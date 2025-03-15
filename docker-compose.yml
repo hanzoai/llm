@@ -13,7 +13,9 @@ services:
     # command:
     #   - "--config=/app/config.yaml"
     ports:
-      - "4000:4000"  # Exposes the app on host port 4000.
+      - 4000
+    networks:
+      - hanzo-network
     environment:
       DATABASE_URL: "postgresql://llmproxy:dbpassword9090@db:5432/litellm"
       STORE_MODEL_IN_DB: "True"
@@ -27,6 +29,10 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.llm.rule=Host(`api.hanzo.ai`)"
+      - "traefik.http.routers.llm.entrypoints=websecure"
 
   db:
     image: postgres:16
