@@ -8,7 +8,7 @@ services:
         target: runtime
     image: ghcr.io/berriai/litellm:main-stable
     ports:
-      - "4000:4000"  # Exposes the app on host port 4000 if needed; Traefik will use the internal port.
+      - "4000:4000"  # Exposes container port 4000 to the host (if needed)
     networks:
       - hanzo-network
     environment:
@@ -16,6 +16,12 @@ services:
       STORE_MODEL_IN_DB: "True"
     env_file:
       - .env
+    volumes:
+      - ./config.yaml:/app/config.yaml  # Mounts your config file into the container
+    command: >
+      sh -c "until nc -z db 5432; do echo 'Waiting for db...'; sleep 2; done;
+      echo 'Database is up, starting app';
+      exec litellm --config=/app/config.yaml"
     depends_on:
       - db
     healthcheck:
@@ -26,12 +32,13 @@ services:
       start_period: 40s
     labels:
       - "traefik.enable=true"
-      # Route traffic coming to api.hanzo.ai (or adjust as needed)
-      - "traefik.http.routers.llm.rule=Host(`api.hanzo.ai`)"
-      # Use the "web" entrypoint (ensure Traefik is configured with it)
-      - "traefik.http.routers.llm.entrypoints=web"
-      # Define the service used by the router and tell Traefik which container port to use
-      - "traefik.http.services.llm-service.loadbalancer.server.port=4000"
+      - "traefik.http.routers.litellm.rule=Host(`api.hanzo.ai`)"
+      - "traefik.http.routers.litellm.entrypoints=websecure"
+      - "traefik.http.services.litellm.loadbalancer.server.port=4000"
+    deploy:
+      replicas: 1  # You can increase this number to scale the service
+      restart_policy:
+        condition: on-failure
 
   db:
     image: postgres:16
