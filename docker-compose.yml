@@ -8,20 +8,22 @@ services:
         target: runtime
     image: ghcr.io/berriai/litellm:main-stable
     ports:
-      - "4000:4000"  # Exposes container port 4000 to the host (if needed)
+      - "4000:4000"  # Map container port 4000 to host
     networks:
       - hanzo-network
     environment:
       DATABASE_URL: "postgresql://llmproxy:dbpassword9090@db:5432/litellm"
-      STORE_MODEL_IN_DB: "True"
+      STORE_MODEL_IN_DB: "True"  # Allows adding models via UI
     env_file:
       - .env
     volumes:
-      - ./config.yaml:/app/config.yaml  # Mounts your config file into the container
-    command: >
-      sh -c "until nc -z db 5432; do echo 'Waiting for db...'; sleep 2; done;
-      echo 'Database is up, starting app';
-      exec litellm --config=/app/config.yaml"
+      - ./config.yaml:/app/config.yaml  # Mount config so it’s accessible at /app/config.yaml
+    # Use the default ENTRYPOINT from the Dockerfile (docker/prod_entrypoint.sh)
+    # Pass the config file and port as arguments.
+    command:
+      - "--config=/app/config.yaml"
+      - "--port"
+      - "4000"
     depends_on:
       - db
     healthcheck:
@@ -30,15 +32,15 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    deploy:
+     replicas: 1  # You can increase this number to scale the service
+     restart_policy:
+       condition: on-failure
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.litellm.rule=Host(`api.hanzo.ai`)"
       - "traefik.http.routers.litellm.entrypoints=websecure"
       - "traefik.http.services.litellm.loadbalancer.server.port=4000"
-    deploy:
-      replicas: 1  # You can increase this number to scale the service
-      restart_policy:
-        condition: on-failure
 
   db:
     image: postgres:16
@@ -47,6 +49,8 @@ services:
       POSTGRES_DB: litellm
       POSTGRES_USER: llmproxy
       POSTGRES_PASSWORD: dbpassword9090
+    ports:
+      - "5432:5432"  # Bind the host port if needed (adjust if conflicts arise)
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
