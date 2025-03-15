@@ -12,26 +12,26 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 
 
-def test_using_litellm():
+def test_using_llm():
     try:
-        import litellm
+        import llm
 
-        print("litellm imported successfully")
+        print("llm imported successfully")
     except Exception as e:
         pytest.fail(
-            f"Error occurred: {e}. Installing litellm on python3.8 failed please retry"
+            f"Error occurred: {e}. Installing llm on python3.8 failed please retry"
         )
 
 
-def test_litellm_proxy_server():
-    # Install the litellm[proxy] package
-    subprocess.run(["pip", "install", "litellm[proxy]"])
+def test_llm_proxy_server():
+    # Install the llm[proxy] package
+    subprocess.run(["pip", "install", "llm[proxy]"])
 
     # Import the proxy_server module
     try:
-        import litellm.proxy.proxy_server
+        import llm.proxy.proxy_server
     except ImportError:
-        pytest.fail("Failed to import litellm.proxy_server")
+        pytest.fail("Failed to import llm.proxy_server")
 
     # Assertion to satisfy the test, you can add other checks as needed
     assert True
@@ -41,11 +41,11 @@ def test_package_dependencies():
     try:
         import tomli
         import pathlib
-        import litellm
+        import llm
 
-        # Get the litellm package root path
-        litellm_path = pathlib.Path(litellm.__file__).parent.parent
-        pyproject_path = litellm_path / "pyproject.toml"
+        # Get the llm package root path
+        llm_path = pathlib.Path(llm.__file__).parent.parent
+        pyproject_path = llm_path / "pyproject.toml"
 
         # Read and parse pyproject.toml
         with open(pyproject_path, "rb") as f:
@@ -90,19 +90,19 @@ import pytest
 import requests
 
 
-def test_litellm_proxy_server_config_no_general_settings():
-    # Install the litellm[proxy] package
+def test_llm_proxy_server_config_no_general_settings():
+    # Install the llm[proxy] package
     # Start the server
     try:
-        subprocess.run(["pip", "install", "litellm[proxy]"])
-        subprocess.run(["pip", "install", "litellm[extra_proxy]"])
+        subprocess.run(["pip", "install", "llm[proxy]"])
+        subprocess.run(["pip", "install", "llm[extra_proxy]"])
         filepath = os.path.dirname(os.path.abspath(__file__))
         config_fp = f"{filepath}/test_configs/test_config_no_auth.yaml"
         server_process = subprocess.Popen(
             [
                 "python",
                 "-m",
-                "litellm.proxy.proxy_cli",
+                "llm.proxy.proxy_cli",
                 "--config",
                 config_fp,
             ]
@@ -131,7 +131,7 @@ def test_litellm_proxy_server_config_no_general_settings():
         assert response.status_code == 200
 
     except ImportError:
-        pytest.fail("Failed to import litellm.proxy_server")
+        pytest.fail("Failed to import llm.proxy_server")
     except requests.ConnectionError:
         pytest.fail("Failed to connect to the server")
     finally:

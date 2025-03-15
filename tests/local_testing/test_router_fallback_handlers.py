@@ -11,9 +11,9 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import litellm
-from litellm import Router
-from litellm.integrations.custom_logger import CustomLogger
+import llm
+from llm import Router
+from llm.integrations.custom_logger import CustomLogger
 from typing import Any, Dict
 
 
@@ -23,7 +23,7 @@ from typing import List, Dict
 
 sys.path.insert(0, os.path.abspath("../.."))
 
-from litellm.router_utils.fallback_event_handlers import (
+from llm.router_utils.fallback_event_handlers import (
     run_async_fallback,
     log_success_fallback_event,
     log_failure_fallback_event,
@@ -36,14 +36,14 @@ def create_test_router():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
             },
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -65,10 +65,10 @@ async def test_run_async_fallback(original_function):
     """
     Basic test - given a list of fallback models, run the original function with the fallback models
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
     fallback_model_group = ["gpt-4"]
     original_model_group = "gpt-3.5-turbo"
-    original_exception = litellm.exceptions.InternalServerError(
+    original_exception = llm.exceptions.InternalServerError(
         message="Simulated error",
         llm_provider="openai",
         model="gpt-3.5-turbo",
@@ -87,7 +87,7 @@ async def test_run_async_fallback(original_function):
         request_kwargs["messages"] = [{"role": "user", "content": "Hello, world!"}]
 
     result = await run_async_fallback(
-        litellm_router=router,
+        llm_router=router,
         original_function=original_function,
         num_retries=1,
         fallback_model_group=fallback_model_group,
@@ -101,11 +101,11 @@ async def test_run_async_fallback(original_function):
     assert result is not None
 
     if original_function == router._acompletion:
-        assert isinstance(result, litellm.ModelResponse)
+        assert isinstance(result, llm.ModelResponse)
     elif original_function == router._atext_completion:
-        assert isinstance(result, litellm.TextCompletionResponse)
+        assert isinstance(result, llm.TextCompletionResponse)
     elif original_function == router._aembedding:
-        assert isinstance(result, litellm.EmbeddingResponse)
+        assert isinstance(result, llm.EmbeddingResponse)
 
 
 class CustomTestLogger(CustomLogger):
@@ -144,14 +144,14 @@ async def test_log_success_fallback_event():
     """
     original_model_group = "gpt-3.5-turbo"
     kwargs = {"messages": [{"role": "user", "content": "Hello, world!"}]}
-    original_exception = litellm.exceptions.InternalServerError(
+    original_exception = llm.exceptions.InternalServerError(
         message="Simulated error",
         llm_provider="openai",
         model="gpt-3.5-turbo",
     )
 
     logger = CustomTestLogger()
-    litellm.callbacks = [logger]
+    llm.callbacks = [logger]
 
     # This test mainly checks if the function runs without errors
     await log_success_fallback_event(original_model_group, kwargs, original_exception)
@@ -173,14 +173,14 @@ async def test_log_failure_fallback_event():
     """
     original_model_group = "gpt-3.5-turbo"
     kwargs = {"messages": [{"role": "user", "content": "Hello, world!"}]}
-    original_exception = litellm.exceptions.InternalServerError(
+    original_exception = llm.exceptions.InternalServerError(
         message="Simulated error",
         llm_provider="openai",
         model="gpt-3.5-turbo",
     )
 
     logger = CustomTestLogger()
-    litellm.callbacks = [logger]
+    llm.callbacks = [logger]
 
     # This test mainly checks if the function runs without errors
     await log_failure_fallback_event(original_model_group, kwargs, original_exception)
@@ -208,7 +208,7 @@ async def test_failed_fallbacks_raise_most_recent_exception(original_function):
     """
     fallback_model_group = ["gpt-4"]
     original_model_group = "gpt-3.5-turbo"
-    original_exception = litellm.exceptions.InternalServerError(
+    original_exception = llm.exceptions.InternalServerError(
         message="Simulated error",
         llm_provider="openai",
         model="gpt-3.5-turbo",
@@ -225,15 +225,15 @@ async def test_failed_fallbacks_raise_most_recent_exception(original_function):
     elif original_function == router._acompletion:
         request_kwargs["messages"] = [{"role": "user", "content": "Hello, world!"}]
 
-    with pytest.raises(litellm.exceptions.RateLimitError):
+    with pytest.raises(llm.exceptions.RateLimitError):
         await run_async_fallback(
-            litellm_router=router,
+            llm_router=router,
             original_function=original_function,
             num_retries=1,
             fallback_model_group=fallback_model_group,
             original_model_group=original_model_group,
             original_exception=original_exception,
-            mock_response="litellm.RateLimitError",
+            mock_response="llm.RateLimitError",
             max_fallbacks=5,
             fallback_depth=0,
             **request_kwargs
@@ -244,21 +244,21 @@ router_2 = Router(
     model_list=[
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
         },
         {
             "model_name": "gpt-4",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-4",
                 "api_key": "very-fake-key",
             },
         },
         {
             "model_name": "fake-openai-endpoint-2",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/fake-openai-endpoint-2",
                 "api_key": "working-key-since-this-is-fake-endpoint",
                 "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
@@ -297,7 +297,7 @@ async def test_multiple_fallbacks(original_function):
         request_kwargs["messages"] = [{"role": "user", "content": "Hello, world!"}]
 
     result = await run_async_fallback(
-        litellm_router=router_2,
+        llm_router=router_2,
         original_function=original_function,
         num_retries=1,
         fallback_model_group=fallback_model_group,

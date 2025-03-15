@@ -12,17 +12,17 @@ Example for creating a human-like audio response to a prompt
 
 <Tabs>
 
-<TabItem label="LiteLLM Python SDK" value="Python">
+<TabItem label="Hanzo Python SDK" value="Python">
 
 ```python
 import os 
 import base64
-from litellm import completion
+from llm import completion
 
 os.environ["OPENAI_API_KEY"] = "your-api-key"
 
 # openai call
-completion = await litellm.acompletion(
+completion = await llm.acompletion(
     model="gpt-4o-audio-preview",
     modalities=["text", "audio"],
     audio={"voice": "alloy", "format": "wav"},
@@ -35,14 +35,14 @@ with open("dog.wav", "wb") as f:
 ```
 
 </TabItem>
-<TabItem label="LiteLLM Proxy Server" value="proxy">
+<TabItem label="Hanzo Proxy Server" value="proxy">
 
 1. Define an audio model on config.yaml
 
 ```yaml
 model_list:
   - model_name: gpt-4o-audio-preview # OpenAI gpt-4o-audio-preview
-    litellm_params:
+    llm_params:
       model: openai/gpt-4o-audio-preview
       api_key: os.environ/OPENAI_API_KEY 
 
@@ -51,7 +51,7 @@ model_list:
 2. Run proxy server
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 3. Test it using the OpenAI Python SDK
@@ -62,8 +62,8 @@ import base64
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="LITELLM_PROXY_KEY", # sk-1234
-    base_url="LITELLM_PROXY_BASE" # http://0.0.0.0:4000
+    api_key="LLM_PROXY_KEY", # sk-1234
+    base_url="LLM_PROXY_BASE" # http://0.0.0.0:4000
 )
 
 completion = client.chat.completions.create(
@@ -97,7 +97,7 @@ with open("dog.wav", "wb") as f:
 
 <Tabs>
 
-<TabItem label="LiteLLM Python SDK" value="Python">
+<TabItem label="Hanzo Python SDK" value="Python">
 
 ```python
 import base64
@@ -109,7 +109,7 @@ response.raise_for_status()
 wav_data = response.content
 encoded_string = base64.b64encode(wav_data).decode("utf-8")
 
-completion = litellm.completion(
+completion = llm.completion(
     model="gpt-4o-audio-preview",
     modalities=["text", "audio"],
     audio={"voice": "alloy", "format": "wav"},
@@ -132,7 +132,7 @@ print(completion.choices[0].message)
 
 </TabItem>
 
-<TabItem label="LiteLLM Proxy Server" value="proxy">
+<TabItem label="Hanzo Proxy Server" value="proxy">
 
 
 1. Define an audio model on config.yaml
@@ -140,7 +140,7 @@ print(completion.choices[0].message)
 ```yaml
 model_list:
   - model_name: gpt-4o-audio-preview # OpenAI gpt-4o-audio-preview
-    litellm_params:
+    llm_params:
       model: openai/gpt-4o-audio-preview
       api_key: os.environ/OPENAI_API_KEY 
 
@@ -149,7 +149,7 @@ model_list:
 2. Run proxy server
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 3. Test it using the OpenAI Python SDK
@@ -160,8 +160,8 @@ import base64
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="LITELLM_PROXY_KEY", # sk-1234
-    base_url="LITELLM_PROXY_BASE" # http://0.0.0.0:4000
+    api_key="LLM_PROXY_KEY", # sk-1234
+    base_url="LLM_PROXY_BASE" # http://0.0.0.0:4000
 )
 
 
@@ -206,22 +206,22 @@ print(completion.choices[0].message)
 ## Checking if a model supports `audio_input` and `audio_output`
 
 <Tabs>
-<TabItem label="LiteLLM Python SDK" value="Python">
+<TabItem label="Hanzo Python SDK" value="Python">
 
-Use `litellm.supports_audio_output(model="")` -> returns `True` if model can generate audio output
+Use `llm.supports_audio_output(model="")` -> returns `True` if model can generate audio output
 
-Use `litellm.supports_audio_input(model="")` -> returns `True` if model can accept audio input
+Use `llm.supports_audio_input(model="")` -> returns `True` if model can accept audio input
 
 ```python
-assert litellm.supports_audio_output(model="gpt-4o-audio-preview") == True
-assert litellm.supports_audio_input(model="gpt-4o-audio-preview") == True
+assert llm.supports_audio_output(model="gpt-4o-audio-preview") == True
+assert llm.supports_audio_input(model="gpt-4o-audio-preview") == True
 
-assert litellm.supports_audio_output(model="gpt-3.5-turbo") == False
-assert litellm.supports_audio_input(model="gpt-3.5-turbo") == False
+assert llm.supports_audio_output(model="gpt-3.5-turbo") == False
+assert llm.supports_audio_input(model="gpt-3.5-turbo") == False
 ```
 </TabItem>
 
-<TabItem label="LiteLLM Proxy Server" value="proxy">
+<TabItem label="Hanzo Proxy Server" value="proxy">
 
 
 1. Define vision models on config.yaml
@@ -229,11 +229,11 @@ assert litellm.supports_audio_input(model="gpt-3.5-turbo") == False
 ```yaml
 model_list:
   - model_name: gpt-4o-audio-preview # OpenAI gpt-4o-audio-preview
-    litellm_params:
+    llm_params:
       model: openai/gpt-4o-audio-preview
       api_key: os.environ/OPENAI_API_KEY
   - model_name: llava-hf          # Custom OpenAI compatible model
-    litellm_params:
+    llm_params:
       model: openai/llava-hf/llava-v1.6-vicuna-7b-hf
       api_base: http://localhost:8000
       api_key: fake-key
@@ -245,7 +245,7 @@ model_list:
 2. Run proxy server
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 3. Call `/model_group/info` to check if your model supports `vision`

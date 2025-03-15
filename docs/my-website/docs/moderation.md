@@ -6,26 +6,26 @@ import TabItem from '@theme/TabItem';
 
 ### Usage
 <Tabs>
-<TabItem value="python" label="LiteLLM Python SDK">
+<TabItem value="python" label="Hanzo Python SDK">
 
 ```python
-from litellm import moderation
+from llm import moderation
 
 response = moderation(
-    input="hello from litellm",
+    input="hello from llm",
     model="text-moderation-stable"
 )
 ```
 
 </TabItem>
-<TabItem value="proxy" label="LiteLLM Proxy Server">
+<TabItem value="proxy" label="Hanzo Proxy Server">
 
-For `/moderations` endpoint, there is **no need to specify `model` in the request or on the litellm config.yaml**
+For `/moderations` endpoint, there is **no need to specify `model` in the request or on the llm config.yaml**
 
-Start litellm proxy server 
+Start llm proxy server 
 
 ```
-litellm
+llm
 ```
 
 
@@ -40,7 +40,7 @@ from openai import OpenAI
 client = OpenAI(api_key="<proxy-api-key>", base_url="http://0.0.0.0:4000")
 
 response = client.moderations.create(
-    input="hello from litellm",
+    input="hello from llm",
     model="text-moderation-stable" # optional, defaults to `omni-moderation-latest`
 )
 
@@ -63,7 +63,7 @@ curl --location 'http://0.0.0.0:4000/moderations' \
 </Tabs>
 
 ## Input Params
-LiteLLM accepts and translates the [OpenAI Moderation params](https://platform.openai.com/docs/api-reference/moderations) across all supported providers.
+Hanzo accepts and translates the [OpenAI Moderation params](https://platform.openai.com/docs/api-reference/moderations) across all supported providers.
 
 ### Required Fields
 
@@ -85,7 +85,7 @@ LiteLLM accepts and translates the [OpenAI Moderation params](https://platform.o
 ## Output Format
 Here's the exact json output and type you can expect from all moderation calls:
 
-[**LiteLLM follows OpenAI's output format**](https://platform.openai.com/docs/api-reference/moderations/object)
+[**Hanzo follows OpenAI's output format**](https://platform.openai.com/docs/api-reference/moderations/object)
 
 
 ```python

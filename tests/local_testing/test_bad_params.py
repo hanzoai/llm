@@ -11,11 +11,11 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm import completion, embedding
-from litellm.utils import Message
+import llm
+from llm import completion, embedding
+from llm.utils import Message
 
-# litellm.set_verbose = True
+# llm.set_verbose = True
 user_message = "Hello, how are you?"
 messages = [{"content": user_message, "role": "user"}]
 model_val = None
@@ -38,11 +38,11 @@ def test_completion_with_empty_model():
 
 def test_completion_invalid_param_cohere():
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         response = completion(model="command-nightly", messages=messages, seed=12)
         pytest.fail(f"This should have failed cohere does not support `seed` parameter")
     except Exception as e:
-        assert isinstance(e, litellm.UnsupportedParamsError)
+        assert isinstance(e, llm.UnsupportedParamsError)
         print("got an exception=", str(e))
         if " cohere does not support parameters: {'seed': 12}" in str(e):
             pass

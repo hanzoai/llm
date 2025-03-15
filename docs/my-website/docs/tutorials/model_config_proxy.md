@@ -9,20 +9,20 @@ import Image from '@theme/IdealImage';
 Let's spin up a local OpenAI-compatible server, to call a deployed `codellama/CodeLlama-34b-Instruct-hf` model using Huggingface's [Text-Generation-Inference (TGI)](https://github.com/huggingface/text-generation-inference) format.
 
 ```shell
-$ litellm --model huggingface/codellama/CodeLlama-34b-Instruct-hf --api_base https://my-endpoint.com
+$ llm --model huggingface/codellama/CodeLlama-34b-Instruct-hf --api_base https://my-endpoint.com
 
 # OpenAI compatible server running on http://0.0.0.0/8000
 ```
 
 In a new shell, run: 
 ```shell
-$ litellm --test
+$ llm --test
 ``` 
 This will send a test request to our endpoint. 
 
 Now, let's see what got sent to huggingface. Run: 
 ```shell
-$ litellm --logs
+$ llm --logs
 ```
 This will return the most recent log (by default logs are stored in a local file called 'api_logs.json').
 
@@ -31,22 +31,22 @@ As we can see, this is the formatting sent to huggingface:
 <Image img={require('../../img/codellama_input.png')} />  
 
 
-This follows [our formatting](https://github.com/BerriAI/litellm/blob/9932371f883c55fd0f3142f91d9c40279e8fe241/litellm/llms/prompt_templates/factory.py#L10) for CodeLlama (based on the [Huggingface's documentation](https://huggingface.co/blog/codellama#conversational-instructions)). 
+This follows [our formatting](https://github.com/BerriAI/llm/blob/9932371f883c55fd0f3142f91d9c40279e8fe241/llm/llms/prompt_templates/factory.py#L10) for CodeLlama (based on the [Huggingface's documentation](https://huggingface.co/blog/codellama#conversational-instructions)). 
 
 But this lacks BOS(`<s>`) and EOS(`</s>`) tokens.
 
-So instead of using the LiteLLM default, let's use our own prompt template to use these in our messages. 
+So instead of using the Hanzo default, let's use our own prompt template to use these in our messages. 
 
 ## Step 2: Create Custom Prompt Template
 
-Our litellm server accepts prompt templates as part of a config file. You can save api keys, fallback models, prompt templates etc. in this config. [See a complete config file](../proxy_server.md)
+Our llm server accepts prompt templates as part of a config file. You can save api keys, fallback models, prompt templates etc. in this config. [See a complete config file](../proxy_server.md)
 
 For now, let's just create a simple config file with our prompt template, and tell our server about it. 
 
-Create a file called `litellm_config.toml`:
+Create a file called `llm_config.toml`:
 
 ```shell
-$ touch litellm_config.toml
+$ touch llm_config.toml
 ```
 We want to add:
 * BOS (`<s>`) tokens at the start of every System and Human message
@@ -54,7 +54,7 @@ We want to add:
 
 Let's open our file in our terminal: 
 ```shell
-$ vi litellm_config.toml
+$ vi llm_config.toml
 ```
 
 paste our prompt template:
@@ -77,20 +77,20 @@ save our file (in vim):
 
 ## Step 3: Run new template
 
-Let's save our custom template to our litellm server by running:
+Let's save our custom template to our llm server by running:
 ```shell
-$ litellm --config -f ./litellm_config.toml 
+$ llm --config -f ./llm_config.toml 
 ```
-LiteLLM will save a copy of this file in it's package, so it can persist these settings across restarts.
+Hanzo will save a copy of this file in it's package, so it can persist these settings across restarts.
 
 Re-start our server: 
 ```shell
-$ litellm --model huggingface/codellama/CodeLlama-34b-Instruct-hf --api_base https://my-endpoint.com
+$ llm --model huggingface/codellama/CodeLlama-34b-Instruct-hf --api_base https://my-endpoint.com
 ```
 
 In a new shell, run: 
 ```shell
-$ litellm --test
+$ llm --test
 ``` 
 
 See our new input prompt to Huggingface! 

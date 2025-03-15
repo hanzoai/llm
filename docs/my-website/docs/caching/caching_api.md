@@ -1,13 +1,13 @@
-# Hosted Cache - api.litellm.ai
+# Hosted Cache - api.llm.ai
 
-Use api.litellm.ai for caching `completion()` and `embedding()` responses
+Use api.llm.ai for caching `completion()` and `embedding()` responses
 
 ## Quick Start Usage - Completion
 ```python
-import litellm
-from litellm import completion
-from litellm.caching.caching import Cache
-litellm.cache = Cache(type="hosted") # init cache to use api.litellm.ai
+import llm
+from llm import completion
+from llm.caching.caching import Cache
+llm.cache = Cache(type="hosted") # init cache to use api.llm.ai
 
 # Make completion calls
 response1 = completion(
@@ -29,33 +29,33 @@ response2 = completion(
 
 ```python
 import time
-import litellm
-from litellm import completion, embedding
-from litellm.caching.caching import Cache
-litellm.cache = Cache(type="hosted")
+import llm
+from llm import completion, embedding
+from llm.caching.caching import Cache
+llm.cache = Cache(type="hosted")
 
 start_time = time.time()
-embedding1 = embedding(model="text-embedding-ada-002", input=["hello from litellm"*5], caching=True)
+embedding1 = embedding(model="text-embedding-ada-002", input=["hello from llm"*5], caching=True)
 end_time = time.time()
 print(f"Embedding 1 response time: {end_time - start_time} seconds")
 
 start_time = time.time()
-embedding2 = embedding(model="text-embedding-ada-002", input=["hello from litellm"*5], caching=True)
+embedding2 = embedding(model="text-embedding-ada-002", input=["hello from llm"*5], caching=True)
 end_time = time.time()
 print(f"Embedding 2 response time: {end_time - start_time} seconds")
 ```
 
 ## Caching with Streaming 
-LiteLLM can cache your streamed responses for you
+Hanzo can cache your streamed responses for you
 
 ### Usage
 ```python
-import litellm
+import llm
 import time
-from litellm import completion
-from litellm.caching.caching import Cache
+from llm import completion
+from llm.caching.caching import Cache
 
-litellm.cache = Cache(type="hosted")
+llm.cache = Cache(type="hosted")
 
 # Make completion calls
 response1 = completion(

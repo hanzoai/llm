@@ -9,13 +9,13 @@
 # sys.path.insert(
 #     0, os.path.abspath("../..")
 # )  # Adds the parent directory to the system path
-# import litellm
-# from litellm import Router
+# import llm
+# from llm import Router
 # from concurrent.futures import ThreadPoolExecutor
 # from dotenv import load_dotenv
 # from aiodebug import log_slow_callbacks  # Import the aiodebug utility for logging slow callbacks
 
-# # litellm.telemetry = False
+# # llm.telemetry = False
 
 # load_dotenv()
 
@@ -31,13 +31,13 @@
 # exception_counts = {}
 # exception_data = []
 
-# litellm.telemetry = False
+# llm.telemetry = False
 
 # num_task_cancelled_errors = 0
 
 # model_list = [{
 #     "model_name": "azure-model",
-#     "litellm_params": {
+#     "llm_params": {
 #         "model": "azure/gpt-turbo",
 #         "api_key": "os.environ/AZURE_FRANCE_API_KEY",
 #         "api_base": "https://openai-france-1234.openai.azure.com",
@@ -45,7 +45,7 @@
 #     }
 # }, {
 #     "model_name": "azure-model",
-#     "litellm_params": {
+#     "llm_params": {
 #         "model": "azure/gpt-35-turbo",
 #         "api_key": "os.environ/AZURE_EUROPE_API_KEY",
 #         "api_base": "https://my-endpoint-europe-berri-992.openai.azure.com",
@@ -53,7 +53,7 @@
 #     }
 # }, {
 #     "model_name": "azure-model",
-#     "litellm_params": {
+#     "llm_params": {
 #         "model": "azure/gpt-35-turbo",
 #         "api_key": "os.environ/AZURE_CANADA_API_KEY",
 #         "api_base": "https://my-endpoint-canada-berri992.openai.azure.com",

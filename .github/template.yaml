@@ -1,9 +1,9 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  llmlite-service
+  llm-service
 
-  SAM Template for llmlite-service
+  SAM Template for llm-service
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
@@ -36,7 +36,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: !Sub "${AWS::StackName}-function"
-      CodeUri: "./litellm"
+      CodeUri: "./llm"
       Handler: proxy/lambda.handler
       Runtime: python3.11
       AutoPublishAlias: !Ref AliasParameter
@@ -88,7 +88,7 @@ Outputs:
   FunctionVersion:
     Description: "Lambda Function Version"
     Value: !GetAtt Function.Version.Version
-  
+
   FunctionNewAlarmARN:
     Description: "Lambda Function New Alarm ARN"
     Value: !GetAtt NewVersionErrorMetricGreaterThanZeroAlarm.Arn

@@ -11,12 +11,12 @@ import threading
 logging.basicConfig(level=logging.DEBUG)
 sys.path.insert(0, os.path.abspath("../.."))
 
-import litellm
-from litellm import completion
-from litellm.caching import InMemoryCache
+import llm
+from llm import completion
+from llm.caching import InMemoryCache
 
-litellm.num_retries = 3
-litellm.success_callback = ["langfuse"]
+llm.num_retries = 3
+llm.success_callback = ["langfuse"]
 os.environ["LANGFUSE_DEBUG"] = "True"
 import time
 
@@ -132,10 +132,10 @@ class TestLangfuseLogging:
         mock_post = AsyncMock()
         mock_post.return_value = mock_response
 
-        litellm.set_verbose = True
-        litellm.success_callback = ["langfuse"]
+        llm.set_verbose = True
+        llm.success_callback = ["langfuse"]
 
-        return {"trace_id": f"litellm-test-{str(uuid.uuid4())}", "mock_post": mock_post}
+        return {"trace_id": f"llm-test-{str(uuid.uuid4())}", "mock_post": mock_post}
 
     async def _verify_langfuse_call(
         self,
@@ -170,7 +170,7 @@ class TestLangfuseLogging:
         """Test Langfuse logging for chat completion"""
         setup = await mock_setup  # Await the fixture
         with patch("httpx.Client.post", setup["mock_post"]):
-            await litellm.acompletion(
+            await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Hello!"}],
                 mock_response="Hello! How can I assist you today?",
@@ -185,7 +185,7 @@ class TestLangfuseLogging:
         """Test Langfuse logging for chat completion with tags"""
         setup = await mock_setup  # Await the fixture
         with patch("httpx.Client.post", setup["mock_post"]):
-            await litellm.acompletion(
+            await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Hello!"}],
                 mock_response="Hello! How can I assist you today?",
@@ -203,7 +203,7 @@ class TestLangfuseLogging:
         """Test Langfuse logging for chat completion with tags"""
         setup = await mock_setup  # Await the fixture
         with patch("httpx.Client.post", setup["mock_post"]):
-            await litellm.acompletion(
+            await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Hello!"}],
                 mock_response="Hello! How can I assist you today?",
@@ -223,7 +223,7 @@ class TestLangfuseLogging:
         """Test Langfuse logging for chat completion with metadata for langfuse"""
         setup = await mock_setup  # Await the fixture
         with patch("httpx.Client.post", setup["mock_post"]):
-            await litellm.acompletion(
+            await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Hello!"}],
                 mock_response="Hello! How can I assist you today?",
@@ -279,7 +279,7 @@ class TestLangfuseLogging:
         }
 
         with patch("httpx.Client.post", setup["mock_post"]):
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Hello!"}],
                 mock_response="Hello! How can I assist you today?",
@@ -340,7 +340,7 @@ class TestLangfuseLogging:
             test_metadata["trace_id"] = setup["trace_id"]
 
         with patch("httpx.Client.post", setup["mock_post"]):
-            await litellm.acompletion(
+            await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Hello!"}],
                 mock_response="Hello! How can I assist you today?",
@@ -359,11 +359,11 @@ class TestLangfuseLogging:
     ):
         """Test Langfuse logging for chat completion with malformed LLM response"""
         setup = await mock_setup  # Await the fixture
-        litellm._turn_on_debug()
+        llm._turn_on_debug()
         with patch("httpx.Client.post", setup["mock_post"]):
-            mock_response = litellm.ModelResponse(
+            mock_response = llm.ModelResponse(
                 choices=[],
-                usage=litellm.Usage(
+                usage=llm.Usage(
                     prompt_tokens=10,
                     completion_tokens=10,
                     total_tokens=20,
@@ -372,7 +372,7 @@ class TestLangfuseLogging:
                 object="chat.completion",
                 created=1723081200,
             ).model_dump()
-            await litellm.acompletion(
+            await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Hello!"}],
                 mock_response=mock_response,

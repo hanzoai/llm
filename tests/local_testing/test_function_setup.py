@@ -11,7 +11,7 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the, system path
 import pytest, uuid
-from litellm.utils import function_setup, Rules
+from llm.utils import function_setup, Rules
 from datetime import datetime
 
 
@@ -29,5 +29,5 @@ def test_empty_content():
         rules_obj=rules_obj,
         start_time=datetime.now(),
         messages=[],
-        litellm_call_id=str(uuid.uuid4()),
+        llm_call_id=str(uuid.uuid4()),
     )

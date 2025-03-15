@@ -8,11 +8,11 @@
 
 
 from typing import Literal
-import litellm
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.integrations.custom_logger import CustomLogger
+import llm
+from llm.proxy._types import UserAPIKeyAuth
+from llm.integrations.custom_logger import CustomLogger
 from fastapi import HTTPException
-from litellm._logging import verbose_proxy_logger
+from llm._logging import verbose_proxy_logger
 
 
 class _ENTERPRISE_GoogleTextModeration(CustomLogger):
@@ -52,15 +52,15 @@ class _ENTERPRISE_GoogleTextModeration(CustomLogger):
         self.document_type = language_v1.types.Document.Type.PLAIN_TEXT  # type: ignore
 
         default_confidence_threshold = (
-            litellm.google_moderation_confidence_threshold or 0.8
+            llm.google_moderation_confidence_threshold or 0.8
         )  # by default require a high confidence (80%) to fail
 
         for category in self.confidence_categories:
-            if hasattr(litellm, f"{category}_confidence_threshold"):
+            if hasattr(llm, f"{category}_confidence_threshold"):
                 setattr(
                     self,
                     f"{category}_confidence_threshold",
-                    getattr(litellm, f"{category}_confidence_threshold"),
+                    getattr(llm, f"{category}_confidence_threshold"),
                 )
             else:
                 setattr(
@@ -79,7 +79,7 @@ class _ENTERPRISE_GoogleTextModeration(CustomLogger):
     def print_verbose(self, print_statement):
         try:
             verbose_proxy_logger.debug(print_statement)
-            if litellm.set_verbose:
+            if llm.set_verbose:
                 print(print_statement)  # noqa
         except Exception:
             pass

@@ -4,7 +4,7 @@ import os
 sys.path.insert(0, os.path.abspath("../.."))
 
 import asyncio
-import litellm
+import llm
 import pytest
 import time
 import json
@@ -89,7 +89,7 @@ async def test_vertex_load():
             avg_percentage_diff < 25
         ), f"Average performance difference of {avg_percentage_diff:.2f}% exceeds 20% threshold"
 
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         pass
     except Exception as e:
         pytest.fail(f"An exception occurred - {e}")
@@ -131,7 +131,7 @@ def create_async_task(message_type):
                     {
                         "type": "image_url",
                         "image_url": {
-                            "url": "https://litellm-listing.s3.amazonaws.com/litellm_logo.png"
+                            "url": "https://llm-listing.s3.amazonaws.com/llm_logo.png"
                         },
                     },
                 ],
@@ -146,4 +146,4 @@ def create_async_task(message_type):
         "timeout": 10,
         "api_base": base_url,
     }
-    return asyncio.create_task(litellm.acompletion(**completion_args))
+    return asyncio.create_task(llm.acompletion(**completion_args))

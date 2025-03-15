@@ -8,9 +8,9 @@ sys.path.insert(
 )  # Adds the parent directory to the system-path
 
 import pytest
-from litellm.integrations.humanloop import HumanLoopPromptManager
-from litellm.types.utils import StandardCallbackDynamicParams
-from litellm.litellm_core_utils.litellm_logging import DynamicLoggingCache
+from llm.integrations.humanloop import HumanLoopPromptManager
+from llm.types.utils import StandardCallbackDynamicParams
+from llm.llm_core_utils.llm_logging import DynamicLoggingCache
 from unittest.mock import Mock, patch
 
 

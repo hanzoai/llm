@@ -18,14 +18,14 @@ import time
 
 import pytest
 from typing import Optional
-import litellm
-from litellm import create_batch, create_file
-from litellm._logging import verbose_logger
+import llm
+from llm import create_batch, create_file
+from llm._logging import verbose_logger
 
 verbose_logger.setLevel(logging.DEBUG)
 
-from litellm.integrations.custom_logger import CustomLogger
-from litellm.types.utils import StandardLoggingPayload
+from llm.integrations.custom_logger import CustomLogger
+from llm.types.utils import StandardLoggingPayload
 import random
 from unittest.mock import patch, MagicMock
 
@@ -88,7 +88,7 @@ async def test_create_batch(provider):
     _current_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(_current_dir, file_name)
 
-    file_obj = await litellm.acreate_file(
+    file_obj = await llm.acreate_file(
         file=open(file_path, "rb"),
         purpose="batch",
         custom_llm_provider=provider,
@@ -101,7 +101,7 @@ async def test_create_batch(provider):
     ), "Failed to create file, expected a non null file_id but got {batch_input_file_id}"
 
     await asyncio.sleep(1)
-    create_batch_response = await litellm.acreate_batch(
+    create_batch_response = await llm.acreate_batch(
         completion_window="24h",
         endpoint="/v1/chat/completions",
         input_file_id=batch_input_file_id,
@@ -109,7 +109,7 @@ async def test_create_batch(provider):
         metadata={"key1": "value1", "key2": "value2"},
     )
 
-    print("response from litellm.create_batch=", create_batch_response)
+    print("response from llm.create_batch=", create_batch_response)
     await asyncio.sleep(6)
 
     assert (
@@ -123,7 +123,7 @@ async def test_create_batch(provider):
         create_batch_response.input_file_id == batch_input_file_id
     ), f"Failed to create batch, expected input_file_id to be {batch_input_file_id} but got {create_batch_response.input_file_id}"
 
-    retrieved_batch = await litellm.aretrieve_batch(
+    retrieved_batch = await llm.aretrieve_batch(
         batch_id=create_batch_response.id, custom_llm_provider=provider
     )
     print("retrieved batch=", retrieved_batch)
@@ -132,10 +132,10 @@ async def test_create_batch(provider):
     assert retrieved_batch.id == create_batch_response.id
 
     # list all batches
-    list_batches = await litellm.alist_batches(custom_llm_provider=provider, limit=2)
+    list_batches = await llm.alist_batches(custom_llm_provider=provider, limit=2)
     print("list_batches=", list_batches)
 
-    file_content = await litellm.afile_content(
+    file_content = await llm.afile_content(
         file_id=batch_input_file_id, custom_llm_provider=provider
     )
 
@@ -147,7 +147,7 @@ async def test_create_batch(provider):
         file.write(result)
 
     # Cancel Batch
-    cancel_batch_response = await litellm.acancel_batch(
+    cancel_batch_response = await llm.acancel_batch(
         batch_id=create_batch_response.id,
         custom_llm_provider=provider,
     )
@@ -175,7 +175,7 @@ def cleanup_azure_files():
     """
     Delete all files for Azure - helper for when we run out of Azure Files Quota
     """
-    azure_files = litellm.file_list(
+    azure_files = llm.file_list(
         custom_llm_provider="azure",
         api_key=os.getenv("AZURE_FT_API_KEY"),
         api_base=os.getenv("AZURE_FT_API_BASE"),
@@ -183,7 +183,7 @@ def cleanup_azure_files():
     print("azure_files=", azure_files)
     for _file in azure_files:
         print("deleting file=", _file)
-        delete_file_response = litellm.file_delete(
+        delete_file_response = llm.file_delete(
             file_id=_file.id,
             custom_llm_provider="azure",
             api_key=os.getenv("AZURE_FT_API_KEY"),
@@ -243,16 +243,16 @@ async def test_async_create_batch(provider):
     2. Create Batch Request
     3. Retrieve the specific batch
     """
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
     print("Testing async create batch")
-    litellm.logging_callback_manager._reset_all_callbacks()
+    llm.logging_callback_manager._reset_all_callbacks()
     custom_logger = TestCustomLogger()
-    litellm.callbacks = [custom_logger, "datadog"]
+    llm.callbacks = [custom_logger, "datadog"]
 
     file_name = "openai_batch_completions.jsonl"
     _current_dir = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(_current_dir, file_name)
-    file_obj = await litellm.acreate_file(
+    file_obj = await llm.acreate_file(
         file=open(file_path, "rb"),
         purpose="batch",
         custom_llm_provider=provider,
@@ -269,17 +269,17 @@ async def test_async_create_batch(provider):
         "user_api_key_alias": "special_api_key_alias",
         "user_api_key_team_alias": "special_team_alias",
     }
-    create_batch_response = await litellm.acreate_batch(
+    create_batch_response = await llm.acreate_batch(
         completion_window="24h",
         endpoint="/v1/chat/completions",
         input_file_id=batch_input_file_id,
         custom_llm_provider=provider,
         metadata={"key1": "value1", "key2": "value2"},
-        # litellm specific param - used for logging metadata on logging callback
-        litellm_metadata=extra_metadata_field,
+        # llm specific param - used for logging metadata on logging callback
+        llm_metadata=extra_metadata_field,
     )
 
-    print("response from litellm.create_batch=", create_batch_response)
+    print("response from llm.create_batch=", create_batch_response)
 
     assert (
         create_batch_response.id is not None
@@ -308,7 +308,7 @@ async def test_async_create_batch(provider):
         == extra_metadata_field["user_api_key_team_alias"]
     )
 
-    retrieved_batch = await litellm.aretrieve_batch(
+    retrieved_batch = await llm.aretrieve_batch(
         batch_id=create_batch_response.id, custom_llm_provider=provider
     )
     print("retrieved batch=", retrieved_batch)
@@ -317,26 +317,26 @@ async def test_async_create_batch(provider):
     assert retrieved_batch.id == create_batch_response.id
 
     # list all batches
-    list_batches = await litellm.alist_batches(custom_llm_provider=provider, limit=2)
+    list_batches = await llm.alist_batches(custom_llm_provider=provider, limit=2)
     print("list_batches=", list_batches)
 
     # try to get file content for our original file
 
-    file_content = await litellm.afile_content(
+    file_content = await llm.afile_content(
         file_id=batch_input_file_id, custom_llm_provider=provider
     )
 
     print("file content = ", file_content)
 
     # file obj
-    file_obj = await litellm.afile_retrieve(
+    file_obj = await llm.afile_retrieve(
         file_id=batch_input_file_id, custom_llm_provider=provider
     )
     print("file obj = ", file_obj)
     assert file_obj.id == batch_input_file_id
 
     # delete file
-    delete_file_response = await litellm.afile_delete(
+    delete_file_response = await llm.afile_delete(
         file_id=batch_input_file_id, custom_llm_provider=provider
     )
 
@@ -344,7 +344,7 @@ async def test_async_create_batch(provider):
 
     assert delete_file_response.id == batch_input_file_id
 
-    all_files_list = await litellm.afile_list(
+    all_files_list = await llm.afile_list(
         custom_llm_provider=provider,
     )
 
@@ -356,7 +356,7 @@ async def test_async_create_batch(provider):
         file.write(file_content.content)
 
     # Cancel Batch
-    cancel_batch_response = await litellm.acancel_batch(
+    cancel_batch_response = await llm.acancel_batch(
         batch_id=create_batch_response.id,
         custom_llm_provider=provider,
     )
@@ -370,11 +370,11 @@ async def test_async_create_batch(provider):
 
 mock_file_response = {
     "kind": "storage#object",
-    "id": "litellm-local/litellm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb/1739598666670574",
-    "selfLink": "https://www.googleapis.com/storage/v1/b/litellm-local/o/litellm-vertex-files%2Fpublishers%2Fgoogle%2Fmodels%2Fgemini-1.5-flash-001%2F5f7b99ad-9203-4430-98bf-3b45451af4cb",
-    "mediaLink": "https://storage.googleapis.com/download/storage/v1/b/litellm-local/o/litellm-vertex-files%2Fpublishers%2Fgoogle%2Fmodels%2Fgemini-1.5-flash-001%2F5f7b99ad-9203-4430-98bf-3b45451af4cb?generation=1739598666670574&alt=media",
-    "name": "litellm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb",
-    "bucket": "litellm-local",
+    "id": "llm-local/llm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb/1739598666670574",
+    "selfLink": "https://www.googleapis.com/storage/v1/b/llm-local/o/llm-vertex-files%2Fpublishers%2Fgoogle%2Fmodels%2Fgemini-1.5-flash-001%2F5f7b99ad-9203-4430-98bf-3b45451af4cb",
+    "mediaLink": "https://storage.googleapis.com/download/storage/v1/b/llm-local/o/llm-vertex-files%2Fpublishers%2Fgoogle%2Fmodels%2Fgemini-1.5-flash-001%2F5f7b99ad-9203-4430-98bf-3b45451af4cb?generation=1739598666670574&alt=media",
+    "name": "llm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb",
+    "bucket": "llm-local",
     "generation": "1739598666670574",
     "metageneration": "1",
     "contentType": "application/json",
@@ -391,18 +391,18 @@ mock_file_response = {
 
 mock_vertex_batch_response = {
     "name": "projects/123456789/locations/us-central1/batchPredictionJobs/test-batch-id-456",
-    "displayName": "litellm_batch_job",
+    "displayName": "llm_batch_job",
     "model": "projects/123456789/locations/us-central1/models/gemini-1.5-flash-001",
     "modelVersionId": "v1",
     "inputConfig": {
         "gcsSource": {
             "uris": [
-                "gs://litellm-local/litellm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb"
+                "gs://llm-local/llm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb"
             ]
         }
     },
     "outputConfig": {
-        "gcsDestination": {"outputUriPrefix": "gs://litellm-local/batch-outputs/"}
+        "gcsDestination": {"outputUriPrefix": "gs://llm-local/batch-outputs/"}
     },
     "dedicatedResources": {
         "machineSpec": {
@@ -425,7 +425,7 @@ mock_vertex_batch_response = {
 @pytest.mark.asyncio
 async def test_avertex_batch_prediction():
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post"
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post"
     ) as mock_post:
         # Configure mock responses
         mock_response = MagicMock()
@@ -444,14 +444,14 @@ async def test_avertex_batch_prediction():
         mock_post.side_effect = mock_side_effect
 
         # load_vertex_ai_credentials()
-        litellm.set_verbose = True
-        litellm._turn_on_debug()
+        llm.set_verbose = True
+        llm._turn_on_debug()
         file_name = "vertex_batch_completions.jsonl"
         _current_dir = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(_current_dir, file_name)
 
         # Create file
-        file_obj = await litellm.acreate_file(
+        file_obj = await llm.acreate_file(
             file=open(file_path, "rb"),
             purpose="batch",
             custom_llm_provider="vertex_ai",
@@ -460,11 +460,11 @@ async def test_avertex_batch_prediction():
 
         assert (
             file_obj.id
-            == "gs://litellm-local/litellm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb"
+            == "gs://llm-local/llm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb"
         )
 
         # Create batch
-        create_batch_response = await litellm.acreate_batch(
+        create_batch_response = await llm.acreate_batch(
             completion_window="24h",
             endpoint="/v1/chat/completions",
             input_file_id=file_obj.id,
@@ -476,12 +476,12 @@ async def test_avertex_batch_prediction():
         assert create_batch_response.id == "test-batch-id-456"
         assert (
             create_batch_response.input_file_id
-            == "gs://litellm-local/litellm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb"
+            == "gs://llm-local/llm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb"
         )
 
         # Mock the retrieve batch response
         with patch(
-            "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.get"
+            "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.get"
         ) as mock_get:
             mock_get_response = MagicMock()
             mock_get_response.json.return_value = mock_vertex_batch_response
@@ -489,7 +489,7 @@ async def test_avertex_batch_prediction():
             mock_get_response.raise_for_status.return_value = None
             mock_get.return_value = mock_get_response
 
-            retrieved_batch = await litellm.aretrieve_batch(
+            retrieved_batch = await llm.aretrieve_batch(
                 batch_id=create_batch_response.id,
                 custom_llm_provider="vertex_ai",
             )

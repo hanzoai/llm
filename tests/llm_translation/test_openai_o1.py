@@ -13,8 +13,8 @@ import httpx
 import pytest
 from respx import MockRouter
 
-import litellm
-from litellm import Choices, Message, ModelResponse
+import llm
+from llm import Choices, Message, ModelResponse
 from base_llm_unit_tests import BaseLLMChatTest, BaseOSeriesModelsTest
 
 
@@ -27,12 +27,12 @@ async def test_o1_handle_system_role(model):
     - role 'system' is translated to 'user'
     """
     from openai import AsyncOpenAI
-    from litellm.utils import supports_system_messages
+    from llm.utils import supports_system_messages
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-    litellm.model_cost = litellm.get_model_cost_map(url="")
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
+    llm.model_cost = llm.get_model_cost_map(url="")
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     client = AsyncOpenAI(api_key="fake-api-key")
 
@@ -40,7 +40,7 @@ async def test_o1_handle_system_role(model):
         client.chat.completions.with_raw_response, "create"
     ) as mock_client:
         try:
-            await litellm.acompletion(
+            await llm.acompletion(
                 model=model,
                 max_tokens=10,
                 messages=[{"role": "system", "content": "Be a good bot!"}],
@@ -80,11 +80,11 @@ async def test_o1_handle_tool_calling_optional_params(
     - role 'system' is translated to 'user'
     """
     from openai import AsyncOpenAI
-    from litellm.utils import ProviderConfigManager
-    from litellm.types.utils import LlmProviders
+    from llm.utils import ProviderConfigManager
+    from llm.types.utils import LlmProviders
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-    litellm.model_cost = litellm.get_model_cost_map(url="")
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
+    llm.model_cost = llm.get_model_cost_map(url="")
 
     config = ProviderConfigManager.get_provider_chat_config(
         model=model, provider=LlmProviders.OPENAI
@@ -104,7 +104,7 @@ async def test_o1_max_completion_tokens(model: str):
     """
     from openai import AsyncOpenAI
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     client = AsyncOpenAI(api_key="fake-api-key")
 
@@ -112,7 +112,7 @@ async def test_o1_max_completion_tokens(model: str):
         client.chat.completions.with_raw_response, "create"
     ) as mock_client:
         try:
-            await litellm.acompletion(
+            await llm.acompletion(
                 model=model,
                 max_completion_tokens=10,
                 messages=[{"role": "user", "content": "Hello!"}],
@@ -131,12 +131,12 @@ async def test_o1_max_completion_tokens(model: str):
         assert request_body["messages"] == [{"role": "user", "content": "Hello!"}]
 
 
-def test_litellm_responses():
+def test_llm_responses():
     """
     ensures that type of completion_tokens_details is correctly handled / returned
     """
-    from litellm import ModelResponse
-    from litellm.types.utils import CompletionTokensDetails
+    from llm import ModelResponse
+    from llm.types.utils import CompletionTokensDetails
 
     response = ModelResponse(
         usage={
@@ -164,7 +164,7 @@ class TestOpenAIO1(BaseOSeriesModelsTest, BaseLLMChatTest):
         return OpenAI(api_key="fake-api-key")
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
         pass
 
     def test_prompt_caching(self):
@@ -184,21 +184,21 @@ class TestOpenAIO3(BaseOSeriesModelsTest, BaseLLMChatTest):
         return OpenAI(api_key="fake-api-key")
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
         pass
 
 
 def test_o1_supports_vision():
     """Test that o1 supports vision"""
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-    litellm.model_cost = litellm.get_model_cost_map(url="")
-    for k, v in litellm.model_cost.items():
-        if k.startswith("o1") and v.get("litellm_provider") == "openai":
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
+    llm.model_cost = llm.get_model_cost_map(url="")
+    for k, v in llm.model_cost.items():
+        if k.startswith("o1") and v.get("llm_provider") == "openai":
             assert v.get("supports_vision") is True, f"{k} does not support vision"
 
 
 def test_o3_reasoning_effort():
-    resp = litellm.completion(
+    resp = llm.completion(
         model="o3-mini",
         messages=[{"role": "user", "content": "Hello!"}],
         reasoning_effort="high",
@@ -209,7 +209,7 @@ def test_o3_reasoning_effort():
 @pytest.mark.parametrize("model", ["o1-preview", "o1-mini", "o1", "o3-mini"])
 def test_streaming_response(model):
     """Test that streaming response is returned correctly"""
-    from litellm import completion
+    from llm import completion
 
     response = completion(
         model=model,
@@ -226,5 +226,5 @@ def test_streaming_response(model):
     for chunk in response:
         chunks.append(chunk)
 
-    resp = litellm.stream_chunk_builder(chunks=chunks)
+    resp = llm.stream_chunk_builder(chunks=chunks)
     print(resp)

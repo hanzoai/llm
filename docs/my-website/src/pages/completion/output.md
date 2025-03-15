@@ -1,5 +1,5 @@
 # Completion Function - completion()
-Here's the exact json output you can expect from a litellm `completion` call:
+Here's the exact json output you can expect from a llm `completion` call:
 
 ```python 
 {'choices': [{'finish_reason': 'stop',

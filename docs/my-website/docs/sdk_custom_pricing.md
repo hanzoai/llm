@@ -6,7 +6,7 @@ For cost per second pricing, you **just** need to register `input_cost_per_secon
 
 ```python
 # !pip install boto3 
-from litellm import completion, completion_cost 
+from llm import completion, completion_cost 
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -36,7 +36,7 @@ def test_completion_sagemaker():
 
 ```python
 # !pip install boto3 
-from litellm import completion, completion_cost 
+from llm import completion, completion_cost 
 
 ## set ENV variables
 os.environ["AZURE_API_KEY"] = ""

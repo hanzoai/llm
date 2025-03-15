@@ -6,10 +6,10 @@ import io, asyncio
 # logging.basicConfig(level=logging.DEBUG)
 sys.path.insert(0, os.path.abspath("../.."))
 
-from litellm import completion
-import litellm
+from llm import completion
+import llm
 
-litellm.num_retries = 3
+llm.num_retries = 3
 
 import time, random
 import pytest
@@ -75,15 +75,15 @@ def test_dynamo_logging():
         # pre
         # redirect stdout to log_file
 
-        litellm.success_callback = ["dynamodb"]
-        litellm.dynamodb_table_name = "litellm-logs-1"
-        litellm.set_verbose = True
+        llm.success_callback = ["dynamodb"]
+        llm.dynamodb_table_name = "llm-logs-1"
+        llm.set_verbose = True
         original_stdout, log_file, file_name = pre_request()
 
         print("Testing async dynamoDB logging")
 
         async def _test():
-            return await litellm.acompletion(
+            return await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "This is a test"}],
                 max_tokens=100,
@@ -96,7 +96,7 @@ def test_dynamo_logging():
 
         # streaming + async
         async def _test2():
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "This is a test"}],
                 max_tokens=10,
@@ -111,7 +111,7 @@ def test_dynamo_logging():
 
         # aembedding()
         async def _test3():
-            return await litellm.aembedding(
+            return await llm.aembedding(
                 model="text-embedding-ada-002", input=["hi"], user="ishaan-2"
             )
 

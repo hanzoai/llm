@@ -4,14 +4,14 @@
 
 # sys.path.insert(0, os.path.abspath("../.."))
 
-# import litellm
+# import llm
 # from memory_profiler import profile
-# from litellm.utils import (
+# from llm.utils import (
 #     ModelResponseIterator,
 #     ModelResponseListIterator,
 #     CustomStreamWrapper,
 # )
-# from litellm.types.utils import ModelResponse, Choices, Message
+# from llm.types.utils import ModelResponse, Choices, Message
 # import time
 # import pytest
 
@@ -155,14 +155,14 @@
 
 #     chunk_list = []
 #     for chunk in chunks:
-#         new_chunk = litellm.ModelResponse(stream=True, id=chunk["id"])
+#         new_chunk = llm.ModelResponse(stream=True, id=chunk["id"])
 #         if "choices" in chunk and isinstance(chunk["choices"], list):
 #             new_choices = []
 #             for choice in chunk["choices"]:
-#                 if isinstance(choice, litellm.utils.StreamingChoices):
+#                 if isinstance(choice, llm.utils.StreamingChoices):
 #                     _new_choice = choice
 #                 elif isinstance(choice, dict):
-#                     _new_choice = litellm.utils.StreamingChoices(**choice)
+#                     _new_choice = llm.utils.StreamingChoices(**choice)
 #                 new_choices.append(_new_choice)
 #             new_chunk.choices = new_choices
 #         chunk_list.append(new_chunk)
@@ -172,17 +172,17 @@
 
 # async def mock_completion(*args, **kwargs):
 #     completion_stream = model_response_list_factory()
-#     return litellm.CustomStreamWrapper(
+#     return llm.CustomStreamWrapper(
 #         completion_stream=completion_stream,
 #         model="gpt-4-0613",
 #         custom_llm_provider="cached_response",
-#         logging_obj=litellm.Logging(
+#         logging_obj=llm.Logging(
 #             model="gpt-4-0613",
 #             messages=[{"role": "user", "content": "Hey"}],
 #             stream=True,
 #             call_type="completion",
 #             start_time=time.time(),
-#             litellm_call_id="12345",
+#             llm_call_id="12345",
 #             function_id="1245",
 #         ),
 #     )

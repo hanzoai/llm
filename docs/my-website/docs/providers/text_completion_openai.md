@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 # OpenAI (Text Completion)
 
-LiteLLM supports OpenAI text completion models
+Hanzo supports OpenAI text completion models
 
 ### Required API Keys
 
@@ -15,7 +15,7 @@ os.environ["OPENAI_API_KEY"] = "your-api-key"
 ### Usage
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 os.environ["OPENAI_API_KEY"] = "your-api-key"
 
@@ -26,9 +26,9 @@ response = completion(
 )
 ```
 
-### Usage - LiteLLM Proxy Server
+### Usage - Hanzo Proxy Server
 
-Here's how to call OpenAI models with the LiteLLM Proxy Server
+Here's how to call OpenAI models with the Hanzo Proxy Server
 
 ### 1. Save key in your environment
 
@@ -44,11 +44,11 @@ export OPENAI_API_KEY=""
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: openai/gpt-3.5-turbo                          # The `openai/` prefix will call openai.chat.completions.create
       api_key: os.environ/OPENAI_API_KEY
   - model_name: gpt-3.5-turbo-instruct
-    litellm_params:
+    llm_params:
       model: text-completion-openai/gpt-3.5-turbo-instruct # The `text-completion-openai/` prefix will call openai.completions.create
       api_key: os.environ/OPENAI_API_KEY
 ```
@@ -61,7 +61,7 @@ This means requests to `gpt-4`, `gpt-3.5-turbo` , `gpt-4-turbo-preview` will all
 ```yaml
 model_list:
   - model_name: "*"             # all requests where model not in your config go to this deployment
-    litellm_params:
+    llm_params:
       model: openai/*           # set `openai/` to use the openai route
       api_key: os.environ/OPENAI_API_KEY
 ```
@@ -69,7 +69,7 @@ model_list:
 <TabItem value="cli" label="CLI">
 
 ```bash
-$ litellm --model gpt-3.5-turbo-instruct
+$ llm --model gpt-3.5-turbo-instruct
 
 # Server running on http://0.0.0.0:4000
 ```
@@ -107,7 +107,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="gpt-3.5-turbo-instruct", messages = [
     {
         "role": "user",
@@ -131,7 +131,7 @@ from langchain.prompts.chat import (
 from langchain.schema import HumanMessage, SystemMessage
 
 chat = ChatOpenAI(
-    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LiteLLM Proxy
+    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the Hanzo Proxy
     model = "gpt-3.5-turbo-instruct",
     temperature=0.1
 )
@@ -141,7 +141,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)

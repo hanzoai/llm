@@ -6,11 +6,11 @@ Use this to control access and budgets across a lot of keys.
 
 :::info 
 
-This is a LiteLLM Enterprise feature.
+This is a Hanzo Enterprise feature.
 
-Get a 7 day free trial + get in touch [here](https://litellm.ai/#trial).
+Get a 7 day free trial + get in touch [here](https://llm.ai/#trial).
 
-See pricing [here](https://litellm.ai/#pricing).
+See pricing [here](https://llm.ai/#pricing).
 
 :::
 
@@ -44,7 +44,7 @@ Expected Response:
 {
     "key": "sk-...",
     "budget_id": "my-test-tier",
-    "litellm_budget_table": {
+    "llm_budget_table": {
         "budget_id": "my-test-tier",
         "rpm_limit": 0
     }
@@ -66,5 +66,5 @@ curl -L -X POST 'http://0.0.0.0:4000/v1/chat/completions' \
 ```
 
 
-## [API Reference](https://litellm-api.up.railway.app/#/budget%20management)
+## [API Reference](https://llm-api.up.railway.app/#/budget%20management)
 

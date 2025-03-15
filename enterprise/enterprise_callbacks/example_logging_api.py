@@ -1,4 +1,4 @@
-# this is an example endpoint to receive data from litellm
+# this is an example endpoint to receive data from llm
 from fastapi import FastAPI, HTTPException, Request
 
 app = FastAPI()

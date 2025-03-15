@@ -10,7 +10,7 @@ This task is available in the base and instruction variants of the **7B** and **
 
 ```python 
 import os
-from litellm import longer_context_model_fallback_dict, ContextWindowExceededError, completion
+from llm import longer_context_model_fallback_dict, ContextWindowExceededError, completion
 
 os.environ["HUGGINGFACE_API_KEY"] = "your-hf-token" # https://huggingface.co/docs/hub/security-tokens
 

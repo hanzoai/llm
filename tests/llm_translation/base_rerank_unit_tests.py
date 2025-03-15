@@ -10,10 +10,10 @@ import os
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm.exceptions import BadRequestError
-from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
-from litellm.utils import (
+import llm
+from llm.exceptions import BadRequestError
+from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
+from llm.utils import (
     CustomStreamWrapper,
     get_supported_openai_params,
     get_optional_params,
@@ -79,20 +79,20 @@ class BaseLLMRerankTest(ABC):
         pass
 
     @abstractmethod
-    def get_custom_llm_provider(self) -> litellm.LlmProviders:
+    def get_custom_llm_provider(self) -> llm.LlmProviders:
         """Must return the custom llm provider"""
         pass
 
     @pytest.mark.asyncio()
     @pytest.mark.parametrize("sync_mode", [True, False])
     async def test_basic_rerank(self, sync_mode):
-        litellm._turn_on_debug()
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-        litellm.model_cost = litellm.get_model_cost_map(url="")
+        llm._turn_on_debug()
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
+        llm.model_cost = llm.get_model_cost_map(url="")
         rerank_call_args = self.get_base_rerank_call_args()
         custom_llm_provider = self.get_custom_llm_provider()
         if sync_mode is True:
-            response = litellm.rerank(
+            response = llm.rerank(
                 **rerank_call_args,
                 query="hello",
                 documents=["hello", "world"],
@@ -111,7 +111,7 @@ class BaseLLMRerankTest(ABC):
                 response=response, custom_llm_provider=custom_llm_provider.value
             )
         else:
-            response = await litellm.arerank(
+            response = await llm.arerank(
                 **rerank_call_args,
                 query="hello",
                 documents=["hello", "world"],

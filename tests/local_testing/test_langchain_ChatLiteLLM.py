@@ -10,10 +10,10 @@
 #     0, os.path.abspath("../..")
 # )  # Adds the parent directory to the system path
 # import pytest
-# import litellm
-# from litellm import embedding, completion, text_completion, completion_cost
+# import llm
+# from llm import embedding, completion, text_completion, completion_cost
 
-# from langchain.chat_models import ChatLiteLLM
+# from langchain.chat_models import ChatHanzo
 # from langchain.prompts.chat import (
 #     ChatPromptTemplate,
 #     SystemMessagePromptTemplate,
@@ -24,7 +24,7 @@
 
 # def test_chat_gpt():
 #     try:
-#         chat = ChatLiteLLM(model="gpt-3.5-turbo", max_tokens=10)
+#         chat = ChatHanzo(model="gpt-3.5-turbo", max_tokens=10)
 #         messages = [
 #             HumanMessage(
 #                 content="what model are you"
@@ -41,7 +41,7 @@
 
 # def test_claude():
 #     try:
-#         chat = ChatLiteLLM(model="claude-2", max_tokens=10)
+#         chat = ChatHanzo(model="claude-2", max_tokens=10)
 #         messages = [
 #             HumanMessage(
 #                 content="what model are you"
@@ -61,7 +61,7 @@
 # #         api_key = os.environ["OPENAI_API_KEY"]
 # #         os.environ.pop("OPENAI_API_KEY")
 # #         print("testing openai with params")
-# #         llm = ChatLiteLLM(
+# #         llm = ChatHanzo(
 # #             model="gpt-3.5-turbo",
 # #             openai_api_key=api_key,
 # #             # Prefer using None which is the default value, endpoint could be empty string

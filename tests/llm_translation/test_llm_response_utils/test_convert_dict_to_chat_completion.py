@@ -7,11 +7,11 @@ sys.path.insert(
     0, os.path.abspath("../../../")
 )  # Adds the parent directory to the system path
 
-import litellm
+import llm
 import pytest
 from datetime import timedelta
 
-from litellm.types.utils import (
+from llm.types.utils import (
     ModelResponse,
     Message,
     Choices,
@@ -20,7 +20,7 @@ from litellm.types.utils import (
     Usage,
 )
 
-from litellm.litellm_core_utils.llm_response_utils.convert_dict_to_response import (
+from llm.llm_core_utils.llm_response_utils.convert_dict_to_response import (
     convert_to_model_response_object,
 )
 
@@ -328,7 +328,7 @@ def test_convert_to_model_response_object_json_mode():
     This test is verifying that when convert_tool_call_to_json_mode is True, a single tool call's arguments are correctly converted into the message content of the response.
     """
     model_response_object = ModelResponse(model="gpt-3.5-turbo")
-    from litellm.constants import RESPONSE_FORMAT_TOOL_NAME
+    from llm.constants import RESPONSE_FORMAT_TOOL_NAME
 
     response_object = {
         "choices": [
@@ -718,7 +718,7 @@ def test_convert_to_model_response_object_error():
 def test_image_generation_openai_with_pydantic_warning(caplog):
     try:
         import logging
-        from litellm.types.utils import ImageResponse, ImageObject
+        from llm.types.utils import ImageResponse, ImageObject
 
         convert_response_args = {
             "response_object": {
@@ -872,15 +872,15 @@ def test_convert_to_model_response_object_with_thinking_content():
                     "finish_reason": "stop",
                     "index": 0,
                     "message": {
-                        "content": "# LiteLLM\n\nLiteLLM is an open-source library that provides a unified interface for working with various Large Language Models (LLMs). It acts as an abstraction layer that lets developers interact with multiple LLM providers through a single, consistent API.\n\n## Key features:\n\n- **Universal API**: Standardizes interactions with models from OpenAI, Anthropic, Cohere, Azure, and many other providers\n- **Simple switching**: Easily swap between different LLM providers without changing your code\n- **Routing capabilities**: Manage load balancing, fallbacks, and cost optimization\n- **Prompt templates**: Handle different model-specific prompt formats automatically\n- **Logging and observability**: Track usage, performance, and costs across providers\n\nLiteLLM is particularly useful for teams who want flexibility in their LLM infrastructure without creating custom integration code for each provider.",
+                        "content": "# Hanzo\n\nHanzo is an open-source library that provides a unified interface for working with various Large Language Models (LLMs). It acts as an abstraction layer that lets developers interact with multiple LLM providers through a single, consistent API.\n\n## Key features:\n\n- **Universal API**: Standardizes interactions with models from OpenAI, Anthropic, Cohere, Azure, and many other providers\n- **Simple switching**: Easily swap between different LLM providers without changing your code\n- **Routing capabilities**: Manage load balancing, fallbacks, and cost optimization\n- **Prompt templates**: Handle different model-specific prompt formats automatically\n- **Logging and observability**: Track usage, performance, and costs across providers\n\nHanzo is particularly useful for teams who want flexibility in their LLM infrastructure without creating custom integration code for each provider.",
                         "role": "assistant",
                         "tool_calls": None,
                         "function_call": None,
-                        "reasoning_content": "The person is asking about \"litellm\" and included what appears to be a UUID or some form of identifier at the end of their message (fffffe14-7991-43d0-acd8-d3e606db31a8).\n\nLiteLLM is an open-source library/project that provides a unified interface for working with various Large Language Models (LLMs). It's essentially a lightweight package that standardizes the way developers can work with different LLM APIs like OpenAI, Anthropic, Cohere, etc. through a consistent interface.\n\nSome key features and aspects of LiteLLM:\n\n1. Unified API for multiple LLM providers (OpenAI, Anthropic, Azure, etc.)\n2. Standardized input/output formats\n3. Handles routing, fallbacks, and load balancing\n4. Provides logging and observability\n5. Can help with cost tracking across different providers\n6. Makes it easier to switch between different LLM providers\n\nThe UUID-like string they included doesn't seem directly related to the question, unless it's some form of identifier they're including for tracking purposes.",
+                        "reasoning_content": "The person is asking about \"llm\" and included what appears to be a UUID or some form of identifier at the end of their message (fffffe14-7991-43d0-acd8-d3e606db31a8).\n\nHanzo is an open-source library/project that provides a unified interface for working with various Large Language Models (LLMs). It's essentially a lightweight package that standardizes the way developers can work with different LLM APIs like OpenAI, Anthropic, Cohere, etc. through a consistent interface.\n\nSome key features and aspects of Hanzo:\n\n1. Unified API for multiple LLM providers (OpenAI, Anthropic, Azure, etc.)\n2. Standardized input/output formats\n3. Handles routing, fallbacks, and load balancing\n4. Provides logging and observability\n5. Can help with cost tracking across different providers\n6. Makes it easier to switch between different LLM providers\n\nThe UUID-like string they included doesn't seem directly related to the question, unless it's some form of identifier they're including for tracking purposes.",
                         "thinking_blocks": [
                             {
                                 "type": "thinking",
-                                "thinking": "The person is asking about \"litellm\" and included what appears to be a UUID or some form of identifier at the end of their message (fffffe14-7991-43d0-acd8-d3e606db31a8).\n\nLiteLLM is an open-source library/project that provides a unified interface for working with various Large Language Models (LLMs). It's essentially a lightweight package that standardizes the way developers can work with different LLM APIs like OpenAI, Anthropic, Cohere, etc. through a consistent interface.\n\nSome key features and aspects of LiteLLM:\n\n1. Unified API for multiple LLM providers (OpenAI, Anthropic, Azure, etc.)\n2. Standardized input/output formats\n3. Handles routing, fallbacks, and load balancing\n4. Provides logging and observability\n5. Can help with cost tracking across different providers\n6. Makes it easier to switch between different LLM providers\n\nThe UUID-like string they included doesn't seem directly related to the question, unless it's some form of identifier they're including for tracking purposes.",
+                                "thinking": "The person is asking about \"llm\" and included what appears to be a UUID or some form of identifier at the end of their message (fffffe14-7991-43d0-acd8-d3e606db31a8).\n\nHanzo is an open-source library/project that provides a unified interface for working with various Large Language Models (LLMs). It's essentially a lightweight package that standardizes the way developers can work with different LLM APIs like OpenAI, Anthropic, Cohere, etc. through a consistent interface.\n\nSome key features and aspects of Hanzo:\n\n1. Unified API for multiple LLM providers (OpenAI, Anthropic, Azure, etc.)\n2. Standardized input/output formats\n3. Handles routing, fallbacks, and load balancing\n4. Provides logging and observability\n5. Can help with cost tracking across different providers\n6. Makes it easier to switch between different LLM providers\n\nThe UUID-like string they included doesn't seem directly related to the question, unless it's some form of identifier they're including for tracking purposes.",
                                 "signature": "ErUBCkYIARgCIkCf+r0qMSOMYkjlFERM00IxsY9I/m19dQGEF/Zv1E0AtvdZjKGnr+nr5vXUldmb/sUCgrQRH4YUyV0X3MoMrsNnEgxDqhUFcUTg1vM0CroaDEY1wKJ0Ca0EZ6S1jCIwF8ATum3xiF/mRSIIjoD6Virh0hFcOfH3Sz6Chtev9WUwwYMAVP4/hyzbrUDnsUlmKh0CfTayaXm6o63/6Kelr6pzLbErjQx2xZRnRjCypw==",
                             }
                         ],

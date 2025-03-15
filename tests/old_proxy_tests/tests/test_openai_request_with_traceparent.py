@@ -29,7 +29,7 @@ with tracer.start_as_current_span("ishaan-local-dev-app") as span:
     trace_id = _trace_parent.split("-")[1]
     print("Trace ID: ", trace_id)
 
-    # # request sent to model set on litellm proxy, `litellm --model`
+    # # request sent to model set on llm proxy, `llm --model`
     response = client.chat.completions.create(
         model="llama3",
         messages=[

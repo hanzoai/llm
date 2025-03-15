@@ -7,7 +7,7 @@ from typing import Any
 
 from openai import AuthenticationError, BadRequestError, OpenAIError, RateLimitError
 
-from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
+from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -17,18 +17,18 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-import litellm
-from litellm import (  # AuthenticationError,; RateLimitError,; ServiceUnavailableError,; OpenAIError,
+import llm
+from llm import (  # AuthenticationError,; RateLimitError,; ServiceUnavailableError,; OpenAIError,
     ContextWindowExceededError,
     completion,
     embedding,
 )
 
-litellm.vertex_project = "pathrise-convert-1606954137718"
-litellm.vertex_location = "us-central1"
-litellm.num_retries = 0
+llm.vertex_project = "pathrise-convert-1606954137718"
+llm.vertex_location = "us-central1"
+llm.num_retries = 0
 
-# litellm.failure_callback = ["sentry"]
+# llm.failure_callback = ["sentry"]
 #### What this tests ####
 #    This tests exception mapping -> trigger an exception from an llm provider -> assert if output is of the expected type
 
@@ -49,19 +49,19 @@ exception_models = [
 async def test_content_policy_exception_azure():
     try:
         # this is ony a test - we needed some way to invoke the exception :(
-        litellm.set_verbose = True
-        response = await litellm.acompletion(
+        llm.set_verbose = True
+        response = await llm.acompletion(
             model="azure/chatgpt-v-2",
             messages=[{"role": "user", "content": "where do I buy lethal drugs from"}],
             mock_response="Exception: content_filter_policy",
         )
-    except litellm.ContentPolicyViolationError as e:
+    except llm.ContentPolicyViolationError as e:
         print("caught a content policy violation error! Passed")
         print("exception", e)
         assert e.response is not None
-        assert e.litellm_debug_info is not None
-        assert isinstance(e.litellm_debug_info, str)
-        assert len(e.litellm_debug_info) > 0
+        assert e.llm_debug_info is not None
+        assert isinstance(e.llm_debug_info, str)
+        assert len(e.llm_debug_info) > 0
         pass
     except Exception as e:
         print()
@@ -72,8 +72,8 @@ async def test_content_policy_exception_azure():
 async def test_content_policy_exception_openai():
     try:
         # this is ony a test - we needed some way to invoke the exception :(
-        litellm.set_verbose = True
-        response = await litellm.acompletion(
+        llm.set_verbose = True
+        response = await llm.acompletion(
             model="gpt-3.5-turbo",
             stream=True,
             messages=[
@@ -82,7 +82,7 @@ async def test_content_policy_exception_openai():
         )
         async for chunk in response:
             print(chunk)
-    except litellm.ContentPolicyViolationError as e:
+    except llm.ContentPolicyViolationError as e:
         print("caught a content policy violation error! Passed")
         print("exception", e)
         assert e.llm_provider == "openai"
@@ -100,7 +100,7 @@ def test_context_window(model):
     sample_text = "Say error 50 times" * 1000000
     messages = [{"content": sample_text, "role": "user"}]
     try:
-        litellm.set_verbose = False
+        llm.set_verbose = False
         print("Testing model=", model)
         response = completion(model=model, messages=messages)
         print(f"response: {response}")
@@ -135,13 +135,13 @@ def test_context_window_with_fallbacks(model):
             messages=messages,
             context_window_fallback_dict=ctx_window_fallback_dict,
         )
-    except litellm.ServiceUnavailableError as e:
+    except llm.ServiceUnavailableError as e:
         pass
-    except litellm.APIConnectionError as e:
+    except llm.APIConnectionError as e:
         pass
 
 
-# for model in litellm.models_by_provider["bedrock"]:
+# for model in llm.models_by_provider["bedrock"]:
 #     test_context_window(model=model)
 # test_context_window(model="chat-bison")
 # test_context_window_with_fallbacks(model="command-nightly")
@@ -178,13 +178,13 @@ def invalid_auth(model):  # set the model key to an invalid key, depending on th
             os.environ["TOGETHERAI_API_KEY"] = (
                 "84060c79880fc49df126d3e87b53f8a463ff6e1c6d27fe64207cde25cdfcd1f24a"
             )
-        elif model in litellm.openrouter_models:
+        elif model in llm.openrouter_models:
             temporary_key = os.environ["OPENROUTER_API_KEY"]
             os.environ["OPENROUTER_API_KEY"] = "bad-key"
-        elif model in litellm.aleph_alpha_models:
+        elif model in llm.aleph_alpha_models:
             temporary_key = os.environ["ALEPH_ALPHA_API_KEY"]
             os.environ["ALEPH_ALPHA_API_KEY"] = "bad-key"
-        elif model in litellm.nlp_cloud_models:
+        elif model in llm.nlp_cloud_models:
             temporary_key = os.environ["NLP_CLOUD_API_KEY"]
             os.environ["NLP_CLOUD_API_KEY"] = "bad-key"
         elif (
@@ -227,9 +227,9 @@ def invalid_auth(model):  # set the model key to an invalid key, depending on th
             os.environ["AI21_API_KEY"] = temporary_key
         elif "togethercomputer" in model:
             os.environ["TOGETHERAI_API_KEY"] = temporary_key
-        elif model in litellm.aleph_alpha_models:
+        elif model in llm.aleph_alpha_models:
             os.environ["ALEPH_ALPHA_API_KEY"] = temporary_key
-        elif model in litellm.nlp_cloud_models:
+        elif model in llm.nlp_cloud_models:
             os.environ["NLP_CLOUD_API_KEY"] = temporary_key
         elif "bedrock" in model:
             os.environ["AWS_ACCESS_KEY_ID"] = temporary_aws_access_key
@@ -238,7 +238,7 @@ def invalid_auth(model):  # set the model key to an invalid key, depending on th
     return
 
 
-# for model in litellm.models_by_provider["bedrock"]:
+# for model in llm.models_by_provider["bedrock"]:
 #     invalid_auth(model=model)
 # invalid_auth(model="command-nightly")
 
@@ -257,7 +257,7 @@ def test_completion_azure_exception():
         import openai
 
         print("azure gpt-3.5 test\n\n")
-        litellm.set_verbose = True
+        llm.set_verbose = True
         ## Test azure call
         old_azure_key = os.environ["AZURE_API_KEY"]
         os.environ["AZURE_API_KEY"] = "good morning"
@@ -281,7 +281,7 @@ def test_completion_azure_exception():
 def test_azure_embedding_exceptions():
     try:
 
-        response = litellm.embedding(
+        response = llm.embedding(
             model="azure/azure-embedding-model",
             input="hello",
             messages="hello",
@@ -293,7 +293,7 @@ def test_azure_embedding_exceptions():
         # CRUCIAL Test - Ensures our exceptions are readable and not overly complicated. some users have complained exceptions will randomly have another exception raised in our exception mapping
         assert (
             e.message
-            == "litellm.APIError: AzureException APIError - Embeddings.create() got an unexpected keyword argument 'messages'"
+            == "llm.APIError: AzureException APIError - Embeddings.create() got an unexpected keyword argument 'messages'"
         )
 
 
@@ -301,14 +301,14 @@ async def asynctest_completion_azure_exception():
     try:
         import openai
 
-        import litellm
+        import llm
 
         print("azure gpt-3.5 test\n\n")
-        litellm.set_verbose = True
+        llm.set_verbose = True
         ## Test azure call
         old_azure_key = os.environ["AZURE_API_KEY"]
         os.environ["AZURE_API_KEY"] = "good morning"
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model="azure/chatgpt-v-2",
             messages=[{"role": "user", "content": "hello"}],
         )
@@ -336,14 +336,14 @@ def asynctest_completion_openai_exception_bad_model():
 
         import openai
 
-        import litellm
+        import llm
 
         print("azure exception bad model\n\n")
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         ## Test azure call
         async def test():
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="openai/gpt-6",
                 messages=[{"role": "user", "content": "hello"}],
             )
@@ -367,14 +367,14 @@ def asynctest_completion_azure_exception_bad_model():
 
         import openai
 
-        import litellm
+        import llm
 
         print("azure exception bad model\n\n")
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         ## Test azure call
         async def test():
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="azure/gpt-12",
                 messages=[{"role": "user", "content": "hello"}],
             )
@@ -397,7 +397,7 @@ def test_completion_openai_exception():
         import openai
 
         print("openai gpt-3.5 test\n\n")
-        litellm.set_verbose = True
+        llm.set_verbose = True
         ## Test azure call
         old_azure_key = os.environ["OPENAI_API_KEY"]
         os.environ["OPENAI_API_KEY"] = "good morning"
@@ -418,9 +418,9 @@ def test_completion_openai_exception():
 
 
 def test_anthropic_openai_exception():
-    # test if anthropic raises litellm.AuthenticationError
+    # test if anthropic raises llm.AuthenticationError
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         ## Test azure call
         old_azure_key = os.environ["ANTHROPIC_API_KEY"]
         os.environ.pop("ANTHROPIC_API_KEY")
@@ -430,7 +430,7 @@ def test_anthropic_openai_exception():
         )
         print(f"response: {response}")
         print(response)
-    except litellm.AuthenticationError as e:
+    except llm.AuthenticationError as e:
         os.environ["ANTHROPIC_API_KEY"] = old_azure_key
         print("Exception vars=", vars(e))
         assert (
@@ -450,7 +450,7 @@ def test_completion_mistral_exception():
         import openai
 
         print("Testing mistral ai exception mapping")
-        litellm.set_verbose = True
+        llm.set_verbose = True
         ## Test azure call
         old_azure_key = os.environ["MISTRAL_API_KEY"]
         os.environ["MISTRAL_API_KEY"] = "good morning"
@@ -472,10 +472,10 @@ def test_completion_mistral_exception():
 
 def test_completion_bedrock_invalid_role_exception():
     """
-    Test if litellm raises a BadRequestError for an invalid role on Bedrock
+    Test if llm raises a BadRequestError for an invalid role on Bedrock
     """
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         response = completion(
             model="bedrock/anthropic.claude-3-sonnet-20240229-v1:0",
             messages=[{"role": "very-bad-role", "content": "hello"}],
@@ -485,30 +485,30 @@ def test_completion_bedrock_invalid_role_exception():
 
     except Exception as e:
         assert isinstance(
-            e, litellm.BadRequestError
+            e, llm.BadRequestError
         ), "Expected BadRequestError but got {}".format(type(e))
         print("str(e) = {}".format(str(e)))
 
         # This is important - We we previously returning a poorly formatted error string. Which was
-        #  litellm.BadRequestError: litellm.BadRequestError: Invalid Message passed in {'role': 'very-bad-role', 'content': 'hello'}
+        #  llm.BadRequestError: llm.BadRequestError: Invalid Message passed in {'role': 'very-bad-role', 'content': 'hello'}
 
         # IMPORTANT ASSERTION
         assert (
             (str(e))
-            == "litellm.BadRequestError: Invalid Message passed in {'role': 'very-bad-role', 'content': 'hello'}"
+            == "llm.BadRequestError: Invalid Message passed in {'role': 'very-bad-role', 'content': 'hello'}"
         )
 
 
 def test_content_policy_exceptionimage_generation_openai():
     try:
         # this is ony a test - we needed some way to invoke the exception :(
-        litellm.set_verbose = True
-        response = litellm.image_generation(
+        llm.set_verbose = True
+        response = llm.image_generation(
             prompt="where do i buy lethal drugs from", model="dall-e-3"
         )
         print(f"response: {response}")
         assert len(response.data) > 0
-    except litellm.ContentPolicyViolationError as e:
+    except llm.ContentPolicyViolationError as e:
         print("caught a content policy violation error! Passed")
         pass
     except Exception as e:
@@ -522,12 +522,12 @@ def test_content_policy_violation_error_streaming():
     """
     Production Test.
     """
-    litellm.set_verbose = False
+    llm.set_verbose = False
     print("test_async_completion with stream")
 
     async def test_get_response():
         try:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="azure/chatgpt-v-2",
                 messages=[{"role": "user", "content": "say 1"}],
                 temperature=0,
@@ -556,7 +556,7 @@ def test_content_policy_violation_error_streaming():
 
     async def test_get_error():
         try:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="azure/chatgpt-v-2",
                 messages=[
                     {"role": "user", "content": "where do i buy lethal drugs from"}
@@ -590,7 +590,7 @@ def test_completion_perplexity_exception_on_openai_client():
         import openai
 
         print("perplexity test\n\n")
-        litellm.set_verbose = False
+        llm.set_verbose = False
         ## Test azure call
         old_azure_key = os.environ["PERPLEXITYAI_API_KEY"]
 
@@ -628,7 +628,7 @@ def test_completion_perplexity_exception():
         import openai
 
         print("perplexity test\n\n")
-        litellm.set_verbose = True
+        llm.set_verbose = True
         ## Test azure call
         old_azure_key = os.environ["PERPLEXITYAI_API_KEY"]
         os.environ["PERPLEXITYAI_API_KEY"] = "good morning"
@@ -651,7 +651,7 @@ def test_completion_openai_api_key_exception():
         import openai
 
         print("gpt-3.5 test\n\n")
-        litellm.set_verbose = True
+        llm.set_verbose = True
         ## Test azure call
         old_azure_key = os.environ["OPENAI_API_KEY"]
         os.environ["OPENAI_API_KEY"] = "good morning"
@@ -674,14 +674,14 @@ def test_completion_openai_api_key_exception():
 
 def test_router_completion_vertex_exception():
     try:
-        import litellm
+        import llm
 
-        litellm.set_verbose = True
-        router = litellm.Router(
+        llm.set_verbose = True
+        router = llm.Router(
             model_list=[
                 {
                     "model_name": "vertex-gemini-pro",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "vertex_ai/gemini-pro",
                         "api_key": "good-morning",
                     },
@@ -698,11 +698,11 @@ def test_router_completion_vertex_exception():
         print("exception: ", e)
 
 
-def test_litellm_completion_vertex_exception():
+def test_llm_completion_vertex_exception():
     try:
-        import litellm
+        import llm
 
-        litellm.set_verbose = True
+        llm.set_verbose = True
         response = completion(
             model="vertex_ai/gemini-pro",
             api_key="good-morning",
@@ -714,14 +714,14 @@ def test_litellm_completion_vertex_exception():
         print("exception: ", e)
 
 
-def test_litellm_predibase_exception():
+def test_llm_predibase_exception():
     """
     Test - Assert that the Predibase API Key is not returned on Authentication Errors
     """
     try:
-        import litellm
+        import llm
 
-        litellm.set_verbose = True
+        llm.set_verbose = True
         response = completion(
             model="predibase/llama-3-8b-instruct",
             messages=[{"role": "user", "content": "What is the meaning of life?"}],
@@ -784,15 +784,15 @@ def test_exception_mapping(provider):
 
     assert that they are being mapped correctly
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
     error_map = {
-        400: litellm.BadRequestError,
-        401: litellm.AuthenticationError,
-        404: litellm.NotFoundError,
-        408: litellm.Timeout,
-        429: litellm.RateLimitError,
-        500: litellm.InternalServerError,
-        503: litellm.ServiceUnavailableError,
+        400: llm.BadRequestError,
+        401: llm.AuthenticationError,
+        404: llm.NotFoundError,
+        408: llm.Timeout,
+        429: llm.RateLimitError,
+        500: llm.InternalServerError,
+        503: llm.ServiceUnavailableError,
     }
 
     for code, expected_exception in error_map.items():
@@ -824,7 +824,7 @@ def test_exception_mapping(provider):
 
 def test_anthropic_tool_calling_exception():
     """
-    Related - https://github.com/BerriAI/litellm/issues/4348
+    Related - https://github.com/BerriAI/llm/issues/4348
     """
     tools = [
         {
@@ -837,12 +837,12 @@ def test_anthropic_tool_calling_exception():
         }
     ]
     try:
-        litellm.completion(
+        llm.completion(
             model="claude-3-5-sonnet-20240620",
             messages=[{"role": "user", "content": "Hey, how's it going?"}],
             tools=tools,
         )
-    except litellm.BadRequestError:
+    except llm.BadRequestError:
         pass
 
 
@@ -862,27 +862,27 @@ def _pre_call_utils(
         data["input"] = "Hello world!"
         mapped_target: Any = client.embeddings.with_raw_response
         if sync_mode:
-            original_function = litellm.embedding
+            original_function = llm.embedding
         else:
-            original_function = litellm.aembedding
+            original_function = llm.aembedding
     elif call_type == "chat_completion":
         data["messages"] = [{"role": "user", "content": "Hello world"}]
         if streaming is True:
             data["stream"] = True
         mapped_target = client.chat.completions.with_raw_response  # type: ignore
         if sync_mode:
-            original_function = litellm.completion
+            original_function = llm.completion
         else:
-            original_function = litellm.acompletion
+            original_function = llm.acompletion
     elif call_type == "completion":
         data["prompt"] = "Hello world"
         if streaming is True:
             data["stream"] = True
         mapped_target = client.completions.with_raw_response  # type: ignore
         if sync_mode:
-            original_function = litellm.text_completion
+            original_function = llm.text_completion
         else:
-            original_function = litellm.atext_completion
+            original_function = llm.atext_completion
 
     return data, original_function, mapped_target
 
@@ -899,26 +899,26 @@ def _pre_call_utils_httpx(
         data["input"] = "Hello world!"
 
         if sync_mode:
-            original_function = litellm.embedding
+            original_function = llm.embedding
         else:
-            original_function = litellm.aembedding
+            original_function = llm.aembedding
     elif call_type == "chat_completion":
         data["messages"] = [{"role": "user", "content": "Hello world"}]
         if streaming is True:
             data["stream"] = True
 
         if sync_mode:
-            original_function = litellm.completion
+            original_function = llm.completion
         else:
-            original_function = litellm.acompletion
+            original_function = llm.acompletion
     elif call_type == "completion":
         data["prompt"] = "Hello world"
         if streaming is True:
             data["stream"] = True
         if sync_mode:
-            original_function = litellm.text_completion
+            original_function = llm.text_completion
         else:
-            original_function = litellm.atext_completion
+            original_function = llm.atext_completion
 
     return data, original_function, mapped_target
 
@@ -942,11 +942,11 @@ def _pre_call_utils_httpx(
 @pytest.mark.asyncio
 async def test_exception_with_headers(sync_mode, provider, model, call_type, streaming):
     """
-    User feedback: litellm says "No deployments available for selected model, Try again in 60 seconds"
+    User feedback: llm says "No deployments available for selected model, Try again in 60 seconds"
     but Azure says to retry in at most 9s
 
     ```
-    {"message": "litellm.proxy.proxy_server.embeddings(): Exception occured - No deployments available for selected model, Try again in 60 seconds. Passed model=text-embedding-ada-002. pre-call-checks=False, allowed_model_region=n/a, cooldown_list=[('b49cbc9314273db7181fe69b1b19993f04efb88f2c1819947c538bac08097e4c', {'Exception Received': 'litellm.RateLimitError: AzureException RateLimitError - Requests to the Embeddings_Create Operation under Azure OpenAI API version 2023-09-01-preview have exceeded call rate limit of your current OpenAI S0 pricing tier. Please retry after 9 seconds. Please go here: https://aka.ms/oai/quotaincrease if you would like to further increase the default rate limit.', 'Status Code': '429'})]", "level": "ERROR", "timestamp": "2024-08-22T03:25:36.900476"}
+    {"message": "llm.proxy.proxy_server.embeddings(): Exception occured - No deployments available for selected model, Try again in 60 seconds. Passed model=text-embedding-ada-002. pre-call-checks=False, allowed_model_region=n/a, cooldown_list=[('b49cbc9314273db7181fe69b1b19993f04efb88f2c1819947c538bac08097e4c', {'Exception Received': 'llm.RateLimitError: AzureException RateLimitError - Requests to the Embeddings_Create Operation under Azure OpenAI API version 2023-09-01-preview have exceeded call rate limit of your current OpenAI S0 pricing tier. Please retry after 9 seconds. Please go here: https://aka.ms/oai/quotaincrease if you would like to further increase the default rate limit.', 'Status Code': '429'})]", "level": "ERROR", "timestamp": "2024-08-22T03:25:36.900476"}
     ```
     """
     print(f"Received args: {locals()}")
@@ -957,14 +957,14 @@ async def test_exception_with_headers(sync_mode, provider, model, call_type, str
             openai_client = openai.OpenAI(api_key="")
         elif provider == "azure":
             openai_client = openai.AzureOpenAI(
-                api_key="", base_url="", api_version=litellm.AZURE_DEFAULT_API_VERSION
+                api_key="", base_url="", api_version=llm.AZURE_DEFAULT_API_VERSION
             )
     else:
         if provider == "openai":
             openai_client = openai.AsyncOpenAI(api_key="")
         elif provider == "azure":
             openai_client = openai.AsyncAzureOpenAI(
-                api_key="", base_url="", api_version=litellm.AZURE_DEFAULT_API_VERSION
+                api_key="", base_url="", api_version=llm.AZURE_DEFAULT_API_VERSION
             )
 
     data = {"model": model}
@@ -1019,7 +1019,7 @@ async def test_exception_with_headers(sync_mode, provider, model, call_type, str
     ):
         new_retry_after_mock_client = MagicMock(return_value=-1)
 
-        litellm.utils._get_retry_after_from_exception_header = (
+        llm.utils._get_retry_after_from_exception_header = (
             new_retry_after_mock_client
         )
 
@@ -1037,10 +1037,10 @@ async def test_exception_with_headers(sync_mode, provider, model, call_type, str
                     async for chunk in resp:
                         continue
 
-        except litellm.RateLimitError as e:
+        except llm.RateLimitError as e:
             exception_raised = True
-            assert e.litellm_response_headers is not None
-            assert int(e.litellm_response_headers["retry-after"]) == cooldown_time
+            assert e.llm_response_headers is not None
+            assert int(e.llm_response_headers["retry-after"]) == cooldown_time
 
         if exception_raised is False:
             print(resp)
@@ -1063,11 +1063,11 @@ async def test_exception_with_headers_httpx(
     sync_mode, provider, model, call_type, streaming
 ):
     """
-    User feedback: litellm says "No deployments available for selected model, Try again in 60 seconds"
+    User feedback: llm says "No deployments available for selected model, Try again in 60 seconds"
     but Azure says to retry in at most 9s
 
     ```
-    {"message": "litellm.proxy.proxy_server.embeddings(): Exception occured - No deployments available for selected model, Try again in 60 seconds. Passed model=text-embedding-ada-002. pre-call-checks=False, allowed_model_region=n/a, cooldown_list=[('b49cbc9314273db7181fe69b1b19993f04efb88f2c1819947c538bac08097e4c', {'Exception Received': 'litellm.RateLimitError: AzureException RateLimitError - Requests to the Embeddings_Create Operation under Azure OpenAI API version 2023-09-01-preview have exceeded call rate limit of your current OpenAI S0 pricing tier. Please retry after 9 seconds. Please go here: https://aka.ms/oai/quotaincrease if you would like to further increase the default rate limit.', 'Status Code': '429'})]", "level": "ERROR", "timestamp": "2024-08-22T03:25:36.900476"}
+    {"message": "llm.proxy.proxy_server.embeddings(): Exception occured - No deployments available for selected model, Try again in 60 seconds. Passed model=text-embedding-ada-002. pre-call-checks=False, allowed_model_region=n/a, cooldown_list=[('b49cbc9314273db7181fe69b1b19993f04efb88f2c1819947c538bac08097e4c', {'Exception Received': 'llm.RateLimitError: AzureException RateLimitError - Requests to the Embeddings_Create Operation under Azure OpenAI API version 2023-09-01-preview have exceeded call rate limit of your current OpenAI S0 pricing tier. Please retry after 9 seconds. Please go here: https://aka.ms/oai/quotaincrease if you would like to further increase the default rate limit.', 'Status Code': '429'})]", "level": "ERROR", "timestamp": "2024-08-22T03:25:36.900476"}
     ```
     """
     print(f"Received args: {locals()}")
@@ -1126,7 +1126,7 @@ async def test_exception_with_headers_httpx(
     ):
         new_retry_after_mock_client = MagicMock(return_value=-1)
 
-        litellm.utils._get_retry_after_from_exception_header = (
+        llm.utils._get_retry_after_from_exception_header = (
             new_retry_after_mock_client
         )
 
@@ -1144,13 +1144,13 @@ async def test_exception_with_headers_httpx(
                     async for chunk in resp:
                         continue
 
-        except litellm.RateLimitError as e:
+        except llm.RateLimitError as e:
             exception_raised = True
             assert (
-                e.litellm_response_headers is not None
-            ), "litellm_response_headers is None"
-            print("e.litellm_response_headers", e.litellm_response_headers)
-            assert int(e.litellm_response_headers["retry-after"]) == cooldown_time
+                e.llm_response_headers is not None
+            ), "llm_response_headers is None"
+            print("e.llm_response_headers", e.llm_response_headers)
+            assert int(e.llm_response_headers["retry-after"]) == cooldown_time
 
         if exception_raised is False:
             print(resp)
@@ -1163,16 +1163,16 @@ async def test_bad_request_error_contains_httpx_response(model):
     """
     Test that the BadRequestError contains the httpx response
 
-    Relevant issue: https://github.com/BerriAI/litellm/issues/6732
+    Relevant issue: https://github.com/BerriAI/llm/issues/6732
     """
     try:
-        await litellm.acompletion(
+        await llm.acompletion(
             model=model,
             messages=[{"role": "user", "content": "Hello world"}],
             bad_arg="bad_arg",
         )
         pytest.fail("Expected to raise BadRequestError")
-    except litellm.BadRequestError as e:
+    except llm.BadRequestError as e:
         print("e.response", e.response)
         print("vars(e.response)", vars(e.response))
         assert e.response is not None
@@ -1180,31 +1180,31 @@ async def test_bad_request_error_contains_httpx_response(model):
 
 def test_exceptions_base_class():
     try:
-        raise litellm.RateLimitError(
+        raise llm.RateLimitError(
             message="BedrockException: Rate Limit Error",
             model="model",
             llm_provider="bedrock",
         )
-    except litellm.RateLimitError as e:
-        assert isinstance(e, litellm.RateLimitError)
+    except llm.RateLimitError as e:
+        assert isinstance(e, llm.RateLimitError)
         assert e.code == "429"
         assert e.type == "throttling_error"
 
 
-def test_context_window_exceeded_error_from_litellm_proxy():
+def test_context_window_exceeded_error_from_llm_proxy():
     from httpx import Response
-    from litellm.litellm_core_utils.exception_mapping_utils import (
-        extract_and_raise_litellm_exception,
+    from llm.llm_core_utils.exception_mapping_utils import (
+        extract_and_raise_llm_exception,
     )
 
     args = {
         "response": Response(status_code=400, text="Bad Request"),
-        "error_str": "Error code: 400 - {'error': {'message': \"litellm.ContextWindowExceededError: litellm.BadRequestError: this is a mock context window exceeded error\\nmodel=gpt-3.5-turbo. context_window_fallbacks=None. fallbacks=None.\\n\\nSet 'context_window_fallback' - https://docs.litellm.ai/docs/routing#fallbacks\\nReceived Model Group=gpt-3.5-turbo\\nAvailable Model Group Fallbacks=None\", 'type': None, 'param': None, 'code': '400'}}",
+        "error_str": "Error code: 400 - {'error': {'message': \"llm.ContextWindowExceededError: llm.BadRequestError: this is a mock context window exceeded error\\nmodel=gpt-3.5-turbo. context_window_fallbacks=None. fallbacks=None.\\n\\nSet 'context_window_fallback' - https://docs.llm.ai/docs/routing#fallbacks\\nReceived Model Group=gpt-3.5-turbo\\nAvailable Model Group Fallbacks=None\", 'type': None, 'param': None, 'code': '400'}}",
         "model": "gpt-3.5-turbo",
-        "custom_llm_provider": "litellm_proxy",
+        "custom_llm_provider": "llm_proxy",
     }
-    with pytest.raises(litellm.ContextWindowExceededError):
-        extract_and_raise_litellm_exception(**args)
+    with pytest.raises(llm.ContextWindowExceededError):
+        extract_and_raise_llm_exception(**args)
 
 
 @pytest.mark.parametrize("sync_mode", [True, False])
@@ -1215,19 +1215,19 @@ async def test_exception_bubbling_up(sync_mode, stream_mode, model):
     """
     make sure code, param, and type are bubbled up
     """
-    import litellm
+    import llm
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     with pytest.raises(Exception) as exc_info:
         if sync_mode:
-            litellm.completion(
+            llm.completion(
                 model=model,
                 messages=[{"role": "usera", "content": "hi"}],
                 stream=stream_mode,
                 sync_stream=sync_mode,
             )
         else:
-            await litellm.acompletion(
+            await llm.acompletion(
                 model=model,
                 messages=[{"role": "usera", "content": "hi"}],
                 stream=stream_mode,

@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 
 :::info
 
-Requires LiteLLM v1.63.0+
+Requires Hanzo v1.63.0+
 
 :::
 
@@ -35,7 +35,7 @@ Supported Providers:
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 import os 
 
 os.environ["ANTHROPIC_API_KEY"] = ""
@@ -56,7 +56,7 @@ print(response.choices[0].message.content)
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $LITELLM_KEY" \
+  -H "Authorization: Bearer $LLM_KEY" \
   -d '{
     "model": "anthropic/claude-3-7-sonnet-20250219",
     "messages": [
@@ -109,8 +109,8 @@ Here's how to use `thinking` blocks by Anthropic with tool calling.
 <TabItem value="sdk" label="SDK">
 
 ```python
-litellm._turn_on_debug()
-litellm.modify_params = True
+llm._turn_on_debug()
+llm.modify_params = True
 model = "anthropic/claude-3-7-sonnet-20250219" # works across Anthropic, Bedrock, Vertex AI
 # Step 1: send the conversation and available functions to the model
 messages = [
@@ -142,7 +142,7 @@ tools = [
         },
     }
 ]
-response = litellm.completion(
+response = llm.completion(
     model=model,
     messages=messages,
     tools=tools,
@@ -191,7 +191,7 @@ if tool_calls:
             }
         )  # extend conversation with function response
     print(f"messages: {messages}")
-    second_response = litellm.completion(
+    second_response = llm.completion(
         model=model,
         messages=messages,
         seed=22,
@@ -210,7 +210,7 @@ if tool_calls:
 ```yaml
 model_list:
   - model_name: claude-3-7-sonnet-thinking
-    litellm_params:
+    llm_params:
       model: anthropic/claude-3-7-sonnet-20250219
       api_key: os.environ/ANTHROPIC_API_KEY
       thinking: {
@@ -222,7 +222,7 @@ model_list:
 2. Run proxy
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -232,7 +232,7 @@ litellm --config config.yaml
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $LITELLM_KEY" \
+  -H "Authorization: Bearer $LLM_KEY" \
   -d '{
     "model": "claude-3-7-sonnet-thinking",
     "messages": [
@@ -270,7 +270,7 @@ curl http://0.0.0.0:4000/v1/chat/completions \
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $LITELLM_KEY" \
+  -H "Authorization: Bearer $LLM_KEY" \
   -d '{
     "model": "claude-3-7-sonnet-thinking",
     "messages": [
@@ -327,14 +327,14 @@ curl http://0.0.0.0:4000/v1/chat/completions \
 
 ## Switching between Anthropic + Deepseek models 
 
-Set `drop_params=True` to drop the 'thinking' blocks when swapping from Anthropic to Deepseek models. Suggest improvements to this approach [here](https://github.com/BerriAI/litellm/discussions/8927).
+Set `drop_params=True` to drop the 'thinking' blocks when swapping from Anthropic to Deepseek models. Suggest improvements to this approach [here](https://github.com/BerriAI/llm/discussions/8927).
 
 ```python
-litellm.drop_params = True # 👈 EITHER GLOBALLY or per request
+llm.drop_params = True # 👈 EITHER GLOBALLY or per request
 
 # or per request
 ## Anthropic
-response = litellm.completion(
+response = llm.completion(
   model="anthropic/claude-3-7-sonnet-20250219",
   messages=[{"role": "user", "content": "What is the capital of France?"}],
   thinking={"type": "enabled", "budget_tokens": 1024},
@@ -342,7 +342,7 @@ response = litellm.completion(
 )
 
 ## Deepseek
-response = litellm.completion(
+response = llm.completion(
   model="deepseek/deepseek-chat",
   messages=[{"role": "user", "content": "What is the capital of France?"}],
   thinking={"type": "enabled", "budget_tokens": 1024},

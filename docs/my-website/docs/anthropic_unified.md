@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 # /v1/messages [BETA] 
 
-LiteLLM provides a BETA endpoint in the spec of Anthropic's `/v1/messages` endpoint. 
+Hanzo provides a BETA endpoint in the spec of Anthropic's `/v1/messages` endpoint. 
 
 This currently just supports the Anthropic API. 
 
@@ -30,14 +30,14 @@ Planned improvement:
 ```yaml
 model_list:
     - model_name: anthropic-claude
-      litellm_params:
+      llm_params:
         model: claude-3-7-sonnet-latest
 ```
 
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -45,7 +45,7 @@ litellm --config /path/to/config.yaml
 ```bash
 curl -L -X POST 'http://0.0.0.0:4000/v1/messages' \
 -H 'content-type: application/json' \
--H 'x-api-key: $LITELLM_API_KEY' \
+-H 'x-api-key: $LLM_API_KEY' \
 -H 'anthropic-version: 2023-06-01' \
 -d '{
   "model": "anthropic-claude",
@@ -67,7 +67,7 @@ curl -L -X POST 'http://0.0.0.0:4000/v1/messages' \
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm.llms.anthropic.experimental_pass_through.messages.handler import anthropic_messages
+from llm.llms.anthropic.experimental_pass_through.messages.handler import anthropic_messages
 import asyncio 
 import os 
 

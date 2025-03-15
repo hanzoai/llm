@@ -6,12 +6,12 @@
 
 
 ## Callback Class
-You can create a custom callback class to precisely log events as they occur in litellm. 
+You can create a custom callback class to precisely log events as they occur in llm. 
 
 ```python
-import litellm
-from litellm.integrations.custom_logger import CustomLogger
-from litellm import completion, acompletion
+import llm
+from llm.integrations.custom_logger import CustomLogger
+from llm import completion, acompletion
 
 class MyCustomHandler(CustomLogger):
     def log_pre_api_call(self, model, messages, kwargs): 
@@ -37,7 +37,7 @@ class MyCustomHandler(CustomLogger):
 
 customHandler = MyCustomHandler()
 
-litellm.callbacks = [customHandler]
+llm.callbacks = [customHandler]
 
 ## sync 
 response = completion(model="gpt-3.5-turbo", messages=[{ "role": "user", "content": "Hi 👋 - i'm openai"}],
@@ -61,9 +61,9 @@ asyncio.run(completion())
 If you just want to log on a specific event (e.g. on input) - you can use callback functions. 
 
 You can set custom callbacks to trigger for:
-- `litellm.input_callback`   - Track inputs/transformed inputs before making the LLM API call
-- `litellm.success_callback` - Track inputs/outputs after making LLM API call
-- `litellm.failure_callback` - Track inputs/outputs + exceptions for litellm calls
+- `llm.input_callback`   - Track inputs/transformed inputs before making the LLM API call
+- `llm.success_callback` - Track inputs/outputs after making LLM API call
+- `llm.failure_callback` - Track inputs/outputs + exceptions for llm calls
 
 ## Defining a Custom Callback Function
 Create a custom callback function that takes specific arguments:
@@ -75,7 +75,7 @@ def custom_callback(
     start_time, end_time    # start/end time
 ):
     # Your custom code here
-    print("LITELLM: in custom callback function")
+    print("LLM: in custom callback function")
     print("kwargs", kwargs)
     print("completion_response", completion_response)
     print("start_time", start_time)
@@ -84,18 +84,18 @@ def custom_callback(
 
 ### Setting the custom callback function
 ```python
-import litellm
-litellm.success_callback = [custom_callback]
+import llm
+llm.success_callback = [custom_callback]
 ```
 
 ## Using Your Custom Callback Function
 
 ```python
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 
 # Assign the custom callback function
-litellm.success_callback = [custom_callback]
+llm.success_callback = [custom_callback]
 
 response = completion(
     model="gpt-3.5-turbo",
@@ -116,8 +116,8 @@ print(response)
 We recommend using the Custom Logger class for async.
 
 ```python
-from litellm.integrations.custom_logger import CustomLogger
-from litellm import acompletion 
+from llm.integrations.custom_logger import CustomLogger
+from llm import acompletion 
 
 class MyCustomHandler(CustomLogger):
     #### ASYNC #### 
@@ -133,7 +133,7 @@ class MyCustomHandler(CustomLogger):
 import asyncio 
 customHandler = MyCustomHandler()
 
-litellm.callbacks = [customHandler]
+llm.callbacks = [customHandler]
 
 def async completion():
     response = await acompletion(model="gpt-3.5-turbo", messages=[{ "role": "user", "content": "Hi 👋 - i'm openai"}],
@@ -147,19 +147,19 @@ asyncio.run(completion())
 
 If you just want to pass in an async function for logging. 
 
-LiteLLM currently supports just async success callback functions for async completion/embedding calls. 
+Hanzo currently supports just async success callback functions for async completion/embedding calls. 
 
 ```python
-import asyncio, litellm 
+import asyncio, llm 
 
 async def async_test_logging_fn(kwargs, completion_obj, start_time, end_time):
     print(f"On Async Success!")
 
 async def test_chat_openai():
     try:
-        # litellm.set_verbose = True
-        litellm.success_callback = [async_test_logging_fn]
-        response = await litellm.acompletion(model="gpt-3.5-turbo",
+        # llm.set_verbose = True
+        llm.success_callback = [async_test_logging_fn]
+        response = await llm.acompletion(model="gpt-3.5-turbo",
                               messages=[{
                                   "role": "user",
                                   "content": "Hi 👋 - i'm openai"
@@ -176,7 +176,7 @@ asyncio.run(test_chat_openai())
 
 :::info
 
-We're actively trying to expand this to other event types. [Tell us if you need this!](https://github.com/BerriAI/litellm/issues/1007)
+We're actively trying to expand this to other event types. [Tell us if you need this!](https://github.com/BerriAI/llm/issues/1007)
 :::
 
 ## What's in kwargs? 
@@ -189,7 +189,7 @@ def custom_callback(
     start_time, end_time    # start/end time
 ):
     # Your custom code here
-    print("LITELLM: in custom callback function")
+    print("LLM: in custom callback function")
     print("kwargs", kwargs)
     print("completion_response", completion_response)
     print("start_time", start_time)
@@ -198,7 +198,7 @@ def custom_callback(
 
 This is a dictionary containing all the model-call details (the params we receive, the values we send to the http endpoint, the response we receive, stacktrace in case of errors, etc.). 
 
-This is all logged in the [model_call_details via our Logger](https://github.com/BerriAI/litellm/blob/fc757dc1b47d2eb9d0ea47d6ad224955b705059d/litellm/utils.py#L246).
+This is all logged in the [model_call_details via our Logger](https://github.com/BerriAI/llm/blob/fc757dc1b47d2eb9d0ea47d6ad224955b705059d/llm/utils.py#L246).
 
 Here's exactly what you can expect in the kwargs dictionary:
 ```shell
@@ -206,7 +206,7 @@ Here's exactly what you can expect in the kwargs dictionary:
 "model": self.model,
 "messages": self.messages,
 "optional_params": self.optional_params, # model-specific params passed in
-"litellm_params": self.litellm_params, # litellm-specific params passed in (e.g. metadata passed to completion call)
+"llm_params": self.llm_params, # llm-specific params passed in (e.g. metadata passed to completion call)
 "start_time": self.start_time, # datetime object of when call was started
 
 ### PRE-API CALL PARAMS ### (check via kwargs["log_event_type"]="pre_api_call")
@@ -235,9 +235,9 @@ Cache hits are logged in success events as `kwarg["cache_hit"]`.
 Here's an example of accessing it: 
 
   ```python
-  import litellm
-from litellm.integrations.custom_logger import CustomLogger
-from litellm import completion, acompletion, Cache
+  import llm
+from llm.integrations.custom_logger import CustomLogger
+from llm import completion, acompletion, Cache
 
 class MyCustomHandler(CustomLogger):
     async def async_log_success_event(self, kwargs, response_obj, start_time, end_time): 
@@ -246,10 +246,10 @@ class MyCustomHandler(CustomLogger):
 
 async def test_async_completion_azure_caching():
     customHandler_caching = MyCustomHandler()
-    litellm.cache = Cache(type="redis", host=os.environ['REDIS_HOST'], port=os.environ['REDIS_PORT'], password=os.environ['REDIS_PASSWORD'])
-    litellm.callbacks = [customHandler_caching]
+    llm.cache = Cache(type="redis", host=os.environ['REDIS_HOST'], port=os.environ['REDIS_PORT'], password=os.environ['REDIS_PASSWORD'])
+    llm.callbacks = [customHandler_caching]
     unique_time = time.time()
-    response1 = await litellm.acompletion(model="azure/chatgpt-v-2",
+    response1 = await llm.acompletion(model="azure/chatgpt-v-2",
                             messages=[{
                                 "role": "user",
                                 "content": f"Hi 👋 - i'm async azure {unique_time}"
@@ -257,7 +257,7 @@ async def test_async_completion_azure_caching():
                             caching=True)
     await asyncio.sleep(1)
     print(f"customHandler_caching.states pre-cache hit: {customHandler_caching.states}")
-    response2 = await litellm.acompletion(model="azure/chatgpt-v-2",
+    response2 = await llm.acompletion(model="azure/chatgpt-v-2",
                             messages=[{
                                 "role": "user",
                                 "content": f"Hi 👋 - i'm async azure {unique_time}"
@@ -271,10 +271,10 @@ async def test_async_completion_azure_caching():
 
 ### Get complete streaming response
 
-LiteLLM will pass you the complete streaming response in the final streaming chunk as part of the kwargs for your custom callback function.
+Hanzo will pass you the complete streaming response in the final streaming chunk as part of the kwargs for your custom callback function.
 
 ```python
-# litellm.set_verbose = False
+# llm.set_verbose = False
         def custom_callback(
             kwargs,                 # kwargs to completion
             completion_response,    # response from completion
@@ -285,7 +285,7 @@ LiteLLM will pass you the complete streaming response in the final streaming chu
                 print(f"Complete Streaming Response: {kwargs['complete_streaming_response']}")
         
         # Assign the custom callback function
-        litellm.success_callback = [custom_callback]
+        llm.success_callback = [custom_callback]
 
         response = completion(model="claude-instant-1", messages=messages, stream=True)
         for idx, chunk in enumerate(response): 
@@ -295,13 +295,13 @@ LiteLLM will pass you the complete streaming response in the final streaming chu
 
 ### Log additional metadata
 
-LiteLLM accepts a metadata dictionary in the completion call. You can pass additional metadata into your completion call via `completion(..., metadata={"key": "value"})`. 
+Hanzo accepts a metadata dictionary in the completion call. You can pass additional metadata into your completion call via `completion(..., metadata={"key": "value"})`. 
 
-Since this is a [litellm-specific param](https://github.com/BerriAI/litellm/blob/b6a015404eed8a0fa701e98f4581604629300ee3/litellm/main.py#L235), it's accessible via kwargs["litellm_params"]
+Since this is a [llm-specific param](https://github.com/BerriAI/llm/blob/b6a015404eed8a0fa701e98f4581604629300ee3/llm/main.py#L235), it's accessible via kwargs["llm_params"]
 
 ```python
-from litellm import completion
-import os, litellm
+from llm import completion
+import os, llm
 
 ## set ENV variables
 os.environ["OPENAI_API_KEY"] = "your-api-key"
@@ -313,13 +313,13 @@ def custom_callback(
     completion_response,    # response from completion
     start_time, end_time    # start/end time
 ):
-    print(kwargs["litellm_params"]["metadata"])
+    print(kwargs["llm_params"]["metadata"])
     
 
 # Assign the custom callback function
-litellm.success_callback = [custom_callback]
+llm.success_callback = [custom_callback]
 
-response = litellm.completion(model="gpt-3.5-turbo", messages=messages, metadata={"hello": "world"})
+response = llm.completion(model="gpt-3.5-turbo", messages=messages, metadata={"hello": "world"})
 ```
 
 ## Examples
@@ -335,15 +335,15 @@ def track_cost_callback(
     start_time, end_time    # start/end time
 ):
     try:
-        response_cost = kwargs["response_cost"] # litellm calculates response cost for you
+        response_cost = kwargs["response_cost"] # llm calculates response cost for you
         print("regular response_cost", response_cost)
     except:
         pass
 
 # Step 2. Assign the custom callback function
-litellm.success_callback = [track_cost_callback]
+llm.success_callback = [track_cost_callback]
 
-# Step 3. Make litellm.completion call
+# Step 3. Make llm.completion call
 response = completion(
     model="gpt-3.5-turbo",
     messages=[
@@ -365,7 +365,7 @@ def get_transformed_inputs(
     params_to_model = kwargs["additional_args"]["complete_input_dict"]
     print("params to model", params_to_model)
 
-litellm.input_callback = [get_transformed_inputs]
+llm.input_callback = [get_transformed_inputs]
 
 def test_chat_openai():
     try:
@@ -391,8 +391,8 @@ params to model {'model': 'claude-2', 'prompt': "\n\nHuman: Hi 👋 - i'm openai
 
 ```python
 import mixpanel
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 
 def custom_callback(
     kwargs,                 # kwargs to completion
@@ -404,7 +404,7 @@ def custom_callback(
 
 
 # Assign the custom callback function
-litellm.success_callback = [custom_callback]
+llm.success_callback = [custom_callback]
 
 response = completion(
     model="gpt-3.5-turbo",

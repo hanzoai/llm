@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react';
 const CodeBlock = ({ token }) => {
   const codeWithToken = `
 import os
-from litellm import completion
+from llm import completion
 
 # set ENV variables 
-os.environ["LITELLM_TOKEN"] = '${token}'
+os.environ["LLM_TOKEN"] = '${token}'
 
 messages = [{ "content": "Hello, how are you?","role": "user"}]
 
@@ -18,7 +18,7 @@ response = completion("command-nightly", messages)
 `;
 
   const codeWithoutToken = `
-from litellm import completion
+from llm import completion
 
 ## set ENV variables
 os.environ["OPENAI_API_KEY"] = "openai key"

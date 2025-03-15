@@ -13,27 +13,27 @@ Use this if you want to **proxy all models from a specific provider without defi
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import Router
+from llm import Router
 
 router = Router(
     model_list=[
         {
             "model_name": "anthropic/*",
-            "litellm_params": {
+            "llm_params": {
                 "model": "anthropic/*",
                 "api_key": os.environ["ANTHROPIC_API_KEY"]
             }
         }, 
         {
             "model_name": "groq/*",
-            "litellm_params": {
+            "llm_params": {
                 "model": "groq/*",
                 "api_key": os.environ["GROQ_API_KEY"]
             }
         }, 
         {
             "model_name": "fo::*:static::*", # all requests matching this pattern will be routed to this deployment, example: model="fo::hi::static::hi" will be routed to deployment: "openai/fo::*:static::*"
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/fo::*:static::*",
                 "api_key": os.environ["OPENAI_API_KEY"]
             }
@@ -50,25 +50,25 @@ router = Router(
 model_list:
   # provider specific wildcard routing
   - model_name: "anthropic/*"
-    litellm_params:
+    llm_params:
       model: "anthropic/*"
       api_key: os.environ/ANTHROPIC_API_KEY
   - model_name: "groq/*"
-    litellm_params:
+    llm_params:
       model: "groq/*"
       api_key: os.environ/GROQ_API_KEY
   - model_name: "fo::*:static::*" # all requests matching this pattern will be routed to this deployment, example: model="fo::hi::static::hi" will be routed to deployment: "openai/fo::*:static::*"
-    litellm_params:
+    llm_params:
       model: "openai/fo::*:static::*"
       api_key: os.environ/OPENAI_API_KEY
 ```
 </TabItem>
 </Tabs>
 
-## [PROXY-Only] Step 2 - Run litellm proxy 
+## [PROXY-Only] Step 2 - Run llm proxy 
 
 ```shell
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 ## Step 3 - Test it 
@@ -77,7 +77,7 @@ $ litellm --config /path/to/config.yaml
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import Router
+from llm import Router
 
 router = Router(model_list=...)
 

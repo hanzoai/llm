@@ -18,8 +18,8 @@ from openai.lib.azure import OpenAIError
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm import APIConnectionError, Router
+import llm
+from llm import APIConnectionError, Router
 from unittest.mock import ANY
 
 
@@ -32,7 +32,7 @@ async def test_router_init():
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
@@ -42,7 +42,7 @@ async def test_router_init():
         },
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/chatgpt-v-2",
                 "api_key": os.getenv("AZURE_API_KEY"),
                 "api_base": os.getenv("AZURE_API_BASE"),
@@ -87,7 +87,7 @@ async def test_router_init():
 @pytest.mark.skip(
     reason="This test is not relevant to the current codebase. The default Azure AD workflow is used."
 )
-@patch("litellm.secret_managers.get_azure_ad_token_provider.os")
+@patch("llm.secret_managers.get_azure_ad_token_provider.os")
 def test_router_init_with_neither_api_key_nor_azure_service_principal_with_secret(
     mocked_os_lib: MagicMock,
 ) -> None:
@@ -95,7 +95,7 @@ def test_router_init_with_neither_api_key_nor_azure_service_principal_with_secre
     Test router initialization with neither API key nor using Azure Service Principal with Secret authentication
     workflow (having not provided environment variables).
     """
-    litellm.enable_azure_ad_token_refresh = True
+    llm.enable_azure_ad_token_refresh = True
     # mock EMPTY environment variables
     environment_variables_expected_to_use: Dict = {}
     mocked_environ = PropertyMock(return_value=environment_variables_expected_to_use)
@@ -108,7 +108,7 @@ def test_router_init_with_neither_api_key_nor_azure_service_principal_with_secre
         {
             # test case for Azure Service Principal with Secret authentication
             "model_name": "gpt-4o",
-            "litellm_params": {
+            "llm_params": {
                 # checkout there is no api_key here -
                 # AZURE_CLIENT_ID, AZURE_CLIENT_SECRET and AZURE_TENANT_ID environment variables should be used instead
                 "model": "gpt-4o",
@@ -132,7 +132,7 @@ def test_router_init_with_neither_api_key_nor_azure_service_principal_with_secre
 
 @patch("azure.identity.get_bearer_token_provider")
 @patch("azure.identity.ClientSecretCredential")
-@patch("litellm.secret_managers.get_azure_ad_token_provider.os")
+@patch("llm.secret_managers.get_azure_ad_token_provider.os")
 def test_router_init_azure_service_principal_with_secret_with_environment_variables(
     mocked_os_lib: MagicMock,
     mocked_credential: MagicMock,
@@ -147,7 +147,7 @@ def test_router_init_azure_service_principal_with_secret_with_environment_variab
     and environment variables.
     """
     monkeypatch.delenv("AZURE_API_KEY", raising=False)
-    litellm.enable_azure_ad_token_refresh = True
+    llm.enable_azure_ad_token_refresh = True
     # mock the token provider function
     mocked_func_generating_token = MagicMock(return_value="test_token")
     mocked_get_bearer_token_provider.return_value = mocked_func_generating_token
@@ -168,7 +168,7 @@ def test_router_init_azure_service_principal_with_secret_with_environment_variab
         {
             # test case for Azure Service Principal with Secret authentication
             "model_name": "gpt-4o",
-            "litellm_params": {
+            "llm_params": {
                 # checkout there is no api_key here -
                 # AZURE_CLIENT_ID, AZURE_CLIENT_SECRET and AZURE_TENANT_ID environment variables should be used instead
                 "model": "gpt-4o",
@@ -224,17 +224,17 @@ def test_router_init_azure_service_principal_with_secret_with_environment_variab
 @pytest.mark.asyncio
 async def test_audio_speech_router():
     """
-    Test that router uses OpenAI/Azure OpenAI Client initialized during init for litellm.aspeech
+    Test that router uses OpenAI/Azure OpenAI Client initialized during init for llm.aspeech
     """
 
-    from litellm import Router
+    from llm import Router
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     model_list = [
         {
             "model_name": "tts",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/azure-tts",
                 "api_base": os.getenv("AZURE_SWEDEN_API_BASE"),
                 "api_key": os.getenv("AZURE_SWEDEN_API_KEY"),
@@ -250,7 +250,7 @@ async def test_audio_speech_router():
         client_type="async",
     )
 
-    with patch("litellm.aspeech") as mock_aspeech:
+    with patch("llm.aspeech") as mock_aspeech:
         await _router.aspeech(
             model="tts",
             voice="alloy",
@@ -258,7 +258,7 @@ async def test_audio_speech_router():
         )
 
         print(
-            "litellm.aspeech was called with kwargs = ", mock_aspeech.call_args.kwargs
+            "llm.aspeech was called with kwargs = ", mock_aspeech.call_args.kwargs
         )
 
         # Get the actual client that was passed

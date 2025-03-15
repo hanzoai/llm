@@ -1,12 +1,12 @@
 # Reliability - Retries, Fallbacks
 
-LiteLLM helps prevent failed requests in 2 ways: 
+Hanzo helps prevent failed requests in 2 ways: 
 - Retries
 - Fallbacks: Context Window + General
 
 ## Helper utils 
-LiteLLM supports the following functions for reliability:
-* `litellm.longer_context_model_fallback_dict`: Dictionary which has a mapping for those models which have larger equivalents  
+Hanzo supports the following functions for reliability:
+* `llm.longer_context_model_fallback_dict`: Dictionary which has a mapping for those models which have larger equivalents  
 * `num_retries`: use tenacity retries
 * `completion()` with fallbacks: switch between models/keys/api bases in case of errors. 
 
@@ -18,7 +18,7 @@ Call it in completion like this `completion(..num_retries=2)`.
 Here's a quick look at how you can use it: 
 
 ```python 
-from litellm import completion
+from llm import completion
 
 user_message = "Hello, whats the weather in San Francisco??"
 messages = [{"content": user_message, "role": "user"}]
@@ -41,7 +41,7 @@ response = completion(
 
 ### Context Window Fallbacks (SDK)
 ```python 
-from litellm import completion
+from llm import completion
 
 fallback_dict = {"gpt-3.5-turbo": "gpt-3.5-turbo-16k"}
 messages = [{"content": "how does a court case get to the Supreme Court?" * 500, "role": "user"}]
@@ -186,7 +186,7 @@ if (
                     del kwargs["model"]
 
                 print("making completion call", model)
-                response = litellm.completion(**kwargs, model=model)
+                response = llm.completion(**kwargs, model=model)
 
                 if response != None:
                     return response

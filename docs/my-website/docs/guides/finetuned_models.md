@@ -24,7 +24,7 @@ Fine tuned models on vertex have a numerical model/endpoint id.
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 ## set ENV variables
@@ -51,7 +51,7 @@ response = completion(
 
 ```yaml
 - model_name: finetuned-gemini
-  litellm_params:
+  llm_params:
     model: vertex_ai/<ENDPOINT_ID>
     vertex_project: <PROJECT_ID>
     vertex_location: <LOCATION>
@@ -64,7 +64,7 @@ response = completion(
 ```bash
 curl --location 'https://0.0.0.0:4000/v1/chat/completions' \
 --header 'Content-Type: application/json' \
---header 'Authorization: <LITELLM_KEY>' \
+--header 'Authorization: <LLM_KEY>' \
 --data '{"model": "finetuned-gemini" ,"messages":[{"role": "user", "content":[{"type": "text", "text": "hi"}]}]}'
 ```
 

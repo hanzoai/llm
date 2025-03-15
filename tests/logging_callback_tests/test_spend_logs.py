@@ -12,7 +12,7 @@ import io
 import os
 import time
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -24,9 +24,9 @@ import logging
 from typing import Optional
 import pytest
 
-import litellm
-from litellm.proxy.spend_tracking.spend_tracking_utils import get_logging_payload
-from litellm.proxy._types import SpendLogsMetadata, SpendLogsPayload
+import llm
+from llm.proxy.spend_tracking.spend_tracking_utils import get_logging_payload
+from llm.proxy._types import SpendLogsMetadata, SpendLogsPayload
 
 
 @pytest.mark.parametrize(
@@ -52,7 +52,7 @@ def test_spend_logs_payload(model_id: Optional[str]):
                 "user": "116544810872468347480",
                 "extra_body": {},
             },
-            "litellm_params": {
+            "llm_params": {
                 "acompletion": True,
                 "api_key": "23c217a5b59f41b6b7a198017f4792f2",
                 "force_timeout": 600,
@@ -60,7 +60,7 @@ def test_spend_logs_payload(model_id: Optional[str]):
                 "verbose": False,
                 "custom_llm_provider": "azure",
                 "api_base": "https://openai-gpt-4-test-v-1.openai.azure.com//openai/",
-                "litellm_call_id": "b9929bf6-7b80-4c8c-b486-034e6ac0c8b7",
+                "llm_call_id": "b9929bf6-7b80-4c8c-b486-034e6ac0c8b7",
                 "model_alias_map": {},
                 "completion_call_id": None,
                 "metadata": {
@@ -68,7 +68,7 @@ def test_spend_logs_payload(model_id: Optional[str]):
                     "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
                     "user_api_key_alias": "custom-key-alias",
                     "user_api_end_user_max_budget": None,
-                    "litellm_api_version": "0.0.0",
+                    "llm_api_version": "0.0.0",
                     "global_max_parallel_requests": None,
                     "user_api_key_user_id": "116544810872468347480",
                     "user_api_key_org_id": "custom-org-id",
@@ -99,7 +99,7 @@ def test_spend_logs_payload(model_id: Optional[str]):
                     "error_information": None,
                     "status": "success",
                     "proxy_server_request": "{}",
-                    "raw_request": "\n\nPOST Request Sent from LiteLLM:\ncurl -X POST \\\nhttps://openai-gpt-4-test-v-1.openai.azure.com//openai/ \\\n-H 'Authorization: *****' \\\n-d '{'model': 'chatgpt-v-2', 'messages': [{'role': 'system', 'content': 'you are a helpful assistant.\\n'}, {'role': 'user', 'content': 'bom dia'}], 'stream': False, 'max_tokens': 10, 'user': '116544810872468347480', 'extra_body': {}}'\n",
+                    "raw_request": "\n\nPOST Request Sent from Hanzo:\ncurl -X POST \\\nhttps://openai-gpt-4-test-v-1.openai.azure.com//openai/ \\\n-H 'Authorization: *****' \\\n-d '{'model': 'chatgpt-v-2', 'messages': [{'role': 'system', 'content': 'you are a helpful assistant.\\n'}, {'role': 'user', 'content': 'bom dia'}], 'stream': False, 'max_tokens': 10, 'user': '116544810872468347480', 'extra_body': {}}'\n",
                 },
                 "model_info": {
                     "id": "4bad40a1eb6bebd1682800f16f44b9f06c52a6703444c99c7f9f32e9de3693b4",
@@ -142,7 +142,7 @@ def test_spend_logs_payload(model_id: Optional[str]):
             "stream": False,
             "user": "116544810872468347480",
             "call_type": "acompletion",
-            "litellm_call_id": "b9929bf6-7b80-4c8c-b486-034e6ac0c8b7",
+            "llm_call_id": "b9929bf6-7b80-4c8c-b486-034e6ac0c8b7",
             "completion_start_time": datetime.datetime(2024, 6, 7, 12, 43, 30, 954146),
             "max_tokens": 10,
             "extra_body": {},
@@ -180,13 +180,13 @@ def test_spend_logs_payload(model_id: Optional[str]):
                 },
             },
         },
-        "response_obj": litellm.ModelResponse(
+        "response_obj": llm.ModelResponse(
             id=model_id,
             choices=[
-                litellm.Choices(
+                llm.Choices(
                     finish_reason="length",
                     index=0,
-                    message=litellm.Message(
+                    message=llm.Message(
                         content="Bom dia! Como posso ajudar você", role="assistant"
                     ),
                 )
@@ -195,7 +195,7 @@ def test_spend_logs_payload(model_id: Optional[str]):
             model="gpt-35-turbo",
             object="chat.completion",
             system_fingerprint=None,
-            usage=litellm.Usage(
+            usage=llm.Usage(
                 completion_tokens=10, prompt_tokens=20, total_tokens=30
             ),
         ),
@@ -215,7 +215,7 @@ def test_spend_logs_payload(model_id: Optional[str]):
     payload["metadata"] = json.loads(payload["metadata"])
     assert set(payload["metadata"].keys()) == set(expected_metadata_keys)
 
-    # This is crucial - used in PROD, it should pass, related issue: https://github.com/BerriAI/litellm/issues/4334
+    # This is crucial - used in PROD, it should pass, related issue: https://github.com/BerriAI/llm/issues/4334
     assert (
         payload["request_tags"] == '["model-anthropic-claude-v2.1", "app-ishaan-prod"]'
     )
@@ -236,14 +236,14 @@ def test_spend_logs_payload_whisper():
         "model": "whisper-1",
         "messages": [{"role": "user", "content": "audio_file"}],
         "optional_params": {},
-        "litellm_params": {
+        "llm_params": {
             "api_base": "",
             "metadata": {
                 "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
                 "user_api_key_alias": None,
                 "user_api_key_end_user_id": "test-user",
                 "user_api_end_user_max_budget": None,
-                "litellm_api_version": "1.40.19",
+                "llm_api_version": "1.40.19",
                 "global_max_parallel_requests": None,
                 "user_api_key_user_id": "default_user_id",
                 "user_api_key_org_id": None,
@@ -262,7 +262,7 @@ def test_spend_logs_payload_whisper():
                     "content-type": "multipart/form-data; boundary=------------------------21d518e191326d20",
                 },
                 "endpoint": "http://localhost:4000/v1/audio/transcriptions",
-                "litellm_parent_otel_span": None,
+                "llm_parent_otel_span": None,
                 "model_group": "whisper-1",
                 "deployment": "whisper-1",
                 "model_info": {
@@ -276,7 +276,7 @@ def test_spend_logs_payload_whisper():
         "stream": False,
         "user": "",
         "call_type": "atranscription",
-        "litellm_call_id": "05921cf7-33f9-421c-aad9-33310c1e2702",
+        "llm_call_id": "05921cf7-33f9-421c-aad9-33310c1e2702",
         "completion_start_time": datetime.datetime(2024, 6, 26, 14, 20, 13, 653149),
         "stream_options": None,
         "input": "tmp-requestc8640aee-7d85-49c3-b3ef-bdc9255d8e37.wav",
@@ -297,7 +297,7 @@ def test_spend_logs_payload_whisper():
         "response_cost": 0.00023398580000000003,
     }
 
-    response = litellm.utils.TranscriptionResponse(
+    response = llm.utils.TranscriptionResponse(
         text="Four score and seven years ago, our fathers brought forth on this continent a new nation, conceived in liberty and dedicated to the proposition that all men are created equal. Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure."
     )
 
@@ -319,7 +319,7 @@ def test_spend_logs_payload_with_prompts_enabled(monkeypatch):
     Test that messages and responses are logged in spend logs when store_prompts_in_spend_logs is enabled
     """
     # Mock general_settings
-    from litellm.proxy.proxy_server import general_settings
+    from llm.proxy.proxy_server import general_settings
 
     general_settings["store_prompts_in_spend_logs"] = True
 
@@ -327,23 +327,23 @@ def test_spend_logs_payload_with_prompts_enabled(monkeypatch):
         "kwargs": {
             "model": "gpt-3.5-turbo",
             "messages": [{"role": "user", "content": "Hello!"}],
-            "litellm_params": {
+            "llm_params": {
                 "metadata": {
                     "user_api_key": "fake_key",
                 }
             },
         },
-        "response_obj": litellm.ModelResponse(
+        "response_obj": llm.ModelResponse(
             id="chatcmpl-123",
             choices=[
-                litellm.Choices(
+                llm.Choices(
                     finish_reason="stop",
                     index=0,
-                    message=litellm.Message(content="Hi there!", role="assistant"),
+                    message=llm.Message(content="Hi there!", role="assistant"),
                 )
             ],
             model="gpt-3.5-turbo",
-            usage=litellm.Usage(completion_tokens=2, prompt_tokens=1, total_tokens=3),
+            usage=llm.Usage(completion_tokens=2, prompt_tokens=1, total_tokens=3),
         ),
         "start_time": datetime.datetime.now(),
         "end_time": datetime.datetime.now(),
@@ -358,7 +358,7 @@ def test_spend_logs_payload_with_prompts_enabled(monkeypatch):
         },
         "request_tags": ["model-anthropic-claude-v2.1", "app-ishaan-prod"],
     }
-    litellm_params = {
+    llm_params = {
         "proxy_server_request": {
             "body": {
                 "model": "gpt-4",
@@ -367,7 +367,7 @@ def test_spend_logs_payload_with_prompts_enabled(monkeypatch):
         }
     }
     input_args["kwargs"]["standard_logging_object"] = standard_logging_payload
-    input_args["kwargs"]["litellm_params"] = litellm_params
+    input_args["kwargs"]["llm_params"] = llm_params
 
     payload: SpendLogsPayload = get_logging_payload(**input_args)
 

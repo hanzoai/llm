@@ -11,23 +11,23 @@ from datetime import datetime
 load_dotenv()
 import os, io, time
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest, logging, asyncio
-import litellm, asyncio
-from litellm.proxy.proxy_server import token_counter
-from litellm.proxy.utils import PrismaClient, ProxyLogging, hash_token, update_spend
-from litellm._logging import verbose_proxy_logger
+import llm, asyncio
+from llm.proxy.proxy_server import token_counter
+from llm.proxy.utils import PrismaClient, ProxyLogging, hash_token, update_spend
+from llm._logging import verbose_proxy_logger
 
 verbose_proxy_logger.setLevel(level=logging.DEBUG)
 
-from litellm.proxy._types import TokenCountRequest, TokenCountResponse
+from llm.proxy._types import TokenCountRequest, TokenCountResponse
 
 
-from litellm import Router
+from llm import Router
 
 
 @pytest.mark.asyncio
@@ -43,7 +43,7 @@ async def test_vLLM_token_counting():
         model_list=[
             {
                 "model_name": "special-alias",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/wolfram/miquliz-120b-v2.0",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                 },
@@ -51,7 +51,7 @@ async def test_vLLM_token_counting():
         ]
     )
 
-    setattr(litellm.proxy.proxy_server, "llm_router", llm_router)
+    setattr(llm.proxy.proxy_server, "llm_router", llm_router)
 
     response = await token_counter(
         request=TokenCountRequest(
@@ -79,14 +79,14 @@ async def test_token_counting_model_not_in_model_list():
         model_list=[
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4",
                 },
             }
         ]
     )
 
-    setattr(litellm.proxy.proxy_server, "llm_router", llm_router)
+    setattr(llm.proxy.proxy_server, "llm_router", llm_router)
 
     response = await token_counter(
         request=TokenCountRequest(
@@ -114,14 +114,14 @@ async def test_gpt_token_counting():
         model_list=[
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4",
                 },
             }
         ]
     )
 
-    setattr(litellm.proxy.proxy_server, "llm_router", llm_router)
+    setattr(llm.proxy.proxy_server, "llm_router", llm_router)
 
     response = await token_counter(
         request=TokenCountRequest(

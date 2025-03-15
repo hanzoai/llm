@@ -20,10 +20,10 @@ const sidebars = {
     { type: "doc", id: "index" }, // NEW
     {
       type: "category",
-      label: "LiteLLM Proxy Server",
+      label: "Hanzo Proxy Server",
       link: {
         type: "generated-index",
-        title: "LiteLLM Proxy Server (LLM Gateway)",
+        title: "Hanzo Proxy Server (LLM Gateway)",
         description: `OpenAI Proxy Server (LLM Gateway) to call 100+ LLMs in a unified interface & track spend, set budgets per virtual key/user`,
         slug: "/simple_proxy",
       },
@@ -58,7 +58,7 @@ const sidebars = {
         {
           type: "link",
           label: "All Endpoints (Swagger)",
-          href: "https://litellm-api.up.railway.app/",
+          href: "https://llm-api.up.railway.app/",
         },
         "proxy/enterprise",
         {
@@ -117,7 +117,7 @@ const sidebars = {
         {
           type: "link",
           label: "Load Balancing, Routing, Fallbacks",
-          href: "https://docs.litellm.ai/docs/routing-load-balancing",
+          href: "https://docs.llm.ai/docs/routing-load-balancing",
         },
         {
           type: "category",
@@ -173,7 +173,7 @@ const sidebars = {
         type: "generated-index",
         title: "Providers",
         description:
-          "Learn how to deploy + call models from different providers on LiteLLM",
+          "Learn how to deploy + call models from different providers on Hanzo",
         slug: "/providers",
       },
       items: [
@@ -188,7 +188,7 @@ const sidebars = {
         "providers/anthropic",
         "providers/aws_sagemaker",
         "providers/bedrock",
-        "providers/litellm_proxy",
+        "providers/llm_proxy",
         "providers/mistral",
         "providers/codestral",
         "providers/cohere",
@@ -268,7 +268,7 @@ const sidebars = {
         type: "generated-index",
         title: "Supported Endpoints",
         description:
-          "Learn how to deploy + call models from different providers on LiteLLM",
+          "Learn how to deploy + call models from different providers on Hanzo",
         slug: "/supported_endpoints",
       },
       items: [
@@ -345,7 +345,7 @@ const sidebars = {
     },
     {
       type: "category",
-      label: "LiteLLM Python SDK",
+      label: "Hanzo Python SDK",
       items: [
         "set_keys",
         "completion/token_usage",
@@ -415,10 +415,10 @@ const sidebars = {
       label: "Tutorials",
       items: [
         "tutorials/openweb_ui",
-        'tutorials/litellm_proxy_aporia',
+        'tutorials/llm_proxy_aporia',
         {
           type: "category",
-          label: "LiteLLM Python SDK Tutorials",
+          label: "Hanzo Python SDK Tutorials",
           items: [
 
             'tutorials/azure_openai',
@@ -426,7 +426,7 @@ const sidebars = {
             "tutorials/gradio_integration",
             "tutorials/huggingface_codellama",
             "tutorials/huggingface_tutorial",
-            "tutorials/TogetherAI_liteLLM",
+            "tutorials/TogetherAI_LLM",
             "tutorials/finetuned_chat_gpt",
             "tutorials/text_completion",
             "tutorials/first_playground",
@@ -460,12 +460,12 @@ const sidebars = {
         "migration_policy",
         {
           type: "category",
-          label: "❤️ 🚅 Projects built on LiteLLM",
+          label: "❤️ 🚅 Projects built on Hanzo",
           link: {
             type: "generated-index",
-            title: "Projects built on LiteLLM",
+            title: "Projects built on Hanzo",
             description:
-              "Learn how to deploy + call models from different providers on LiteLLM",
+              "Learn how to deploy + call models from different providers on Hanzo",
             slug: "/project",
           },
           items: [
@@ -485,7 +485,7 @@ const sidebars = {
             "projects/Otter",
             "projects/GPT Migrate",
             "projects/YiVal",
-            "projects/LiteLLM Proxy",
+            "projects/Hanzo Proxy",
             "projects/llm_cord",
             "projects/pgai",
           ],

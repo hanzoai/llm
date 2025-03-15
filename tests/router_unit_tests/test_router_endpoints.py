@@ -11,8 +11,8 @@ from unittest.mock import AsyncMock, patch
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-from litellm import Router, CustomLogger
-from litellm.types.utils import StandardLoggingPayload
+from llm import Router, CustomLogger
+from llm.types.utils import StandardLoggingPayload
 
 # Get the current directory of the file being run
 pwd = os.path.dirname(os.path.realpath(__file__))
@@ -22,7 +22,7 @@ file_path = os.path.join(pwd, "gettysburg.wav")
 
 audio_file = open(file_path, "rb")
 from pathlib import Path
-import litellm
+import llm
 import pytest
 import asyncio
 
@@ -32,35 +32,35 @@ def model_list():
     return [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
         },
         {
             "model_name": "gpt-4o",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-4o",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
         },
         {
             "model_name": "dall-e-3",
-            "litellm_params": {
+            "llm_params": {
                 "model": "dall-e-3",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
         },
         {
             "model_name": "cohere-rerank",
-            "litellm_params": {
+            "llm_params": {
                 "model": "cohere/rerank-english-v3.0",
                 "api_key": os.getenv("COHERE_API_KEY"),
             },
         },
         {
             "model_name": "claude-3-5-sonnet-20240620",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "mock_response": "hi this is macintosh.",
             },
@@ -68,7 +68,7 @@ def model_list():
     ]
 
 
-# This file includes the custom callbacks for LiteLLM Proxy
+# This file includes the custom callbacks for Hanzo Proxy
 # Once defined, these can be passed in proxy_config.yaml
 class MyCustomHandler(CustomLogger):
     def __init__(self):
@@ -88,26 +88,26 @@ class MyCustomHandler(CustomLogger):
             pass
 
 
-# Set litellm.callbacks = [proxy_handler_instance] on the proxy
-# need to set litellm.callbacks = [proxy_handler_instance] # on the proxy
+# Set llm.callbacks = [proxy_handler_instance] on the proxy
+# need to set llm.callbacks = [proxy_handler_instance] # on the proxy
 @pytest.mark.asyncio
 @pytest.mark.flaky(retries=6, delay=10)
 async def test_transcription_on_router():
     proxy_handler_instance = MyCustomHandler()
-    litellm.set_verbose = True
-    litellm.callbacks = [proxy_handler_instance]
+    llm.set_verbose = True
+    llm.callbacks = [proxy_handler_instance]
     print("\n Testing async transcription on router\n")
     try:
         model_list = [
             {
                 "model_name": "whisper",
-                "litellm_params": {
+                "llm_params": {
                     "model": "whisper-1",
                 },
             },
             {
                 "model_name": "whisper",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/azure-whisper",
                     "api_base": "https://my-endpoint-europe-berri-992.openai.azure.com/",
                     "api_key": os.getenv("AZURE_EUROPE_API_KEY"),
@@ -155,16 +155,16 @@ async def test_transcription_on_router():
 @pytest.mark.parametrize("mode", ["iterator"])  # "file",
 @pytest.mark.asyncio
 async def test_audio_speech_router(mode):
-    litellm.set_verbose = True
+    llm.set_verbose = True
     test_logger = MyCustomHandler()
-    litellm.callbacks = [test_logger]
-    from litellm import Router
+    llm.callbacks = [test_logger]
+    from llm import Router
 
     client = Router(
         model_list=[
             {
                 "model_name": "tts",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/tts-1",
                 },
             },
@@ -187,7 +187,7 @@ async def test_audio_speech_router(mode):
 
     await asyncio.sleep(3)
 
-    from litellm.llms.openai.openai import HttpxBinaryResponseContent
+    from llm.llms.openai.openai import HttpxBinaryResponseContent
 
     assert isinstance(response, HttpxBinaryResponseContent)
 
@@ -201,7 +201,7 @@ async def test_audio_speech_router(mode):
 
 @pytest.mark.asyncio()
 async def test_rerank_endpoint(model_list):
-    from litellm.types.utils import RerankResponse
+    from llm.types.utils import RerankResponse
 
     router = Router(model_list=model_list)
 
@@ -234,18 +234,18 @@ async def test_rerank_endpoint(model_list):
     "model", ["omni-moderation-latest", "openai/omni-moderation-latest", None]
 )
 async def test_moderation_endpoint(model):
-    litellm.set_verbose = True
+    llm.set_verbose = True
     router = Router(
         model_list=[
             {
                 "model_name": "openai/*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/*",
                 },
             },
             {
                 "model_name": "*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/*",
                 },
             },
@@ -293,12 +293,12 @@ async def test_aaaaatext_completion_endpoint(model_list, sync_mode):
 @pytest.mark.asyncio
 async def test_router_with_empty_choices(model_list):
     """
-    https://github.com/BerriAI/litellm/issues/8306
+    https://github.com/BerriAI/llm/issues/8306
     """
     router = Router(model_list=model_list)
-    mock_response = litellm.ModelResponse(
+    mock_response = llm.ModelResponse(
         choices=[],
-        usage=litellm.Usage(
+        usage=llm.Usage(
             prompt_tokens=10,
             completion_tokens=10,
             total_tokens=20,
@@ -345,7 +345,7 @@ def test_generic_api_call_with_fallbacks_basic(sync_mode):
         model_list=[
             {
                 "model_name": "test-model-alias",
-                "litellm_params": {
+                "llm_params": {
                     "model": "anthropic/test-model",
                     "api_key": "fake-api-key",
                 },
@@ -409,7 +409,7 @@ async def test_aadapter_completion():
             model_list=[
                 {
                     "model_name": "test-adapter-model",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "anthropic/test-model",
                         "api_key": "fake-api-key",
                     },
@@ -448,7 +448,7 @@ async def test__aadapter_completion():
     """
     Test the _aadapter_completion method directly
     """
-    # Create a mock response for litellm.aadapter_completion
+    # Create a mock response for llm.aadapter_completion
     mock_response = {
         "id": "adapter_resp_123",
         "object": "adapter.completion",
@@ -464,9 +464,9 @@ async def test__aadapter_completion():
         "usage": {"prompt_tokens": 10, "completion_tokens": 20, "total_tokens": 30},
     }
 
-    # Create a router with a mocked litellm.aadapter_completion
+    # Create a router with a mocked llm.aadapter_completion
     with patch(
-        "litellm.aadapter_completion", new_callable=AsyncMock
+        "llm.aadapter_completion", new_callable=AsyncMock
     ) as mock_adapter_completion:
         mock_adapter_completion.return_value = mock_response
 
@@ -474,7 +474,7 @@ async def test__aadapter_completion():
             model_list=[
                 {
                     "model_name": "test-adapter-model",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "anthropic/test-model",
                         "api_key": "fake-api-key",
                     },
@@ -486,7 +486,7 @@ async def test__aadapter_completion():
         router.async_get_available_deployment = AsyncMock(
             return_value={
                 "model_name": "test-adapter-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "test-model",
                     "api_key": "fake-api-key",
                 },
@@ -510,7 +510,7 @@ async def test__aadapter_completion():
         # Verify the response
         assert response == mock_response
 
-        # Verify litellm.aadapter_completion was called with the right parameters
+        # Verify llm.aadapter_completion was called with the right parameters
         mock_adapter_completion.assert_called_once()
         call_kwargs = mock_adapter_completion.call_args.kwargs
         assert call_kwargs["adapter_id"] == "test-adapter-id"
@@ -537,7 +537,7 @@ def test_initialize_router_endpoints():
         model_list=[
             {
                 "model_name": "test-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "anthropic/test-model",
                     "api_key": "fake-api-key",
                 },

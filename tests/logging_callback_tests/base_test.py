@@ -10,11 +10,11 @@ import os
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm.exceptions import BadRequestError
-from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
-from litellm.utils import CustomStreamWrapper
-from litellm.types.utils import ModelResponse
+import llm
+from llm.exceptions import BadRequestError
+from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
+from llm.utils import CustomStreamWrapper
+from llm.types.utils import ModelResponse
 
 # test_example.py
 from abc import ABC, abstractmethod
@@ -27,7 +27,7 @@ class BaseLoggingCallbackTest(ABC):
 
     @pytest.fixture
     def mock_response_obj(self):
-        from litellm.types.utils import (
+        from llm.types.utils import (
             ModelResponse,
             Choices,
             Message,
@@ -95,6 +95,6 @@ class BaseLoggingCallbackTest(ABC):
         """
         Check if parallel tool calls are correctly logged by Logging callback
 
-        Relevant issue - https://github.com/BerriAI/litellm/issues/6677
+        Relevant issue - https://github.com/BerriAI/llm/issues/6677
         """
         pass

@@ -13,8 +13,8 @@ import pytest
 sys.path.insert(0, os.path.abspath("../.."))
 from typing import Optional
 
-import litellm
-from litellm.utils import calculate_max_parallel_requests
+import llm
+from llm.utils import calculate_max_parallel_requests
 
 """
 - only rpm
@@ -82,7 +82,7 @@ def test_setting_mpr_limits_per_model(
 ):
     deployment = {
         "model_name": "gpt-3.5-turbo",
-        "litellm_params": {
+        "llm_params": {
             "model": "gpt-3.5-turbo",
             "max_parallel_requests": max_parallel_requests,
             "tpm": tpm,
@@ -91,7 +91,7 @@ def test_setting_mpr_limits_per_model(
         "model_info": {"id": "my-unique-id"},
     }
 
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[deployment],
         default_max_parallel_requests=default_max_parallel_requests,
     )
@@ -159,7 +159,7 @@ async def test_max_parallel_requests_rpm_rate_limiting():
     """
     - make sure requests > model limits are retried successfully.
     """
-    from litellm import Router
+    from llm import Router
 
     router = Router(
         routing_strategy="usage-based-routing-v2",
@@ -167,7 +167,7 @@ async def test_max_parallel_requests_rpm_rate_limiting():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "temperature": 0.0,
                     "rpm": 1,
@@ -184,7 +184,7 @@ async def test_max_parallel_requests_tpm_rate_limiting_base_case():
     """
     - check error raised if defined tpm limit crossed.
     """
-    from litellm import Router, token_counter
+    from llm import Router, token_counter
 
     _messages = [{"role": "user", "content": "Hey, how's it going?"}]
     router = Router(
@@ -193,7 +193,7 @@ async def test_max_parallel_requests_tpm_rate_limiting_base_case():
         model_list=[
             {
                 "model_name": "gpt-4o-2024-08-06",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o-2024-08-06",
                     "temperature": 0.0,
                     "tpm": 1,
@@ -203,7 +203,7 @@ async def test_max_parallel_requests_tpm_rate_limiting_base_case():
         num_retries=0,
     )
 
-    with pytest.raises(litellm.RateLimitError):
+    with pytest.raises(llm.RateLimitError):
         for _ in range(2):
             await router.acompletion(
                 model="gpt-4o-2024-08-06",

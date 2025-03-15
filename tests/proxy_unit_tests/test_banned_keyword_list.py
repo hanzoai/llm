@@ -14,24 +14,24 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-import litellm
-from litellm.proxy.enterprise.enterprise_hooks.banned_keywords import (
+import llm
+from llm.proxy.enterprise.enterprise_hooks.banned_keywords import (
     _ENTERPRISE_BannedKeywords,
 )
-from litellm import Router, mock_completion
-from litellm.proxy.utils import ProxyLogging, hash_token
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.caching.caching import DualCache
+from llm import Router, mock_completion
+from llm.proxy.utils import ProxyLogging, hash_token
+from llm.proxy._types import UserAPIKeyAuth
+from llm.caching.caching import DualCache
 
 
 @pytest.mark.asyncio
 async def test_banned_keywords_check():
     """
-    - Set some banned keywords as a litellm module value
+    - Set some banned keywords as a llm module value
     - Test to see if a call with banned keywords is made, an error is raised
     - Test to see if a call without banned keywords is made it passes
     """
-    litellm.banned_keywords_list = ["hello"]
+    llm.banned_keywords_list = ["hello"]
 
     banned_keywords_obj = _ENTERPRISE_BannedKeywords()
 

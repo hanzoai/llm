@@ -6,11 +6,11 @@ import TabItem from '@theme/TabItem';
 
 :::info
 
-✨ SSO is on LiteLLM Enterprise
+✨ SSO is on Hanzo Enterprise
 
-[Enterprise Pricing](https://www.litellm.ai/#pricing)
+[Enterprise Pricing](https://www.llm.ai/#pricing)
 
-[Get free 7-day trial key](https://www.litellm.ai/#trial)
+[Get free 7-day trial key](https://www.llm.ai/#trial)
 
 :::
 
@@ -20,7 +20,7 @@ import TabItem from '@theme/TabItem';
 Control the upperbound that users can use for `max_budget`, `budget_duration` or any `key/generate` param per key. 
 
 ```yaml
-litellm_settings:
+llm_settings:
   upperbound_key_generate_params:
     max_budget: 100 # Optional[float], optional): upperbound of $100, for all /key/generate requests
     budget_duration: "10d" # Optional[str], optional): upperbound of 10 days for budget_duration values
@@ -76,7 +76,7 @@ GOOGLE_CLIENT_SECRET=
 - Set Redirect URL on your Oauth 2.0 Client on https://console.cloud.google.com/ 
     - Set a redirect url = `<your proxy base url>/sso/callback`
     ```shell
-    https://litellm-production-7002.up.railway.app/sso/callback
+    https://llm-production-7002.up.railway.app/sso/callback
     ```
 
 </TabItem>
@@ -151,11 +151,11 @@ Some SSO providers require a specific redirect url for login and logout. You can
 
 Set this in your .env (so the proxy can set the correct redirect url)
 ```shell
-PROXY_BASE_URL=https://litellm-api.up.railway.app/
+PROXY_BASE_URL=https://llm-api.up.railway.app/
 ```
 
 #### Step 4. Test flow
-<Image img={require('../../img/litellm_ui_3.gif')} />
+<Image img={require('../../img/llm_ui_3.gif')} />
 
 ### Restrict Email Subdomains w/ SSO
 
@@ -173,7 +173,7 @@ Set a Proxy Admin when SSO is enabled. Once SSO is enabled, the `user_id` for us
 
 #### Step 1: Copy your ID from the UI 
 
-<Image img={require('../../img/litellm_ui_copy_id.png')} />
+<Image img={require('../../img/llm_ui_copy_id.png')} />
 
 #### Step 2: Set it in your .env as the PROXY_ADMIN_ID 
 
@@ -183,7 +183,7 @@ export PROXY_ADMIN_ID="116544810872468347480"
 
 #### Step 3: See all proxy keys
 
-<Image img={require('../../img/litellm_ui_admin.png')} />
+<Image img={require('../../img/llm_ui_admin.png')} />
 
 :::info
 
@@ -199,7 +199,7 @@ The following logic will apply
 - If team assigned don't show `Default Team`
 - If no team assigned then they should see `Default Team`
 
-Set `default_team_disabled: true` on your litellm config.yaml
+Set `default_team_disabled: true` on your llm config.yaml
 
 ```yaml
 general_settings:
@@ -227,11 +227,11 @@ general_settings:
 
 ### Custom Branding Admin UI
 
-Use your companies custom branding on the LiteLLM Admin UI
+Use your companies custom branding on the Hanzo Admin UI
 We allow you to 
 - Customize the UI Logo
 - Customize the UI color scheme
-<Image img={require('../../img/litellm_custom_ai.png')} />
+<Image img={require('../../img/llm_custom_ai.png')} />
 
 #### Set Custom Logo
 We allow you to pass a local image or a an http/https url of your image
@@ -240,7 +240,7 @@ Set `UI_LOGO_PATH` on your env. We recommend using a hosted image, it's a lot ea
 
 Exaple setting Hosted image
 ```shell
-UI_LOGO_PATH="https://litellm-logo-aws-marketplace.s3.us-west-2.amazonaws.com/berriai-logo-github.png"
+UI_LOGO_PATH="https://llm-logo-aws-marketplace.s3.us-west-2.amazonaws.com/berriai-logo-github.png"
 ```
 
 Exaple setting a local image (on your container)
@@ -248,7 +248,7 @@ Exaple setting a local image (on your container)
 UI_LOGO_PATH="ui_images/logo.jpg"
 ```
 #### Set Custom Color Theme
-- Navigate to [/enterprise/enterprise_ui](https://github.com/BerriAI/litellm/blob/main/enterprise/enterprise_ui/_enterprise_colors.json)
+- Navigate to [/enterprise/enterprise_ui](https://github.com/BerriAI/llm/blob/main/enterprise/enterprise_ui/_enterprise_colors.json)
 - Inside the `enterprise_ui` directory, rename `_enterprise_colors.json` to `enterprise_colors.json`
 - Set your companies custom color scheme in `enterprise_colors.json`
 Example contents of `enterprise_colors.json` 
@@ -266,5 +266,5 @@ Set your colors to any of the following colors: https://www.tremor.so/docs/layou
 }
 
 ```
-- Deploy LiteLLM Proxy Server
+- Deploy Hanzo Proxy Server
 

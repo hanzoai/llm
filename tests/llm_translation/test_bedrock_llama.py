@@ -6,7 +6,7 @@ import os
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
+import llm
 
 
 class TestBedrockTestSuite(BaseLLMChatTest):
@@ -14,7 +14,7 @@ class TestBedrockTestSuite(BaseLLMChatTest):
         pass
 
     def get_base_completion_call_args(self) -> dict:
-        litellm._turn_on_debug()
+        llm._turn_on_debug()
         return {
             "model": "bedrock/converse/us.meta.llama3-3-70b-instruct-v1:0",
         }

@@ -23,8 +23,8 @@ import httpx
 
 import pytest
 
-import litellm
-from litellm import (
+import llm
+from llm import (
     RateLimitError,
     Timeout,
     acompletion,
@@ -32,14 +32,14 @@ from litellm import (
     completion_cost,
     embedding,
 )
-from litellm.llms.vertex_ai.gemini.transformation import (
+from llm.llms.vertex_ai.gemini.transformation import (
     _gemini_convert_messages_with_history,
 )
-from litellm.llms.vertex_ai.vertex_llm_base import VertexBase
+from llm.llms.vertex_ai.vertex_llm_base import VertexBase
 
 
-litellm.num_retries = 3
-litellm.cache = None
+llm.num_retries = 3
+llm.cache = None
 user_message = "Write a short poem about the sky"
 messages = [{"content": user_message, "role": "user"}]
 
@@ -155,9 +155,9 @@ async def test_get_response():
             ],
         )
         return response
-    except litellm.RateLimitError:
+    except llm.RateLimitError:
         pass
-    except litellm.UnprocessableEntityError as e:
+    except llm.UnprocessableEntityError as e:
         pass
     except Exception as e:
         pytest.fail(f"An error occurred - {str(e)}")
@@ -174,11 +174,11 @@ async def test_get_router_response():
 
     prompt = '\ndef count_nums(arr):\n    """\n    Write a function count_nums which takes an array of integers and returns\n    the number of elements which has a sum of digits > 0.\n    If a number is negative, then its first signed digit will be negative:\n    e.g. -123 has signed digits -1, 2, and 3.\n    >>> count_nums([]) == 0\n    >>> count_nums([-1, 11, -11]) == 1\n    >>> count_nums([1, 1, 2]) == 3\n    """\n'
     try:
-        router = litellm.Router(
+        router = llm.Router(
             model_list=[
                 {
                     "model_name": "sonnet",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "vertex_ai/claude-3-sonnet@20240229",
                         "vertex_ai_project": vertex_ai_project,
                         "vertex_ai_location": vertex_ai_location,
@@ -201,9 +201,9 @@ async def test_get_router_response():
 
         print(f"\n\nResponse: {response}\n\n")
 
-    except litellm.ServiceUnavailableError:
+    except llm.ServiceUnavailableError:
         pass
-    except litellm.UnprocessableEntityError as e:
+    except llm.UnprocessableEntityError as e:
         pass
     except Exception as e:
         pytest.fail(f"An error occurred - {str(e)}")
@@ -217,7 +217,7 @@ def test_vertex_ai_anthropic_streaming():
     try:
         load_vertex_ai_credentials()
 
-        # litellm.set_verbose = True
+        # llm.set_verbose = True
 
         model = "claude-3-sonnet@20240229"
 
@@ -240,7 +240,7 @@ def test_vertex_ai_anthropic_streaming():
             streaming_format_tests(idx=idx, chunk=chunk)
 
     # raise Exception("it worked!")
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
     except Exception as e:
         pytest.fail(f"Error occurred: {e}")
@@ -274,7 +274,7 @@ async def test_aavertex_ai_anthropic_async():
             vertex_credentials=vertex_credentials,
         )
         print(f"Model Response: {response}")
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
     except Exception as e:
         pytest.fail(f"Error occurred: {e}")
@@ -291,7 +291,7 @@ async def test_aavertex_ai_anthropic_async():
 async def test_aaavertex_ai_anthropic_async_streaming():
     # load_vertex_ai_credentials()
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         model = "claude-3-sonnet@20240229"
 
         vertex_ai_project = "pathrise-convert-1606954137718"
@@ -313,7 +313,7 @@ async def test_aaavertex_ai_anthropic_async_streaming():
         async for chunk in response:
             streaming_format_tests(idx=idx, chunk=chunk)
             idx += 1
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
     except Exception as e:
         pytest.fail(f"Error occurred: {e}")
@@ -329,19 +329,19 @@ async def test_aaavertex_ai_anthropic_async_streaming():
 def test_avertex_ai():
     import random
 
-    litellm.num_retries = 3
+    llm.num_retries = 3
     load_vertex_ai_credentials()
     test_models = (
-        litellm.vertex_chat_models
-        + litellm.vertex_code_chat_models
-        + litellm.vertex_text_models
-        + litellm.vertex_code_text_models
+        llm.vertex_chat_models
+        + llm.vertex_code_chat_models
+        + llm.vertex_text_models
+        + llm.vertex_code_text_models
     )
-    litellm.set_verbose = False
+    llm.set_verbose = False
     vertex_ai_project = "pathrise-convert-1606954137718"
 
     test_models = random.sample(test_models, 1)
-    test_models += litellm.vertex_language_models  # always test gemini-pro
+    test_models += llm.vertex_language_models  # always test gemini-pro
     for model in test_models:
         try:
             if model in VERTEX_MODELS_TO_NOT_TEST or (
@@ -363,10 +363,10 @@ def test_avertex_ai():
             print(
                 f"response.choices[0].finish_reason: {response.choices[0].finish_reason}"
             )
-            assert response.choices[0].finish_reason in litellm._openai_finish_reasons
-        except litellm.RateLimitError as e:
+            assert response.choices[0].finish_reason in llm._openai_finish_reasons
+        except llm.RateLimitError as e:
             pass
-        except litellm.InternalServerError as e:
+        except llm.InternalServerError as e:
             pass
         except Exception as e:
             pytest.fail(f"Error occurred: {e}")
@@ -381,18 +381,18 @@ def test_avertex_ai():
 @pytest.mark.flaky(retries=3, delay=1)
 def test_avertex_ai_stream():
     load_vertex_ai_credentials()
-    litellm.set_verbose = True
-    litellm.vertex_project = "pathrise-convert-1606954137718"
+    llm.set_verbose = True
+    llm.vertex_project = "pathrise-convert-1606954137718"
     import random
 
     test_models = (
-        litellm.vertex_chat_models
-        + litellm.vertex_code_chat_models
-        + litellm.vertex_text_models
-        + litellm.vertex_code_text_models
+        llm.vertex_chat_models
+        + llm.vertex_code_chat_models
+        + llm.vertex_text_models
+        + llm.vertex_code_text_models
     )
     test_models = random.sample(test_models, 1)
-    test_models += litellm.vertex_language_models  # always test gemini-pro
+    test_models += llm.vertex_language_models  # always test gemini-pro
     for model in test_models:
         try:
             if model in VERTEX_MODELS_TO_NOT_TEST or (
@@ -416,9 +416,9 @@ def test_avertex_ai_stream():
                 assert type(content) == str
                 # pass
             assert len(completed_str) > 1
-        except litellm.RateLimitError as e:
+        except llm.RateLimitError as e:
             pass
-        except litellm.InternalServerError as e:
+        except llm.InternalServerError as e:
             pass
         except Exception as e:
             pytest.fail(f"Error occurred: {e}")
@@ -434,16 +434,16 @@ async def test_async_vertexai_response():
 
     load_vertex_ai_credentials()
     test_models = (
-        litellm.vertex_chat_models
-        + litellm.vertex_code_chat_models
-        + litellm.vertex_text_models
-        + litellm.vertex_code_text_models
+        llm.vertex_chat_models
+        + llm.vertex_code_chat_models
+        + llm.vertex_text_models
+        + llm.vertex_code_text_models
     )
     test_models = random.sample(test_models, 1)
-    test_models += litellm.vertex_language_models  # always test gemini-pro
+    test_models += llm.vertex_language_models  # always test gemini-pro
     for model in test_models:
         print(
-            f"model being tested in async call: {model}, litellm.vertex_language_models: {litellm.vertex_language_models}"
+            f"model being tested in async call: {model}, llm.vertex_language_models: {llm.vertex_language_models}"
         )
         if model in VERTEX_MODELS_TO_NOT_TEST or (
             "gecko" in model
@@ -461,13 +461,13 @@ async def test_async_vertexai_response():
                 model=model, messages=messages, temperature=0.7, timeout=5
             )
             print(f"response: {response}")
-        except litellm.RateLimitError as e:
+        except llm.RateLimitError as e:
             pass
-        except litellm.Timeout as e:
+        except llm.Timeout as e:
             pass
-        except litellm.APIError as e:
+        except llm.APIError as e:
             pass
-        except litellm.InternalServerError as e:
+        except llm.InternalServerError as e:
             pass
         except Exception as e:
             pytest.fail(f"An exception occurred: {e}")
@@ -483,13 +483,13 @@ async def test_async_vertexai_streaming_response():
 
     load_vertex_ai_credentials()
     test_models = (
-        litellm.vertex_chat_models
-        + litellm.vertex_code_chat_models
-        + litellm.vertex_text_models
-        + litellm.vertex_code_text_models
+        llm.vertex_chat_models
+        + llm.vertex_code_chat_models
+        + llm.vertex_text_models
+        + llm.vertex_code_text_models
     )
     test_models = random.sample(test_models, 1)
-    test_models += litellm.vertex_language_models  # always test gemini-pro
+    test_models += llm.vertex_language_models  # always test gemini-pro
     for model in test_models:
         if model in VERTEX_MODELS_TO_NOT_TEST or (
             "gecko" in model
@@ -518,13 +518,13 @@ async def test_async_vertexai_streaming_response():
                     complete_response += chunk.choices[0].delta.content
             print(f"complete_response: {complete_response}")
             assert len(complete_response) > 0
-        except litellm.RateLimitError as e:
+        except llm.RateLimitError as e:
             pass
-        except litellm.APIConnectionError:
+        except llm.APIConnectionError:
             pass
-        except litellm.Timeout as e:
+        except llm.Timeout as e:
             pass
-        except litellm.InternalServerError as e:
+        except llm.InternalServerError as e:
             pass
         except Exception as e:
             print(e)
@@ -541,10 +541,10 @@ async def test_async_vertexai_streaming_response():
 async def test_gemini_pro_vision(provider, sync_mode):
     try:
         load_vertex_ai_credentials()
-        litellm.set_verbose = True
-        litellm.num_retries = 3
+        llm.set_verbose = True
+        llm.num_retries = 3
         if sync_mode:
-            resp = litellm.completion(
+            resp = llm.completion(
                 model="{}/gemini-1.5-flash-preview-0514".format(provider),
                 messages=[
                     {"role": "system", "content": "Be a good bot"},
@@ -563,7 +563,7 @@ async def test_gemini_pro_vision(provider, sync_mode):
                 ],
             )
         else:
-            resp = await litellm.acompletion(
+            resp = await llm.acompletion(
                 model="{}/gemini-1.5-flash-preview-0514".format(provider),
                 messages=[
                     {"role": "system", "content": "Be a good bot"},
@@ -589,7 +589,7 @@ async def test_gemini_pro_vision(provider, sync_mode):
         # Google counts the prompt tokens for us, we should ensure we use the tokens from the orignal response
         assert prompt_tokens == 267  # the gemini api returns 267 to us
 
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
     except Exception as e:
         if "500 Internal error encountered.'" in str(e):
@@ -604,7 +604,7 @@ async def test_gemini_pro_vision(provider, sync_mode):
 @pytest.mark.parametrize("load_pdf", [False])  # True,
 @pytest.mark.flaky(retries=3, delay=1)
 def test_completion_function_plus_pdf(load_pdf):
-    litellm.set_verbose = True
+    llm.set_verbose = True
     load_vertex_ai_credentials()
     try:
         import base64
@@ -638,7 +638,7 @@ def test_completion_function_plus_pdf(load_pdf):
         )
 
         print(response)
-    except litellm.InternalServerError as e:
+    except llm.InternalServerError as e:
         pass
     except Exception as e:
         pytest.fail("Got={}".format(str(e)))
@@ -657,11 +657,11 @@ def encode_image(image_path):
 def test_gemini_pro_vision_base64():
     try:
         load_vertex_ai_credentials()
-        litellm.set_verbose = True
+        llm.set_verbose = True
         image_path = "../proxy/cached_logo.jpg"
         # Getting the base64 string
         base64_image = encode_image(image_path)
-        resp = litellm.completion(
+        resp = llm.completion(
             model="vertex_ai/gemini-1.5-pro",
             messages=[
                 {
@@ -681,9 +681,9 @@ def test_gemini_pro_vision_base64():
         print(resp)
 
         prompt_tokens = resp.usage.prompt_tokens
-    except litellm.InternalServerError:
+    except llm.InternalServerError:
         pass
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
     except Exception as e:
         if "500 Internal error encountered.'" in str(e):
@@ -818,20 +818,20 @@ def vertex_httpx_grounding_post(*args, **kwargs):
 def test_gemini_pro_grounding(value_in_dict):
     try:
         load_vertex_ai_credentials()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         tools = [{"googleSearchRetrieval": value_in_dict}]
 
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
-        from litellm.llms.custom_httpx.http_handler import HTTPHandler
+        from llm.llms.custom_httpx.http_handler import HTTPHandler
 
         client = HTTPHandler()
 
         with patch.object(
             client, "post", side_effect=vertex_httpx_grounding_post
         ) as mock_call:
-            resp = litellm.completion(
+            resp = llm.completion(
                 model="vertex_ai_beta/gemini-1.0-pro-001",
                 messages=[{"role": "user", "content": "Who won the world cup?"}],
                 tools=tools,
@@ -854,9 +854,9 @@ def test_gemini_pro_grounding(value_in_dict):
             assert "vertex_ai_grounding_metadata" in resp._hidden_params
             assert isinstance(resp._hidden_params["vertex_ai_grounding_metadata"], list)
 
-    except litellm.InternalServerError:
+    except llm.InternalServerError:
         pass
-    except litellm.RateLimitError:
+    except llm.RateLimitError:
         pass
 
 
@@ -870,12 +870,12 @@ def test_gemini_pro_grounding(value_in_dict):
 async def test_gemini_pro_function_calling_httpx(model, sync_mode):
     try:
         load_vertex_ai_credentials()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         messages = [
             {
                 "role": "system",
-                "content": "Your name is Litellm Bot, you are a helpful assistant",
+                "content": "Your name is LLM Bot, you are a helpful assistant",
             },
             # User asks for their name and weather in San Francisco
             {
@@ -912,9 +912,9 @@ async def test_gemini_pro_function_calling_httpx(model, sync_mode):
         }
         print(f"Model for call - {model}")
         if sync_mode:
-            response = litellm.completion(**data)
+            response = llm.completion(**data)
         else:
-            response = await litellm.acompletion(**data)
+            response = await llm.acompletion(**data)
 
         print(f"response: {response}")
 
@@ -922,7 +922,7 @@ async def test_gemini_pro_function_calling_httpx(model, sync_mode):
         assert isinstance(
             response.choices[0].message.tool_calls[0].function.arguments, str
         )
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
     except Exception as e:
         if "429 Quota exceeded" in str(e):
@@ -952,12 +952,12 @@ from test_completion import response_format_tests
 async def test_partner_models_httpx(model, sync_mode):
     try:
         load_vertex_ai_credentials()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         messages = [
             {
                 "role": "system",
-                "content": "Your name is Litellm Bot, you are a helpful assistant",
+                "content": "Your name is LLM Bot, you are a helpful assistant",
             },
             # User asks for their name and weather in San Francisco
             {
@@ -972,24 +972,24 @@ async def test_partner_models_httpx(model, sync_mode):
             "timeout": 10,
         }
         if sync_mode:
-            response = litellm.completion(**data)
+            response = llm.completion(**data)
         else:
-            response = await litellm.acompletion(**data)
+            response = await llm.acompletion(**data)
 
         response_format_tests(response=response)
 
         print(f"response: {response}")
 
         assert isinstance(response._hidden_params["response_cost"], float)
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         pass
-    except litellm.InternalServerError as e:
+    except llm.InternalServerError as e:
         pass
-    except litellm.APIConnectionError as e:
+    except llm.APIConnectionError as e:
         pass
-    except litellm.ServiceUnavailableError as e:
+    except llm.ServiceUnavailableError as e:
         pass
     except Exception as e:
         if "429 Quota exceeded" in str(e):
@@ -1015,12 +1015,12 @@ async def test_partner_models_httpx(model, sync_mode):
 async def test_partner_models_httpx_streaming(model, sync_mode):
     try:
         load_vertex_ai_credentials()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         messages = [
             {
                 "role": "system",
-                "content": "Your name is Litellm Bot, you are a helpful assistant",
+                "content": "Your name is LLM Bot, you are a helpful assistant",
             },
             # User asks for their name and weather in San Francisco
             {
@@ -1035,20 +1035,20 @@ async def test_partner_models_httpx_streaming(model, sync_mode):
             "stream": True,
         }
         if sync_mode:
-            response = litellm.completion(**data)
+            response = llm.completion(**data)
             for idx, chunk in enumerate(response):
                 streaming_format_tests(idx=idx, chunk=chunk)
         else:
-            response = await litellm.acompletion(**data)
+            response = await llm.acompletion(**data)
             idx = 0
             async for chunk in response:
                 streaming_format_tests(idx=idx, chunk=chunk)
                 idx += 1
 
         print(f"response: {response}")
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
-    except litellm.InternalServerError as e:
+    except llm.InternalServerError as e:
         pass
     except Exception as e:
         if "429 Quota exceeded" in str(e):
@@ -1197,7 +1197,7 @@ async def test_gemini_pro_json_schema_httpx_content_policy_error(
     provider, content_filter_type
 ):
     load_vertex_ai_credentials()
-    litellm.set_verbose = True
+    llm.set_verbose = True
     messages = [
         {
             "role": "user",
@@ -1212,7 +1212,7 @@ Using this JSON schema:
             """,
         }
     ]
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     client = HTTPHandler()
 
@@ -1433,12 +1433,12 @@ async def test_gemini_pro_json_schema_args_sent_httpx(
     enforce_validation,
 ):
     load_vertex_ai_credentials()
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-    litellm.model_cost = litellm.get_model_cost_map(url="")
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
+    llm.model_cost = llm.get_model_cost_map(url="")
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     messages = [{"role": "user", "content": "List 5 cookie recipes"}]
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     response_schema = {
         "type": "object",
@@ -1473,7 +1473,7 @@ async def test_gemini_pro_json_schema_args_sent_httpx(
             httpx_response.side_effect = vertex_httpx_mock_post_valid_response
     resp = None
     with patch.object(client, "post", new=httpx_response) as mock_call:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         print(f"model entering completion: {model}")
 
         try:
@@ -1491,7 +1491,7 @@ async def test_gemini_pro_json_schema_args_sent_httpx(
             print("Received={}".format(resp))
             if invalid_response is True and enforce_validation is True:
                 pytest.fail("Expected this to fail")
-        except litellm.JSONSchemaValidationError as e:
+        except llm.JSONSchemaValidationError as e:
             if invalid_response is False:
                 pytest.fail("Expected this to pass. Got={}".format(e))
 
@@ -1549,18 +1549,18 @@ async def test_gemini_pro_json_schema_args_sent_httpx_openai_schema(
     from typing import List
 
     if enforce_validation:
-        litellm.enable_json_schema_validation = True
+        llm.enable_json_schema_validation = True
 
     from pydantic import BaseModel
 
     load_vertex_ai_credentials()
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-    litellm.model_cost = litellm.get_model_cost_map(url="")
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
+    llm.model_cost = llm.get_model_cost_map(url="")
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     messages = [{"role": "user", "content": "List 5 cookie recipes"}]
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     class Recipe(BaseModel):
         recipe_name: str
@@ -1596,7 +1596,7 @@ async def test_gemini_pro_json_schema_args_sent_httpx_openai_schema(
             print("Received={}".format(resp))
             if invalid_response is True and enforce_validation is True:
                 pytest.fail("Expected this to fail")
-        except litellm.JSONSchemaValidationError as e:
+        except llm.JSONSchemaValidationError as e:
             if invalid_response is False:
                 pytest.fail("Expected this to pass. Got={}".format(e))
 
@@ -1639,14 +1639,14 @@ async def test_gemini_pro_json_schema_args_sent_httpx_openai_schema(
 @pytest.mark.asyncio
 async def test_gemini_pro_httpx_custom_api_base(model):
     load_vertex_ai_credentials()
-    litellm.set_verbose = True
+    llm.set_verbose = True
     messages = [
         {
             "role": "user",
             "content": "Hello world",
         }
     ]
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     client = HTTPHandler()
 
@@ -1687,12 +1687,12 @@ async def test_gemini_pro_httpx_custom_api_base(model):
 async def test_gemini_pro_function_calling(provider, sync_mode):
     try:
         load_vertex_ai_credentials()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         messages = [
             {
                 "role": "system",
-                "content": "Your name is Litellm Bot, you are a helpful assistant",
+                "content": "Your name is LLM Bot, you are a helpful assistant",
             },
             # User asks for their name and weather in San Francisco
             {
@@ -1750,12 +1750,12 @@ async def test_gemini_pro_function_calling(provider, sync_mode):
             "tools": tools,
         }
         if sync_mode:
-            response = litellm.completion(**data)
+            response = llm.completion(**data)
         else:
-            response = await litellm.acompletion(**data)
+            response = await llm.acompletion(**data)
 
         print(f"response: {response}")
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
     except Exception as e:
         if "429 Quota exceeded" in str(e):
@@ -1772,7 +1772,7 @@ async def test_gemini_pro_function_calling(provider, sync_mode):
 @pytest.mark.flaky(retries=3, delay=1)
 async def test_gemini_pro_function_calling_streaming(sync_mode):
     load_vertex_ai_credentials()
-    litellm.set_verbose = True
+    llm.set_verbose = True
     data = {
         "model": "vertex_ai/gemini-pro",
         "messages": [
@@ -1805,32 +1805,32 @@ async def test_gemini_pro_function_calling_streaming(sync_mode):
     chunks = []
     try:
         if sync_mode == True:
-            response = litellm.completion(**data)
+            response = llm.completion(**data)
             print(f"completion: {response}")
 
             for chunk in response:
                 chunks.append(chunk)
-                assert isinstance(chunk, litellm.ModelResponseStream)
+                assert isinstance(chunk, llm.ModelResponseStream)
         else:
-            response = await litellm.acompletion(**data)
+            response = await llm.acompletion(**data)
             print(f"completion: {response}")
 
-            assert isinstance(response, litellm.CustomStreamWrapper)
+            assert isinstance(response, llm.CustomStreamWrapper)
 
             async for chunk in response:
                 print(f"chunk: {chunk}")
                 chunks.append(chunk)
-                assert isinstance(chunk, litellm.ModelResponseStream)
+                assert isinstance(chunk, llm.ModelResponseStream)
 
-        complete_response = litellm.stream_chunk_builder(chunks=chunks)
+        complete_response = llm.stream_chunk_builder(chunks=chunks)
         assert (
             complete_response.choices[0].message.content is not None
             or len(complete_response.choices[0].message.tool_calls) > 0
         )
         print(f"complete_response: {complete_response}")
-    except litellm.APIError as e:
+    except llm.APIError as e:
         pass
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
 
 
@@ -1838,7 +1838,7 @@ async def test_gemini_pro_function_calling_streaming(sync_mode):
 @pytest.mark.flaky(retries=3, delay=1)
 async def test_gemini_pro_async_function_calling():
     load_vertex_ai_credentials()
-    litellm.set_verbose = True
+    llm.set_verbose = True
     try:
         tools = [
             {
@@ -1869,7 +1869,7 @@ async def test_gemini_pro_async_function_calling():
                 "content": "What's the weather like in Boston today in fahrenheit?",
             }
         ]
-        completion = await litellm.acompletion(
+        completion = await llm.acompletion(
             model="gemini-pro", messages=messages, tools=tools, tool_choice="auto"
         )
         print(f"completion: {completion}")
@@ -1877,9 +1877,9 @@ async def test_gemini_pro_async_function_calling():
         assert completion.choices[0].message.content is None
         assert len(completion.choices[0].message.tool_calls) == 1
 
-    # except litellm.APIError as e:
+    # except llm.APIError as e:
     #     pass
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
     except Exception as e:
         pytest.fail(f"An exception occurred - {str(e)}")
@@ -1896,16 +1896,16 @@ async def test_gemini_pro_async_function_calling():
 async def test_vertexai_embedding(sync_mode):
     try:
         load_vertex_ai_credentials()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
-        input_text = ["good morning from litellm", "this is another item"]
+        input_text = ["good morning from llm", "this is another item"]
 
         if sync_mode:
-            response = litellm.embedding(
+            response = llm.embedding(
                 model="textembedding-gecko@001", input=input_text
             )
         else:
-            response = await litellm.aembedding(
+            response = await llm.aembedding(
                 model="textembedding-gecko@001", input=input_text
             )
 
@@ -1925,7 +1925,7 @@ async def test_vertexai_embedding(sync_mode):
             assert len(embedding["embedding"]) > 0
             assert all(isinstance(x, float) for x in embedding["embedding"])
 
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
     except Exception as e:
         pytest.fail(f"Error occurred: {e}")
@@ -1962,11 +1962,11 @@ async def test_vertexai_multimodal_embedding():
     }
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        # Act: Call the litellm.aembedding function
-        response = await litellm.aembedding(
+        # Act: Call the llm.aembedding function
+        response = await llm.aembedding(
             model="vertex_ai/multimodalembedding@001",
             input=[
                 {
@@ -2022,11 +2022,11 @@ async def test_vertexai_multimodal_embedding_text_input():
     }
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        # Act: Call the litellm.aembedding function
-        response = await litellm.aembedding(
+        # Act: Call the llm.aembedding function
+        response = await llm.aembedding(
             model="vertex_ai/multimodalembedding@001",
             input=[
                 "this is a unicorn",
@@ -2080,11 +2080,11 @@ async def test_vertexai_multimodal_embedding_image_in_input():
     }
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        # Act: Call the litellm.aembedding function
-        response = await litellm.aembedding(
+        # Act: Call the llm.aembedding function
+        response = await llm.aembedding(
             model="vertex_ai/multimodalembedding@001",
             input=["gs://cloud-samples-data/vertex-ai/llm/prompts/landmark1.png"],
         )
@@ -2146,11 +2146,11 @@ async def test_vertexai_multimodal_embedding_base64image_in_input():
     }
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        # Act: Call the litellm.aembedding function
-        response = await litellm.aembedding(
+        # Act: Call the llm.aembedding function
+        response = await llm.aembedding(
             model="vertex_ai/multimodalembedding@001",
             input=[base64_image],
         )
@@ -2180,7 +2180,7 @@ async def test_vertexai_multimodal_embedding_base64image_in_input():
 def test_vertexai_embedding_embedding_latest():
     try:
         load_vertex_ai_credentials()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         response = embedding(
             model="vertex_ai/text-embedding-004",
@@ -2193,7 +2193,7 @@ def test_vertexai_embedding_embedding_latest():
         assert len(response.data[0]["embedding"]) == 1
         assert response.usage.prompt_tokens > 0
         print(f"response:", response)
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
     except Exception as e:
         pytest.fail(f"Error occurred: {e}")
@@ -2204,7 +2204,7 @@ def test_vertexai_embedding_embedding_latest():
 def test_vertexai_embedding_embedding_latest_input_type():
     try:
         load_vertex_ai_credentials()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         response = embedding(
             model="vertex_ai/text-embedding-004",
@@ -2213,7 +2213,7 @@ def test_vertexai_embedding_embedding_latest_input_type():
         )
         assert response.usage.prompt_tokens > 0
         print(f"response:", response)
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
     except Exception as e:
         pytest.fail(f"Error occurred: {e}")
@@ -2225,13 +2225,13 @@ def test_vertexai_embedding_embedding_latest_input_type():
 async def test_vertexai_aembedding():
     try:
         load_vertex_ai_credentials()
-        # litellm.set_verbose=True
-        response = await litellm.aembedding(
+        # llm.set_verbose=True
+        response = await llm.aembedding(
             model="textembedding-gecko@001",
-            input=["good morning from litellm", "this is another item"],
+            input=["good morning from llm", "this is another item"],
         )
         print(f"response: {response}")
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
     except Exception as e:
         pytest.fail(f"Error occurred: {e}")
@@ -2242,7 +2242,7 @@ def test_tool_name_conversion():
     messages = [
         {
             "role": "system",
-            "content": "Your name is Litellm Bot, you are a helpful assistant",
+            "content": "Your name is LLM Bot, you are a helpful assistant",
         },
         # User asks for their name and weather in San Francisco
         {
@@ -2289,7 +2289,7 @@ def test_prompt_factory():
     messages = [
         {
             "role": "system",
-            "content": "Your name is Litellm Bot, you are a helpful assistant",
+            "content": "Your name is LLM Bot, you are a helpful assistant",
         },
         # User asks for their name and weather in San Francisco
         {
@@ -2351,7 +2351,7 @@ def test_prompt_factory_nested():
 
 
 def test_get_token_url():
-    from litellm.llms.vertex_ai.gemini.vertex_and_google_ai_studio_gemini import (
+    from llm.llms.vertex_ai.gemini.vertex_and_google_ai_studio_gemini import (
         VertexLLM,
     )
 
@@ -2458,11 +2458,11 @@ async def test_completion_fine_tuned_model():
     }
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        # Act: Call the litellm.completion function
-        response = await litellm.acompletion(
+        # Act: Call the llm.completion function
+        response = await llm.acompletion(
             model="vertex_ai_beta/4965075652664360960",
             messages=[{"role": "user", "content": "Write a short poem about the sky"}],
         )
@@ -2554,7 +2554,7 @@ def mock_gemini_request(*args, **kwargs):
 
 
 def mock_gemini_list_request(*args, **kwargs):
-    from litellm.types.llms.vertex_ai import (
+    from llm.types.llms.vertex_ai import (
         CachedContent,
         CachedContentListAllResponseBody,
     )
@@ -2579,9 +2579,9 @@ import uuid
 )
 @pytest.mark.asyncio
 async def test_gemini_context_caching_anthropic_format(sync_mode):
-    from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
+    from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     gemini_context_caching_messages = [
         # System Message
         {
@@ -2630,7 +2630,7 @@ async def test_gemini_context_caching_anthropic_format(sync_mode):
     with patch.object(client, "post", side_effect=mock_gemini_request) as mock_client:
         try:
             if sync_mode:
-                response = litellm.completion(
+                response = llm.completion(
                     model="gemini/gemini-1.5-flash-001",
                     messages=gemini_context_caching_messages,
                     temperature=0.2,
@@ -2638,7 +2638,7 @@ async def test_gemini_context_caching_anthropic_format(sync_mode):
                     client=client,
                 )
             else:
-                response = await litellm.acompletion(
+                response = await llm.acompletion(
                     model="gemini/gemini-1.5-flash-001",
                     messages=gemini_context_caching_messages,
                     temperature=0.2,
@@ -2668,13 +2668,13 @@ async def test_gemini_context_caching_anthropic_format(sync_mode):
 
 @pytest.mark.asyncio
 async def test_partner_models_httpx_ai21():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     model = "vertex_ai/jamba-1.5-mini@001"
 
     messages = [
         {
             "role": "system",
-            "content": "Your name is Litellm Bot, you are a helpful assistant",
+            "content": "Your name is LLM Bot, you are a helpful assistant",
         },
         {
             "role": "user",
@@ -2747,10 +2747,10 @@ async def test_partner_models_httpx_ai21():
     mock_response.status_code = 200
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        response = await litellm.acompletion(**data)
+        response = await llm.acompletion(**data)
 
         # Assert
         mock_post.assert_called_once()
@@ -2773,7 +2773,7 @@ async def test_partner_models_httpx_ai21():
             "messages": [
                 {
                     "role": "system",
-                    "content": "Your name is Litellm Bot, you are a helpful assistant",
+                    "content": "Your name is LLM Bot, you are a helpful assistant",
                 },
                 {
                     "role": "user",
@@ -2821,9 +2821,9 @@ async def test_partner_models_httpx_ai21():
 
 
 def test_gemini_function_call_parameter_in_messages():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     load_vertex_ai_credentials()
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     tools = [
         {
@@ -2939,8 +2939,8 @@ def test_gemini_function_call_parameter_in_messages():
 
 
 def test_gemini_function_call_parameter_in_messages_2():
-    litellm.set_verbose = True
-    from litellm.llms.vertex_ai.gemini.transformation import (
+    llm.set_verbose = True
+    from llm.llms.vertex_ai.gemini.transformation import (
         _gemini_convert_messages_with_history,
     )
 
@@ -3004,9 +3004,9 @@ def test_gemini_function_call_parameter_in_messages_2():
     ],
 )
 def test_gemini_finetuned_endpoint(base_model, metadata):
-    litellm.set_verbose = True
+    llm.set_verbose = True
     load_vertex_ai_credentials()
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     # Set up the messages
     messages = [
@@ -3064,19 +3064,19 @@ async def test_vertexai_embedding_finetuned(respx_mock: MockRouter):
     """
     Tests that:
     - Request URL and body are correctly formatted for Vertex AI embeddings
-    - Response is properly parsed into litellm's embedding response format
+    - Response is properly parsed into llm's embedding response format
     """
     load_vertex_ai_credentials()
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     # Test input
-    input_text = ["good morning from litellm", "this is another item"]
+    input_text = ["good morning from llm", "this is another item"]
 
     # Expected request/response
     expected_url = "https://us-central1-aiplatform.googleapis.com/v1/projects/633608382793/locations/us-central1/endpoints/1004708436694269952:predict"
     expected_request = {
         "instances": [
-            {"inputs": "good morning from litellm"},
+            {"inputs": "good morning from llm"},
             {"inputs": "this is another item"},
         ],
         "parameters": {},
@@ -3099,7 +3099,7 @@ async def test_vertexai_embedding_finetuned(respx_mock: MockRouter):
     )
 
     # Make request
-    response = await litellm.aembedding(
+    response = await llm.aembedding(
         vertex_project="633608382793",
         model="vertex_ai/1004708436694269952",
         input=input_text,
@@ -3132,18 +3132,18 @@ async def test_vertexai_model_garden_model_completion(
     respx_mock: MockRouter, max_retries
 ):
     """
-    Relevant issue: https://github.com/BerriAI/litellm/issues/6480
+    Relevant issue: https://github.com/BerriAI/llm/issues/6480
 
     Using OpenAI compatible models from Vertex Model Garden
     """
     load_vertex_ai_credentials()
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     # Test input
     messages = [
         {
             "role": "system",
-            "content": "Your name is Litellm Bot, you are a helpful assistant",
+            "content": "Your name is LLM Bot, you are a helpful assistant",
         },
         {
             "role": "user",
@@ -3165,7 +3165,7 @@ async def test_vertexai_model_garden_model_completion(
                 "index": 0,
                 "message": {
                     "role": "assistant",
-                    "content": "Hello, my name is Litellm Bot. I'm a helpful assistant here to provide information and answer your questions.\n\nTo check the weather for you, I'll need to know your location. Could you please provide me with your city or zip code? That way, I can give you the most accurate and up-to-date weather information.\n\nIf you don't have your location handy, I can also suggest some popular weather websites or apps that you can use to check the weather for your area.\n\nLet me know how I can assist you!",
+                    "content": "Hello, my name is LLM Bot. I'm a helpful assistant here to provide information and answer your questions.\n\nTo check the weather for you, I'll need to know your location. Could you please provide me with your city or zip code? That way, I can give you the most accurate and up-to-date weather information.\n\nIf you don't have your location handy, I can also suggest some popular weather websites or apps that you can use to check the weather for your area.\n\nLet me know how I can assist you!",
                     "tool_calls": [],
                 },
                 "logprobs": None,
@@ -3183,7 +3183,7 @@ async def test_vertexai_model_garden_model_completion(
     )
 
     # Make request
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="vertex_ai/openai/5464397967697903616",
         messages=messages,
         vertex_project="633608382793",
@@ -3203,7 +3203,7 @@ async def test_vertexai_model_garden_model_completion(
     assert len(response.choices) == 1
     assert response.choices[0].message.role == "assistant"
     assert response.choices[0].message.content.startswith(
-        "Hello, my name is Litellm Bot"
+        "Hello, my name is LLM Bot"
     )
     assert response.choices[0].finish_reason == "stop"
     assert response.usage.completion_tokens == 109
@@ -3212,7 +3212,7 @@ async def test_vertexai_model_garden_model_completion(
 
 
 def test_vertexai_code_gecko():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     load_vertex_ai_credentials()
     response = completion(
         model="vertex_ai/code-gecko@002",
@@ -3258,8 +3258,8 @@ def vertex_ai_anthropic_thinking_mock_response(*args, **kwargs):
 
 
 def test_vertex_anthropic_completion():
-    from litellm import completion
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm import completion
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     client = HTTPHandler()
 
@@ -3289,8 +3289,8 @@ def test_vertex_anthropic_completion():
 
 
 def test_signed_s3_url_with_format():
-    from litellm import completion
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm import completion
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     client = HTTPHandler()
 
@@ -3305,7 +3305,7 @@ def test_signed_s3_url_with_format():
                     {
                         "type": "image_url",
                         "image_url": {
-                            "url": "https://litellm-logo-aws-marketplace.s3.us-west-2.amazonaws.com/berriai-logo-github.png?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHlAy6QneghdEo4Dp4rw%2BHhdInKX4MU3T0hZT1qV3AD%2FAiBGY%2FtfxmBJkj%2BK6%2FxAgek6L3tpOcq6su1mBrj87El%2FCirLAwghEAEaDDg4ODYwMjIyMzQyOCIMzds7lsxAFHHCRHmkKqgDgnsJBaEmmwXBWqzyMMe3BUKsCqfvrYupFGxBREP%2BaEz%2ByLSKiTM3xWzaRz6vrP9T4HSJ97B9wQ3dhUBT22XzdOFsaq49wZapwy9hoPNrMyZ77DIa0MlEbg0uudGOaMAw4NbVEqoERQuZmIMMbNHCeoJsZxKCttRZlTDzU%2FeNNy96ltb%2FuIkX5b3OOYdUaKj%2FUjmPz%2FEufY%2Bn%2FFHawunSYXJwL4pYuBF1IKRtPjqamaYscH%2FrzD7fubGUMqk6hvyGEo%2BLqnVyruQEmVFqAnXyWlpHGqeWazEC7xcsC2lhLO%2FKUouyVML%2FxyYtL4CuKp52qtLWWauAFGnyBZnCHtSL58KLaMTSh7inhoFFIKDN2hymrJ4D9%2Bxv%2FMOzefH5X%2B0pcdJUwyxcwgL3myggRmIYq1L6IL4I%2F54BIU%2FMctJcRXQ8NhQNP2PsaCsXYHHVMXRZxps9v8t9Ciorb0PAaLr0DIGVgEqejSjwbzNTctQf59Rj0GhZ0A6A3nFaq3nL4UvO51aPP6aelN6RnLwHh8fF80iPWII7Oj9PWn9bkON%2F7%2B5k42oPFR0KDTD0yaO%2BBjrlAouRvkyHZnCuLuJdEeqc8%2Fwm4W8SbMiYDzIEPPe2wFR2sH4%2FDlnJRqia9Or00d4N%2BOefBkPv%2Bcdt68r%2FwjeWOrulczzLGjJE%2FGw1Lb9dtGtmupGm2XKOW3geJwXkk1qcr7u5zwy6DNamLJbitB026JFKorRnPajhe5axEDv%2BRu6l1f0eailIrCwZ2iytA94Ni8LTha2GbZvX7fFHcmtyNlgJPpMcELdkOEGTCNBldGck5MFHG27xrVrlR%2F7HZIkKYlImNmsOIjuK7acDiangvVdB6GlmVbzNUKtJ7YJhS2ivwvdDIf8XuaFAkhjRNpewDl0GzPvojK%2BDTizZydyJL%2B20pVkSXptyPwrrHEeiOFWwhszW2iTZij4rlRAoZW6NEdfkWsXrGMbxJTZa3E5URejJbg%2B4QgGtjLrgJhRC1pJGP02GX7VMxVWZzomfC2Hn7WaF44wgcuqjE4HGJfpA2ZLBxde52g%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA45ZGR4NCKIUOODV3%2F20250305%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20250305T235823Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=71a900a9467eaf3811553500aaf509a10a9e743a8133cfb6a78dcbcbc6da4a05",
+                            "url": "https://llm-logo-aws-marketplace.s3.us-west-2.amazonaws.com/berriai-logo-github.png?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHlAy6QneghdEo4Dp4rw%2BHhdInKX4MU3T0hZT1qV3AD%2FAiBGY%2FtfxmBJkj%2BK6%2FxAgek6L3tpOcq6su1mBrj87El%2FCirLAwghEAEaDDg4ODYwMjIyMzQyOCIMzds7lsxAFHHCRHmkKqgDgnsJBaEmmwXBWqzyMMe3BUKsCqfvrYupFGxBREP%2BaEz%2ByLSKiTM3xWzaRz6vrP9T4HSJ97B9wQ3dhUBT22XzdOFsaq49wZapwy9hoPNrMyZ77DIa0MlEbg0uudGOaMAw4NbVEqoERQuZmIMMbNHCeoJsZxKCttRZlTDzU%2FeNNy96ltb%2FuIkX5b3OOYdUaKj%2FUjmPz%2FEufY%2Bn%2FFHawunSYXJwL4pYuBF1IKRtPjqamaYscH%2FrzD7fubGUMqk6hvyGEo%2BLqnVyruQEmVFqAnXyWlpHGqeWazEC7xcsC2lhLO%2FKUouyVML%2FxyYtL4CuKp52qtLWWauAFGnyBZnCHtSL58KLaMTSh7inhoFFIKDN2hymrJ4D9%2Bxv%2FMOzefH5X%2B0pcdJUwyxcwgL3myggRmIYq1L6IL4I%2F54BIU%2FMctJcRXQ8NhQNP2PsaCsXYHHVMXRZxps9v8t9Ciorb0PAaLr0DIGVgEqejSjwbzNTctQf59Rj0GhZ0A6A3nFaq3nL4UvO51aPP6aelN6RnLwHh8fF80iPWII7Oj9PWn9bkON%2F7%2B5k42oPFR0KDTD0yaO%2BBjrlAouRvkyHZnCuLuJdEeqc8%2Fwm4W8SbMiYDzIEPPe2wFR2sH4%2FDlnJRqia9Or00d4N%2BOefBkPv%2Bcdt68r%2FwjeWOrulczzLGjJE%2FGw1Lb9dtGtmupGm2XKOW3geJwXkk1qcr7u5zwy6DNamLJbitB026JFKorRnPajhe5axEDv%2BRu6l1f0eailIrCwZ2iytA94Ni8LTha2GbZvX7fFHcmtyNlgJPpMcELdkOEGTCNBldGck5MFHG27xrVrlR%2F7HZIkKYlImNmsOIjuK7acDiangvVdB6GlmVbzNUKtJ7YJhS2ivwvdDIf8XuaFAkhjRNpewDl0GzPvojK%2BDTizZydyJL%2B20pVkSXptyPwrrHEeiOFWwhszW2iTZij4rlRAoZW6NEdfkWsXrGMbxJTZa3E5URejJbg%2B4QgGtjLrgJhRC1pJGP02GX7VMxVWZzomfC2Hn7WaF44wgcuqjE4HGJfpA2ZLBxde52g%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA45ZGR4NCKIUOODV3%2F20250305%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20250305T235823Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=71a900a9467eaf3811553500aaf509a10a9e743a8133cfb6a78dcbcbc6da4a05",
                             "format": "image/jpeg",
                         },
                     },

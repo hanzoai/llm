@@ -12,11 +12,11 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-import litellm
-from litellm.proxy.auth.auth_utils import (
+import llm
+from llm.proxy.auth.auth_utils import (
     _allow_model_level_clientside_configurable_parameters,
 )
-from litellm.router import Router
+from llm.router import Router
 
 
 @pytest.mark.parametrize(
@@ -34,13 +34,13 @@ from litellm.router import Router
             False,
         ),  # should return False
         (
-            {"api_base": "^https://litellm.*direct\.fireworks\.ai/v1$"},
-            {"api_base": "https://litellm-dev.direct.fireworks.ai/v1"},
+            {"api_base": "^https://llm.*direct\.fireworks\.ai/v1$"},
+            {"api_base": "https://llm-dev.direct.fireworks.ai/v1"},
             True,
         ),
         (
-            {"api_base": "^https://litellm.*novice\.fireworks\.ai/v1$"},
-            {"api_base": "https://litellm-dev.direct.fireworks.ai/v1"},
+            {"api_base": "^https://llm.*novice\.fireworks\.ai/v1$"},
+            {"api_base": "https://llm-dev.direct.fireworks.ai/v1"},
             False,
         ),
     ],
@@ -52,7 +52,7 @@ def test_configurable_clientside_parameters(
         model_list=[
             {
                 "model_name": "dummy-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "dummy-key",
                     "configurable_clientside_auth_params": [allowed_param],
@@ -71,7 +71,7 @@ def test_configurable_clientside_parameters(
 
 
 def test_get_end_user_id_from_request_body_always_returns_str():
-    from litellm.proxy.auth.auth_utils import get_end_user_id_from_request_body
+    from llm.proxy.auth.auth_utils import get_end_user_id_from_request_body
 
     request_body = {"user": 123}
     end_user_id = get_end_user_id_from_request_body(request_body)

@@ -14,12 +14,12 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-import litellm
-from litellm import completion
-from litellm._logging import verbose_logger
-from litellm.integrations.gcs_pubsub.pub_sub import *
+import llm
+from llm import completion
+from llm._logging import verbose_logger
+from llm.integrations.gcs_pubsub.pub_sub import *
 from datetime import datetime, timedelta
-from litellm.types.utils import (
+from llm.types.utils import (
     StandardLoggingPayload,
     StandardLoggingModelInformation,
     StandardLoggingMetadata,
@@ -73,10 +73,10 @@ async def test_async_gcs_pub_sub():
     mock_construct_request_headers = AsyncMock()
     mock_construct_request_headers.return_value = {"Authorization": "Bearer mock_token"}
     gcs_pub_sub_logger.construct_request_headers = mock_construct_request_headers
-    litellm.callbacks = [gcs_pub_sub_logger]
+    llm.callbacks = [gcs_pub_sub_logger]
 
     # Make the completion call
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="gpt-4o",
         messages=[{"role": "user", "content": "Hello, world!"}],
         mock_response="hi",
@@ -92,7 +92,7 @@ async def test_async_gcs_pub_sub():
     print("sent to url", actual_url)
     assert (
         actual_url
-        == "https://pubsub.googleapis.com/v1/projects/reliableKeys/topics/litellmDB:publish"
+        == "https://pubsub.googleapis.com/v1/projects/reliableKeys/topics/llmDB:publish"
     )
     actual_request = mock_post.call_args[1]["json"]
 

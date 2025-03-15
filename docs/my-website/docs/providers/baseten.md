@@ -1,5 +1,5 @@
 # Baseten 
-LiteLLM supports any Text-Gen-Interface models on Baseten.
+Hanzo supports any Text-Gen-Interface models on Baseten.
 
 [Here's a tutorial on deploying a huggingface TGI model (Llama2, CodeLlama, WizardCoder, Falcon, etc.) on Baseten](https://truss.baseten.co/examples/performance/tgi-server)
 
@@ -10,9 +10,9 @@ os.environ["BASETEN_API_KEY"] = ""
 ```
 
 ### Baseten Models
-Baseten provides infrastructure to deploy and serve ML models https://www.baseten.co/. Use liteLLM to easily call models deployed on Baseten.
+Baseten provides infrastructure to deploy and serve ML models https://www.baseten.co/. Use LLM to easily call models deployed on Baseten.
 
-Example Baseten Usage - Note: liteLLM supports all models deployed on Baseten
+Example Baseten Usage - Note: LLM supports all models deployed on Baseten
 
 Usage: Pass `model=baseten/<Model ID>`
 

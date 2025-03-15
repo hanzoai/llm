@@ -5,8 +5,8 @@ import os
 sys.path.insert(0, os.path.abspath("../.."))
 
 import asyncio
-import litellm
-from litellm._logging import verbose_logger
+import llm
+from llm._logging import verbose_logger
 import logging
 import time
 import pytest
@@ -26,17 +26,17 @@ def test_langsmith_logging_async():
             print(f"\nRun {run + 1}:")
 
             # Test with empty success_callback
-            litellm.success_callback = []
-            litellm.callbacks = []
-            litellm._async_success_callback = []
-            litellm._async_failure_callback = []
-            litellm.failure_callback = []
+            llm.success_callback = []
+            llm.callbacks = []
+            llm._async_success_callback = []
+            llm._async_failure_callback = []
+            llm.failure_callback = []
             start_time_empty_callback = asyncio.run(make_async_calls())
             print("Done with no callback test")
 
             # Test with langsmith callback
             print("Starting langsmith test")
-            litellm.success_callback = ["langsmith"]
+            llm.success_callback = ["langsmith"]
             start_time_langsmith = asyncio.run(make_async_calls())
             print("Done with langsmith test")
 
@@ -61,12 +61,12 @@ def test_langsmith_logging_async():
             avg_percentage_diff < 10
         ), f"Average performance difference of {avg_percentage_diff:.2f}% exceeds 10% threshold"
 
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         pass
     except Exception as e:
         pytest.fail(f"An exception occurred - {e}")
 
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         pass
     except Exception as e:
         pytest.fail(f"An exception occurred - {e}")
@@ -96,11 +96,11 @@ async def make_async_calls(metadata=None, **completion_kwargs):
 
 def create_async_task(**completion_kwargs):
     """
-    Creates an async task for the litellm.acompletion function.
+    Creates an async task for the llm.acompletion function.
     This is just the task, but it is not run here.
     To run the task it must be awaited or used in other asyncio coroutine execution functions like asyncio.gather.
-    Any kwargs passed to this function will be passed to the litellm.acompletion function.
-    By default a standard set of arguments are used for the litellm.acompletion function.
+    Any kwargs passed to this function will be passed to the llm.acompletion function.
+    By default a standard set of arguments are used for the llm.acompletion function.
     """
     completion_args = {
         "model": "openai/chatgpt-v-2",
@@ -113,4 +113,4 @@ def create_async_task(**completion_kwargs):
         "mock_response": "hello from my load test",
     }
     completion_args.update(completion_kwargs)
-    return asyncio.create_task(litellm.acompletion(**completion_args))
+    return asyncio.create_task(llm.acompletion(**completion_args))

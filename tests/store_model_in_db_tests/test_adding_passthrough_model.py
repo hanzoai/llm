@@ -39,7 +39,7 @@ def _delete_all_assemblyai_models_from_db():
     assemblyai_models = [
         model
         for model in response_data["data"]
-        if model.get("litellm_params", {}).get("custom_llm_provider") == "assemblyai"
+        if model.get("llm_params", {}).get("custom_llm_provider") == "assemblyai"
     ]
 
     for model in assemblyai_models:
@@ -157,7 +157,7 @@ def add_assembly_ai_model_to_db(
         headers={"Authorization": f"Bearer {TEST_MASTER_KEY}"},
         json={
             "model_name": "assemblyai/*",
-            "litellm_params": {
+            "llm_params": {
                 "model": "assemblyai/*",
                 "custom_llm_provider": "assemblyai",
                 "api_key": os.getenv(ASSEMBLYAI_API_KEY_ENV_VAR),

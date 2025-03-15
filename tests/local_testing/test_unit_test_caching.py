@@ -16,16 +16,16 @@ import random
 
 import pytest
 
-import litellm
-from litellm import aembedding, completion, embedding
-from litellm.caching.caching import Cache
+import llm
+from llm import aembedding, completion, embedding
+from llm.caching.caching import Cache
 
 from unittest.mock import AsyncMock, patch, MagicMock
-from litellm.caching.caching_handler import LLMCachingHandler, CachingHandlerResponse
-from litellm.caching.caching import LiteLLMCacheType
-from litellm.types.utils import CallTypes
-from litellm.types.rerank import RerankResponse
-from litellm.types.utils import (
+from llm.caching.caching_handler import LLMCachingHandler, CachingHandlerResponse
+from llm.caching.caching import HanzoCacheType
+from llm.types.utils import CallTypes
+from llm.types.rerank import RerankResponse
+from llm.types.utils import (
     ModelResponse,
     EmbeddingResponse,
     TextCompletionResponse,
@@ -33,14 +33,14 @@ from litellm.types.utils import (
     Embedding,
 )
 from datetime import timedelta, datetime
-from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLogging
-from litellm.litellm_core_utils.model_param_helper import ModelParamHelper
-from litellm._logging import verbose_logger
+from llm.llm_core_utils.llm_logging import Logging as HanzoLogging
+from llm.llm_core_utils.model_param_helper import ModelParamHelper
+from llm._logging import verbose_logger
 import logging
 
 
 def test_get_kwargs_for_cache_key():
-    _cache = litellm.Cache()
+    _cache = llm.Cache()
     relevant_kwargs = ModelParamHelper._get_all_llm_api_params()
     print(relevant_kwargs)
 
@@ -209,14 +209,14 @@ def test_get_model_param_value():
 
 def test_preset_cache_key():
     """
-    Test that the preset cache key is used if it is set in kwargs["litellm_params"]
+    Test that the preset cache key is used if it is set in kwargs["llm_params"]
     """
     cache = Cache()
     kwargs = {
         "model": "gpt-3.5-turbo",
         "messages": [{"role": "user", "content": "Hello, world!"}],
         "temperature": 0.7,
-        "litellm_params": {"preset_cache_key": "preset-cache-key"},
+        "llm_params": {"preset_cache_key": "preset-cache-key"},
     }
 
     assert cache.get_cache_key(**kwargs) == "preset-cache-key"

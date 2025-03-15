@@ -13,14 +13,14 @@ from datetime import datetime
 
 import pytest
 
-import litellm
-from litellm import completion
-from litellm._logging import verbose_logger
-from litellm.integrations.gcs_bucket.gcs_bucket import (
+import llm
+from llm import completion
+from llm._logging import verbose_logger
+from llm.integrations.gcs_bucket.gcs_bucket import (
     GCSBucketLogger,
     StandardLoggingPayload,
 )
-from litellm.types.utils import StandardCallbackDynamicParams
+from llm.types.utils import StandardCallbackDynamicParams
 
 verbose_logger.setLevel(logging.DEBUG)
 
@@ -73,8 +73,8 @@ async def test_aaabasic_gcs_logger():
     gcs_logger = GCSBucketLogger()
     print("GCSBucketLogger", gcs_logger)
 
-    litellm.callbacks = [gcs_logger]
-    response = await litellm.acompletion(
+    llm.callbacks = [gcs_logger]
+    response = await llm.acompletion(
         model="gpt-3.5-turbo",
         temperature=0.7,
         messages=[{"role": "user", "content": "This is a test"}],
@@ -86,7 +86,7 @@ async def test_aaabasic_gcs_logger():
             "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
             "user_api_key_alias": None,
             "user_api_end_user_max_budget": None,
-            "litellm_api_version": "0.0.0",
+            "llm_api_version": "0.0.0",
             "global_max_parallel_requests": None,
             "user_api_key_user_id": "116544810872468347480",
             "user_api_key_org_id": None,
@@ -115,7 +115,7 @@ async def test_aaabasic_gcs_logger():
             },
             "api_base": "https://openai-gpt-4-test-v-1.openai.azure.com/",
             "caching_groups": None,
-            "raw_request": "\n\nPOST Request Sent from LiteLLM:\ncurl -X POST \\\nhttps://openai-gpt-4-test-v-1.openai.azure.com//openai/ \\\n-H 'Authorization: *****' \\\n-d '{'model': 'chatgpt-v-2', 'messages': [{'role': 'system', 'content': 'you are a helpful assistant.\\n'}, {'role': 'user', 'content': 'bom dia'}], 'stream': False, 'max_tokens': 10, 'user': '116544810872468347480', 'extra_body': {}}'\n",
+            "raw_request": "\n\nPOST Request Sent from Hanzo:\ncurl -X POST \\\nhttps://openai-gpt-4-test-v-1.openai.azure.com//openai/ \\\n-H 'Authorization: *****' \\\n-d '{'model': 'chatgpt-v-2', 'messages': [{'role': 'system', 'content': 'you are a helpful assistant.\\n'}, {'role': 'user', 'content': 'bom dia'}], 'stream': False, 'max_tokens': 10, 'user': '116544810872468347480', 'extra_body': {}}'\n",
         },
     )
 
@@ -175,16 +175,16 @@ async def test_basic_gcs_logger_failure():
 
     gcs_log_id = f"failure-test-{uuid.uuid4().hex}"
 
-    litellm.callbacks = [gcs_logger]
+    llm.callbacks = [gcs_logger]
 
     try:
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model="gpt-3.5-turbo",
             temperature=0.7,
             messages=[{"role": "user", "content": "This is a test"}],
             max_tokens=10,
             user="ishaan-2",
-            mock_response=litellm.BadRequestError(
+            mock_response=llm.BadRequestError(
                 model="gpt-3.5-turbo",
                 message="Error: 400: Bad Request: Invalid API key, please check your API key and try again.",
                 llm_provider="openai",
@@ -195,7 +195,7 @@ async def test_basic_gcs_logger_failure():
                 "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
                 "user_api_key_alias": None,
                 "user_api_end_user_max_budget": None,
-                "litellm_api_version": "0.0.0",
+                "llm_api_version": "0.0.0",
                 "global_max_parallel_requests": None,
                 "user_api_key_user_id": "116544810872468347480",
                 "user_api_key_org_id": None,
@@ -223,7 +223,7 @@ async def test_basic_gcs_logger_failure():
                 },
                 "api_base": "https://openai-gpt-4-test-v-1.openai.azure.com/",
                 "caching_groups": None,
-                "raw_request": "\n\nPOST Request Sent from LiteLLM:\ncurl -X POST \\\nhttps://openai-gpt-4-test-v-1.openai.azure.com//openai/ \\\n-H 'Authorization: *****' \\\n-d '{'model': 'chatgpt-v-2', 'messages': [{'role': 'system', 'content': 'you are a helpful assistant.\\n'}, {'role': 'user', 'content': 'bom dia'}], 'stream': False, 'max_tokens': 10, 'user': '116544810872468347480', 'extra_body': {}}'\n",
+                "raw_request": "\n\nPOST Request Sent from Hanzo:\ncurl -X POST \\\nhttps://openai-gpt-4-test-v-1.openai.azure.com//openai/ \\\n-H 'Authorization: *****' \\\n-d '{'model': 'chatgpt-v-2', 'messages': [{'role': 'system', 'content': 'you are a helpful assistant.\\n'}, {'role': 'user', 'content': 'bom dia'}], 'stream': False, 'max_tokens': 10, 'user': '116544810872468347480', 'extra_body': {}}'\n",
             },
         )
     except Exception:
@@ -277,24 +277,24 @@ async def test_basic_gcs_logging_per_request_with_callback_set():
     Test GCS Bucket logging per request
 
     Request 1 - pass gcs_bucket_name in kwargs
-    Request 2 - don't pass gcs_bucket_name in kwargs - ensure 'litellm-testing-bucket'
+    Request 2 - don't pass gcs_bucket_name in kwargs - ensure 'llm-testing-bucket'
     """
     import logging
-    from litellm._logging import verbose_logger
+    from llm._logging import verbose_logger
 
     verbose_logger.setLevel(logging.DEBUG)
     load_vertex_ai_credentials()
     gcs_logger = GCSBucketLogger()
     print("GCSBucketLogger", gcs_logger)
-    litellm.callbacks = [gcs_logger]
+    llm.callbacks = [gcs_logger]
 
-    GCS_BUCKET_NAME = "example-bucket-1-litellm"
+    GCS_BUCKET_NAME = "example-bucket-1-llm"
     standard_callback_dynamic_params: StandardCallbackDynamicParams = (
         StandardCallbackDynamicParams(gcs_bucket_name=GCS_BUCKET_NAME)
     )
 
     try:
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model="gpt-4o-mini",
             temperature=0.7,
             messages=[{"role": "user", "content": "This is a test"}],
@@ -343,9 +343,9 @@ async def test_basic_gcs_logging_per_request_with_callback_set():
         standard_callback_dynamic_params=standard_callback_dynamic_params,
     )
 
-    # Request 2 - don't pass gcs_bucket_name in kwargs - ensure 'litellm-testing-bucket'
+    # Request 2 - don't pass gcs_bucket_name in kwargs - ensure 'llm-testing-bucket'
     try:
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model="gpt-4o-mini",
             temperature=0.7,
             messages=[{"role": "user", "content": "This is a test"}],
@@ -362,7 +362,7 @@ async def test_basic_gcs_logging_per_request_with_callback_set():
     # Get the current date
     current_date = datetime.now().strftime("%Y-%m-%d")
     standard_callback_dynamic_params = StandardCallbackDynamicParams(
-        gcs_bucket_name="litellm-testing-bucket"
+        gcs_bucket_name="llm-testing-bucket"
     )
 
     # Modify the object_name to include the date-based folder
@@ -400,29 +400,29 @@ async def test_basic_gcs_logging_per_request_with_callback_set():
 
 @pytest.mark.skip(reason="This test is flaky")
 @pytest.mark.asyncio
-async def test_basic_gcs_logging_per_request_with_no_litellm_callback_set():
+async def test_basic_gcs_logging_per_request_with_no_llm_callback_set():
     """
     Test GCS Bucket logging per request
 
-    key difference: no litellm.callbacks set
+    key difference: no llm.callbacks set
 
     Request 1 - pass gcs_bucket_name in kwargs
-    Request 2 - don't pass gcs_bucket_name in kwargs - ensure 'litellm-testing-bucket'
+    Request 2 - don't pass gcs_bucket_name in kwargs - ensure 'llm-testing-bucket'
     """
     import logging
-    from litellm._logging import verbose_logger
+    from llm._logging import verbose_logger
 
     verbose_logger.setLevel(logging.DEBUG)
     load_vertex_ai_credentials()
     gcs_logger = GCSBucketLogger()
 
-    GCS_BUCKET_NAME = "example-bucket-1-litellm"
+    GCS_BUCKET_NAME = "example-bucket-1-llm"
     standard_callback_dynamic_params: StandardCallbackDynamicParams = (
         StandardCallbackDynamicParams(gcs_bucket_name=GCS_BUCKET_NAME)
     )
 
     try:
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model="gpt-4o-mini",
             temperature=0.7,
             messages=[{"role": "user", "content": "This is a test"}],
@@ -476,13 +476,13 @@ async def test_basic_gcs_logging_per_request_with_no_litellm_callback_set():
     # make a failure request - assert that failure callback is hit
     gcs_log_id = f"failure-test-{uuid.uuid4().hex}"
     try:
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model="gpt-4o-mini",
             temperature=0.7,
             messages=[{"role": "user", "content": "This is a test"}],
             max_tokens=10,
             user="ishaan-2",
-            mock_response=litellm.BadRequestError(
+            mock_response=llm.BadRequestError(
                 model="gpt-3.5-turbo",
                 message="Error: 400: Bad Request: Invalid API key, please check your API key and try again.",
                 llm_provider="openai",
@@ -585,14 +585,14 @@ async def test_basic_gcs_logger_with_folder_in_bucket_name():
     load_vertex_ai_credentials()
     gcs_logger = GCSBucketLogger()
 
-    bucket_name = "litellm-testing-bucket/test-folder-logs"
+    bucket_name = "llm-testing-bucket/test-folder-logs"
 
     old_bucket_name = os.environ.get("GCS_BUCKET_NAME")
     os.environ["GCS_BUCKET_NAME"] = bucket_name
     print("GCSBucketLogger", gcs_logger)
 
-    litellm.callbacks = [gcs_logger]
-    response = await litellm.acompletion(
+    llm.callbacks = [gcs_logger]
+    response = await llm.acompletion(
         model="gpt-3.5-turbo",
         temperature=0.7,
         messages=[{"role": "user", "content": "This is a test"}],
@@ -604,7 +604,7 @@ async def test_basic_gcs_logger_with_folder_in_bucket_name():
             "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
             "user_api_key_alias": None,
             "user_api_end_user_max_budget": None,
-            "litellm_api_version": "0.0.0",
+            "llm_api_version": "0.0.0",
             "global_max_parallel_requests": None,
             "user_api_key_user_id": "116544810872468347480",
             "user_api_key_org_id": None,
@@ -633,7 +633,7 @@ async def test_basic_gcs_logger_with_folder_in_bucket_name():
             },
             "api_base": "https://openai-gpt-4-test-v-1.openai.azure.com/",
             "caching_groups": None,
-            "raw_request": "\n\nPOST Request Sent from LiteLLM:\ncurl -X POST \\\nhttps://openai-gpt-4-test-v-1.openai.azure.com//openai/ \\\n-H 'Authorization: *****' \\\n-d '{'model': 'chatgpt-v-2', 'messages': [{'role': 'system', 'content': 'you are a helpful assistant.\\n'}, {'role': 'user', 'content': 'bom dia'}], 'stream': False, 'max_tokens': 10, 'user': '116544810872468347480', 'extra_body': {}}'\n",
+            "raw_request": "\n\nPOST Request Sent from Hanzo:\ncurl -X POST \\\nhttps://openai-gpt-4-test-v-1.openai.azure.com//openai/ \\\n-H 'Authorization: *****' \\\n-d '{'model': 'chatgpt-v-2', 'messages': [{'role': 'system', 'content': 'you are a helpful assistant.\\n'}, {'role': 'user', 'content': 'bom dia'}], 'stream': False, 'max_tokens': 10, 'user': '116544810872468347480', 'extra_body': {}}'\n",
         },
     )
 

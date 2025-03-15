@@ -5,7 +5,7 @@
 #     0, os.path.abspath("../..")
 # )  # Adds the parent directory to the system path
 # import time
-# import litellm
+# import llm
 # import openai
 # import pytest
 
@@ -45,10 +45,10 @@
 #     print(token, end="")
 
 
-# ### litellm
+# ### llm
 
 # import os
-# from litellm import completion
+# from llm import completion
 
 # os.environ["TOGETHERAI_API_KEY"] = ""
 

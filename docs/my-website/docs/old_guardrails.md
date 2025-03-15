@@ -3,26 +3,26 @@ import TabItem from '@theme/TabItem';
 
 # 🛡️ [Beta] Guardrails
 
-Setup Prompt Injection Detection, Secret Detection on LiteLLM Proxy
+Setup Prompt Injection Detection, Secret Detection on Hanzo Proxy
 
 ## Quick Start
 
-### 1. Setup guardrails on litellm proxy config.yaml
+### 1. Setup guardrails on llm proxy config.yaml
 
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: openai/gpt-3.5-turbo
       api_key: sk-xxxxxxx
 
-litellm_settings:
+llm_settings:
   guardrails:
     - prompt_injection:  # your custom name for guardrail
-        callbacks: [lakera_prompt_injection] # litellm callbacks to use
+        callbacks: [lakera_prompt_injection] # llm callbacks to use
         default_on: true # will run on all llm requests when true
     - pii_masking:            # your custom name for guardrail
-        callbacks: [presidio] # use the litellm presidio callback
+        callbacks: [presidio] # use the llm presidio callback
         default_on: false # by default this is off for all requests
     - hide_secrets_guard:
         callbacks: [hide_secrets]
@@ -40,16 +40,16 @@ Since `pii_masking` is default Off for all requests, [you can switch it on per A
 
 ### 2. Test it
 
-Run litellm proxy
+Run llm proxy
 
 ```shell
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 Make LLM API request
 
 
-Test it with this request -> expect it to get rejected by LiteLLM Proxy
+Test it with this request -> expect it to get rejected by Hanzo Proxy
 
 ```shell
 curl --location 'http://localhost:4000/chat/completions' \
@@ -74,7 +74,7 @@ You can switch off/on any guardrail on the config.yaml by passing
 "metadata": {"guardrails": {"<guardrail_name>": false}}
 ```
 
-example - we defined `prompt_injection`, `hide_secrets_guard` [on step 1](#1-setup-guardrails-on-litellm-proxy-configyaml)
+example - we defined `prompt_injection`, `hide_secrets_guard` [on step 1](#1-setup-guardrails-on-llm-proxy-configyaml)
 This will 
 - switch **off** `prompt_injection` checks running on this request
 - switch **on** `hide_secrets_guard` checks on this request
@@ -129,7 +129,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(
     model="llama3",
     messages = [
@@ -174,7 +174,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -192,7 +192,7 @@ print(response)
 
 **Step 1** Create Key with `pii_masking` On 
 
-**NOTE:** We defined `pii_masking` [on step 1](#1-setup-guardrails-on-litellm-proxy-configyaml)
+**NOTE:** We defined `pii_masking` [on step 1](#1-setup-guardrails-on-llm-proxy-configyaml)
 
 👉 Set `"permissions": {"pii_masking": true}` with either `/key/generate` or `/key/update`
 
@@ -278,7 +278,7 @@ curl -X POST 'http://0.0.0.0:4000/team/update' \
 ```bash
 curl --location 'http://0.0.0.0:4000/chat/completions' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer $LITELLM_VIRTUAL_KEY' \
+--header 'Authorization: Bearer $LLM_VIRTUAL_KEY' \
 --data '{
 "model": "gpt-3.5-turbo",
     "messages": [
@@ -315,10 +315,10 @@ The `pii_masking` guardrail ran on this request because api key=sk-jNm1Zar7XfNdZ
 
 
 
-## Spec for `guardrails` on litellm config
+## Spec for `guardrails` on llm config
 
 ```yaml
-litellm_settings:
+llm_settings:
   guardrails:
     - string: GuardrailItemSpec
 ```
@@ -335,10 +335,10 @@ litellm_settings:
 Example: 
 
 ```yaml
-litellm_settings:
+llm_settings:
   guardrails:
     - prompt_injection:  # your custom name for guardrail
-        callbacks: [lakera_prompt_injection, hide_secrets, llmguard_moderations, llamaguard_moderations, google_text_moderation] # litellm callbacks to use
+        callbacks: [lakera_prompt_injection, hide_secrets, llmguard_moderations, llamaguard_moderations, google_text_moderation] # llm callbacks to use
         default_on: true # will run on all llm requests when true
         callback_args: {"lakera_prompt_injection": {"moderation_check": "pre_call"}}
     - hide_secrets:

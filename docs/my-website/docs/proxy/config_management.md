@@ -13,7 +13,7 @@ Contents of `parent_config.yaml`:
 include:
   - model_config.yaml # 👈 Key change, will include the contents of model_config.yaml
 
-litellm_settings:
+llm_settings:
   callbacks: ["prometheus"] 
 ```
 
@@ -22,11 +22,11 @@ Contents of `model_config.yaml`:
 ```yaml
 model_list:
   - model_name: gpt-4o
-    litellm_params:
+    llm_params:
       model: openai/gpt-4o
       api_base: https://exampleopenaiendpoint-production.up.railway.app/
   - model_name: fake-anthropic-endpoint
-    litellm_params:
+    llm_params:
       model: anthropic/fake
       api_base: https://exampleanthropicendpoint-production.up.railway.app/
 
@@ -36,7 +36,7 @@ Start proxy server
 
 This will start the proxy server with config `parent_config.yaml`. Since the `include` directive is used, the server will also include the contents of `model_config.yaml`.
 ```
-litellm --config parent_config.yaml --detailed_debug
+llm --config parent_config.yaml --detailed_debug
 ```
 
 

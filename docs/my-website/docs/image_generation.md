@@ -3,7 +3,7 @@
 ## Quick Start
 
 ```python
-from litellm import image_generation
+from llm import image_generation
 import os 
 
 # set api keys 
@@ -21,8 +21,8 @@ print(f"response: {response}")
 ```yaml
 model_list:
   - model_name: dall-e-2 ### RECEIVED MODEL NAME ###
-    litellm_params: # all params accepted by litellm.image_generation()
-      model: azure/dall-e-2 ### MODEL NAME sent to `litellm.image_generation()` ###
+    llm_params: # all params accepted by llm.image_generation()
+      model: azure/dall-e-2 ### MODEL NAME sent to `llm.image_generation()` ###
       api_base: https://my-endpoint-europe-berri-992.openai.azure.com/
       api_key: "os.environ/AZURE_API_KEY_EU" # does os.getenv("AZURE_API_KEY_EU")
       rpm: 6      # [OPTIONAL] Rate limit for this deployment: in requests per minute (rpm)
@@ -32,7 +32,7 @@ model_list:
 ### Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml 
+llm --config /path/to/config.yaml 
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -75,20 +75,20 @@ print(image)
 </TabItem>
 </Tabs>
 
-## Input Params for `litellm.image_generation()`
+## Input Params for `llm.image_generation()`
 
 :::info
 
 Any non-openai params, will be treated as provider-specific params, and sent in the request body as kwargs to the provider.
 
-[**See Reserved Params**](https://github.com/BerriAI/litellm/blob/2f5f85cb52f36448d1f8bbfbd3b8af8167d0c4c8/litellm/main.py#L4082)
+[**See Reserved Params**](https://github.com/BerriAI/llm/blob/2f5f85cb52f36448d1f8bbfbd3b8af8167d0c4c8/llm/main.py#L4082)
 :::
 
 ### Required Fields
 
 - `prompt`: *string* - A text description of the desired image(s).  
 
-### Optional LiteLLM Fields
+### Optional Hanzo Fields
 
     model: Optional[str] = None,
     n: Optional[int] = None,
@@ -101,7 +101,7 @@ Any non-openai params, will be treated as provider-specific params, and sent in 
     api_key: Optional[str] = None,
     api_base: Optional[str] = None,
     api_version: Optional[str] = None,
-    litellm_logging_obj=None,
+    llm_logging_obj=None,
     custom_llm_provider=None,
 
 - `model`: *string (optional)* The model to use for image generation. Defaults to openai/dall-e-2
@@ -126,7 +126,7 @@ Any non-openai params, will be treated as provider-specific params, and sent in 
 
 - `api_type`: *string (optional)* - The type of API to use.
 
-### Output from `litellm.image_generation()`
+### Output from `llm.image_generation()`
 
 ```json
 
@@ -145,7 +145,7 @@ Any non-openai params, will be treated as provider-specific params, and sent in 
 
 ### Usage
 ```python
-from litellm import image_generation
+from llm import image_generation
 import os
 os.environ['OPENAI_API_KEY'] = ""
 response = image_generation(model='dall-e-2', prompt="cute baby otter")
@@ -159,7 +159,7 @@ response = image_generation(model='dall-e-2', prompt="cute baby otter")
 ## Azure OpenAI Image Generation Models
 
 ### API keys
-This can be set as env variables or passed as **params to litellm.image_generation()**
+This can be set as env variables or passed as **params to llm.image_generation()**
 ```python
 import os
 os.environ['AZURE_API_KEY'] = 
@@ -169,7 +169,7 @@ os.environ['AZURE_API_VERSION'] =
 
 ### Usage
 ```python
-from litellm import embedding
+from llm import embedding
 response = embedding(
     model="azure/<your deployment name>",
     prompt="cute baby otter",
@@ -189,13 +189,13 @@ print(response)
 ## OpenAI Compatible Image Generation Models
 Use this for calling `/image_generation` endpoints on OpenAI Compatible Servers, example https://github.com/xorbitsai/inference
 
-**Note add `openai/` prefix to model so litellm knows to route to OpenAI**
+**Note add `openai/` prefix to model so llm knows to route to OpenAI**
 
 ### Usage
 ```python
-from litellm import image_generation
+from llm import image_generation
 response = image_generation(
-  model = "openai/<your-llm-name>",     # add `openai/` prefix to model so litellm knows to route to OpenAI
+  model = "openai/<your-llm-name>",     # add `openai/` prefix to model so llm knows to route to OpenAI
   api_base="http://0.0.0.0:8000/"       # set API Base of your Custom OpenAI Endpoint
   prompt="cute baby otter"
 )
@@ -208,7 +208,7 @@ Use this for stable diffusion on bedrock
 ### Usage
 ```python
 import os
-from litellm import image_generation
+from llm import image_generation
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -228,7 +228,7 @@ print(f"response: {response}")
 Use this for image generation models on VertexAI
 
 ```python
-response = litellm.image_generation(
+response = llm.image_generation(
     prompt="An olympic size swimming pool",
     model="vertex_ai/imagegeneration@006",
     vertex_ai_project="adroit-crow-413218",

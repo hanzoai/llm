@@ -9,11 +9,11 @@ Example passing images to a model
 
 <Tabs>
 
-<TabItem label="LiteLLMPython SDK" value="Python">
+<TabItem label="HanzoPython SDK" value="Python">
 
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 os.environ["OPENAI_API_KEY"] = "your-api-key"
 
@@ -42,18 +42,18 @@ response = completion(
 ```
 
 </TabItem>
-<TabItem label="LiteLLM Proxy Server" value="proxy">
+<TabItem label="Hanzo Proxy Server" value="proxy">
 
 1. Define vision models on config.yaml
 
 ```yaml
 model_list:
   - model_name: gpt-4-vision-preview # OpenAI gpt-4-vision-preview
-    litellm_params:
+    llm_params:
       model: openai/gpt-4-vision-preview
       api_key: os.environ/OPENAI_API_KEY
   - model_name: llava-hf          # Custom OpenAI compatible model
-    litellm_params:
+    llm_params:
       model: openai/llava-hf/llava-v1.6-vicuna-7b-hf
       api_base: http://localhost:8000
       api_key: fake-key
@@ -65,7 +65,7 @@ model_list:
 2. Run proxy server
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 3. Test it using the OpenAI Python SDK
@@ -76,7 +76,7 @@ import os
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="sk-1234", # your litellm proxy api key
+    api_key="sk-1234", # your llm proxy api key
 )
 
 response = client.chat.completions.create(
@@ -113,20 +113,20 @@ response = client.chat.completions.create(
 ## Checking if a model supports `vision`
 
 <Tabs>
-<TabItem label="LiteLLM Python SDK" value="Python">
+<TabItem label="Hanzo Python SDK" value="Python">
 
-Use `litellm.supports_vision(model="")` -> returns `True` if model supports `vision` and `False` if not
+Use `llm.supports_vision(model="")` -> returns `True` if model supports `vision` and `False` if not
 
 ```python
-assert litellm.supports_vision(model="openai/gpt-4-vision-preview") == True
-assert litellm.supports_vision(model="vertex_ai/gemini-1.0-pro-vision") == True
-assert litellm.supports_vision(model="openai/gpt-3.5-turbo") == False
-assert litellm.supports_vision(model="xai/grok-2-vision-latest") == True
-assert litellm.supports_vision(model="xai/grok-2-latest") == False
+assert llm.supports_vision(model="openai/gpt-4-vision-preview") == True
+assert llm.supports_vision(model="vertex_ai/gemini-1.0-pro-vision") == True
+assert llm.supports_vision(model="openai/gpt-3.5-turbo") == False
+assert llm.supports_vision(model="xai/grok-2-vision-latest") == True
+assert llm.supports_vision(model="xai/grok-2-latest") == False
 ```
 </TabItem>
 
-<TabItem label="LiteLLM Proxy Server" value="proxy">
+<TabItem label="Hanzo Proxy Server" value="proxy">
 
 
 1. Define vision models on config.yaml
@@ -134,11 +134,11 @@ assert litellm.supports_vision(model="xai/grok-2-latest") == False
 ```yaml
 model_list:
   - model_name: gpt-4-vision-preview # OpenAI gpt-4-vision-preview
-    litellm_params:
+    llm_params:
       model: openai/gpt-4-vision-preview
       api_key: os.environ/OPENAI_API_KEY
   - model_name: llava-hf          # Custom OpenAI compatible model
-    litellm_params:
+    llm_params:
       model: openai/llava-hf/llava-v1.6-vicuna-7b-hf
       api_base: http://localhost:8000
       api_key: fake-key
@@ -149,7 +149,7 @@ model_list:
 2. Run proxy server
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 3. Call `/model_group/info` to check if your model supports `vision`
@@ -194,7 +194,7 @@ Expected Response
 
 ## Explicitly specify image type 
 
-If you have images without a mime-type, or if litellm is incorrectly inferring the mime type of your image (e.g. calling `gs://` url's with vertex ai), you can set this explicity via the `format` param. 
+If you have images without a mime-type, or if llm is incorrectly inferring the mime type of your image (e.g. calling `gs://` url's with vertex ai), you can set this explicity via the `format` param. 
 
 ```python
 "image_url": {
@@ -203,7 +203,7 @@ If you have images without a mime-type, or if litellm is incorrectly inferring t
 }
 ```
 
-LiteLLM will use this for any API endpoint, which supports specifying mime-type (e.g. anthropic/bedrock/vertex ai). 
+Hanzo will use this for any API endpoint, which supports specifying mime-type (e.g. anthropic/bedrock/vertex ai). 
 
 For others (e.g. openai), it will be ignored. 
 
@@ -212,7 +212,7 @@ For others (e.g. openai), it will be ignored.
 
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 os.environ["ANTHROPIC_API_KEY"] = "your-api-key"
 
@@ -249,11 +249,11 @@ response = completion(
 ```yaml
 model_list:
   - model_name: gpt-4-vision-preview # OpenAI gpt-4-vision-preview
-    litellm_params:
+    llm_params:
       model: openai/gpt-4-vision-preview
       api_key: os.environ/OPENAI_API_KEY
   - model_name: llava-hf          # Custom OpenAI compatible model
-    litellm_params:
+    llm_params:
       model: openai/llava-hf/llava-v1.6-vicuna-7b-hf
       api_base: http://localhost:8000
       api_key: fake-key
@@ -265,7 +265,7 @@ model_list:
 2. Run proxy server
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 3. Test it using the OpenAI Python SDK
@@ -276,7 +276,7 @@ import os
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="sk-1234", # your litellm proxy api key
+    api_key="sk-1234", # your llm proxy api key
 )
 
 response = client.chat.completions.create(

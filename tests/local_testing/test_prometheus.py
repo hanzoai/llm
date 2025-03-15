@@ -6,9 +6,9 @@ import pytest_asyncio
 
 from prometheus_client import REGISTRY
 
-import litellm
-from litellm.integrations.prometheus import PrometheusLogger
-from litellm.types.utils import BudgetConfig, GenericBudgetConfigType
+import llm
+from llm.integrations.prometheus import PrometheusLogger
+from llm.types.utils import BudgetConfig, GenericBudgetConfigType
 
 
 def compare_metrics(func):
@@ -39,17 +39,17 @@ async def prometheus_logger():
     for collector in collectors:
         REGISTRY.unregister(collector)
 
-    with patch("litellm.proxy.proxy_server.premium_user", True):
+    with patch("llm.proxy.proxy_server.premium_user", True):
         yield PrometheusLogger()
 
 
 @pytest.mark.asyncio
 async def test_async_prometheus_success_logging_with_callbacks(prometheus_logger):
-    litellm.callbacks = [prometheus_logger]
+    llm.callbacks = [prometheus_logger]
 
     @compare_metrics
     async def op():
-        await litellm.acompletion(
+        await llm.acompletion(
             model="claude-3-haiku-20240307",
             messages=[{"role": "user", "content": "what llm are u"}],
             max_tokens=10,
@@ -58,12 +58,12 @@ async def test_async_prometheus_success_logging_with_callbacks(prometheus_logger
         )
 
     diff = await op()
-    assert diff["litellm_requests_metric_total"] == 1.0
+    assert diff["llm_requests_metric_total"] == 1.0
 
 
 @pytest.mark.asyncio
 async def test_async_prometheus_budget_logging_with_callbacks(prometheus_logger):
-    litellm.callbacks = [prometheus_logger]
+    llm.callbacks = [prometheus_logger]
 
     @compare_metrics
     async def op():
@@ -71,11 +71,11 @@ async def test_async_prometheus_budget_logging_with_callbacks(prometheus_logger)
             "openai": BudgetConfig(time_period="1d", budget_limit=50),
         }
 
-        router = litellm.Router(
+        router = llm.Router(
             model_list=[
                 {
                     "model_name": "gpt-3.5-turbo",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "openai/gpt-3.5-turbo",
                         "api_key": "mock-key",
                     },
@@ -98,5 +98,5 @@ async def test_async_prometheus_budget_logging_with_callbacks(prometheus_logger)
 
     diff = await op()
 
-    # TODO: Should implement `litellm_provider_remaining_budget_metric` in prometheus.py
-    assert diff.get("litellm_provider_remaining_budget_metric", 50.0) == 50.0
+    # TODO: Should implement `llm_provider_remaining_budget_metric` in prometheus.py
+    assert diff.get("llm_provider_remaining_budget_metric", 50.0) == 50.0

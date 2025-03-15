@@ -13,16 +13,16 @@ import os
 import time
 import json
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
+import llm
 import asyncio
 from typing import Optional
-from litellm.types.utils import StandardLoggingPayload, Usage
-from litellm.integrations.custom_logger import CustomLogger
+from llm.types.utils import StandardLoggingPayload, Usage
+from llm.integrations.custom_logger import CustomLogger
 
 
 class TestCustomLogger(CustomLogger):
@@ -50,9 +50,9 @@ async def test_stream_token_counting_gpt_4o():
     When stream_options={"include_usage": True} logging callback tracks Usage == Usage from llm API
     """
     custom_logger = TestCustomLogger()
-    litellm.logging_callback_manager.add_litellm_callback(custom_logger)
+    llm.logging_callback_manager.add_llm_callback(custom_logger)
 
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="gpt-4o",
         messages=[{"role": "user", "content": "Hello, how are you?" * 100}],
         stream=True,
@@ -87,12 +87,12 @@ async def test_stream_token_counting_without_include_usage():
     """
     When stream_options={"include_usage": True} is not passed, the usage tracked == usage from llm api chunk
 
-    by default, litellm passes `include_usage=True` for OpenAI API
+    by default, llm passes `include_usage=True` for OpenAI API
     """
     custom_logger = TestCustomLogger()
-    litellm.logging_callback_manager.add_litellm_callback(custom_logger)
+    llm.logging_callback_manager.add_llm_callback(custom_logger)
 
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="gpt-4o",
         messages=[{"role": "user", "content": "Hello, how are you?" * 100}],
         stream=True,
@@ -124,13 +124,13 @@ async def test_stream_token_counting_without_include_usage():
 @pytest.mark.asyncio
 async def test_stream_token_counting_with_redaction():
     """
-    When litellm.turn_off_message_logging=True is used, the usage tracked == usage from llm api chunk
+    When llm.turn_off_message_logging=True is used, the usage tracked == usage from llm api chunk
     """
-    litellm.turn_off_message_logging = True
+    llm.turn_off_message_logging = True
     custom_logger = TestCustomLogger()
-    litellm.logging_callback_manager.add_litellm_callback(custom_logger)
+    llm.logging_callback_manager.add_llm_callback(custom_logger)
 
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="gpt-4o",
         messages=[{"role": "user", "content": "Hello, how are you?" * 100}],
         stream=True,
@@ -165,14 +165,14 @@ async def test_stream_token_counting_anthropic_with_include_usage():
     from anthropic import Anthropic
 
     anthropic_client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
 
     custom_logger = TestCustomLogger()
-    litellm.logging_callback_manager.add_litellm_callback(custom_logger)
+    llm.logging_callback_manager.add_llm_callback(custom_logger)
 
     input_text = "Respond in just 1 word. Say ping"
 
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="claude-3-5-sonnet-20240620",
         messages=[{"role": "user", "content": input_text}],
         max_tokens=4096,
@@ -230,8 +230,8 @@ async def test_stream_token_counting_anthropic_with_include_usage():
     print("input_tokens_anthropic_api", input_tokens_anthropic_api)
     print("output_tokens_anthropic_api", output_tokens_anthropic_api)
 
-    print("input_tokens_litellm", custom_logger.recorded_usage.prompt_tokens)
-    print("output_tokens_litellm", custom_logger.recorded_usage.completion_tokens)
+    print("input_tokens_llm", custom_logger.recorded_usage.prompt_tokens)
+    print("output_tokens_llm", custom_logger.recorded_usage.completion_tokens)
 
     ## Assert Accuracy of token counting
     # input tokens should be exactly the same

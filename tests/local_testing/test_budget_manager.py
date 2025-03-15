@@ -8,9 +8,9 @@
 # sys.path.insert(
 #     0, os.path.abspath("../..")
 # )  # Adds the parent directory to the system path
-# import litellm
-# litellm.set_verbose = True
-# from litellm import completion, BudgetManager
+# import llm
+# llm.set_verbose = True
+# from llm import completion, BudgetManager
 
 # budget_manager = BudgetManager(project_name="test_project", client_type="hosted")
 
@@ -93,7 +93,7 @@
 #             "messages": [{"role": "user", "content": "Hello!"}]
 #         }
 #         if budget_manager.get_current_cost(user=user) <= budget_manager.get_total_budget(user=user):
-#             response = litellm.completion(**data)
+#             response = llm.completion(**data)
 #             print(budget_manager.update_cost(completion_obj=response, user=user))
 
 #         assert budget_manager.get_current_cost(user) > 0, f"Test setup failed: Budget did not decrease after completion"

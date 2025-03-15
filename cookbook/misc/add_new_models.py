@@ -3,7 +3,7 @@ import requests
 
 def get_initial_config():
     proxy_base_url = input("Enter your proxy base URL (e.g., http://localhost:4000): ")
-    master_key = input("Enter your LITELLM_MASTER_KEY ")
+    master_key = input("Enter your LLM_MASTER_KEY ")
     return proxy_base_url, master_key
 
 
@@ -11,21 +11,21 @@ def get_user_input():
     model_name = input(
         "Enter model_name (this is the 'model' passed in /chat/completions requests):"
     )
-    model = input("litellm_params: Enter model eg. 'azure/<your-deployment-name>': ")
-    tpm = int(input("litellm_params: Enter tpm (tokens per minute): "))
-    rpm = int(input("litellm_params: Enter rpm (requests per minute): "))
-    api_key = input("litellm_params: Enter api_key: ")
-    api_base = input("litellm_params: Enter api_base: ")
-    api_version = input("litellm_params: Enter api_version: ")
-    timeout = int(input("litellm_params: Enter timeout (0 for default): "))
+    model = input("llm_params: Enter model eg. 'azure/<your-deployment-name>': ")
+    tpm = int(input("llm_params: Enter tpm (tokens per minute): "))
+    rpm = int(input("llm_params: Enter rpm (requests per minute): "))
+    api_key = input("llm_params: Enter api_key: ")
+    api_base = input("llm_params: Enter api_base: ")
+    api_version = input("llm_params: Enter api_version: ")
+    timeout = int(input("llm_params: Enter timeout (0 for default): "))
     stream_timeout = int(
-        input("litellm_params: Enter stream_timeout (0 for default): ")
+        input("llm_params: Enter stream_timeout (0 for default): ")
     )
-    max_retries = int(input("litellm_params: Enter max_retries (0 for default): "))
+    max_retries = int(input("llm_params: Enter max_retries (0 for default): "))
 
     return {
         "model_name": model_name,
-        "litellm_params": {
+        "llm_params": {
             "model": model,
             "tpm": tpm,
             "rpm": rpm,

@@ -10,12 +10,12 @@ from unittest.mock import MagicMock, patch
 logging.basicConfig(level=logging.DEBUG)
 sys.path.insert(0, os.path.abspath("../.."))
 
-import litellm
-from litellm import completion
-from litellm.caching import InMemoryCache
+import llm
+from llm import completion
+from llm.caching import InMemoryCache
 
-litellm.num_retries = 3
-litellm.success_callback = ["langfuse"]
+llm.num_retries = 3
+llm.success_callback = ["langfuse"]
 os.environ["LANGFUSE_DEBUG"] = "True"
 import time
 
@@ -31,7 +31,7 @@ def langfuse_client():
     )
     # use a in memory langfuse client for testing, RAM util on ci/cd gets too high when we init many langfuse clients
 
-    _cached_client = litellm.in_memory_llm_clients_cache.get_cache(_langfuse_cache_key)
+    _cached_client = llm.in_memory_llm_clients_cache.get_cache(_langfuse_cache_key)
     if _cached_client:
         langfuse_client = _cached_client
     else:
@@ -40,7 +40,7 @@ def langfuse_client():
             secret_key=os.environ["LANGFUSE_SECRET_KEY"],
             host="https://us.cloud.langfuse.com",
         )
-        litellm.in_memory_llm_clients_cache.set_cache(
+        llm.in_memory_llm_clients_cache.set_cache(
             key=_langfuse_cache_key,
             value=langfuse_client,
         )
@@ -138,16 +138,16 @@ def test_langfuse_logging_async():
     # this tests time added to make langfuse logging calls, vs just acompletion calls
     try:
         pre_langfuse_setup()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         # Make 5 calls with an empty success_callback
-        litellm.success_callback = []
+        llm.success_callback = []
         start_time_empty_callback = asyncio.run(make_async_calls())
         print("done with no callback test")
 
         print("starting langfuse test")
         # Make 5 calls with success_callback set to "langfuse"
-        litellm.success_callback = ["langfuse"]
+        llm.success_callback = ["langfuse"]
         start_time_langfuse = asyncio.run(make_async_calls())
         print("done with langfuse test")
 
@@ -158,7 +158,7 @@ def test_langfuse_logging_async():
         # assert the diff is not more than 1 second - this was 5 seconds before the fix
         assert abs(start_time_langfuse - start_time_empty_callback) < 1
 
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         pass
     except Exception as e:
         pytest.fail(f"An exception occurred - {e}")
@@ -187,11 +187,11 @@ async def make_async_calls(metadata=None, **completion_kwargs):
 
 def create_async_task(**completion_kwargs):
     """
-    Creates an async task for the litellm.acompletion function.
+    Creates an async task for the llm.acompletion function.
     This is just the task, but it is not run here.
     To run the task it must be awaited or used in other asyncio coroutine execution functions like asyncio.gather.
-    Any kwargs passed to this function will be passed to the litellm.acompletion function.
-    By default a standard set of arguments are used for the litellm.acompletion function.
+    Any kwargs passed to this function will be passed to the llm.acompletion function.
+    By default a standard set of arguments are used for the llm.acompletion function.
     """
     completion_args = {
         "model": "azure/chatgpt-v-2",
@@ -204,7 +204,7 @@ def create_async_task(**completion_kwargs):
         "mock_response": "It's simple to use and easy to get started",
     }
     completion_args.update(completion_kwargs)
-    return asyncio.create_task(litellm.acompletion(**completion_args))
+    return asyncio.create_task(llm.acompletion(**completion_args))
 
 
 @pytest.mark.asyncio
@@ -214,10 +214,10 @@ async def test_langfuse_logging_without_request_response(stream, langfuse_client
     try:
         import uuid
 
-        _unique_trace_name = f"litellm-test-{str(uuid.uuid4())}"
-        litellm.set_verbose = True
-        litellm.turn_off_message_logging = True
-        litellm.success_callback = ["langfuse"]
+        _unique_trace_name = f"llm-test-{str(uuid.uuid4())}"
+        llm.set_verbose = True
+        llm.turn_off_message_logging = True
+        llm.success_callback = ["langfuse"]
         response = await create_async_task(
             model="gpt-3.5-turbo",
             stream=stream,
@@ -245,11 +245,11 @@ async def test_langfuse_logging_without_request_response(stream, langfuse_client
 
         print(f"_trace_data: {_trace_data}")
         assert _trace_data[0].input == {
-            "messages": [{"content": "redacted-by-litellm", "role": "user"}]
+            "messages": [{"content": "redacted-by-llm", "role": "user"}]
         }
         assert _trace_data[0].output == {
             "role": "assistant",
-            "content": "redacted-by-litellm",
+            "content": "redacted-by-llm",
             "function_call": None,
             "tool_calls": None,
         }
@@ -278,10 +278,10 @@ async def test_langfuse_logging_audio_transcriptions(langfuse_client):
     """
     import uuid
 
-    _unique_trace_name = f"litellm-test-{str(uuid.uuid4())}"
-    litellm.set_verbose = True
-    litellm.success_callback = ["langfuse"]
-    await litellm.atranscription(
+    _unique_trace_name = f"llm-test-{str(uuid.uuid4())}"
+    llm.set_verbose = True
+    llm.success_callback = ["langfuse"]
+    await llm.atranscription(
         model="whisper-1",
         file=audio_file,
         metadata={
@@ -302,7 +302,7 @@ async def test_langfuse_logging_audio_transcriptions(langfuse_client):
     print("generations for given trace=", generations)
 
     assert len(generations) == 1
-    assert generations[0].name == "litellm-atranscription"
+    assert generations[0].name == "llm-atranscription"
     assert generations[0].output is not None
 
 
@@ -317,9 +317,9 @@ async def test_langfuse_masked_input_output(langfuse_client):
     import uuid
 
     for mask_value in [True, False]:
-        _unique_trace_name = f"litellm-test-{str(uuid.uuid4())}"
-        litellm.set_verbose = True
-        litellm.success_callback = ["langfuse"]
+        _unique_trace_name = f"llm-test-{str(uuid.uuid4())}"
+        llm.set_verbose = True
+        llm.success_callback = ["langfuse"]
         response = await create_async_task(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "This is a test"}],
@@ -331,9 +331,9 @@ async def test_langfuse_masked_input_output(langfuse_client):
             mock_response="This is a test response",
         )
         print(response)
-        expected_input = "redacted-by-litellm" if mask_value else "This is a test"
+        expected_input = "redacted-by-llm" if mask_value else "This is a test"
         expected_output = (
-            "redacted-by-litellm" if mask_value else "This is a test response"
+            "redacted-by-llm" if mask_value else "This is a test response"
         )
         langfuse_client.flush()
         await asyncio.sleep(30)
@@ -366,8 +366,8 @@ async def test_aaalangfuse_logging_metadata(langfuse_client):
     """
     import uuid
 
-    litellm.set_verbose = True
-    litellm.success_callback = ["langfuse"]
+    llm.set_verbose = True
+    llm.success_callback = ["langfuse"]
 
     trace_identifiers = {}
     expected_filtered_metadata_keys = {
@@ -385,22 +385,22 @@ async def test_aaalangfuse_logging_metadata(langfuse_client):
         "trace_actual_metadata_key": "trace_actual_metadata_value"
     }  # Allows for setting the metadata on the trace
     run_id = str(uuid.uuid4())
-    session_id = f"litellm-test-session-{run_id}"
+    session_id = f"llm-test-session-{run_id}"
     trace_common_metadata = {
         "session_id": session_id,
-        "tags": ["litellm-test-tag1", "litellm-test-tag2"],
+        "tags": ["llm-test-tag1", "llm-test-tag2"],
         "update_trace_keys": [
             "output",
             "trace_metadata",
         ],  # Overwrite the following fields in the trace with the last generation's output and the trace_user_id
         "trace_metadata": trace_metadata,
         "gen_metadata_key": "gen_metadata_value",  # Metadata key that should not be filtered in the generation
-        "trace_release": "litellm-test-release",
-        "version": "litellm-test-version",
+        "trace_release": "llm-test-release",
+        "version": "llm-test-version",
     }
     for trace_num in range(1, 3):  # Two traces
         metadata = copy.deepcopy(trace_common_metadata)
-        trace_id = f"litellm-test-trace{trace_num}-{run_id}"
+        trace_id = f"llm-test-trace{trace_num}-{run_id}"
         metadata["trace_id"] = trace_id
         metadata["trace_name"] = trace_id
         trace_identifiers[trace_id] = []
@@ -408,9 +408,9 @@ async def test_aaalangfuse_logging_metadata(langfuse_client):
         for generation_num in range(
             1, trace_num + 1
         ):  # Each trace has a number of generations equal to its trace number
-            metadata["trace_user_id"] = f"litellm-test-user{generation_num}-{run_id}"
+            metadata["trace_user_id"] = f"llm-test-user{generation_num}-{run_id}"
             generation_id = (
-                f"litellm-test-trace{trace_num}-generation-{generation_num}-{run_id}"
+                f"llm-test-trace{trace_num}-generation-{generation_num}-{run_id}"
             )
             metadata["generation_id"] = generation_id
             metadata["generation_name"] = generation_id
@@ -490,7 +490,7 @@ async def test_aaalangfuse_logging_metadata(langfuse_client):
 @pytest.mark.skip(reason="beta test - checking langfuse output")
 def test_langfuse_logging_stream():
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         response = completion(
             model="gpt-3.5-turbo",
             messages=[
@@ -507,7 +507,7 @@ def test_langfuse_logging_stream():
         for chunk in response:
             pass
             # print(chunk)
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         pass
     except Exception as e:
         print(e)
@@ -519,7 +519,7 @@ def test_langfuse_logging_stream():
 @pytest.mark.skip(reason="beta test - checking langfuse output")
 def test_langfuse_logging_custom_generation_name():
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         response = completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hi 👋 - i'm claude"}],
@@ -535,7 +535,7 @@ def test_langfuse_logging_custom_generation_name():
             },
         )
         print(response)
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         pass
     except Exception as e:
         pytest.fail(f"An exception occurred - {e}")
@@ -548,14 +548,14 @@ def test_langfuse_logging_custom_generation_name():
 @pytest.mark.skip(reason="beta test - checking langfuse output")
 def test_langfuse_logging_embedding():
     try:
-        litellm.set_verbose = True
-        litellm.success_callback = ["langfuse"]
-        response = litellm.embedding(
+        llm.set_verbose = True
+        llm.success_callback = ["langfuse"]
+        response = llm.embedding(
             model="text-embedding-ada-002",
             input=["gm", "ishaan"],
         )
         print(response)
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         pass
     except Exception as e:
         pytest.fail(f"An exception occurred - {e}")
@@ -564,7 +564,7 @@ def test_langfuse_logging_embedding():
 
 @pytest.mark.skip(reason="beta test - checking langfuse output")
 def test_langfuse_logging_function_calling():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     function1 = [
         {
             "name": "get_current_weather",
@@ -590,7 +590,7 @@ def test_langfuse_logging_function_calling():
             functions=function1,
         )
         print(response)
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         pass
     except Exception as e:
         print(e)
@@ -613,23 +613,23 @@ def test_aaalangfuse_existing_trace_id():
     # Test - if the logs were sent to the correct team on langfuse
     import datetime
 
-    import litellm
-    from litellm.integrations.langfuse.langfuse import LangFuseLogger
+    import llm
+    from llm.integrations.langfuse.langfuse import LangFuseLogger
 
     langfuse_Logger = LangFuseLogger(
         langfuse_public_key=os.getenv("LANGFUSE_PROJECT2_PUBLIC"),
         langfuse_secret=os.getenv("LANGFUSE_PROJECT2_SECRET"),
     )
-    litellm.success_callback = ["langfuse"]
+    llm.success_callback = ["langfuse"]
 
     # langfuse_args = {'kwargs': { 'start_time':  'end_time': datetime.datetime(2024, 5, 1, 7, 31, 29, 903685), 'user_id': None, 'print_verbose': <function print_verbose at 0x109d1f420>, 'level': 'DEFAULT', 'status_message': None}
-    response_obj = litellm.ModelResponse(
+    response_obj = llm.ModelResponse(
         id="chatcmpl-9K5HUAbVRqFrMZKXL0WoC295xhguY",
         choices=[
-            litellm.Choices(
+            llm.Choices(
                 finish_reason="stop",
                 index=0,
-                message=litellm.Message(
+                message=llm.Message(
                     content="I'm sorry, I am an AI assistant and do not have real-time information. I recommend checking a reliable weather website or app for the most up-to-date weather information in Boston.",
                     role="assistant",
                 ),
@@ -639,7 +639,7 @@ def test_aaalangfuse_existing_trace_id():
         model="gpt-3.5-turbo-0125",
         object="chat.completion",
         system_fingerprint="fp_3b956da36b",
-        usage=litellm.Usage(completion_tokens=37, prompt_tokens=14, total_tokens=51),
+        usage=llm.Usage(completion_tokens=37, prompt_tokens=14, total_tokens=51),
     )
 
     ### NEW TRACE ###
@@ -648,7 +648,7 @@ def test_aaalangfuse_existing_trace_id():
         "response_obj": response_obj,
         "kwargs": {
             "model": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "acompletion": False,
                 "api_key": None,
                 "force_timeout": 600,
@@ -656,7 +656,7 @@ def test_aaalangfuse_existing_trace_id():
                 "verbose": False,
                 "custom_llm_provider": "openai",
                 "api_base": "https://api.openai.com/v1/",
-                "litellm_call_id": None,
+                "llm_call_id": None,
                 "model_alias_map": {},
                 "completion_call_id": None,
                 "metadata": None,
@@ -672,7 +672,7 @@ def test_aaalangfuse_existing_trace_id():
             "stream": False,
             "user": None,
             "call_type": "completion",
-            "litellm_call_id": None,
+            "llm_call_id": None,
             "completion_start_time": "2024-05-01 07:31:29.903685",
             "temperature": 0.1,
             "extra_body": {},
@@ -696,7 +696,7 @@ def test_aaalangfuse_existing_trace_id():
         "start_time": datetime.datetime(2024, 5, 1, 7, 31, 27, 986164),
         "end_time": datetime.datetime(2024, 5, 1, 7, 31, 29, 903685),
         "user_id": None,
-        "print_verbose": litellm.print_verbose,
+        "print_verbose": llm.print_verbose,
         "level": "DEFAULT",
         "status_message": None,
     }
@@ -726,13 +726,13 @@ def test_aaalangfuse_existing_trace_id():
 
     new_metadata = {"existing_trace_id": trace_id}
     new_messages = [{"role": "user", "content": "What do you know?"}]
-    new_response_obj = litellm.ModelResponse(
+    new_response_obj = llm.ModelResponse(
         id="chatcmpl-9K5HUAbVRqFrMZKXL0WoC295xhguY",
         choices=[
-            litellm.Choices(
+            llm.Choices(
                 finish_reason="stop",
                 index=0,
-                message=litellm.Message(
+                message=llm.Message(
                     content="What do I know?",
                     role="assistant",
                 ),
@@ -742,13 +742,13 @@ def test_aaalangfuse_existing_trace_id():
         model="gpt-3.5-turbo-0125",
         object="chat.completion",
         system_fingerprint="fp_3b956da36b",
-        usage=litellm.Usage(completion_tokens=37, prompt_tokens=14, total_tokens=51),
+        usage=llm.Usage(completion_tokens=37, prompt_tokens=14, total_tokens=51),
     )
     langfuse_args = {
         "response_obj": new_response_obj,
         "kwargs": {
             "model": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "acompletion": False,
                 "api_key": None,
                 "force_timeout": 600,
@@ -756,7 +756,7 @@ def test_aaalangfuse_existing_trace_id():
                 "verbose": False,
                 "custom_llm_provider": "openai",
                 "api_base": "https://api.openai.com/v1/",
-                "litellm_call_id": "508113a1-c6f1-48ce-a3e1-01c6cce9330e",
+                "llm_call_id": "508113a1-c6f1-48ce-a3e1-01c6cce9330e",
                 "model_alias_map": {},
                 "completion_call_id": None,
                 "metadata": new_metadata,
@@ -772,7 +772,7 @@ def test_aaalangfuse_existing_trace_id():
             "stream": False,
             "user": None,
             "call_type": "completion",
-            "litellm_call_id": "508113a1-c6f1-48ce-a3e1-01c6cce9330e",
+            "llm_call_id": "508113a1-c6f1-48ce-a3e1-01c6cce9330e",
             "completion_start_time": "2024-05-01 07:31:29.903685",
             "temperature": 0.1,
             "extra_body": {},
@@ -796,7 +796,7 @@ def test_aaalangfuse_existing_trace_id():
         "start_time": datetime.datetime(2024, 5, 1, 7, 31, 27, 986164),
         "end_time": datetime.datetime(2024, 5, 1, 7, 31, 29, 903685),
         "user_id": None,
-        "print_verbose": litellm.print_verbose,
+        "print_verbose": llm.print_verbose,
         "level": "DEFAULT",
         "status_message": None,
     }
@@ -831,7 +831,7 @@ def test_aaalangfuse_existing_trace_id():
     reason="Authentication missing for openai",
 )
 def test_langfuse_logging_tool_calling():
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     def get_current_weather(location, unit="fahrenheit"):
         """Get the current weather in a given location"""
@@ -877,7 +877,7 @@ def test_langfuse_logging_tool_calling():
         }
     ]
 
-    response = litellm.completion(
+    response = llm.completion(
         model="gpt-3.5-turbo-1106",
         messages=messages,
         tools=tools,
@@ -911,10 +911,10 @@ def get_langfuse_prompt(name: str):
 
 @pytest.mark.asyncio
 @pytest.mark.skip(
-    reason="local only test, use this to verify if we can send request to litellm proxy server"
+    reason="local only test, use this to verify if we can send request to llm proxy server"
 )
 async def test_make_request():
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="openai/llama3",
         api_key="sk-1234",
         base_url="http://localhost:4000",
@@ -944,7 +944,7 @@ def test_aaalangfuse_dynamic_logging():
     import langfuse
 
     trace_id = str(uuid.uuid4())
-    _ = litellm.completion(
+    _ = llm.completion(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": "Hey"}],
         mock_response="Hey! how's it going?",
@@ -967,7 +967,7 @@ def test_aaalangfuse_dynamic_logging():
 import datetime
 
 generation_params = {
-    "name": "litellm-acompletion",
+    "name": "llm-acompletion",
     "id": "time-10-35-32-316778_chatcmpl-ABQDEzVJS8fziPdvkeTA3tnQaxeMX",
     "start_time": datetime.datetime(2024, 9, 25, 10, 35, 32, 316778),
     "end_time": datetime.datetime(2024, 9, 25, 10, 35, 32, 897141),
@@ -1020,7 +1020,7 @@ generation_params = {
             },
         },
         "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
-        "litellm_api_version": "0.0.0",
+        "llm_api_version": "0.0.0",
         "user_api_key_user_id": "default_user_id",
         "user_api_key_spend": 0.0,
         "user_api_key_metadata": {},
@@ -1083,7 +1083,7 @@ generation_params = {
                 "llm_provider-content-encoding": "gzip",
                 "llm_provider-alt-svc": 'h3=":443"; ma=86400',
             },
-            "litellm_call_id": "1fa31658-20af-40b5-9ac9-60fd7b5ad98c",
+            "llm_call_id": "1fa31658-20af-40b5-9ac9-60fd7b5ad98c",
             "model_id": "5583ac0c3e38cfd381b6cc09bcca6e0db60af48d3f16da325f82eb9df1b6a1e4",
             "api_base": "https://api.openai.com",
             "optional_params": {
@@ -1093,7 +1093,7 @@ generation_params = {
             },
             "response_cost": 0.00038,
         },
-        "litellm_response_cost": 0.00038,
+        "llm_response_cost": 0.00038,
         "api_base": "https://api.openai.com/v1/",
         "cache_hit": False,
     },
@@ -1114,7 +1114,7 @@ generation_params = {
 )
 def test_langfuse_prompt_type(prompt):
 
-    from litellm.integrations.langfuse.langfuse import _add_prompt_to_generation_params
+    from llm.integrations.langfuse.langfuse import _add_prompt_to_generation_params
     from unittest.mock import patch, MagicMock, Mock
 
     clean_metadata = {
@@ -1143,7 +1143,7 @@ def test_langfuse_prompt_type(prompt):
             },
         },
         "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
-        "litellm_api_version": "0.0.0",
+        "llm_api_version": "0.0.0",
         "user_api_key_user_id": "default_user_id",
         "user_api_key_spend": 0.0,
         "user_api_key_metadata": {},
@@ -1206,13 +1206,13 @@ def test_langfuse_prompt_type(prompt):
                 "llm_provider-content-encoding": "gzip",
                 "llm_provider-alt-svc": 'h3=":443"; ma=86400',
             },
-            "litellm_call_id": "1fa31658-20af-40b5-9ac9-60fd7b5ad98c",
+            "llm_call_id": "1fa31658-20af-40b5-9ac9-60fd7b5ad98c",
             "model_id": "5583ac0c3e38cfd381b6cc09bcca6e0db60af48d3f16da325f82eb9df1b6a1e4",
             "api_base": "https://api.openai.com",
             "optional_params": {"stream": False, "max_retries": 0, "extra_body": {}},
             "response_cost": 0.00038,
         },
-        "litellm_response_cost": 0.00038,
+        "llm_response_cost": 0.00038,
         "api_base": "https://api.openai.com/v1/",
         "cache_hit": False,
     }
@@ -1225,7 +1225,7 @@ def test_langfuse_prompt_type(prompt):
 
 
 def test_langfuse_logging_metadata():
-    from litellm.integrations.langfuse.langfuse import log_requester_metadata
+    from llm.integrations.langfuse.langfuse import log_requester_metadata
 
     metadata = {"key": "value", "requester_metadata": {"key": "value"}}
 

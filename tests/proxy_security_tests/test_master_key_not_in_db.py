@@ -1,8 +1,8 @@
 import os
 import pytest
 from fastapi.testclient import TestClient
-from litellm.proxy.proxy_server import app, ProxyLogging
-from litellm.caching import DualCache
+from llm.proxy.proxy_server import app, ProxyLogging
+from llm.caching import DualCache
 
 TEST_DB_ENV_VAR_NAME = "MASTER_KEY_CHECK_DB_URL"
 
@@ -11,8 +11,8 @@ TEST_DB_ENV_VAR_NAME = "MASTER_KEY_CHECK_DB_URL"
 def override_env_settings(monkeypatch):
     # Set environment variables only for tests using-monkeypatch (function scope by default).
     monkeypatch.setenv("DATABASE_URL", os.environ[TEST_DB_ENV_VAR_NAME])
-    monkeypatch.setenv("LITELLM_MASTER_KEY", "sk-1234")
-    monkeypatch.setenv("LITELLM_LOG", "DEBUG")
+    monkeypatch.setenv("LLM_MASTER_KEY", "sk-1234")
+    monkeypatch.setenv("LLM_LOG", "DEBUG")
 
 
 @pytest.fixture(scope="module")
@@ -35,7 +35,7 @@ async def test_master_key_not_inserted(test_client):
     response = test_client.get("/health/liveliness")
     assert response.status_code == 200
 
-    from litellm.proxy.utils import PrismaClient
+    from llm.proxy.utils import PrismaClient
 
     prisma_client = PrismaClient(
         database_url=os.environ[TEST_DB_ENV_VAR_NAME],
@@ -46,11 +46,11 @@ async def test_master_key_not_inserted(test_client):
 
     # Connect directly to the test database to inspect the data.
     await prisma_client.connect()
-    result = await prisma_client.db.litellm_verificationtoken.find_many()
+    result = await prisma_client.db.llm_verificationtoken.find_many()
     print(result)
 
     # The expectation is that no token (or unintended record) is added on startup.
     assert len(result) == 0, (
-        "SECURITY ALERT SECURITY ALERT SECURITY ALERT: Expected no record in the litellm_verificationtoken table. On startup - the master key should NOT be Inserted into the DB."
+        "SECURITY ALERT SECURITY ALERT SECURITY ALERT: Expected no record in the llm_verificationtoken table. On startup - the master key should NOT be Inserted into the DB."
         "We have found keys in the DB. This is unexpected and should not happen."
     )

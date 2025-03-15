@@ -12,21 +12,21 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 from typing import Literal
-import litellm
+import llm
 import sys
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.integrations.custom_logger import CustomLogger
+from llm.proxy._types import UserAPIKeyAuth
+from llm.integrations.custom_logger import CustomLogger
 from fastapi import HTTPException
-from litellm._logging import verbose_proxy_logger
+from llm._logging import verbose_proxy_logger
 
-litellm.set_verbose = True
+llm.set_verbose = True
 
 
 class _ENTERPRISE_OpenAI_Moderation(CustomLogger):
     def __init__(self):
         self.model_name = (
-            litellm.openai_moderations_model_name or "text-moderation-latest"
-        )  # pass the model_name you initialized on litellm.Router()
+            llm.openai_moderations_model_name or "text-moderation-latest"
+        )  # pass the model_name you initialized on llm.Router()
         pass
 
     #### CALL HOOKS - proxy only ####
@@ -50,7 +50,7 @@ class _ENTERPRISE_OpenAI_Moderation(CustomLogger):
                 if "content" in m and isinstance(m["content"], str):
                     text += m["content"]
 
-        from litellm.proxy.proxy_server import llm_router
+        from llm.proxy.proxy_server import llm_router
 
         if llm_router is None:
             return

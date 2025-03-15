@@ -2,12 +2,12 @@
 
 Redact messages / mask PII before sending data to logging integrations (langfuse/etc.).
 
-See our [**Presidio PII Masking**](https://github.com/BerriAI/litellm/blob/a176feeacc5fdf504747978d82056eb84679c4be/litellm/proxy/hooks/presidio_pii_masking.py#L286) for reference.
+See our [**Presidio PII Masking**](https://github.com/BerriAI/llm/blob/a176feeacc5fdf504747978d82056eb84679c4be/llm/proxy/hooks/presidio_pii_masking.py#L286) for reference.
 
 1. Setup a custom callback 
 
 ```python
-from litellm.integrations.custom_logger import CustomLogger
+from llm.integrations.custom_logger import CustomLogger
 
 class MyCustomHandler(CustomLogger):
     async def async_logging_hook(
@@ -49,12 +49,12 @@ customHandler = MyCustomHandler()
 ```
 
 
-2. Connect custom handler to LiteLLM
+2. Connect custom handler to Hanzo
 
 ```python
-import litellm
+import llm
 
-litellm.callbacks = [customHandler]
+llm.callbacks = [customHandler]
 ```
 
 3. Test it!
@@ -63,8 +63,8 @@ litellm.callbacks = [customHandler]
 # pip install langfuse 
 
 import os
-import litellm
-from litellm import completion 
+import llm
+from llm import completion 
 
 os.environ["LANGFUSE_PUBLIC_KEY"] = ""
 os.environ["LANGFUSE_SECRET_KEY"] = ""
@@ -73,8 +73,8 @@ os.environ["LANGFUSE_HOST"] # optional
 # LLM API Keys
 os.environ['OPENAI_API_KEY']=""
 
-litellm.callbacks = [customHandler]
-litellm.success_callback = ["langfuse"]
+llm.callbacks = [customHandler]
+llm.success_callback = ["langfuse"]
 
 
 

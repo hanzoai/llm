@@ -8,12 +8,12 @@ import traceback
 
 from dotenv import load_dotenv
 
-import litellm.types
-import litellm.types.utils
-from litellm.llms.anthropic.chat import ModelResponseIterator
+import llm.types
+import llm.types.utils
+from llm.llms.anthropic.chat import ModelResponseIterator
 import httpx
 import json
-from litellm.llms.custom_httpx.http_handler import HTTPHandler
+from llm.llms.custom_httpx.http_handler import HTTPHandler
 from base_rerank_unit_tests import BaseLLMRerankTest
 
 load_dotenv()
@@ -28,8 +28,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 
 
 @pytest.mark.parametrize(
@@ -40,7 +40,7 @@ from litellm import completion
     ],
 )
 def test_map_azure_model_group(model_group_header, expected_model):
-    from litellm.llms.azure_ai.embed.cohere_transformation import AzureAICohereConfig
+    from llm.llms.azure_ai.embed.cohere_transformation import AzureAICohereConfig
 
     config = AzureAICohereConfig()
     assert config._map_azure_model_group(model_group_header) == expected_model
@@ -53,15 +53,15 @@ async def test_azure_ai_with_image_url():
 
     Test that Azure AI studio can handle image_url passed when content is a list containing both text and image_url
     """
-    from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler
+    from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     client = AsyncHTTPHandler()
 
     with patch.object(client, "post") as mock_client:
         try:
-            await litellm.acompletion(
+            await llm.acompletion(
                 model="azure_ai/Phi-3-5-vision-instruct-dcvov",
                 api_base="https://Phi-3-5-vision-instruct-dcvov.eastus2.models.ai.azure.com",
                 messages=[
@@ -75,7 +75,7 @@ async def test_azure_ai_with_image_url():
                             {
                                 "type": "image_url",
                                 "image_url": {
-                                    "url": "https://litellm-listing.s3.amazonaws.com/litellm_logo.png"
+                                    "url": "https://llm-listing.s3.amazonaws.com/llm_logo.png"
                                 },
                             },
                         ],
@@ -103,7 +103,7 @@ async def test_azure_ai_with_image_url():
                     {
                         "type": "image_url",
                         "image_url": {
-                            "url": "https://litellm-listing.s3.amazonaws.com/litellm_logo.png"
+                            "url": "https://llm-listing.s3.amazonaws.com/llm_logo.png"
                         },
                     },
                 ],
@@ -115,33 +115,33 @@ async def test_azure_ai_with_image_url():
     "api_base, expected_url",
     [
         (
-            "https://litellm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview",
-            "https://litellm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview",
+            "https://llm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview",
+            "https://llm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview",
         ),
         (
-            "https://litellm8397336933.services.ai.azure.com/models/chat/completions",
-            "https://litellm8397336933.services.ai.azure.com/models/chat/completions",
+            "https://llm8397336933.services.ai.azure.com/models/chat/completions",
+            "https://llm8397336933.services.ai.azure.com/models/chat/completions",
         ),
         (
-            "https://litellm8397336933.services.ai.azure.com/models",
-            "https://litellm8397336933.services.ai.azure.com/models/chat/completions",
+            "https://llm8397336933.services.ai.azure.com/models",
+            "https://llm8397336933.services.ai.azure.com/models/chat/completions",
         ),
         (
-            "https://litellm8397336933.services.ai.azure.com",
-            "https://litellm8397336933.services.ai.azure.com/models/chat/completions",
+            "https://llm8397336933.services.ai.azure.com",
+            "https://llm8397336933.services.ai.azure.com/models/chat/completions",
         ),
     ],
 )
 def test_azure_ai_services_handler(api_base, expected_url):
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     client = HTTPHandler()
 
     with patch.object(client, "post") as mock_client:
         try:
-            response = litellm.completion(
+            response = llm.completion(
                 model="azure_ai/Meta-Llama-3.1-70B-Instruct",
                 messages=[{"role": "user", "content": "Hello, how are you?"}],
                 api_key="my-fake-api-key",
@@ -160,18 +160,18 @@ def test_azure_ai_services_handler(api_base, expected_url):
 
 
 def test_azure_ai_services_with_api_version():
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler, AsyncHTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler, AsyncHTTPHandler
 
     client = HTTPHandler()
 
     with patch.object(client, "post") as mock_client:
         try:
-            response = litellm.completion(
+            response = llm.completion(
                 model="azure_ai/Meta-Llama-3.1-70B-Instruct",
                 messages=[{"role": "user", "content": "Hello, how are you?"}],
                 api_key="my-fake-api-key",
                 api_version="2024-05-01-preview",
-                api_base="https://litellm8397336933.services.ai.azure.com/models",
+                api_base="https://llm8397336933.services.ai.azure.com/models",
                 client=client,
             )
         except Exception as e:
@@ -181,7 +181,7 @@ def test_azure_ai_services_with_api_version():
         assert mock_client.call_args.kwargs["headers"]["api-key"] == "my-fake-api-key"
         assert (
             mock_client.call_args.kwargs["url"]
-            == "https://litellm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview"
+            == "https://llm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview"
         )
 
 
@@ -189,7 +189,7 @@ def test_completion_azure_ai_command_r():
     try:
         import os
 
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         os.environ["AZURE_AI_API_BASE"] = os.getenv("AZURE_COHERE_API_BASE", "")
         os.environ["AZURE_AI_API_KEY"] = os.getenv("AZURE_COHERE_API_KEY", "")
@@ -207,7 +207,7 @@ def test_completion_azure_ai_command_r():
         )  # type: ignore
 
         assert "azure_ai" in response.model
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         pass
     except Exception as e:
         pytest.fail(f"Error occurred: {e}")
@@ -242,10 +242,10 @@ def test_azure_deepseek_reasoning_content():
         mock_response.json = lambda: json.loads(mock_response.text)
         mock_post.return_value = mock_response
 
-        response = litellm.completion(
+        response = llm.completion(
             model="azure_ai/deepseek-r1",
             messages=[{"role": "user", "content": "Hello, world!"}],
-            api_base="https://litellm8397336933.services.ai.azure.com/models/chat/completions",
+            api_base="https://llm8397336933.services.ai.azure.com/models/chat/completions",
             api_key="my-fake-api-key",
             client=client,
         )
@@ -256,8 +256,8 @@ def test_azure_deepseek_reasoning_content():
 
 
 class TestAzureAIRerank(BaseLLMRerankTest):
-    def get_custom_llm_provider(self) -> litellm.LlmProviders:
-        return litellm.LlmProviders.AZURE_AI
+    def get_custom_llm_provider(self) -> llm.LlmProviders:
+        return llm.LlmProviders.AZURE_AI
 
     def get_base_rerank_call_args(self) -> dict:
         return {

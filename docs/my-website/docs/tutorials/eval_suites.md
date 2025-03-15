@@ -4,23 +4,23 @@ import TabItem from '@theme/TabItem';
 
 # Evaluate LLMs - MLflow Evals, Auto Eval
 
-## Using LiteLLM with MLflow
+## Using Hanzo with MLflow
 MLflow provides an API `mlflow.evaluate()` to help evaluate your LLMs https://mlflow.org/docs/latest/llms/llm-evaluate/index.html
 
 ### Pre Requisites
 ```shell
-pip install litellm
+pip install llm
 ```
 ```shell
 pip install mlflow
 ```
 
 
-### Step 1: Start LiteLLM Proxy on the CLI
-LiteLLM allows you to create an OpenAI compatible server for all supported LLMs. [More information on litellm proxy here](https://docs.litellm.ai/docs/simple_proxy)
+### Step 1: Start Hanzo Proxy on the CLI
+Hanzo allows you to create an OpenAI compatible server for all supported LLMs. [More information on llm proxy here](https://docs.llm.ai/docs/simple_proxy)
 
 ```shell
-$ litellm --model huggingface/bigcode/starcoder
+$ llm --model huggingface/bigcode/starcoder
 
 #INFO: Proxy running on http://0.0.0.0:8000
 ```
@@ -36,7 +36,7 @@ $ export AWS_SECRET_ACCESS_KEY=""
 ```
 
 ```shell
-$ litellm --model bedrock/anthropic.claude-v2
+$ llm --model bedrock/anthropic.claude-v2
 ```
 </TabItem>
 <TabItem value="huggingface" label="Huggingface (TGI)">
@@ -45,7 +45,7 @@ $ litellm --model bedrock/anthropic.claude-v2
 $ export HUGGINGFACE_API_KEY=my-api-key #[OPTIONAL]
 ```
 ```shell
-$ litellm --model huggingface/<your model name> --api_base https://k58ory32yinf1ly0.us-east-1.aws.endpoints.huggingface.cloud
+$ llm --model huggingface/<your model name> --api_base https://k58ory32yinf1ly0.us-east-1.aws.endpoints.huggingface.cloud
 ```
 
 </TabItem>
@@ -55,7 +55,7 @@ $ litellm --model huggingface/<your model name> --api_base https://k58ory32yinf1
 $ export ANTHROPIC_API_KEY=my-api-key
 ```
 ```shell
-$ litellm --model claude-instant-1
+$ llm --model claude-instant-1
 ```
 
 </TabItem>
@@ -63,13 +63,13 @@ $ litellm --model claude-instant-1
 Assuming you're running vllm locally
 
 ```shell
-$ litellm --model vllm/facebook/opt-125m
+$ llm --model vllm/facebook/opt-125m
 ```
 </TabItem>
 <TabItem value="openai-proxy" label="OpenAI Compatible Server">
 
 ```shell
-$ litellm --model openai/<model_name> --api_base <your-api-base>
+$ llm --model openai/<model_name> --api_base <your-api-base>
 ```
 </TabItem>
 <TabItem value="together_ai" label="TogetherAI">
@@ -78,7 +78,7 @@ $ litellm --model openai/<model_name> --api_base <your-api-base>
 $ export TOGETHERAI_API_KEY=my-api-key
 ```
 ```shell
-$ litellm --model together_ai/lmsys/vicuna-13b-v1.5-16k
+$ llm --model together_ai/lmsys/vicuna-13b-v1.5-16k
 ```
 
 </TabItem>
@@ -89,7 +89,7 @@ $ litellm --model together_ai/lmsys/vicuna-13b-v1.5-16k
 $ export REPLICATE_API_KEY=my-api-key
 ```
 ```shell
-$ litellm \
+$ llm \
   --model replicate/meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3
 ```
 
@@ -98,7 +98,7 @@ $ litellm \
 <TabItem value="petals" label="Petals">
 
 ```shell
-$ litellm --model petals/meta-llama/Llama-2-70b-chat-hf
+$ llm --model petals/meta-llama/Llama-2-70b-chat-hf
 ```
 
 </TabItem>
@@ -109,7 +109,7 @@ $ litellm --model petals/meta-llama/Llama-2-70b-chat-hf
 $ export PALM_API_KEY=my-palm-key
 ```
 ```shell
-$ litellm --model palm/chat-bison
+$ llm --model palm/chat-bison
 ```
 
 </TabItem>
@@ -121,7 +121,7 @@ $ export AZURE_API_KEY=my-api-key
 $ export AZURE_API_BASE=my-api-base
 ```
 ```
-$ litellm --model azure/my-deployment-name
+$ llm --model azure/my-deployment-name
 ```
 
 </TabItem>
@@ -133,7 +133,7 @@ $ export AI21_API_KEY=my-api-key
 ```
 
 ```shell
-$ litellm --model j2-light
+$ llm --model j2-light
 ```
 
 </TabItem>
@@ -145,7 +145,7 @@ $ export COHERE_API_KEY=my-api-key
 ```
 
 ```shell
-$ litellm --model command-nightly
+$ llm --model command-nightly
 ```
 
 </TabItem>
@@ -154,7 +154,7 @@ $ litellm --model command-nightly
 
 
 ### Step 2: Run MLflow
-Before running the eval we will set `openai.api_base` to the litellm proxy from Step 1
+Before running the eval we will set `openai.api_base` to the llm proxy from Step 1
 
 ```python
 openai.api_base = "http://0.0.0.0:8000"
@@ -220,13 +220,13 @@ See evaluation table below:
 ```
 
 
-## Using LiteLLM with AutoEval
+## Using Hanzo with AutoEval
 AutoEvals is a tool for quickly and easily evaluating AI model outputs using best practices.
 https://github.com/braintrustdata/autoevals
 
 ### Pre Requisites
 ```shell
-pip install litellm
+pip install llm
 ```
 ```shell
 pip install autoevals
@@ -243,11 +243,11 @@ See autoevals docs on the [supported evaluators](https://www.braintrustdata.com/
 # auto evals imports 
 from autoevals.llm import *
 ###################
-import litellm
+import llm
 
-# litellm completion call
+# llm completion call
 question = "which country has the highest population"
-response = litellm.completion(
+response = llm.completion(
     model = "gpt-3.5-turbo",
     messages = [
         {
@@ -260,9 +260,9 @@ print(response)
 # use the auto eval Factuality() evaluator
 evaluator = Factuality()
 result = evaluator(
-    output=response.choices[0]["message"]["content"],       # response from litellm.completion()
+    output=response.choices[0]["message"]["content"],       # response from llm.completion()
     expected="India",                                       # expected output
-    input=question                                          # question passed to litellm.completion
+    input=question                                          # question passed to llm.completion
 )
 
 print(result)

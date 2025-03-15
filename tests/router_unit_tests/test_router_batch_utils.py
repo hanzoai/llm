@@ -8,15 +8,15 @@ from datetime import datetime
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-from litellm import Router
+from llm import Router
 import pytest
-import litellm
+import llm
 from unittest.mock import patch, MagicMock, AsyncMock
 
 import json
 from io import BytesIO
 from typing import Dict, List
-from litellm.router_utils.batch_utils import (
+from llm.router_utils.batch_utils import (
     replace_model_in_jsonl,
     _get_router_metadata_variable_name,
 )
@@ -80,5 +80,5 @@ def test_router_metadata_variable_name():
     """Test that the variable name is correct"""
     assert _get_router_metadata_variable_name(function_name="completion") == "metadata"
     assert (
-        _get_router_metadata_variable_name(function_name="batch") == "litellm_metadata"
+        _get_router_metadata_variable_name(function_name="batch") == "llm_metadata"
     )

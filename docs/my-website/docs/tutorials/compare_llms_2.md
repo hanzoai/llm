@@ -1,15 +1,15 @@
 import Image from '@theme/IdealImage';
 
-# Comparing LLMs on a Test Set using LiteLLM
+# Comparing LLMs on a Test Set using Hanzo
 
 
 <div class="cell markdown" id="L-W4C3SgClxl">
 
-LiteLLM allows you to use any LLM as a drop in replacement for
+Hanzo allows you to use any LLM as a drop in replacement for
 `gpt-3.5-turbo`
 
 This notebook walks through how you can compare GPT-4 vs Claude-2 on a
-given test set using litellm
+given test set using llm
 
 ## Output at the end of this tutorial:
 <Image img={require('../../img/compare_llms.png')} />
@@ -20,7 +20,7 @@ given test set using litellm
 <div class="cell code" id="fBkbl4Qo9pvz">
 
 ``` python
-!pip install litellm
+!pip install llm
 ```
 
 </div>
@@ -28,21 +28,21 @@ given test set using litellm
 <div class="cell code" execution_count="16" id="tzS-AXWK8lJC">
 
 ``` python
-from litellm import completion
-import litellm
+from llm import completion
+import llm
 
 # init your test set questions
 questions = [
-    "how do i call completion() using LiteLLM",
-    "does LiteLLM support VertexAI",
+    "how do i call completion() using Hanzo",
+    "does Hanzo support VertexAI",
     "how do I set my keys on replicate llama2?",
 ]
 
 
 # set your prompt
 prompt = """
-You are a coding assistant helping users using litellm.
-litellm is a light package to simplify calling OpenAI, Azure, Cohere, Anthropic, Huggingface API Endpoints. It manages:
+You are a coding assistant helping users using llm.
+llm is a light package to simplify calling OpenAI, Azure, Cohere, Anthropic, Huggingface API Endpoints. It manages:
 
 """
 ```
@@ -67,7 +67,7 @@ os.environ['ANTHROPIC_API_KEY'] = ""
 
 ## Calling gpt-3.5-turbo and claude-2 on the same questions
 
-## LiteLLM `completion()` allows you to call all LLMs in the same format
+## Hanzo `completion()` allows you to call all LLMs in the same format
 
 </div>
 
@@ -76,12 +76,12 @@ os.environ['ANTHROPIC_API_KEY'] = ""
 ``` python
 results = [] # for storing results
 
-models = ['gpt-3.5-turbo', 'claude-2'] # define what models you're testing, see: https://docs.litellm.ai/docs/providers
+models = ['gpt-3.5-turbo', 'claude-2'] # define what models you're testing, see: https://docs.llm.ai/docs/providers
 for question in questions:
     row = [question]
     for model in models:
       print("Calling:", model, "question:", question)
-      response = completion( # using litellm.completion
+      response = completion( # using llm.completion
             model=model,
             messages=[
                 {'role': 'system', 'content': prompt},

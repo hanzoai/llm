@@ -27,15 +27,15 @@ Expect to start seeing decryption errors in logs, as your old master key is no l
 Exception: Unable to decrypt value=<new-encrypted-value>
 ```
 
-**3. Update LITELLM_MASTER_KEY**
+**3. Update LLM_MASTER_KEY**
 
-In your environment variables update the value of LITELLM_MASTER_KEY to the new_master_key from Step 2.
+In your environment variables update the value of LLM_MASTER_KEY to the new_master_key from Step 2.
 
 This ensures the key used for decryption from db is the new key.
 
 **4. Test it**
 
-Make a test request to a model stored on proxy with a litellm key (new master key or virtual key) and see if it works
+Make a test request to a model stored on proxy with a llm key (new master key or virtual key) and see if it works
 
 ```bash
  curl -L -X POST 'http://0.0.0.0:4000/v1/chat/completions' \

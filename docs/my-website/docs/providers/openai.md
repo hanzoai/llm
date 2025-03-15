@@ -2,7 +2,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # OpenAI
-LiteLLM supports OpenAI Chat + Embedding calls.
+Hanzo supports OpenAI Chat + Embedding calls.
 
 ### Required API Keys
 
@@ -14,7 +14,7 @@ os.environ["OPENAI_API_KEY"] = "your-api-key"
 ### Usage
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 os.environ["OPENAI_API_KEY"] = "your-api-key"
 
@@ -25,9 +25,9 @@ response = completion(
 )
 ```
 
-### Usage - LiteLLM Proxy Server
+### Usage - Hanzo Proxy Server
 
-Here's how to call OpenAI models with the LiteLLM Proxy Server
+Here's how to call OpenAI models with the Hanzo Proxy Server
 
 ### 1. Save key in your environment
 
@@ -43,11 +43,11 @@ export OPENAI_API_KEY=""
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: openai/gpt-3.5-turbo                          # The `openai/` prefix will call openai.chat.completions.create
       api_key: os.environ/OPENAI_API_KEY
   - model_name: gpt-3.5-turbo-instruct
-    litellm_params:
+    llm_params:
       model: text-completion-openai/gpt-3.5-turbo-instruct # The `text-completion-openai/` prefix will call openai.completions.create
       api_key: os.environ/OPENAI_API_KEY
 ```
@@ -60,7 +60,7 @@ This means requests to `gpt-4`, `gpt-3.5-turbo` , `gpt-4-turbo-preview` will all
 ```yaml
 model_list:
   - model_name: "*"             # all requests where model not in your config go to this deployment
-    litellm_params:
+    llm_params:
       model: openai/*           # set `openai/` to use the openai route
       api_key: os.environ/OPENAI_API_KEY
 ```
@@ -68,7 +68,7 @@ model_list:
 <TabItem value="cli" label="CLI">
 
 ```bash
-$ litellm --model gpt-3.5-turbo
+$ llm --model gpt-3.5-turbo
 
 # Server running on http://0.0.0.0:4000
 ```
@@ -106,7 +106,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="gpt-3.5-turbo", messages = [
     {
         "role": "user",
@@ -130,7 +130,7 @@ from langchain.prompts.chat import (
 from langchain.schema import HumanMessage, SystemMessage
 
 chat = ChatOpenAI(
-    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LiteLLM Proxy
+    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the Hanzo Proxy
     model = "gpt-3.5-turbo",
     temperature=0.1
 )
@@ -140,7 +140,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -200,7 +200,7 @@ These also support the `OPENAI_API_BASE` environment variable, which can be used
 #### Usage
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 os.environ["OPENAI_API_KEY"] = "your-api-key"
 
@@ -243,15 +243,15 @@ response = completion(
 
 ### Getting OpenAI API Response Headers 
 
-Set `litellm.return_response_headers = True` to get raw response headers from OpenAI
+Set `llm.return_response_headers = True` to get raw response headers from OpenAI
 
-You can expect to always get the `_response_headers` field from `litellm.completion()`, `litellm.embedding()` functions
+You can expect to always get the `_response_headers` field from `llm.completion()`, `llm.embedding()` functions
 
 <Tabs>
-<TabItem value="litellm.completion" label="litellm.completion">
+<TabItem value="llm.completion" label="llm.completion">
 
 ```python
-litellm.return_response_headers = True
+llm.return_response_headers = True
 
 # /chat/completion
 response = completion(
@@ -268,10 +268,10 @@ print("_response_headers=", response._response_headers)
 ```
 </TabItem>
 
-<TabItem value="litellm.completion - streaming" label="litellm.completion + stream">
+<TabItem value="llm.completion - streaming" label="llm.completion + stream">
 
 ```python
-litellm.return_response_headers = True
+llm.return_response_headers = True
 
 # /chat/completion
 response = completion(
@@ -291,13 +291,13 @@ for chunk in response:
 ```
 </TabItem>
 
-<TabItem value="litellm.embedding" label="litellm.embedding">
+<TabItem value="llm.embedding" label="llm.embedding">
 
 ```python
-litellm.return_response_headers = True
+llm.return_response_headers = True
 
 # embedding
-embedding_response = litellm.embedding(
+embedding_response = llm.embedding(
     model="text-embedding-ada-002",
     input="hello",
 )
@@ -340,13 +340,13 @@ Expected Response Headers from OpenAI
 ```
 
 ### Parallel Function calling
-See a detailed walthrough of parallel function calling with litellm [here](https://docs.litellm.ai/docs/completion/function_call)
+See a detailed walthrough of parallel function calling with llm [here](https://docs.llm.ai/docs/completion/function_call)
 ```python
-import litellm
+import llm
 import json
 # set openai api key
 import os
-os.environ['OPENAI_API_KEY'] = "" # litellm reads OPENAI_API_KEY from .env and sends the request
+os.environ['OPENAI_API_KEY'] = "" # llm reads OPENAI_API_KEY from .env and sends the request
 # Example dummy function hard coded to return the same weather
 # In production, this could be your backend API or an external API
 def get_current_weather(location, unit="fahrenheit"):
@@ -382,7 +382,7 @@ tools = [
     }
 ]
 
-response = litellm.completion(
+response = llm.completion(
     model="gpt-3.5-turbo-1106",
     messages=messages,
     tools=tools,
@@ -396,7 +396,7 @@ tool_calls = response.choices[0].message.tool_calls
 ### Setting `extra_headers` for completion calls
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 os.environ["OPENAI_API_KEY"] = "your-api-key"
 
@@ -410,11 +410,11 @@ response = completion(
 ### Setting Organization-ID for completion calls
 This can be set in one of the following ways:
 - Environment Variable `OPENAI_ORGANIZATION`
-- Params to `litellm.completion(model=model, organization="your-organization-id")`
-- Set as `litellm.organization="your-organization-id"`
+- Params to `llm.completion(model=model, organization="your-organization-id")`
+- Set as `llm.organization="your-organization-id"`
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 os.environ["OPENAI_API_KEY"] = "your-api-key"
 os.environ["OPENAI_ORGANIZATION"] = "your-org-id" # OPTIONAL
@@ -429,37 +429,37 @@ response = completion(
 
 This is done by setting your own `httpx.Client` 
 
-- For `litellm.completion` set `litellm.client_session=httpx.Client(verify=False)`
-- For `litellm.acompletion` set `litellm.aclient_session=AsyncClient.Client(verify=False)`
+- For `llm.completion` set `llm.client_session=httpx.Client(verify=False)`
+- For `llm.acompletion` set `llm.aclient_session=AsyncClient.Client(verify=False)`
 ```python
-import litellm, httpx
+import llm, httpx
 
 # for completion
-litellm.client_session = httpx.Client(verify=False)
-response = litellm.completion(
+llm.client_session = httpx.Client(verify=False)
+response = llm.completion(
     model="gpt-3.5-turbo",
     messages=messages,
 )
 
 # for acompletion
-litellm.aclient_session = httpx.AsyncClient(verify=False)
-response = litellm.acompletion(
+llm.aclient_session = httpx.AsyncClient(verify=False)
+response = llm.acompletion(
     model="gpt-3.5-turbo",
     messages=messages,
 )
 ```
 
-### Using Helicone Proxy with LiteLLM
+### Using Helicone Proxy with Hanzo
 ```python
 import os 
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 
 os.environ["OPENAI_API_KEY"] = ""
 
 # os.environ["OPENAI_API_BASE"] = ""
-litellm.api_base = "https://oai.hconeai.com/v1"
-litellm.headers = {
+llm.api_base = "https://oai.hconeai.com/v1"
+llm.headers = {
     "Helicone-Auth": f"Bearer {os.getenv('HELICONE_API_KEY')}",
     "Helicone-Cache-Enabled": "true",
 }
@@ -470,18 +470,18 @@ messages = [{ "content": "Hello, how are you?","role": "user"}]
 response = completion("gpt-3.5-turbo", messages)
 ```
 
-### Using OpenAI Proxy with LiteLLM
+### Using OpenAI Proxy with Hanzo
 ```python
 import os 
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 
 os.environ["OPENAI_API_KEY"] = ""
 
 # set custom api base to your proxy
-# either set .env or litellm.api_base
+# either set .env or llm.api_base
 # os.environ["OPENAI_API_BASE"] = ""
-litellm.api_base = "your-openai-proxy-url"
+llm.api_base = "your-openai-proxy-url"
 
 
 messages = [{ "content": "Hello, how are you?","role": "user"}]
@@ -503,7 +503,7 @@ Forward openai Org ID's from the client to OpenAI with `forward_openai_org_id` p
 ```yaml
 model_list:
   - model_name: "gpt-3.5-turbo"
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
@@ -514,7 +514,7 @@ general_settings:
 2. Start Proxy
 
 ```bash
-litellm --config config.yaml --detailed_debug
+llm --config config.yaml --detailed_debug
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -535,6 +535,6 @@ client.chat.completions.create(model="gpt-3.5-turbo", messages=[{"role": "user",
 In your logs you should see the forwarded org id
 
 ```bash
-LiteLLM:DEBUG: utils.py:255 - Request to litellm:
-LiteLLM:DEBUG: utils.py:255 - litellm.acompletion(... organization='my-special-org',)
+Hanzo:DEBUG: utils.py:255 - Request to llm:
+Hanzo:DEBUG: utils.py:255 - llm.acompletion(... organization='my-special-org',)
 ```

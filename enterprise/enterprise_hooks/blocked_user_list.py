@@ -8,12 +8,12 @@
 
 
 from typing import Optional, Literal
-import litellm
-from litellm.proxy.utils import PrismaClient
-from litellm.caching.caching import DualCache
-from litellm.proxy._types import UserAPIKeyAuth, LiteLLM_EndUserTable
-from litellm.integrations.custom_logger import CustomLogger
-from litellm._logging import verbose_proxy_logger
+import llm
+from llm.proxy.utils import PrismaClient
+from llm.caching.caching import DualCache
+from llm.proxy._types import UserAPIKeyAuth, Hanzo_EndUserTable
+from llm.integrations.custom_logger import CustomLogger
+from llm._logging import verbose_proxy_logger
 from fastapi import HTTPException
 
 
@@ -22,7 +22,7 @@ class _ENTERPRISE_BlockedUserList(CustomLogger):
     def __init__(self, prisma_client: Optional[PrismaClient]):
         self.prisma_client = prisma_client
 
-        blocked_user_list = litellm.blocked_user_list
+        blocked_user_list = llm.blocked_user_list
         if blocked_user_list is None:
             self.blocked_user_list = None
             return
@@ -50,7 +50,7 @@ class _ENTERPRISE_BlockedUserList(CustomLogger):
         elif level == "DEBUG":
             verbose_proxy_logger.debug(print_statement)
 
-        if litellm.set_verbose is True:
+        if llm.set_verbose is True:
             print(print_statement)  # noqa
 
     async def async_pre_call_hook(
@@ -82,19 +82,19 @@ class _ENTERPRISE_BlockedUserList(CustomLogger):
                         },
                     )
 
-                cache_key = f"litellm:end_user_id:{user}"
-                end_user_cache_obj: Optional[LiteLLM_EndUserTable] = cache.get_cache(  # type: ignore
+                cache_key = f"llm:end_user_id:{user}"
+                end_user_cache_obj: Optional[Hanzo_EndUserTable] = cache.get_cache(  # type: ignore
                     key=cache_key
                 )
                 if end_user_cache_obj is None and self.prisma_client is not None:
                     # check db
                     end_user_obj = (
-                        await self.prisma_client.db.litellm_endusertable.find_unique(
+                        await self.prisma_client.db.llm_endusertable.find_unique(
                             where={"user_id": user}
                         )
                     )
                     if end_user_obj is None:  # user not in db - assume not blocked
-                        end_user_obj = LiteLLM_EndUserTable(user_id=user, blocked=False)
+                        end_user_obj = Hanzo_EndUserTable(user_id=user, blocked=False)
                     cache.set_cache(key=cache_key, value=end_user_obj, ttl=60)
                     if end_user_obj is not None and end_user_obj.blocked == True:
                         raise HTTPException(
@@ -118,7 +118,7 @@ class _ENTERPRISE_BlockedUserList(CustomLogger):
             raise e
         except Exception as e:
             verbose_proxy_logger.exception(
-                "litellm.enterprise.enterprise_hooks.blocked_user_list::async_pre_call_hook - Exception occurred - {}".format(
+                "llm.enterprise.enterprise_hooks.blocked_user_list::async_pre_call_hook - Exception occurred - {}".format(
                     str(e)
                 )
             )

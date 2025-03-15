@@ -9,7 +9,7 @@ sys.path.insert(
 )  # Adds the parent directory to the system-path
 
 
-import litellm
+import llm
 
 import json
 import os
@@ -23,7 +23,7 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system-path
 from test_rerank import assert_response_shape
-import litellm
+import llm
 
 
 @pytest.mark.asyncio()
@@ -49,10 +49,10 @@ async def test_infinity_rerank():
     }
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        response = await litellm.arerank(
+        response = await llm.arerank(
             model="infinity/rerank-model",
             query="hello",
             documents=["hello", "world"],
@@ -105,10 +105,10 @@ async def test_infinity_rerank_with_return_documents():
     mock_response.status_code = 200
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        response = await litellm.arerank(
+        response = await llm.arerank(
             model="infinity/rerank-model",
             query="hello",
             documents=["hello", "world"],
@@ -147,10 +147,10 @@ async def test_infinity_rerank_with_env(monkeypatch):
     }
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        response = await litellm.arerank(
+        response = await llm.arerank(
             model="infinity/rerank-model",
             query="hello",
             documents=["hello", "world"],

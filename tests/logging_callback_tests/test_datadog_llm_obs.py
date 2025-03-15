@@ -18,13 +18,13 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-import litellm
-from litellm import completion
-from litellm._logging import verbose_logger
-from litellm.integrations.datadog.datadog_llm_obs import DataDogLLMObsLogger
+import llm
+from llm import completion
+from llm._logging import verbose_logger
+from llm.integrations.datadog.datadog_llm_obs import DataDogLLMObsLogger
 from datetime import datetime, timedelta
-from litellm.types.integrations.datadog_llm_obs import *
-from litellm.types.utils import (
+from llm.types.integrations.datadog_llm_obs import *
+from llm.types.utils import (
     StandardLoggingPayload,
     StandardLoggingModelInformation,
     StandardLoggingMetadata,
@@ -88,11 +88,11 @@ def create_standard_logging_payload() -> StandardLoggingPayload:
 @pytest.mark.asyncio
 async def test_datadog_llm_obs_logging():
     datadog_llm_obs_logger = DataDogLLMObsLogger()
-    litellm.callbacks = [datadog_llm_obs_logger]
-    litellm.set_verbose = True
+    llm.callbacks = [datadog_llm_obs_logger]
+    llm.set_verbose = True
 
     for _ in range(2):
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model="gpt-4o",
             messages=[{"role": "user", "content": "Hello testing dd llm obs!"}],
             mock_response="hi",
@@ -113,7 +113,7 @@ async def test_create_llm_obs_payload():
             "messages": [{"role": "user", "content": "Hello"}],
             "standard_logging_object": standard_logging_payload,
         },
-        response_obj=litellm.ModelResponse(
+        response_obj=llm.ModelResponse(
             id="test_id",
             choices=[{"message": {"content": "Hi there!"}}],
             created=12,
@@ -125,7 +125,7 @@ async def test_create_llm_obs_payload():
 
     print("dd created payload", payload)
 
-    assert payload["name"] == "litellm_llm_call"
+    assert payload["name"] == "llm_llm_call"
     assert payload["meta"]["kind"] == "llm"
     assert payload["meta"]["input"]["messages"] == [
         {"role": "user", "content": "Hello, world!"}

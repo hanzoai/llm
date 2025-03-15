@@ -20,19 +20,19 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-import litellm
-from litellm import RateLimitError, Timeout, completion, completion_cost, embedding
-from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
-from litellm.litellm_core_utils.prompt_templates.factory import anthropic_messages_pt
+import llm
+from llm import RateLimitError, Timeout, completion, completion_cost, embedding
+from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
+from llm.llm_core_utils.prompt_templates.factory import anthropic_messages_pt
 
-# litellm.num_retries =3
-litellm.cache = None
-litellm.success_callback = []
+# llm.num_retries =3
+llm.cache = None
+llm.success_callback = []
 user_message = "Write a short poem about the sky"
 messages = [{"content": user_message, "role": "user"}]
 import logging
 
-from litellm._logging import verbose_logger
+from llm._logging import verbose_logger
 
 
 def logger_fn(user_model_dict):
@@ -42,21 +42,21 @@ def logger_fn(user_model_dict):
 @pytest.fixture(autouse=True)
 def reset_callbacks():
     print("\npytest fixture - resetting callbacks")
-    litellm.success_callback = []
-    litellm._async_success_callback = []
-    litellm.failure_callback = []
-    litellm.callbacks = []
+    llm.success_callback = []
+    llm._async_success_callback = []
+    llm.failure_callback = []
+    llm.callbacks = []
 
 
 @pytest.mark.asyncio()
 @pytest.mark.parametrize("sync_mode", [True, False])
 async def test_completion_sagemaker(sync_mode):
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         verbose_logger.setLevel(logging.DEBUG)
         print("testing sagemaker")
         if sync_mode is True:
-            response = litellm.completion(
+            response = llm.completion(
                 model="sagemaker/jumpstart-dft-hf-textgeneration1-mp-20240815-185614",
                 messages=[
                     {"role": "user", "content": "hi"},
@@ -66,7 +66,7 @@ async def test_completion_sagemaker(sync_mode):
                 input_cost_per_second=0.000420,
             )
         else:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="sagemaker/jumpstart-dft-hf-textgeneration1-mp-20240815-185614",
                 messages=[
                     {"role": "user", "content": "hi"},
@@ -93,11 +93,11 @@ async def test_completion_sagemaker(sync_mode):
 )
 async def test_completion_sagemaker_messages_api(sync_mode):
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         verbose_logger.setLevel(logging.DEBUG)
         print("testing sagemaker")
         if sync_mode is True:
-            resp = litellm.completion(
+            resp = llm.completion(
                 model="sagemaker_chat/huggingface-pytorch-tgi-inference-2024-08-23-15-48-59-245",
                 messages=[
                     {"role": "user", "content": "hi"},
@@ -107,7 +107,7 @@ async def test_completion_sagemaker_messages_api(sync_mode):
             )
             print(resp)
         else:
-            resp = await litellm.acompletion(
+            resp = await llm.acompletion(
                 model="sagemaker_chat/huggingface-pytorch-tgi-inference-2024-08-23-15-48-59-245",
                 messages=[
                     {"role": "user", "content": "hi"},
@@ -132,12 +132,12 @@ async def test_completion_sagemaker_messages_api(sync_mode):
 # @pytest.mark.flaky(retries=3, delay=1)
 async def test_completion_sagemaker_stream(sync_mode, model):
     try:
-        litellm.set_verbose = False
+        llm.set_verbose = False
         print("testing sagemaker")
         verbose_logger.setLevel(logging.DEBUG)
         full_text = ""
         if sync_mode is True:
-            response = litellm.completion(
+            response = llm.completion(
                 model=model,
                 messages=[
                     {"role": "user", "content": "hi - what is ur name"},
@@ -155,7 +155,7 @@ async def test_completion_sagemaker_stream(sync_mode, model):
 
             print("SYNC RESPONSE full text", full_text)
         else:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model=model,
                 messages=[
                     {"role": "user", "content": "hi - what is ur name"},
@@ -190,11 +190,11 @@ async def test_completion_sagemaker_stream(sync_mode, model):
     ],
 )
 async def test_completion_sagemaker_streaming_bad_request(sync_mode, model):
-    litellm.set_verbose = True
+    llm.set_verbose = True
     print("testing sagemaker")
     if sync_mode is True:
-        with pytest.raises(litellm.BadRequestError):
-            response = litellm.completion(
+        with pytest.raises(llm.BadRequestError):
+            response = llm.completion(
                 model=model,
                 messages=[
                     {"role": "user", "content": "hi"},
@@ -203,8 +203,8 @@ async def test_completion_sagemaker_streaming_bad_request(sync_mode, model):
                 max_tokens=8000000000000000,
             )
     else:
-        with pytest.raises(litellm.BadRequestError):
-            response = await litellm.acompletion(
+        with pytest.raises(llm.BadRequestError):
+            response = await llm.acompletion(
                 model=model,
                 messages=[
                     {"role": "user", "content": "hi"},
@@ -245,11 +245,11 @@ async def test_acompletion_sagemaker_non_stream():
     }
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        # Act: Call the litellm.acompletion function
-        response = await litellm.acompletion(
+        # Act: Call the llm.acompletion function
+        response = await llm.acompletion(
             model="sagemaker/jumpstart-dft-hf-textgeneration1-mp-20240815-185614",
             messages=[
                 {"role": "user", "content": "hi"},
@@ -305,11 +305,11 @@ async def test_completion_sagemaker_non_stream():
     }
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.HTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.HTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        # Act: Call the litellm.acompletion function
-        response = litellm.completion(
+        # Act: Call the llm.acompletion function
+        response = llm.completion(
             model="sagemaker/jumpstart-dft-hf-textgeneration1-mp-20240815-185614",
             messages=[
                 {"role": "user", "content": "hi"},
@@ -366,11 +366,11 @@ async def test_completion_sagemaker_prompt_template_non_stream():
     }
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.HTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.HTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        # Act: Call the litellm.acompletion function
-        response = litellm.completion(
+        # Act: Call the llm.acompletion function
+        response = llm.completion(
             model="sagemaker/deepseek_coder_6.7_instruct",
             messages=[
                 {"role": "user", "content": "hi"},
@@ -422,11 +422,11 @@ async def test_completion_sagemaker_non_stream_with_aws_params():
     }
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.HTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.HTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        # Act: Call the litellm.acompletion function
-        response = litellm.completion(
+        # Act: Call the llm.acompletion function
+        response = llm.completion(
             model="sagemaker/jumpstart-dft-hf-textgeneration1-mp-20240815-185614",
             messages=[
                 {"role": "user", "content": "hi"},

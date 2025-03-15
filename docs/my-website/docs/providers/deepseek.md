@@ -14,14 +14,14 @@ os.environ['DEEPSEEK_API_KEY']
 
 ## Sample Usage
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['DEEPSEEK_API_KEY'] = ""
 response = completion(
     model="deepseek/deepseek-chat", 
     messages=[
-       {"role": "user", "content": "hello from litellm"}
+       {"role": "user", "content": "hello from llm"}
    ],
 )
 print(response)
@@ -29,14 +29,14 @@ print(response)
 
 ## Sample Usage - Streaming
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['DEEPSEEK_API_KEY'] = ""
 response = completion(
     model="deepseek/deepseek-chat", 
     messages=[
-       {"role": "user", "content": "hello from litellm"}
+       {"role": "user", "content": "hello from llm"}
    ],
     stream=True
 )
@@ -66,7 +66,7 @@ We support ALL Deepseek models, just set `deepseek/` as a prefix when sending co
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['DEEPSEEK_API_KEY'] = ""
@@ -88,7 +88,7 @@ print(
 ```yaml
 model_list:
   - model_name: deepseek-reasoner
-    litellm_params:
+    llm_params:
         model: deepseek/deepseek-reasoner
         api_key: os.environ/DEEPSEEK_API_KEY
 ```
@@ -96,7 +96,7 @@ model_list:
 2. Run proxy
 
 ```bash
-python litellm/proxy/main.py
+python llm/proxy/main.py
 ```
 
 3. Test it!

@@ -2,34 +2,34 @@
 
 ## Security Measures
 
-### LiteLLM Github
+### Hanzo Github
 
 - All commits run through Github's CodeQL checking
 
-### Self-hosted Instances LiteLLM
+### Self-hosted Instances Hanzo
 
-- **No data or telemetry is stored on LiteLLM Servers when you self host**
-- For installation and configuration, see: [Self-hosting guided](https://docs.litellm.ai/docs/proxy/deploy)
-- **Telemetry** We run no telemetry when you self host LiteLLM
+- **No data or telemetry is stored on Hanzo Servers when you self host**
+- For installation and configuration, see: [Self-hosting guided](https://docs.llm.ai/docs/proxy/deploy)
+- **Telemetry** We run no telemetry when you self host Hanzo
 
-### LiteLLM Cloud
+### Hanzo Cloud
 
-- We encrypt all data stored using your `LITELLM_MASTER_KEY` and in transit using TLS.
+- We encrypt all data stored using your `LLM_MASTER_KEY` and in transit using TLS.
 - Our database and application run on GCP, AWS infrastructure, partly managed by NeonDB.
     - US data region: Northern California (AWS/GCP `us-west-1`) & Virginia (AWS `us-east-1`)
     - EU data region Germany/Frankfurt (AWS/GCP `eu-central-1`)
 - All users have access to SSO (Single Sign-On) through OAuth 2.0 with Google, Okta, Microsoft, KeyCloak. 
 - Audit Logs with retention policy
-- Control Allowed IP Addresses that can access your Cloud LiteLLM Instance
+- Control Allowed IP Addresses that can access your Cloud Hanzo Instance
 
 For security inquiries, please contact us at support@berri.ai
 
 
 For security inquiries, please contact us at support@berri.ai
 
-#### Supported data regions for LiteLLM Cloud
+#### Supported data regions for Hanzo Cloud
 
-LiteLLM supports the following data regions:
+Hanzo supports the following data regions:
 
 - US, Northern California (AWS/GCP `us-west-1`)
 - Europe, Frankfurt, Germany (AWS/GCP `eu-central-1`)

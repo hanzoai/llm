@@ -13,11 +13,11 @@ import httpx
 import pytest
 from respx import MockRouter
 
-import litellm
-from litellm import Choices, Message, ModelResponse, EmbeddingResponse, Usage
-from litellm import completion
+import llm
+from llm import Choices, Message, ModelResponse, EmbeddingResponse, Usage
+from llm import completion
 from unittest.mock import patch
-from litellm.llms.xai.chat.transformation import XAIChatConfig, XAI_API_BASE
+from llm.llms.xai.chat.transformation import XAIChatConfig, XAI_API_BASE
 
 
 def test_xai_chat_config_get_openai_compatible_provider_info():
@@ -114,7 +114,7 @@ def test_xai_chat_config_map_openai_params():
 @pytest.mark.parametrize("stream", [False, True])
 def test_completion_xai(stream):
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         messages = [
             {"role": "system", "content": "You're a good bot"},
             {
@@ -133,12 +133,12 @@ def test_completion_xai(stream):
             for chunk in response:
                 print(chunk)
                 assert chunk is not None
-                assert isinstance(chunk, litellm.ModelResponseStream)
-                assert isinstance(chunk.choices[0], litellm.utils.StreamingChoices)
+                assert isinstance(chunk, llm.ModelResponseStream)
+                assert isinstance(chunk.choices[0], llm.utils.StreamingChoices)
 
         else:
             assert response is not None
-            assert isinstance(response, litellm.ModelResponse)
+            assert isinstance(response, llm.ModelResponse)
             assert response.choices[0].message.content is not None
     except Exception as e:
         pytest.fail(f"Error occurred: {e}")

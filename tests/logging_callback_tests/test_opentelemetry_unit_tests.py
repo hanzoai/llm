@@ -16,17 +16,17 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-import litellm
+import llm
 from unittest.mock import patch, MagicMock, AsyncMock
 from base_test import BaseLoggingCallbackTest
-from litellm.types.utils import ModelResponse
+from llm.types.utils import ModelResponse
 
 
 class TestOpentelemetryUnitTests(BaseLoggingCallbackTest):
     def test_parallel_tool_calls(self, mock_response_obj: ModelResponse):
         tool_calls = mock_response_obj.choices[0].message.tool_calls
-        from litellm.integrations.opentelemetry import OpenTelemetry
-        from litellm.proxy._types import SpanAttributes
+        from llm.integrations.opentelemetry import OpenTelemetry
+        from llm.proxy._types import SpanAttributes
 
         kv_pair_dict = OpenTelemetry._tool_calls_kv_pair(tool_calls)
 
@@ -44,13 +44,13 @@ class TestOpentelemetryUnitTests(BaseLoggingCallbackTest):
         """
 
         parent_otel_span = MagicMock()
-        litellm.callbacks = ["otel"]
+        llm.callbacks = ["otel"]
 
-        await litellm.acompletion(
+        await llm.acompletion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hello, world!"}],
             mock_response="Hey!",
-            metadata={"litellm_parent_otel_span": parent_otel_span},
+            metadata={"llm_parent_otel_span": parent_otel_span},
         )
 
         await asyncio.sleep(1)

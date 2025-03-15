@@ -54,8 +54,8 @@ For further configuration, please refer to the [Argilla documentation](https://d
 
 ```python
 import os
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 
 # add env vars
 os.environ["ARGILLA_API_KEY"]="argilla.apikey"
@@ -63,10 +63,10 @@ os.environ["ARGILLA_BASE_URL"]="http://localhost:6900"
 os.environ["ARGILLA_DATASET_NAME"]="my_first_dataset"   
 os.environ["OPENAI_API_KEY"]="sk-proj-..."
 
-litellm.callbacks = ["argilla"]
+llm.callbacks = ["argilla"]
 
 # add argilla transformation object
-litellm.argilla_transformation_object = {
+llm.argilla_transformation_object = {
     "user_input": "messages", # 👈 key= argilla field, value = either message (argilla.ChatField) | response (argilla.TextField)
     "llm_output": "response"
 }
@@ -83,7 +83,7 @@ response = completion(
 <Tab value="proxy" label="PROXY">
 
 ```yaml
-litellm_settings:
+llm_settings:
   callbacks: ["argilla"]
   argilla_transformation_object:
     user_input: "messages" # 👈 key= argilla field, value = either message (argilla.ChatField) | response (argilla.TextField)

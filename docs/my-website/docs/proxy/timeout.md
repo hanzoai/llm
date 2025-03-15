@@ -11,7 +11,7 @@ The timeout set in router is for the entire length of the call, and is passed do
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import Router 
+from llm import Router 
 
 model_list = [{...}]
 
@@ -32,25 +32,25 @@ router_settings:
 **Start Proxy** 
 
 ```shell
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 </TabItem>
 </Tabs>
 
 ### Custom Timeouts, Stream Timeouts - Per Model
-For each model you can set `timeout` & `stream_timeout` under `litellm_params`
+For each model you can set `timeout` & `stream_timeout` under `llm_params`
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import Router 
+from llm import Router 
 import asyncio
 
 model_list = [{
     "model_name": "gpt-3.5-turbo",
-    "litellm_params": {
+    "llm_params": {
         "model": "azure/chatgpt-v-2",
         "api_key": os.getenv("AZURE_API_KEY"),
         "api_version": os.getenv("AZURE_API_VERSION"),
@@ -79,7 +79,7 @@ asyncio.run(router_acompletion())
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/gpt-turbo-small-eu
       api_base: https://my-endpoint-europe-berri-992.openai.azure.com/
       api_key: <your-key>
@@ -87,7 +87,7 @@ model_list:
       stream_timeout: 0.01              # timeout for stream requests (seconds)
       max_retries: 5
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/gpt-turbo-small-ca
       api_base: https://my-endpoint-canada-berri992.openai.azure.com/
       api_key: 
@@ -101,7 +101,7 @@ model_list:
 **Start Proxy**
 
 ```shell
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 
@@ -111,14 +111,14 @@ $ litellm --config /path/to/config.yaml
 
 ### Setting Dynamic Timeouts - Per Request
 
-LiteLLM supports setting a `timeout` per request 
+Hanzo supports setting a `timeout` per request 
 
 **Example Usage**
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import Router 
+from llm import Router 
 
 model_list = [{...}]
 router = Router(model_list=model_list)
@@ -182,7 +182,7 @@ print(response)
 
 To test if your retry/fallback logic can handle timeouts, you can set `mock_timeout=True` for testing. 
 
-This is currently only supported on `/chat/completions` and `/completions` endpoints. Please [let us know](https://github.com/BerriAI/litellm/issues) if you need this for other endpoints. 
+This is currently only supported on `/chat/completions` and `/completions` endpoints. Please [let us know](https://github.com/BerriAI/llm/issues) if you need this for other endpoints. 
 
 ```bash
 curl -L -X POST 'http://0.0.0.0:4000/v1/chat/completions' \

@@ -23,19 +23,19 @@ In the newly created guard's page, you can find a reference to the prompt policy
 
 You can decide which detections will be enabled, and set the threshold for each detection.
 
-### 3. Add Aim Guardrail on your LiteLLM config.yaml 
+### 3. Add Aim Guardrail on your Hanzo config.yaml 
 
 Define your guardrails under the `guardrails` section
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: openai/gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
 guardrails:
   - guardrail_name: aim-protected-app
-    litellm_params:
+    llm_params:
       guardrail: aim
       mode: pre_call # 'during_call' is also available
       api_key: os.environ/AIM_API_KEY
@@ -47,9 +47,9 @@ You can also set `AIM_API_KEY` as an environment variable.
 
 By default, the `api_base` is set to `https://api.aim.security`. If you are using a self-hosted Aim Outpost, you can set the `api_base` to your Outpost's URL.
 
-### 4. Start LiteLLM Gateway
+### 4. Start Hanzo Gateway
 ```shell
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 ### 5. Make your first request
@@ -63,7 +63,7 @@ You can adjust the request content to match different guard's policies.
 <TabItem label="Successfully blocked request" value = "blocked">
 
 :::note
-When using LiteLLM with virtual keys, an `Authorization` header with the virtual key is required.
+When using Hanzo with virtual keys, an `Authorization` header with the virtual key is required.
 :::
 
 ```shell
@@ -96,7 +96,7 @@ If configured correctly, since `ishaan@berri.ai` would be detected by the Aim Gu
 <TabItem label="Successfully permitted request" value = "allowed">
 
 :::note
-When using LiteLLM with virtual keys, an `Authorization` header with the virtual key is required.
+When using Hanzo with virtual keys, an `Authorization` header with the virtual key is required.
 :::
 
 ```shell

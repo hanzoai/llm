@@ -16,7 +16,7 @@ Use this to loadbalance across Azure + OpenAI.
 ```yaml
 model_list:
   - model_name: openai-gpt-4o-realtime-audio
-    litellm_params:
+    llm_params:
       model: openai/gpt-4o-realtime-preview-2024-10-01
       api_key: os.environ/OPENAI_API_KEY
 ```
@@ -26,13 +26,13 @@ model_list:
 ```yaml
 model_list:
   - model_name: gpt-4o
-    litellm_params:
+    llm_params:
       model: azure/gpt-4o-realtime-preview
       api_key: os.environ/AZURE_SWEDEN_API_KEY
       api_base: os.environ/AZURE_SWEDEN_API_BASE
 
   - model_name: openai-gpt-4o-realtime-audio
-    litellm_params:
+    llm_params:
       model: openai/gpt-4o-realtime-preview-2024-10-01
       api_key: os.environ/OPENAI_API_KEY
 ```
@@ -43,7 +43,7 @@ model_list:
 ### Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml 
+llm --config /path/to/config.yaml 
 
 # RUNNING on http://0.0.0.0:8000
 ```
@@ -87,7 +87,7 @@ ws.on("error", function handleError(error) {
 
 ## Logging 
 
-To prevent requests from being dropped, by default LiteLLM just logs these event types:
+To prevent requests from being dropped, by default Hanzo just logs these event types:
 
 - `session.created`
 - `response.create`
@@ -96,7 +96,7 @@ To prevent requests from being dropped, by default LiteLLM just logs these event
 You can override this by setting the `logged_real_time_event_types` parameter in the config. For example:
 
 ```yaml
-litellm_settings:
+llm_settings:
   logged_real_time_event_types: "*" # Log all events
   ## OR ## 
   logged_real_time_event_types: ["session.created", "response.create", "response.done"] # Log only these event types

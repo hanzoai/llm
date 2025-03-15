@@ -1,6 +1,6 @@
 # Custom API Server (Custom Format)
 
-Call your custom torch-serve / internal LLM APIs via LiteLLM
+Call your custom torch-serve / internal LLM APIs via Hanzo
 
 :::info
 
@@ -11,13 +11,13 @@ Call your custom torch-serve / internal LLM APIs via LiteLLM
 ## Quick Start 
 
 ```python
-import litellm
-from litellm import CustomLLM, completion, get_llm_provider
+import llm
+from llm import CustomLLM, completion, get_llm_provider
 
 
 class MyCustomLLM(CustomLLM):
-    def completion(self, *args, **kwargs) -> litellm.ModelResponse:
-        return litellm.completion(
+    def completion(self, *args, **kwargs) -> llm.ModelResponse:
+        return llm.completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hello world"}],
             mock_response="Hi!",
@@ -25,7 +25,7 @@ class MyCustomLLM(CustomLLM):
 
 my_custom_llm = MyCustomLLM()
 
-litellm.custom_provider_map = [ # 👈 KEY STEP - REGISTER HANDLER
+llm.custom_provider_map = [ # 👈 KEY STEP - REGISTER HANDLER
         {"provider": "my-custom-llm", "custom_handler": my_custom_llm}
     ]
 
@@ -42,20 +42,20 @@ assert resp.choices[0].message.content == "Hi!"
 1. Setup your `custom_handler.py` file 
 
 ```python
-import litellm
-from litellm import CustomLLM, completion, get_llm_provider
+import llm
+from llm import CustomLLM, completion, get_llm_provider
 
 
 class MyCustomLLM(CustomLLM):
-    def completion(self, *args, **kwargs) -> litellm.ModelResponse:
-        return litellm.completion(
+    def completion(self, *args, **kwargs) -> llm.ModelResponse:
+        return llm.completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hello world"}],
             mock_response="Hi!",
         )  # type: ignore
 
-    async def acompletion(self, *args, **kwargs) -> litellm.ModelResponse:
-        return litellm.completion(
+    async def acompletion(self, *args, **kwargs) -> llm.ModelResponse:
+        return llm.completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hello world"}],
             mock_response="Hi!",
@@ -77,19 +77,19 @@ custom_handler: `custom_handler.my_custom_llm`
 ```yaml
 model_list:
   - model_name: "test-model"             
-    litellm_params:
+    llm_params:
       model: "openai/text-embedding-ada-002"
   - model_name: "my-custom-model"
-    litellm_params:
+    llm_params:
       model: "my-custom-llm/my-model"
 
-litellm_settings:
+llm_settings:
   custom_provider_map:
   - {"provider": "my-custom-llm", "custom_handler": custom_handler.my_custom_llm}
 ```
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -142,8 +142,8 @@ s/o [@Eloy Lafuente](https://github.com/stronk7) for this code example.
 ```python
 import time
 from typing import Iterator, AsyncIterator
-from litellm.types.utils import GenericStreamingChunk, ModelResponse
-from litellm import CustomLLM, completion, acompletion
+from llm.types.utils import GenericStreamingChunk, ModelResponse
+from llm import CustomLLM, completion, acompletion
 
 class UnixTimeLLM(CustomLLM):
     def completion(self, *args, **kwargs) -> ModelResponse:
@@ -187,9 +187,9 @@ unixtime = UnixTimeLLM()
 
 1. Setup your `custom_handler.py` file 
 ```python
-import litellm
-from litellm import CustomLLM
-from litellm.types.utils import ImageResponse, ImageObject
+import llm
+from llm import CustomLLM
+from llm.types.utils import ImageResponse, ImageObject
 
 
 class MyCustomLLM(CustomLLM):
@@ -215,19 +215,19 @@ custom_handler: `custom_handler.my_custom_llm`
 ```yaml
 model_list:
   - model_name: "test-model"             
-    litellm_params:
+    llm_params:
       model: "openai/text-embedding-ada-002"
   - model_name: "my-custom-model"
-    litellm_params:
+    llm_params:
       model: "my-custom-llm/my-model"
 
-litellm_settings:
+llm_settings:
   custom_provider_map:
   - {"provider": "my-custom-llm", "custom_handler": custom_handler.my_custom_llm}
 ```
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -261,14 +261,14 @@ Here's how to set this:
 <TabItem value="sdk" label="SDK">
 
 ```python
-import litellm
-from litellm import CustomLLM, completion, get_llm_provider
+import llm
+from llm import CustomLLM, completion, get_llm_provider
 
 
 class MyCustomLLM(CustomLLM):
-    def completion(self, *args, **kwargs) -> litellm.ModelResponse:
+    def completion(self, *args, **kwargs) -> llm.ModelResponse:
         assert kwargs["optional_params"] == {"my_custom_param": "my-custom-param"} # 👈 CHECK HERE
-        return litellm.completion(
+        return llm.completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hello world"}],
             mock_response="Hi!",
@@ -276,7 +276,7 @@ class MyCustomLLM(CustomLLM):
 
 my_custom_llm = MyCustomLLM()
 
-litellm.custom_provider_map = [ # 👈 KEY STEP - REGISTER HANDLER
+llm.custom_provider_map = [ # 👈 KEY STEP - REGISTER HANDLER
         {"provider": "my-custom-llm", "custom_handler": my_custom_llm}
     ]
 
@@ -289,9 +289,9 @@ resp = completion(model="my-custom-llm/my-model", my_custom_param="my-custom-par
 
 1. Setup your `custom_handler.py` file 
 ```python
-import litellm
-from litellm import CustomLLM
-from litellm.types.utils import ImageResponse, ImageObject
+import llm
+from llm import CustomLLM
+from llm.types.utils import ImageResponse, ImageObject
 
 
 class MyCustomLLM(CustomLLM):
@@ -318,20 +318,20 @@ custom_handler: `custom_handler.my_custom_llm`
 ```yaml
 model_list:
   - model_name: "test-model"             
-    litellm_params:
+    llm_params:
       model: "openai/text-embedding-ada-002"
   - model_name: "my-custom-model"
-    litellm_params:
+    llm_params:
       model: "my-custom-llm/my-model"
       my_custom_param: "my-custom-param" # 👈 CUSTOM PARAM
 
-litellm_settings:
+llm_settings:
   custom_provider_map:
   - {"provider": "my-custom-llm", "custom_handler": custom_handler.my_custom_llm}
 ```
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -354,9 +354,9 @@ curl -X POST 'http://0.0.0.0:4000/v1/images/generations' \
 ## Custom Handler Spec
 
 ```python
-from litellm.types.utils import GenericStreamingChunk, ModelResponse, ImageResponse
+from llm.types.utils import GenericStreamingChunk, ModelResponse, ImageResponse
 from typing import Iterator, AsyncIterator, Any, Optional, Union
-from litellm.llms.base import BaseLLM
+from llm.llms.base import BaseLLM
 
 class CustomLLMError(Exception):  # use this for all your exceptions
     def __init__(

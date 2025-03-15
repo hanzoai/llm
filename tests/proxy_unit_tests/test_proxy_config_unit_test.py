@@ -6,14 +6,14 @@ import pytest
 
 from dotenv import load_dotenv
 
-import litellm.proxy
-import litellm.proxy.proxy_server
+import llm.proxy
+import llm.proxy.proxy_server
 
 load_dotenv()
 import io
 import os
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -21,7 +21,7 @@ sys.path.insert(
 import asyncio
 import logging
 
-from litellm.proxy.proxy_server import ProxyConfig
+from llm.proxy.proxy_server import ProxyConfig
 
 INVALID_FILES = ["config_with_missing_include.yaml"]
 
@@ -96,23 +96,23 @@ async def test_read_config_file_with_os_environ_vars():
 
     # Add assertions
     assert (
-        config["litellm_settings"]["default_internal_user_params"]["user_role"]
+        config["llm_settings"]["default_internal_user_params"]["user_role"]
         == "admin"
     )
     assert (
-        config["litellm_settings"]["s3_callback_params"]["s3_aws_access_key_id"]
+        config["llm_settings"]["s3_callback_params"]["s3_aws_access_key_id"]
         == "1234567890"
     )
     assert (
-        config["litellm_settings"]["s3_callback_params"]["s3_aws_secret_access_key"]
+        config["llm_settings"]["s3_callback_params"]["s3_aws_secret_access_key"]
         == "1234567890"
     )
 
     for model in config["model_list"]:
-        if "azure" in model["litellm_params"]["model"]:
-            assert model["litellm_params"]["api_key"] == "1234567890"
-        elif "fireworks" in model["litellm_params"]["model"]:
-            assert model["litellm_params"]["api_key"] == "1234567890"
+        if "azure" in model["llm_params"]["model"]:
+            assert model["llm_params"]["api_key"] == "1234567890"
+        elif "fireworks" in model["llm_params"]["model"]:
+            assert model["llm_params"]["api_key"] == "1234567890"
 
     # cleanup
     for key, value in _env_vars_for_testing.items():
@@ -142,7 +142,7 @@ async def test_basic_include_directive():
     )
 
     # Verify original config settings remain
-    assert config["litellm_settings"]["callbacks"] == ["prometheus"]
+    assert config["llm_settings"]["callbacks"] == ["prometheus"]
 
 
 @pytest.mark.asyncio
@@ -183,25 +183,25 @@ async def test_multiple_includes():
     )
 
     # Verify original config settings remain
-    assert config["litellm_settings"]["callbacks"] == ["prometheus"]
+    assert config["llm_settings"]["callbacks"] == ["prometheus"]
 
 
 def test_add_callbacks_from_db_config():
     """Test that callbacks are added correctly and duplicates are prevented"""
     # Setup
-    from litellm.integrations.langfuse.langfuse_prompt_management import (
+    from llm.integrations.langfuse.langfuse_prompt_management import (
         LangfusePromptManagement,
     )
 
     proxy_config = ProxyConfig()
 
-    # Reset litellm callbacks before test
-    litellm.success_callback = []
-    litellm.failure_callback = []
+    # Reset llm callbacks before test
+    llm.success_callback = []
+    llm.failure_callback = []
 
     # Test Case 1: Add new callbacks
     config_data = {
-        "litellm_settings": {
+        "llm_settings": {
             "success_callback": ["langfuse", "custom_callback_api"],
             "failure_callback": ["langfuse"],
         }
@@ -209,26 +209,26 @@ def test_add_callbacks_from_db_config():
 
     proxy_config._add_callbacks_from_db_config(config_data)
 
-    # 1 instance of LangfusePromptManagement should exist in litellm.success_callback
+    # 1 instance of LangfusePromptManagement should exist in llm.success_callback
     num_langfuse_instances = sum(
         isinstance(callback, LangfusePromptManagement)
-        for callback in litellm.success_callback
+        for callback in llm.success_callback
     )
     assert num_langfuse_instances == 1
-    assert len(litellm.success_callback) == 2
-    assert len(litellm.failure_callback) == 1
+    assert len(llm.success_callback) == 2
+    assert len(llm.failure_callback) == 1
 
     # Test Case 2: Try adding duplicate callbacks
     proxy_config._add_callbacks_from_db_config(config_data)
 
     # Verify no duplicates were added
-    assert len(litellm.success_callback) == 2
-    assert len(litellm.failure_callback) == 1
+    assert len(llm.success_callback) == 2
+    assert len(llm.failure_callback) == 1
 
     # Cleanup
-    litellm.success_callback = []
-    litellm.failure_callback = []
-    litellm._known_custom_logger_compatible_callbacks = []
+    llm.success_callback = []
+    llm.failure_callback = []
+    llm._known_custom_logger_compatible_callbacks = []
 
 
 def test_add_callbacks_invalid_input():
@@ -236,12 +236,12 @@ def test_add_callbacks_invalid_input():
     proxy_config = ProxyConfig()
 
     # Reset callbacks
-    litellm.success_callback = []
-    litellm.failure_callback = []
+    llm.success_callback = []
+    llm.failure_callback = []
 
     # Test Case 1: Invalid callback format
     config_data = {
-        "litellm_settings": {
+        "llm_settings": {
             "success_callback": "invalid_string_format",  # Should be a list
             "failure_callback": 123,  # Should be a list
         }
@@ -250,17 +250,17 @@ def test_add_callbacks_invalid_input():
     proxy_config._add_callbacks_from_db_config(config_data)
 
     # Verify no callbacks were added with invalid input
-    assert len(litellm.success_callback) == 0
-    assert len(litellm.failure_callback) == 0
+    assert len(llm.success_callback) == 0
+    assert len(llm.failure_callback) == 0
 
-    # Test Case 2: Missing litellm_settings
+    # Test Case 2: Missing llm_settings
     config_data = {}
     proxy_config._add_callbacks_from_db_config(config_data)
 
     # Verify no callbacks were added
-    assert len(litellm.success_callback) == 0
-    assert len(litellm.failure_callback) == 0
+    assert len(llm.success_callback) == 0
+    assert len(llm.failure_callback) == 0
 
     # Cleanup
-    litellm.success_callback = []
-    litellm.failure_callback = []
+    llm.success_callback = []
+    llm.failure_callback = []

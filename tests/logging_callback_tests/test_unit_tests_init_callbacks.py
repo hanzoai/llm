@@ -11,34 +11,34 @@ sys.path.insert(
 from typing import Literal
 
 import pytest
-import litellm
+import llm
 import asyncio
 import logging
-from litellm._logging import verbose_logger
+from llm._logging import verbose_logger
 from prometheus_client import REGISTRY, CollectorRegistry
 
-from litellm.integrations.lago import LagoLogger
-from litellm.integrations.openmeter import OpenMeterLogger
-from litellm.integrations.braintrust_logging import BraintrustLogger
-from litellm.integrations.pagerduty.pagerduty import PagerDutyAlerting
-from litellm.integrations.galileo import GalileoObserve
-from litellm.integrations.langsmith import LangsmithLogger
-from litellm.integrations.literal_ai import LiteralAILogger
-from litellm.integrations.prometheus import PrometheusLogger
-from litellm.integrations.datadog.datadog import DataDogLogger
-from litellm.integrations.datadog.datadog_llm_obs import DataDogLLMObsLogger
-from litellm.integrations.gcs_bucket.gcs_bucket import GCSBucketLogger
-from litellm.integrations.gcs_pubsub.pub_sub import GcsPubSubLogger
-from litellm.integrations.opik.opik import OpikLogger
-from litellm.integrations.opentelemetry import OpenTelemetry
-from litellm.integrations.mlflow import MlflowLogger
-from litellm.integrations.argilla import ArgillaLogger
-from litellm.integrations.langfuse.langfuse_prompt_management import (
+from llm.integrations.lago import LagoLogger
+from llm.integrations.openmeter import OpenMeterLogger
+from llm.integrations.braintrust_logging import BraintrustLogger
+from llm.integrations.pagerduty.pagerduty import PagerDutyAlerting
+from llm.integrations.galileo import GalileoObserve
+from llm.integrations.langsmith import LangsmithLogger
+from llm.integrations.literal_ai import LiteralAILogger
+from llm.integrations.prometheus import PrometheusLogger
+from llm.integrations.datadog.datadog import DataDogLogger
+from llm.integrations.datadog.datadog_llm_obs import DataDogLLMObsLogger
+from llm.integrations.gcs_bucket.gcs_bucket import GCSBucketLogger
+from llm.integrations.gcs_pubsub.pub_sub import GcsPubSubLogger
+from llm.integrations.opik.opik import OpikLogger
+from llm.integrations.opentelemetry import OpenTelemetry
+from llm.integrations.mlflow import MlflowLogger
+from llm.integrations.argilla import ArgillaLogger
+from llm.integrations.langfuse.langfuse_prompt_management import (
     LangfusePromptManagement,
 )
-from litellm.integrations.azure_storage.azure_storage import AzureBlobStorageLogger
-from litellm.integrations.humanloop import HumanloopLogger
-from litellm.proxy.hooks.dynamic_rate_limiter import _PROXY_DynamicRateLimitHandler
+from llm.integrations.azure_storage.azure_storage import AzureBlobStorageLogger
+from llm.integrations.humanloop import HumanloopLogger
+from llm.proxy.hooks.dynamic_rate_limiter import _PROXY_DynamicRateLimitHandler
 from unittest.mock import patch
 
 # clear prometheus collectors / registry
@@ -100,12 +100,12 @@ expected_env_vars = {
 
 
 def reset_all_callbacks():
-    litellm.callbacks = []
-    litellm.input_callback = []
-    litellm.success_callback = []
-    litellm.failure_callback = []
-    litellm._async_success_callback = []
-    litellm._async_failure_callback = []
+    llm.callbacks = []
+    llm.input_callback = []
+    llm.success_callback = []
+    llm.failure_callback = []
+    llm._async_success_callback = []
+    llm._async_failure_callback = []
 
 
 initial_env_vars = {}
@@ -134,7 +134,7 @@ async def use_callback_in_llm_call(
         # internal CustomLogger class that expects internal_usage_cache passed to it, it always fails when tested in this way
         return
     elif callback == "argilla":
-        litellm.argilla_transformation_object = {}
+        llm.argilla_transformation_object = {}
     elif callback == "openmeter":
         # it's currently handled in jank way, TODO: fix openmete and then actually run it's test
         return
@@ -152,7 +152,7 @@ async def use_callback_in_llm_call(
             status_code=200, json={"items": [{"id": "mocked_dataset_id"}]}
         )
         patch.object(
-            litellm.module_level_client, "get", return_value=mock_response
+            llm.module_level_client, "get", return_value=mock_response
         ).start()
 
     # Mock the httpx call for Argilla dataset retrieval
@@ -163,16 +163,16 @@ async def use_callback_in_llm_call(
             status_code=200, json={"items": [{"id": "mocked_dataset_id"}]}
         )
         patch.object(
-            litellm.module_level_client, "get", return_value=mock_response
+            llm.module_level_client, "get", return_value=mock_response
         ).start()
 
     if used_in == "callbacks":
-        litellm.callbacks = [callback]
+        llm.callbacks = [callback]
     elif used_in == "success_callback":
-        litellm.success_callback = [callback]
+        llm.success_callback = [callback]
 
     for _ in range(5):
-        await litellm.acompletion(
+        await llm.acompletion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "hi"}],
             temperature=0.1,
@@ -184,25 +184,25 @@ async def use_callback_in_llm_call(
         expected_class = callback_class_str_to_classType[callback]
 
         if used_in == "callbacks":
-            assert isinstance(litellm._async_success_callback[0], expected_class)
-            assert isinstance(litellm._async_failure_callback[0], expected_class)
-            assert isinstance(litellm.success_callback[0], expected_class)
-            assert isinstance(litellm.failure_callback[0], expected_class)
+            assert isinstance(llm._async_success_callback[0], expected_class)
+            assert isinstance(llm._async_failure_callback[0], expected_class)
+            assert isinstance(llm.success_callback[0], expected_class)
+            assert isinstance(llm.failure_callback[0], expected_class)
 
             assert (
-                len(litellm._async_success_callback) == 1
-            ), f"Got={litellm._async_success_callback}"
-            assert len(litellm._async_failure_callback) == 1
-            assert len(litellm.success_callback) == 1
-            assert len(litellm.failure_callback) == 1
-            assert len(litellm.callbacks) == 1
+                len(llm._async_success_callback) == 1
+            ), f"Got={llm._async_success_callback}"
+            assert len(llm._async_failure_callback) == 1
+            assert len(llm.success_callback) == 1
+            assert len(llm.failure_callback) == 1
+            assert len(llm.callbacks) == 1
         elif used_in == "success_callback":
-            print(f"litellm.success_callback: {litellm.success_callback}")
-            print(f"litellm._async_success_callback: {litellm._async_success_callback}")
-            assert isinstance(litellm.success_callback[0], expected_class)
-            assert len(litellm.success_callback) == 1  # ["lago", LagoLogger]
-            assert isinstance(litellm._async_success_callback[0], expected_class)
-            assert len(litellm._async_success_callback) == 1
+            print(f"llm.success_callback: {llm.success_callback}")
+            print(f"llm._async_success_callback: {llm._async_success_callback}")
+            assert isinstance(llm.success_callback[0], expected_class)
+            assert len(llm.success_callback) == 1  # ["lago", LagoLogger]
+            assert isinstance(llm._async_success_callback[0], expected_class)
+            assert len(llm._async_success_callback) == 1
 
             # TODO also assert that it's not set for failure_callback
             # As of Oct 21 2024, it's currently set
@@ -219,15 +219,15 @@ async def use_callback_in_llm_call(
 async def test_init_custom_logger_compatible_class_as_callback():
     init_env_vars()
 
-    # used like litellm.callbacks = ["prometheus"]
-    for callback in litellm._known_custom_logger_compatible_callbacks:
+    # used like llm.callbacks = ["prometheus"]
+    for callback in llm._known_custom_logger_compatible_callbacks:
         print(f"Testing callback: {callback}")
         reset_all_callbacks()
 
         await use_callback_in_llm_call(callback, used_in="callbacks")
 
-    # used like this litellm.success_callback = ["prometheus"]
-    for callback in litellm._known_custom_logger_compatible_callbacks:
+    # used like this llm.success_callback = ["prometheus"]
+    for callback in llm._known_custom_logger_compatible_callbacks:
         print(f"Testing callback: {callback}")
         reset_all_callbacks()
 
@@ -237,19 +237,19 @@ async def test_init_custom_logger_compatible_class_as_callback():
 
 
 def test_dynamic_logging_global_callback():
-    from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
-    from litellm.integrations.custom_logger import CustomLogger
-    from litellm.types.utils import ModelResponse, Choices, Message, Usage
+    from llm.llm_core_utils.llm_logging import Logging as HanzoLoggingObj
+    from llm.integrations.custom_logger import CustomLogger
+    from llm.types.utils import ModelResponse, Choices, Message, Usage
 
     cl = CustomLogger()
 
-    litellm_logging = LiteLLMLoggingObj(
+    llm_logging = HanzoLoggingObj(
         model="claude-3-opus-20240229",
         messages=[{"role": "user", "content": "hi"}],
         stream=False,
         call_type="completion",
         start_time=datetime.now(),
-        litellm_call_id="123",
+        llm_call_id="123",
         function_id="456",
         kwargs={
             "langfuse_public_key": "my-mock-public-key",
@@ -260,10 +260,10 @@ def test_dynamic_logging_global_callback():
 
     with patch.object(cl, "log_success_event") as mock_log_success_event:
         cl.log_success_event = mock_log_success_event
-        litellm.success_callback = [cl]
+        llm.success_callback = [cl]
 
         try:
-            litellm_logging.success_handler(
+            llm_logging.success_handler(
                 result=ModelResponse(
                     id="chatcmpl-5418737b-ab14-420b-b9c5-b278b6681b70",
                     created=1732306261,
@@ -301,15 +301,15 @@ def test_dynamic_logging_global_callback():
 
 
 def test_get_combined_callback_list():
-    from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
+    from llm.llm_core_utils.llm_logging import Logging as HanzoLoggingObj
 
-    _logging = LiteLLMLoggingObj(
+    _logging = HanzoLoggingObj(
         model="claude-3-opus-20240229",
         messages=[{"role": "user", "content": "hi"}],
         stream=False,
         call_type="completion",
         start_time=datetime.now(),
-        litellm_call_id="123",
+        llm_call_id="123",
         function_id="456",
     )
 

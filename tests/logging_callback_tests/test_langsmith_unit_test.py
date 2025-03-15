@@ -13,14 +13,14 @@ import time
 from unittest.mock import AsyncMock, patch, MagicMock
 import pytest
 from datetime import datetime, timezone
-from litellm.integrations.langsmith import (
+from llm.integrations.langsmith import (
     LangsmithLogger,
     LangsmithQueueObject,
     CredentialsKey,
     BatchGroup,
 )
 
-import litellm
+import llm
 
 
 # Test get_credentials_from_env
@@ -157,7 +157,7 @@ async def test_make_dot_order():
 # Test is_serializable
 @pytest.mark.asyncio
 async def test_is_serializable():
-    from litellm.integrations.langsmith import is_serializable
+    from llm.integrations.langsmith import is_serializable
     from pydantic import BaseModel
 
     # Test basic types
@@ -206,20 +206,20 @@ async def test_async_send_batch():
 @pytest.mark.asyncio
 async def test_langsmith_key_based_logging(mocker):
     """
-    In key based logging langsmith_api_key and langsmith_project are passed directly to litellm.acompletion
+    In key based logging langsmith_api_key and langsmith_project are passed directly to llm.acompletion
     """
     try:
         # Mock the httpx post request
         mock_post = mocker.patch(
-            "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post"
+            "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post"
         )
         mock_post.return_value.status_code = 200
         mock_post.return_value.raise_for_status = lambda: None
-        litellm.set_verbose = True
-        litellm.DEFAULT_FLUSH_INTERVAL_SECONDS = 1
+        llm.set_verbose = True
+        llm.DEFAULT_FLUSH_INTERVAL_SECONDS = 1
 
-        litellm.callbacks = [LangsmithLogger()]
-        response = await litellm.acompletion(
+        llm.callbacks = [LangsmithLogger()]
+        response = await llm.acompletion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Test message"}],
             max_tokens=10,
@@ -345,13 +345,13 @@ async def test_langsmith_queue_logging():
         # Initialize LangsmithLogger
         test_langsmith_logger = LangsmithLogger()
 
-        litellm.callbacks = [test_langsmith_logger]
+        llm.callbacks = [test_langsmith_logger]
         test_langsmith_logger.batch_size = 6
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         # Make multiple calls to ensure we don't hit the batch size
         for _ in range(5):
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Test message"}],
                 max_tokens=10,
@@ -366,7 +366,7 @@ async def test_langsmith_queue_logging():
 
         # Now make calls to exceed the batch size
         for _ in range(3):
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Test message"}],
                 max_tokens=10,
@@ -386,7 +386,7 @@ async def test_langsmith_queue_logging():
         assert len(test_langsmith_logger.log_queue) < 5
 
         # Clean up
-        for cb in litellm.callbacks:
+        for cb in llm.callbacks:
             if isinstance(cb, LangsmithLogger):
                 await cb.async_httpx_client.client.aclose()
 

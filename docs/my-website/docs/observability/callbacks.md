@@ -2,11 +2,11 @@
 
 ## Use Callbacks to send Output Data to Posthog, Sentry etc
 
-liteLLM provides `input_callbacks`, `success_callbacks` and `failure_callbacks`, making it easy for you to send data to a particular provider depending on the status of your responses.
+LLM provides `input_callbacks`, `success_callbacks` and `failure_callbacks`, making it easy for you to send data to a particular provider depending on the status of your responses.
 
-liteLLM supports:
+LLM supports:
 
-- [Custom Callback Functions](https://docs.litellm.ai/docs/observability/custom_callback)
+- [Custom Callback Functions](https://docs.llm.ai/docs/observability/custom_callback)
 - [Lunary](https://lunary.ai/docs)
 - [Langfuse](https://langfuse.com/docs)
 - [LangSmith](https://www.langchain.com/langsmith)
@@ -22,12 +22,12 @@ This is **not** an extensive list. Please check the dropdown for all logging int
 ### Quick Start
 
 ```python
-from litellm import completion
+from llm import completion
 
 # set callbacks
-litellm.input_callback=["sentry"] # for sentry breadcrumbing - logs the input being sent to the api
-litellm.success_callback=["posthog", "helicone", "langfuse", "lunary", "athina"]
-litellm.failure_callback=["sentry", "lunary", "langfuse"]
+llm.input_callback=["sentry"] # for sentry breadcrumbing - logs the input being sent to the api
+llm.success_callback=["posthog", "helicone", "langfuse", "lunary", "athina"]
+llm.failure_callback=["sentry", "lunary", "langfuse"]
 
 ## set env variables
 os.environ['LUNARY_PUBLIC_KEY'] = ""

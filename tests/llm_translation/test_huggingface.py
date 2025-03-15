@@ -11,9 +11,9 @@ from unittest.mock import AsyncMock
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm import completion, acompletion
-from litellm.llms.custom_httpx.http_handler import HTTPHandler, AsyncHTTPHandler
+import llm
+from llm import completion, acompletion
+from llm.llms.custom_httpx.http_handler import HTTPHandler, AsyncHTTPHandler
 from unittest.mock import patch, MagicMock, AsyncMock, Mock
 import pytest
 

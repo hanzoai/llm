@@ -3,9 +3,9 @@
 :::info
 
 This is an Enterprise feature.
-[Enterprise Pricing](https://www.litellm.ai/#pricing)
+[Enterprise Pricing](https://www.llm.ai/#pricing)
 
-[Contact us here to get a free trial](https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat)
+[Contact us here to get a free trial](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
 
 :::
 
@@ -21,8 +21,8 @@ curl -L -X POST 'http://0.0.0.0:4000/model/new' \
 -H 'Authorization: Bearer sk-******2ql3-sm28WU0tTAmA' \ # 👈 Team API Key (has same 'team_id' as below)
 -H 'Content-Type: application/json' \
 -d '{
-  "model_name": "my-team-model", # 👈 Call LiteLLM with this model name
-  "litellm_params": {
+  "model_name": "my-team-model", # 👈 Call Hanzo with this model name
+  "llm_params": {
     "model": "openai/gpt-4o",
     "custom_llm_provider": "openai",
     "api_key": "******ccb07",
@@ -73,7 +73,7 @@ curl -L -X GET 'http://localhost:4000/team/info?team_id=e59e2671-a064-436a-a0fa-
     "team_id": "e59e2671-a064-436a-a0fa-16ae96e5a0a1",
     "team_info": {
         ...,
-        "litellm_model_table": {
+        "llm_model_table": {
             "model_aliases": {
                 "my-team-model": # 👈 public model name "model_name_e59e2671-a064-436a-a0fa-16ae96e5a0a1_e81c9286-2195-4bd9-81e1-cf393788a1a0" 👈 internally generated model name (used to ensure uniqueness)
             },

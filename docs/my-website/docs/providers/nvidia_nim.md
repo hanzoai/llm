@@ -6,7 +6,7 @@ https://docs.api.nvidia.com/nim/reference/
 
 :::tip
 
-**We support ALL Nvidia NIM models, just set `model=nvidia_nim/<any-model-on-nvidia_nim>` as a prefix when sending litellm requests**
+**We support ALL Nvidia NIM models, just set `model=nvidia_nim/<any-model-on-nvidia_nim>` as a prefix when sending llm requests**
 
 :::
 
@@ -18,7 +18,7 @@ os.environ['NVIDIA_NIM_API_KEY']
 
 ## Sample Usage
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['NVIDIA_NIM_API_KEY'] = ""
@@ -42,7 +42,7 @@ print(response)
 
 ## Sample Usage - Streaming
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['NVIDIA_NIM_API_KEY'] = ""
@@ -71,12 +71,12 @@ for chunk in response:
 ## Usage - embedding
 
 ```python
-import litellm
+import llm
 import os
 
-response = litellm.embedding(
-    model="nvidia_nim/nvidia/nv-embedqa-e5-v5",               # add `nvidia_nim/` prefix to model so litellm knows to route to Nvidia NIM
-    input=["good morning from litellm"],
+response = llm.embedding(
+    model="nvidia_nim/nvidia/nv-embedqa-e5-v5",               # add `nvidia_nim/` prefix to model so llm knows to route to Nvidia NIM
+    input=["good morning from llm"],
     encoding_format = "float", 
     user_id = "user-1234",
 
@@ -88,16 +88,16 @@ print(response)
 ```
 
 
-## **Usage - LiteLLM Proxy Server**
+## **Usage - Hanzo Proxy Server**
 
-Here's how to call an Nvidia NIM Endpoint with the LiteLLM Proxy Server
+Here's how to call an Nvidia NIM Endpoint with the Hanzo Proxy Server
 
 1. Modify the config.yaml 
 
   ```yaml
   model_list:
     - model_name: my-model
-      litellm_params:
+      llm_params:
         model: nvidia_nim/<your-model-name>  # add nvidia_nim/ prefix to route as Nvidia NIM provider
         api_key: api-key                 # api key to send your model
   ```
@@ -106,10 +106,10 @@ Here's how to call an Nvidia NIM Endpoint with the LiteLLM Proxy Server
 2. Start the proxy 
 
   ```bash
-  $ litellm --config /path/to/config.yaml
+  $ llm --config /path/to/config.yaml
   ```
 
-3. Send Request to LiteLLM Proxy Server
+3. Send Request to Hanzo Proxy Server
 
   <Tabs>
 
@@ -118,8 +118,8 @@ Here's how to call an Nvidia NIM Endpoint with the LiteLLM Proxy Server
   ```python
   import openai
   client = openai.OpenAI(
-      api_key="sk-1234",             # pass litellm proxy key, if you're using virtual keys
-      base_url="http://0.0.0.0:4000" # litellm-proxy-base url
+      api_key="sk-1234",             # pass llm proxy key, if you're using virtual keys
+      base_url="http://0.0.0.0:4000" # llm-proxy-base url
   )
 
   response = client.chat.completions.create(

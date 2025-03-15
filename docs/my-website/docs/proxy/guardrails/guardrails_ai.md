@@ -17,23 +17,23 @@ Use [Guardrails.ai](https://www.guardrailsai.com/) to add checks to LLM output.
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
 guardrails:
   - guardrail_name: "guardrails_ai-guard"
-    litellm_params:
+    llm_params:
       guardrail: guardrails_ai
       guard_name: "gibberish_guard" # 👈 Guardrail AI guard name
       mode: "post_call"
       api_base: os.environ/GUARDRAILS_AI_API_BASE # 👈 Guardrails AI API Base. Defaults to "http://0.0.0.0:8000"
 ```
 
-2. Start LiteLLM Gateway 
+2. Start Hanzo Gateway 
 
 ```shell
-litellm --config config.yaml --detailed_debug
+llm --config config.yaml --detailed_debug
 ```
 
 3. Test request 
@@ -58,7 +58,7 @@ curl -i http://localhost:4000/v1/chat/completions \
 
 :::info
 
-✨ This is an Enterprise only feature [Contact us to get a free trial](https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat)
+✨ This is an Enterprise only feature [Contact us to get a free trial](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
 
 :::
 

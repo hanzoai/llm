@@ -7,7 +7,7 @@
 
 :::info
 
-Beta Feature -  This feature might move to LiteLLM Enterprise
+Beta Feature -  This feature might move to Hanzo Enterprise
 
 :::
 

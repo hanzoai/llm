@@ -1,5 +1,5 @@
 # Support & Talk with founders
-[Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-litellm-hosted-version)
+[Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
 
 [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 

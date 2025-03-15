@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 
 Covers Threads, Messages, Assistants. 
 
-LiteLLM currently covers: 
+Hanzo currently covers: 
 - Create Assistants 
 - Delete Assistants
 - Get Assistants
@@ -41,13 +41,13 @@ Call an existing Assistant.
 
 
 ```python
-import litellm
+import llm
 import os 
 
 # setup env
 os.environ["OPENAI_API_KEY"] = "sk-.."
 
-assistant = litellm.create_assistants(
+assistant = llm.create_assistants(
             custom_llm_provider="openai",
             model="gpt-4-turbo",
             instructions="You are a personal math tutor. When asked a question, write and run Python code to answer the question.",
@@ -56,7 +56,7 @@ assistant = litellm.create_assistants(
 )
 
 ### ASYNC USAGE ### 
-# assistant = await litellm.acreate_assistants(
+# assistant = await llm.acreate_assistants(
 #             custom_llm_provider="openai",
 #             model="gpt-4-turbo",
 #             instructions="You are a personal math tutor. When asked a question, write and run Python code to answer the question.",
@@ -68,7 +68,7 @@ assistant = litellm.create_assistants(
 **Get the Assistant**
 
 ```python
-from litellm import get_assistants, aget_assistants
+from llm import get_assistants, aget_assistants
 import os 
 
 # setup env
@@ -83,7 +83,7 @@ assistants = get_assistants(custom_llm_provider="openai")
 **Create a Thread**
 
 ```python
-from litellm import create_thread, acreate_thread
+from llm import create_thread, acreate_thread
 import os 
 
 os.environ["OPENAI_API_KEY"] = "sk-.."
@@ -100,7 +100,7 @@ new_thread = create_thread(
 **Add Messages to the Thread**
 
 ```python
-from litellm import create_thread, get_thread, aget_thread, add_message, a_add_message
+from llm import create_thread, get_thread, aget_thread, add_message, a_add_message
 import os 
 
 os.environ["OPENAI_API_KEY"] = "sk-.."
@@ -133,7 +133,7 @@ added_message = add_message(
 **Run the Assistant on the Thread**
 
 ```python
-from litellm import get_assistants, create_thread, add_message, run_thread, arun_thread
+from llm import get_assistants, create_thread, add_message, run_thread, arun_thread
 import os 
 
 os.environ["OPENAI_API_KEY"] = "sk-.."
@@ -170,14 +170,14 @@ print(f"run_thread: {run_thread}")
 ```yaml
 assistant_settings:
   custom_llm_provider: azure
-  litellm_params: 
+  llm_params: 
     api_key: os.environ/AZURE_API_KEY
     api_base: os.environ/AZURE_API_BASE
     api_version: os.environ/AZURE_API_VERSION
 ```
 
 ```bash
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -255,7 +255,7 @@ curl http://0.0.0.0:4000/v1/threads/thread_abc123/runs \
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import run_thread_stream 
+from llm import run_thread_stream 
 import os
 
 os.environ["OPENAI_API_KEY"] = "sk-.."
@@ -288,7 +288,7 @@ curl -X POST 'http://0.0.0.0:4000/threads/{thread_id}/runs' \
 </TabItem>
 </Tabs>
 
-## [👉 Proxy API Reference](https://litellm-api.up.railway.app/#/assistants)
+## [👉 Proxy API Reference](https://llm-api.up.railway.app/#/assistants)
 
 
 ## Azure OpenAI
@@ -297,7 +297,7 @@ curl -X POST 'http://0.0.0.0:4000/threads/{thread_id}/runs' \
 ```yaml
 assistant_settings:
   custom_llm_provider: azure
-  litellm_params: 
+  llm_params: 
     api_key: os.environ/AZURE_API_KEY
     api_base: os.environ/AZURE_API_BASE
 ```
@@ -325,7 +325,7 @@ To call openai-compatible Assistants API's (eg. Astra Assistants API), just add 
 ```yaml
 assistant_settings:
   custom_llm_provider: openai
-  litellm_params: 
+  llm_params: 
     api_key: os.environ/ASTRA_API_KEY
     api_base: os.environ/ASTRA_API_BASE
 ```

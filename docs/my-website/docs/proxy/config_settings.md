@@ -6,7 +6,7 @@ environment_variables: {}
 
 model_list:
   - model_name: string
-    litellm_params: {}
+    llm_params: {}
     model_info:
       id: string
       mode: embedding
@@ -16,7 +16,7 @@ model_list:
       base_model: gpt-4-1106-preview
       additionalProp1: {}
 
-litellm_settings:
+llm_settings:
   # Logging/Callback settings
   success_callback: ["langfuse"]  # list of success callbacks
   failure_callback: ["sentry"]  # list of failure callbacks
@@ -27,10 +27,10 @@ litellm_settings:
   langfuse_default_tags: ["cache_hit", "cache_key", "proxy_base_url", "user_api_key_alias", "user_api_key_user_id", "user_api_key_user_email", "user_api_key_team_alias", "semantic-similarity", "proxy_base_url"] # default tags for Langfuse Logging
   
   # Networking settings
-  request_timeout: 10 # (int) llm requesttimeout in seconds. Raise Timeout error if call takes longer than 10s. Sets litellm.request_timeout 
-  force_ipv4: boolean # If true, litellm will force ipv4 for all LLM requests. Some users have seen httpx ConnectionError when using ipv6 + Anthropic API
+  request_timeout: 10 # (int) llm requesttimeout in seconds. Raise Timeout error if call takes longer than 10s. Sets llm.request_timeout 
+  force_ipv4: boolean # If true, llm will force ipv4 for all LLM requests. Some users have seen httpx ConnectionError when using ipv6 + Anthropic API
   
-  set_verbose: boolean # sets litellm.set_verbose=True to view verbose debug logs. DO NOT LEAVE THIS ON IN PRODUCTION
+  set_verbose: boolean # sets llm.set_verbose=True to view verbose debug logs. DO NOT LEAVE THIS ON IN PRODUCTION
   json_logs: boolean # if true, logs will be in json format
 
   # Fallbacks, reliability
@@ -49,7 +49,7 @@ litellm_settings:
     host: "localhost"  # The host address for the Redis cache. Required if type is "redis".
     port: 6379  # The port number for the Redis cache. Required if type is "redis".
     password: "your_password"  # The password for the Redis cache. Required if type is "redis".
-    namespace: "litellm.caching.caching" # namespace for redis cache
+    namespace: "llm.caching.caching" # namespace for redis cache
   
     # Optional - Redis Cluster Settings
     redis_startup_nodes: [{"host": "127.0.0.1", "port": "7001"}] 
@@ -65,7 +65,7 @@ litellm_settings:
     similarity_threshold: 0.8   # similarity threshold for semantic cache
 
     # Optional - S3 Cache Settings
-    s3_bucket_name: cache-bucket-litellm   # AWS Bucket Name for S3
+    s3_bucket_name: cache-bucket-llm   # AWS Bucket Name for S3
     s3_region_name: us-west-2              # AWS Region Name for S3
     s3_aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID  # us os.environ/<variable name> to pass environment variables. This is AWS Access Key ID for S3
     s3_aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY  # AWS Secret Access Key for S3
@@ -90,7 +90,7 @@ general_settings:
   disable_retry_on_max_parallel_request_limit_error: boolean  # turn off retries when max parallel request limit is reached
   disable_reset_budget: boolean  # turn off reset budget scheduled task
   disable_adding_master_key_hash_to_db: boolean  # turn off storing master key hash in db, for spend tracking
-  enable_jwt_auth: boolean  # allow proxy admin to auth in via jwt tokens with 'litellm_proxy_admin' in claims
+  enable_jwt_auth: boolean  # allow proxy admin to auth in via jwt tokens with 'llm_proxy_admin' in claims
   enforce_user_param: boolean  # requires all openai endpoint requests to have a 'user' param
   allowed_routes: ["route1", "route2"]  # list of allowed proxy API routes - a user can access. (currently JWT-Auth only)
   key_management_system: google_kms  # either google_kms or azure_kms
@@ -113,7 +113,7 @@ general_settings:
   use_client_credentials_pass_through_routes: boolean  # use client credentials for all pass through routes like "/vertex-ai", /bedrock/. When this is True Virtual Key auth will not be applied on these endpoints
 ```
 
-### litellm_settings - Reference
+### llm_settings - Reference
 
 | Name | Type | Description |
 |------|------|-------------|
@@ -125,17 +125,17 @@ general_settings:
 | modify_params | boolean | If true, allows modifying the parameters of the request before it is sent to the LLM provider |
 | enable_preview_features | boolean | If true, enables preview features - e.g. Azure O1 Models with streaming support.|
 | redact_user_api_key_info | boolean | If true, redacts information about the user api key from logs [Proxy Logging](logging#redacting-userapikeyinfo) |
-| langfuse_default_tags | array of strings | Default tags for Langfuse Logging. Use this if you want to control which LiteLLM-specific fields are logged as tags by the LiteLLM proxy. By default LiteLLM Proxy logs no LiteLLM-specific fields as tags. [Further docs](./logging#litellm-specific-tags-on-langfuse---cache_hit-cache_key) |
-| set_verbose | boolean | If true, sets litellm.set_verbose=True to view verbose debug logs. DO NOT LEAVE THIS ON IN PRODUCTION |
-| json_logs | boolean | If true, logs will be in json format. If you need to store the logs as JSON, just set the `litellm.json_logs = True`. We currently just log the raw POST request from litellm as a JSON [Further docs](./debugging) |
+| langfuse_default_tags | array of strings | Default tags for Langfuse Logging. Use this if you want to control which Hanzo-specific fields are logged as tags by the Hanzo proxy. By default Hanzo Proxy logs no Hanzo-specific fields as tags. [Further docs](./logging#llm-specific-tags-on-langfuse---cache_hit-cache_key) |
+| set_verbose | boolean | If true, sets llm.set_verbose=True to view verbose debug logs. DO NOT LEAVE THIS ON IN PRODUCTION |
+| json_logs | boolean | If true, logs will be in json format. If you need to store the logs as JSON, just set the `llm.json_logs = True`. We currently just log the raw POST request from llm as a JSON [Further docs](./debugging) |
 | default_fallbacks | array of strings | List of fallback models to use if a specific model group is misconfigured / bad. [Further docs](./reliability#default-fallbacks) |
 | request_timeout | integer | The timeout for requests in seconds. If not set, the default value is `6000 seconds`. [For reference OpenAI Python SDK defaults to `600 seconds`.](https://github.com/openai/openai-python/blob/main/src/openai/_constants.py) |
-| force_ipv4 | boolean | If true, litellm will force ipv4 for all LLM requests. Some users have seen httpx ConnectionError when using ipv6 + Anthropic API |
+| force_ipv4 | boolean | If true, llm will force ipv4 for all LLM requests. Some users have seen httpx ConnectionError when using ipv6 + Anthropic API |
 | content_policy_fallbacks | array of objects | Fallbacks to use when a ContentPolicyViolationError is encountered. [Further docs](./reliability#content-policy-fallbacks) |
 | context_window_fallbacks | array of objects | Fallbacks to use when a ContextWindowExceededError is encountered. [Further docs](./reliability#context-window-fallbacks) |
 | cache | boolean | If true, enables caching. [Further docs](./caching) |
 | cache_params | object | Parameters for the cache. [Further docs](./caching#supported-cache_params-on-proxy-configyaml) |
-| disable_end_user_cost_tracking | boolean | If true, turns off end user cost tracking on prometheus metrics + litellm spend logs table on proxy. |
+| disable_end_user_cost_tracking | boolean | If true, turns off end user cost tracking on prometheus metrics + llm spend logs table on proxy. |
 | disable_end_user_cost_tracking_prometheus_only | boolean | If true, turns off end user cost tracking on prometheus metrics only. |
 | key_generation_settings | object | Restricts who can generate keys. [Further docs](./virtual_keys.md#restricting-key-generation) |
 | disable_add_transform_inline_image_block | boolean | For Fireworks AI models - if true, turns off the auto-add of `#transform=inline` to the url of the image_url, if the model is not a vision model. |
@@ -151,7 +151,7 @@ general_settings:
 | disable_retry_on_max_parallel_request_limit_error | boolean | If true, turns off retries when max parallel request limit is reached |
 | disable_reset_budget | boolean | If true, turns off reset budget scheduled task |
 | disable_adding_master_key_hash_to_db | boolean | If true, turns off storing master key hash in db |
-| enable_jwt_auth | boolean | allow proxy admin to auth in via jwt tokens with 'litellm_proxy_admin' in claims. [Doc on JWT Tokens](token_auth) |
+| enable_jwt_auth | boolean | allow proxy admin to auth in via jwt tokens with 'llm_proxy_admin' in claims. [Doc on JWT Tokens](token_auth) |
 | enforce_user_param | boolean | If true, requires all OpenAI endpoint requests to have a 'user' param. [Doc on call hooks](call_hooks)|
 | allowed_routes | array of strings | List of allowed proxy API routes a user can access [Doc on controlling allowed routes](enterprise#control-available-public-private-routes)|
 | key_management_system | string | Specifies the key management system. [Doc Secret Managers](../secret) |
@@ -159,7 +159,7 @@ general_settings:
 | database_url | string | The URL for the database connection [Set up Virtual Keys](virtual_keys) |
 | database_connection_pool_limit | integer | The limit for database connection pool [Setting DB Connection Pool limit](#configure-db-pool-limits--connection-timeouts) |
 | database_connection_timeout | integer | The timeout for database connections in seconds [Setting DB Connection Pool limit, timeout](#configure-db-pool-limits--connection-timeouts) |
-| allow_requests_on_db_unavailable | boolean | If true, allows requests to succeed even if DB is unreachable. **Only use this if running LiteLLM in your VPC** This will allow requests to work even when LiteLLM cannot connect to the DB to verify a Virtual Key |
+| allow_requests_on_db_unavailable | boolean | If true, allows requests to succeed even if DB is unreachable. **Only use this if running Hanzo in your VPC** This will allow requests to work even when Hanzo cannot connect to the DB to verify a Virtual Key |
 | custom_auth | string | Write your own custom authentication logic [Doc Custom Auth](virtual_keys#custom-auth) |
 | max_parallel_requests | integer | The max parallel requests allowed per deployment |
 | global_max_parallel_requests | integer | The max parallel requests allowed on the proxy overall |
@@ -194,7 +194,7 @@ general_settings:
 | allow_user_auth | boolean | (Deprecated) old approach for user authentication. |
 | user_api_key_cache_ttl | int | The time (in seconds) to cache user api keys in memory. |
 | disable_prisma_schema_update | boolean | If true, turns off automatic schema updates to DB |
-| litellm_key_header_name | str | If set, allows passing LiteLLM keys as a custom header. [Doc on custom headers](./virtual_keys.md#custom-headers) |
+| llm_key_header_name | str | If set, allows passing Hanzo keys as a custom header. [Doc on custom headers](./virtual_keys.md#custom-headers) |
 | moderation_model | str | The default model to use for moderation. |
 | custom_sso | str | Path to a python file that implements custom SSO logic. [Doc on custom SSO](./custom_sso.md) |
 | allow_client_side_credentials | boolean | If true, allows passing client side credentials to the proxy. (Useful when testing finetuning models) [Doc on client side credentials](./virtual_keys.md#client-side-credentials) |
@@ -203,8 +203,8 @@ general_settings:
 | use_google_kms | boolean | If true, load keys from google kms |
 | spend_report_frequency | str | Specify how often you want a Spend Report to be sent (e.g. "1d", "2d", "30d") [More on this](./alerting.md#spend-report-frequency) |
 | ui_access_mode | Literal["admin_only"] | If set, restricts access to the UI to admin users only. [Docs](./ui.md#restrict-ui-access) |
-| litellm_jwtauth | Dict[str, Any] | Settings for JWT authentication. [Docs](./token_auth.md) |
-| litellm_license | str | The license key for the proxy. [Docs](../enterprise.md#how-does-deployment-with-enterprise-license-work) |
+| llm_jwtauth | Dict[str, Any] | Settings for JWT authentication. [Docs](./token_auth.md) |
+| llm_license | str | The license key for the proxy. [Docs](../enterprise.md#how-does-deployment-with-enterprise-license-work) |
 | oauth2_config_mappings | Dict[str, str] | Define the OAuth2 config mappings | 
 | pass_through_endpoints | List[Dict[str, Any]] | Define the pass through endpoints. [Docs](./pass_through) |
 | enable_oauth2_proxy_auth | boolean | (Enterprise Feature) If true, enables oauth2.0 authentication |
@@ -215,7 +215,7 @@ general_settings:
 
 :::info
 
-Most values can also be set via `litellm_settings`. If you see overlapping values, settings on `router_settings` will override those on `litellm_settings`.
+Most values can also be set via `llm_settings`. If you see overlapping values, settings on `router_settings` will override those on `llm_settings`.
 :::
 
 ```yaml
@@ -251,9 +251,9 @@ router_settings:
 | Name | Type | Description |
 |------|------|-------------|
 | routing_strategy | string | The strategy used for routing requests. Options: "simple-shuffle", "least-busy", "usage-based-routing", "latency-based-routing". Default is "simple-shuffle". [More information here](../routing) |
-| redis_host | string | The host address for the Redis server. **Only set this if you have multiple instances of LiteLLM Proxy and want current tpm/rpm tracking to be shared across them** |
-| redis_password | string | The password for the Redis server. **Only set this if you have multiple instances of LiteLLM Proxy and want current tpm/rpm tracking to be shared across them** |
-| redis_port | string | The port number for the Redis server. **Only set this if you have multiple instances of LiteLLM Proxy and want current tpm/rpm tracking to be shared across them**|
+| redis_host | string | The host address for the Redis server. **Only set this if you have multiple instances of Hanzo Proxy and want current tpm/rpm tracking to be shared across them** |
+| redis_password | string | The password for the Redis server. **Only set this if you have multiple instances of Hanzo Proxy and want current tpm/rpm tracking to be shared across them** |
+| redis_port | string | The port number for the Redis server. **Only set this if you have multiple instances of Hanzo Proxy and want current tpm/rpm tracking to be shared across them**|
 | enable_pre_call_check | boolean | If true, checks if a call is within the model's context window before making the call. [More information here](reliability) |
 | content_policy_fallbacks | array of objects | Specifies fallback models for content policy violations. [More information here](reliability) |
 | fallbacks | array of objects | Specifies fallback models for all types of errors. [More information here](reliability) |
@@ -267,7 +267,7 @@ router_settings:
 | default_priority | (Optional[int]) | The default priority for a request. Only for '.scheduler_acompletion()'. Default is None. | 
 | polling_interval | (Optional[float]) | frequency of polling queue. Only for '.scheduler_acompletion()'. Default is 3ms. |
 | max_fallbacks | Optional[int] | The maximum number of fallbacks to try before exiting the call. Defaults to 5. |
-| default_litellm_params | Optional[dict] | The default litellm parameters to add to all requests (e.g. `temperature`, `max_tokens`). |
+| default_llm_params | Optional[dict] | The default llm parameters to add to all requests (e.g. `temperature`, `max_tokens`). |
 | timeout | Optional[float] | The default timeout for a request. Default is 10 minutes. |
 | stream_timeout | Optional[float] | The default timeout for a streaming request. If not set, the 'timeout' value is used. |
 | debug_level | Literal["DEBUG", "INFO"] | The debug level for the logging library in the router. Defaults to "INFO". |
@@ -353,7 +353,7 @@ router_settings:
 | DD_SITE | Site URL for Datadog (e.g., datadoghq.com)
 | DD_SOURCE | Source identifier for Datadog logs
 | DD_ENV | Environment identifier for Datadog logs. Only supported for `datadog_llm_observability` callback
-| DD_SERVICE | Service identifier for Datadog logs. Defaults to "litellm-server"
+| DD_SERVICE | Service identifier for Datadog logs. Defaults to "llm-server"
 | DD_VERSION | Version identifier for Datadog logs. Defaults to "unknown"
 | DEBUG_OTEL | Enable debug mode for OpenTelemetry
 | DIRECT_URL | Direct URL for service endpoint
@@ -368,8 +368,8 @@ router_settings:
 | GCS_PATH_SERVICE_ACCOUNT | Path to the Google Cloud service account JSON file
 | GCS_FLUSH_INTERVAL | Flush interval for GCS logging (in seconds). Specify how often you want a log to be sent to GCS. **Default is 20 seconds**
 | GCS_BATCH_SIZE | Batch size for GCS logging. Specify after how many logs you want to flush to GCS. If `BATCH_SIZE` is set to 10, logs are flushed every 10 logs. **Default is 2048**
-| GCS_PUBSUB_TOPIC_ID | PubSub Topic ID to send LiteLLM SpendLogs to.
-| GCS_PUBSUB_PROJECT_ID | PubSub Project ID to send LiteLLM SpendLogs to.
+| GCS_PUBSUB_TOPIC_ID | PubSub Topic ID to send Hanzo SpendLogs to.
+| GCS_PUBSUB_PROJECT_ID | PubSub Project ID to send Hanzo SpendLogs to.
 | GENERIC_AUTHORIZATION_ENDPOINT | Authorization endpoint for generic OAuth providers
 | GENERIC_CLIENT_ID | Client ID for generic OAuth providers
 | GENERIC_CLIENT_SECRET | Client secret for generic OAuth providers
@@ -403,7 +403,7 @@ router_settings:
 | HCP_VAULT_TOKEN | Token for [Hashicorp Vault Secret Manager](../secret.md#hashicorp-vault)
 | HCP_VAULT_CERT_ROLE | Role for [Hashicorp Vault Secret Manager Auth](../secret.md#hashicorp-vault)
 | HELICONE_API_KEY | API key for Helicone service
-| HOSTNAME | Hostname for the server, this will be [emitted to `datadog` logs](https://docs.litellm.ai/docs/proxy/logging#datadog)
+| HOSTNAME | Hostname for the server, this will be [emitted to `datadog` logs](https://docs.llm.ai/docs/proxy/logging#datadog)
 | HUGGINGFACE_API_BASE | Base URL for Hugging Face API
 | IAM_TOKEN_DB_AUTH | IAM token for database authentication
 | JSON_LOGS | Enable JSON formatted logging
@@ -429,20 +429,20 @@ router_settings:
 | LITERAL_API_KEY | API key for Literal integration
 | LITERAL_API_URL | API URL for Literal service
 | LITERAL_BATCH_SIZE | Batch size for Literal operations
-| LITELLM_DONT_SHOW_FEEDBACK_BOX | Flag to hide feedback box in LiteLLM UI
-| LITELLM_DROP_PARAMS | Parameters to drop in LiteLLM requests
-| LITELLM_EMAIL | Email associated with LiteLLM account
-| LITELLM_GLOBAL_MAX_PARALLEL_REQUEST_RETRIES | Maximum retries for parallel requests in LiteLLM
-| LITELLM_GLOBAL_MAX_PARALLEL_REQUEST_RETRY_TIMEOUT | Timeout for retries of parallel requests in LiteLLM
-| LITELLM_HOSTED_UI | URL of the hosted UI for LiteLLM
-| LITELLM_LICENSE | License key for LiteLLM usage
-| LITELLM_LOCAL_MODEL_COST_MAP | Local configuration for model cost mapping in LiteLLM
-| LITELLM_LOG | Enable detailed logging for LiteLLM
-| LITELLM_MODE | Operating mode for LiteLLM (e.g., production, development)
-| LITELLM_SALT_KEY | Salt key for encryption in LiteLLM
-| LITELLM_SECRET_AWS_KMS_LITELLM_LICENSE | AWS KMS encrypted license for LiteLLM
-| LITELLM_TOKEN | Access token for LiteLLM integration
-| LITELLM_PRINT_STANDARD_LOGGING_PAYLOAD | If true, prints the standard logging payload to the console - useful for debugging
+| LLM_DONT_SHOW_FEEDBACK_BOX | Flag to hide feedback box in Hanzo UI
+| LLM_DROP_PARAMS | Parameters to drop in Hanzo requests
+| LLM_EMAIL | Email associated with Hanzo account
+| LLM_GLOBAL_MAX_PARALLEL_REQUEST_RETRIES | Maximum retries for parallel requests in Hanzo
+| LLM_GLOBAL_MAX_PARALLEL_REQUEST_RETRY_TIMEOUT | Timeout for retries of parallel requests in Hanzo
+| LLM_HOSTED_UI | URL of the hosted UI for Hanzo
+| LLM_LICENSE | License key for Hanzo usage
+| LLM_LOCAL_MODEL_COST_MAP | Local configuration for model cost mapping in Hanzo
+| LLM_LOG | Enable detailed logging for Hanzo
+| LLM_MODE | Operating mode for Hanzo (e.g., production, development)
+| LLM_SALT_KEY | Salt key for encryption in Hanzo
+| LLM_SECRET_AWS_KMS_LLM_LICENSE | AWS KMS encrypted license for Hanzo
+| LLM_TOKEN | Access token for Hanzo integration
+| LLM_PRINT_STANDARD_LOGGING_PAYLOAD | If true, prints the standard logging payload to the console - useful for debugging
 | LOGFIRE_TOKEN | Token for Logfire logging service
 | MICROSOFT_CLIENT_ID | Client ID for Microsoft services
 | MICROSOFT_CLIENT_SECRET | Client secret for Microsoft services
@@ -469,7 +469,7 @@ router_settings:
 | PHOENIX_API_KEY | API key for Arize Phoenix
 | PHOENIX_COLLECTOR_ENDPOINT | API endpoint for Arize Phoenix
 | PHOENIX_COLLECTOR_HTTP_ENDPOINT | API http endpoint for Arize Phoenix
-| POD_NAME | Pod name for the server, this will be [emitted to `datadog` logs](https://docs.litellm.ai/docs/proxy/logging#datadog) as `POD_NAME` 
+| POD_NAME | Pod name for the server, this will be [emitted to `datadog` logs](https://docs.llm.ai/docs/proxy/logging#datadog) as `POD_NAME` 
 | PREDIBASE_API_BASE | Base URL for Predibase API
 | PRESIDIO_ANALYZER_API_BASE | Base URL for Presidio Analyzer service
 | PRESIDIO_ANONYMIZER_API_BASE | Base URL for Presidio Anonymizer service

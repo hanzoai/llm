@@ -10,7 +10,7 @@ os.environ['CLOUDFLARE_ACCOUNT_ID'] = "03xxxxx"
 
 ## Sample Usage
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['CLOUDFLARE_API_KEY'] = "3dnSGlxxxx"
@@ -19,7 +19,7 @@ os.environ['CLOUDFLARE_ACCOUNT_ID'] = "03xxxxx"
 response = completion(
     model="cloudflare/@cf/meta/llama-2-7b-chat-int8", 
     messages=[
-       {"role": "user", "content": "hello from litellm"}
+       {"role": "user", "content": "hello from llm"}
    ],
 )
 print(response)
@@ -27,7 +27,7 @@ print(response)
 
 ## Sample Usage - Streaming
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['CLOUDFLARE_API_KEY'] = "3dnSGlxxxx"
@@ -36,7 +36,7 @@ os.environ['CLOUDFLARE_ACCOUNT_ID'] = "03xxxxx"
 response = completion(
     model="cloudflare/@hf/thebloke/codellama-7b-instruct-awq", 
     messages=[
-       {"role": "user", "content": "hello from litellm"}
+       {"role": "user", "content": "hello from llm"}
    ],
     stream=True
 )

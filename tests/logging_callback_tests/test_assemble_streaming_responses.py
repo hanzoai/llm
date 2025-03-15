@@ -23,10 +23,10 @@ import httpx
 import pytest
 from respx import MockRouter
 
-import litellm
-from litellm import Choices, Message, ModelResponse, TextCompletionResponse, TextChoices
+import llm
+from llm import Choices, Message, ModelResponse, TextCompletionResponse, TextChoices
 
-from litellm.litellm_core_utils.litellm_logging import (
+from llm.llm_core_utils.llm_logging import (
     _assemble_complete_response_from_streaming_chunks,
 )
 
@@ -46,8 +46,8 @@ def test_assemble_complete_response_from_streaming_chunks_1(is_async):
     chunk = {
         "id": "chatcmpl-9mWtyDnikZZoB75DyfUzWUxiiE2Pi",
         "choices": [
-            litellm.utils.StreamingChoices(
-                delta=litellm.utils.Delta(
+            llm.utils.StreamingChoices(
+                delta=llm.utils.Delta(
                     content="hello in response",
                     function_call=None,
                     role=None,
@@ -63,7 +63,7 @@ def test_assemble_complete_response_from_streaming_chunks_1(is_async):
         "system_fingerprint": None,
         "usage": None,
     }
-    chunk = litellm.ModelResponse(**chunk, stream=True)
+    chunk = llm.ModelResponse(**chunk, stream=True)
     complete_streaming_response = _assemble_complete_response_from_streaming_chunks(
         result=chunk,
         start_time=datetime.now(),
@@ -85,9 +85,9 @@ def test_assemble_complete_response_from_streaming_chunks_1(is_async):
     chunk = {
         "id": "chatcmpl-9mWtyDnikZZoB75DyfUzWUxiiE2Pi",
         "choices": [
-            litellm.utils.StreamingChoices(
+            llm.utils.StreamingChoices(
                 finish_reason="stop",
-                delta=litellm.utils.Delta(
+                delta=llm.utils.Delta(
                     content="end of response",
                     function_call=None,
                     role=None,
@@ -103,7 +103,7 @@ def test_assemble_complete_response_from_streaming_chunks_1(is_async):
         "system_fingerprint": None,
         "usage": None,
     }
-    chunk = litellm.ModelResponse(**chunk, stream=True)
+    chunk = llm.ModelResponse(**chunk, stream=True)
     complete_streaming_response = _assemble_complete_response_from_streaming_chunks(
         result=chunk,
         start_time=datetime.now(),
@@ -132,7 +132,7 @@ def test_assemble_complete_response_from_streaming_chunks_2(is_async):
     Test 2 - TextCompletionResponse with 1 list of streaming chunks. Assert chunks are added to the streaming_chunks, after final chunk sent assert complete_streaming_response is not None
     """
 
-    from litellm.utils import TextCompletionStreamWrapper
+    from llm.utils import TextCompletionStreamWrapper
 
     _text_completion_stream_wrapper = TextCompletionStreamWrapper(
         completion_stream=None, model="test_model"
@@ -147,8 +147,8 @@ def test_assemble_complete_response_from_streaming_chunks_2(is_async):
     chunk = {
         "id": "chatcmpl-9mWtyDnikZZoB75DyfUzWUxiiE2Pi",
         "choices": [
-            litellm.utils.StreamingChoices(
-                delta=litellm.utils.Delta(
+            llm.utils.StreamingChoices(
+                delta=llm.utils.Delta(
                     content="hello in response",
                     function_call=None,
                     role=None,
@@ -164,7 +164,7 @@ def test_assemble_complete_response_from_streaming_chunks_2(is_async):
         "system_fingerprint": None,
         "usage": None,
     }
-    chunk = litellm.ModelResponse(**chunk, stream=True)
+    chunk = llm.ModelResponse(**chunk, stream=True)
     chunk = _text_completion_stream_wrapper.convert_to_text_completion_object(chunk)
 
     complete_streaming_response = _assemble_complete_response_from_streaming_chunks(
@@ -188,9 +188,9 @@ def test_assemble_complete_response_from_streaming_chunks_2(is_async):
     chunk = {
         "id": "chatcmpl-9mWtyDnikZZoB75DyfUzWUxiiE2Pi",
         "choices": [
-            litellm.utils.StreamingChoices(
+            llm.utils.StreamingChoices(
                 finish_reason="stop",
-                delta=litellm.utils.Delta(
+                delta=llm.utils.Delta(
                     content="end of response",
                     function_call=None,
                     role=None,
@@ -206,7 +206,7 @@ def test_assemble_complete_response_from_streaming_chunks_2(is_async):
         "system_fingerprint": None,
         "usage": None,
     }
-    chunk = litellm.ModelResponse(**chunk, stream=True)
+    chunk = llm.ModelResponse(**chunk, stream=True)
     chunk = _text_completion_stream_wrapper.convert_to_text_completion_object(chunk)
     complete_streaming_response = _assemble_complete_response_from_streaming_chunks(
         result=chunk,
@@ -244,8 +244,8 @@ def test_assemble_complete_response_from_streaming_chunks_3(is_async):
     chunk = {
         "id": "chatcmpl-9mWtyDnikZZoB75DyfUzWUxiiE2Pi",
         "choices": [
-            litellm.utils.StreamingChoices(
-                delta=litellm.utils.Delta(
+            llm.utils.StreamingChoices(
+                delta=llm.utils.Delta(
                     content="hello in response",
                     function_call=None,
                     role=None,
@@ -261,7 +261,7 @@ def test_assemble_complete_response_from_streaming_chunks_3(is_async):
         "system_fingerprint": None,
         "usage": None,
     }
-    chunk = litellm.ModelResponse(**chunk, stream=True)
+    chunk = llm.ModelResponse(**chunk, stream=True)
     complete_streaming_response = _assemble_complete_response_from_streaming_chunks(
         result=chunk,
         start_time=datetime.now(),
@@ -320,9 +320,9 @@ def test_assemble_complete_response_from_streaming_chunks_4(is_async):
     chunk = {
         "id": "chatcmpl-9mWtyDnikZZoB75DyfUzWUxiiE2Pi",
         "choices": [
-            litellm.utils.StreamingChoices(
+            llm.utils.StreamingChoices(
                 finish_reason="stop",
-                delta=litellm.utils.Delta(
+                delta=llm.utils.Delta(
                     content="end of response",
                     function_call=None,
                     role=None,
@@ -338,7 +338,7 @@ def test_assemble_complete_response_from_streaming_chunks_4(is_async):
         "system_fingerprint": None,
         "usage": None,
     }
-    chunk = litellm.ModelResponse(**chunk, stream=True)
+    chunk = llm.ModelResponse(**chunk, stream=True)
 
     # remove attribute id from chunk
     del chunk.object

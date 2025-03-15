@@ -5,16 +5,16 @@ import Image from '@theme/IdealImage';
 :::tip
 
 This is community maintained, Please make an issue if you run into a bug
-https://github.com/BerriAI/litellm
+https://github.com/BerriAI/llm
 
 :::
 
 
-[Sentry](https://sentry.io/) provides error monitoring for production. LiteLLM can add breadcrumbs and send exceptions to Sentry with this integration
+[Sentry](https://sentry.io/) provides error monitoring for production. Hanzo can add breadcrumbs and send exceptions to Sentry with this integration
 
 Track exceptions for:
-- litellm.completion() - completion()for 100+ LLMs
-- litellm.acompletion() - async completion()
+- llm.completion() - completion()for 100+ LLMs
+- llm.acompletion() - async completion()
 - Streaming completion() & acompletion() calls
 
 <Image img={require('../../img/sentry.png')} />
@@ -25,18 +25,18 @@ Track exceptions for:
 ### Set SENTRY_DSN & callback
 
 ```python
-import litellm, os
+import llm, os
 os.environ["SENTRY_DSN"] = "your-sentry-url"
-litellm.failure_callback=["sentry"]
+llm.failure_callback=["sentry"]
 ```
 
 ### Sentry callback with completion
 ```python
-import litellm
-from litellm import completion 
+import llm
+from llm import completion 
 
-litellm.input_callback=["sentry"] # adds sentry breadcrumbing
-litellm.failure_callback=["sentry"] # [OPTIONAL] if you want litellm to capture -> send exception to sentry
+llm.input_callback=["sentry"] # adds sentry breadcrumbing
+llm.failure_callback=["sentry"] # [OPTIONAL] if you want llm to capture -> send exception to sentry
 
 import os 
 os.environ["SENTRY_DSN"] = "your-sentry-url"
@@ -51,7 +51,7 @@ print(response)
 
 ## Redacting Messages, Response Content from Sentry Logging 
 
-Set `litellm.turn_off_message_logging=True` This will prevent the messages and responses from being logged to sentry, but request metadata will still be logged.
+Set `llm.turn_off_message_logging=True` This will prevent the messages and responses from being logged to sentry, but request metadata will still be logged.
 
-[Let us know](https://github.com/BerriAI/litellm/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml&title=%5BFeature%5D%3A+) if you need any additional options from Sentry. 
+[Let us know](https://github.com/BerriAI/llm/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml&title=%5BFeature%5D%3A+) if you need any additional options from Sentry. 
 

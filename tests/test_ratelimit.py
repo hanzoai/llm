@@ -13,15 +13,15 @@ sys.path.insert(
     0, os.path.abspath("../")
 )  # Adds the parent directory to the system path
 
-import litellm
+import llm
 from pydantic import BaseModel
-from litellm import utils, Router
+from llm import utils, Router
 
 COMPLETION_TOKENS = 5
 base_model_list = [
     {
         "model_name": "gpt-3.5-turbo",
-        "litellm_params": {
+        "llm_params": {
             "model": "gpt-3.5-turbo",
             "api_key": os.getenv("OPENAI_API_KEY"),
             "max_tokens": COMPLETION_TOKENS,
@@ -125,7 +125,7 @@ def test_rate_limit(
         ExpectNoException: Signfies that no other error has happened. A NOP
     """
     # Can send more messages then we're going to; so don't expect a rate limit error
-    litellm.logging_callback_manager._reset_all_callbacks()
+    llm.logging_callback_manager._reset_all_callbacks()
     args = locals()
     print(f"args: {args}")
     expected_exception = (

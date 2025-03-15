@@ -6,11 +6,11 @@ import TabItem from '@theme/TabItem';
 
 :::info
 
-✨ JWT Auth is on LiteLLM Enterprise
+✨ JWT Auth is on Hanzo Enterprise
 
-[Enterprise Pricing](https://www.litellm.ai/#pricing)
+[Enterprise Pricing](https://www.llm.ai/#pricing)
 
-[Get free 7-day trial key](https://www.litellm.ai/#trial)
+[Get free 7-day trial key](https://www.llm.ai/#trial)
 
 :::
 
@@ -38,7 +38,7 @@ import TabItem from '@theme/TabItem';
   "name": "John Doe",
   "email": "john.doe@example.com",
   "resource_access": {
-    "litellm-test-client-id": {
+    "llm-test-client-id": {
       "roles": ["basic_user"] # 👈 ROLE
     }
   }
@@ -55,9 +55,9 @@ import TabItem from '@theme/TabItem';
 ```yaml
 general_settings:
   enable_jwt_auth: True 
-  litellm_jwtauth:
+  llm_jwtauth:
     user_roles_jwt_field: "roles" # the field in the JWT that contains the roles 
-    user_allowed_roles: ["basic_user"] # roles that map to an 'internal_user' role on LiteLLM 
+    user_allowed_roles: ["basic_user"] # roles that map to an 'internal_user' role on Hanzo 
     enforce_rbac: true # if true, will check if the user has the correct role to access the model
   
   role_permissions: # control what models are allowed for each role
@@ -66,10 +66,10 @@ general_settings:
 
 model_list:
     - model: anthropic-claude
-      litellm_params:
+      llm_params:
         model: claude-3-5-haiku-20241022
     - model: openai-gpt-4o
-      litellm_params:
+      llm_params:
         model: gpt-4o
 ```
 
@@ -79,9 +79,9 @@ model_list:
 ```yaml
 general_settings:
   enable_jwt_auth: True 
-  litellm_jwtauth:
-    user_roles_jwt_field: "resource_access.litellm-test-client-id.roles" # the field in the JWT that contains the roles
-    user_allowed_roles: ["basic_user"] # roles that map to an 'internal_user' role on LiteLLM 
+  llm_jwtauth:
+    user_roles_jwt_field: "resource_access.llm-test-client-id.roles" # the field in the JWT that contains the roles
+    user_allowed_roles: ["basic_user"] # roles that map to an 'internal_user' role on Hanzo 
     enforce_rbac: true # if true, will check if the user has the correct role to access the model
   
   role_permissions: # control what models are allowed for each role
@@ -90,10 +90,10 @@ general_settings:
 
 model_list:
     - model: anthropic-claude
-      litellm_params:
+      llm_params:
         model: claude-3-5-haiku-20241022
     - model: openai-gpt-4o
-      litellm_params:
+      llm_params:
         model: gpt-4o
 ```
 
@@ -105,12 +105,12 @@ model_list:
 
 1. Specify JWT_PUBLIC_KEY_URL - This is the public keys endpoint of your OpenID provider. For Azure AD it's `https://login.microsoftonline.com/{tenant_id}/discovery/v2.0/keys`. For Keycloak it's `{keycloak_base_url}/realms/{your-realm}/protocol/openid-connect/certs`.
 
-1. Map JWT roles to LiteLLM roles - Done via `user_roles_jwt_field` and `user_allowed_roles`
+1. Map JWT roles to Hanzo roles - Done via `user_roles_jwt_field` and `user_allowed_roles`
     -  Currently just `internal_user` is supported for role mapping. 
 2. Specify model access: 
     - `role_permissions`: control what models are allowed for each role. 
-        - `role`: the LiteLLM role to control access for. Allowed roles = ["internal_user", "proxy_admin", "team"]
+        - `role`: the Hanzo role to control access for. Allowed roles = ["internal_user", "proxy_admin", "team"]
         - `models`: list of models that the role is allowed to access. 
     - `model_list`: parent list of models on the proxy. [Learn more](./configs.md#llm-configs-model_list)
 
-3. Model Checks: The proxy will run validation checks on the received JWT. [Code](https://github.com/BerriAI/litellm/blob/3a4f5b23b5025b87b6d969f2485cc9bc741f9ba6/litellm/proxy/auth/user_api_key_auth.py#L284)
+3. Model Checks: The proxy will run validation checks on the received JWT. [Code](https://github.com/BerriAI/llm/blob/3a4f5b23b5025b87b6d969f2485cc9bc741f9ba6/llm/proxy/auth/user_api_key_auth.py#L284)

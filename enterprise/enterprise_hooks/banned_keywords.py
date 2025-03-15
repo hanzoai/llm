@@ -8,18 +8,18 @@
 
 
 from typing import Literal
-import litellm
-from litellm.caching.caching import DualCache
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.integrations.custom_logger import CustomLogger
-from litellm._logging import verbose_proxy_logger
+import llm
+from llm.caching.caching import DualCache
+from llm.proxy._types import UserAPIKeyAuth
+from llm.integrations.custom_logger import CustomLogger
+from llm._logging import verbose_proxy_logger
 from fastapi import HTTPException
 
 
 class _ENTERPRISE_BannedKeywords(CustomLogger):
     # Class variables or attributes
     def __init__(self):
-        banned_keywords_list = litellm.banned_keywords_list
+        banned_keywords_list = llm.banned_keywords_list
 
         if banned_keywords_list is None:
             raise Exception(
@@ -49,7 +49,7 @@ class _ENTERPRISE_BannedKeywords(CustomLogger):
         elif level == "DEBUG":
             verbose_proxy_logger.debug(print_statement)
 
-        if litellm.set_verbose is True:
+        if llm.set_verbose is True:
             print(print_statement)  # noqa
 
     def test_violation(self, test_str: str):
@@ -82,7 +82,7 @@ class _ENTERPRISE_BannedKeywords(CustomLogger):
             raise e
         except Exception as e:
             verbose_proxy_logger.exception(
-                "litellm.enterprise.enterprise_hooks.banned_keywords::async_pre_call_hook - Exception occurred - {}".format(
+                "llm.enterprise.enterprise_hooks.banned_keywords::async_pre_call_hook - Exception occurred - {}".format(
                     str(e)
                 )
             )
@@ -93,8 +93,8 @@ class _ENTERPRISE_BannedKeywords(CustomLogger):
         user_api_key_dict: UserAPIKeyAuth,
         response,
     ):
-        if isinstance(response, litellm.ModelResponse) and isinstance(
-            response.choices[0], litellm.utils.Choices
+        if isinstance(response, llm.ModelResponse) and isinstance(
+            response.choices[0], llm.utils.Choices
         ):
             for word in self.banned_keywords_list:
                 self.test_violation(test_str=response.choices[0].message.content or "")

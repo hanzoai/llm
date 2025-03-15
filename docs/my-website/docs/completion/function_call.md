@@ -2,30 +2,30 @@
 
 ## Checking if a model supports function calling 
 
-Use `litellm.supports_function_calling(model="")` -> returns `True` if model supports Function calling, `False` if not
+Use `llm.supports_function_calling(model="")` -> returns `True` if model supports Function calling, `False` if not
 
 ```python
-assert litellm.supports_function_calling(model="gpt-3.5-turbo") == True
-assert litellm.supports_function_calling(model="azure/gpt-4-1106-preview") == True
-assert litellm.supports_function_calling(model="palm/chat-bison") == False
-assert litellm.supports_function_calling(model="xai/grok-2-latest") == True
-assert litellm.supports_function_calling(model="ollama/llama2") == False
+assert llm.supports_function_calling(model="gpt-3.5-turbo") == True
+assert llm.supports_function_calling(model="azure/gpt-4-1106-preview") == True
+assert llm.supports_function_calling(model="palm/chat-bison") == False
+assert llm.supports_function_calling(model="xai/grok-2-latest") == True
+assert llm.supports_function_calling(model="ollama/llama2") == False
 ```
 
 
 ## Checking if a model supports parallel function calling 
 
-Use `litellm.supports_parallel_function_calling(model="")` -> returns `True` if model supports parallel function calling, `False` if not
+Use `llm.supports_parallel_function_calling(model="")` -> returns `True` if model supports parallel function calling, `False` if not
 
 ```python
-assert litellm.supports_parallel_function_calling(model="gpt-4-turbo-preview") == True
-assert litellm.supports_parallel_function_calling(model="gpt-4") == False
+assert llm.supports_parallel_function_calling(model="gpt-4-turbo-preview") == True
+assert llm.supports_parallel_function_calling(model="gpt-4") == False
 ```
 ## Parallel Function calling
 Parallel function calling is the model's ability to perform multiple function calls together, allowing the effects and results of these function calls to be resolved in parallel
 
 ## Quick Start - gpt-3.5-turbo-1106
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/litellm/blob/main/cookbook/Parallel_function_calling.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/Parallel_function_calling.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
@@ -39,11 +39,11 @@ In this example we define a single function `get_current_weather`.
 ### Full Code - Parallel function calling with `gpt-3.5-turbo-1106`
 
 ```python
-import litellm
+import llm
 import json
 # set openai api key
 import os
-os.environ['OPENAI_API_KEY'] = "" # litellm reads OPENAI_API_KEY from .env and sends the request
+os.environ['OPENAI_API_KEY'] = "" # llm reads OPENAI_API_KEY from .env and sends the request
 
 # Example dummy function hard coded to return the same weather
 # In production, this could be your backend API or an external API
@@ -83,7 +83,7 @@ def test_parallel_function_call():
                 },
             }
         ]
-        response = litellm.completion(
+        response = llm.completion(
             model="gpt-3.5-turbo-1106",
             messages=messages,
             tools=tools,
@@ -121,7 +121,7 @@ def test_parallel_function_call():
                         "content": function_response,
                     }
                 )  # extend conversation with function response
-            second_response = litellm.completion(
+            second_response = llm.completion(
                 model="gpt-3.5-turbo-1106",
                 messages=messages,
             )  # get a new response from the model where it can see the function response
@@ -135,13 +135,13 @@ test_parallel_function_call()
 
 ### Explanation - Parallel function calling
 Below is an explanation of what is happening in the code snippet above for Parallel function calling with `gpt-3.5-turbo-1106`
-### Step1: litellm.completion() with `tools` set to `get_current_weather`
+### Step1: llm.completion() with `tools` set to `get_current_weather`
 ```python
-import litellm
+import llm
 import json
 # set openai api key
 import os
-os.environ['OPENAI_API_KEY'] = "" # litellm reads OPENAI_API_KEY from .env and sends the request
+os.environ['OPENAI_API_KEY'] = "" # llm reads OPENAI_API_KEY from .env and sends the request
 # Example dummy function hard coded to return the same weather
 # In production, this could be your backend API or an external API
 def get_current_weather(location, unit="fahrenheit"):
@@ -177,7 +177,7 @@ tools = [
     }
 ]
 
-response = litellm.completion(
+response = llm.completion(
     model="gpt-3.5-turbo-1106",
     messages=messages,
     tools=tools,
@@ -251,10 +251,10 @@ if tool_calls:
 
 ```
 
-### Step 3 - Second litellm.completion() call 
+### Step 3 - Second llm.completion() call 
 Once the functions are executed, send the model the information for each function call and its response. This allows the model to generate a new response considering the effects of the function calls.
 ```python
-second_response = litellm.completion(
+second_response = llm.completion(
     model="gpt-3.5-turbo-1106",
     messages=messages,
 )
@@ -282,11 +282,11 @@ ModelResponse(
 ```python
 # set Azure env variables
 import os
-os.environ['AZURE_API_KEY'] = "" # litellm reads AZURE_API_KEY from .env and sends the request
+os.environ['AZURE_API_KEY'] = "" # llm reads AZURE_API_KEY from .env and sends the request
 os.environ['AZURE_API_BASE'] = "https://openai-gpt-4-test-v-1.openai.azure.com/"
 os.environ['AZURE_API_VERSION'] = "2023-07-01-preview"
 
-import litellm
+import llm
 import json
 # Example dummy function hard coded to return the same weather
 # In production, this could be your backend API or an external API
@@ -324,7 +324,7 @@ tools = [
     }
 ]
 
-response = litellm.completion(
+response = llm.completion(
     model="azure/chatgpt-functioncalling", # model = azure/<your-azure-deployment-name>
     messages=messages,
     tools=tools,
@@ -367,8 +367,8 @@ if tool_calls:
           }
       )
 
-## Step 3 - Second litellm.completion() call
-second_response = litellm.completion(
+## Step 3 - Second llm.completion() call
+second_response = llm.completion(
     model="azure/chatgpt-functioncalling",
     messages=messages,
 )
@@ -379,8 +379,8 @@ print("Second Response Message\n", second_response.choices[0].message.content)
 
 ## Deprecated - Function Calling with `completion(functions=functions)`
 ```python
-import os, litellm
-from litellm import completion
+import os, llm
+from llm import completion
 
 os.environ['OPENAI_API_KEY'] = ""
 
@@ -419,13 +419,13 @@ response = completion(model="gpt-3.5-turbo-0613", messages=messages, functions=f
 print(response)
 ```
 
-## litellm.function_to_dict - Convert Functions to dictionary for OpenAI function calling
+## llm.function_to_dict - Convert Functions to dictionary for OpenAI function calling
 `function_to_dict` allows you to pass a function docstring and produce a dictionary usable for OpenAI function calling
 
 ### Using `function_to_dict`
 1. Define your function `get_current_weather`
 2. Add a docstring to your function `get_current_weather`
-3. Pass the function to `litellm.utils.function_to_dict` to get the dictionary for OpenAI function calling
+3. Pass the function to `llm.utils.function_to_dict` to get the dictionary for OpenAI function calling
 
 ```python
 # function with docstring
@@ -447,8 +447,8 @@ def get_current_weather(location: str, unit: str):
         if location == "Boston, MA":
             return "The weather is 12F"
 
-# use litellm.utils.function_to_dict to convert function to dict
-function_json = litellm.utils.function_to_dict(get_current_weather)
+# use llm.utils.function_to_dict to convert function to dict
+function_json = llm.utils.function_to_dict(get_current_weather)
 print(function_json)
 ```
 
@@ -470,8 +470,8 @@ print(function_json)
 
 ### Using function_to_dict with Function calling
 ```python
-import os, litellm
-from litellm import completion
+import os, llm
+from llm import completion
 
 os.environ['OPENAI_API_KEY'] = ""
 
@@ -497,7 +497,7 @@ def get_current_weather(location: str, unit: str):
     if location == "Boston, MA":
         return "The weather is 12F"
 
-functions = [litellm.utils.function_to_dict(get_current_weather)]
+functions = [llm.utils.function_to_dict(get_current_weather)]
 
 response = completion(model="gpt-3.5-turbo-0613", messages=messages, functions=functions)
 print(response)
@@ -506,15 +506,15 @@ print(response)
 ## Function calling for Models w/out function-calling support
 
 ### Adding Function to prompt
-For Models/providers without function calling support, LiteLLM allows you to add the function to the prompt set: `litellm.add_function_to_prompt = True`
+For Models/providers without function calling support, Hanzo allows you to add the function to the prompt set: `llm.add_function_to_prompt = True`
 
 #### Usage
 ```python
-import os, litellm
-from litellm import completion
+import os, llm
+from llm import completion
 
 # IMPORTANT - Set this to TRUE to add the function to the prompt for Non OpenAI LLMs
-litellm.add_function_to_prompt = True # set add_function_to_prompt for Non OpenAI LLMs
+llm.add_function_to_prompt = True # set add_function_to_prompt for Non OpenAI LLMs
 
 os.environ['ANTHROPIC_API_KEY'] = ""
 

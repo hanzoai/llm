@@ -1,12 +1,12 @@
-# 🔑 LiteLLM Keys (Access Claude-2, Llama2-70b, etc.)
+# 🔑 Hanzo Keys (Access Claude-2, Llama2-70b, etc.)
 
-Use this if you're trying to add support for new LLMs and need access for testing. We provide a free $10 community-key for testing all providers on LiteLLM: 
+Use this if you're trying to add support for new LLMs and need access for testing. We provide a free $10 community-key for testing all providers on Hanzo: 
 
 ## usage (community-key)
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 ## set ENV variables
 os.environ["OPENAI_API_KEY"] = "your-api-key"
@@ -24,10 +24,10 @@ response = completion("command-nightly", messages)
 **Need a dedicated key?**
 Email us @ krrish@berri.ai 
 
-## Supported Models for LiteLLM Key
-These are the models that currently work with the "sk-litellm-.." keys.
+## Supported Models for Hanzo Key
+These are the models that currently work with the "sk-llm-.." keys.
 
-For a complete list of models/providers that you can call with LiteLLM, [check out our provider list](./providers/)
+For a complete list of models/providers that you can call with Hanzo, [check out our provider list](./providers/)
 
 * OpenAI models - [OpenAI docs](./providers/openai.md)
     * gpt-4
@@ -62,20 +62,20 @@ This was initially built for the Open Interpreter community. If you're trying to
 **Note**: You will need to clone and modify the Github repo, until [this PR is merged.](https://github.com/KillianLucas/open-interpreter/pull/288)
 
 ```
-git clone https://github.com/krrishdholakia/open-interpreter-litellm-fork
+git clone https://github.com/krrishdholakia/open-interpreter-llm-fork
 ```
 To run it do: 
 ```
 poetry build 
 
-# call gpt-4 - always add 'litellm_proxy/' in front of the model name
-poetry run interpreter --model litellm_proxy/gpt-4
+# call gpt-4 - always add 'llm_proxy/' in front of the model name
+poetry run interpreter --model llm_proxy/gpt-4
 
-# call llama-70b - always add 'litellm_proxy/' in front of the model name
-poetry run interpreter --model litellm_proxy/togethercomputer/llama-2-70b-chat
+# call llama-70b - always add 'llm_proxy/' in front of the model name
+poetry run interpreter --model llm_proxy/togethercomputer/llama-2-70b-chat
 
-# call claude-2 - always add 'litellm_proxy/' in front of the model name
-poetry run interpreter --model litellm_proxy/claude-2
+# call claude-2 - always add 'llm_proxy/' in front of the model name
+poetry run interpreter --model llm_proxy/claude-2
 ```
 
 And that's it! 
@@ -83,4 +83,4 @@ And that's it!
 Now you can call any model you like!
 
 
-Want us to add more models? [Let us know!](https://github.com/BerriAI/litellm/issues/new/choose)
+Want us to add more models? [Let us know!](https://github.com/BerriAI/llm/issues/new/choose)

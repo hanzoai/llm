@@ -9,28 +9,28 @@ sys.path.insert(
 )  # Adds the parent directory to the system-path
 
 import pytest
-import litellm
-from litellm.integrations.opentelemetry import OpenTelemetry, OpenTelemetryConfig, Span
+import llm
+from llm.integrations.opentelemetry import OpenTelemetry, OpenTelemetryConfig, Span
 import asyncio
 import logging
 from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanExporter
-from litellm._logging import verbose_logger
-from litellm.proxy._types import SpanAttributes
+from llm._logging import verbose_logger
+from llm.proxy._types import SpanAttributes
 
 verbose_logger.setLevel(logging.DEBUG)
 
-EXPECTED_SPAN_NAMES = ["litellm_request", "raw_gen_ai_request"]
+EXPECTED_SPAN_NAMES = ["llm_request", "raw_gen_ai_request"]
 exporter = InMemorySpanExporter()
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("streaming", [True, False])
 async def test_async_otel_callback(streaming):
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
-    litellm.callbacks = [OpenTelemetry(config=OpenTelemetryConfig(exporter=exporter))]
+    llm.callbacks = [OpenTelemetry(config=OpenTelemetryConfig(exporter=exporter))]
 
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": "hi"}],
         temperature=0.1,
@@ -56,8 +56,8 @@ async def test_async_otel_callback(streaming):
         print("span name", span.name)
         print("span attributes", span.attributes)
 
-        if span.name == "litellm_request":
-            validate_litellm_request(span)
+        if span.name == "llm_request":
+            validate_llm_request(span)
             # Additional specific checks
             assert span._attributes["gen_ai.request.model"] == "gpt-3.5-turbo"
             assert span._attributes["gen_ai.system"] == "openai"
@@ -74,7 +74,7 @@ async def test_async_otel_callback(streaming):
     exporter.clear()
 
 
-def validate_litellm_request(span):
+def validate_llm_request(span):
     expected_attributes = [
         "gen_ai.request.model",
         "gen_ai.system",
@@ -144,9 +144,9 @@ def validate_raw_gen_ai_request_openai_streaming(span):
 )
 @pytest.mark.flaky(retries=6, delay=2)
 def test_completion_claude_3_function_call_with_otel(model):
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
-    litellm.callbacks = [OpenTelemetry(config=OpenTelemetryConfig(exporter=exporter))]
+    llm.callbacks = [OpenTelemetry(config=OpenTelemetryConfig(exporter=exporter))]
     tools = [
         {
             "type": "function",
@@ -175,7 +175,7 @@ def test_completion_claude_3_function_call_with_otel(model):
     ]
     try:
         # test without max tokens
-        response = litellm.completion(
+        response = llm.completion(
             model=model,
             messages=messages,
             tools=tools,
@@ -186,8 +186,8 @@ def test_completion_claude_3_function_call_with_otel(model):
             drop_params=True,
         )
 
-        print("response from LiteLLM", response)
-    except litellm.InternalServerError:
+        print("response from Hanzo", response)
+    except llm.InternalServerError:
         pass
     except Exception as e:
         pytest.fail(f"Error occurred: {e}")
@@ -203,25 +203,25 @@ async def test_awesome_otel_with_message_logging_off(streaming, global_redact):
     """
     No content should be logged when message logging is off
 
-    tests when litellm.turn_off_message_logging is set to True
+    tests when llm.turn_off_message_logging is set to True
     tests when OpenTelemetry(message_logging=False) is set
     """
-    litellm.set_verbose = True
-    litellm.callbacks = [OpenTelemetry(config=OpenTelemetryConfig(exporter=exporter))]
+    llm.set_verbose = True
+    llm.callbacks = [OpenTelemetry(config=OpenTelemetryConfig(exporter=exporter))]
     if global_redact is False:
         otel_logger = OpenTelemetry(
             message_logging=False, config=OpenTelemetryConfig(exporter="console")
         )
     else:
         # use global redaction
-        litellm.turn_off_message_logging = True
+        llm.turn_off_message_logging = True
         otel_logger = OpenTelemetry(config=OpenTelemetryConfig(exporter="console"))
 
-    litellm.callbacks = [otel_logger]
-    litellm.success_callback = []
-    litellm.failure_callback = []
+    llm.callbacks = [otel_logger]
+    llm.success_callback = []
+    llm.failure_callback = []
 
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": "hi"}],
         mock_response="hi",
@@ -247,7 +247,7 @@ async def test_awesome_otel_with_message_logging_off(streaming, global_redact):
     exporter.clear()
 
     if global_redact is True:
-        litellm.turn_off_message_logging = False
+        llm.turn_off_message_logging = False
 
 
 def validate_redacted_message_span_attributes(span):

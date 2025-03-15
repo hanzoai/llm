@@ -9,24 +9,24 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 from openai import APITimeoutError as Timeout
 
-import litellm
+import llm
 
-litellm.num_retries = 0
+llm.num_retries = 0
 import asyncio
 import logging
 from typing import Optional
 import openai
 from test_openai_batches_and_files import load_vertex_ai_credentials
 
-from litellm import create_fine_tuning_job
-from litellm._logging import verbose_logger
-from litellm.llms.vertex_ai.fine_tuning.handler import (
+from llm import create_fine_tuning_job
+from llm._logging import verbose_logger
+from llm.llms.vertex_ai.fine_tuning.handler import (
     FineTuningJobCreate,
     VertexFineTuningAPI,
 )
-from litellm.types.llms.openai import Hyperparameters
-from litellm.integrations.custom_logger import CustomLogger
-from litellm.types.utils import StandardLoggingPayload
+from llm.types.llms.openai import Hyperparameters
+from llm.integrations.custom_logger import CustomLogger
+from llm.types.utils import StandardLoggingPayload
 from unittest.mock import patch, MagicMock, AsyncMock
 
 vertex_finetune_api = VertexFineTuningAPI()
@@ -51,26 +51,26 @@ class TestCustomLogger(CustomLogger):
 async def test_create_fine_tune_jobs_async():
     try:
         custom_logger = TestCustomLogger()
-        litellm.callbacks = ["datadog", custom_logger]
+        llm.callbacks = ["datadog", custom_logger]
         verbose_logger.setLevel(logging.DEBUG)
         file_name = "openai_batch_completions.jsonl"
         _current_dir = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(_current_dir, file_name)
 
-        file_obj = await litellm.acreate_file(
+        file_obj = await llm.acreate_file(
             file=open(file_path, "rb"),
             purpose="fine-tune",
             custom_llm_provider="openai",
         )
         print("Response from creating file=", file_obj)
 
-        create_fine_tuning_response = await litellm.acreate_fine_tuning_job(
+        create_fine_tuning_response = await llm.acreate_fine_tuning_job(
             model="gpt-3.5-turbo-0125",
             training_file=file_obj.id,
         )
 
         print(
-            "response from litellm.create_fine_tuning_job=", create_fine_tuning_response
+            "response from llm.create_fine_tuning_job=", create_fine_tuning_response
         )
 
         assert create_fine_tuning_response.id is not None
@@ -88,28 +88,28 @@ async def test_create_fine_tune_jobs_async():
 
         # list fine tuning jobs
         print("listing ft jobs")
-        ft_jobs = await litellm.alist_fine_tuning_jobs(limit=2)
-        print("response from litellm.list_fine_tuning_jobs=", ft_jobs)
+        ft_jobs = await llm.alist_fine_tuning_jobs(limit=2)
+        print("response from llm.list_fine_tuning_jobs=", ft_jobs)
         assert len(list(ft_jobs)) > 0
 
         # retrieve fine tuning job
-        response = await litellm.aretrieve_fine_tuning_job(
+        response = await llm.aretrieve_fine_tuning_job(
             fine_tuning_job_id=create_fine_tuning_response.id,
         )
-        print("response from litellm.retrieve_fine_tuning_job=", response)
+        print("response from llm.retrieve_fine_tuning_job=", response)
 
         # delete file
 
-        await litellm.afile_delete(
+        await llm.afile_delete(
             file_id=file_obj.id,
         )
 
         # cancel ft job
-        response = await litellm.acancel_fine_tuning_job(
+        response = await llm.acancel_fine_tuning_job(
             fine_tuning_job_id=create_fine_tuning_response.id,
         )
 
-        print("response from litellm.cancel_fine_tuning_job=", response)
+        print("response from llm.cancel_fine_tuning_job=", response)
 
         assert response.status == "cancelled"
         assert response.id == create_fine_tuning_response.id
@@ -133,7 +133,7 @@ async def test_azure_create_fine_tune_jobs_async():
 
         file_id = "file-5e4b20ecbd724182b9964f3cd2ab7212"
 
-        create_fine_tuning_response = await litellm.acreate_fine_tuning_job(
+        create_fine_tuning_response = await llm.acreate_fine_tuning_job(
             model="gpt-35-turbo-1106",
             training_file=file_id,
             custom_llm_provider="azure",
@@ -141,7 +141,7 @@ async def test_azure_create_fine_tune_jobs_async():
         )
 
         print(
-            "response from litellm.create_fine_tuning_job=", create_fine_tuning_response
+            "response from llm.create_fine_tuning_job=", create_fine_tuning_response
         )
 
         assert create_fine_tuning_response.id is not None
@@ -151,22 +151,22 @@ async def test_azure_create_fine_tune_jobs_async():
 
         # list fine tuning jobs
         print("listing ft jobs")
-        ft_jobs = await litellm.alist_fine_tuning_jobs(
+        ft_jobs = await llm.alist_fine_tuning_jobs(
             limit=2,
             custom_llm_provider="azure",
             api_base="https://exampleopenaiendpoint-production.up.railway.app",
         )
-        print("response from litellm.list_fine_tuning_jobs=", ft_jobs)
+        print("response from llm.list_fine_tuning_jobs=", ft_jobs)
 
         # cancel ft job
-        response = await litellm.acancel_fine_tuning_job(
+        response = await llm.acancel_fine_tuning_job(
             fine_tuning_job_id=create_fine_tuning_response.id,
             custom_llm_provider="azure",
             api_key=os.getenv("AZURE_SWEDEN_API_KEY"),
             api_base="https://exampleopenaiendpoint-production.up.railway.app",
         )
 
-        print("response from litellm.cancel_fine_tuning_job=", response)
+        print("response from llm.cancel_fine_tuning_job=", response)
 
         assert response.status == "cancelled"
         assert response.id == create_fine_tuning_response.id
@@ -209,10 +209,10 @@ async def test_create_vertex_fine_tune_jobs_mocked():
     )
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        create_fine_tuning_response = await litellm.acreate_fine_tuning_job(
+        create_fine_tuning_response = await llm.acreate_fine_tuning_job(
             model=base_model,
             custom_llm_provider="vertex_ai",
             training_file=training_file,
@@ -281,10 +281,10 @@ async def test_create_vertex_fine_tune_jobs_mocked_with_hyperparameters():
     )
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        create_fine_tuning_response = await litellm.acreate_fine_tuning_job(
+        create_fine_tuning_response = await llm.acreate_fine_tuning_job(
             model=base_model,
             custom_llm_provider="vertex_ai",
             training_file=training_file,
@@ -429,7 +429,7 @@ async def test_create_vertex_fine_tune_jobs():
 
     vertex_credentials = os.getenv("GCS_PATH_SERVICE_ACCOUNT")
     print("creating fine tuning job")
-    create_fine_tuning_response = await litellm.acreate_fine_tuning_job(
+    create_fine_tuning_response = await llm.acreate_fine_tuning_job(
         model="gemini-1.0-pro-002",
         custom_llm_provider="vertex_ai",
         training_file="gs://cloud-samples-data/ai-platform/generative_ai/sft_train_data.jsonl",
@@ -469,7 +469,7 @@ async def test_mock_openai_create_fine_tune_job():
             result_files=[],
         )
 
-        response = await litellm.acreate_fine_tuning_job(
+        response = await llm.acreate_fine_tuning_job(
             model="gpt-3.5-turbo-0125",
             training_file="file-123",
             hyperparameters={"n_epochs": 3},
@@ -507,7 +507,7 @@ async def test_mock_openai_list_fine_tune_jobs():
         # Simple mock return value - actual structure doesn't matter for this test
         mock_list.return_value = []
 
-        await litellm.alist_fine_tuning_jobs(limit=2, after="ft-000", client=client)
+        await llm.alist_fine_tuning_jobs(limit=2, after="ft-000", client=client)
 
         # Only verify that the client was called with correct parameters
         mock_list.assert_called_once()
@@ -525,7 +525,7 @@ async def test_mock_openai_cancel_fine_tune_job():
     client = AsyncOpenAI(api_key="fake-api-key")
 
     with patch.object(client.fine_tuning.jobs, "cancel") as mock_cancel:
-        await litellm.acancel_fine_tuning_job(
+        await llm.acancel_fine_tuning_job(
             fine_tuning_job_id="ft-123", client=client
         )
 
@@ -542,7 +542,7 @@ async def test_mock_openai_retrieve_fine_tune_job():
 
     with patch.object(client.fine_tuning.jobs, "retrieve") as mock_retrieve:
 
-        response = await litellm.aretrieve_fine_tuning_job(
+        response = await llm.aretrieve_fine_tuning_job(
             fine_tuning_job_id="ft-123", client=client
         )
 

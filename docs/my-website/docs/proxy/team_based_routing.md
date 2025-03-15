@@ -17,13 +17,13 @@ Create a config.yaml with 2 model groups + connected postgres db
 ```yaml
 model_list: 
   - model_name: gpt-3.5-turbo-eu # 👈 Model Group 1
-    litellm_params:
+    llm_params:
       model: azure/chatgpt-v-2
       api_base: os.environ/AZURE_API_BASE_EU
       api_key: os.environ/AZURE_API_KEY_EU
       api_version: "2023-07-01-preview"
   - model_name: gpt-3.5-turbo-worldwide # 👈 Model Group 2
-    litellm_params:
+    llm_params:
       model: azure/chatgpt-v-2
       api_base: os.environ/AZURE_API_BASE
       api_key: os.environ/AZURE_API_KEY
@@ -37,7 +37,7 @@ general_settings:
 Start proxy
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 ### Create Team with Model Alias

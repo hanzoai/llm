@@ -6,15 +6,15 @@ import io, asyncio
 # logging.basicConfig(level=logging.DEBUG)
 sys.path.insert(0, os.path.abspath("../.."))
 
-from litellm import completion
-import litellm
+from llm import completion
+import llm
 
-litellm.num_retries = 3
+llm.num_retries = 3
 
 import time, random
 import pytest
 import boto3
-from litellm._logging import verbose_logger
+from llm._logging import verbose_logger
 import logging
 
 
@@ -25,17 +25,17 @@ import logging
 @pytest.mark.flaky(retries=3, delay=1)
 async def test_basic_s3_logging(sync_mode, streaming):
     verbose_logger.setLevel(level=logging.DEBUG)
-    litellm.success_callback = ["s3"]
-    litellm.s3_callback_params = {
+    llm.success_callback = ["s3"]
+    llm.s3_callback_params = {
         "s3_bucket_name": "load-testing-oct",
         "s3_aws_secret_access_key": "os.environ/AWS_SECRET_ACCESS_KEY",
         "s3_aws_access_key_id": "os.environ/AWS_ACCESS_KEY_ID",
         "s3_region_name": "us-west-2",
     }
-    litellm.set_verbose = True
+    llm.set_verbose = True
     response_id = None
     if sync_mode is True:
-        response = litellm.completion(
+        response = llm.completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "This is a test"}],
             mock_response="It's simple to use and easy to get started",
@@ -49,7 +49,7 @@ async def test_basic_s3_logging(sync_mode, streaming):
             response_id = response.id
         time.sleep(2)
     else:
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "This is a test"}],
             mock_response="It's simple to use and easy to get started",
@@ -99,22 +99,22 @@ list_all_s3_objects("load-testing-oct")
 def test_s3_logging():
     # all s3 requests need to be in one test function
     # since we are modifying stdout, and pytests runs tests in parallel
-    # on circle ci - we only test litellm.acompletion()
+    # on circle ci - we only test llm.acompletion()
     try:
         # redirect stdout to log_file
-        litellm.cache = litellm.Cache(
+        llm.cache = llm.Cache(
             type="s3",
-            s3_bucket_name="litellm-my-test-bucket-2",
+            s3_bucket_name="llm-my-test-bucket-2",
             s3_region_name="us-east-1",
         )
 
-        litellm.success_callback = ["s3"]
-        litellm.s3_callback_params = {
-            "s3_bucket_name": "litellm-logs-2",
+        llm.success_callback = ["s3"]
+        llm.s3_callback_params = {
+            "s3_bucket_name": "llm-logs-2",
             "s3_aws_secret_access_key": "os.environ/AWS_SECRET_ACCESS_KEY",
             "s3_aws_access_key_id": "os.environ/AWS_ACCESS_KEY_ID",
         }
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         print("Testing async s3 logging")
 
@@ -125,7 +125,7 @@ def test_s3_logging():
         curr_time = str(time.time())
 
         async def _test():
-            return await litellm.acompletion(
+            return await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": f"This is a test {curr_time}"}],
                 max_tokens=10,
@@ -138,7 +138,7 @@ def test_s3_logging():
         expected_keys.append(response.id)
 
         async def _test():
-            return await litellm.acompletion(
+            return await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": f"This is a test {curr_time}"}],
                 max_tokens=10,
@@ -154,7 +154,7 @@ def test_s3_logging():
         import boto3
 
         s3 = boto3.client("s3")
-        bucket_name = "litellm-logs-2"
+        bucket_name = "llm-logs-2"
         # List objects in the bucket
         response = s3.list_objects(Bucket=bucket_name)
 
@@ -209,17 +209,17 @@ def test_s3_logging():
 def test_s3_logging_async():
     # this tests time added to make s3 logging calls, vs just acompletion calls
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         # Make 5 calls with an empty success_callback
-        litellm.success_callback = []
+        llm.success_callback = []
         start_time_empty_callback = asyncio.run(make_async_calls())
         print("done with no callback test")
 
         print("starting s3 logging load test")
         # Make 5 calls with success_callback set to "langfuse"
-        litellm.success_callback = ["s3"]
-        litellm.s3_callback_params = {
-            "s3_bucket_name": "litellm-logs-2",
+        llm.success_callback = ["s3"]
+        llm.s3_callback_params = {
+            "s3_bucket_name": "llm-logs-2",
             "s3_aws_secret_access_key": "os.environ/AWS_SECRET_ACCESS_KEY",
             "s3_aws_access_key_id": "os.environ/AWS_ACCESS_KEY_ID",
         }
@@ -233,7 +233,7 @@ def test_s3_logging_async():
         # assert the diff is not more than 1 second
         assert abs(start_time_s3 - start_time_empty_callback) < 1
 
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         pass
     except Exception as e:
         pytest.fail(f"An exception occurred - {e}")
@@ -243,7 +243,7 @@ async def make_async_calls():
     tasks = []
     for _ in range(5):
         task = asyncio.create_task(
-            litellm.acompletion(
+            llm.acompletion(
                 model="azure/chatgpt-v-2",
                 messages=[{"role": "user", "content": "This is a test"}],
                 max_tokens=5,
@@ -275,21 +275,21 @@ async def make_async_calls():
 def test_s3_logging_r2():
     # all s3 requests need to be in one test function
     # since we are modifying stdout, and pytests runs tests in parallel
-    # on circle ci - we only test litellm.acompletion()
+    # on circle ci - we only test llm.acompletion()
     try:
         # redirect stdout to log_file
-        # litellm.cache = litellm.Cache(
-        #     type="s3", s3_bucket_name="litellm-r2-bucket", s3_region_name="us-west-2"
+        # llm.cache = llm.Cache(
+        #     type="s3", s3_bucket_name="llm-r2-bucket", s3_region_name="us-west-2"
         # )
-        litellm.set_verbose = True
-        from litellm._logging import verbose_logger
+        llm.set_verbose = True
+        from llm._logging import verbose_logger
         import logging
 
         verbose_logger.setLevel(level=logging.DEBUG)
 
-        litellm.success_callback = ["s3"]
-        litellm.s3_callback_params = {
-            "s3_bucket_name": "litellm-r2-bucket",
+        llm.success_callback = ["s3"]
+        llm.s3_callback_params = {
+            "s3_bucket_name": "llm-r2-bucket",
             "s3_aws_secret_access_key": "os.environ/R2_S3_ACCESS_KEY",
             "s3_aws_access_key_id": "os.environ/R2_S3_ACCESS_ID",
             "s3_endpoint_url": "os.environ/R2_S3_URL",
@@ -304,7 +304,7 @@ def test_s3_logging_r2():
         curr_time = str(time.time())
 
         async def _test():
-            return await litellm.acompletion(
+            return await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": f"This is a test {curr_time}"}],
                 max_tokens=10,
@@ -326,7 +326,7 @@ def test_s3_logging_r2():
             aws_secret_access_key=os.getenv("R2_S3_ACCESS_KEY"),
         )
 
-        bucket_name = "litellm-r2-bucket"
+        bucket_name = "llm-r2-bucket"
         # List objects in the bucket
         response = s3.list_objects(Bucket=bucket_name)
 

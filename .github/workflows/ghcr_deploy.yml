@@ -1,5 +1,5 @@
-# this workflow is triggered by an API call when there is a new PyPI release of LiteLLM
-name: Build, Publish LiteLLM Docker Image. New Release
+# this workflow is triggered by an API call when there is a new PyPI release of Hanzo
+name: Build, Publish Hanzo Docker Image. New Release
 on:
   workflow_dispatch:
     inputs:
@@ -17,7 +17,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  CHART_NAME: litellm-helm
+  CHART_NAME: llm-helm
 
 # There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
@@ -30,7 +30,7 @@ jobs:
           echo "Tag: ${{ github.event.inputs.tag }}"
           echo "Release type: ${{ github.event.inputs.release_type }}"
   docker-hub-deploy:
-    if: github.repository == 'BerriAI/litellm'
+    if: github.repository == 'BerriAI/llm'
     runs-on: ubuntu-latest
     steps:
       -
@@ -56,23 +56,23 @@ jobs:
         with:
           context: .
           push: true
-          tags: litellm/litellm:${{ github.event.inputs.tag || 'latest' }} 
+          tags: llm/llm:${{ github.event.inputs.tag || 'latest' }} 
       -
-        name: Build and push litellm-database image
+        name: Build and push llm-database image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           file: ./docker/Dockerfile.database
-          tags: litellm/litellm-database:${{ github.event.inputs.tag || 'latest' }}
+          tags: llm/llm-database:${{ github.event.inputs.tag || 'latest' }}
       -
-        name: Build and push litellm-spend-logs image
+        name: Build and push llm-spend-logs image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          file: ./litellm-js/spend-logs/Dockerfile
-          tags: litellm/litellm-spend_logs:${{ github.event.inputs.tag || 'latest' }}
+          file: ./llm-js/spend-logs/Dockerfile
+          tags: llm/llm-spend_logs:${{ github.event.inputs.tag || 'latest' }}
       
   build-and-push-image:
     runs-on: ubuntu-latest
@@ -227,7 +227,7 @@ jobs:
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: .
-          file: ./litellm-js/spend-logs/Dockerfile
+          file: ./llm-js/spend-logs/Dockerfile
           push: true
           tags: ${{ steps.meta-spend-logs.outputs.tags }}-${{ github.event.inputs.tag || 'latest' }}, ${{ steps.meta-spend-logs.outputs.tags }}-${{ github.event.inputs.release_type }}
           platforms: local,linux/amd64,linux/arm64,linux/arm64/v8
@@ -253,7 +253,7 @@ jobs:
         run: |
           echo "REPO_OWNER=`echo ${{github.repository_owner}} | tr '[:upper:]' '[:lower:]'`" >>${GITHUB_ENV}
     
-      - name: Get LiteLLM Latest Tag
+      - name: Get Hanzo Latest Tag
         id: current_app_tag
         shell: bash
         run: |
@@ -298,7 +298,7 @@ jobs:
           update_dependencies: true
 
   release:
-    name: "New LiteLLM Release"
+    name: "New Hanzo Release"
     needs: [docker-hub-deploy, build-and-push-image, build-and-push-image-database]
 
     runs-on: "ubuntu-latest"
@@ -360,12 +360,12 @@ jobs:
           RELEASE_NOTES: ${{ steps.release-notes.outputs.result }}
         run: |
           curl -H "Content-Type: application/json" -X POST -d '{
-            "content": "New LiteLLM release '"${RELEASE_TAG}"'",
+            "content": "New Hanzo release '"${RELEASE_TAG}"'",
             "username": "Release Changelog",
             "avatar_url": "https://cdn.discordapp.com/avatars/487431320314576937/bd64361e4ba6313d561d54e78c9e7171.png",
             "embeds": [
               {
-                "title": "Changelog for LiteLLM '"${RELEASE_TAG}"'",
+                "title": "Changelog for Hanzo '"${RELEASE_TAG}"'",
                 "description": "'"${RELEASE_NOTES}"'",
                 "color": 2105893
               }

@@ -16,7 +16,7 @@ PROXY_BASE_URL = "http://0.0.0.0:4000"
 async def test_team_model_alias():
     """
     Test model alias functionality with teams:
-    1. Add a new model with model_name="gpt-4-team1" and litellm_params.model="gpt-4o"
+    1. Add a new model with model_name="gpt-4-team1" and llm_params.model="gpt-4o"
     2. Create a new team
     3. Update team with model_alias mapping
     4. Generate key for team
@@ -30,7 +30,7 @@ async def test_team_model_alias():
         "/model/new",
         json={
             "model_name": "gpt-4o-team1",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-4o",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
@@ -114,7 +114,7 @@ async def test_team_model_association():
         "/model/new",
         json={
             "model_name": "gpt-4-team-test",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-4",
                 "custom_llm_provider": "openai",
                 "api_key": "fake_key",
@@ -187,7 +187,7 @@ async def test_team_model_visibility_in_models_endpoint():
         "/model/new",
         json={
             "model_name": "gpt-4-team-test",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-4",
                 "custom_llm_provider": "openai",
                 "api_key": "fake_key",
@@ -258,7 +258,7 @@ async def test_team_model_visibility_in_model_info_endpoint():
         "/model/new",
         json={
             "model_name": "gpt-4-team-test",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-4",
                 "custom_llm_provider": "openai",
                 "api_key": "fake_key",

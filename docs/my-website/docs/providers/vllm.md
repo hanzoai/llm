@@ -3,30 +3,30 @@ import TabItem from '@theme/TabItem';
 
 # VLLM
 
-LiteLLM supports all models on VLLM.
+Hanzo supports all models on VLLM.
 
 | Property | Details |
 |-------|-------|
 | Description | vLLM is a fast and easy-to-use library for LLM inference and serving. [Docs](https://docs.vllm.ai/en/latest/index.html) |
-| Provider Route on LiteLLM | `hosted_vllm/` (for OpenAI compatible server), `vllm/` (for vLLM sdk usage) |
+| Provider Route on Hanzo | `hosted_vllm/` (for OpenAI compatible server), `vllm/` (for vLLM sdk usage) |
 | Provider Doc | [vLLM ↗](https://docs.vllm.ai/en/latest/index.html) |
 | Supported Endpoints | `/chat/completions`, `/embeddings`, `/completions` |
 
 
 # Quick Start
 
-## Usage - litellm.completion (calling OpenAI compatible endpoint)
-vLLM Provides an OpenAI compatible endpoints - here's how to call it with LiteLLM 
+## Usage - llm.completion (calling OpenAI compatible endpoint)
+vLLM Provides an OpenAI compatible endpoints - here's how to call it with Hanzo 
 
-In order to use litellm to call a hosted vllm server add the following to your completion call
+In order to use llm to call a hosted vllm server add the following to your completion call
 
 * `model="hosted_vllm/<your-vllm-model-name>"` 
 * `api_base = "your-hosted-vllm-server"`
 
 ```python
-import litellm 
+import llm 
 
-response = litellm.completion(
+response = llm.completion(
             model="hosted_vllm/facebook/opt-125m", # pass the vllm model name
             messages=messages,
             api_base="https://hosted-vllm-api.co",
@@ -37,16 +37,16 @@ print(response)
 ```
 
 
-## Usage -  LiteLLM Proxy Server (calling OpenAI compatible endpoint)
+## Usage -  Hanzo Proxy Server (calling OpenAI compatible endpoint)
 
-Here's how to call an OpenAI-Compatible Endpoint with the LiteLLM Proxy Server
+Here's how to call an OpenAI-Compatible Endpoint with the Hanzo Proxy Server
 
 1. Modify the config.yaml 
 
   ```yaml
   model_list:
     - model_name: my-model
-      litellm_params:
+      llm_params:
         model: hosted_vllm/facebook/opt-125m  # add hosted_vllm/ prefix to route as OpenAI provider
         api_base: https://hosted-vllm-api.co      # add api base for OpenAI compatible provider
   ```
@@ -54,10 +54,10 @@ Here's how to call an OpenAI-Compatible Endpoint with the LiteLLM Proxy Server
 2. Start the proxy 
 
   ```bash
-  $ litellm --config /path/to/config.yaml
+  $ llm --config /path/to/config.yaml
   ```
 
-3. Send Request to LiteLLM Proxy Server
+3. Send Request to Hanzo Proxy Server
 
   <Tabs>
 
@@ -66,8 +66,8 @@ Here's how to call an OpenAI-Compatible Endpoint with the LiteLLM Proxy Server
   ```python
   import openai
   client = openai.OpenAI(
-      api_key="sk-1234",             # pass litellm proxy key, if you're using virtual keys
-      base_url="http://0.0.0.0:4000" # litellm-proxy-base url
+      api_key="sk-1234",             # pass llm proxy key, if you're using virtual keys
+      base_url="http://0.0.0.0:4000" # llm-proxy-base url
   )
 
   response = client.chat.completions.create(
@@ -111,7 +111,7 @@ Here's how to call an OpenAI-Compatible Endpoint with the LiteLLM Proxy Server
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import embedding   
+from llm import embedding   
 import os
 
 os.environ["HOSTED_VLLM_API_BASE"] = "http://localhost:8000"
@@ -130,7 +130,7 @@ print(embedding)
 ```yaml
 model_list:
     - model_name: my-model
-      litellm_params:
+      llm_params:
         model: hosted_vllm/facebook/opt-125m  # add hosted_vllm/ prefix to route as OpenAI provider
         api_base: https://hosted-vllm-api.co      # add api base for OpenAI compatible provider
 ```
@@ -138,7 +138,7 @@ model_list:
 2. Start the proxy 
 
 ```bash
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -179,7 +179,7 @@ There are two ways to send a video url to VLLM:
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 
 response = completion(
             model="hosted_vllm/qwen", # pass the vllm model name
@@ -213,7 +213,7 @@ print(response)
 ```yaml
 model_list:
     - model_name: my-model
-      litellm_params:
+      llm_params:
         model: hosted_vllm/qwen  # add hosted_vllm/ prefix to route as OpenAI provider
         api_base: https://hosted-vllm-api.co      # add api base for OpenAI compatible provider
 ```
@@ -221,7 +221,7 @@ model_list:
 2. Start the proxy 
 
 ```bash
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -250,16 +250,16 @@ curl -X POST http://0.0.0.0:4000/chat/completions \
 
 
 ## (Deprecated) for `vllm pip package` 
-### Using - `litellm.completion`
+### Using - `llm.completion`
 
 ```
-pip install litellm vllm
+pip install llm vllm
 ```
 ```python
-import litellm 
+import llm 
 
-response = litellm.completion(
-            model="vllm/facebook/opt-125m", # add a vllm prefix so litellm knows the custom_llm_provider==vllm
+response = llm.completion(
+            model="vllm/facebook/opt-125m", # add a vllm prefix so llm knows the custom_llm_provider==vllm
             messages=messages,
             temperature=0.2,
             max_tokens=80)
@@ -271,7 +271,7 @@ print(response)
 ### Batch Completion
 
 ```python
-from litellm import batch_completion
+from llm import batch_completion
 
 model_name = "facebook/opt-125m"
 provider = "vllm"
@@ -302,7 +302,7 @@ def default_pt(messages):
     return " ".join(message["content"] for message in messages)
 ```
 
-[Code for how prompt templates work in LiteLLM](https://github.com/BerriAI/litellm/blob/main/litellm/llms/prompt_templates/factory.py)
+[Code for how prompt templates work in Hanzo](https://github.com/BerriAI/llm/blob/main/llm/llms/prompt_templates/factory.py)
 
 
 #### Models we already have Prompt Templates for
@@ -320,7 +320,7 @@ def default_pt(messages):
 
 ```python 
 # Create your own custom prompt template works 
-litellm.register_prompt_template(
+llm.register_prompt_template(
 	model="togethercomputer/LLaMA-2-7B-32K",
 	roles={
             "system": {
@@ -335,7 +335,7 @@ litellm.register_prompt_template(
                 "pre_message": "\n",
                 "post_message": "\n",
             }
-        } # tell LiteLLM how you want to map the openai messages to this model
+        } # tell Hanzo how you want to map the openai messages to this model
 )
 
 def test_vllm_custom_model():
@@ -347,5 +347,5 @@ def test_vllm_custom_model():
 test_vllm_custom_model()
 ```
 
-[Implementation Code](https://github.com/BerriAI/litellm/blob/6b3cb1898382f2e4e80fd372308ea232868c78d1/litellm/utils.py#L1414)
+[Implementation Code](https://github.com/BerriAI/llm/blob/6b3cb1898382f2e4e80fd372308ea232868c78d1/llm/utils.py#L1414)
 

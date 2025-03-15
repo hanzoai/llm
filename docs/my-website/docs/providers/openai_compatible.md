@@ -5,20 +5,20 @@ import TabItem from '@theme/TabItem';
 
 To call models hosted behind an openai proxy, make 2 changes:
 
-1. For `/chat/completions`: Put `openai/` in front of your model name, so litellm knows you're trying to call an openai `/chat/completions` endpoint. 
+1. For `/chat/completions`: Put `openai/` in front of your model name, so llm knows you're trying to call an openai `/chat/completions` endpoint. 
 
-2. For `/completions`: Put `text-completion-openai/` in front of your model name, so litellm knows you're trying to call an openai `/completions` endpoint. [NOT REQUIRED for `openai/` endpoints called via `/v1/completions` route].
+2. For `/completions`: Put `text-completion-openai/` in front of your model name, so llm knows you're trying to call an openai `/completions` endpoint. [NOT REQUIRED for `openai/` endpoints called via `/v1/completions` route].
 
-2. **Do NOT** add anything additional to the base url e.g. `/v1/embedding`. LiteLLM uses the openai-client to make these calls, and that automatically adds the relevant endpoints. 
+2. **Do NOT** add anything additional to the base url e.g. `/v1/embedding`. Hanzo uses the openai-client to make these calls, and that automatically adds the relevant endpoints. 
 
 
 ## Usage - completion
 ```python
-import litellm
+import llm
 import os
 
-response = litellm.completion(
-    model="openai/mistral",               # add `openai/` prefix to model so litellm knows to route to OpenAI
+response = llm.completion(
+    model="openai/mistral",               # add `openai/` prefix to model so llm knows to route to OpenAI
     api_key="sk-1234",                  # api key to your openai compatible endpoint
     api_base="http://0.0.0.0:4000",     # set API Base of your Custom OpenAI Endpoint
     messages=[
@@ -34,30 +34,30 @@ print(response)
 ## Usage - embedding
 
 ```python
-import litellm
+import llm
 import os
 
-response = litellm.embedding(
-    model="openai/GPT-J",               # add `openai/` prefix to model so litellm knows to route to OpenAI
+response = llm.embedding(
+    model="openai/GPT-J",               # add `openai/` prefix to model so llm knows to route to OpenAI
     api_key="sk-1234",                  # api key to your openai compatible endpoint
     api_base="http://0.0.0.0:4000",     # set API Base of your Custom OpenAI Endpoint
-    input=["good morning from litellm"]
+    input=["good morning from llm"]
 )
 print(response)
 ```
 
 
 
-## Usage with LiteLLM Proxy Server
+## Usage with Hanzo Proxy Server
 
-Here's how to call an OpenAI-Compatible Endpoint with the LiteLLM Proxy Server
+Here's how to call an OpenAI-Compatible Endpoint with the Hanzo Proxy Server
 
 1. Modify the config.yaml 
 
   ```yaml
   model_list:
     - model_name: my-model
-      litellm_params:
+      llm_params:
         model: openai/<your-model-name>  # add openai/ prefix to route as OpenAI provider
         api_base: <model-api-base>       # add api base for OpenAI compatible provider
         api_key: api-key                 # api key to send your model
@@ -74,10 +74,10 @@ Here's how to call an OpenAI-Compatible Endpoint with the LiteLLM Proxy Server
 2. Start the proxy 
 
   ```bash
-  $ litellm --config /path/to/config.yaml
+  $ llm --config /path/to/config.yaml
   ```
 
-3. Send Request to LiteLLM Proxy Server
+3. Send Request to Hanzo Proxy Server
 
   <Tabs>
 
@@ -86,8 +86,8 @@ Here's how to call an OpenAI-Compatible Endpoint with the LiteLLM Proxy Server
   ```python
   import openai
   client = openai.OpenAI(
-      api_key="sk-1234",             # pass litellm proxy key, if you're using virtual keys
-      base_url="http://0.0.0.0:4000" # litellm-proxy-base url
+      api_key="sk-1234",             # pass llm proxy key, if you're using virtual keys
+      base_url="http://0.0.0.0:4000" # llm-proxy-base url
   )
 
   response = client.chat.completions.create(
@@ -132,7 +132,7 @@ Some VLLM models (e.g. gemma) don't support system messages. To map those reques
 ```yaml
 model_list:
 - model_name: my-custom-model
-   litellm_params:
+   llm_params:
       model: openai/google/gemma
       api_base: http://my-custom-base
       api_key: "" 

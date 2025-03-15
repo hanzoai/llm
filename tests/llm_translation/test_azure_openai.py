@@ -6,7 +6,7 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 
 import pytest
-from litellm.llms.azure.common_utils import process_azure_headers
+from llm.llms.azure.common_utils import process_azure_headers
 from httpx import Headers
 from base_embedding_unit_tests import BaseLLMEmbeddingTest
 
@@ -100,8 +100,8 @@ def test_process_azure_headers_with_dict_input():
 from httpx import Client
 from unittest.mock import MagicMock, patch
 from openai import AzureOpenAI
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 import os
 
 
@@ -121,13 +121,13 @@ import os
     ],
 )
 def test_azure_extra_headers(input, call_type, header_value):
-    from litellm import embedding, image_generation
+    from llm import embedding, image_generation
 
     http_client = Client()
 
     messages = [{"role": "user", "content": "Hello world"}]
     with patch.object(http_client, "send", new=MagicMock()) as mock_client:
-        litellm.client_session = http_client
+        llm.client_session = http_client
         try:
             if call_type == "completion":
                 func = completion
@@ -183,7 +183,7 @@ def test_azure_extra_headers(input, call_type, header_value):
     ],
 )
 def test_process_azure_endpoint_url(api_base, model, expected_endpoint):
-    from litellm.llms.azure.azure import AzureChatCompletion
+    from llm.llms.azure.azure import AzureChatCompletion
 
     azure_chat_completion = AzureChatCompletion()
     input_args = {
@@ -209,8 +209,8 @@ class TestAzureEmbedding(BaseLLMEmbeddingTest):
             "api_base": os.getenv("AZURE_API_BASE"),
         }
 
-    def get_custom_llm_provider(self) -> litellm.LlmProviders:
-        return litellm.LlmProviders.AZURE
+    def get_custom_llm_provider(self) -> llm.LlmProviders:
+        return llm.LlmProviders.AZURE
 
 
 @patch("azure.identity.UsernamePasswordCredential")
@@ -218,7 +218,7 @@ class TestAzureEmbedding(BaseLLMEmbeddingTest):
 def test_get_azure_ad_token_from_username_password(
     mock_get_bearer_token_provider, mock_credential
 ):
-    from litellm.llms.azure.common_utils import (
+    from llm.llms.azure.common_utils import (
         get_azure_ad_token_from_username_password,
     )
 
@@ -293,10 +293,10 @@ def test_azure_openai_gpt_4o_naming(monkeypatch):
     ],
 )
 def test_azure_gpt_4o_with_tool_call_and_response_format(api_version):
-    from litellm import completion
+    from llm import completion
     from typing import Optional
     from pydantic import BaseModel
-    import litellm
+    import llm
 
     from openai import AzureOpenAI
 
@@ -338,7 +338,7 @@ def test_azure_gpt_4o_with_tool_call_and_response_format(api_version):
     ]
 
     with patch.object(client.chat.completions.with_raw_response, "create") as mock_post:
-        response = litellm.completion(
+        response = llm.completion(
             model="azure/gpt-4o",
             messages=[
                 {
@@ -371,7 +371,7 @@ def test_map_openai_params():
     """
     Ensure response_format does not override tools
     """
-    from litellm.llms.azure.chat.gpt_transformation import AzureOpenAIConfig
+    from llm.llms.azure.chat.gpt_transformation import AzureOpenAIConfig
 
     azure_openai_config = AzureOpenAIConfig()
     tools = [
@@ -465,12 +465,12 @@ def test_map_openai_params():
 @pytest.mark.parametrize("max_retries", [0, 4])
 @pytest.mark.parametrize("stream", [True, False])
 @patch(
-    "litellm.main.azure_chat_completions.make_sync_azure_openai_chat_completion_request"
+    "llm.main.azure_chat_completions.make_sync_azure_openai_chat_completion_request"
 )
 def test_azure_max_retries_0(
     mock_make_sync_azure_openai_chat_completion_request, max_retries, stream
 ):
-    from litellm import completion
+    from llm import completion
 
     try:
         completion(
@@ -493,12 +493,12 @@ def test_azure_max_retries_0(
 
 @pytest.mark.parametrize("max_retries", [0, 4])
 @pytest.mark.parametrize("stream", [True, False])
-@patch("litellm.main.azure_chat_completions.make_azure_openai_chat_completion_request")
+@patch("llm.main.azure_chat_completions.make_azure_openai_chat_completion_request")
 @pytest.mark.asyncio
 async def test_async_azure_max_retries_0(
     make_azure_openai_chat_completion_request, max_retries, stream
 ):
-    from litellm import acompletion
+    from llm import acompletion
 
     try:
         await acompletion(
@@ -522,12 +522,12 @@ async def test_async_azure_max_retries_0(
 @pytest.mark.parametrize("max_retries", [0, 4])
 @pytest.mark.parametrize("stream", [True, False])
 @pytest.mark.parametrize("sync_mode", [True, False])
-@patch("litellm.llms.azure.common_utils.select_azure_base_url_or_endpoint")
+@patch("llm.llms.azure.common_utils.select_azure_base_url_or_endpoint")
 @pytest.mark.asyncio
 async def test_azure_instruct(
     mock_select_azure_base_url_or_endpoint, max_retries, stream, sync_mode
 ):
-    from litellm import completion, acompletion
+    from llm import completion, acompletion
 
     args = {
         "model": "azure_text/instruct-model",
@@ -557,12 +557,12 @@ async def test_azure_instruct(
 
 @pytest.mark.parametrize("max_retries", [0, 4])
 @pytest.mark.parametrize("sync_mode", [True, False])
-@patch("litellm.llms.azure.common_utils.select_azure_base_url_or_endpoint")
+@patch("llm.llms.azure.common_utils.select_azure_base_url_or_endpoint")
 @pytest.mark.asyncio
 async def test_azure_embedding_max_retries_0(
     mock_select_azure_base_url_or_endpoint, max_retries, sync_mode
 ):
-    from litellm import aembedding, embedding
+    from llm import aembedding, embedding
 
     args = {
         "model": "azure/azure-embedding-model",

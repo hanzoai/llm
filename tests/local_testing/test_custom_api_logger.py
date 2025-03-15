@@ -8,10 +8,10 @@ sys.path.insert(0, os.path.abspath("../.."))
 print("Modified sys.path:", sys.path)
 
 
-from litellm import completion
-import litellm
+from llm import completion
+import llm
 
-litellm.num_retries = 3
+llm.num_retries = 3
 
 import time, random
 import pytest
@@ -21,13 +21,13 @@ import pytest
 @pytest.mark.skip(reason="new beta feature, will be testing in our ci/cd soon")
 async def test_custom_api_logging():
     try:
-        litellm.success_callback = ["generic"]
-        litellm.set_verbose = True
+        llm.success_callback = ["generic"]
+        llm.set_verbose = True
         os.environ["GENERIC_LOGGER_ENDPOINT"] = "http://localhost:8000/log-event"
 
         print("Testing generic api logging")
 
-        await litellm.acompletion(
+        await llm.acompletion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": f"This is a test"}],
             max_tokens=10,

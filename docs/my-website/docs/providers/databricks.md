@@ -3,11 +3,11 @@ import TabItem from '@theme/TabItem';
 
 # 🆕 Databricks
 
-LiteLLM supports all models on Databricks
+Hanzo supports all models on Databricks
 
 :::tip
 
-**We support ALL Databricks models, just set `model=databricks/<any-model-on-databricks>` as a prefix when sending litellm requests**
+**We support ALL Databricks models, just set `model=databricks/<any-model-on-databricks>` as a prefix when sending llm requests**
 
 :::
 
@@ -26,7 +26,7 @@ os.environ["DATABRICKS_API_BASE"] = ""
 ### Example Call
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 ## set ENV variables
 os.environ["DATABRICKS_API_KEY"] = "databricks key"
@@ -47,7 +47,7 @@ response = completion(
   ```yaml
   model_list:
     - model_name: dbrx-instruct
-      litellm_params:
+      llm_params:
         model: databricks/databricks-dbrx-instruct
         api_key: os.environ/DATABRICKS_API_KEY
         api_base: os.environ/DATABRICKS_API_BASE
@@ -58,10 +58,10 @@ response = completion(
 2. Start the proxy 
 
   ```bash
-  $ litellm --config /path/to/config.yaml --debug
+  $ llm --config /path/to/config.yaml --debug
   ```
 
-3. Send Request to LiteLLM Proxy Server
+3. Send Request to Hanzo Proxy Server
 
   <Tabs>
 
@@ -70,8 +70,8 @@ response = completion(
   ```python
   import openai
   client = openai.OpenAI(
-      api_key="sk-1234",             # pass litellm proxy key, if you're using virtual keys
-      base_url="http://0.0.0.0:4000" # litellm-proxy-base url
+      api_key="sk-1234",             # pass llm proxy key, if you're using virtual keys
+      base_url="http://0.0.0.0:4000" # llm-proxy-base url
   )
 
   response = client.chat.completions.create(
@@ -123,11 +123,11 @@ response = completion(
 </Tabs>
 
 ## Passing additional params - max_tokens, temperature 
-See all litellm.completion supported params [here](../completion/input.md#translated-openai-params)
+See all llm.completion supported params [here](../completion/input.md#translated-openai-params)
 
 ```python
-# !pip install litellm
-from litellm import completion
+# !pip install llm
+from llm import completion
 import os
 ## set ENV variables
 os.environ["DATABRICKS_API_KEY"] = "databricks key"
@@ -147,7 +147,7 @@ response = completion(
 ```yaml
   model_list:
     - model_name: llama-3
-      litellm_params:
+      llm_params:
         model: databricks/databricks-meta-llama-3-70b-instruct
         api_key: os.environ/DATABRICKS_API_KEY
         max_tokens: 20
@@ -156,21 +156,21 @@ response = completion(
 
 ## Passings Databricks specific params - 'instruction'
 
-For embedding models, databricks lets you pass in an additional param 'instruction'. [Full Spec](https://github.com/BerriAI/litellm/blob/43353c28b341df0d9992b45c6ce464222ebd7984/litellm/llms/databricks.py#L164)
+For embedding models, databricks lets you pass in an additional param 'instruction'. [Full Spec](https://github.com/BerriAI/llm/blob/43353c28b341df0d9992b45c6ce464222ebd7984/llm/llms/databricks.py#L164)
 
 
 ```python
-# !pip install litellm
-from litellm import embedding
+# !pip install llm
+from llm import embedding
 import os
 ## set ENV variables
 os.environ["DATABRICKS_API_KEY"] = "databricks key"
 os.environ["DATABRICKS_API_BASE"] = "databricks url"
 
 # Databricks bge-large-en call
-response = litellm.embedding(
+response = llm.embedding(
       model="databricks/databricks-bge-large-en",
-      input=["good morning from litellm"],
+      input=["good morning from llm"],
       instruction="Represent this sentence for searching relevant passages:",
   )
 ```
@@ -180,7 +180,7 @@ response = litellm.embedding(
 ```yaml
   model_list:
     - model_name: bge-large
-      litellm_params:
+      llm_params:
         model: databricks/databricks-bge-large-en
         api_key: os.environ/DATABRICKS_API_KEY
         api_base: os.environ/DATABRICKS_API_BASE
@@ -192,7 +192,7 @@ response = litellm.embedding(
 
 :::tip
 
-**We support ALL Databricks models, just set `model=databricks/<any-model-on-databricks>` as a prefix when sending litellm requests**
+**We support ALL Databricks models, just set `model=databricks/<any-model-on-databricks>` as a prefix when sending llm requests**
 
 :::
 
@@ -212,7 +212,7 @@ response = litellm.embedding(
 
 :::tip
 
-**We support ALL Databricks models, just set `model=databricks/<any-model-on-databricks>` as a prefix when sending litellm requests**
+**We support ALL Databricks models, just set `model=databricks/<any-model-on-databricks>` as a prefix when sending llm requests**
 
 :::
 

@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 ## Getting Started
 
-Use Humanloop to manage prompts across all LiteLLM Providers.
+Use Humanloop to manage prompts across all Hanzo Providers.
 
 
 
@@ -19,13 +19,13 @@ Use Humanloop to manage prompts across all LiteLLM Providers.
 
 ```python
 import os 
-import litellm
+import llm
 
 os.environ["HUMANLOOP_API_KEY"] = "" # [OPTIONAL] set here or in `.completion`
 
-litellm.set_verbose = True # see raw request to provider
+llm.set_verbose = True # see raw request to provider
 
-resp = litellm.completion(
+resp = llm.completion(
     model="humanloop/gpt-3.5-turbo",
     prompt_id="test-chat-prompt",
     prompt_variables={"user_message": "this is used"}, # [OPTIONAL]
@@ -44,7 +44,7 @@ resp = litellm.completion(
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: humanloop/gpt-3.5-turbo
       prompt_id: "<humanloop_prompt_id>"
       api_key: os.environ/OPENAI_API_KEY
@@ -53,7 +53,7 @@ model_list:
 2. Start the proxy
 
 ```bash
-litellm --config config.yaml --detailed_debug
+llm --config config.yaml --detailed_debug
 ```
 
 3. Test it! 
@@ -88,7 +88,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages = [
@@ -117,7 +117,7 @@ print(response)
 **Expected Logs:**
 
 ```
-POST Request Sent from LiteLLM:
+POST Request Sent from Hanzo:
 curl -X POST \
 https://api.openai.com/v1/ \
 -d '{'model': 'gpt-3.5-turbo', 'messages': <YOUR HUMANLOOP PROMPT TEMPLATE>}'
@@ -128,15 +128,15 @@ https://api.openai.com/v1/ \
 
 ## How to set model 
 
-### Set the model on LiteLLM 
+### Set the model on Hanzo 
 
-You can do `humanloop/<litellm_model_name>`
+You can do `humanloop/<llm_model_name>`
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
-litellm.completion(
+llm.completion(
     model="humanloop/gpt-3.5-turbo", # or `humanloop/anthropic/claude-3-5-sonnet`
     ...
 )
@@ -148,7 +148,7 @@ litellm.completion(
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: humanloop/gpt-3.5-turbo # OR humanloop/anthropic/claude-3-5-sonnet
       prompt_id: <humanloop_prompt_id>
       api_key: os.environ/OPENAI_API_KEY
@@ -159,7 +159,7 @@ model_list:
 
 ### Set the model on Humanloop
 
-LiteLLM will call humanloop's `https://api.humanloop.com/v5/prompts/<your-prompt-id>` endpoint, to get the prompt template.
+Hanzo will call humanloop's `https://api.humanloop.com/v5/prompts/<your-prompt-id>` endpoint, to get the prompt template.
 
 This also returns the template model set on Humanloop.
 

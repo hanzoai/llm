@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 # Prompt Caching 
 
-For OpenAI + Anthropic + Deepseek, LiteLLM follows the OpenAI prompt caching usage object format:
+For OpenAI + Anthropic + Deepseek, Hanzo follows the OpenAI prompt caching usage object format:
 
 ```bash
 "usage": {
@@ -37,7 +37,7 @@ Note: OpenAI caching is only available for prompts containing 1024 tokens or mor
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion 
+from llm import completion 
 import os
 
 os.environ["OPENAI_API_KEY"] = ""
@@ -101,7 +101,7 @@ assert response.usage.prompt_tokens_details.cached_tokens > 0
 ```yaml
 model_list:
     - model_name: gpt-4o
-      litellm_params:
+      llm_params:
         model: openai/gpt-4o
         api_key: os.environ/OPENAI_API_KEY
 ```
@@ -109,7 +109,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -119,8 +119,8 @@ from openai import OpenAI
 import os
 
 client = OpenAI(
-    api_key="LITELLM_PROXY_KEY", # sk-1234
-    base_url="LITELLM_PROXY_BASE" # http://0.0.0.0:4000
+    api_key="LLM_PROXY_KEY", # sk-1234
+    base_url="LLM_PROXY_BASE" # http://0.0.0.0:4000
 )
 
 for _ in range(2):
@@ -189,11 +189,11 @@ If you pass that in for any other llm provider, it will be ignored.
 <TabItem value="sdk" label="SDK">
 
 ```python 
-from litellm import completion 
-import litellm 
+from llm import completion 
+import llm 
 import os 
 
-litellm.set_verbose = True # 👈 SEE RAW REQUEST
+llm.set_verbose = True # 👈 SEE RAW REQUEST
 os.environ["ANTHROPIC_API_KEY"] = "" 
 
 response = completion(
@@ -230,7 +230,7 @@ print(response.usage)
 ```yaml
 model_list:
     - model_name: claude-3-5-sonnet-20240620
-      litellm_params:
+      llm_params:
         model: anthropic/claude-3-5-sonnet-20240620
         api_key: os.environ/ANTHROPIC_API_KEY
 ```
@@ -238,7 +238,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -248,8 +248,8 @@ from openai import OpenAI
 import os
 
 client = OpenAI(
-    api_key="LITELLM_PROXY_KEY", # sk-1234
-    base_url="LITELLM_PROXY_BASE" # http://0.0.0.0:4000
+    api_key="LLM_PROXY_KEY", # sk-1234
+    base_url="LLM_PROXY_BASE" # http://0.0.0.0:4000
 )
 
 response = client.chat.completions.create(
@@ -287,13 +287,13 @@ print(response.usage)
 Works the same as OpenAI. 
 
 ```python 
-from litellm import completion 
-import litellm
+from llm import completion 
+import llm
 import os 
 
 os.environ["DEEPSEEK_API_KEY"] = "" 
 
-litellm.set_verbose = True # 👈 SEE RAW REQUEST
+llm.set_verbose = True # 👈 SEE RAW REQUEST
 
 model_name = "deepseek/deepseek-chat"
 messages_1 = [
@@ -343,8 +343,8 @@ message_2 = [
     {"role": "user", "content": "When did the Shang Dynasty fall?"},
 ]
 
-response_1 = litellm.completion(model=model_name, messages=messages_1)
-response_2 = litellm.completion(model=model_name, messages=message_2)
+response_1 = llm.completion(model=model_name, messages=messages_1)
+response_2 = llm.completion(model=model_name, messages=message_2)
 
 # Add any assertions here to check the response
 print(response_2.usage)
@@ -355,7 +355,7 @@ print(response_2.usage)
 
 Cost cache-hit prompt tokens can differ from cache-miss prompt tokens.
 
-Use the `completion_cost()` function for calculating cost ([handles prompt caching cost calculation](https://github.com/BerriAI/litellm/blob/f7ce1173f3315cc6cae06cf9bcf12e54a2a19705/litellm/llms/anthropic/cost_calculation.py#L12) as well). [**See more helper functions**](./token_usage.md)
+Use the `completion_cost()` function for calculating cost ([handles prompt caching cost calculation](https://github.com/BerriAI/llm/blob/f7ce1173f3315cc6cae06cf9bcf12e54a2a19705/llm/llms/anthropic/cost_calculation.py#L12) as well). [**See more helper functions**](./token_usage.md)
 
 ```python
 cost = completion_cost(completion_response=response, model=model)
@@ -367,11 +367,11 @@ cost = completion_cost(completion_response=response, model=model)
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion, completion_cost
-import litellm 
+from llm import completion, completion_cost
+import llm 
 import os 
 
-litellm.set_verbose = True # 👈 SEE RAW REQUEST
+llm.set_verbose = True # 👈 SEE RAW REQUEST
 os.environ["ANTHROPIC_API_KEY"] = "" 
 model = "anthropic/claude-3-5-sonnet-20240620"
 response = completion(
@@ -408,14 +408,14 @@ print(formatted_string)
 </TabItem>
 <TabItem value="proxy" label="PROXY">
 
-LiteLLM returns the calculated cost in the response headers - `x-litellm-response-cost` 
+Hanzo returns the calculated cost in the response headers - `x-llm-response-cost` 
 
 ```python
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="LITELLM_PROXY_KEY", # sk-1234..
-    base_url="LITELLM_PROXY_BASE" # http://0.0.0.0:4000
+    api_key="LLM_PROXY_KEY", # sk-1234..
+    base_url="LLM_PROXY_BASE" # http://0.0.0.0:4000
 )
 response = client.chat.completions.with_raw_response.create(
     messages=[{
@@ -424,7 +424,7 @@ response = client.chat.completions.with_raw_response.create(
     }],
     model="gpt-3.5-turbo",
 )
-print(response.headers.get('x-litellm-response-cost'))
+print(response.headers.get('x-llm-response-cost'))
 
 completion = response.parse()  # get the object that `chat.completions.create()` would have returned
 print(completion)
@@ -441,7 +441,7 @@ Check if a model supports prompt caching with `supports_prompt_caching()`
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm.utils import supports_prompt_caching
+from llm.utils import supports_prompt_caching
 
 supports_pc: bool = supports_prompt_caching(model="anthropic/claude-3-5-sonnet-20240620")
 
@@ -458,7 +458,7 @@ Use the `/model/info` endpoint to check if a model on the proxy supports prompt 
 ```yaml
 model_list:
     - model_name: claude-3-5-sonnet-20240620
-      litellm_params:
+      llm_params:
         model: anthropic/claude-3-5-sonnet-20240620
         api_key: os.environ/ANTHROPIC_API_KEY
 ```
@@ -466,7 +466,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -483,7 +483,7 @@ curl -L -X GET 'http://0.0.0.0:4000/v1/model/info' \
     "data": [
         {
             "model_name": "claude-3-5-sonnet-20240620",
-            "litellm_params": {
+            "llm_params": {
                 "model": "anthropic/claude-3-5-sonnet-20240620"
             },
             "model_info": {
@@ -499,4 +499,4 @@ curl -L -X GET 'http://0.0.0.0:4000/v1/model/info' \
 </TabItem>
 </Tabs>
 
-This checks our maintained [model info/cost map](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json)
+This checks our maintained [model info/cost map](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json)

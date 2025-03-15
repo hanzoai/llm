@@ -14,15 +14,15 @@ sys.path.insert(0, os.path.abspath("../.."))
 from typing import List, Literal, Optional
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import litellm
-from litellm import Cache, Router
-from litellm.integrations.custom_logger import CustomLogger
+import llm
+from llm import Cache, Router
+from llm.integrations.custom_logger import CustomLogger
 
 # Test Scenarios (test across completion, streaming, embedding)
 ## 1: Pre-API-Call
 ## 2: Post-API-Call
-## 3: On LiteLLM Call success
-## 4: On LiteLLM Call failure
+## 3: On Hanzo Call success
+## 4: On Hanzo Call failure
 ## fallbacks
 ## retries
 
@@ -38,12 +38,12 @@ from litellm.integrations.custom_logger import CustomLogger
 ## 1. router.completion() + router.embeddings()
 ## 2. proxy.completions + proxy.embeddings
 
-litellm.num_retries = 0
+llm.num_retries = 0
 
 
 class CompletionCustomHandler(
     CustomLogger
-):  # https://docs.litellm.ai/docs/observability/custom_callback#callback-class
+):  # https://docs.llm.ai/docs/observability/custom_callback#callback-class
     """
     The set of expected inputs to a custom handler for a
     """
@@ -79,23 +79,23 @@ class CompletionCustomHandler(
             assert isinstance(kwargs["model"], str)
             assert isinstance(kwargs["messages"], list)
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
+            assert isinstance(kwargs["llm_params"], dict)
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
             assert isinstance(kwargs["user"], (str, type(None)))
             ### ROUTER-SPECIFIC KWARGS
-            assert isinstance(kwargs["litellm_params"]["metadata"], dict)
-            assert isinstance(kwargs["litellm_params"]["metadata"]["model_group"], str)
-            assert isinstance(kwargs["litellm_params"]["metadata"]["deployment"], str)
-            assert isinstance(kwargs["litellm_params"]["model_info"], dict)
-            assert isinstance(kwargs["litellm_params"]["model_info"]["id"], str)
+            assert isinstance(kwargs["llm_params"]["metadata"], dict)
+            assert isinstance(kwargs["llm_params"]["metadata"]["model_group"], str)
+            assert isinstance(kwargs["llm_params"]["metadata"]["deployment"], str)
+            assert isinstance(kwargs["llm_params"]["model_info"], dict)
+            assert isinstance(kwargs["llm_params"]["model_info"]["id"], str)
             assert isinstance(
-                kwargs["litellm_params"]["proxy_server_request"], (str, type(None))
+                kwargs["llm_params"]["proxy_server_request"], (str, type(None))
             )
             assert isinstance(
-                kwargs["litellm_params"]["preset_cache_key"], (str, type(None))
+                kwargs["llm_params"]["preset_cache_key"], (str, type(None))
             )
-            assert isinstance(kwargs["litellm_params"]["stream_response"], dict)
+            assert isinstance(kwargs["llm_params"]["stream_response"], dict)
         except Exception as e:
             print(f"Assertion Error: {traceback.format_exc()}")
             self.errors.append(traceback.format_exc())
@@ -113,7 +113,7 @@ class CompletionCustomHandler(
             assert isinstance(kwargs["model"], str)
             assert isinstance(kwargs["messages"], list)
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
+            assert isinstance(kwargs["llm_params"], dict)
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
             assert isinstance(kwargs["user"], (str, type(None)))
@@ -121,7 +121,7 @@ class CompletionCustomHandler(
             assert isinstance(kwargs["api_key"], (str, type(None)))
             assert (
                 isinstance(
-                    kwargs["original_response"], (str, litellm.CustomStreamWrapper)
+                    kwargs["original_response"], (str, llm.CustomStreamWrapper)
                 )
                 or inspect.iscoroutine(kwargs["original_response"])
                 or inspect.isasyncgen(kwargs["original_response"])
@@ -129,18 +129,18 @@ class CompletionCustomHandler(
             assert isinstance(kwargs["additional_args"], (dict, type(None)))
             assert isinstance(kwargs["log_event_type"], str)
             ### ROUTER-SPECIFIC KWARGS
-            assert isinstance(kwargs["litellm_params"]["metadata"], dict)
-            assert isinstance(kwargs["litellm_params"]["metadata"]["model_group"], str)
-            assert isinstance(kwargs["litellm_params"]["metadata"]["deployment"], str)
-            assert isinstance(kwargs["litellm_params"]["model_info"], dict)
-            assert isinstance(kwargs["litellm_params"]["model_info"]["id"], str)
+            assert isinstance(kwargs["llm_params"]["metadata"], dict)
+            assert isinstance(kwargs["llm_params"]["metadata"]["model_group"], str)
+            assert isinstance(kwargs["llm_params"]["metadata"]["deployment"], str)
+            assert isinstance(kwargs["llm_params"]["model_info"], dict)
+            assert isinstance(kwargs["llm_params"]["model_info"]["id"], str)
             assert isinstance(
-                kwargs["litellm_params"]["proxy_server_request"], (str, type(None))
+                kwargs["llm_params"]["proxy_server_request"], (str, type(None))
             )
             assert isinstance(
-                kwargs["litellm_params"]["preset_cache_key"], (str, type(None))
+                kwargs["llm_params"]["preset_cache_key"], (str, type(None))
             )
-            assert isinstance(kwargs["litellm_params"]["stream_response"], dict)
+            assert isinstance(kwargs["llm_params"]["stream_response"], dict)
         except Exception:
             print(f"Assertion Error: {traceback.format_exc()}")
             self.errors.append(traceback.format_exc())
@@ -153,14 +153,14 @@ class CompletionCustomHandler(
             ## END TIME
             assert isinstance(end_time, datetime)
             ## RESPONSE OBJECT
-            assert isinstance(response_obj, litellm.ModelResponseStream)
+            assert isinstance(response_obj, llm.ModelResponseStream)
             ## KWARGS
             assert isinstance(kwargs["model"], str)
             assert isinstance(kwargs["messages"], list) and isinstance(
                 kwargs["messages"][0], dict
             )
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
+            assert isinstance(kwargs["llm_params"], dict)
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
             assert isinstance(kwargs["user"], (str, type(None)))
@@ -171,7 +171,7 @@ class CompletionCustomHandler(
             assert isinstance(kwargs["api_key"], (str, type(None)))
             assert (
                 isinstance(
-                    kwargs["original_response"], (str, litellm.CustomStreamWrapper)
+                    kwargs["original_response"], (str, llm.CustomStreamWrapper)
                 )
                 or inspect.isasyncgen(kwargs["original_response"])
                 or inspect.iscoroutine(kwargs["original_response"])
@@ -190,14 +190,14 @@ class CompletionCustomHandler(
             ## END TIME
             assert isinstance(end_time, datetime)
             ## RESPONSE OBJECT
-            assert isinstance(response_obj, litellm.ModelResponse)
+            assert isinstance(response_obj, llm.ModelResponse)
             ## KWARGS
             assert isinstance(kwargs["model"], str)
             assert isinstance(kwargs["messages"], list) and isinstance(
                 kwargs["messages"][0], dict
             )
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
+            assert isinstance(kwargs["llm_params"], dict)
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
             assert isinstance(kwargs["user"], (str, type(None)))
@@ -207,7 +207,7 @@ class CompletionCustomHandler(
             ) or isinstance(kwargs["input"], (dict, str))
             assert isinstance(kwargs["api_key"], (str, type(None)))
             assert isinstance(
-                kwargs["original_response"], (str, litellm.CustomStreamWrapper)
+                kwargs["original_response"], (str, llm.CustomStreamWrapper)
             )
             assert isinstance(kwargs["additional_args"], (dict, type(None)))
             assert isinstance(kwargs["log_event_type"], str)
@@ -231,7 +231,7 @@ class CompletionCustomHandler(
                 kwargs["messages"][0], dict
             )
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
+            assert isinstance(kwargs["llm_params"], dict)
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
             assert isinstance(kwargs["user"], (str, type(None)))
@@ -242,7 +242,7 @@ class CompletionCustomHandler(
             assert isinstance(kwargs["api_key"], (str, type(None)))
             assert (
                 isinstance(
-                    kwargs["original_response"], (str, litellm.CustomStreamWrapper)
+                    kwargs["original_response"], (str, llm.CustomStreamWrapper)
                 )
                 or kwargs["original_response"] == None
             )
@@ -273,13 +273,13 @@ class CompletionCustomHandler(
             assert isinstance(end_time, datetime)
             ## RESPONSE OBJECT
             assert isinstance(
-                response_obj, (litellm.ModelResponse, litellm.EmbeddingResponse)
+                response_obj, (llm.ModelResponse, llm.EmbeddingResponse)
             )
             ## KWARGS
             assert isinstance(kwargs["model"], str)
 
             # checking we use base_model for azure cost calculation
-            base_model = litellm.utils._get_base_model_from_metadata(
+            base_model = llm.utils._get_base_model_from_metadata(
                 model_call_details=kwargs
             )
 
@@ -289,7 +289,7 @@ class CompletionCustomHandler(
                 and kwargs["stream"] != True
             ):
                 # when base_model is set for azure, we should use pricing for the base_model
-                # this checks response_cost == litellm.cost_per_token(model=base_model)
+                # this checks response_cost == llm.cost_per_token(model=base_model)
                 assert isinstance(kwargs["response_cost"], float)
                 response_cost = kwargs["response_cost"]
                 print(
@@ -298,7 +298,7 @@ class CompletionCustomHandler(
                 prompt_tokens = response_obj.usage.prompt_tokens
                 completion_tokens = response_obj.usage.completion_tokens
                 # ensure the pricing is based on the base_model here
-                prompt_price, completion_price = litellm.cost_per_token(
+                prompt_price, completion_price = llm.cost_per_token(
                     model=base_model,
                     prompt_tokens=prompt_tokens,
                     completion_tokens=completion_tokens,
@@ -311,7 +311,7 @@ class CompletionCustomHandler(
 
             assert isinstance(kwargs["messages"], list)
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
+            assert isinstance(kwargs["llm_params"], dict)
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
             assert isinstance(kwargs["user"], (str, type(None)))
@@ -319,7 +319,7 @@ class CompletionCustomHandler(
             assert isinstance(kwargs["api_key"], (str, type(None)))
             assert (
                 isinstance(
-                    kwargs["original_response"], (str, litellm.CustomStreamWrapper)
+                    kwargs["original_response"], (str, llm.CustomStreamWrapper)
                 )
                 or inspect.isasyncgen(kwargs["original_response"])
                 or inspect.iscoroutine(kwargs["original_response"])
@@ -328,18 +328,18 @@ class CompletionCustomHandler(
             assert isinstance(kwargs["log_event_type"], str)
             assert kwargs["cache_hit"] is None or isinstance(kwargs["cache_hit"], bool)
             ### ROUTER-SPECIFIC KWARGS
-            assert isinstance(kwargs["litellm_params"]["metadata"], dict)
-            assert isinstance(kwargs["litellm_params"]["metadata"]["model_group"], str)
-            assert isinstance(kwargs["litellm_params"]["metadata"]["deployment"], str)
-            assert isinstance(kwargs["litellm_params"]["model_info"], dict)
-            assert isinstance(kwargs["litellm_params"]["model_info"]["id"], str)
+            assert isinstance(kwargs["llm_params"]["metadata"], dict)
+            assert isinstance(kwargs["llm_params"]["metadata"]["model_group"], str)
+            assert isinstance(kwargs["llm_params"]["metadata"]["deployment"], str)
+            assert isinstance(kwargs["llm_params"]["model_info"], dict)
+            assert isinstance(kwargs["llm_params"]["model_info"]["id"], str)
             assert isinstance(
-                kwargs["litellm_params"]["proxy_server_request"], (str, type(None))
+                kwargs["llm_params"]["proxy_server_request"], (str, type(None))
             )
             assert isinstance(
-                kwargs["litellm_params"]["preset_cache_key"], (str, type(None))
+                kwargs["llm_params"]["preset_cache_key"], (str, type(None))
             )
-            assert isinstance(kwargs["litellm_params"]["stream_response"], dict)
+            assert isinstance(kwargs["llm_params"]["stream_response"], dict)
         except Exception:
             print(f"Assertion Error: {traceback.format_exc()}")
             self.errors.append(traceback.format_exc())
@@ -358,7 +358,7 @@ class CompletionCustomHandler(
             assert isinstance(kwargs["model"], str)
             assert isinstance(kwargs["messages"], list)
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
+            assert isinstance(kwargs["llm_params"], dict)
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
             assert isinstance(kwargs["user"], (str, type(None)))
@@ -366,7 +366,7 @@ class CompletionCustomHandler(
             assert isinstance(kwargs["api_key"], (str, type(None)))
             assert (
                 isinstance(
-                    kwargs["original_response"], (str, litellm.CustomStreamWrapper)
+                    kwargs["original_response"], (str, llm.CustomStreamWrapper)
                 )
                 or inspect.isasyncgen(kwargs["original_response"])
                 or inspect.iscoroutine(kwargs["original_response"])
@@ -388,12 +388,12 @@ async def test_async_chat_azure():
         customHandler_completion_azure_router = CompletionCustomHandler()
         customHandler_streaming_azure_router = CompletionCustomHandler()
         customHandler_failure = CompletionCustomHandler()
-        litellm.callbacks = [customHandler_completion_azure_router]
-        litellm.set_verbose = True
+        llm.callbacks = [customHandler_completion_azure_router]
+        llm.set_verbose = True
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -416,8 +416,8 @@ async def test_async_chat_azure():
         )  # pre, post, success
         # streaming
 
-        litellm.logging_callback_manager._reset_all_callbacks()
-        litellm.callbacks = [customHandler_streaming_azure_router]
+        llm.logging_callback_manager._reset_all_callbacks()
+        llm.callbacks = [customHandler_streaming_azure_router]
         router2 = Router(model_list=model_list, num_retries=0)  # type: ignore
         response = await router2.acompletion(
             model="gpt-3.5-turbo",
@@ -437,7 +437,7 @@ async def test_async_chat_azure():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "my-bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -448,8 +448,8 @@ async def test_async_chat_azure():
             },
         ]
 
-        litellm.logging_callback_manager._reset_all_callbacks()
-        litellm.callbacks = [customHandler_failure]
+        llm.logging_callback_manager._reset_all_callbacks()
+        llm.callbacks = [customHandler_failure]
         router3 = Router(model_list=model_list, num_retries=0)  # type: ignore
         try:
             response = await router3.acompletion(
@@ -476,11 +476,11 @@ async def test_async_embedding_azure():
     try:
         customHandler = CompletionCustomHandler()
         customHandler_failure = CompletionCustomHandler()
-        litellm.callbacks = [customHandler]
+        llm.callbacks = [customHandler]
         model_list = [
             {
                 "model_name": "azure-embedding-model",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/azure-embedding-model",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -492,7 +492,7 @@ async def test_async_embedding_azure():
         ]
         router = Router(model_list=model_list)  # type: ignore
         response = await router.aembedding(
-            model="azure-embedding-model", input=["hello from litellm!"]
+            model="azure-embedding-model", input=["hello from llm!"]
         )
         await asyncio.sleep(2)
         assert len(customHandler.errors) == 0
@@ -501,7 +501,7 @@ async def test_async_embedding_azure():
         model_list = [
             {
                 "model_name": "azure-embedding-model",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/azure-embedding-model",
                     "api_key": "my-bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -511,12 +511,12 @@ async def test_async_embedding_azure():
                 "rpm": 1800,
             },
         ]
-        litellm.logging_callback_manager._reset_all_callbacks()
-        litellm.callbacks = [customHandler_failure]
+        llm.logging_callback_manager._reset_all_callbacks()
+        llm.callbacks = [customHandler_failure]
         router3 = Router(model_list=model_list, num_retries=0)  # type: ignore
         try:
             response = await router3.aembedding(
-                model="azure-embedding-model", input=["hello from litellm!"]
+                model="azure-embedding-model", input=["hello from llm!"]
             )
             print(f"response in router3 aembedding: {response}")
         except Exception:
@@ -538,13 +538,13 @@ async def test_async_embedding_azure():
 async def test_async_chat_azure_with_fallbacks():
     try:
         customHandler_fallbacks = CompletionCustomHandler()
-        litellm.callbacks = [customHandler_fallbacks]
-        litellm.set_verbose = True
+        llm.callbacks = [customHandler_fallbacks]
+        llm.set_verbose = True
         # with fallbacks
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "my-bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -555,7 +555,7 @@ async def test_async_chat_azure_with_fallbacks():
             },
             {
                 "model_name": "gpt-3.5-turbo-16k",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo-16k",
                 },
                 "tpm": 240000,
@@ -565,7 +565,7 @@ async def test_async_chat_azure_with_fallbacks():
         router = Router(
             model_list=model_list,
             fallbacks=[{"gpt-3.5-turbo": ["gpt-3.5-turbo-16k"]}],
-            retry_policy=litellm.router.RetryPolicy(
+            retry_policy=llm.router.RetryPolicy(
                 AuthenticationErrorRetries=0,
             ),
         )  # type: ignore
@@ -579,7 +579,7 @@ async def test_async_chat_azure_with_fallbacks():
         assert (
             len(customHandler_fallbacks.states) == 6
         )  # pre, post, failure, pre, post, success
-        litellm.callbacks = []
+        llm.callbacks = []
     except Exception as e:
         print(f"Assertion Error: {traceback.format_exc()}")
         pytest.fail(f"An exception occurred - {str(e)}")
@@ -594,18 +594,18 @@ async def test_async_chat_azure_with_fallbacks():
 @pytest.mark.flaky(retries=3, delay=1)
 async def test_async_completion_azure_caching():
     customHandler_caching = CompletionCustomHandler()
-    litellm.cache = Cache(
+    llm.cache = Cache(
         type="redis",
         host=os.environ["REDIS_HOST"],
         port=os.environ["REDIS_PORT"],
         password=os.environ["REDIS_PASSWORD"],
     )
-    litellm.callbacks = [customHandler_caching]
+    llm.callbacks = [customHandler_caching]
     unique_time = time.time()
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for litellm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-v-2",
                 "api_key": os.getenv("AZURE_API_KEY"),
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -616,7 +616,7 @@ async def test_async_completion_azure_caching():
         },
         {
             "model_name": "gpt-3.5-turbo-16k",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo-16k",
             },
             "tpm": 240000,
@@ -653,21 +653,21 @@ async def test_rate_limit_error_callback():
     """
     Assert a callback is hit, if a model group starts hitting rate limit errors
 
-    Relevant issue: https://github.com/BerriAI/litellm/issues/4096
+    Relevant issue: https://github.com/BerriAI/llm/issues/4096
     """
-    from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLogging
+    from llm.llm_core_utils.llm_logging import Logging as HanzoLogging
 
     customHandler = CompletionCustomHandler()
-    litellm.callbacks = [customHandler]
-    litellm.success_callback = []
+    llm.callbacks = [customHandler]
+    llm.success_callback = []
 
     router = Router(
         model_list=[
             {
                 "model_name": "my-test-gpt",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
-                    "mock_response": "litellm.RateLimitError",
+                    "mock_response": "llm.RateLimitError",
                 },
             }
         ],
@@ -675,12 +675,12 @@ async def test_rate_limit_error_callback():
         num_retries=0,
     )
 
-    litellm_logging_obj = LiteLLMLogging(
+    llm_logging_obj = HanzoLogging(
         model="my-test-gpt",
         messages=[{"role": "user", "content": "hi"}],
         stream=False,
         call_type="acompletion",
-        litellm_call_id="1234",
+        llm_call_id="1234",
         start_time=datetime.now(),
         function_id="1234",
     )
@@ -705,9 +705,9 @@ async def test_rate_limit_error_callback():
             _ = await router.acompletion(
                 model="my-test-gpt",
                 messages=[{"role": "user", "content": "Hey, how's it going?"}],
-                litellm_logging_obj=litellm_logging_obj,
+                llm_logging_obj=llm_logging_obj,
             )
-        except (litellm.RateLimitError, ValueError):
+        except (llm.RateLimitError, ValueError):
             pass
 
         await asyncio.sleep(3)

@@ -1,0 +1,6 @@
+model_list:
+  - model_name: gpt-4o
+    llm_params:
+      model: gpt-4o
+
+

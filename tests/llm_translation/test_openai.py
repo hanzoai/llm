@@ -13,14 +13,14 @@ import httpx
 import pytest
 from respx import MockRouter
 
-import litellm
-from litellm import Choices, Message, ModelResponse
+import llm
+from llm import Choices, Message, ModelResponse
 from base_llm_unit_tests import BaseLLMChatTest
 import asyncio
 
 
 def test_openai_prediction_param():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     code = """
     /// <summary>
     /// Represents a user with a first name, last name, and username.
@@ -44,7 +44,7 @@ def test_openai_prediction_param():
     }
     """
 
-    completion = litellm.completion(
+    completion = llm.completion(
         model="gpt-4o-mini",
         messages=[
             {
@@ -69,7 +69,7 @@ async def test_openai_prediction_param_mock():
     """
     Tests that prediction parameter is correctly passed to the API
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     code = """
     /// <summary>
@@ -101,7 +101,7 @@ async def test_openai_prediction_param_mock():
         client.chat.completions.with_raw_response, "create"
     ) as mock_client:
         try:
-            await litellm.acompletion(
+            await llm.acompletion(
                 model="gpt-4o-mini",
                 messages=[
                     {
@@ -130,15 +130,15 @@ async def test_openai_prediction_param_with_caching():
     """
     Tests using `prediction` parameter with caching
     """
-    from litellm.caching.caching import LiteLLMCacheType
+    from llm.caching.caching import HanzoCacheType
     import logging
-    from litellm._logging import verbose_logger
+    from llm._logging import verbose_logger
 
     verbose_logger.setLevel(logging.DEBUG)
     import time
 
-    litellm.set_verbose = True
-    litellm.cache = litellm.Cache(type=LiteLLMCacheType.LOCAL)
+    llm.set_verbose = True
+    llm.cache = llm.Cache(type=HanzoCacheType.LOCAL)
     code = """
     /// <summary>
     /// Represents a user with a first name, last name, and username.
@@ -162,7 +162,7 @@ async def test_openai_prediction_param_with_caching():
     }
     """
 
-    completion_response_1 = litellm.completion(
+    completion_response_1 = llm.completion(
         model="gpt-4o-mini",
         messages=[
             {
@@ -177,7 +177,7 @@ async def test_openai_prediction_param_with_caching():
     time.sleep(0.5)
 
     # cache hit
-    completion_response_2 = litellm.completion(
+    completion_response_2 = llm.completion(
         model="gpt-4o-mini",
         messages=[
             {
@@ -191,7 +191,7 @@ async def test_openai_prediction_param_with_caching():
 
     assert completion_response_1.id == completion_response_2.id
 
-    completion_response_3 = litellm.completion(
+    completion_response_3 = llm.completion(
         model="gpt-4o-mini",
         messages=[
             {"role": "user", "content": "What is the first name of the user?"},
@@ -214,7 +214,7 @@ async def test_vision_with_custom_model():
 
     client = AsyncOpenAI(api_key="fake-api-key")
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     api_base = "https://my-custom.api.openai.com"
 
     # Fetch and encode a test image
@@ -228,7 +228,7 @@ async def test_vision_with_custom_model():
         client.chat.completions.with_raw_response, "create"
     ) as mock_client:
         try:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="openai/my-custom-model",
                 max_tokens=10,
                 api_base=api_base,  # use the mock api
@@ -277,7 +277,7 @@ class TestOpenAIChatCompletion(BaseLLMChatTest):
         return {"model": "gpt-4o-mini"}
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
         pass
 
     def test_prompt_caching(self):
@@ -300,7 +300,7 @@ class TestOpenAIChatCompletion(BaseLLMChatTest):
                 messages=[{"role": "user", "content": "你好世界！\ud83e, ö"}],
             )
             assert response is not None
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             pytest.skip("Skipping test due to InternalServerError")
 
     def test_prompt_caching(self):
@@ -311,15 +311,15 @@ class TestOpenAIChatCompletion(BaseLLMChatTest):
 
 
 def test_completion_bad_org():
-    import litellm
+    import llm
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     _old_org = os.environ.get("OPENAI_ORGANIZATION", None)
     os.environ["OPENAI_ORGANIZATION"] = "bad-org"
     messages = [{"role": "user", "content": "hi"}]
 
     with pytest.raises(Exception) as exc_info:
-        comp = litellm.completion(
+        comp = llm.completion(
             model="gpt-4o-mini", messages=messages, organization="bad-org"
         )
 
@@ -332,12 +332,12 @@ def test_completion_bad_org():
         del os.environ["OPENAI_ORGANIZATION"]
 
 
-@patch("litellm.main.openai_chat_completions._get_openai_client")
+@patch("llm.main.openai_chat_completions._get_openai_client")
 def test_openai_max_retries_0(mock_get_openai_client):
-    import litellm
+    import llm
 
-    litellm.set_verbose = True
-    response = litellm.completion(
+    llm.set_verbose = True
+    response = llm.completion(
         model="gpt-4o-mini",
         messages=[{"role": "user", "content": "hi"}],
         max_retries=0,
@@ -349,7 +349,7 @@ def test_openai_max_retries_0(mock_get_openai_client):
 
 @pytest.mark.parametrize("model", ["o1", "o1-preview", "o1-mini", "o3-mini"])
 def test_o1_parallel_tool_calls(model):
-    litellm.completion(
+    llm.completion(
         model=model,
         messages=[
             {
@@ -363,7 +363,7 @@ def test_o1_parallel_tool_calls(model):
 
 
 def test_openai_chat_completion_streaming_handler_reasoning_content():
-    from litellm.llms.openai.chat.gpt_transformation import (
+    from llm.llms.openai.chat.gpt_transformation import (
         OpenAIChatCompletionStreamingHandler,
     )
     from unittest.mock import MagicMock

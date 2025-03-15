@@ -7,7 +7,7 @@ load_dotenv()
 import io
 import os
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -19,11 +19,11 @@ import pytest
 from fastapi import Request
 from starlette.datastructures import URL, Headers, QueryParams
 
-import litellm
-from litellm.proxy._types import LiteLLMRoutes
-from litellm.proxy.auth.auth_utils import get_request_route
-from litellm.proxy.auth.route_checks import RouteChecks
-from litellm.proxy.proxy_server import app
+import llm
+from llm.proxy._types import HanzoRoutes
+from llm.proxy.auth.auth_utils import get_request_route
+from llm.proxy.auth.route_checks import RouteChecks
+from llm.proxy.proxy_server import app
 
 # Configure logging
 logging.basicConfig(
@@ -32,7 +32,7 @@ logging.basicConfig(
 )
 
 
-def test_routes_on_litellm_proxy():
+def test_routes_on_llm_proxy():
     """
     Goal of this test: Test that we have all the critical OpenAI Routes on the Proxy server Fast API router
 
@@ -48,11 +48,11 @@ def test_routes_on_litellm_proxy():
             _path_as_str = _path_as_str.replace(":path", "")
         _all_routes.append(_path_as_str)
 
-    print("ALL ROUTES on LiteLLM Proxy:", _all_routes)
+    print("ALL ROUTES on Hanzo Proxy:", _all_routes)
     print("\n\n")
-    print("ALL OPENAI ROUTES:", LiteLLMRoutes.openai_routes.value)
+    print("ALL OPENAI ROUTES:", HanzoRoutes.openai_routes.value)
 
-    for route in LiteLLMRoutes.openai_routes.value:
+    for route in HanzoRoutes.openai_routes.value:
         # realtime routes - /realtime?model=gpt-4o
         if "realtime" in route:
             assert "/realtime" in _all_routes

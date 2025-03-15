@@ -4,9 +4,9 @@
             "id": "88b1898a-cc5d-4e8e-93bc-3e71300c5e8d",
             "type": "trace-create",
             "body": {
-                "id": "litellm-test-a46356d9-ecff-44c8-a3da-fed3588b5128",
+                "id": "llm-test-a46356d9-ecff-44c8-a3da-fed3588b5128",
                 "timestamp": "2025-01-22T17:59:36.162545Z",
-                "name": "litellm-acompletion",
+                "name": "llm-acompletion",
                 "input": {
                     "messages": [
                         {
@@ -29,8 +29,8 @@
             "id": "96bb77a6-a350-431b-bfd8-425491259728",
             "type": "generation-create",
             "body": {
-                "traceId": "litellm-test-a46356d9-ecff-44c8-a3da-fed3588b5128",
-                "name": "litellm-acompletion",
+                "traceId": "llm-test-a46356d9-ecff-44c8-a3da-fed3588b5128",
+                "name": "llm-acompletion",
                 "startTime": "2025-01-22T09:59:36.161090-08:00",
                 "metadata": {
                     "hidden_params": {
@@ -39,9 +39,9 @@
                         "api_base": "https://api.openai.com",
                         "response_cost": 5.4999999999999995e-05,
                         "additional_headers": {},
-                        "litellm_overhead_time_ms": null
+                        "llm_overhead_time_ms": null
                     },
-                    "litellm_response_cost": 5.4999999999999995e-05,
+                    "llm_response_cost": 5.4999999999999995e-05,
                     "cache_hit": false,
                     "requester_metadata": {}
                 },
@@ -79,7 +79,7 @@
     ],
     "metadata": {
         "batch_size": 2,
-        "sdk_integration": "litellm",
+        "sdk_integration": "llm",
         "sdk_name": "python",
         "sdk_version": "2.44.1",
         "public_key": "pk-lf-e02aaea3-8668-4c9f-8c69-771a4ea1f5c9"

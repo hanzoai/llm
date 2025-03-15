@@ -15,12 +15,12 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-import litellm
-from litellm.proxy.enterprise.enterprise_hooks.llm_guard import _ENTERPRISE_LLMGuard
-from litellm import Router, mock_completion
-from litellm.proxy.utils import ProxyLogging, hash_token
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.caching.caching import DualCache
+import llm
+from llm.proxy.enterprise.enterprise_hooks.llm_guard import _ENTERPRISE_LLMGuard
+from llm import Router, mock_completion
+from llm.proxy.utils import ProxyLogging, hash_token
+from llm.proxy._types import UserAPIKeyAuth
+from llm.caching.caching import DualCache
 
 ### UNIT TESTS FOR LLM GUARD ###
 
@@ -103,7 +103,7 @@ def test_llm_guard_key_specific_mode():
     """
     Tests to see if llm guard 'key-specific' permissions work
     """
-    litellm.llm_guard_mode = "key-specific"
+    llm.llm_guard_mode = "key-specific"
 
     llm_guard = _ENTERPRISE_LLMGuard(mock_testing=True)
 
@@ -138,7 +138,7 @@ def test_llm_guard_request_specific_mode():
     """
     Tests to see if llm guard 'request-specific' permissions work
     """
-    litellm.llm_guard_mode = "request-specific"
+    llm.llm_guard_mode = "request-specific"
 
     llm_guard = _ENTERPRISE_LLMGuard(mock_testing=True)
 

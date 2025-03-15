@@ -14,7 +14,7 @@ from typing import Optional
 
 import httpx
 
-from litellm.types.integrations.slack_alerting import AlertType
+from llm.types.integrations.slack_alerting import AlertType
 
 # import logging
 # logging.basicConfig(level=logging.DEBUG)
@@ -27,16 +27,16 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 from openai import APIError
 
-import litellm
-from litellm.caching.caching import DualCache, RedisCache
-from litellm.integrations.SlackAlerting.slack_alerting import (
+import llm
+from llm.caching.caching import DualCache, RedisCache
+from llm.integrations.SlackAlerting.slack_alerting import (
     DeploymentMetrics,
     SlackAlerting,
 )
-from litellm.proxy._types import CallInfo
-from litellm.proxy.utils import ProxyLogging
-from litellm.router import AlertingConfig, Router
-from litellm.utils import get_api_base
+from llm.proxy._types import CallInfo
+from llm.proxy.utils import ProxyLogging
+from llm.router import AlertingConfig, Router
+from llm.utils import get_api_base
 
 
 @pytest.mark.parametrize(
@@ -58,7 +58,7 @@ async def test_get_api_base():
     _pl.update_values(alerting=["slack"], alerting_threshold=100, redis_cache=None)
     model = "chatgpt-v-2"
     messages = [{"role": "user", "content": "Hey how's it going?"}]
-    litellm_params = {
+    llm_params = {
         "acompletion": True,
         "api_key": None,
         "api_base": "https://openai-gpt-4-test-v-1.openai.azure.com/",
@@ -66,7 +66,7 @@ async def test_get_api_base():
         "logger_fn": None,
         "verbose": False,
         "custom_llm_provider": "azure",
-        "litellm_call_id": "68f46d2d-714d-4ad8-8137-69600ec8755c",
+        "llm_call_id": "68f46d2d-714d-4ad8-8137-69600ec8755c",
         "model_alias_map": {},
         "completion_call_id": None,
         "metadata": None,
@@ -84,7 +84,7 @@ async def test_get_api_base():
             kwargs={
                 "model": model,
                 "messages": messages,
-                "litellm_params": litellm_params,
+                "llm_params": llm_params,
             },
             start_time=start_time,
             end_time=end_time,
@@ -149,7 +149,7 @@ async def test_response_taking_too_long_hanging(slack_alerting):
     request_data = {
         "model": "test_model",
         "messages": "test_messages",
-        "litellm_status": "running",
+        "llm_status": "running",
     }
     with patch.object(slack_alerting, "send_alert", new=AsyncMock()) as mock_send_alert:
         await slack_alerting.response_taking_too_long(
@@ -164,7 +164,7 @@ async def test_response_taking_too_long_hanging(slack_alerting):
 async def test_response_taking_too_long_callback(slack_alerting):
     start_time = datetime.now()
     end_time = start_time + timedelta(seconds=301)
-    kwargs = {"model": "test_model", "messages": "test_messages", "litellm_params": {}}
+    kwargs = {"model": "test_model", "messages": "test_messages", "llm_params": {}}
     with patch.object(slack_alerting, "send_alert", new=AsyncMock()) as mock_send_alert:
         await slack_alerting.response_taking_too_long_callback(
             kwargs, None, start_time, end_time
@@ -182,7 +182,7 @@ async def test_alerting_metadata(slack_alerting):
     kwargs = {
         "model": "test_model",
         "messages": "test_messages",
-        "litellm_params": {"metadata": {"alerting_metadata": {"hello": "world"}}},
+        "llm_params": {"metadata": {"alerting_metadata": {"hello": "world"}}},
     }
     with patch.object(slack_alerting, "send_alert", new=AsyncMock()) as mock_send_alert:
 
@@ -238,7 +238,7 @@ async def test_budget_alerts_crossed_again(slack_alerting):
 async def test_send_alert(slack_alerting):
     import logging
 
-    from litellm._logging import verbose_logger
+    from llm._logging import verbose_logger
 
     asyncio.create_task(slack_alerting.periodic_flush())
     verbose_logger.setLevel(level=logging.DEBUG)
@@ -257,11 +257,11 @@ async def test_send_alert(slack_alerting):
 @pytest.mark.asyncio
 async def test_daily_reports_unit_test(slack_alerting):
     with patch.object(slack_alerting, "send_alert", new=AsyncMock()) as mock_send_alert:
-        router = litellm.Router(
+        router = llm.Router(
             model_list=[
                 {
                     "model_name": "test-gpt",
-                    "litellm_params": {"model": "gpt-3.5-turbo"},
+                    "llm_params": {"model": "gpt-3.5-turbo"},
                     "model_info": {"id": "1234"},
                 }
             ]
@@ -270,7 +270,7 @@ async def test_daily_reports_unit_test(slack_alerting):
             id="1234",
             failed_request=False,
             latency_per_output_token=20.3,
-            updated_at=litellm.utils.get_utc_datetime(),
+            updated_at=llm.utils.get_utc_datetime(),
         )
 
         updated_val = await slack_alerting.async_update_daily_reports(
@@ -287,14 +287,14 @@ async def test_daily_reports_unit_test(slack_alerting):
 @pytest.mark.asyncio
 async def test_daily_reports_completion(slack_alerting):
     with patch.object(slack_alerting, "send_alert", new=AsyncMock()) as mock_send_alert:
-        litellm.callbacks = [slack_alerting]
+        llm.callbacks = [slack_alerting]
 
         # on async success
-        router = litellm.Router(
+        router = llm.Router(
             model_list=[
                 {
                     "model_name": "gpt-5",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "gpt-3.5-turbo",
                     },
                 }
@@ -314,11 +314,11 @@ async def test_daily_reports_completion(slack_alerting):
         mock_send_alert.assert_awaited_once()
 
         # on async failure
-        router = litellm.Router(
+        router = llm.Router(
             model_list=[
                 {
                     "model_name": "gpt-5",
-                    "litellm_params": {"model": "gpt-3.5-turbo", "api_key": "bad_key"},
+                    "llm_params": {"model": "gpt-3.5-turbo", "api_key": "bad_key"},
                 }
             ]
         )
@@ -349,13 +349,13 @@ async def test_daily_reports_redis_cache_scheduler():
     # we need this to be 0 so it actualy sends the report
     slack_alerting.alerting_args.daily_report_frequency = 0
 
-    from litellm.router import AlertingConfig
+    from llm.router import AlertingConfig
 
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-5",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                 },
             }
@@ -388,21 +388,21 @@ async def test_daily_reports_redis_cache_scheduler():
 @pytest.mark.asyncio
 @pytest.mark.skip(reason="Local test. Test if slack alerts are sent.")
 async def test_send_llm_exception_to_slack():
-    from litellm.router import AlertingConfig
+    from llm.router import AlertingConfig
 
     # on async success
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "bad_key",
                 },
             },
             {
                 "model_name": "gpt-5-good",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                 },
             },
@@ -440,7 +440,7 @@ async def test_send_daily_reports_ignores_zero_values():
     )
     slack_alerting.internal_usage_cache.async_set_cache_pipeline = AsyncMock()
 
-    router.get_model_info.side_effect = lambda x: {"litellm_params": {"model": x}}
+    router.get_model_info.side_effect = lambda x: {"llm_params": {"model": x}}
 
     with patch.object(slack_alerting, "send_alert", new=AsyncMock()) as mock_send_alert:
         result = await slack_alerting.send_daily_reports(router)
@@ -607,25 +607,25 @@ async def test_outage_alerting_called(
     """
     slack_alerting = SlackAlerting(alerting=["webhook"])
 
-    litellm.callbacks = [slack_alerting]
+    llm.callbacks = [slack_alerting]
 
     error_to_raise: Optional[APIError] = None
 
     if error_code == 400:
         print("RAISING 400 ERROR CODE")
-        error_to_raise = litellm.BadRequestError(
+        error_to_raise = llm.BadRequestError(
             message="this is a bad request",
             model=model,
             llm_provider=llm_provider,
         )
     elif error_code == 408:
         print("RAISING 408 ERROR CODE")
-        error_to_raise = litellm.Timeout(
+        error_to_raise = llm.Timeout(
             message="A timeout occurred", model=model, llm_provider=llm_provider
         )
     elif error_code == 500:
         print("RAISING 500 ERROR CODE")
-        error_to_raise = litellm.ServiceUnavailableError(
+        error_to_raise = llm.ServiceUnavailableError(
             message="API is unavailable",
             model=model,
             llm_provider=llm_provider,
@@ -633,7 +633,7 @@ async def test_outage_alerting_called(
                 status_code=503,
                 request=httpx.Request(
                     method="completion",
-                    url="https://github.com/BerriAI/litellm",
+                    url="https://github.com/BerriAI/llm",
                 ),
             ),
         )
@@ -642,7 +642,7 @@ async def test_outage_alerting_called(
         model_list=[
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": model,
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": api_base,
@@ -715,25 +715,25 @@ async def test_region_outage_alerting_called(
         alerting=["webhook"], alert_types=[AlertType.region_outage_alerts]
     )
 
-    litellm.callbacks = [slack_alerting]
+    llm.callbacks = [slack_alerting]
 
     error_to_raise: Optional[APIError] = None
 
     if error_code == 400:
         print("RAISING 400 ERROR CODE")
-        error_to_raise = litellm.BadRequestError(
+        error_to_raise = llm.BadRequestError(
             message="this is a bad request",
             model=model,
             llm_provider=llm_provider,
         )
     elif error_code == 408:
         print("RAISING 408 ERROR CODE")
-        error_to_raise = litellm.Timeout(
+        error_to_raise = llm.Timeout(
             message="A timeout occurred", model=model, llm_provider=llm_provider
         )
     elif error_code == 500:
         print("RAISING 500 ERROR CODE")
-        error_to_raise = litellm.ServiceUnavailableError(
+        error_to_raise = llm.ServiceUnavailableError(
             message="API is unavailable",
             model=model,
             llm_provider=llm_provider,
@@ -741,7 +741,7 @@ async def test_region_outage_alerting_called(
                 status_code=503,
                 request=httpx.Request(
                     method="completion",
-                    url="https://github.com/BerriAI/litellm",
+                    url="https://github.com/BerriAI/llm",
                 ),
             ),
         )
@@ -750,7 +750,7 @@ async def test_region_outage_alerting_called(
         model_list=[
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": model,
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": api_base,
@@ -761,7 +761,7 @@ async def test_region_outage_alerting_called(
             },
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": model,
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": api_base,
@@ -794,11 +794,11 @@ async def test_region_outage_alerting_called(
 @pytest.mark.asyncio
 @pytest.mark.skip(reason="test only needs to run locally ")
 async def test_alerting():
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "bad_key",
                 },
@@ -830,31 +830,31 @@ async def test_langfuse_trace_id():
     """
     - Unit test for `_add_langfuse_trace_id_to_alert` function in slack_alerting.py
     """
-    from litellm.litellm_core_utils.litellm_logging import Logging
-    from litellm.integrations.SlackAlerting.utils import _add_langfuse_trace_id_to_alert
+    from llm.llm_core_utils.llm_logging import Logging
+    from llm.integrations.SlackAlerting.utils import _add_langfuse_trace_id_to_alert
 
-    litellm.success_callback = ["langfuse"]
+    llm.success_callback = ["langfuse"]
 
-    litellm_logging_obj = Logging(
+    llm_logging_obj = Logging(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": "hi"}],
         stream=False,
         call_type="acompletion",
-        litellm_call_id="1234",
+        llm_call_id="1234",
         start_time=datetime.now(),
         function_id="1234",
     )
 
-    litellm.completion(
+    llm.completion(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": "Hey how's it going?"}],
         mock_response="Hey!",
-        litellm_logging_obj=litellm_logging_obj,
+        llm_logging_obj=llm_logging_obj,
     )
 
     await asyncio.sleep(3)
 
-    assert litellm_logging_obj._get_trace_id(service_name="langfuse") is not None
+    assert llm_logging_obj._get_trace_id(service_name="langfuse") is not None
 
     slack_alerting = SlackAlerting(
         alerting_threshold=32,
@@ -864,7 +864,7 @@ async def test_langfuse_trace_id():
     )
 
     trace_url = await _add_langfuse_trace_id_to_alert(
-        request_data={"litellm_logging_obj": litellm_logging_obj}
+        request_data={"llm_logging_obj": llm_logging_obj}
     )
 
     assert trace_url is not None
@@ -872,7 +872,7 @@ async def test_langfuse_trace_id():
     returned_trace_id = int(trace_url.split("/")[-1])
 
     assert returned_trace_id == int(
-        litellm_logging_obj._get_trace_id(service_name="langfuse")
+        llm_logging_obj._get_trace_id(service_name="langfuse")
     )
 
 
@@ -881,9 +881,9 @@ async def test_print_alerting_payload_warning():
     """
     Test if alerts are printed to verbose logger when log_to_console=True
     """
-    litellm.set_verbose = True
-    from litellm._logging import verbose_proxy_logger
-    from litellm.integrations.SlackAlerting.batching_handler import send_to_webhook
+    llm.set_verbose = True
+    from llm._logging import verbose_proxy_logger
+    from llm.integrations.SlackAlerting.batching_handler import send_to_webhook
     import logging
 
     # Create a string buffer to capture log output
@@ -944,7 +944,7 @@ async def test_spend_report_cache(report_type):
         {"individual_request_tag": "tag2", "total_spend": 150.0},
     ]
 
-    with patch("litellm.proxy.proxy_server.prisma_client") as mock_prisma:
+    with patch("llm.proxy.proxy_server.prisma_client") as mock_prisma:
         # Setup mock for database query
         mock_prisma.db.query_raw = AsyncMock(
             side_effect=[mock_spend_data, mock_tag_data]

@@ -1,7 +1,7 @@
 # Custom LLM API-Endpoints
-LiteLLM supports Custom deploy api endpoints
+Hanzo supports Custom deploy api endpoints
 
-LiteLLM Expects the following input and output for custom LLM API endpoints
+Hanzo Expects the following input and output for custom LLM API endpoints
 
 ### Model Details
 
@@ -14,9 +14,9 @@ For calls to your custom API base ensure:
 | meta-llama/Llama-2-13b-hf  | `response = completion(model="custom/meta-llama/Llama-2-13b-hf", messages=messages, api_base="https://your-custom-inference-endpoint")` |
 | meta-llama/Llama-2-13b-hf  | `response = completion(model="custom/meta-llama/Llama-2-13b-hf", messages=messages, api_base="https://api.autoai.dev/inference")` |
 
-### Example Call to Custom LLM API using LiteLLM
+### Example Call to Custom LLM API using Hanzo
 ```python
-from litellm import completion
+from llm import completion
 response = completion(
     model="custom/meta-llama/Llama-2-13b-hf", 
     messages= [{"content": "what is custom llama?", "role": "user"}],

@@ -10,10 +10,10 @@ component_management:
       paths:
         - "*/caching/*"
         - ".*redis.*"
-    - component_id: "litellm_logging"
+    - component_id: "llm_logging"
       paths:
         - "*/integrations/*"
-        - ".*litellm_logging.*"
+        - ".*llm_logging.*"
     - component_id: "Proxy_Authentication"
       paths:
         - "*/proxy/auth/**"

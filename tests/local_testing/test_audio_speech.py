@@ -23,7 +23,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import openai
 import pytest
 
-import litellm
+import llm
 
 
 @pytest.mark.parametrize(
@@ -43,11 +43,11 @@ import litellm
 )  # ,
 @pytest.mark.asyncio
 @pytest.mark.flaky(retries=3, delay=1)
-async def test_audio_speech_litellm(sync_mode, model, api_base, api_key):
+async def test_audio_speech_llm(sync_mode, model, api_base, api_key):
     speech_file_path = Path(__file__).parent / "speech.mp3"
 
     if sync_mode:
-        response = litellm.speech(
+        response = llm.speech(
             model=model,
             voice="alloy",
             input="the quick brown fox jumped over the lazy dogs",
@@ -61,11 +61,11 @@ async def test_audio_speech_litellm(sync_mode, model, api_base, api_key):
             optional_params={},
         )
 
-        from litellm.types.llms.openai import HttpxBinaryResponseContent
+        from llm.types.llms.openai import HttpxBinaryResponseContent
 
         assert isinstance(response, HttpxBinaryResponseContent)
     else:
-        response = await litellm.aspeech(
+        response = await llm.aspeech(
             model=model,
             voice="alloy",
             input="the quick brown fox jumped over the lazy dogs",
@@ -79,7 +79,7 @@ async def test_audio_speech_litellm(sync_mode, model, api_base, api_key):
             optional_params={},
         )
 
-        from litellm.llms.openai.openai import HttpxBinaryResponseContent
+        from llm.llms.openai.openai import HttpxBinaryResponseContent
 
         assert isinstance(response, HttpxBinaryResponseContent)
 
@@ -91,12 +91,12 @@ async def test_audio_speech_litellm(sync_mode, model, api_base, api_key):
 @pytest.mark.skip(reason="local only test - we run testing using MockRequests below")
 @pytest.mark.asyncio
 @pytest.mark.flaky(retries=3, delay=1)
-async def test_audio_speech_litellm_vertex(sync_mode):
-    litellm.set_verbose = True
+async def test_audio_speech_llm_vertex(sync_mode):
+    llm.set_verbose = True
     speech_file_path = Path(__file__).parent / "speech_vertex.mp3"
     model = "vertex_ai/test"
     if sync_mode:
-        response = litellm.speech(
+        response = llm.speech(
             model="vertex_ai/test",
             input="hello what llm guardrail do you have",
         )
@@ -104,21 +104,21 @@ async def test_audio_speech_litellm_vertex(sync_mode):
         response.stream_to_file(speech_file_path)
 
     else:
-        response = await litellm.aspeech(
+        response = await llm.aspeech(
             model="vertex_ai/",
             input="async hello what llm guardrail do you have",
         )
 
         from types import SimpleNamespace
 
-        from litellm.llms.openai.openai import HttpxBinaryResponseContent
+        from llm.llms.openai.openai import HttpxBinaryResponseContent
 
         response.stream_to_file(speech_file_path)
 
 
 @pytest.mark.flaky(retries=6, delay=2)
 @pytest.mark.asyncio
-async def test_speech_litellm_vertex_async():
+async def test_speech_llm_vertex_async():
     # Mock the response
     mock_response = AsyncMock()
 
@@ -132,18 +132,18 @@ async def test_speech_litellm_vertex_async():
 
     # Set up the mock for asynchronous calls
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         new_callable=AsyncMock,
     ) as mock_async_post:
         mock_async_post.return_value = mock_response
         model = "vertex_ai/test"
 
         try:
-            response = await litellm.aspeech(
+            response = await llm.aspeech(
                 model=model,
                 input="async hello what llm guardrail do you have",
             )
-        except litellm.APIConnectionError as e:
+        except llm.APIConnectionError as e:
             if "Your default credentials were not found" in str(e):
                 pytest.skip("skipping test, credentials not found")
 
@@ -165,7 +165,7 @@ async def test_speech_litellm_vertex_async():
 
 
 @pytest.mark.asyncio
-async def test_speech_litellm_vertex_async_with_voice():
+async def test_speech_llm_vertex_async_with_voice():
     # Mock the response
     mock_response = AsyncMock()
 
@@ -179,14 +179,14 @@ async def test_speech_litellm_vertex_async_with_voice():
 
     # Set up the mock for asynchronous calls
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         new_callable=AsyncMock,
     ) as mock_async_post:
         mock_async_post.return_value = mock_response
         model = "vertex_ai/test"
 
         try:
-            response = await litellm.aspeech(
+            response = await llm.aspeech(
                 model=model,
                 input="async hello what llm guardrail do you have",
                 voice={
@@ -198,7 +198,7 @@ async def test_speech_litellm_vertex_async_with_voice():
                     "speakingRate": "10",
                 },
             )
-        except litellm.APIConnectionError as e:
+        except llm.APIConnectionError as e:
             if "Your default credentials were not found" in str(e):
                 pytest.skip("skipping test, credentials not found")
 
@@ -220,7 +220,7 @@ async def test_speech_litellm_vertex_async_with_voice():
 
 
 @pytest.mark.asyncio
-async def test_speech_litellm_vertex_async_with_voice_ssml():
+async def test_speech_llm_vertex_async_with_voice_ssml():
     # Mock the response
     mock_response = AsyncMock()
 
@@ -241,14 +241,14 @@ async def test_speech_litellm_vertex_async_with_voice_ssml():
 
     # Set up the mock for asynchronous calls
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         new_callable=AsyncMock,
     ) as mock_async_post:
         mock_async_post.return_value = mock_response
         model = "vertex_ai/test"
 
         try:
-            response = await litellm.aspeech(
+            response = await llm.aspeech(
                 input=ssml,
                 model=model,
                 voice={
@@ -260,7 +260,7 @@ async def test_speech_litellm_vertex_async_with_voice_ssml():
                     "speakingRate": "10",
                 },
             )
-        except litellm.APIConnectionError as e:
+        except llm.APIConnectionError as e:
             if "Your default credentials were not found" in str(e):
                 pytest.skip("skipping test, credentials not found")
 
@@ -283,18 +283,18 @@ async def test_speech_litellm_vertex_async_with_voice_ssml():
 
 @pytest.mark.skip(reason="causes openai rate limit errors")
 def test_audio_speech_cost_calc():
-    from litellm.integrations.custom_logger import CustomLogger
+    from llm.integrations.custom_logger import CustomLogger
 
     model = "azure/azure-tts"
     api_base = os.getenv("AZURE_SWEDEN_API_BASE")
     api_key = os.getenv("AZURE_SWEDEN_API_KEY")
 
     custom_logger = CustomLogger()
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     with patch.object(custom_logger, "log_success_event") as mock_cost_calc:
-        litellm.callbacks = [custom_logger]
-        litellm.speech(
+        llm.callbacks = [custom_logger]
+        llm.speech(
             model=model,
             voice="alloy",
             input="the quick brown fox jumped over the lazy dogs",

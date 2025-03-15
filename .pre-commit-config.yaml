@@ -6,14 +6,14 @@ repos:
         entry: pyright
         language: system
         types: [python]
-        files: ^litellm/
+        files: ^llm/
     -   id: isort
         name: isort
         entry: isort
         language: system
         types: [python]
-        files: litellm/.*\.py
-        exclude: ^litellm/__init__.py$
+        files: llm/.*\.py
+        exclude: ^llm/__init__.py$
 -   repo: https://github.com/psf/black
     rev: 24.2.0
     hooks:
@@ -22,12 +22,12 @@ repos:
     rev: 7.0.0  # The version of flake8 to use
     hooks:
     -  id: flake8
-       exclude: ^litellm/tests/|^litellm/proxy/tests/|^litellm/tests/litellm/|^tests/litellm/
+       exclude: ^llm/tests/|^llm/proxy/tests/|^llm/tests/llm/|^tests/llm/
        additional_dependencies: [flake8-print]
-       files: litellm/.*\.py
+       files: llm/.*\.py
     # -  id: flake8
     #    name: flake8 (router.py function length)
-    #    files: ^litellm/router\.py$
+    #    files: ^llm/router\.py$
     #    args: [--max-function-length=40]
     # #    additional_dependencies: [flake8-functions]
 -   repo: https://github.com/python-poetry/poetry
@@ -45,5 +45,5 @@ repos:
     #     entry: python check_file_length.py
     #     args: ["10000"]  # set your desired maximum number of lines
     #     language: python
-    #     files: litellm/.*\.py
-    #     exclude: ^litellm/tests/
+    #     files: llm/.*\.py
+    #     exclude: ^llm/tests/

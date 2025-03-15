@@ -1,10 +1,10 @@
 # Contributing - UI
 
-Here's how to run the LiteLLM UI locally for making changes: 
+Here's how to run the Hanzo UI locally for making changes: 
 
 ## 1. Clone the repo 
 ```bash
-git clone https://github.com/BerriAI/litellm.git
+git clone https://github.com/BerriAI/llm.git
 ```
 
 ## 2. Start the UI + Proxy 
@@ -17,7 +17,7 @@ export PROXY_BASE_URL="http://localhost:3000/"
 ```
 
 ```bash
-cd litellm/litellm/proxy
+cd llm/llm/proxy
 python3 proxy_cli.py --config /path/to/config.yaml --port 4000
 ```
 
@@ -29,7 +29,7 @@ export NODE_ENV="development"
 ```
 
 ```bash
-cd litellm/ui/litellm-dashboard
+cd llm/ui/llm-dashboard
 
 npm run dev
 

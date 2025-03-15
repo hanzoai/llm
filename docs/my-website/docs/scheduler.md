@@ -7,7 +7,7 @@ import TabItem from '@theme/TabItem';
 
 Beta feature. Use for testing only. 
 
-[Help us improve this](https://github.com/BerriAI/litellm/issues)
+[Help us improve this](https://github.com/BerriAI/llm/issues)
 :::
 
 Prioritize LLM API requests in high-traffic.
@@ -27,13 +27,13 @@ Supported Router endpoints:
 ## Quick Start 
 
 ```python
-from litellm import Router
+from llm import Router
 
 router = Router(
     model_list=[
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "mock_response": "Hello world this is Macintosh!", # fakes the LLM API call
                 "rpm": 1,
@@ -55,9 +55,9 @@ except Exception as e:
     print("didn't make request")
 ```
 
-## LiteLLM Proxy
+## Hanzo Proxy
 
-To prioritize requests on LiteLLM Proxy add `priority` to the request.
+To prioritize requests on Hanzo Proxy add `priority` to the request.
 
 <Tabs>
 <TabItem value="curl" label="curl">
@@ -87,7 +87,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages = [
@@ -109,17 +109,17 @@ print(response)
 
 ## Advanced - Redis Caching 
 
-Use redis caching to do request prioritization across multiple instances of LiteLLM. 
+Use redis caching to do request prioritization across multiple instances of Hanzo. 
 
 ### SDK 
 ```python
-from litellm import Router
+from llm import Router
 
 router = Router(
     model_list=[
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "mock_response": "Hello world this is Macintosh!", # fakes the LLM API call
                 "rpm": 1,
@@ -147,12 +147,12 @@ except Exception as e:
 ```yaml
 model_list:
     - model_name: gpt-3.5-turbo-fake-model
-      litellm_params:
+      llm_params:
         model: gpt-3.5-turbo
         mock_response: "hello world!" 
         api_key: my-good-key
 
-litellm_settings:
+llm_settings:
     request_timeout: 600 # 👈 Will keep retrying until timeout occurs
 
 router_settings:
@@ -162,7 +162,7 @@ router_settings:
 ```
 
 ```bash
-$ litellm --config /path/to/config.yaml 
+$ llm --config /path/to/config.yaml 
 
 # RUNNING on http://0.0.0.0:4000s
 ```

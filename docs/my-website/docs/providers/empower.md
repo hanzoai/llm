@@ -1,5 +1,5 @@
 # Empower
-LiteLLM supports all models on Empower. 
+Hanzo supports all models on Empower. 
 
 ## API Keys
 
@@ -10,7 +10,7 @@ os.environ["EMPOWER_API_KEY"] = "your-api-key"
 ## Example Usage
 
 ```python
-from litellm import completion 
+from llm import completion 
 import os
 
 os.environ["EMPOWER_API_KEY"] = "your-api-key"
@@ -23,7 +23,7 @@ print(response)
 
 ## Example Usage - Streaming
 ```python
-from litellm import completion 
+from llm import completion 
 import os
 
 os.environ["EMPOWER_API_KEY"] = "your-api-key"
@@ -39,7 +39,7 @@ for chunk in response:
 ## Example Usage - Automatic Tool Calling
 
 ```python
-from litellm import completion 
+from llm import completion 
 import os
 
 os.environ["EMPOWER_API_KEY"] = "your-api-key"
@@ -76,9 +76,9 @@ print("\nLLM Response:\n", response)
 ```
 
 ## Empower Models
-liteLLM supports `non-streaming` and `streaming` requests to all models on https://empower.dev/
+LLM supports `non-streaming` and `streaming` requests to all models on https://empower.dev/
 
-Example Empower Usage - Note: liteLLM supports all models deployed on Empower
+Example Empower Usage - Note: LLM supports all models deployed on Empower
 
 
 ### Empower LLMs - Automatic Tool Using models

@@ -1,6 +1,6 @@
 # Setting API Keys, Base, Version
 
-LiteLLM allows you to specify the following:
+Hanzo allows you to specify the following:
 * API Key
 * API Base
 * API Version
@@ -15,14 +15,14 @@ Useful Helper functions:
 
 You can set the API configs using:
 * Environment Variables
-* litellm variables `litellm.api_key`
+* llm variables `llm.api_key`
 * Passing args to `completion()`
 
 ## Environment Variables
 
 ### Setting API Keys
 
-Set the liteLLM API key or specific provider key:
+Set the LLM API key or specific provider key:
 
 ```python
 import os 
@@ -55,9 +55,9 @@ For cloud providers:
 - GCP
 - Watson AI 
 
-you might need to set additional parameters. LiteLLM provides a common set of params, that we map across all providers. 
+you might need to set additional parameters. Hanzo provides a common set of params, that we map across all providers. 
 
-|      | LiteLLM param | Watson       | Vertex AI    | Azure        | Bedrock      |
+|      | Hanzo param | Watson       | Vertex AI    | Azure        | Bedrock      |
 |------|--------------|--------------|--------------|--------------|--------------|
 | Project | project | watsonx_project | vertex_project | n/a | n/a |
 | Region | region_name | watsonx_region_name | vertex_location | n/a | aws_region_name |
@@ -65,63 +65,63 @@ you might need to set additional parameters. LiteLLM provides a common set of pa
 
 If you want, you can call them by their provider-specific params as well. 
 
-## litellm variables
+## llm variables
 
-### litellm.api_key
+### llm.api_key
 This variable is checked for all providers
 
 ```python
-import litellm
+import llm
 # openai call
-litellm.api_key = "sk-OpenAIKey"
-response = litellm.completion(messages=messages, model="gpt-3.5-turbo")
+llm.api_key = "sk-OpenAIKey"
+response = llm.completion(messages=messages, model="gpt-3.5-turbo")
 
 # anthropic call
-litellm.api_key = "sk-AnthropicKey"
-response = litellm.completion(messages=messages, model="claude-2")
+llm.api_key = "sk-AnthropicKey"
+response = llm.completion(messages=messages, model="claude-2")
 ```
 
-### litellm.provider_key (example litellm.openai_key)
+### llm.provider_key (example llm.openai_key)
 
 ```python
-litellm.openai_key = "sk-OpenAIKey"
-response = litellm.completion(messages=messages, model="gpt-3.5-turbo")
+llm.openai_key = "sk-OpenAIKey"
+response = llm.completion(messages=messages, model="gpt-3.5-turbo")
 
 # anthropic call
-litellm.anthropic_key = "sk-AnthropicKey"
-response = litellm.completion(messages=messages, model="claude-2")
+llm.anthropic_key = "sk-AnthropicKey"
+response = llm.completion(messages=messages, model="claude-2")
 ```
 
-### litellm.api_base
+### llm.api_base
 
 ```python
-import litellm
-litellm.api_base = "https://hosted-llm-api.co"
-response = litellm.completion(messages=messages, model="gpt-3.5-turbo")
+import llm
+llm.api_base = "https://hosted-llm-api.co"
+response = llm.completion(messages=messages, model="gpt-3.5-turbo")
 ```
 
-### litellm.api_version
+### llm.api_version
 
 ```python
-import litellm
-litellm.api_version = "2023-05-15"
-response = litellm.completion(messages=messages, model="gpt-3.5-turbo")
+import llm
+llm.api_version = "2023-05-15"
+response = llm.completion(messages=messages, model="gpt-3.5-turbo")
 ```
 
-### litellm.organization
+### llm.organization
 ```python
-import litellm
-litellm.organization = "LiteLlmOrg"
-response = litellm.completion(messages=messages, model="gpt-3.5-turbo")
+import llm
+llm.organization = "LLMOrg"
+response = llm.completion(messages=messages, model="gpt-3.5-turbo")
 ```
 
-## Passing Args to completion() (or any litellm endpoint - `transcription`, `embedding`, `text_completion`, etc)
+## Passing Args to completion() (or any llm endpoint - `transcription`, `embedding`, `text_completion`, etc)
 
 You can pass the API key within `completion()` call:
 
 ### api_key
 ```python
-from litellm import completion
+from llm import completion
 
 messages = [{ "content": "Hello, how are you?","role": "user"}]
 
@@ -131,7 +131,7 @@ response = completion("command-nightly", messages, api_key="Your-Api-Key")
 ### api_base
 
 ```python
-from litellm import completion
+from llm import completion
 
 messages = [{ "content": "Hello, how are you?","role": "user"}]
 
@@ -141,7 +141,7 @@ response = completion("command-nightly", messages, api_base="https://hosted-llm-
 ### api_version
 
 ```python
-from litellm import completion
+from llm import completion
 
 messages = [{ "content": "Hello, how are you?","role": "user"}]
 
@@ -171,8 +171,8 @@ os.environ = {'OPENAI_API_KEY': 'temp'} # mock set only openai key in environ
 valid_models = get_valid_models()
 print(valid_models)
 
-# list of openai supported llms on litellm
-expected_models = litellm.open_ai_chat_completion_models + litellm.open_ai_text_completion_models
+# list of openai supported llms on llm
+expected_models = llm.open_ai_chat_completion_models + llm.open_ai_text_completion_models
 
 assert(valid_models == expected_models)
 
@@ -187,10 +187,10 @@ This helper will check the provider's endpoint for valid models.
 Currently implemented for:
 - OpenAI (if OPENAI_API_KEY is set)
 - Fireworks AI (if FIREWORKS_AI_API_KEY is set)
-- LiteLLM Proxy (if LITELLM_PROXY_API_KEY is set)
+- Hanzo Proxy (if LLM_PROXY_API_KEY is set)
 
 ```python
-from litellm import get_valid_models
+from llm import get_valid_models
 
 valid_models = get_valid_models(check_provider_endpoint=True)
 print(valid_models)
@@ -201,7 +201,7 @@ print(valid_models)
 This helper tells you if you have all the required environment variables for a model, and if not - what's missing. 
 
 ```python
-from litellm import validate_environment
+from llm import validate_environment
 
 print(validate_environment("openai/gpt-3.5-turbo"))
 ```

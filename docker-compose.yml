@@ -1,8 +1,8 @@
 version: "3.11"
 
 services:
-  litellm:
-    image: ghcr.io/berriai/litellm:main-stable
+  llm:
+    image: ghcr.io/berriai/llm:main-stable
     ports:
       - "4000:4000"  # Map container port 4000 to host
     build:
@@ -16,7 +16,7 @@ services:
     networks:
       - hanzo-network
     environment:
-      DATABASE_URL: "postgresql://llmproxy:dbpassword9090@db:5432/litellm"
+      DATABASE_URL: "postgresql://llmproxy:dbpassword9090@db:5432/llm"
       STORE_MODEL_IN_DB: "True"  # Allows adding models via UI
     env_file:
       - .env
@@ -30,9 +30,9 @@ services:
       start_period: 40s
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.litellm.rule=Host(`api.hanzo.ai`)"
-      - "traefik.http.routers.litellm.entrypoints=websecure"
-      - "traefik.http.services.litellm.loadbalancer.server.port=4000"
+      - "traefik.http.routers.llm.rule=Host(`api.hanzo.ai`)"
+      - "traefik.http.routers.llm.entrypoints=websecure"
+      - "traefik.http.services.llm.loadbalancer.server.port=4000"
     #########################################
     ## Uncomment these lines to start proxy with a config.yaml file ##
     # volumes:
@@ -45,7 +45,7 @@ services:
     image: postgres:16
     restart: always
     environment:
-      POSTGRES_DB: litellm
+      POSTGRES_DB: llm
       POSTGRES_USER: llmproxy
       POSTGRES_PASSWORD: dbpassword9090
     ports:
@@ -53,7 +53,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d litellm -U llmproxy"]
+      test: ["CMD-SHELL", "pg_isready -d llm -U llmproxy"]
       interval: 1s
       timeout: 5s
       retries: 10
@@ -79,7 +79,7 @@ volumes:
   prometheus_data:
     driver: local
   postgres_data:
-    name: litellm_postgres_data
+    name: llm_postgres_data
 
 networks:
   hanzo-network:

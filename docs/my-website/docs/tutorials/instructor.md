@@ -1,6 +1,6 @@
 # Instructor - Function Calling
 
-Use LiteLLM with [jxnl's instructor library](https://github.com/jxnl/instructor) for function calling in prod. 
+Use Hanzo with [jxnl's instructor library](https://github.com/jxnl/instructor) for function calling in prod. 
 
 ## Usage
 
@@ -8,12 +8,12 @@ Use LiteLLM with [jxnl's instructor library](https://github.com/jxnl/instructor)
 import os
 
 import instructor
-from litellm import completion
+from llm import completion
 from pydantic import BaseModel
 
-os.environ["LITELLM_LOG"] = "DEBUG"  # 👈 print DEBUG LOGS
+os.environ["LLM_LOG"] = "DEBUG"  # 👈 print DEBUG LOGS
 
-client = instructor.from_litellm(completion)
+client = instructor.from_llm(completion)
 
 # import dotenv
 # dotenv.load_dotenv()
@@ -44,7 +44,7 @@ print(f"user: {user}")
 ```python
 import asyncio
 import instructor
-from litellm import Router
+from llm import Router
 from pydantic import BaseModel
 
 aclient = instructor.patch(
@@ -52,10 +52,10 @@ aclient = instructor.patch(
         model_list=[
             {
                 "model_name": "gpt-4o-mini",
-                "litellm_params": {"model": "gpt-4o-mini"},
+                "llm_params": {"model": "gpt-4o-mini"},
             }
         ],
-        default_litellm_params={"acompletion": True},  # 👈 IMPORTANT - tells litellm to route to async completion function.
+        default_llm_params={"acompletion": True},  # 👈 IMPORTANT - tells llm to route to async completion function.
     )
 )
 

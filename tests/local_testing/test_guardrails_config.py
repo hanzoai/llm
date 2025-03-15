@@ -12,17 +12,17 @@ from datetime import datetime
 import pytest
 from pydantic import BaseModel
 
-import litellm.litellm_core_utils
-import litellm.litellm_core_utils.litellm_logging
+import llm.llm_core_utils
+import llm.llm_core_utils.llm_logging
 
 sys.path.insert(0, os.path.abspath("../.."))
 from typing import Any, List, Literal, Optional, Tuple, Union
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import litellm
-from litellm import Cache, completion, embedding
-from litellm.integrations.custom_logger import CustomLogger
-from litellm.types.utils import LiteLLMCommonStrings
+import llm
+from llm import Cache, completion, embedding
+from llm.integrations.custom_logger import CustomLogger
+from llm.types.utils import HanzoCommonStrings
 
 
 class CustomLoggingIntegration(CustomLogger):
@@ -55,7 +55,7 @@ def test_guardrail_masking_logging_only():
     callback = CustomLoggingIntegration()
 
     with patch.object(callback, "log_success_event", new=MagicMock()) as mock_call:
-        litellm.callbacks = [callback]
+        llm.callbacks = [callback]
         messages = [{"role": "user", "content": "Hey, my name is Peter."}]
         response = completion(
             model="gpt-3.5-turbo", messages=messages, mock_response="Hi Peter!"
@@ -75,8 +75,8 @@ def test_guardrail_masking_logging_only():
 
 
 def test_guardrail_list_of_event_hooks():
-    from litellm.integrations.custom_guardrail import CustomGuardrail
-    from litellm.types.guardrails import GuardrailEventHooks
+    from llm.integrations.custom_guardrail import CustomGuardrail
+    from llm.types.guardrails import GuardrailEventHooks
 
     cg = CustomGuardrail(
         guardrail_name="custom-guard", event_hook=["pre_call", "post_call"]
@@ -93,21 +93,21 @@ def test_guardrail_list_of_event_hooks():
 
 
 def test_guardrail_info_response():
-    from litellm.types.guardrails import GuardrailInfoResponse, LitellmParams
+    from llm.types.guardrails import GuardrailInfoResponse, LLMParams
 
     guardrail_info = GuardrailInfoResponse(
         guardrail_name="aporia-pre-guard",
-        litellm_params=LitellmParams(
+        llm_params=LLMParams(
             guardrail="aporia",
             mode="pre_call",
         ),
         guardrail_info={
             "guardrail_name": "aporia-pre-guard",
-            "litellm_params": {
+            "llm_params": {
                 "guardrail": "aporia",
                 "mode": "always_on",
             },
         },
     )
 
-    assert guardrail_info.litellm_params.default_on == False
+    assert guardrail_info.llm_params.default_on == False

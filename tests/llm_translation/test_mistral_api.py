@@ -5,9 +5,9 @@ import traceback
 
 from dotenv import load_dotenv
 
-import litellm.types
-import litellm.types.utils
-from litellm.llms.anthropic.chat import ModelResponseIterator
+import llm.types
+import llm.types.utils
+from llm.llms.anthropic.chat import ModelResponseIterator
 
 load_dotenv()
 import io
@@ -21,20 +21,20 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-import litellm
+import llm
 
-from litellm.llms.anthropic.common_utils import process_anthropic_headers
+from llm.llms.anthropic.common_utils import process_anthropic_headers
 from httpx import Headers
 from base_llm_unit_tests import BaseLLMChatTest
 
 
 class TestMistralCompletion(BaseLLMChatTest):
     def get_base_completion_call_args(self) -> dict:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         return {"model": "mistral/mistral-small-latest"}
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
         pass
 
     def test_multilingual_requests(self):

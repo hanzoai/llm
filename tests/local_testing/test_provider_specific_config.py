@@ -13,16 +13,16 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import litellm
-from litellm import RateLimitError, completion
+import llm
+from llm import RateLimitError, completion
 
 #  Huggingface - Expensive to deploy models and keep them running. Maybe we can try doing this via baseten??
 # def hf_test_completion_tgi():
-#     litellm.HuggingfaceConfig(max_new_tokens=200)
-#     litellm.set_verbose=True
+#     llm.HuggingfaceConfig(max_new_tokens=200)
+#     llm.set_verbose=True
 #     try:
 #         # OVERRIDE WITH DYNAMIC MAX TOKENS
-#         response_1 = litellm.completion(
+#         response_1 = llm.completion(
 #             model="huggingface/mistralai/Mistral-7B-Instruct-v0.1",
 #             messages=[{ "content": "Hello, how are you?","role": "user"}],
 #             api_base="https://n9ox93a8sv5ihsow.us-east-1.aws.endpoints.huggingface.cloud",
@@ -33,7 +33,7 @@ from litellm import RateLimitError, completion
 #         response_1_text = response_1.choices[0].message.content
 
 #         # USE CONFIG TOKENS
-#         response_2 = litellm.completion(
+#         response_2 = llm.completion(
 #             model="huggingface/mistralai/Mistral-7B-Instruct-v0.1",
 #             messages=[{ "content": "Hello, how are you?","role": "user"}],
 #             api_base="https://n9ox93a8sv5ihsow.us-east-1.aws.endpoints.huggingface.cloud",
@@ -51,11 +51,11 @@ from litellm import RateLimitError, completion
 
 
 def claude_test_completion():
-    litellm.AnthropicConfig(max_tokens_to_sample=200)
-    # litellm.set_verbose=True
+    llm.AnthropicConfig(max_tokens_to_sample=200)
+    # llm.set_verbose=True
     try:
         # OVERRIDE WITH DYNAMIC MAX TOKENS
-        response_1 = litellm.completion(
+        response_1 = llm.completion(
             model="claude-3-haiku-20240307",
             messages=[{"content": "Hello, how are you?", "role": "user"}],
             max_tokens=10,
@@ -65,7 +65,7 @@ def claude_test_completion():
         response_1_text = response_1.choices[0].message.content
 
         # USE CONFIG TOKENS
-        response_2 = litellm.completion(
+        response_2 = llm.completion(
             model="claude-3-haiku-20240307",
             messages=[{"content": "Hello, how are you?", "role": "user"}],
         )
@@ -76,7 +76,7 @@ def claude_test_completion():
         assert len(response_2_text) > len(response_1_text)
 
         try:
-            response_3 = litellm.completion(
+            response_3 = llm.completion(
                 model="claude-3-5-haiku-20241022",
                 messages=[{"content": "Hello, how are you?", "role": "user"}],
                 n=2,
@@ -94,11 +94,11 @@ def claude_test_completion():
 
 
 def replicate_test_completion():
-    litellm.ReplicateConfig(max_new_tokens=200)
-    # litellm.set_verbose=True
+    llm.ReplicateConfig(max_new_tokens=200)
+    # llm.set_verbose=True
     try:
         # OVERRIDE WITH DYNAMIC MAX TOKENS
-        response_1 = litellm.completion(
+        response_1 = llm.completion(
             model="meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
             messages=[{"content": "Hello, how are you?", "role": "user"}],
             max_tokens=10,
@@ -108,7 +108,7 @@ def replicate_test_completion():
         response_1_text = response_1.choices[0].message.content
 
         # USE CONFIG TOKENS
-        response_2 = litellm.completion(
+        response_2 = llm.completion(
             model="meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
             messages=[{"content": "Hello, how are you?", "role": "user"}],
         )
@@ -118,7 +118,7 @@ def replicate_test_completion():
 
         assert len(response_2_text) > len(response_1_text)
         try:
-            response_3 = litellm.completion(
+            response_3 = llm.completion(
                 model="meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
                 messages=[{"content": "Hello, how are you?", "role": "user"}],
                 n=2,
@@ -135,11 +135,11 @@ def replicate_test_completion():
 
 
 def cohere_test_completion():
-    # litellm.CohereConfig(max_tokens=200)
-    litellm.set_verbose = True
+    # llm.CohereConfig(max_tokens=200)
+    llm.set_verbose = True
     try:
         # OVERRIDE WITH DYNAMIC MAX TOKENS
-        response_1 = litellm.completion(
+        response_1 = llm.completion(
             model="command-nightly",
             messages=[{"content": "Hello, how are you?", "role": "user"}],
             max_tokens=10,
@@ -147,7 +147,7 @@ def cohere_test_completion():
         response_1_text = response_1.choices[0].message.content
 
         # USE CONFIG TOKENS
-        response_2 = litellm.completion(
+        response_2 = llm.completion(
             model="command-nightly",
             messages=[{"content": "Hello, how are you?", "role": "user"}],
         )
@@ -155,7 +155,7 @@ def cohere_test_completion():
 
         assert len(response_2_text) > len(response_1_text)
 
-        response_3 = litellm.completion(
+        response_3 = llm.completion(
             model="command-nightly",
             messages=[{"content": "Hello, how are you?", "role": "user"}],
             n=2,
@@ -174,11 +174,11 @@ def cohere_test_completion():
 
 
 def togetherai_test_completion():
-    litellm.TogetherAIConfig(max_tokens=10)
-    litellm.set_verbose = True
+    llm.TogetherAIConfig(max_tokens=10)
+    llm.set_verbose = True
     try:
         # OVERRIDE WITH DYNAMIC MAX TOKENS
-        response_1 = litellm.completion(
+        response_1 = llm.completion(
             model="together_ai/togethercomputer/llama-2-70b-chat",
             messages=[
                 {
@@ -192,7 +192,7 @@ def togetherai_test_completion():
         print(f"response_1_text: {response_1_text}")
 
         # USE CONFIG TOKENS
-        response_2 = litellm.completion(
+        response_2 = llm.completion(
             model="together_ai/togethercomputer/llama-2-70b-chat",
             messages=[
                 {
@@ -207,7 +207,7 @@ def togetherai_test_completion():
         assert len(response_2_text) < len(response_1_text)
 
         try:
-            response_3 = litellm.completion(
+            response_3 = llm.completion(
                 model="together_ai/togethercomputer/llama-2-70b-chat",
                 messages=[{"content": "Hello, how are you?", "role": "user"}],
                 n=2,
@@ -230,11 +230,11 @@ def togetherai_test_completion():
 
 
 def nlp_cloud_test_completion():
-    litellm.NLPCloudConfig(max_length=10)
-    # litellm.set_verbose=True
+    llm.NLPCloudConfig(max_length=10)
+    # llm.set_verbose=True
     try:
         # OVERRIDE WITH DYNAMIC MAX TOKENS
-        response_1 = litellm.completion(
+        response_1 = llm.completion(
             model="dolphin",
             messages=[
                 {
@@ -248,7 +248,7 @@ def nlp_cloud_test_completion():
         print(f"response_1_text: {response_1_text}")
 
         # USE CONFIG TOKENS
-        response_2 = litellm.completion(
+        response_2 = llm.completion(
             model="dolphin",
             messages=[
                 {
@@ -263,7 +263,7 @@ def nlp_cloud_test_completion():
         assert len(response_2_text) < len(response_1_text)
 
         try:
-            response_3 = litellm.completion(
+            response_3 = llm.completion(
                 model="dolphin",
                 messages=[{"content": "Hello, how are you?", "role": "user"}],
                 n=2,
@@ -281,11 +281,11 @@ def nlp_cloud_test_completion():
 
 
 def aleph_alpha_test_completion():
-    litellm.AlephAlphaConfig(maximum_tokens=10)
-    # litellm.set_verbose=True
+    llm.AlephAlphaConfig(maximum_tokens=10)
+    # llm.set_verbose=True
     try:
         # OVERRIDE WITH DYNAMIC MAX TOKENS
-        response_1 = litellm.completion(
+        response_1 = llm.completion(
             model="luminous-base",
             messages=[
                 {
@@ -299,7 +299,7 @@ def aleph_alpha_test_completion():
         print(f"response_1_text: {response_1_text}")
 
         # USE CONFIG TOKENS
-        response_2 = litellm.completion(
+        response_2 = llm.completion(
             model="luminous-base",
             messages=[
                 {
@@ -313,7 +313,7 @@ def aleph_alpha_test_completion():
 
         assert len(response_2_text) < len(response_1_text)
 
-        response_3 = litellm.completion(
+        response_3 = llm.completion(
             model="luminous-base",
             messages=[{"content": "Hello, how are you?", "role": "user"}],
             n=2,
@@ -328,11 +328,11 @@ def aleph_alpha_test_completion():
 
 #  Petals - calls are too slow, will cause circle ci to fail due to delay. Test locally.
 # def petals_completion():
-#     litellm.PetalsConfig(max_new_tokens=10)
-#     # litellm.set_verbose=True
+#     llm.PetalsConfig(max_new_tokens=10)
+#     # llm.set_verbose=True
 #     try:
 #         # OVERRIDE WITH DYNAMIC MAX TOKENS
-#         response_1 = litellm.completion(
+#         response_1 = llm.completion(
 #             model="petals/petals-team/StableBeluga2",
 #             messages=[{ "content": "Hello, how are you? Be as verbose as possible","role": "user"}],
 #             api_base="https://chat.petals.dev/api/v1/generate",
@@ -342,7 +342,7 @@ def aleph_alpha_test_completion():
 #         print(f"response_1_text: {response_1_text}")
 
 #         # USE CONFIG TOKENS
-#         response_2 = litellm.completion(
+#         response_2 = llm.completion(
 #             model="petals/petals-team/StableBeluga2",
 #             api_base="https://chat.petals.dev/api/v1/generate",
 #             messages=[{ "content": "Hello, how are you? Be as verbose as possible","role": "user"}],
@@ -359,11 +359,11 @@ def aleph_alpha_test_completion():
 #  VertexAI
 # We don't have vertex ai configured for circle ci yet -- need to figure this out.
 # def vertex_ai_test_completion():
-#     litellm.VertexAIConfig(max_output_tokens=10)
-#     # litellm.set_verbose=True
+#     llm.VertexAIConfig(max_output_tokens=10)
+#     # llm.set_verbose=True
 #     try:
 #         # OVERRIDE WITH DYNAMIC MAX TOKENS
-#         response_1 = litellm.completion(
+#         response_1 = llm.completion(
 #             model="chat-bison",
 #             messages=[{ "content": "Hello, how are you? Be as verbose as possible","role": "user"}],
 #             max_tokens=100
@@ -372,7 +372,7 @@ def aleph_alpha_test_completion():
 #         print(f"response_1_text: {response_1_text}")
 
 #         # USE CONFIG TOKENS
-#         response_2 = litellm.completion(
+#         response_2 = llm.completion(
 #             model="chat-bison",
 #             messages=[{ "content": "Hello, how are you? Be as verbose as possible","role": "user"}],
 #         )
@@ -390,11 +390,11 @@ def aleph_alpha_test_completion():
 
 @pytest.mark.skip(reason="AWS Suspended Account")
 def sagemaker_test_completion():
-    litellm.SagemakerConfig(max_new_tokens=10)
-    # litellm.set_verbose=True
+    llm.SagemakerConfig(max_new_tokens=10)
+    # llm.set_verbose=True
     try:
         # OVERRIDE WITH DYNAMIC MAX TOKENS
-        response_1 = litellm.completion(
+        response_1 = llm.completion(
             model="sagemaker/berri-benchmarking-Llama-2-70b-chat-hf-4",
             messages=[
                 {
@@ -408,7 +408,7 @@ def sagemaker_test_completion():
         print(f"response_1_text: {response_1_text}")
 
         # USE CONFIG TOKENS
-        response_2 = litellm.completion(
+        response_2 = llm.completion(
             model="sagemaker/berri-benchmarking-Llama-2-70b-chat-hf-4",
             messages=[
                 {
@@ -456,10 +456,10 @@ def test_sagemaker_default_region():
     mock_response.status_code = 200
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.HTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.HTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        response = litellm.completion(
+        response = llm.completion(
             model="sagemaker/mock-endpoint",
             messages=[{"content": "Hello, world!", "role": "user"}],
         )
@@ -508,10 +508,10 @@ def test_sagemaker_environment_region():
     mock_response.status_code = 200
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.HTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.HTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
-        response = litellm.completion(
+        response = llm.completion(
             model="sagemaker/mock-endpoint",
             messages=[{"content": "Hello, world!", "role": "user"}],
         )
@@ -562,11 +562,11 @@ def test_sagemaker_config_region():
     mock_response.status_code = 200
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.HTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.HTTPHandler.post",
         return_value=mock_response,
     ) as mock_post:
 
-        response = litellm.completion(
+        response = llm.completion(
             model="sagemaker/mock-endpoint",
             messages=[{"content": "Hello, world!", "role": "user"}],
             aws_region_name=expected_region,
@@ -594,11 +594,11 @@ def test_sagemaker_config_region():
 
 
 def bedrock_test_completion():
-    litellm.AmazonCohereConfig(max_tokens=10)
-    # litellm.set_verbose=True
+    llm.AmazonCohereConfig(max_tokens=10)
+    # llm.set_verbose=True
     try:
         # OVERRIDE WITH DYNAMIC MAX TOKENS
-        response_1 = litellm.completion(
+        response_1 = llm.completion(
             model="bedrock/cohere.command-text-v14",
             messages=[
                 {
@@ -612,7 +612,7 @@ def bedrock_test_completion():
         print(f"response_1_text: {response_1_text}")
 
         # USE CONFIG TOKENS
-        response_2 = litellm.completion(
+        response_2 = llm.completion(
             model="bedrock/cohere.command-text-v14",
             messages=[
                 {
@@ -636,11 +636,11 @@ def bedrock_test_completion():
 
 # OpenAI Chat Completion
 def openai_test_completion():
-    litellm.OpenAIConfig(max_tokens=10)
-    # litellm.set_verbose=True
+    llm.OpenAIConfig(max_tokens=10)
+    # llm.set_verbose=True
     try:
         # OVERRIDE WITH DYNAMIC MAX TOKENS
-        response_1 = litellm.completion(
+        response_1 = llm.completion(
             model="gpt-3.5-turbo",
             messages=[
                 {
@@ -654,7 +654,7 @@ def openai_test_completion():
         print(f"response_1_text: {response_1_text}")
 
         # USE CONFIG TOKENS
-        response_2 = litellm.completion(
+        response_2 = llm.completion(
             model="gpt-3.5-turbo",
             messages=[
                 {
@@ -676,11 +676,11 @@ def openai_test_completion():
 
 # OpenAI Text Completion
 def openai_text_completion_test():
-    litellm.OpenAITextCompletionConfig(max_tokens=10)
-    # litellm.set_verbose=True
+    llm.OpenAITextCompletionConfig(max_tokens=10)
+    # llm.set_verbose=True
     try:
         # OVERRIDE WITH DYNAMIC MAX TOKENS
-        response_1 = litellm.completion(
+        response_1 = llm.completion(
             model="gpt-3.5-turbo-instruct",
             messages=[
                 {
@@ -694,7 +694,7 @@ def openai_text_completion_test():
         print(f"response_1_text: {response_1_text}")
 
         # USE CONFIG TOKENS
-        response_2 = litellm.completion(
+        response_2 = llm.completion(
             model="gpt-3.5-turbo-instruct",
             messages=[
                 {
@@ -708,7 +708,7 @@ def openai_text_completion_test():
 
         assert len(response_2_text) < len(response_1_text)
 
-        response_3 = litellm.completion(
+        response_3 = llm.completion(
             model="gpt-3.5-turbo-instruct",
             messages=[{"content": "Hello, how are you?", "role": "user"}],
             n=2,
@@ -723,11 +723,11 @@ def openai_text_completion_test():
 
 # Azure OpenAI
 def azure_openai_test_completion():
-    litellm.AzureOpenAIConfig(max_tokens=10)
-    # litellm.set_verbose=True
+    llm.AzureOpenAIConfig(max_tokens=10)
+    # llm.set_verbose=True
     try:
         # OVERRIDE WITH DYNAMIC MAX TOKENS
-        response_1 = litellm.completion(
+        response_1 = llm.completion(
             model="azure/chatgpt-v-2",
             messages=[
                 {
@@ -741,7 +741,7 @@ def azure_openai_test_completion():
         print(f"response_1_text: {response_1_text}")
 
         # USE CONFIG TOKENS
-        response_2 = litellm.completion(
+        response_2 = llm.completion(
             model="azure/chatgpt-v-2",
             messages=[
                 {

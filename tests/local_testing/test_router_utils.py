@@ -8,10 +8,10 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm import Router
-from litellm.router import Deployment, LiteLLM_Params
-from litellm.types.router import ModelInfo
+import llm
+from llm import Router
+from llm.router import Deployment, Hanzo_Params
+from llm.types.router import ModelInfo
 from concurrent.futures import ThreadPoolExecutor
 from collections import defaultdict
 from dotenv import load_dotenv
@@ -23,7 +23,7 @@ load_dotenv()
 def test_returned_settings():
     # this tests if the router raises an exception when invalid params are set
     # in this test both deployments have bad keys - Keep this test. It validates if the router raises the most recent exception
-    litellm.set_verbose = True
+    llm.set_verbose = True
     import openai
 
     try:
@@ -31,7 +31,7 @@ def test_returned_settings():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -42,7 +42,7 @@ def test_returned_settings():
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  #
+                "llm_params": {  #
                     "model": "gpt-3.5-turbo",
                     "api_key": "bad-key",
                 },
@@ -87,7 +87,7 @@ def test_returned_settings():
         pytest.fail("An error occurred - " + traceback.format_exc())
 
 
-from litellm.types.utils import CallTypes
+from llm.types.utils import CallTypes
 
 
 def test_update_kwargs_before_fallbacks_unit_test():
@@ -95,7 +95,7 @@ def test_update_kwargs_before_fallbacks_unit_test():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -112,7 +112,7 @@ def test_update_kwargs_before_fallbacks_unit_test():
         kwargs=kwargs,
     )
 
-    assert kwargs["litellm_trace_id"] is not None
+    assert kwargs["llm_trace_id"] is not None
 
 
 @pytest.mark.parametrize(
@@ -132,7 +132,7 @@ async def test_update_kwargs_before_fallbacks(call_type):
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -174,17 +174,17 @@ async def test_update_kwargs_before_fallbacks(call_type):
             mock_client.assert_called_once()
 
             print(mock_client.call_args.kwargs)
-            assert mock_client.call_args.kwargs["litellm_trace_id"] is not None
+            assert mock_client.call_args.kwargs["llm_trace_id"] is not None
 
 
 def test_router_get_model_info_wildcard_routes():
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-    litellm.model_cost = litellm.get_model_cost_map(url="")
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
+    llm.model_cost = llm.get_model_cost_map(url="")
     router = Router(
         model_list=[
             {
                 "model_name": "gemini/*",
-                "litellm_params": {"model": "gemini/*"},
+                "llm_params": {"model": "gemini/*"},
                 "model_info": {"id": 1},
             },
         ]
@@ -200,13 +200,13 @@ def test_router_get_model_info_wildcard_routes():
 
 @pytest.mark.asyncio
 async def test_router_get_model_group_usage_wildcard_routes():
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-    litellm.model_cost = litellm.get_model_cost_map(url="")
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
+    llm.model_cost = llm.get_model_cost_map(url="")
     router = Router(
         model_list=[
             {
                 "model_name": "gemini/*",
-                "litellm_params": {"model": "gemini/*"},
+                "llm_params": {"model": "gemini/*"},
                 "model_info": {"id": 1},
             },
         ]
@@ -233,7 +233,7 @@ async def test_call_router_callbacks_on_success():
         model_list=[
             {
                 "model_name": "gemini/*",
-                "litellm_params": {"model": "gemini/*"},
+                "llm_params": {"model": "gemini/*"},
                 "model_info": {"id": 1},
             },
         ]
@@ -268,7 +268,7 @@ async def test_call_router_callbacks_on_failure():
         model_list=[
             {
                 "model_name": "gemini/*",
-                "litellm_params": {"model": "gemini/*"},
+                "llm_params": {"model": "gemini/*"},
                 "model_info": {"id": 1},
             },
         ]
@@ -277,11 +277,11 @@ async def test_call_router_callbacks_on_failure():
     with patch.object(
         router.cache, "async_increment_cache", new=AsyncMock()
     ) as mock_callback:
-        with pytest.raises(litellm.RateLimitError):
+        with pytest.raises(llm.RateLimitError):
             await router.acompletion(
                 model="gemini/gemini-1.5-flash",
                 messages=[{"role": "user", "content": "Hello, how are you?"}],
-                mock_response="litellm.RateLimitError",
+                mock_response="llm.RateLimitError",
                 num_retries=0,
             )
         await asyncio.sleep(1)
@@ -297,15 +297,15 @@ async def test_call_router_callbacks_on_failure():
 
 @pytest.mark.asyncio
 async def test_router_model_group_headers():
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-    litellm.model_cost = litellm.get_model_cost_map(url="")
-    from litellm.types.utils import OPENAI_RESPONSE_HEADERS
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
+    llm.model_cost = llm.get_model_cost_map(url="")
+    from llm.types.utils import OPENAI_RESPONSE_HEADERS
 
     router = Router(
         model_list=[
             {
                 "model_name": "gemini/*",
-                "litellm_params": {"model": "gemini/*"},
+                "llm_params": {"model": "gemini/*"},
                 "model_info": {"id": 1},
             }
         ]
@@ -320,7 +320,7 @@ async def test_router_model_group_headers():
         await asyncio.sleep(1)
 
     assert (
-        resp._hidden_params["additional_headers"]["x-litellm-model-group"]
+        resp._hidden_params["additional_headers"]["x-llm-model-group"]
         == "gemini/gemini-1.5-flash"
     )
 
@@ -330,15 +330,15 @@ async def test_router_model_group_headers():
 
 @pytest.mark.asyncio
 async def test_get_remaining_model_group_usage():
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-    litellm.model_cost = litellm.get_model_cost_map(url="")
-    from litellm.types.utils import OPENAI_RESPONSE_HEADERS
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
+    llm.model_cost = llm.get_model_cost_map(url="")
+    from llm.types.utils import OPENAI_RESPONSE_HEADERS
 
     router = Router(
         model_list=[
             {
                 "model_name": "gemini/*",
-                "litellm_params": {"model": "gemini/*"},
+                "llm_params": {"model": "gemini/*"},
                 "model_info": {"id": 1},
             }
         ]
@@ -375,7 +375,7 @@ def test_router_get_model_access_groups(potential_access_group, expected_result)
         model_list=[
             {
                 "model_name": "gemini/*",
-                "litellm_params": {"model": "gemini/*"},
+                "llm_params": {"model": "gemini/*"},
                 "model_info": {"id": 1, "access_groups": ["gemini-models"]},
             },
         ]
@@ -388,7 +388,7 @@ def test_router_get_model_access_groups(potential_access_group, expected_result)
 
 def test_router_redis_cache():
     router = Router(
-        model_list=[{"model_name": "gemini/*", "litellm_params": {"model": "gemini/*"}}]
+        model_list=[{"model_name": "gemini/*", "llm_params": {"model": "gemini/*"}}]
     )
 
     redis_cache = MagicMock()
@@ -401,7 +401,7 @@ def test_router_redis_cache():
 def test_router_handle_clientside_credential():
     deployment = {
         "model_name": "gemini/*",
-        "litellm_params": {"model": "gemini/*"},
+        "llm_params": {"model": "gemini/*"},
         "model_info": {
             "id": "1",
         },
@@ -416,7 +416,7 @@ def test_router_handle_clientside_credential():
         },
     )
 
-    assert new_deployment.litellm_params.api_key == "123"
+    assert new_deployment.llm_params.api_key == "123"
     assert len(router.get_model_list()) == 2
 
 
@@ -425,7 +425,7 @@ def test_router_get_async_openai_model_client():
         model_list=[
             {
                 "model_name": "gemini/*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gemini/*",
                     "api_base": "https://api.gemini.com",
                 },

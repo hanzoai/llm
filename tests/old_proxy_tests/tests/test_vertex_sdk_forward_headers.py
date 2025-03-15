@@ -5,12 +5,12 @@
 # from vertexai.preview import caching
 # from vertexai.preview.generative_models import GenerativeModel
 
-# LITE_LLM_ENDPOINT = "http://localhost:4000"
+# LLM_ENDPOINT = "http://localhost:4000"
 
 # vertexai.init(
 #     project="pathrise-convert-1606954137718",
 #     location="us-central1",
-#     api_endpoint=f"{LITE_LLM_ENDPOINT}/vertex-ai",
+#     api_endpoint=f"{LLM_ENDPOINT}/vertex-ai",
 #     api_transport="rest",
 # )
 

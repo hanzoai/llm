@@ -16,8 +16,8 @@ from typing import Literal
 import pytest
 from pydantic import BaseModel, ConfigDict
 
-import litellm
-from litellm import Router, completion_cost, stream_chunk_builder
+import llm
+from llm import Router, completion_cost, stream_chunk_builder
 
 models = [
     dict(
@@ -35,7 +35,7 @@ router = Router(
     model_list=[
         {
             "model_name": m["model_name"],
-            "litellm_params": {
+            "llm_params": {
                 "model": m.get("model", m["model_name"]),
             },
         }
@@ -61,9 +61,9 @@ router = Router(
 )
 def test_run(model: str):
     """
-    Relevant issue - https://github.com/BerriAI/litellm/issues/4965
+    Relevant issue - https://github.com/BerriAI/llm/issues/4965
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
     prompt = "Hi"
     kwargs = dict(
         model=model,

@@ -4,7 +4,7 @@
 - [Async Completion](#async-completion)
 
 ## Streaming Responses
-LiteLLM supports streaming the model response back by passing `stream=True` as an argument to the completion function
+Hanzo supports streaming the model response back by passing `stream=True` as an argument to the completion function
 ### Usage
 ```python
 response = completion(model="gpt-3.5-turbo", messages=messages, stream=True)
@@ -14,11 +14,11 @@ for chunk in response:
 ```
 
 ## Async Completion
-Asynchronous Completion with LiteLLM
-LiteLLM provides an asynchronous version of the completion function called `acompletion`
+Asynchronous Completion with Hanzo
+Hanzo provides an asynchronous version of the completion function called `acompletion`
 ### Usage
 ```
-from litellm import acompletion
+from llm import acompletion
 import asyncio
 
 async def test_get_response():
@@ -42,7 +42,7 @@ If set, an additional chunk will be streamed before the data: [DONE] message. Th
 
 ### SDK 
 ```python 
-from litellm import completion 
+from llm import completion 
 import os
 
 os.environ["OPENAI_API_KEY"] = "" 

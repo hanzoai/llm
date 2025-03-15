@@ -3,12 +3,12 @@ Anthropic, OpenAI, Mistral, Llama and Gemini LLMs are Supported on Clarifai.
 
 :::warning 
 
-Streaming is not yet supported on using clarifai and litellm. Tracking support here: https://github.com/BerriAI/litellm/issues/4162
+Streaming is not yet supported on using clarifai and llm. Tracking support here: https://github.com/BerriAI/llm/issues/4162
 
 :::
 
 ## Pre-Requisites
-`pip install litellm`
+`pip install llm`
 
 ## Required Environment Variables
 To obtain your Clarifai Personal access token follow this [link](https://docs.clarifai.com/clarifai-basics/authentication/personal-access-tokens/). Optionally the PAT can also be passed in `completion` function.
@@ -22,7 +22,7 @@ os.environ["CLARIFAI_API_KEY"] = "YOUR_CLARIFAI_PAT"  # CLARIFAI_PAT
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 os.environ["CLARIFAI_API_KEY"] = ""
 
@@ -59,9 +59,9 @@ response = completion(
 ```
 
 ## Clarifai models
-liteLLM supports all models on [Clarifai community](https://clarifai.com/explore/models?filterData=%5B%7B%22field%22%3A%22use_cases%22%2C%22value%22%3A%5B%22llm%22%5D%7D%5D&page=1&perPage=24)
+LLM supports all models on [Clarifai community](https://clarifai.com/explore/models?filterData=%5B%7B%22field%22%3A%22use_cases%22%2C%22value%22%3A%5B%22llm%22%5D%7D%5D&page=1&perPage=24)
 
-Example  Usage - Note: liteLLM supports all models deployed on Clarifai
+Example  Usage - Note: LLM supports all models deployed on Clarifai
 
 ## Llama LLMs
 | Model Name                        | Function Call |

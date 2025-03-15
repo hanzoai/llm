@@ -1,21 +1,21 @@
 # Langfuse SDK
 
-Pass-through endpoints for Langfuse - call langfuse endpoints with LiteLLM Virtual Key.
+Pass-through endpoints for Langfuse - call langfuse endpoints with Hanzo Virtual Key.
 
-Just replace `https://us.cloud.langfuse.com` with `LITELLM_PROXY_BASE_URL/langfuse` 🚀
+Just replace `https://us.cloud.langfuse.com` with `LLM_PROXY_BASE_URL/langfuse` 🚀
 
 #### **Example Usage**
 ```python
 from langfuse import Langfuse
 
 langfuse = Langfuse(
-    host="http://localhost:4000/langfuse", # your litellm proxy endpoint
+    host="http://localhost:4000/langfuse", # your llm proxy endpoint
     public_key="anything",        # no key required since this is a pass through
-    secret_key="LITELLM_VIRTUAL_KEY",        # no key required since this is a pass through
+    secret_key="LLM_VIRTUAL_KEY",        # no key required since this is a pass through
 )
 
 print("sending langfuse trace request")
-trace = langfuse.trace(name="test-trace-litellm-proxy-passthrough")
+trace = langfuse.trace(name="test-trace-llm-proxy-passthrough")
 print("flushing langfuse request")
 langfuse.flush()
 
@@ -37,10 +37,10 @@ export LANGFUSE_PUBLIC_KEY=""
 export LANGFUSE_PRIVATE_KEY=""
 ```
 
-2. Start LiteLLM Proxy 
+2. Start Hanzo Proxy 
 
 ```bash
-litellm
+llm
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -53,13 +53,13 @@ Let's log a trace to Langfuse!
 from langfuse import Langfuse
 
 langfuse = Langfuse(
-    host="http://localhost:4000/langfuse", # your litellm proxy endpoint
+    host="http://localhost:4000/langfuse", # your llm proxy endpoint
     public_key="anything",        # no key required since this is a pass through
     secret_key="anything",        # no key required since this is a pass through
 )
 
 print("sending langfuse trace request")
-trace = langfuse.trace(name="test-trace-litellm-proxy-passthrough")
+trace = langfuse.trace(name="test-trace-llm-proxy-passthrough")
 print("flushing langfuse request")
 langfuse.flush()
 
@@ -80,13 +80,13 @@ Use this, to avoid giving developers the raw Google AI Studio key, but still let
 
 ```bash
 export DATABASE_URL=""
-export LITELLM_MASTER_KEY=""
+export LLM_MASTER_KEY=""
 export LANGFUSE_PUBLIC_KEY=""
 export LANGFUSE_PRIVATE_KEY=""
 ```
 
 ```bash
-litellm
+llm
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -116,13 +116,13 @@ Expected Response
 from langfuse import Langfuse
 
 langfuse = Langfuse(
-    host="http://localhost:4000/langfuse", # your litellm proxy endpoint
+    host="http://localhost:4000/langfuse", # your llm proxy endpoint
     public_key="anything",        # no key required since this is a pass through
     secret_key="sk-1234ewknldferwedojwojw",        # no key required since this is a pass through
 )
 
 print("sending langfuse trace request")
-trace = langfuse.trace(name="test-trace-litellm-proxy-passthrough")
+trace = langfuse.trace(name="test-trace-llm-proxy-passthrough")
 print("flushing langfuse request")
 langfuse.flush()
 

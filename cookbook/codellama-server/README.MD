@@ -2,13 +2,13 @@
 
 Works with: Anthropic, Huggingface, Cohere, TogetherAI, Azure, OpenAI, etc.
 
-[![PyPI Version](https://img.shields.io/pypi/v/litellm.svg)](https://pypi.org/project/litellm/)
-[![PyPI Version](https://img.shields.io/badge/stable%20version-v0.1.345-blue?color=green&link=https://pypi.org/project/litellm/0.1.1/)](https://pypi.org/project/litellm/0.1.1/)
-![Downloads](https://img.shields.io/pypi/dm/litellm)
+[![PyPI Version](https://img.shields.io/pypi/v/llm.svg)](https://pypi.org/project/llm/)
+[![PyPI Version](https://img.shields.io/badge/stable%20version-v0.1.345-blue?color=green&link=https://pypi.org/project/llm/0.1.1/)](https://pypi.org/project/llm/0.1.1/)
+![Downloads](https://img.shields.io/pypi/dm/llm)
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/HuDPw-?referralCode=jch2ME)
 
-**LIVE DEMO** - https://litellm.ai/playground
+**LIVE DEMO** - https://llm.ai/playground
 
 ## What does CodeLlama Server do
 
@@ -24,17 +24,17 @@ Works with: Anthropic, Huggingface, Cohere, TogetherAI, Azure, OpenAI, etc.
   - Text responses will always be available at `['choices'][0]['message']['content']`
   - Stream responses will always be available at `['choices'][0]['delta']['content']`
 - **Error Handling** Using Model Fallbacks (if `CodeLlama` fails, try `GPT-4`) with cooldowns, and retries
-- **Prompt Logging** - Log successful completions to promptlayer for testing + iterating on your prompts in production! (Learn more: https://litellm.readthedocs.io/en/latest/advanced/
+- **Prompt Logging** - Log successful completions to promptlayer for testing + iterating on your prompts in production! (Learn more: https://llm.readthedocs.io/en/latest/advanced/
 
   **Example: Logs sent to PromptLayer**
 
     <img src="imgs/promptlayer_logging.png" alt="Prompt Logging" width="900"/>
 
 
-- **Token Usage & Spend** - Track Input + Completion tokens used + Spend/model - https://docs.litellm.ai/docs/token_usage
-- **Caching** - Provides in-memory cache + GPT-Cache integration for more advanced usage - https://docs.litellm.ai/docs/caching/gpt_cache
+- **Token Usage & Spend** - Track Input + Completion tokens used + Spend/model - https://docs.llm.ai/docs/token_usage
+- **Caching** - Provides in-memory cache + GPT-Cache integration for more advanced usage - https://docs.llm.ai/docs/caching/gpt_cache
 
-- **Streaming & Async Support** - Return generators to stream text responses - TEST IT 👉 https://litellm.ai/
+- **Streaming & Async Support** - Return generators to stream text responses - TEST IT 👉 https://llm.ai/
 
 ## API Endpoints
 
@@ -47,7 +47,7 @@ This endpoint is used to generate chat completions for 50+ support LLM API Model
 This API endpoint accepts all inputs in raw JSON and expects the following inputs
 
 - `prompt` (string, required): The user's coding related question
-- Additional Optional parameters: `temperature`, `functions`, `function_call`, `top_p`, `n`, `stream`. See the full list of supported inputs here: https://litellm.readthedocs.io/en/latest/input/
+- Additional Optional parameters: `temperature`, `functions`, `function_call`, `top_p`, `n`, `stream`. See the full list of supported inputs here: https://llm.readthedocs.io/en/latest/input/
 
 #### Example JSON body
 
@@ -83,7 +83,7 @@ print(response.text)
 ### Output [Response Format]
 
 Responses from the server are given in the following format.
-All responses from the server are returned in the following format (for all LLM models). More info on output here: https://litellm.readthedocs.io/en/latest/output/
+All responses from the server are returned in the following format (for all LLM models). More info on output here: https://llm.readthedocs.io/en/latest/output/
 
 ```json
 {
@@ -111,9 +111,9 @@ All responses from the server are returned in the following format (for all LLM 
 
 ### Running Locally
 
-1. Clone liteLLM repository to your local machine:
+1. Clone LLM repository to your local machine:
    ```
-   git clone https://github.com/BerriAI/litellm-CodeLlama-server
+   git clone https://github.com/BerriAI/llm-CodeLlama-server
    ```
 2. Install the required dependencies using pip
    ```
@@ -141,7 +141,7 @@ All responses from the server are returned in the following format (for all LLM 
 
 # Support / Talk with founders
 
-- [Our calendar 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-litellm-hosted-version)
+- [Our calendar 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 - Our numbers 📞 +1 (770) 8783-106 / +1 (412) 618-6238
 - Our emails ✉️ ishaan@berri.ai / krrish@berri.ai

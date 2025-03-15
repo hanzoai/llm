@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import pytest
 
-from litellm import completion, acompletion
+from llm import completion, acompletion
 
 @pytest.mark.parametrize("sync_mode", [True, False])
 @pytest.mark.asyncio

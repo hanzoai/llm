@@ -16,8 +16,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-import litellm
-from litellm import (
+import llm
+from llm import (
     RateLimitError,
     TextCompletionResponse,
     atext_completion,
@@ -27,7 +27,7 @@ from litellm import (
     text_completion,
 )
 
-litellm.num_retries = 3
+llm.num_retries = 3
 
 
 token_prompt = [
@@ -3798,7 +3798,7 @@ def test_completion_openai_prompt():
 def test_completion_openai_engine_and_model():
     try:
         print("\n text 003 test\n")
-        litellm.set_verbose = True
+        llm.set_verbose = True
         response = text_completion(
             model="gpt-3.5-turbo-instruct",
             engine="anything",
@@ -3819,7 +3819,7 @@ def test_completion_openai_engine_and_model():
 def test_completion_openai_engine():
     try:
         print("\n text 003 test\n")
-        litellm.set_verbose = True
+        llm.set_verbose = True
         response = text_completion(
             engine="gpt-3.5-turbo-instruct",
             prompt="What's the weather in SF?",
@@ -3876,7 +3876,7 @@ def test_completion_gpt_instruct():
 def test_text_completion_basic():
     try:
         print("\n test 003 with logprobs \n")
-        litellm.set_verbose = False
+        llm.set_verbose = False
         response = text_completion(
             model="gpt-3.5-turbo-instruct",
             prompt="good morning",
@@ -3897,7 +3897,7 @@ def test_text_completion_basic():
 
 def test_completion_text_003_prompt_array():
     try:
-        litellm.set_verbose = False
+        llm.set_verbose = False
         response = text_completion(
             model="gpt-3.5-turbo-instruct",
             prompt=token_prompt,  # token prompt is a 2d list
@@ -3916,7 +3916,7 @@ def test_completion_text_003_prompt_array():
 # not including this in our ci cd pipeline, since we don't want to fail tests due to an unstable replit
 # def test_text_completion_with_proxy():
 #     try:
-#         litellm.set_verbose=True
+#         llm.set_verbose=True
 #         response = text_completion(
 #             model="facebook/opt-125m",
 #             prompt='Write a tagline for a traditional bavarian tavern',
@@ -3937,7 +3937,7 @@ def test_completion_text_003_prompt_array():
 @pytest.mark.skip(reason="local test")
 def test_completion_hf_prompt_array():
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         print("\n testing hf mistral\n")
         response = text_completion(
             model="huggingface/mistralai/Mistral-7B-Instruct-v0.3",
@@ -3952,7 +3952,7 @@ def test_completion_hf_prompt_array():
         print(response.choices)
         assert len(response.choices) == 2
         # response_str = response["choices"][0]["text"]
-    except litellm.RateLimitError:
+    except llm.RateLimitError:
         print("got rate limit error from hugging face... passsing")
         return
     except Exception as e:
@@ -4001,19 +4001,19 @@ def test_text_completion_stream():
 
 
 def test_async_text_completion():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     print("test_async_text_completion")
 
     async def test_get_response():
         try:
-            response = await litellm.atext_completion(
+            response = await llm.atext_completion(
                 model="gpt-3.5-turbo-instruct",
                 prompt="good morning",
                 stream=False,
                 max_tokens=10,
             )
             print(f"response: {response}")
-        except litellm.Timeout as e:
+        except llm.Timeout as e:
             print(e)
         except Exception as e:
             print(e)
@@ -4023,20 +4023,20 @@ def test_async_text_completion():
 
 @pytest.mark.flaky(retries=6, delay=1)
 def test_async_text_completion_together_ai():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     print("test_async_text_completion")
 
     async def test_get_response():
         try:
-            response = await litellm.atext_completion(
+            response = await llm.atext_completion(
                 model="together_ai/mistralai/Mixtral-8x7B-Instruct-v0.1",
                 prompt="good morning",
                 max_tokens=10,
             )
             print(f"response: {response}")
-        except litellm.RateLimitError as e:
+        except llm.RateLimitError as e:
             print(e)
-        except litellm.Timeout as e:
+        except llm.Timeout as e:
             print(e)
         except Exception as e:
             pytest.fail("An unexpected error occurred")
@@ -4049,12 +4049,12 @@ def test_async_text_completion_together_ai():
 
 def test_async_text_completion_stream():
     # tests atext_completion + streaming - assert only one finish reason sent
-    litellm.set_verbose = False
+    llm.set_verbose = False
     print("test_async_text_completion with stream")
 
     async def test_get_response():
         try:
-            response = await litellm.atext_completion(
+            response = await llm.atext_completion(
                 model="gpt-3.5-turbo-instruct",
                 prompt="good morning",
                 stream=True,
@@ -4083,7 +4083,7 @@ def test_async_text_completion_stream():
 @pytest.mark.asyncio
 async def test_async_text_completion_chat_model_stream():
     try:
-        response = await litellm.atext_completion(
+        response = await llm.atext_completion(
             model="gpt-3.5-turbo",
             prompt="good morning",
             stream=True,
@@ -4101,8 +4101,8 @@ async def test_async_text_completion_chat_model_stream():
         assert (
             num_finish_reason == 1
         ), f"expected only one finish reason. Got {num_finish_reason}"
-        response_obj = litellm.stream_chunk_builder(chunks=chunks)
-        cost = litellm.completion_cost(completion_response=response_obj)
+        response_obj = llm.stream_chunk_builder(chunks=chunks)
+        cost = llm.completion_cost(completion_response=response_obj)
         assert cost > 0
     except Exception as e:
         pytest.fail(f"GOT exception for gpt-3.5 In streaming{e}")
@@ -4122,13 +4122,13 @@ async def test_completion_codestral_fim_api(model):
 
             load_vertex_ai_credentials()
 
-        litellm.set_verbose = True
+        llm.set_verbose = True
         import logging
 
-        from litellm._logging import verbose_logger
+        from llm._logging import verbose_logger
 
         verbose_logger.setLevel(level=logging.DEBUG)
-        response = await litellm.atext_completion(
+        response = await llm.atext_completion(
             model=model,
             prompt="def is_odd(n): \n return n % 2 == 1 \ndef test_is_odd():",
             suffix="return True",
@@ -4144,10 +4144,10 @@ async def test_completion_codestral_fim_api(model):
 
         assert response.choices[0].text is not None
 
-        # cost = litellm.completion_cost(completion_response=response)
+        # cost = llm.completion_cost(completion_response=response)
         # print("cost to make mistral completion=", cost)
         # assert cost > 0.0
-    except litellm.ServiceUnavailableError:
+    except llm.ServiceUnavailableError:
         print("got ServiceUnavailableError")
         pass
     except Exception as e:
@@ -4169,12 +4169,12 @@ async def test_completion_codestral_fim_api_stream(model):
             load_vertex_ai_credentials()
         import logging
 
-        from litellm._logging import verbose_logger
+        from llm._logging import verbose_logger
 
-        litellm.set_verbose = False
+        llm.set_verbose = False
 
         # verbose_logger.setLevel(level=logging.DEBUG)
-        response = await litellm.atext_completion(
+        response = await llm.atext_completion(
             model=model,
             prompt="def is_odd(n): \n return n % 2 == 1 \ndef test_is_odd():",
             suffix="return True",
@@ -4192,13 +4192,13 @@ async def test_completion_codestral_fim_api_stream(model):
             full_response += chunk.get("choices")[0].get("text") or ""
 
         print("full_response", full_response)
-        # cost = litellm.completion_cost(completion_response=response)
+        # cost = llm.completion_cost(completion_response=response)
         # print("cost to make mistral completion=", cost)
         # assert cost > 0.0
-    except litellm.APIConnectionError as e:
+    except llm.APIConnectionError as e:
         print(e)
         pass
-    except litellm.ServiceUnavailableError as e:
+    except llm.ServiceUnavailableError as e:
         print(e)
         pass
     except Exception as e:
@@ -4256,8 +4256,8 @@ def test_completion_vllm(provider):
 
 
 def test_completion_fireworks_ai_multiple_choices():
-    litellm.set_verbose = True
-    response = litellm.text_completion(
+    llm.set_verbose = True
+    response = llm.text_completion(
         model="fireworks_ai/llama-v3p1-8b-instruct",
         prompt=["halo", "hi", "halo", "hi"],
     )
@@ -4268,8 +4268,8 @@ def test_completion_fireworks_ai_multiple_choices():
 
 @pytest.mark.parametrize("stream", [True, False])
 def test_text_completion_with_echo(stream):
-    litellm.set_verbose = True
-    response = litellm.text_completion(
+    llm.set_verbose = True
+    response = llm.text_completion(
         model="davinci-002",
         prompt="hello",
         max_tokens=1,  # only see the first token

@@ -6,23 +6,23 @@ Log LLM Logs to [Google Cloud Storage Buckets](https://cloud.google.com/storage?
 
 :::info
 
-✨ This is an Enterprise only feature [Get Started with Enterprise here](https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat)
+✨ This is an Enterprise only feature [Get Started with Enterprise here](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
 
 :::
 
 
 ### Usage
 
-1. Add `gcs_bucket` to LiteLLM Config.yaml
+1. Add `gcs_bucket` to Hanzo Config.yaml
 ```yaml
 model_list:
-- litellm_params:
+- llm_params:
     api_base: https://openai-function-calling-workers.tasslexyz.workers.dev/
     api_key: my-fake-key
     model: openai/my-fake-model
   model_name: fake-openai-endpoint
 
-litellm_settings:
+llm_settings:
   callbacks: ["gcs_bucket"] # 👈 KEY CHANGE # 👈 KEY CHANGE
 ```
 
@@ -36,7 +36,7 @@ GCS_PATH_SERVICE_ACCOUNT="/Users/ishaanjaffer/Downloads/adroit-crow-413218-a956e
 3. Start Proxy
 
 ```
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 4. Test it! 
@@ -77,7 +77,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 
 ## Support & Talk to Founders
 
-- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-litellm-hosted-version)
+- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 - Our numbers 📞 +1 (770) 8783-106 / ‭+1 (412) 618-6238‬
 - Our emails ✉️ ishaan@berri.ai / krrish@berri.ai

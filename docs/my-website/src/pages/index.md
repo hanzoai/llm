@@ -1,66 +1,66 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# LiteLLM - Getting Started
+# Hanzo - Getting Started
 
-https://github.com/BerriAI/litellm
+https://github.com/BerriAI/llm
 
 ## **Call 100+ LLMs using the OpenAI Input/Output Format**
 
 - Translate inputs to provider's `completion`, `embedding`, and `image_generation` endpoints
-- [Consistent output](https://docs.litellm.ai/docs/completion/output), text responses will always be available at `['choices'][0]['message']['content']`
-- Retry/fallback logic across multiple deployments (e.g. Azure/OpenAI) - [Router](https://docs.litellm.ai/docs/routing)
-- Track spend & set budgets per project [LiteLLM Proxy Server](https://docs.litellm.ai/docs/simple_proxy)
+- [Consistent output](https://docs.llm.ai/docs/completion/output), text responses will always be available at `['choices'][0]['message']['content']`
+- Retry/fallback logic across multiple deployments (e.g. Azure/OpenAI) - [Router](https://docs.llm.ai/docs/routing)
+- Track spend & set budgets per project [Hanzo Proxy Server](https://docs.llm.ai/docs/simple_proxy)
 
-## How to use LiteLLM
-You can use litellm through either:
-1. [LiteLLM Proxy Server](#litellm-proxy-server-llm-gateway) - Server (LLM Gateway) to call 100+ LLMs, load balance, cost tracking across projects
-2. [LiteLLM python SDK](#basic-usage) - Python Client to call 100+ LLMs, load balance, cost tracking
+## How to use Hanzo
+You can use llm through either:
+1. [Hanzo Proxy Server](#llm-proxy-server-llm-gateway) - Server (LLM Gateway) to call 100+ LLMs, load balance, cost tracking across projects
+2. [Hanzo python SDK](#basic-usage) - Python Client to call 100+ LLMs, load balance, cost tracking
 
-### **When to use LiteLLM Proxy Server (LLM Gateway)**
+### **When to use Hanzo Proxy Server (LLM Gateway)**
 
 :::tip
 
-Use LiteLLM Proxy Server if you want a **central service (LLM Gateway) to access multiple LLMs**
+Use Hanzo Proxy Server if you want a **central service (LLM Gateway) to access multiple LLMs**
 
 Typically used by Gen AI Enablement /  ML PLatform Teams
 
 :::
 
-  - LiteLLM Proxy gives you a unified interface to access multiple LLMs (100+ LLMs)
+  - Hanzo Proxy gives you a unified interface to access multiple LLMs (100+ LLMs)
   - Track LLM Usage and setup guardrails
   - Customize Logging, Guardrails, Caching per project
 
-### **When to use LiteLLM Python SDK**
+### **When to use Hanzo Python SDK**
 
 :::tip
 
-  Use LiteLLM Python SDK if you want to use LiteLLM in your **python code**
+  Use Hanzo Python SDK if you want to use Hanzo in your **python code**
 
 Typically used by developers building llm projects
 
 :::
 
-  - LiteLLM SDK gives you a unified interface to access multiple LLMs (100+ LLMs) 
-  - Retry/fallback logic across multiple deployments (e.g. Azure/OpenAI) - [Router](https://docs.litellm.ai/docs/routing)
+  - Hanzo SDK gives you a unified interface to access multiple LLMs (100+ LLMs) 
+  - Retry/fallback logic across multiple deployments (e.g. Azure/OpenAI) - [Router](https://docs.llm.ai/docs/routing)
 
-## **LiteLLM Python SDK**
+## **Hanzo Python SDK**
 
 ### Basic usage 
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/litellm/blob/main/cookbook/liteLLM_Getting_Started.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/LLM_Getting_Started.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
 ```shell
-pip install litellm
+pip install llm
 ```
 
 <Tabs>
 <TabItem value="openai" label="OpenAI">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 ## set ENV variables
@@ -76,7 +76,7 @@ response = completion(
 <TabItem value="anthropic" label="Anthropic">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 ## set ENV variables
@@ -93,7 +93,7 @@ response = completion(
 <TabItem value="vertex" label="VertexAI">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 # auth: run 'gcloud auth application-default'
@@ -111,7 +111,7 @@ response = completion(
 <TabItem value="nvidia" label="NVIDIA">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 ## set ENV variables
@@ -129,7 +129,7 @@ response = completion(
 <TabItem value="hugging" label="HuggingFace">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ["HUGGINGFACE_API_KEY"] = "huggingface_api_key"
@@ -149,7 +149,7 @@ print(response)
 <TabItem value="azure" label="Azure OpenAI">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 ## set ENV variables
@@ -169,7 +169,7 @@ response = completion(
 <TabItem value="ollama" label="Ollama">
 
 ```python
-from litellm import completion
+from llm import completion
 
 response = completion(
             model="ollama/llama2",
@@ -182,7 +182,7 @@ response = completion(
 <TabItem value="or" label="Openrouter">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 ## set ENV variables
@@ -205,7 +205,7 @@ Set `stream=True` in the `completion` args.
 <TabItem value="openai" label="OpenAI">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 ## set ENV variables
@@ -222,7 +222,7 @@ response = completion(
 <TabItem value="anthropic" label="Anthropic">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 ## set ENV variables
@@ -240,7 +240,7 @@ response = completion(
 <TabItem value="vertex" label="VertexAI">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 # auth: run 'gcloud auth application-default'
@@ -259,7 +259,7 @@ response = completion(
 <TabItem value="nvidia" label="NVIDIA">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 ## set ENV variables
@@ -277,7 +277,7 @@ response = completion(
 <TabItem value="hugging" label="HuggingFace">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ["HUGGINGFACE_API_KEY"] = "huggingface_api_key"
@@ -298,7 +298,7 @@ print(response)
 <TabItem value="azure" label="Azure OpenAI">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 ## set ENV variables
@@ -319,7 +319,7 @@ response = completion(
 <TabItem value="ollama" label="Ollama">
 
 ```python
-from litellm import completion
+from llm import completion
 
 response = completion(
             model="ollama/llama2",
@@ -333,7 +333,7 @@ response = completion(
 <TabItem value="or" label="Openrouter">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 ## set ENV variables
@@ -352,11 +352,11 @@ response = completion(
 
 ### Exception handling 
 
-LiteLLM maps exceptions across all supported providers to the OpenAI exceptions. All our exceptions inherit from OpenAI's exception types, so any error-handling you have for that, should work out of the box with LiteLLM.
+Hanzo maps exceptions across all supported providers to the OpenAI exceptions. All our exceptions inherit from OpenAI's exception types, so any error-handling you have for that, should work out of the box with Hanzo.
 
 ```python
 from openai.error import OpenAIError
-from litellm import completion
+from llm import completion
 
 os.environ["ANTHROPIC_API_KEY"] = "bad-key"
 try:
@@ -366,11 +366,11 @@ except OpenAIError as e:
     print(e)
 ```
 
-### Logging Observability - Log LLM Input/Output ([Docs](https://docs.litellm.ai/docs/observability/callbacks))
-LiteLLM exposes pre defined callbacks to send data to MLflow, Lunary, Langfuse, Helicone, Promptlayer, Traceloop, Slack
+### Logging Observability - Log LLM Input/Output ([Docs](https://docs.llm.ai/docs/observability/callbacks))
+Hanzo exposes pre defined callbacks to send data to MLflow, Lunary, Langfuse, Helicone, Promptlayer, Traceloop, Slack
 
 ```python
-from litellm import completion
+from llm import completion
 
 ## set env variables for logging tools (API key set up is not required when using MLflow)
 os.environ["LUNARY_PUBLIC_KEY"] = "your-lunary-public-key" # get your key at https://app.lunary.ai/settings
@@ -381,17 +381,17 @@ os.environ["LANGFUSE_SECRET_KEY"] = ""
 os.environ["OPENAI_API_KEY"]
 
 # set callbacks
-litellm.success_callback = ["lunary", "mlflow", "langfuse", "helicone"] # log input/output to lunary, mlflow, langfuse, helicone
+llm.success_callback = ["lunary", "mlflow", "langfuse", "helicone"] # log input/output to lunary, mlflow, langfuse, helicone
 
 #openai call
 response = completion(model="gpt-3.5-turbo", messages=[{"role": "user", "content": "Hi 👋 - i'm openai"}])
 ```
 
 ### Track Costs, Usage, Latency for streaming
-Use a callback function for this - more info on custom callbacks: https://docs.litellm.ai/docs/observability/custom_callback
+Use a callback function for this - more info on custom callbacks: https://docs.llm.ai/docs/observability/custom_callback
 
 ```python
-import litellm
+import llm
 
 # track_cost_callback
 def track_cost_callback(
@@ -405,9 +405,9 @@ def track_cost_callback(
     except:
         pass
 # set callback
-litellm.success_callback = [track_cost_callback] # set custom callback function
+llm.success_callback = [track_cost_callback] # set custom callback function
 
-# litellm.completion() call
+# llm.completion() call
 response = completion(
     model="gpt-3.5-turbo",
     messages=[
@@ -420,37 +420,37 @@ response = completion(
 )
 ```
 
-## **LiteLLM Proxy Server (LLM Gateway)**
+## **Hanzo Proxy Server (LLM Gateway)**
 
 Track spend across multiple projects/people
 
-![ui_3](https://github.com/BerriAI/litellm/assets/29436595/47c97d5e-b9be-4839-b28c-43d7f4f10033)
+![ui_3](https://github.com/BerriAI/llm/assets/29436595/47c97d5e-b9be-4839-b28c-43d7f4f10033)
 
 The proxy provides:
 
-1. [Hooks for auth](https://docs.litellm.ai/docs/proxy/virtual_keys#custom-auth)
-2. [Hooks for logging](https://docs.litellm.ai/docs/proxy/logging#step-1---create-your-custom-litellm-callback-class)
-3. [Cost tracking](https://docs.litellm.ai/docs/proxy/virtual_keys#tracking-spend)
-4. [Rate Limiting](https://docs.litellm.ai/docs/proxy/users#set-rate-limits)
+1. [Hooks for auth](https://docs.llm.ai/docs/proxy/virtual_keys#custom-auth)
+2. [Hooks for logging](https://docs.llm.ai/docs/proxy/logging#step-1---create-your-custom-llm-callback-class)
+3. [Cost tracking](https://docs.llm.ai/docs/proxy/virtual_keys#tracking-spend)
+4. [Rate Limiting](https://docs.llm.ai/docs/proxy/users#set-rate-limits)
 
-### 📖 Proxy Endpoints - [Swagger Docs](https://litellm-api.up.railway.app/)
+### 📖 Proxy Endpoints - [Swagger Docs](https://llm-api.up.railway.app/)
 
 Go here for a complete tutorial with keys + rate limits - [**here**](./proxy/docker_quick_start.md)
 
 ### Quick Start Proxy - CLI
 
 ```shell
-pip install 'litellm[proxy]'
+pip install 'llm[proxy]'
 ```
 
-#### Step 1: Start litellm proxy
+#### Step 1: Start llm proxy
 
 <Tabs>
 
 <TabItem label="pip package" value="pip">
 
 ```shell
-$ litellm --model huggingface/bigcode/starcoder
+$ llm --model huggingface/bigcode/starcoder
 
 #INFO: Proxy running on http://0.0.0.0:4000
 ```
@@ -462,12 +462,12 @@ $ litellm --model huggingface/bigcode/starcoder
 
 ### Step 1. CREATE config.yaml 
 
-Example `litellm_config.yaml` 
+Example `llm_config.yaml` 
 
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/<your-azure-model-deployment>
       api_base: os.environ/AZURE_API_BASE # runs os.getenv("AZURE_API_BASE")
       api_key: os.environ/AZURE_API_KEY # runs os.getenv("AZURE_API_KEY")
@@ -478,11 +478,11 @@ model_list:
 
 ```shell
 docker run \
-    -v $(pwd)/litellm_config.yaml:/app/config.yaml \
+    -v $(pwd)/llm_config.yaml:/app/config.yaml \
     -e AZURE_API_KEY=d6*********** \
     -e AZURE_API_BASE=https://openai-***********/ \
     -p 4000:4000 \
-    ghcr.io/berriai/litellm:main-latest \
+    ghcr.io/berriai/llm:main-latest \
     --config /app/config.yaml --detailed_debug
 ```
 
@@ -495,7 +495,7 @@ docker run \
 ```python
 import openai # openai v1.0.0+
 client = openai.OpenAI(api_key="anything",base_url="http://0.0.0.0:4000") # set proxy to base_url
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="gpt-3.5-turbo", messages = [
     {
         "role": "user",
@@ -509,5 +509,5 @@ print(response)
 ## More details
 
 - [exception mapping](../../docs/exception_mapping)
-- [E2E Tutorial for LiteLLM Proxy Server](../../docs/proxy/docker_quick_start)
+- [E2E Tutorial for Hanzo Proxy Server](../../docs/proxy/docker_quick_start)
 - [proxy virtual keys & spend management](../../docs/proxy/virtual_keys)

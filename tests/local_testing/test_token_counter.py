@@ -1,5 +1,5 @@
 #### What this tests ####
-#    This tests litellm.token_counter() function
+#    This tests llm.token_counter() function
 import traceback
 import os
 import sys
@@ -13,8 +13,8 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 from unittest.mock import AsyncMock, MagicMock, patch
 
-import litellm
-from litellm import (
+import llm
+from llm import (
     create_pretrained_tokenizer,
     decode,
     encode,
@@ -310,14 +310,14 @@ def test_get_modified_max_tokens(
     - Test when max_tokens > max_output => expect max_output
     """
     args = locals()
-    import litellm
+    import llm
 
-    litellm.token_counter = MagicMock()
+    llm.token_counter = MagicMock()
 
     def _mock_token_counter(*args, **kwargs):
         return input_tokens
 
-    litellm.token_counter.side_effect = _mock_token_counter
+    llm.token_counter.side_effect = _mock_token_counter
     print(f"_mock_token_counter: {_mock_token_counter()}")
     messages = [{"role": "user", "content": "Hello world!"}]
 
@@ -352,7 +352,7 @@ def test_empty_tools():
 
 def test_gpt_4o_token_counter():
     with patch.object(
-        litellm.utils, "openai_token_counter", new=MagicMock()
+        llm.utils, "openai_token_counter", new=MagicMock()
     ) as mock_client:
         token_counter(
             model="gpt-4o-2024-05-13", messages=[{"role": "user", "content": "Hey!"}]
@@ -370,7 +370,7 @@ def test_gpt_4o_token_counter():
 )
 def test_img_url_token_counter(img_url):
 
-    from litellm.litellm_core_utils.token_counter import get_image_dimensions
+    from llm.llm_core_utils.token_counter import get_image_dimensions
 
     width, height = get_image_dimensions(data=img_url)
 
@@ -386,11 +386,11 @@ def test_token_encode_disallowed_special():
 
 import unittest
 from unittest.mock import patch, MagicMock
-from litellm.utils import encoding, _select_tokenizer_helper, claude_json_str
+from llm.utils import encoding, _select_tokenizer_helper, claude_json_str
 
 
 class TestTokenizerSelection(unittest.TestCase):
-    @patch("litellm.utils.Tokenizer.from_pretrained")
+    @patch("llm.utils.Tokenizer.from_pretrained")
     def test_llama3_tokenizer_api_failure(self, mock_from_pretrained):
         # Setup mock to raise an error
         mock_from_pretrained.side_effect = Exception("Failed to load tokenizer")
@@ -405,13 +405,13 @@ class TestTokenizerSelection(unittest.TestCase):
         self.assertEqual(result["type"], "openai_tokenizer")
         self.assertEqual(result["tokenizer"], encoding)
 
-    @patch("litellm.utils.Tokenizer.from_pretrained")
+    @patch("llm.utils.Tokenizer.from_pretrained")
     def test_cohere_tokenizer_api_failure(self, mock_from_pretrained):
         # Setup mock to raise an error
         mock_from_pretrained.side_effect = Exception("Failed to load tokenizer")
 
         # Add Cohere model to the list for testing
-        litellm.cohere_models = ["command-r-v1"]
+        llm.cohere_models = ["command-r-v1"]
 
         # Test with Cohere model
         result = _select_tokenizer_helper("command-r-v1")
@@ -425,13 +425,13 @@ class TestTokenizerSelection(unittest.TestCase):
         self.assertEqual(result["type"], "openai_tokenizer")
         self.assertEqual(result["tokenizer"], encoding)
 
-    @patch("litellm.utils.Tokenizer.from_str")
+    @patch("llm.utils.Tokenizer.from_str")
     def test_claude_tokenizer_api_failure(self, mock_from_str):
         # Setup mock to raise an error
         mock_from_str.side_effect = Exception("Failed to load tokenizer")
 
         # Add Claude model to the list for testing
-        litellm.anthropic_models = ["claude-2"]
+        llm.anthropic_models = ["claude-2"]
 
         # Test with Claude model
         result = _select_tokenizer_helper("claude-2")
@@ -443,7 +443,7 @@ class TestTokenizerSelection(unittest.TestCase):
         self.assertEqual(result["type"], "openai_tokenizer")
         self.assertEqual(result["tokenizer"], encoding)
 
-    @patch("litellm.utils.Tokenizer.from_pretrained")
+    @patch("llm.utils.Tokenizer.from_pretrained")
     def test_llama2_tokenizer_api_failure(self, mock_from_pretrained):
         # Setup mock to raise an error
         mock_from_pretrained.side_effect = Exception("Failed to load tokenizer")
@@ -460,11 +460,11 @@ class TestTokenizerSelection(unittest.TestCase):
         self.assertEqual(result["type"], "openai_tokenizer")
         self.assertEqual(result["tokenizer"], encoding)
 
-    @patch("litellm.utils._return_huggingface_tokenizer")
+    @patch("llm.utils._return_huggingface_tokenizer")
     def test_disable_hf_tokenizer_download(self, mock_return_huggingface_tokenizer):
         # Use pytest.MonkeyPatch() directly instead of fixture
         monkeypatch = pytest.MonkeyPatch()
-        monkeypatch.setattr(litellm, "disable_hf_tokenizer_download", True)
+        monkeypatch.setattr(llm, "disable_hf_tokenizer_download", True)
 
         result = _select_tokenizer_helper("grok-32r22r")
         mock_return_huggingface_tokenizer.assert_not_called()

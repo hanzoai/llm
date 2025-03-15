@@ -4,8 +4,8 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-from litellm import Router
-from litellm.router import Deployment, LiteLLM_Params
+from llm import Router
+from llm.router import Deployment, Hanzo_Params
 from unittest.mock import patch
 import json
 
@@ -17,7 +17,7 @@ def test_initialize_deployment_for_pass_through_success():
     router = Router(model_list=[])
     deployment = Deployment(
         model_name="vertex-test",
-        litellm_params=LiteLLM_Params(
+        llm_params=Hanzo_Params(
             model="vertex_ai/test-model",
             vertex_project="test-project",
             vertex_location="us-central1",
@@ -36,7 +36,7 @@ def test_initialize_deployment_for_pass_through_success():
     )
 
     # Verify the credentials were properly set
-    from litellm.proxy.vertex_ai_endpoints.vertex_endpoints import (
+    from llm.proxy.vertex_ai_endpoints.vertex_endpoints import (
         vertex_pass_through_router,
     )
 
@@ -57,7 +57,7 @@ def test_initialize_deployment_for_pass_through_missing_params():
     router = Router(model_list=[])
     deployment = Deployment(
         model_name="vertex-test",
-        litellm_params=LiteLLM_Params(
+        llm_params=Hanzo_Params(
             model="vertex_ai/test-model",
             # Missing required parameters
             use_in_pass_through=True,
@@ -83,7 +83,7 @@ def test_initialize_deployment_when_pass_through_disabled():
     router = Router(model_list=[])
     deployment = Deployment(
         model_name="vertex-test",
-        litellm_params=LiteLLM_Params(
+        llm_params=Hanzo_Params(
             model="vertex_ai/test-model",
         ),
     )
@@ -108,7 +108,7 @@ def test_add_vertex_pass_through_deployment():
     # Create a deployment with Vertex AI pass-through settings
     deployment = Deployment(
         model_name="vertex-test",
-        litellm_params=LiteLLM_Params(
+        llm_params=Hanzo_Params(
             model="vertex_ai/test-model",
             vertex_project="test-project",
             vertex_location="us-central1",
@@ -123,7 +123,7 @@ def test_add_vertex_pass_through_deployment():
     router.add_deployment(deployment)
 
     # Get the vertex credentials from the router
-    from litellm.proxy.vertex_ai_endpoints.vertex_endpoints import (
+    from llm.proxy.vertex_ai_endpoints.vertex_endpoints import (
         vertex_pass_through_router,
     )
 

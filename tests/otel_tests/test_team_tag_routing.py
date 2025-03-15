@@ -7,7 +7,7 @@ from openai import OpenAI, AsyncOpenAI
 from typing import Optional, List, Union
 import uuid
 
-LITELLM_MASTER_KEY = "sk-1234"
+LLM_MASTER_KEY = "sk-1234"
 
 
 async def chat_completion(
@@ -76,8 +76,8 @@ async def create_key_with_team(session, key, team_id: str):
 
 
 async def model_info_get_call(session, key, model_id: str):
-    # make get call pass "litellm_model_id" in query params
-    url = f"http://0.0.0.0:4000/model/info?litellm_model_id={model_id}"
+    # make get call pass "llm_model_id" in query params
+    url = f"http://0.0.0.0:4000/model/info?llm_model_id={model_id}"
     headers = {
         "Authorization": f"Bearer {key}",
         "Content-Type": "application/json",
@@ -95,7 +95,7 @@ async def model_info_get_call(session, key, model_id: str):
 @pytest.mark.asyncio()
 async def test_team_tag_routing():
     async with aiohttp.ClientSession() as session:
-        key = LITELLM_MASTER_KEY
+        key = LLM_MASTER_KEY
         team_a_data = await create_team_with_tags(session, key, ["teamA"])
         print("team_a_data=", team_a_data)
         team_a_id = team_a_data["team_id"]
@@ -116,7 +116,7 @@ async def test_team_tag_routing():
             print(response_a)
             print(headers)
             assert (
-                headers["x-litellm-model-id"] == "team-a-model"
+                headers["x-llm-model-id"] == "team-a-model"
             ), "Model ID should be teamA"
 
         key_with_team_b = await create_key_with_team(session, key, team_b_id)
@@ -127,14 +127,14 @@ async def test_team_tag_routing():
             print(response_b)
             print(headers)
             assert (
-                headers["x-litellm-model-id"] == "team-b-model"
+                headers["x-llm-model-id"] == "team-b-model"
             ), "Model ID should be teamB"
 
 
 @pytest.mark.asyncio()
 async def test_chat_completion_with_no_tags():
     async with aiohttp.ClientSession() as session:
-        key = LITELLM_MASTER_KEY
+        key = LLM_MASTER_KEY
         response, headers = await chat_completion(session, key)
         headers = dict(headers)
         print(response)

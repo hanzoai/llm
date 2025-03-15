@@ -10,26 +10,26 @@ os.environ['XINFERENCE_API_KEY'] = "anything" #[optional] no api key required
 
 ## Sample Usage - Embedding
 ```python
-from litellm import embedding
+from llm import embedding
 import os
 
 os.environ['XINFERENCE_API_BASE'] = "http://127.0.0.1:9997/v1"
 response = embedding(
     model="xinference/bge-base-en",
-    input=["good morning from litellm"],
+    input=["good morning from llm"],
 )
 print(response)
 ```
 
 ## Sample Usage `api_base` param
 ```python
-from litellm import embedding
+from llm import embedding
 import os
 
 response = embedding(
     model="xinference/bge-base-en",
     api_base="http://127.0.0.1:9997/v1",
-    input=["good morning from litellm"],
+    input=["good morning from llm"],
 )
 print(response)
 ```

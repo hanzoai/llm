@@ -6,12 +6,12 @@ Cli arguments,  --host, --port, --num_workers
    - The host for the server to listen on.
    - **Usage:** 
      ```shell
-     litellm --host 127.0.0.1
+     llm --host 127.0.0.1
      ```
    - **Usage - set Environment Variable:** `HOST`
     ```shell
     export HOST=127.0.0.1
-    litellm
+    llm
     ```
 
 ## --port
@@ -19,12 +19,12 @@ Cli arguments,  --host, --port, --num_workers
    - The port to bind the server to.
    - **Usage:** 
      ```shell
-     litellm --port 8080
+     llm --port 8080
      ```
   - **Usage - set Environment Variable:** `PORT`
     ```shell
     export PORT=8080
-    litellm
+    llm
     ```
 
 ## --num_workers
@@ -32,20 +32,20 @@ Cli arguments,  --host, --port, --num_workers
    - The number of uvicorn workers to spin up.
    - **Usage:** 
      ```shell
-     litellm --num_workers 4
+     llm --num_workers 4
      ```
   - **Usage - set Environment Variable:** `NUM_WORKERS`
     ```shell
     export NUM_WORKERS=4
-    litellm
+    llm
     ```
 
 ## --api_base
    - **Default:** `None`
-   - The API base for the model litellm should call.
+   - The API base for the model llm should call.
    - **Usage:** 
      ```shell
-     litellm --model huggingface/tinyllama --api_base https://k58ory32yinf1ly0.us-east-1.aws.endpoints.huggingface.cloud
+     llm --model huggingface/tinyllama --api_base https://k58ory32yinf1ly0.us-east-1.aws.endpoints.huggingface.cloud
      ```
 
 ## --api_version
@@ -53,15 +53,15 @@ Cli arguments,  --host, --port, --num_workers
    - For Azure services, specify the API version.
    - **Usage:** 
      ```shell
-     litellm --model azure/gpt-deployment --api_version 2023-08-01 --api_base https://<your api base>"
+     llm --model azure/gpt-deployment --api_version 2023-08-01 --api_base https://<your api base>"
      ```
 
 ## --model or -m
    - **Default:** `None`
-   - The model name to pass to Litellm.
+   - The model name to pass to LLM.
    - **Usage:** 
      ```shell
-     litellm --model gpt-3.5-turbo
+     llm --model gpt-3.5-turbo
      ```
 
 ## --test
@@ -69,7 +69,7 @@ Cli arguments,  --host, --port, --num_workers
    - Proxy chat completions URL to make a test request.
    - **Usage:** 
      ```shell
-     litellm --test
+     llm --test
      ```
 
 ## --health
@@ -77,7 +77,7 @@ Cli arguments,  --host, --port, --num_workers
    - Runs a health check on all models in config.yaml
    - **Usage:** 
      ```shell
-     litellm --health
+     llm --health
      ```
 
 ## --alias
@@ -85,7 +85,7 @@ Cli arguments,  --host, --port, --num_workers
    - An alias for the model, for user-friendly reference.
    - **Usage:** 
      ```shell
-     litellm --alias my-gpt-model
+     llm --alias my-gpt-model
      ```
 
 ## --debug
@@ -94,12 +94,12 @@ Cli arguments,  --host, --port, --num_workers
    - Enable debugging mode for the input.
    - **Usage:** 
      ```shell
-     litellm --debug
+     llm --debug
      ```
   - **Usage - set Environment Variable:** `DEBUG`
     ```shell
     export DEBUG=True
-    litellm
+    llm
     ```
 
 ## --detailed_debug
@@ -108,12 +108,12 @@ Cli arguments,  --host, --port, --num_workers
    - Enable debugging mode for the input.
    - **Usage:** 
      ```shell
-     litellm --detailed_debug
+     llm --detailed_debug
      ```
   - **Usage - set Environment Variable:** `DETAILED_DEBUG`
     ```shell
     export DETAILED_DEBUG=True
-    litellm
+    llm
     ```
 
 #### --temperature
@@ -122,7 +122,7 @@ Cli arguments,  --host, --port, --num_workers
    - Set the temperature for the model.
    - **Usage:** 
      ```shell
-     litellm --temperature 0.7
+     llm --temperature 0.7
      ```
 
 ## --max_tokens
@@ -131,7 +131,7 @@ Cli arguments,  --host, --port, --num_workers
    - Set the maximum number of tokens for the model output.
    - **Usage:** 
      ```shell
-     litellm --max_tokens 50
+     llm --max_tokens 50
      ```
 
 ## --request_timeout
@@ -140,7 +140,7 @@ Cli arguments,  --host, --port, --num_workers
    - Set the timeout in seconds for completion calls.
    - **Usage:** 
      ```shell
-     litellm --request_timeout 300
+     llm --request_timeout 300
      ```
 
 ## --drop_params
@@ -148,7 +148,7 @@ Cli arguments,  --host, --port, --num_workers
    - Drop any unmapped params.
    - **Usage:** 
      ```shell
-     litellm --drop_params
+     llm --drop_params
      ```
 
 ## --add_function_to_prompt
@@ -156,14 +156,14 @@ Cli arguments,  --host, --port, --num_workers
    - If a function passed but unsupported, pass it as a part of the prompt.
    - **Usage:** 
      ```shell
-     litellm --add_function_to_prompt
+     llm --add_function_to_prompt
      ```
 
 ## --config
-   - Configure Litellm by providing a configuration file path.
+   - Configure LLM by providing a configuration file path.
    - **Usage:** 
      ```shell
-     litellm --config path/to/config.yaml
+     llm --config path/to/config.yaml
      ```
 
 ## --telemetry
@@ -172,7 +172,7 @@ Cli arguments,  --host, --port, --num_workers
    - Help track usage of this feature.
    - **Usage:** 
      ```shell
-     litellm --telemetry False
+     llm --telemetry False
      ```
 
 
@@ -182,5 +182,5 @@ Cli arguments,  --host, --port, --num_workers
    - Specify a log configuration file for uvicorn.
    - **Usage:** 
      ```shell
-     litellm --log_config path/to/log_config.conf
+     llm --log_config path/to/log_config.conf
      ```

@@ -10,13 +10,13 @@ import os
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm.exceptions import BadRequestError
-from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
-from litellm.utils import CustomStreamWrapper
+import llm
+from llm.exceptions import BadRequestError
+from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
+from llm.utils import CustomStreamWrapper
 from openai.types.image import Image
-from litellm.integrations.custom_logger import CustomLogger
-from litellm.types.utils import StandardLoggingPayload
+from llm.integrations.custom_logger import CustomLogger
+from llm.types.utils import StandardLoggingPayload
 
 
 class TestCustomLogger(CustomLogger):
@@ -48,11 +48,11 @@ class BaseImageGenTest(ABC):
         """Test basic image generation"""
         try:
             custom_logger = TestCustomLogger()
-            litellm.logging_callback_manager._reset_all_callbacks()
-            litellm.callbacks = [custom_logger]
+            llm.logging_callback_manager._reset_all_callbacks()
+            llm.callbacks = [custom_logger]
             base_image_generation_call_args = self.get_base_image_generation_call_args()
-            litellm.set_verbose = True
-            response = await litellm.aimage_generation(
+            llm.set_verbose = True
+            response = await llm.aimage_generation(
                 **base_image_generation_call_args, prompt="A image of a otter"
             )
             print(response)
@@ -77,9 +77,9 @@ class BaseImageGenTest(ABC):
                 assert isinstance(d, Image)
                 print("data in response.data", d)
                 assert d.b64_json is not None or d.url is not None
-        except litellm.RateLimitError as e:
+        except llm.RateLimitError as e:
             pass
-        except litellm.ContentPolicyViolationError:
+        except llm.ContentPolicyViolationError:
             pass  # Azure randomly raises these errors - skip when they occur
         except Exception as e:
             if "Your task failed as a result of our safety system." in str(e):

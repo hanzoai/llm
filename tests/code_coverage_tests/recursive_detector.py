@@ -78,7 +78,7 @@ def find_recursive_functions_in_directory(directory):
 
 
 # Example usage
-directory_path = "./litellm"
+directory_path = "./llm"
 recursive_functions, ignored_recursive_functions = (
     find_recursive_functions_in_directory(directory_path)
 )

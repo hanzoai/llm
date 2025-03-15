@@ -6,12 +6,12 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'liteLLM',
+  title: 'LLM',
   tagline: 'Simplify LLM API Calls',
   favicon: '/img/favicon.ico', 
 
   // Set the production url of your site here
-  url: 'https://docs.litellm.ai/',
+  url: 'https://docs.llm.ai/',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -108,10 +108,10 @@ const config = {
         // Public API key: it is safe to commit it
         apiKey: '4e0cf8c3020d0c876ad9174cea5c01fb',
   
-        indexName: 'litellm',
+        indexName: 'llm',
       },
       navbar: {
-        title: '🚅 LiteLLM',
+        title: '🚅 Hanzo',
         items: [
           {
             type: 'docSidebar',
@@ -133,12 +133,12 @@ const config = {
           },
           { to: '/release_notes', label: 'Release Notes', position: 'left' },
           {
-            href: 'https://models.litellm.ai/',
+            href: 'https://models.llm.ai/',
             label: '💸 LLM Model Cost Map',
             position: 'right',
           },
           {
-            href: 'https://github.com/BerriAI/litellm',
+            href: 'https://github.com/BerriAI/llm',
             label: 'GitHub',
             position: 'right',
           },
@@ -157,7 +157,7 @@ const config = {
             items: [
               {
                 label: 'Getting Started',
-                to: 'https://docs.litellm.ai/docs/',
+                to: 'https://docs.llm.ai/docs/',
               },
             ],
           },
@@ -170,7 +170,7 @@ const config = {
               },
               {
                 label: 'Twitter',
-                href: 'https://twitter.com/LiteLLM',
+                href: 'https://twitter.com/Hanzo',
               },
             ],
           },
@@ -179,12 +179,12 @@ const config = {
             items: [
               {
                 label: 'GitHub',
-                href: 'https://github.com/BerriAI/litellm/',
+                href: 'https://github.com/BerriAI/llm/',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} liteLLM`,
+        copyright: `Copyright © ${new Date().getFullYear()} LLM`,
       },
       prism: {
         theme: lightCodeTheme,

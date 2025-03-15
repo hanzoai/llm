@@ -29,23 +29,23 @@ import pytest
 from fastapi import Request, Response
 from starlette.datastructures import URL
 
-import litellm
-from litellm import Router, mock_completion
-from litellm.caching.caching import DualCache
-from litellm.integrations.custom_logger import CustomLogger
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.proxy.enterprise.enterprise_hooks.secret_detection import (
+import llm
+from llm import Router, mock_completion
+from llm.caching.caching import DualCache
+from llm.integrations.custom_logger import CustomLogger
+from llm.proxy._types import UserAPIKeyAuth
+from llm.proxy.enterprise.enterprise_hooks.secret_detection import (
     _ENTERPRISE_SecretDetection,
 )
-from litellm.proxy.proxy_server import (
+from llm.proxy.proxy_server import (
     Depends,
     HTTPException,
     chat_completion,
     completion,
     embeddings,
 )
-from litellm.proxy.utils import ProxyLogging, hash_token
-from litellm.router import Router
+from llm.proxy.utils import ProxyLogging, hash_token
+from llm.router import Router
 
 
 class testLogger(CustomLogger):
@@ -85,7 +85,7 @@ router = Router(
     model_list=[
         {
             "model_name": "fake-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/fake",
                 "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                 "api_key": "sk-12345",
@@ -125,16 +125,16 @@ router = Router(
 async def test_chat_completion_request_with_redaction(route, body):
     """
     IMPORTANT Enterprise Test - Do not delete it:
-    Makes a /chat/completions request on LiteLLM Proxy
+    Makes a /chat/completions request on Hanzo Proxy
 
     Ensures that the secret is redacted EVEN on the callback
     """
-    from litellm.proxy import proxy_server
+    from llm.proxy import proxy_server
 
     setattr(proxy_server, "llm_router", router)
     _test_logger = testLogger()
-    litellm.callbacks = [_test_logger]
-    litellm.set_verbose = True
+    llm.callbacks = [_test_logger]
+    llm.set_verbose = True
 
     # Prepare the query string
     query_params = "param1=value1&param2=value2"

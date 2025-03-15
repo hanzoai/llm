@@ -6,23 +6,23 @@ from typing import Optional
 from unittest.mock import patch, AsyncMock
 
 sys.path.insert(0, os.path.abspath("../.."))
-import litellm
-from litellm.integrations.custom_logger import CustomLogger
+import llm
+from llm.integrations.custom_logger import CustomLogger
 import json
-from litellm.types.utils import StandardLoggingPayload
-from litellm.types.llms.openai import (
+from llm.types.utils import StandardLoggingPayload
+from llm.types.llms.openai import (
     ResponseCompletedEvent,
     ResponsesAPIResponse,
     ResponseTextConfig,
     ResponseAPIUsage,
     IncompleteDetails,
 )
-from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler
+from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler
 
 
 def validate_responses_api_response(response, final_chunk: bool = False):
     """
-    Validate that a response from litellm.responses() or litellm.aresponses()
+    Validate that a response from llm.responses() or llm.aresponses()
     conforms to the expected ResponsesAPIResponse structure.
 
     Args:
@@ -93,18 +93,18 @@ def validate_responses_api_response(response, final_chunk: bool = False):
 @pytest.mark.parametrize("sync_mode", [True, False])
 @pytest.mark.asyncio
 async def test_basic_openai_responses_api(sync_mode):
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
 
     if sync_mode:
-        response = litellm.responses(
+        response = llm.responses(
             model="gpt-4o", input="Basic ping", max_output_tokens=20
         )
     else:
-        response = await litellm.aresponses(
+        response = await llm.aresponses(
             model="gpt-4o", input="Basic ping", max_output_tokens=20
         )
 
-    print("litellm response=", json.dumps(response, indent=4, default=str))
+    print("llm response=", json.dumps(response, indent=4, default=str))
 
     # Use the helper function to validate the response
     validate_responses_api_response(response, final_chunk=True)
@@ -113,24 +113,24 @@ async def test_basic_openai_responses_api(sync_mode):
 @pytest.mark.parametrize("sync_mode", [True])
 @pytest.mark.asyncio
 async def test_basic_openai_responses_api_streaming(sync_mode):
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
 
     if sync_mode:
-        response = litellm.responses(
+        response = llm.responses(
             model="gpt-4o",
             input="Basic ping",
             stream=True,
         )
         for event in response:
-            print("litellm response=", json.dumps(event, indent=4, default=str))
+            print("llm response=", json.dumps(event, indent=4, default=str))
     else:
-        response = await litellm.aresponses(
+        response = await llm.aresponses(
             model="gpt-4o",
             input="Basic ping",
             stream=True,
         )
         async for event in response:
-            print("litellm response=", json.dumps(event, indent=4, default=str))
+            print("llm response=", json.dumps(event, indent=4, default=str))
 
 
 class TestCustomLogger(CustomLogger):
@@ -154,7 +154,7 @@ def validate_standard_logging_payload(
 
     Args:
         slp (StandardLoggingPayload): The standard logging payload object to validate
-        response (dict): The litellm response to compare against
+        response (dict): The llm response to compare against
         request_model (str): The model name that was requested
     """
     # Validate payload exists
@@ -187,12 +187,12 @@ def validate_standard_logging_payload(
 
 @pytest.mark.asyncio
 async def test_basic_openai_responses_api_streaming_with_logging():
-    litellm._turn_on_debug()
-    litellm.set_verbose = True
+    llm._turn_on_debug()
+    llm.set_verbose = True
     test_custom_logger = TestCustomLogger()
-    litellm.callbacks = [test_custom_logger]
+    llm.callbacks = [test_custom_logger]
     request_model = "gpt-4o"
-    response = await litellm.aresponses(
+    response = await llm.aresponses(
         model=request_model,
         input="hi",
         stream=True,
@@ -201,7 +201,7 @@ async def test_basic_openai_responses_api_streaming_with_logging():
     async for event in response:
         if event.type == "response.completed":
             final_response = event
-        print("litellm response=", json.dumps(event, indent=4, default=str))
+        print("llm response=", json.dumps(event, indent=4, default=str))
 
     print("sleeping for 2 seconds...")
     await asyncio.sleep(2)
@@ -220,56 +220,56 @@ async def test_basic_openai_responses_api_streaming_with_logging():
     )
 
 
-def validate_responses_match(slp_response, litellm_response):
-    """Validate that the standard logging payload OpenAI response matches the litellm response"""
+def validate_responses_match(slp_response, llm_response):
+    """Validate that the standard logging payload OpenAI response matches the llm response"""
     # Validate core fields
-    assert slp_response["id"] == litellm_response["id"], "ID mismatch"
-    assert slp_response["model"] == litellm_response["model"], "Model mismatch"
+    assert slp_response["id"] == llm_response["id"], "ID mismatch"
+    assert slp_response["model"] == llm_response["model"], "Model mismatch"
     assert (
-        slp_response["created_at"] == litellm_response["created_at"]
+        slp_response["created_at"] == llm_response["created_at"]
     ), "Created at mismatch"
 
     # Validate usage
     assert (
         slp_response["usage"]["input_tokens"]
-        == litellm_response["usage"]["input_tokens"]
+        == llm_response["usage"]["input_tokens"]
     ), "Input tokens mismatch"
     assert (
         slp_response["usage"]["output_tokens"]
-        == litellm_response["usage"]["output_tokens"]
+        == llm_response["usage"]["output_tokens"]
     ), "Output tokens mismatch"
     assert (
         slp_response["usage"]["total_tokens"]
-        == litellm_response["usage"]["total_tokens"]
+        == llm_response["usage"]["total_tokens"]
     ), "Total tokens mismatch"
 
     # Validate output/messages
     assert len(slp_response["output"]) == len(
-        litellm_response["output"]
+        llm_response["output"]
     ), "Output length mismatch"
-    for slp_msg, litellm_msg in zip(slp_response["output"], litellm_response["output"]):
-        assert slp_msg["role"] == litellm_msg.role, "Message role mismatch"
-        # Access the content's text field for the litellm response
-        litellm_content = litellm_msg.content[0].text if litellm_msg.content else ""
+    for slp_msg, llm_msg in zip(slp_response["output"], llm_response["output"]):
+        assert slp_msg["role"] == llm_msg.role, "Message role mismatch"
+        # Access the content's text field for the llm response
+        llm_content = llm_msg.content[0].text if llm_msg.content else ""
         assert (
-            slp_msg["content"][0]["text"] == litellm_content
-        ), f"Message content mismatch. Expected {litellm_content}, Got {slp_msg['content']}"
-        assert slp_msg["status"] == litellm_msg.status, "Message status mismatch"
+            slp_msg["content"][0]["text"] == llm_content
+        ), f"Message content mismatch. Expected {llm_content}, Got {slp_msg['content']}"
+        assert slp_msg["status"] == llm_msg.status, "Message status mismatch"
 
 
 @pytest.mark.asyncio
 async def test_basic_openai_responses_api_non_streaming_with_logging():
-    litellm._turn_on_debug()
-    litellm.set_verbose = True
+    llm._turn_on_debug()
+    llm.set_verbose = True
     test_custom_logger = TestCustomLogger()
-    litellm.callbacks = [test_custom_logger]
+    llm.callbacks = [test_custom_logger]
     request_model = "gpt-4o"
-    response = await litellm.aresponses(
+    response = await llm.aresponses(
         model=request_model,
         input="hi",
     )
 
-    print("litellm response=", json.dumps(response, indent=4, default=str))
+    print("llm response=", json.dumps(response, indent=4, default=str))
     print("response hidden params=", response._hidden_params)
 
     print("sleeping for 2 seconds...")
@@ -289,7 +289,7 @@ async def test_basic_openai_responses_api_non_streaming_with_logging():
 
 def validate_stream_event(event):
     """
-    Validate that a streaming event from litellm.responses() or litellm.aresponses()
+    Validate that a streaming event from llm.responses() or llm.aresponses()
     with stream=True conforms to the expected structure based on its event type.
 
     Args:
@@ -473,12 +473,12 @@ def validate_stream_event(event):
 @pytest.mark.asyncio
 async def test_openai_responses_api_streaming_validation(sync_mode):
     """Test that validates each streaming event from the responses API"""
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
 
     event_types_seen = set()
 
     if sync_mode:
-        response = litellm.responses(
+        response = llm.responses(
             model="gpt-4o",
             input="Tell me about artificial intelligence in 3 sentences.",
             stream=True,
@@ -488,7 +488,7 @@ async def test_openai_responses_api_streaming_validation(sync_mode):
             validate_stream_event(event)
             event_types_seen.add(event.type)
     else:
-        response = await litellm.aresponses(
+        response = await llm.aresponses(
             model="gpt-4o",
             input="Tell me about artificial intelligence in 3 sentences.",
             stream=True,
@@ -509,16 +509,16 @@ async def test_openai_responses_api_streaming_validation(sync_mode):
 
 @pytest.mark.parametrize("sync_mode", [True, False])
 @pytest.mark.asyncio
-async def test_openai_responses_litellm_router(sync_mode):
+async def test_openai_responses_llm_router(sync_mode):
     """
-    Test the OpenAI responses API with LiteLLM Router in both sync and async modes
+    Test the OpenAI responses API with Hanzo Router in both sync and async modes
     """
-    litellm._turn_on_debug()
-    router = litellm.Router(
+    llm._turn_on_debug()
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt4o-special-alias",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -554,16 +554,16 @@ async def test_openai_responses_litellm_router(sync_mode):
 
 @pytest.mark.parametrize("sync_mode", [True, False])
 @pytest.mark.asyncio
-async def test_openai_responses_litellm_router_streaming(sync_mode):
+async def test_openai_responses_llm_router_streaming(sync_mode):
     """
-    Test the OpenAI responses API with streaming through LiteLLM Router
+    Test the OpenAI responses API with streaming through Hanzo Router
     """
-    litellm._turn_on_debug()
-    router = litellm.Router(
+    llm._turn_on_debug()
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt4o-special-alias",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -604,7 +604,7 @@ async def test_openai_responses_litellm_router_streaming(sync_mode):
 
 
 @pytest.mark.asyncio
-async def test_openai_responses_litellm_router_no_metadata():
+async def test_openai_responses_llm_router_no_metadata():
     """
     Test that metadata is not passed through when using the Router for responses API
     """
@@ -659,18 +659,18 @@ async def test_openai_responses_litellm_router_no_metadata():
             return self._json_data
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         new_callable=AsyncMock,
     ) as mock_post:
         # Configure the mock to return our response
         mock_post.return_value = MockResponse(mock_response, 200)
 
-        litellm._turn_on_debug()
-        router = litellm.Router(
+        llm._turn_on_debug()
+        router = llm.Router(
             model_list=[
                 {
                     "model_name": "gpt4o-special-alias",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "gpt-4o",
                         "api_key": "fake-key",
                     },
@@ -699,7 +699,7 @@ async def test_openai_responses_litellm_router_no_metadata():
 
 
 @pytest.mark.asyncio
-async def test_openai_responses_litellm_router_with_metadata():
+async def test_openai_responses_llm_router_with_metadata():
     """
     Test that metadata is correctly passed through when explicitly provided to the Router for responses API
     """
@@ -759,18 +759,18 @@ async def test_openai_responses_litellm_router_with_metadata():
             return self._json_data
 
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
         new_callable=AsyncMock,
     ) as mock_post:
         # Configure the mock to return our response
         mock_post.return_value = MockResponse(mock_response, 200)
 
-        litellm._turn_on_debug()
-        router = litellm.Router(
+        llm._turn_on_debug()
+        router = llm.Router(
             model_list=[
                 {
                     "model_name": "gpt4o-special-alias",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "gpt-4o",
                         "api_key": "fake-key",
                     },
@@ -800,9 +800,9 @@ async def test_openai_responses_litellm_router_with_metadata():
 def test_bad_request_bad_param_error():
     """Raise a BadRequestError when an invalid parameter value is provided"""
     try:
-        litellm.responses(model="gpt-4o", input="This should fail", temperature=2000)
+        llm.responses(model="gpt-4o", input="This should fail", temperature=2000)
         pytest.fail("Expected BadRequestError but no exception was raised")
-    except litellm.BadRequestError as e:
+    except llm.BadRequestError as e:
         print(f"Exception raised: {e}")
         print(f"Exception type: {type(e)}")
         print(f"Exception args: {e.args}")
@@ -815,11 +815,11 @@ def test_bad_request_bad_param_error():
 async def test_async_bad_request_bad_param_error():
     """Raise a BadRequestError when an invalid parameter value is provided"""
     try:
-        await litellm.aresponses(
+        await llm.aresponses(
             model="gpt-4o", input="This should fail", temperature=2000
         )
         pytest.fail("Expected BadRequestError but no exception was raised")
-    except litellm.BadRequestError as e:
+    except llm.BadRequestError as e:
         print(f"Exception raised: {e}")
         print(f"Exception type: {type(e)}")
         print(f"Exception args: {e.args}")

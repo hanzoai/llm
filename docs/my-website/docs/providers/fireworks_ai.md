@@ -11,14 +11,14 @@ import TabItem from '@theme/TabItem';
 | Property | Details |
 |-------|-------|
 | Description | The fastest and most efficient inference engine to build production-ready, compound AI systems. |
-| Provider Route on LiteLLM | `fireworks_ai/` |
+| Provider Route on Hanzo | `fireworks_ai/` |
 | Provider Doc | [Fireworks AI ↗](https://docs.fireworks.ai/getting-started/introduction) |
 | Supported OpenAI Endpoints | `/chat/completions`, `/embeddings`, `/completions`, `/audio/transcriptions` |
 
 
 ## Overview
 
-This guide explains how to integrate LiteLLM with Fireworks AI. You can connect to Fireworks AI in three main ways:
+This guide explains how to integrate Hanzo with Fireworks AI. You can connect to Fireworks AI in three main ways:
 
 1. <b> Using Fireworks AI serverless models </b> – Easy connection to Fireworks-managed models.
 2. <b> Connecting to a model in your own Fireworks account </b> – Access models that are hosted within your Fireworks account.
@@ -33,14 +33,14 @@ os.environ['FIREWORKS_AI_API_KEY']
 
 ## Sample Usage - Serverless Models
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['FIREWORKS_AI_API_KEY'] = ""
 response = completion(
     model="fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct", 
     messages=[
-       {"role": "user", "content": "hello from litellm"}
+       {"role": "user", "content": "hello from llm"}
    ],
 )
 print(response)
@@ -48,14 +48,14 @@ print(response)
 
 ## Sample Usage - Serverless Models - Streaming
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['FIREWORKS_AI_API_KEY'] = ""
 response = completion(
     model="fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct", 
     messages=[
-       {"role": "user", "content": "hello from litellm"}
+       {"role": "user", "content": "hello from llm"}
    ],
     stream=True
 )
@@ -66,14 +66,14 @@ for chunk in response:
 
 ## Sample Usage -  Models in Your Own Fireworks Account 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['FIREWORKS_AI_API_KEY'] = ""
 response = completion(
     model="fireworks_ai/accounts/fireworks/models/YOUR_MODEL_ID", 
     messages=[
-       {"role": "user", "content": "hello from litellm"}
+       {"role": "user", "content": "hello from llm"}
    ],
 )
 print(response)
@@ -81,14 +81,14 @@ print(response)
 
 ## Sample Usage - Direct-Route Deployment
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['FIREWORKS_AI_API_KEY'] = "YOUR_DIRECT_API_KEY"
 response = completion(
     model="fireworks_ai/accounts/fireworks/models/qwen2p5-coder-7b#accounts/gitlab/deployments/2fb7764c", 
     messages=[
-       {"role": "user", "content": "hello from litellm"}
+       {"role": "user", "content": "hello from llm"}
    ],
    api_base="https://gitlab-2fb7764c.direct.fireworks.ai/v1"
 )
@@ -98,14 +98,14 @@ print(response)
 > **Note:** The above is for the chat interface, if you want to use the text completion interface it's model="text-completion-openai/accounts/fireworks/models/qwen2p5-coder-7b#accounts/gitlab/deployments/2fb7764c"
 
 
-## Usage with LiteLLM Proxy 
+## Usage with Hanzo Proxy 
 
 ### 1. Set Fireworks AI Models on config.yaml
 
 ```yaml
 model_list:
   - model_name: fireworks-llama-v3-70b-instruct
-    litellm_params:
+    llm_params:
       model: fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct
       api_key: "os.environ/FIREWORKS_AI_API_KEY"
 ```
@@ -113,7 +113,7 @@ model_list:
 ### 2. Start Proxy 
 
 ```
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 ### 3. Test it
@@ -146,7 +146,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="fireworks-llama-v3-70b-instruct", messages = [
     {
         "role": "user",
@@ -170,7 +170,7 @@ from langchain.prompts.chat import (
 from langchain.schema import HumanMessage, SystemMessage
 
 chat = ChatOpenAI(
-    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LiteLLM Proxy
+    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the Hanzo Proxy
     model = "fireworks-llama-v3-70b-instruct",
     temperature=0.1
 )
@@ -180,7 +180,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -192,21 +192,21 @@ print(response)
 
 ## Document Inlining 
 
-LiteLLM supports document inlining for Fireworks AI models. This is useful for models that are not vision models, but still need to parse documents/images/etc.
+Hanzo supports document inlining for Fireworks AI models. This is useful for models that are not vision models, but still need to parse documents/images/etc.
 
-LiteLLM will add `#transform=inline` to the url of the image_url, if the model is not a vision model.[**See Code**](https://github.com/BerriAI/litellm/blob/1ae9d45798bdaf8450f2dfdec703369f3d2212b7/litellm/llms/fireworks_ai/chat/transformation.py#L114)
+Hanzo will add `#transform=inline` to the url of the image_url, if the model is not a vision model.[**See Code**](https://github.com/BerriAI/llm/blob/1ae9d45798bdaf8450f2dfdec703369f3d2212b7/llm/llms/fireworks_ai/chat/transformation.py#L114)
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ["FIREWORKS_AI_API_KEY"] = "YOUR_API_KEY"
 os.environ["FIREWORKS_AI_API_BASE"] = "https://audio-prod.us-virginia-1.direct.fireworks.ai/v1"
 
-completion = litellm.completion(
+completion = llm.completion(
     model="fireworks_ai/accounts/fireworks/models/llama-v3p3-70b-instruct",
     messages=[
         {
@@ -237,7 +237,7 @@ print(completion)
 ```yaml
 model_list:
   - model_name: llama-v3p3-70b-instruct
-    litellm_params:
+    llm_params:
       model: fireworks_ai/accounts/fireworks/models/llama-v3p3-70b-instruct
       api_key: os.environ/FIREWORKS_AI_API_KEY
     #   api_base: os.environ/FIREWORKS_AI_API_BASE [OPTIONAL], defaults to "https://api.fireworks.ai/inference/v1"
@@ -246,7 +246,7 @@ model_list:
 2. Start Proxy
 
 ```
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 3. Test it
@@ -286,14 +286,14 @@ If you want to disable the auto-add of `#transform=inline` to the url of the ima
 <TabItem value="sdk" label="SDK">
 
 ```python
-litellm.disable_add_transform_inline_image_block = True
+llm.disable_add_transform_inline_image_block = True
 ```
 
 </TabItem>
 <TabItem value="proxy" label="PROXY">
 
 ```yaml
-litellm_settings:
+llm_settings:
     disable_add_transform_inline_image_block: true
 ```
 
@@ -324,11 +324,11 @@ We support ALL Fireworks AI models, just set `fireworks_ai/` as a prefix when se
 
 | Model Name            | Function Call                                                   |
 |-----------------------|-----------------------------------------------------------------|
-| fireworks_ai/nomic-ai/nomic-embed-text-v1.5 | `response = litellm.embedding(model="fireworks_ai/nomic-ai/nomic-embed-text-v1.5", input=input_text)` |
-| fireworks_ai/nomic-ai/nomic-embed-text-v1 | `response = litellm.embedding(model="fireworks_ai/nomic-ai/nomic-embed-text-v1", input=input_text)` |
-| fireworks_ai/WhereIsAI/UAE-Large-V1 | `response = litellm.embedding(model="fireworks_ai/WhereIsAI/UAE-Large-V1", input=input_text)` |
-| fireworks_ai/thenlper/gte-large | `response = litellm.embedding(model="fireworks_ai/thenlper/gte-large", input=input_text)` |
-| fireworks_ai/thenlper/gte-base | `response = litellm.embedding(model="fireworks_ai/thenlper/gte-base", input=input_text)` |
+| fireworks_ai/nomic-ai/nomic-embed-text-v1.5 | `response = llm.embedding(model="fireworks_ai/nomic-ai/nomic-embed-text-v1.5", input=input_text)` |
+| fireworks_ai/nomic-ai/nomic-embed-text-v1 | `response = llm.embedding(model="fireworks_ai/nomic-ai/nomic-embed-text-v1", input=input_text)` |
+| fireworks_ai/WhereIsAI/UAE-Large-V1 | `response = llm.embedding(model="fireworks_ai/WhereIsAI/UAE-Large-V1", input=input_text)` |
+| fireworks_ai/thenlper/gte-large | `response = llm.embedding(model="fireworks_ai/thenlper/gte-large", input=input_text)` |
+| fireworks_ai/thenlper/gte-base | `response = llm.embedding(model="fireworks_ai/thenlper/gte-base", input=input_text)` |
 
 
 ## Audio Transcription
@@ -339,7 +339,7 @@ We support ALL Fireworks AI models, just set `fireworks_ai/` as a prefix when se
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import transcription
+from llm import transcription
 import os
 
 os.environ["FIREWORKS_AI_API_KEY"] = "YOUR_API_KEY"
@@ -361,7 +361,7 @@ response = transcription(
 ```yaml
 model_list:
   - model_name: whisper-v3
-    litellm_params:
+    llm_params:
       model: fireworks_ai/whisper-v3
       api_base: https://audio-prod.us-virginia-1.direct.fireworks.ai/v1
       api_key: os.environ/FIREWORKS_API_KEY
@@ -372,7 +372,7 @@ model_list:
 2. Start Proxy
 
 ```
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 3. Test it

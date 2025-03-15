@@ -1,11 +1,11 @@
 # Create your first LLM playground
 import Image from '@theme/IdealImage';
 
-Create a playground to **evaluate multiple LLM Providers in less than 10 minutes**. If you want to see this in prod, check out our [website](https://litellm.ai/).
+Create a playground to **evaluate multiple LLM Providers in less than 10 minutes**. If you want to see this in prod, check out our [website](https://llm.ai/).
 
 **What will it look like?**
 <Image
-  img={require('../../img/litellm_streamlit_playground.png')}
+  img={require('../../img/llm_streamlit_playground.png')}
   alt="streamlit_playground"
   style={{ maxWidth: '75%', height: 'auto' }}
 />
@@ -24,11 +24,11 @@ Let's make sure our keys are working. Run this script in any environment of your
 🚨 Don't forget to replace the placeholder key values with your keys!
 
 ```python 
-pip install litellm
+pip install llm
 ```
 
 ```python
-from litellm import completion
+from llm import completion
 
 ## set ENV variables
 os.environ["OPENAI_API_KEY"] = "openai key" ## REPLACE THIS
@@ -54,13 +54,13 @@ Let's build a basic Flask app as our backend server. We'll give it a specific ro
 
 **Notes**:
 * 🚨 Don't forget to replace the placeholder key values with your keys!
-* `completion_with_retries`: LLM API calls can fail in production. This function wraps the normal litellm completion() call with [tenacity](https://tenacity.readthedocs.io/en/latest/) to retry the call in case it fails. 
+* `completion_with_retries`: LLM API calls can fail in production. This function wraps the normal llm completion() call with [tenacity](https://tenacity.readthedocs.io/en/latest/) to retry the call in case it fails. 
 
-LiteLLM specific snippet:
+Hanzo specific snippet:
 
 ```python 
 import os
-from litellm import completion_with_retries 
+from llm import completion_with_retries 
 
 ## set ENV variables
 os.environ["OPENAI_API_KEY"] = "openai key" ## REPLACE THIS
@@ -86,7 +86,7 @@ The complete code:
 ```python 
 import os
 from flask import Flask, jsonify, request
-from litellm import completion_with_retries 
+from llm import completion_with_retries 
 
 
 ## set ENV variables
@@ -148,10 +148,10 @@ This is what you should see
 
 For our frontend, we'll use [Streamlit](https://streamlit.io/) - this enables us to build a simple python web-app.
 
-Let's download the playground template we (LiteLLM) have created: 
+Let's download the playground template we (Hanzo) have created: 
 
 ```zsh
-git clone https://github.com/BerriAI/litellm_playground_fe_template.git
+git clone https://github.com/BerriAI/llm_playground_fe_template.git
 ```
 
 ### 3.2 Run it
@@ -160,13 +160,13 @@ Make sure our server from [step 2](#2-set-up-server) is still running at port 40
 
 :::info
 
- If you used another port, no worries - just make sure you change [this line](https://github.com/BerriAI/litellm_playground_fe_template/blob/411bea2b6a2e0b079eb0efd834886ad783b557ef/app.py#L7) in your playground template's app.py
+ If you used another port, no worries - just make sure you change [this line](https://github.com/BerriAI/llm_playground_fe_template/blob/411bea2b6a2e0b079eb0efd834886ad783b557ef/app.py#L7) in your playground template's app.py
 :::
 
 Now let's run our app: 
 
 ```zsh
-cd litellm_playground_fe_template && streamlit run app.py
+cd llm_playground_fe_template && streamlit run app.py
 ```
 
 If you're missing Streamlit - just pip install it (or check out their [installation guidelines](https://docs.streamlit.io/library/get-started/installation#install-streamlit-on-macoslinux))
@@ -176,7 +176,7 @@ pip install streamlit
 ```
 
 This is what you should see: 
-<Image img={require('../../img/litellm_streamlit_playground.png')} alt="streamlit_playground" />
+<Image img={require('../../img/llm_streamlit_playground.png')} alt="streamlit_playground" />
 
 
 # Congratulations 🚀 
@@ -184,4 +184,4 @@ This is what you should see:
 You've created your first LLM Playground - with the ability to call 50+ LLM APIs. 
 
 Next Steps: 
-* [Check out the full list of LLM Providers you can now add](https://docs.litellm.ai/docs/providers)
+* [Check out the full list of LLM Providers you can now add](https://docs.llm.ai/docs/providers)

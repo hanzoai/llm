@@ -17,8 +17,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 from dotenv import load_dotenv
 
-import litellm
-from litellm import Router
+import llm
+from llm import Router
 
 load_dotenv()
 
@@ -26,13 +26,13 @@ load_dotenv()
 def test_weighted_selection_router():
     # this tests if load balancing works based on the provided rpms in the router
     # it's a fast test, only tests get_available_deployment
-    # users can pass rpms as a litellm_param
+    # users can pass rpms as a llm_param
     try:
-        litellm.set_verbose = False
+        llm.set_verbose = False
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "rpm": 6,
@@ -40,7 +40,7 @@ def test_weighted_selection_router():
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": os.getenv("AZURE_API_BASE"),
@@ -57,7 +57,7 @@ def test_weighted_selection_router():
         # call get_available_deployment 1k times, it should pick azure/chatgpt-v-2 about 90% of the time
         for _ in range(1000):
             selected_model = router.get_available_deployment("gpt-3.5-turbo")
-            selected_model_id = selected_model["litellm_params"]["model"]
+            selected_model_id = selected_model["llm_params"]["model"]
             selected_model_name = selected_model_id
             selection_counts[selected_model_name] += 1
         print(selection_counts)
@@ -81,14 +81,14 @@ def test_weighted_selection_router():
 def test_weighted_selection_router_tpm():
     # this tests if load balancing works based on the provided tpms in the router
     # it's a fast test, only tests get_available_deployment
-    # users can pass rpms as a litellm_param
+    # users can pass rpms as a llm_param
     try:
         print("\ntest weighted selection based on TPM\n")
-        litellm.set_verbose = False
+        llm.set_verbose = False
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "tpm": 5,
@@ -96,7 +96,7 @@ def test_weighted_selection_router_tpm():
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": os.getenv("AZURE_API_BASE"),
@@ -113,7 +113,7 @@ def test_weighted_selection_router_tpm():
         # call get_available_deployment 1k times, it should pick azure/chatgpt-v-2 about 90% of the time
         for _ in range(1000):
             selected_model = router.get_available_deployment("gpt-3.5-turbo")
-            selected_model_id = selected_model["litellm_params"]["model"]
+            selected_model_id = selected_model["llm_params"]["model"]
             selected_model_name = selected_model_id
             selection_counts[selected_model_name] += 1
         print(selection_counts)
@@ -137,14 +137,14 @@ def test_weighted_selection_router_tpm():
 def test_weighted_selection_router_tpm_as_router_param():
     # this tests if load balancing works based on the provided tpms in the router
     # it's a fast test, only tests get_available_deployment
-    # users can pass rpms as a litellm_param
+    # users can pass rpms as a llm_param
     try:
         print("\ntest weighted selection based on TPM\n")
-        litellm.set_verbose = False
+        llm.set_verbose = False
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -152,7 +152,7 @@ def test_weighted_selection_router_tpm_as_router_param():
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": os.getenv("AZURE_API_BASE"),
@@ -169,7 +169,7 @@ def test_weighted_selection_router_tpm_as_router_param():
         # call get_available_deployment 1k times, it should pick azure/chatgpt-v-2 about 90% of the time
         for _ in range(1000):
             selected_model = router.get_available_deployment("gpt-3.5-turbo")
-            selected_model_id = selected_model["litellm_params"]["model"]
+            selected_model_id = selected_model["llm_params"]["model"]
             selected_model_name = selected_model_id
             selection_counts[selected_model_name] += 1
         print(selection_counts)
@@ -193,14 +193,14 @@ def test_weighted_selection_router_tpm_as_router_param():
 def test_weighted_selection_router_rpm_as_router_param():
     # this tests if load balancing works based on the provided tpms in the router
     # it's a fast test, only tests get_available_deployment
-    # users can pass rpms as a litellm_param
+    # users can pass rpms as a llm_param
     try:
         print("\ntest weighted selection based on RPM\n")
-        litellm.set_verbose = False
+        llm.set_verbose = False
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -209,7 +209,7 @@ def test_weighted_selection_router_rpm_as_router_param():
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": os.getenv("AZURE_API_BASE"),
@@ -227,7 +227,7 @@ def test_weighted_selection_router_rpm_as_router_param():
         # call get_available_deployment 1k times, it should pick azure/chatgpt-v-2 about 90% of the time
         for _ in range(1000):
             selected_model = router.get_available_deployment("gpt-3.5-turbo")
-            selected_model_id = selected_model["litellm_params"]["model"]
+            selected_model_id = selected_model["llm_params"]["model"]
             selected_model_name = selected_model_id
             selection_counts[selected_model_name] += 1
         print(selection_counts)
@@ -251,13 +251,13 @@ def test_weighted_selection_router_rpm_as_router_param():
 def test_weighted_selection_router_no_rpm_set():
     # this tests if we can do selection when no rpm is provided too
     # it's a fast test, only tests get_available_deployment
-    # users can pass rpms as a litellm_param
+    # users can pass rpms as a llm_param
     try:
-        litellm.set_verbose = False
+        llm.set_verbose = False
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "rpm": 6,
@@ -265,7 +265,7 @@ def test_weighted_selection_router_no_rpm_set():
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": os.getenv("AZURE_API_BASE"),
@@ -275,7 +275,7 @@ def test_weighted_selection_router_no_rpm_set():
             },
             {
                 "model_name": "claude-1",
-                "litellm_params": {
+                "llm_params": {
                     "model": "bedrock/claude1.2",
                     "rpm": 1440,
                 },
@@ -289,7 +289,7 @@ def test_weighted_selection_router_no_rpm_set():
         # call get_available_deployment 1k times, it should pick azure/chatgpt-v-2 about 90% of the time
         for _ in range(1000):
             selected_model = router.get_available_deployment("claude-1")
-            selected_model_id = selected_model["litellm_params"]["model"]
+            selected_model_id = selected_model["llm_params"]["model"]
             selected_model_name = selected_model_id
             selection_counts[selected_model_name] += 1
         print(selection_counts)
@@ -312,11 +312,11 @@ def test_weighted_selection_router_no_rpm_set():
 
 def test_model_group_aliases():
     try:
-        litellm.set_verbose = False
+        llm.set_verbose = False
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "tpm": 1,
@@ -324,7 +324,7 @@ def test_model_group_aliases():
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": os.getenv("AZURE_API_BASE"),
@@ -334,7 +334,7 @@ def test_model_group_aliases():
             },
             {
                 "model_name": "claude-1",
-                "litellm_params": {
+                "llm_params": {
                     "model": "bedrock/claude1.2",
                     "tpm": 1,
                 },
@@ -362,7 +362,7 @@ def test_model_group_aliases():
         selection_counts = defaultdict(int)
         for _ in range(1000):
             selected_model = router.get_available_deployment("gpt-3.5-turbo")
-            selected_model_id = selected_model["litellm_params"]["model"]
+            selected_model_id = selected_model["llm_params"]["model"]
             selected_model_name = selected_model_id
             selection_counts[selected_model_name] += 1
         print(selection_counts)
@@ -386,7 +386,7 @@ def test_model_group_aliases():
 def test_usage_based_routing():
     """
     in this test we, have a model group with two models in it, model-a and model-b.
-    Then at some point, we exceed the TPM limit (set in the litellm_params)
+    Then at some point, we exceed the TPM limit (set in the llm_params)
     for model-a only; but for model-b we are still under the limit
     """
     try:
@@ -403,12 +403,12 @@ def test_usage_based_routing():
         model_list = [
             {
                 "model_name": "azure/gpt-4",
-                "litellm_params": get_azure_params("chatgpt-low-tpm"),
+                "llm_params": get_azure_params("chatgpt-low-tpm"),
                 "tpm": 100,
             },
             {
                 "model_name": "azure/gpt-4",
-                "litellm_params": get_azure_params("chatgpt-high-tpm"),
+                "llm_params": get_azure_params("chatgpt-high-tpm"),
                 "tpm": 1000,
             },
         ]
@@ -465,7 +465,7 @@ async def test_wildcard_openai_routing():
         model_list = [
             {
                 "model_name": "*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/*",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -536,13 +536,13 @@ tpm_list = [[None, None], [6, 1440]]
 async def test_weighted_selection_router_async(rpm_list, tpm_list):
     # this tests if load balancing works based on the provided rpms in the router
     # it's a fast test, only tests get_available_deployment
-    # users can pass rpms as a litellm_param
+    # users can pass rpms as a llm_param
     try:
-        litellm.set_verbose = False
+        llm.set_verbose = False
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "rpm": rpm_list[0],
@@ -551,7 +551,7 @@ async def test_weighted_selection_router_async(rpm_list, tpm_list):
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": os.getenv("AZURE_API_BASE"),
@@ -571,7 +571,7 @@ async def test_weighted_selection_router_async(rpm_list, tpm_list):
             selected_model = await router.async_get_available_deployment(
                 "gpt-3.5-turbo", request_kwargs={}
             )
-            selected_model_id = selected_model["litellm_params"]["model"]
+            selected_model_id = selected_model["llm_params"]["model"]
             selected_model_name = selected_model_id
             selection_counts[selected_model_name] += 1
         print(selection_counts)

@@ -1,5 +1,5 @@
 #### What this tests ####
-#    This tests using caching w/ litellm which requires SSL=True
+#    This tests using caching w/ llm which requires SSL=True
 
 import sys, os
 import time
@@ -13,16 +13,16 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-import litellm
-from litellm import embedding, completion, Router
-from litellm.caching.caching import Cache
+import llm
+from llm import embedding, completion, Router
+from llm.caching.caching import Cache
 
 messages = [{"role": "user", "content": f"who is ishaan {time.time()}"}]
 
 
 def test_caching_v2():  # test in memory cache
     try:
-        litellm.cache = Cache(
+        llm.cache = Cache(
             type="redis",
             host="os.environ/REDIS_HOST_2",
             port="os.environ/REDIS_PORT_2",
@@ -33,7 +33,7 @@ def test_caching_v2():  # test in memory cache
         response2 = completion(model="gpt-3.5-turbo", messages=messages, caching=True)
         print(f"response1: {response1}")
         print(f"response2: {response2}")
-        litellm.cache = None  # disable cache
+        llm.cache = None  # disable cache
         if (
             response2["choices"][0]["message"]["content"]
             != response1["choices"][0]["message"]["content"]
@@ -51,13 +51,13 @@ def test_caching_v2():  # test in memory cache
 
 def test_caching_router():
     """
-    Test scenario where litellm.cache is set but kwargs("caching") is not. This should still return a cache hit.
+    Test scenario where llm.cache is set but kwargs("caching") is not. This should still return a cache hit.
     """
     try:
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -67,7 +67,7 @@ def test_caching_router():
                 "rpm": 1800,
             }
         ]
-        litellm.cache = Cache(
+        llm.cache = Cache(
             type="redis",
             host="os.environ/REDIS_HOST_2",
             port="os.environ/REDIS_PORT_2",
@@ -88,7 +88,7 @@ def test_caching_router():
         ):
             print(f"response1: {response1}")
             print(f"response2: {response2}")
-        litellm.cache = None  # disable cache
+        llm.cache = None  # disable cache
         assert (
             response2["choices"][0]["message"]["content"]
             == response1["choices"][0]["message"]["content"]
@@ -108,7 +108,7 @@ async def test_redis_with_ssl():
     Relevant issue:
         User was seeing this error: `TypeError: AbstractConnection.__init__() got an unexpected keyword argument 'ssl'`
     """
-    from litellm._redis import get_redis_connection_pool, get_redis_async_client
+    from llm._redis import get_redis_connection_pool, get_redis_async_client
 
     # Get the connection pool with SSL
     # REDIS_HOST_WITH_SSL is just a redis cloud instance with Transport layer security (TLS) enabled

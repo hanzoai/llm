@@ -7,7 +7,7 @@ from openai import OpenAI, AsyncOpenAI, AzureOpenAI, AsyncAzureOpenAI
 from typing import Optional, List, Union
 import uuid
 
-LITELLM_MASTER_KEY = "sk-1234"
+LLM_MASTER_KEY = "sk-1234"
 
 
 def response_header_check(response):
@@ -359,10 +359,10 @@ async def test_chat_completion_different_deployments():
             )
         try:
             print(f"results: {results}")
-            init_model_id = results[0]["x-litellm-model-id"]
+            init_model_id = results[0]["x-llm-model-id"]
             deployments_shuffled = False
             for result in results[1:]:
-                if init_model_id != result["x-litellm-model-id"]:
+                if init_model_id != result["x-llm-model-id"]:
                     deployments_shuffled = True
             if deployments_shuffled == False:
                 pytest.fail("Expected at least 1 shuffled call")
@@ -564,12 +564,12 @@ async def test_proxy_all_models():
     async with aiohttp.ClientSession() as session:
         # call chat/completions with a model that the key was not created for + the model is not on the config.yaml
         await chat_completion(
-            session=session, key=LITELLM_MASTER_KEY, model="groq/llama3-8b-8192"
+            session=session, key=LLM_MASTER_KEY, model="groq/llama3-8b-8192"
         )
 
         await chat_completion(
             session=session,
-            key=LITELLM_MASTER_KEY,
+            key=LLM_MASTER_KEY,
             model="anthropic/claude-3-sonnet-20240229",
         )
 

@@ -4,12 +4,12 @@ Pass-through endpoints for Bedrock - call provider-specific endpoint, in native 
 
 | Feature | Supported | Notes | 
 |-------|-------|-------|
-| Cost Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/litellm/issues/new) |
+| Cost Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
 | Logging | ✅ | works across all integrations |
-| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/litellm/issues/new) |
+| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
 | Streaming | ✅ | |
 
-Just replace `https://bedrock-runtime.{aws_region_name}.amazonaws.com` with `LITELLM_PROXY_BASE_URL/bedrock` 🚀
+Just replace `https://bedrock-runtime.{aws_region_name}.amazonaws.com` with `LLM_PROXY_BASE_URL/bedrock` 🚀
 
 #### **Example Usage**
 ```bash
@@ -41,10 +41,10 @@ export AWS_SECRET_ACCESS_KEY="" # Secret access key
 export AWS_REGION_NAME="" # us-east-1, us-east-2, us-west-1, us-west-2
 ```
 
-2. Start LiteLLM Proxy 
+2. Start Hanzo Proxy 
 
 ```bash
-litellm
+llm
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -75,14 +75,14 @@ Key Changes:
 
 | **Original Endpoint**                                | **Replace With**                  |
 |------------------------------------------------------|-----------------------------------|
-| `https://bedrock-runtime.{aws_region_name}.amazonaws.com`          | `http://0.0.0.0:4000/bedrock` (LITELLM_PROXY_BASE_URL="http://0.0.0.0:4000")      |
-| `AWS4-HMAC-SHA256..`                                 | `Bearer anything` (use `Bearer LITELLM_VIRTUAL_KEY` if Virtual Keys are setup on proxy)                    |
+| `https://bedrock-runtime.{aws_region_name}.amazonaws.com`          | `http://0.0.0.0:4000/bedrock` (LLM_PROXY_BASE_URL="http://0.0.0.0:4000")      |
+| `AWS4-HMAC-SHA256..`                                 | `Bearer anything` (use `Bearer LLM_VIRTUAL_KEY` if Virtual Keys are setup on proxy)                    |
 
 
 
 ### **Example 1: Converse API**
 
-#### LiteLLM Proxy Call 
+#### Hanzo Proxy Call 
 
 ```bash
 curl -X POST 'http://0.0.0.0:4000/bedrock/model/cohere.command-r-v1:0/converse' \
@@ -114,7 +114,7 @@ curl -X POST 'https://bedrock-runtime.us-west-2.amazonaws.com/model/cohere.comma
 
 ### **Example 2: Apply Guardrail**
 
-#### LiteLLM Proxy Call 
+#### Hanzo Proxy Call 
 
 ```bash
 curl "http://0.0.0.0:4000/bedrock/guardrail/guardrailIdentifier/version/guardrailVersion/apply" \
@@ -196,14 +196,14 @@ Use this, to avoid giving developers the raw AWS Keys, but still letting them us
 
 ```bash
 export DATABASE_URL=""
-export LITELLM_MASTER_KEY=""
+export LLM_MASTER_KEY=""
 export AWS_ACCESS_KEY_ID=""  # Access key
 export AWS_SECRET_ACCESS_KEY="" # Secret access key
 export AWS_REGION_NAME="" # us-east-1, us-east-2, us-west-1, us-west-2
 ```
 
 ```bash
-litellm
+llm
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -244,7 +244,7 @@ curl -X POST 'http://0.0.0.0:4000/bedrock/model/cohere.command-r-v1:0/converse' 
 
 ## Advanced - Bedrock Agents 
 
-Call Bedrock Agents via LiteLLM proxy
+Call Bedrock Agents via Hanzo proxy
 
 ```python
 import os 
@@ -257,7 +257,7 @@ proxy_endpoint = "http://0.0.0.0:4000/bedrock" # 👈 your proxy base url
 # # Create a Config object with the proxy
 # Custom headers
 custom_headers = {
-    'litellm_user_api_key': 'sk-1234', # 👈 your proxy api key
+    'llm_user_api_key': 'sk-1234', # 👈 your proxy api key
 }
 
 
@@ -275,7 +275,7 @@ runtime_client = boto3.client(
 # Custom header injection
 def inject_custom_headers(request, **kwargs):
     request.headers.update({
-        'litellm_user_api_key': 'sk-1234',
+        'llm_user_api_key': 'sk-1234',
     })
 
 # Attach the event to inject custom headers before the request is sent

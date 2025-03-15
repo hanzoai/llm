@@ -15,7 +15,7 @@ import os
 import time
 
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -25,17 +25,17 @@ import logging
 
 from fastapi import HTTPException, Request
 import pytest
-from litellm.proxy.auth.route_checks import RouteChecks
-from litellm.proxy._types import LiteLLM_UserTable, LitellmUserRoles, UserAPIKeyAuth
-from litellm.proxy.pass_through_endpoints.llm_passthrough_endpoints import (
+from llm.proxy.auth.route_checks import RouteChecks
+from llm.proxy._types import Hanzo_UserTable, LLMUserRoles, UserAPIKeyAuth
+from llm.proxy.pass_through_endpoints.llm_passthrough_endpoints import (
     router as llm_passthrough_router,
 )
-from litellm.proxy.vertex_ai_endpoints.vertex_endpoints import (
+from llm.proxy.vertex_ai_endpoints.vertex_endpoints import (
     router as vertex_router,
 )
 
 # Replace the actual hash_token function with our mock
-import litellm.proxy.auth.route_checks
+import llm.proxy.auth.route_checks
 
 
 # Mock objects and functions
@@ -48,7 +48,7 @@ def mock_hash_token(token):
     return token
 
 
-litellm.proxy.auth.route_checks.hash_token = mock_hash_token
+llm.proxy.auth.route_checks.hash_token = mock_hash_token
 
 
 # Test is_llm_api_route
@@ -161,7 +161,7 @@ def test_llm_api_route(route_checks):
     assert (
         route_checks.non_proxy_admin_allowed_routes_check(
             user_obj=None,
-            _user_role=LitellmUserRoles.INTERNAL_USER.value,
+            _user_role=LLMUserRoles.INTERNAL_USER.value,
             route="/v1/chat/completions",
             request=MockRequest(),
             valid_token=UserAPIKeyAuth(api_key="test_key"),
@@ -179,7 +179,7 @@ def test_key_info_route_allowed(route_checks):
     assert (
         route_checks.non_proxy_admin_allowed_routes_check(
             user_obj=None,
-            _user_role=LitellmUserRoles.INTERNAL_USER.value,
+            _user_role=LLMUserRoles.INTERNAL_USER.value,
             route="/key/info",
             request=MockRequest(query_params={"key": "test_key"}),
             valid_token=UserAPIKeyAuth(api_key="test_key"),
@@ -197,7 +197,7 @@ def test_user_info_route_allowed(route_checks):
     assert (
         route_checks.non_proxy_admin_allowed_routes_check(
             user_obj=None,
-            _user_role=LitellmUserRoles.INTERNAL_USER.value,
+            _user_role=LLMUserRoles.INTERNAL_USER.value,
             route="/user/info",
             request=MockRequest(query_params={"user_id": "test_user"}),
             valid_token=UserAPIKeyAuth(api_key="test_key", user_id="test_user"),
@@ -215,7 +215,7 @@ def test_user_info_route_forbidden(route_checks):
     with pytest.raises(HTTPException) as exc_info:
         route_checks.non_proxy_admin_allowed_routes_check(
             user_obj=None,
-            _user_role=LitellmUserRoles.INTERNAL_USER.value,
+            _user_role=LLMUserRoles.INTERNAL_USER.value,
             route="/user/info",
             request=MockRequest(query_params={"user_id": "wrong_user"}),
             valid_token=UserAPIKeyAuth(api_key="test_key", user_id="test_user"),

@@ -13,9 +13,9 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-from litellm import Router
-from litellm.router_strategy.lowest_cost import LowestCostLoggingHandler
-from litellm.caching.caching import DualCache
+from llm import Router
+from llm.router_strategy.lowest_cost import LowestCostLoggingHandler
+from llm.caching.caching import DualCache
 
 ### UNIT TESTS FOR cost ROUTING ###
 
@@ -26,12 +26,12 @@ async def test_get_available_deployments():
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {"model": "gpt-4"},
+            "llm_params": {"model": "gpt-4"},
             "model_info": {"id": "openai-gpt-4"},
         },
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {"model": "groq/llama3-8b-8192"},
+            "llm_params": {"model": "groq/llama3-8b-8192"},
             "model_info": {"id": "groq-llama"},
         },
     ]
@@ -51,7 +51,7 @@ async def test_get_available_deployments():
 
 @pytest.mark.asyncio
 async def test_get_available_deployments_custom_price():
-    from litellm._logging import verbose_router_logger
+    from llm._logging import verbose_router_logger
     import logging
 
     verbose_router_logger.setLevel(logging.DEBUG)
@@ -59,7 +59,7 @@ async def test_get_available_deployments_custom_price():
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/chatgpt-v-2",
                 "input_cost_per_token": 0.00003,
                 "output_cost_per_token": 0.00003,
@@ -68,7 +68,7 @@ async def test_get_available_deployments_custom_price():
         },
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/chatgpt-v-1",
                 "input_cost_per_token": 0.000000001,
                 "output_cost_per_token": 0.00000001,
@@ -77,7 +77,7 @@ async def test_get_available_deployments_custom_price():
         },
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/chatgpt-v-5",
                 "input_cost_per_token": 10,
                 "output_cost_per_token": 12,
@@ -107,12 +107,12 @@ async def test_lowest_cost_routing():
     model_list = [
         {
             "model_name": "gpt-4",
-            "litellm_params": {"model": "gpt-4"},
+            "llm_params": {"model": "gpt-4"},
             "model_info": {"id": "openai-gpt-4"},
         },
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {"model": "gpt-3.5-turbo"},
+            "llm_params": {"model": "gpt-3.5-turbo"},
             "model_info": {"id": "gpt-3.5-turbo"},
         },
     ]
@@ -132,7 +132,7 @@ async def test_lowest_cost_routing():
 
 async def _deploy(lowest_cost_logger, deployment_id, tokens_used, duration):
     kwargs = {
-        "litellm_params": {
+        "llm_params": {
             "metadata": {
                 "model_group": "gpt-3.5-turbo",
                 "deployment": "gpt-4",
@@ -164,7 +164,7 @@ async def test_get_available_endpoints_tpm_rpm_check_async(ans_rpm):
 
     assert that only the valid model is returned
     """
-    from litellm._logging import verbose_router_logger
+    from llm._logging import verbose_router_logger
     import logging
 
     verbose_router_logger.setLevel(logging.DEBUG)
@@ -177,12 +177,12 @@ async def test_get_available_endpoints_tpm_rpm_check_async(ans_rpm):
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {"model": "gpt-4"},
+            "llm_params": {"model": "gpt-4"},
             "model_info": {"id": "1234", "rpm": ans_rpm},
         },
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {"model": "groq/llama3-8b-8192"},
+            "llm_params": {"model": "groq/llama3-8b-8192"},
             "model_info": {"id": "5678", "rpm": non_ans_rpm},
         },
     ]

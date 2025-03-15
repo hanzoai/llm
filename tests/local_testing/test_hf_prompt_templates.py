@@ -9,7 +9,7 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-from litellm.litellm_core_utils.prompt_templates.factory import prompt_factory
+from llm.llm_core_utils.prompt_templates.factory import prompt_factory
 
 
 def test_prompt_formatting():
@@ -60,7 +60,7 @@ def test_prompt_formatting_custom_model():
 # test_huggingface_supported_models()
 
 # # test if a custom prompt template works
-# litellm.register_prompt_template(
+# llm.register_prompt_template(
 # 	model="togethercomputer/LLaMA-2-7B-32K",
 # 	roles={"system":"", "assistant":"Assistant:", "user":"User:"},
 # 	pre_message_sep= "\n",

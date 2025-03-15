@@ -2,7 +2,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # Anthropic
-LiteLLM supports all anthropic models.
+Hanzo supports all anthropic models.
 
 - `claude-3.5` (`claude-3-5-sonnet-20240620`)
 - `claude-3` (`claude-3-haiku-20240307`, `claude-3-opus-20240229`, `claude-3-sonnet-20240229`)
@@ -14,7 +14,7 @@ LiteLLM supports all anthropic models.
 | Property | Details |
 |-------|-------|
 | Description | Claude is a highly performant, trustworthy, and intelligent AI platform built by Anthropic. Claude excels at tasks involving language, reasoning, analysis, coding, and more. |
-| Provider Route on LiteLLM | `anthropic/` (add this prefix to the model name, to route any requests to Anthropic - e.g. `anthropic/claude-3-5-sonnet-20240620`) |
+| Provider Route on Hanzo | `anthropic/` (add this prefix to the model name, to route any requests to Anthropic - e.g. `anthropic/claude-3-5-sonnet-20240620`) |
 | Provider Doc | [Anthropic ↗](https://docs.anthropic.com/en/docs/build-with-claude/overview) |
 | API Endpoint for Provider | https://api.anthropic.com |
 | Supported Endpoints | `/chat/completions` |
@@ -41,7 +41,7 @@ Check this in code, [here](../completion/input.md#translated-openai-params)
 
 :::info
 
-Anthropic API fails requests when `max_tokens` are not passed. Due to this litellm passes `max_tokens=4096` when no `max_tokens` are passed.
+Anthropic API fails requests when `max_tokens` are not passed. Due to this llm passes `max_tokens=4096` when no `max_tokens` are passed.
 
 :::
 
@@ -58,7 +58,7 @@ os.environ["ANTHROPIC_API_KEY"] = "your-api-key"
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 # set env - [OPTIONAL] replace with your anthropic key
 os.environ["ANTHROPIC_API_KEY"] = "your-api-key"
@@ -74,7 +74,7 @@ Just set `stream=True` when calling completion.
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 # set env
 os.environ["ANTHROPIC_API_KEY"] = "your-api-key"
@@ -85,9 +85,9 @@ for chunk in response:
     print(chunk["choices"][0]["delta"]["content"])  # same as openai format
 ```
 
-## Usage with LiteLLM Proxy 
+## Usage with Hanzo Proxy 
 
-Here's how to call Anthropic with the LiteLLM Proxy Server
+Here's how to call Anthropic with the Hanzo Proxy Server
 
 ### 1. Save key in your environment
 
@@ -103,13 +103,13 @@ export ANTHROPIC_API_KEY="your-api-key"
 ```yaml
 model_list:
   - model_name: claude-3 ### RECEIVED MODEL NAME ###
-    litellm_params: # all params accepted by litellm.completion() - https://docs.litellm.ai/docs/completion/input
-      model: claude-3-opus-20240229 ### MODEL NAME sent to `litellm.completion()` ###
+    llm_params: # all params accepted by llm.completion() - https://docs.llm.ai/docs/completion/input
+      model: claude-3-opus-20240229 ### MODEL NAME sent to `llm.completion()` ###
       api_key: "os.environ/ANTHROPIC_API_KEY" # does os.getenv("AZURE_API_KEY_EU")
 ```
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 </TabItem>
 <TabItem value="config-all" label="config - default all Anthropic Model">
@@ -124,12 +124,12 @@ ANTHROPIC_API_KEY=sk-ant****
 ```yaml
 model_list:
   - model_name: "*" 
-    litellm_params:
+    llm_params:
       model: "*"
 ```
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 Example Request for this config.yaml
@@ -156,7 +156,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 <TabItem value="cli" label="cli">
 
 ```bash
-$ litellm --model claude-3-opus-20240229
+$ llm --model claude-3-opus-20240229
 
 # Server running on http://0.0.0.0:4000
 ```
@@ -193,7 +193,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="claude-3", messages = [
     {
         "role": "user",
@@ -217,7 +217,7 @@ from langchain.prompts.chat import (
 from langchain.schema import HumanMessage, SystemMessage
 
 chat = ChatOpenAI(
-    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LiteLLM Proxy
+    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the Hanzo Proxy
     model = "claude-3",
     temperature=0.1
 )
@@ -227,7 +227,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -240,7 +240,7 @@ print(response)
 ## Supported Models
 
 `Model Name` 👉 Human-friendly name.  
-`Function Call` 👉 How to call the model in LiteLLM.
+`Function Call` 👉 How to call the model in Hanzo.
 
 | Model Name       | Function Call                              |
 |------------------|--------------------------------------------|
@@ -263,10 +263,10 @@ Use Anthropic Prompt Caching
 
 :::note
 
-Here's what a sample Raw Request from LiteLLM for Anthropic Context Caching looks like: 
+Here's what a sample Raw Request from Hanzo for Anthropic Context Caching looks like: 
 
 ```bash
-POST Request Sent from LiteLLM:
+POST Request Sent from Hanzo:
 curl -X POST \
 https://api.anthropic.com/v1/messages \
 -H 'accept: application/json' -H 'anthropic-version: 2023-06-01' -H 'content-type: application/json' -H 'x-api-key: sk-...' -H 'anthropic-beta: prompt-caching-2024-07-31' \
@@ -306,10 +306,10 @@ This example demonstrates basic Prompt Caching usage, caching the full text of t
 
 
 <Tabs>
-<TabItem value="sdk" label="LiteLLM SDK">
+<TabItem value="sdk" label="Hanzo SDK">
 
 ```python 
-response = await litellm.acompletion(
+response = await llm.acompletion(
     model="anthropic/claude-3-5-sonnet-20240620",
     messages=[
         {
@@ -335,23 +335,23 @@ response = await litellm.acompletion(
 
 ```
 </TabItem>
-<TabItem value="proxy" label="LiteLLM Proxy">
+<TabItem value="proxy" label="Hanzo Proxy">
 
 :::info
 
-LiteLLM Proxy is OpenAI compatible
+Hanzo Proxy is OpenAI compatible
 
-This is an example using the OpenAI Python SDK sending a request to LiteLLM Proxy
+This is an example using the OpenAI Python SDK sending a request to Hanzo Proxy
 
-Assuming you have a model=`anthropic/claude-3-5-sonnet-20240620` on the [litellm proxy config.yaml](#usage-with-litellm-proxy)
+Assuming you have a model=`anthropic/claude-3-5-sonnet-20240620` on the [llm proxy config.yaml](#usage-with-llm-proxy)
 
 :::
 
 ```python 
 import openai
 client = openai.AsyncOpenAI(
-    api_key="anything",            # litellm proxy api key
-    base_url="http://0.0.0.0:4000" # litellm proxy base url
+    api_key="anything",            # llm proxy api key
+    base_url="http://0.0.0.0:4000" # llm proxy base url
 )
 
 
@@ -391,12 +391,12 @@ In this example, we demonstrate caching tool definitions.
 The cache_control parameter is placed on the final tool
 
 <Tabs>
-<TabItem value="sdk" label="LiteLLM SDK">
+<TabItem value="sdk" label="Hanzo SDK">
 
 ```python 
-import litellm
+import llm
 
-response = await litellm.acompletion(
+response = await llm.acompletion(
     model="anthropic/claude-3-5-sonnet-20240620",
     messages = [{"role": "user", "content": "What's the weather like in Boston today?"}]
     tools = [
@@ -423,23 +423,23 @@ response = await litellm.acompletion(
 )
 ```
 </TabItem>
-<TabItem value="proxy" label="LiteLLM Proxy">
+<TabItem value="proxy" label="Hanzo Proxy">
 
 :::info
 
-LiteLLM Proxy is OpenAI compatible
+Hanzo Proxy is OpenAI compatible
 
-This is an example using the OpenAI Python SDK sending a request to LiteLLM Proxy
+This is an example using the OpenAI Python SDK sending a request to Hanzo Proxy
 
-Assuming you have a model=`anthropic/claude-3-5-sonnet-20240620` on the [litellm proxy config.yaml](#usage-with-litellm-proxy)
+Assuming you have a model=`anthropic/claude-3-5-sonnet-20240620` on the [llm proxy config.yaml](#usage-with-llm-proxy)
 
 :::
 
 ```python 
 import openai
 client = openai.AsyncOpenAI(
-    api_key="anything",            # litellm proxy api key
-    base_url="http://0.0.0.0:4000" # litellm proxy base url
+    api_key="anything",            # llm proxy api key
+    base_url="http://0.0.0.0:4000" # llm proxy base url
 )
 
 response = await client.chat.completions.create(
@@ -482,12 +482,12 @@ The cache_control parameter is placed on the system message to designate it as p
 The conversation history (previous messages) is included in the messages array. The final turn is marked with cache-control, for continuing in followups. The second-to-last user message is marked for caching with the cache_control parameter, so that this checkpoint can read from the previous cache.
 
 <Tabs>
-<TabItem value="sdk" label="LiteLLM SDK">
+<TabItem value="sdk" label="Hanzo SDK">
 
 ```python 
-import litellm
+import llm
 
-response = await litellm.acompletion(
+response = await llm.acompletion(
     model="anthropic/claude-3-5-sonnet-20240620",
     messages=[
         # System Message
@@ -532,23 +532,23 @@ response = await litellm.acompletion(
 )
 ```
 </TabItem>
-<TabItem value="proxy" label="LiteLLM Proxy">
+<TabItem value="proxy" label="Hanzo Proxy">
 
 :::info
 
-LiteLLM Proxy is OpenAI compatible
+Hanzo Proxy is OpenAI compatible
 
-This is an example using the OpenAI Python SDK sending a request to LiteLLM Proxy
+This is an example using the OpenAI Python SDK sending a request to Hanzo Proxy
 
-Assuming you have a model=`anthropic/claude-3-5-sonnet-20240620` on the [litellm proxy config.yaml](#usage-with-litellm-proxy)
+Assuming you have a model=`anthropic/claude-3-5-sonnet-20240620` on the [llm proxy config.yaml](#usage-with-llm-proxy)
 
 :::
 
 ```python 
 import openai
 client = openai.AsyncOpenAI(
-    api_key="anything",            # litellm proxy api key
-    base_url="http://0.0.0.0:4000" # litellm proxy base url
+    api_key="anything",            # llm proxy api key
+    base_url="http://0.0.0.0:4000" # llm proxy base url
 )
 
 response = await client.chat.completions.create(
@@ -603,11 +603,11 @@ response = await client.chat.completions.create(
 
 :::info 
 
-LiteLLM now uses Anthropic's 'tool' param 🎉 (v1.34.29+)
+Hanzo now uses Anthropic's 'tool' param 🎉 (v1.34.29+)
 :::
 
 ```python
-from litellm import completion
+from llm import completion
 
 # set env
 os.environ["ANTHROPIC_API_KEY"] = "your-api-key"
@@ -670,13 +670,13 @@ response = completion(
 Here's how to pass the result of a function call back to an anthropic model: 
 
 ```python
-from litellm import completion
+from llm import completion
 import os 
 
 os.environ["ANTHROPIC_API_KEY"] = "sk-ant.."
 
 
-litellm.set_verbose = True
+llm.set_verbose = True
 
 ### 1ST FUNCTION CALL ###
 tools = [
@@ -753,7 +753,7 @@ s/o @[Shekhar Patnaik](https://www.linkedin.com/in/patnaikshekhar) for requestin
 ### Computer Tools
 
 ```python
-from litellm import completion
+from llm import completion
 
 tools = [
     {
@@ -784,7 +784,7 @@ print(resp)
 ## Usage - Vision 
 
 ```python
-from litellm import completion
+from llm import completion
 
 # set env
 os.environ["ANTHROPIC_API_KEY"] = "your-api-key"
@@ -799,7 +799,7 @@ def encode_image(image_path):
 image_path = "../proxy/cached_logo.jpg"
 # Getting the base64 string
 base64_image = encode_image(image_path)
-resp = litellm.completion(
+resp = llm.completion(
     model="anthropic/claude-3-opus-20240229",
     messages=[
         {
@@ -825,7 +825,7 @@ print(f"\nResponse: {resp}")
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 
 resp = completion(
     model="anthropic/claude-3-7-sonnet-20250219",
@@ -843,7 +843,7 @@ resp = completion(
 
 ```yaml
 - model_name: claude-3-7-sonnet-20250219
-  litellm_params:
+  llm_params:
     model: anthropic/claude-3-7-sonnet-20250219
     api_key: os.environ/ANTHROPIC_API_KEY
 ```
@@ -851,7 +851,7 @@ resp = completion(
 2. Start proxy
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -859,7 +859,7 @@ litellm --config /path/to/config.yaml
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <YOUR-LITELLM-KEY>" \
+  -H "Authorization: Bearer <YOUR-LLM-KEY>" \
   -d '{
     "model": "claude-3-7-sonnet-20250219",
     "messages": [{"role": "user", "content": "What is the capital of France?"}],
@@ -929,10 +929,10 @@ ModelResponse(
 
 ## **Passing Extra Headers to Anthropic API**
 
-Pass `extra_headers: dict` to `litellm.completion`
+Pass `extra_headers: dict` to `llm.completion`
 
 ```python
-from litellm import completion
+from llm import completion
 messages = [{"role": "user", "content": "What is Anthropic?"}]
 response = completion(
     model="claude-3-5-sonnet-20240620", 
@@ -950,7 +950,7 @@ You can "put words in Claude's mouth" by including an `assistant` role message a
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 # set env - [OPTIONAL] replace with your anthropic key
 os.environ["ANTHROPIC_API_KEY"] = "your-api-key"
@@ -979,7 +979,7 @@ If you're using Anthropic's Claude 2.1, `system` role messages are properly form
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 # set env - [OPTIONAL] replace with your anthropic key
 os.environ["ANTHROPIC_API_KEY"] = "your-api-key"
@@ -1011,7 +1011,7 @@ Pass base64 encoded PDF files to Anthropic models using the `image_url` field.
 
 ### **using base64**
 ```python
-from litellm import completion, supports_pdf_input
+from llm import completion, supports_pdf_input
 import base64
 import requests
 
@@ -1053,7 +1053,7 @@ print(response.choices[0])
 
 ```yaml
 - model_name: claude-3-5-haiku-20241022
-  litellm_params:
+  llm_params:
     model: anthropic/claude-3-5-haiku-20241022
     api_key: os.environ/ANTHROPIC_API_KEY
 ```
@@ -1061,7 +1061,7 @@ print(response.choices[0])
 2. Start Proxy
 
 ```
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -1069,7 +1069,7 @@ litellm --config /path/to/config.yaml
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <YOUR-LITELLM-KEY>" \
+  -H "Authorization: Bearer <YOUR-LLM-KEY>" \
   -d '{
     "model": "claude-3-5-haiku-20241022",
     "messages": [
@@ -1099,13 +1099,13 @@ curl http://0.0.0.0:4000/v1/chat/completions \
 
 Pass `citations: {"enabled": true}` to Anthropic, to get citations on your document responses. 
 
-Note: This interface is in BETA. If you have feedback on how citations should be returned, please [tell us here](https://github.com/BerriAI/litellm/issues/7970#issuecomment-2644437943)
+Note: This interface is in BETA. If you have feedback on how citations should be returned, please [tell us here](https://github.com/BerriAI/llm/issues/7970#issuecomment-2644437943)
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 
 resp = completion(
     model="claude-3-5-sonnet-20241022",
@@ -1146,7 +1146,7 @@ assert citations is not None
 ```yaml
 model_list:
     - model_name: anthropic-claude
-      litellm_params:
+      llm_params:
         model: anthropic/claude-3-5-sonnet-20241022
         api_key: os.environ/ANTHROPIC_API_KEY
 ```
@@ -1154,7 +1154,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -1197,7 +1197,7 @@ curl -L -X POST 'http://0.0.0.0:4000/v1/chat/completions' \
 
 ## Usage - passing 'user_id' to Anthropic
 
-LiteLLM translates the OpenAI `user` param to Anthropic's `metadata[user_id]` param.
+Hanzo translates the OpenAI `user` param to Anthropic's `metadata[user_id]` param.
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
@@ -1217,7 +1217,7 @@ response = completion(
 ```yaml
 model_list:
     - model_name: claude-3-5-sonnet-20240620
-      litellm_params:
+      llm_params:
         model: anthropic/claude-3-5-sonnet-20240620
         api_key: os.environ/ANTHROPIC_API_KEY
 ```
@@ -1225,7 +1225,7 @@ model_list:
 2. Start Proxy
 
 ```
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -1233,7 +1233,7 @@ litellm --config /path/to/config.yaml
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <YOUR-LITELLM-KEY>" \
+  -H "Authorization: Bearer <YOUR-LLM-KEY>" \
   -d '{
     "model": "claude-3-5-sonnet-20240620",
     "messages": [{"role": "user", "content": "What is Anthropic?"}],

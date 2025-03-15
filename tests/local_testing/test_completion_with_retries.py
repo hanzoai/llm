@@ -10,9 +10,9 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 import pytest
 import openai
-import litellm
-from litellm import completion_with_retries, completion, acompletion_with_retries
-from litellm import (
+import llm
+from llm import completion_with_retries, completion, acompletion_with_retries
+from llm import (
     AuthenticationError,
     BadRequestError,
     RateLimitError,
@@ -32,7 +32,7 @@ def logger_fn(user_model_dict):
 # test_completion_with_num_retries()
 def test_completion_with_0_num_retries():
     try:
-        litellm.set_verbose = False
+        llm.set_verbose = False
         print("making request")
 
         # Use the completion function
@@ -54,7 +54,7 @@ def test_completion_with_0_num_retries():
 @pytest.mark.parametrize("sync_mode", [True, False])
 async def test_completion_with_retry_policy(sync_mode):
     from unittest.mock import patch, MagicMock, AsyncMock
-    from litellm.types.router import RetryPolicy
+    from llm.types.router import RetryPolicy
 
     retry_number = 1
     retry_policy = RetryPolicy(
@@ -64,7 +64,7 @@ async def test_completion_with_retry_policy(sync_mode):
 
     target_function = "completion_with_retries"
 
-    with patch.object(litellm, target_function) as mock_completion_with_retries:
+    with patch.object(llm, target_function) as mock_completion_with_retries:
         data = {
             "model": "azure/gpt-3.5-turbo",
             "messages": [{"gm": "vibe", "role": "user"}],
@@ -93,7 +93,7 @@ async def test_completion_with_retry_policy_no_error(sync_mode):
     Test that the completion function does not throw an error when the retry policy is set
     """
     from unittest.mock import patch, MagicMock, AsyncMock
-    from litellm.types.router import RetryPolicy
+    from llm.types.router import RetryPolicy
 
     retry_number = 1
     retry_policy = RetryPolicy(
@@ -119,7 +119,7 @@ async def test_completion_with_retry_policy_no_error(sync_mode):
 @pytest.mark.asyncio
 async def test_completion_with_retries(sync_mode):
     """
-    If completion_with_retries is called with num_retries=3, and max_retries=0, then litellm.completion should receive num_retries , max_retries=0
+    If completion_with_retries is called with num_retries=3, and max_retries=0, then llm.completion should receive num_retries , max_retries=0
     """
     from unittest.mock import patch, MagicMock, AsyncMock
 
@@ -128,7 +128,7 @@ async def test_completion_with_retries(sync_mode):
     else:
         target_function = "acompletion"
 
-    with patch.object(litellm, target_function) as mock_completion:
+    with patch.object(llm, target_function) as mock_completion:
         if sync_mode:
             completion_with_retries(
                 model="gpt-3.5-turbo",

@@ -67,7 +67,7 @@ async def add_models(session, model_id="123", model_name="azure-gpt-3.5"):
 
     data = {
         "model_name": model_name,
-        "litellm_params": {
+        "llm_params": {
             "model": "azure/chatgpt-v-2",
             "api_key": "os.environ/AZURE_API_KEY",
             "api_base": "https://openai-gpt-4-test-v-1.openai.azure.com/",
@@ -89,12 +89,12 @@ async def add_models(session, model_id="123", model_name="azure-gpt-3.5"):
         return response_json
 
 
-async def get_model_info(session, key, litellm_model_id=None):
+async def get_model_info(session, key, llm_model_id=None):
     """
     Make sure only models user has access to are returned
     """
-    if litellm_model_id:
-        url = f"http://0.0.0.0:4000/model/info?litellm_model_id={litellm_model_id}"
+    if llm_model_id:
+        url = f"http://0.0.0.0:4000/model/info?llm_model_id={llm_model_id}"
     else:
         url = "http://0.0.0.0:4000/model/info"
     headers = {
@@ -185,13 +185,13 @@ async def test_get_specific_model():
         model_specific_info = None
         for idx, m in enumerate(models):
             assert m == "gpt-4"
-            litellm_model_id = response["data"][idx]["model_info"]["id"]
+            llm_model_id = response["data"][idx]["model_info"]["id"]
             model_specific_info = response["data"][idx]
-        assert litellm_model_id is not None
+        assert llm_model_id is not None
         response = await get_model_info(
-            session=session, key=key, litellm_model_id=litellm_model_id
+            session=session, key=key, llm_model_id=llm_model_id
         )
-        assert response["data"][0]["model_info"]["id"] == litellm_model_id
+        assert response["data"][0]["model_info"]["id"] == llm_model_id
         assert (
             response["data"][0] == model_specific_info
         ), "Model info is not the same. Got={}, Expected={}".format(
@@ -259,7 +259,7 @@ async def add_model_for_health_checking(session, model_id="123"):
 
     data = {
         "model_name": f"azure-model-health-check-{model_id}",
-        "litellm_params": {
+        "llm_params": {
             "model": "azure/chatgpt-v-2",
             "api_key": os.getenv("AZURE_API_KEY"),
             "api_base": "https://openai-gpt-4-test-v-1.openai.azure.com/",

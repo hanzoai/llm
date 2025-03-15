@@ -15,7 +15,7 @@ import httpx
 import openai
 import pytest
 
-import litellm
+import llm
 
 
 @pytest.mark.parametrize(
@@ -37,11 +37,11 @@ async def test_httpx_timeout(model, provider, sync_mode):
     messages = [{"role": "user", "content": "Hey, how's it going?"}]
 
     if sync_mode:
-        response = litellm.completion(
+        response = llm.completion(
             model=model, messages=messages, timeout=timeout_val
         )
     else:
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model=model, messages=messages, timeout=timeout_val
         )
 
@@ -50,9 +50,9 @@ async def test_httpx_timeout(model, provider, sync_mode):
 
 def test_timeout():
     # this Will Raise a timeout
-    litellm.set_verbose = False
+    llm.set_verbose = False
     try:
-        response = litellm.completion(
+        response = llm.completion(
             model="gpt-3.5-turbo",
             timeout=0.01,
             messages=[{"role": "user", "content": "hello, write a 20 pg essay"}],
@@ -74,9 +74,9 @@ def test_timeout():
 
 def test_bedrock_timeout():
     # this Will Raise a timeout
-    litellm.set_verbose = True
+    llm.set_verbose = True
     try:
-        response = litellm.completion(
+        response = llm.completion(
             model="bedrock/anthropic.claude-instant-v1",
             timeout=0.01,
             messages=[{"role": "user", "content": "hello, write a 20 pg essay"}],
@@ -95,15 +95,15 @@ def test_bedrock_timeout():
 
 
 def test_hanging_request_azure():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     import asyncio
 
     try:
-        router = litellm.Router(
+        router = llm.Router(
             model_list=[
                 {
                     "model_name": "azure-gpt",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "azure/chatgpt-v-2",
                         "api_base": os.environ["AZURE_API_BASE"],
                         "api_key": os.environ["AZURE_API_KEY"],
@@ -111,13 +111,13 @@ def test_hanging_request_azure():
                 },
                 {
                     "model_name": "openai-gpt",
-                    "litellm_params": {"model": "gpt-3.5-turbo"},
+                    "llm_params": {"model": "gpt-3.5-turbo"},
                 },
             ],
             num_retries=0,
         )
 
-        encoded = litellm.utils.encode(model="gpt-3.5-turbo", text="blue")[0]
+        encoded = llm.utils.encode(model="gpt-3.5-turbo", text="blue")[0]
 
         async def _test():
             response = await router.acompletion(
@@ -151,13 +151,13 @@ def test_hanging_request_azure():
 
 
 def test_hanging_request_openai():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     try:
-        router = litellm.Router(
+        router = llm.Router(
             model_list=[
                 {
                     "model_name": "azure-gpt",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "azure/chatgpt-v-2",
                         "api_base": os.environ["AZURE_API_BASE"],
                         "api_key": os.environ["AZURE_API_KEY"],
@@ -165,13 +165,13 @@ def test_hanging_request_openai():
                 },
                 {
                     "model_name": "openai-gpt",
-                    "litellm_params": {"model": "gpt-3.5-turbo"},
+                    "llm_params": {"model": "gpt-3.5-turbo"},
                 },
             ],
             num_retries=0,
         )
 
-        encoded = litellm.utils.encode(model="gpt-3.5-turbo", text="blue")[0]
+        encoded = llm.utils.encode(model="gpt-3.5-turbo", text="blue")[0]
         response = router.completion(
             model="openai-gpt",
             messages=[{"role": "user", "content": "what color is red"}],
@@ -201,9 +201,9 @@ def test_hanging_request_openai():
 
 def test_timeout_streaming():
     # this Will Raise a timeout
-    litellm.set_verbose = False
+    llm.set_verbose = False
     try:
-        response = litellm.completion(
+        response = llm.completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "hello, write a 20 pg essay"}],
             timeout=0.0001,
@@ -229,20 +229,20 @@ def test_timeout_streaming():
 @pytest.mark.skip(reason="local test")
 def test_timeout_ollama():
     # this Will Raise a timeout
-    import litellm
+    import llm
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     try:
-        litellm.request_timeout = 0.1
-        litellm.set_verbose = True
-        response = litellm.completion(
+        llm.request_timeout = 0.1
+        llm.set_verbose = True
+        response = llm.completion(
             model="ollama/phi",
             messages=[{"role": "user", "content": "hello, what llm are u"}],
             max_tokens=1,
             api_base="https://test-ollama-endpoint.onrender.com",
         )
         # Add any assertions here to check the response
-        litellm.request_timeout = None
+        llm.request_timeout = None
         print(response)
     except openai.APITimeoutError as e:
         print("got a timeout error! Passed ! ")
@@ -256,27 +256,27 @@ def test_timeout_ollama():
 @pytest.mark.parametrize("sync_mode", [True, False])
 @pytest.mark.asyncio
 async def test_anthropic_timeout(streaming, sync_mode):
-    litellm.set_verbose = False
+    llm.set_verbose = False
 
     try:
         if sync_mode:
-            response = litellm.completion(
+            response = llm.completion(
                 model="claude-3-5-sonnet-20240620",
                 timeout=0.01,
                 messages=[{"role": "user", "content": "hello, write a 20 pg essay"}],
                 stream=streaming,
             )
-            if isinstance(response, litellm.CustomStreamWrapper):
+            if isinstance(response, llm.CustomStreamWrapper):
                 for chunk in response:
                     pass
         else:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="claude-3-5-sonnet-20240620",
                 timeout=0.01,
                 messages=[{"role": "user", "content": "hello, write a 20 pg essay"}],
                 stream=streaming,
             )
-            if isinstance(response, litellm.CustomStreamWrapper):
+            if isinstance(response, llm.CustomStreamWrapper):
                 async for chunk in response:
                     pass
         pytest.fail("Did not raise error `openai.APITimeoutError`")

@@ -14,12 +14,12 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-import litellm
-from litellm import completion
-from litellm._logging import verbose_logger
-from litellm.integrations.datadog.datadog import *
+import llm
+from llm import completion
+from llm._logging import verbose_logger
+from llm.integrations.datadog.datadog import *
 from datetime import datetime, timedelta
-from litellm.types.utils import (
+from llm.types.utils import (
     StandardLoggingPayload,
     StandardLoggingModelInformation,
     StandardLoggingMetadata,

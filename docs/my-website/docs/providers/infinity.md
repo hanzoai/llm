@@ -6,15 +6,15 @@ import TabItem from '@theme/TabItem';
 | Property | Details |
 |-------|-------|
 | Description | Infinity is a high-throughput, low-latency REST API for serving text-embeddings, reranking models and clip|
-| Provider Route on LiteLLM | `infinity/` |
+| Provider Route on Hanzo | `infinity/` |
 | Supported Operations | `/rerank` |
 | Link to Provider Doc | [Infinity ↗](https://github.com/michaelfeil/infinity) |
 
 
-## **Usage - LiteLLM Python SDK**
+## **Usage - Hanzo Python SDK**
 
 ```python
-from litellm import rerank
+from llm import rerank
 import os
 
 os.environ["INFINITY_API_BASE"] = "http://localhost:8080"
@@ -26,27 +26,27 @@ response = rerank(
 )
 ```
 
-## **Usage - LiteLLM Proxy**
+## **Usage - Hanzo Proxy**
 
-LiteLLM provides an cohere api compatible `/rerank` endpoint for Rerank calls.
+Hanzo provides an cohere api compatible `/rerank` endpoint for Rerank calls.
 
 **Setup**
 
-Add this to your litellm proxy config.yaml
+Add this to your llm proxy config.yaml
 
 ```yaml
 model_list:
   - model_name: custom-infinity-rerank
-    litellm_params:
+    llm_params:
       model: infinity/rerank
       api_key: os.environ/INFINITY_API_KEY
       api_base: https://localhost:8080
 ```
 
-Start litellm
+Start llm
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -126,7 +126,7 @@ Any unmapped params will be passed to the provider as-is.
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import rerank
+from llm import rerank
 import os
 
 os.environ["INFINITY_API_BASE"] = "http://localhost:8080"
@@ -147,16 +147,16 @@ response = rerank(
 ```yaml
 model_list:
   - model_name: custom-infinity-rerank
-    litellm_params:
+    llm_params:
       model: infinity/rerank
       api_base: https://localhost:8080
       raw_scores: True # 👈 EITHER SET PROVIDER-SPECIFIC PARAMS HERE OR IN REQUEST BODY
 ```
 
-2. Start litellm
+2. Start llm
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```

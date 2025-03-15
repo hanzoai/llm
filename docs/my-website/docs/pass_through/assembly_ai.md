@@ -25,10 +25,10 @@ Let's call the Assembly AI [`/v2/transcripts` endpoint](https://www.assemblyai.c
 export ASSEMBLYAI_API_KEY=""
 ```
 
-2. Start LiteLLM Proxy 
+2. Start Hanzo Proxy 
 
 ```bash
-litellm
+llm
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -40,11 +40,11 @@ Let's call the Assembly AI `/v2/transcripts` endpoint
 ```python
 import assemblyai as aai
 
-LITELLM_VIRTUAL_KEY = "sk-1234" # <your-virtual-key>
-LITELLM_PROXY_BASE_URL = "http://0.0.0.0:4000/assemblyai" # <your-proxy-base-url>/assemblyai
+LLM_VIRTUAL_KEY = "sk-1234" # <your-virtual-key>
+LLM_PROXY_BASE_URL = "http://0.0.0.0:4000/assemblyai" # <your-proxy-base-url>/assemblyai
 
-aai.settings.api_key = f"Bearer {LITELLM_VIRTUAL_KEY}"
-aai.settings.base_url = LITELLM_PROXY_BASE_URL
+aai.settings.api_key = f"Bearer {LLM_VIRTUAL_KEY}"
+aai.settings.base_url = LLM_PROXY_BASE_URL
 
 # URL of the file to transcribe
 FILE_URL = "https://assembly.ai/wildfires.mp3"
@@ -60,17 +60,17 @@ print(transcript.id)
 
 ## Calling Assembly AI EU endpoints
 
-If you want to send your request to the Assembly AI EU endpoint, you can do so by setting the `LITELLM_PROXY_BASE_URL` to `<your-proxy-base-url>/eu.assemblyai`
+If you want to send your request to the Assembly AI EU endpoint, you can do so by setting the `LLM_PROXY_BASE_URL` to `<your-proxy-base-url>/eu.assemblyai`
 
 
 ```python
 import assemblyai as aai
 
-LITELLM_VIRTUAL_KEY = "sk-1234" # <your-virtual-key>
-LITELLM_PROXY_BASE_URL = "http://0.0.0.0:4000/eu.assemblyai" # <your-proxy-base-url>/eu.assemblyai
+LLM_VIRTUAL_KEY = "sk-1234" # <your-virtual-key>
+LLM_PROXY_BASE_URL = "http://0.0.0.0:4000/eu.assemblyai" # <your-proxy-base-url>/eu.assemblyai
 
-aai.settings.api_key = f"Bearer {LITELLM_VIRTUAL_KEY}"
-aai.settings.base_url = LITELLM_PROXY_BASE_URL
+aai.settings.api_key = f"Bearer {LLM_VIRTUAL_KEY}"
+aai.settings.base_url = LLM_PROXY_BASE_URL
 
 # URL of the file to transcribe
 FILE_URL = "https://assembly.ai/wildfires.mp3"

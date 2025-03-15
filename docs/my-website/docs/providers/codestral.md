@@ -27,11 +27,11 @@ Official Mistral API Docs: https://docs.mistral.ai/api/#operation/createFIMCompl
 
 ```python
 import os
-import litellm
+import llm
 
 os.environ['CODESTRAL_API_KEY']
 
-response = await litellm.atext_completion(
+response = await llm.atext_completion(
     model="text-completion-codestral/codestral-2405",
     prompt="def is_odd(n): \n return n % 2 == 1 \ndef test_is_odd():", 
     suffix="return True",                                              # optional
@@ -77,11 +77,11 @@ response = await litellm.atext_completion(
 
 ```python
 import os
-import litellm
+import llm
 
 os.environ['CODESTRAL_API_KEY']
 
-response = await litellm.atext_completion(
+response = await llm.atext_completion(
     model="text-completion-codestral/codestral-2405",
     prompt="def is_odd(n): \n return n % 2 == 1 \ndef test_is_odd():",
     suffix="return True",    # optional
@@ -119,7 +119,7 @@ async for chunk in response:
 </Tabs>
 
 ### Supported Models
-All models listed here https://docs.mistral.ai/platform/endpoints are supported. We actively maintain the list of models, pricing, token window, etc. [here](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json).
+All models listed here https://docs.mistral.ai/platform/endpoints are supported. We actively maintain the list of models, pricing, token window, etc. [here](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json).
 
 | Model Name     | Function Call                                                |
 |----------------|--------------------------------------------------------------|
@@ -144,11 +144,11 @@ Official Mistral API Docs: https://docs.mistral.ai/api/#operation/createChatComp
 
 ```python
 import os
-import litellm
+import llm
 
 os.environ['CODESTRAL_API_KEY']
 
-response = await litellm.acompletion(
+response = await llm.acompletion(
     model="codestral/codestral-latest",
     messages=[
         {
@@ -200,11 +200,11 @@ response = await litellm.acompletion(
 
 ```python
 import os
-import litellm
+import llm
 
 os.environ['CODESTRAL_API_KEY']
 
-response = await litellm.acompletion(
+response = await llm.acompletion(
     model="codestral/codestral-latest",
     messages=[
         {
@@ -247,7 +247,7 @@ async for chunk in response:
 </Tabs>
 
 ### Supported Models
-All models listed here https://docs.mistral.ai/platform/endpoints are supported. We actively maintain the list of models, pricing, token window, etc. [here](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json).
+All models listed here https://docs.mistral.ai/platform/endpoints are supported. We actively maintain the list of models, pricing, token window, etc. [here](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json).
 
 | Model Name     | Function Call                                                |
 |----------------|--------------------------------------------------------------|

@@ -4,22 +4,22 @@ import logging
 import pytest
 from dotenv import load_dotenv
 
-import litellm
-from litellm._logging import verbose_logger, verbose_proxy_logger
-from litellm.integrations.arize.arize import ArizeConfig, ArizeLogger
+import llm
+from llm._logging import verbose_logger, verbose_proxy_logger
+from llm.integrations.arize.arize import ArizeConfig, ArizeLogger
 
 load_dotenv()
 
 
 @pytest.mark.asyncio()
 async def test_async_otel_callback():
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     verbose_proxy_logger.setLevel(logging.DEBUG)
     verbose_logger.setLevel(logging.DEBUG)
-    litellm.success_callback = ["arize"]
+    llm.success_callback = ["arize"]
 
-    await litellm.acompletion(
+    await llm.acompletion(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": "hi test from local arize"}],
         mock_response="hello",

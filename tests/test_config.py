@@ -16,7 +16,7 @@ async def config_update(session):
     url = "http://0.0.0.0:4000/config/update"
     headers = {"Authorization": "Bearer sk-1234", "Content-Type": "application/json"}
     data = {
-        "litellm_settings": {
+        "llm_settings": {
             "success_callback": ["langfuse"],
         },
         "environment_variables": {

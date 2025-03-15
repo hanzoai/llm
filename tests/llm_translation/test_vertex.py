@@ -5,9 +5,9 @@ import traceback
 
 from dotenv import load_dotenv
 
-import litellm.litellm_core_utils
-import litellm.litellm_core_utils.prompt_templates
-import litellm.litellm_core_utils.prompt_templates.factory
+import llm.llm_core_utils
+import llm.llm_core_utils.prompt_templates
+import llm.llm_core_utils.prompt_templates.factory
 
 load_dotenv()
 import io
@@ -17,19 +17,19 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-import litellm
-from litellm import get_optional_params
-from litellm.llms.custom_httpx.http_handler import HTTPHandler
-from litellm.llms.vertex_ai.gemini.transformation import _process_gemini_image
-from litellm.types.llms.vertex_ai import PartType, BlobType
+import llm
+from llm import get_optional_params
+from llm.llms.custom_httpx.http_handler import HTTPHandler
+from llm.llms.vertex_ai.gemini.transformation import _process_gemini_image
+from llm.types.llms.vertex_ai import PartType, BlobType
 import httpx
 
 
 def test_completion_pydantic_obj_2():
     from pydantic import BaseModel
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     class CalendarEvent(BaseModel):
         name: str
@@ -84,7 +84,7 @@ def test_completion_pydantic_obj_2():
     with patch.object(client, "post", new=MagicMock()) as mock_post:
         mock_post.return_value = expected_request_body
         try:
-            litellm.completion(
+            llm.completion(
                 model="gemini/gemini-1.5-pro",
                 messages=messages,
                 response_format=EventsList,
@@ -101,7 +101,7 @@ def test_completion_pydantic_obj_2():
 
 
 def test_build_vertex_schema():
-    from litellm.llms.vertex_ai.common_utils import (
+    from llm.llms.vertex_ai.common_utils import (
         _build_vertex_schema,
     )
     import json
@@ -192,13 +192,13 @@ def test_vertex_function_translation(tool, expect_parameters):
 
 
 def test_function_calling_with_gemini():
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     client = HTTPHandler()
     with patch.object(client, "post", new=MagicMock()) as mock_post:
         try:
-            litellm.completion(
+            llm.completion(
                 model="gemini/gemini-1.5-pro-002",
                 messages=[
                     {
@@ -244,8 +244,8 @@ def test_function_calling_with_gemini():
 
 
 def test_multiple_function_call():
-    litellm.set_verbose = True
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    llm.set_verbose = True
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     client = HTTPHandler()
     messages = [
@@ -310,7 +310,7 @@ def test_multiple_function_call():
     mock_response.json.return_value = response_body
 
     with patch.object(client, "post", return_value=mock_response) as mock_post:
-        r = litellm.completion(
+        r = llm.completion(
             messages=messages, model="gemini/gemini-1.5-flash-002", client=client
         )
         assert len(r.choices) > 0
@@ -351,8 +351,8 @@ def test_multiple_function_call():
 
 
 def test_multiple_function_call_changed_text_pos():
-    litellm.set_verbose = True
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    llm.set_verbose = True
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     client = HTTPHandler()
     messages = [
@@ -416,7 +416,7 @@ def test_multiple_function_call_changed_text_pos():
     mock_response.json.return_value = response_body
 
     with patch.object(client, "post", return_value=mock_response) as mock_post:
-        resp = litellm.completion(
+        resp = llm.completion(
             messages=messages, model="gemini/gemini-1.5-flash-002", client=client
         )
         assert len(resp.choices) > 0
@@ -455,8 +455,8 @@ def test_multiple_function_call_changed_text_pos():
 
 
 def test_function_calling_with_gemini_multiple_results():
-    litellm.set_verbose = True
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    llm.set_verbose = True
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     client = HTTPHandler()
     # Step 1: send the conversation and available functions to the model
@@ -532,7 +532,7 @@ def test_function_calling_with_gemini_multiple_results():
     mock_response.json.return_value = response_body
 
     with patch.object(client, "post", return_value=mock_response):
-        response = litellm.completion(
+        response = llm.completion(
             model="gemini/gemini-1.5-flash-002",
             messages=messages,
             tools=tools,
@@ -550,7 +550,7 @@ def test_function_calling_with_gemini_multiple_results():
 
 
 def test_logprobs_unit_test():
-    from litellm import VertexGeminiConfig
+    from llm import VertexGeminiConfig
 
     result = VertexGeminiConfig()._transform_logprobs(
         logprobs_result={
@@ -1029,8 +1029,8 @@ def test_logprobs_unit_test():
 
 
 def test_logprobs():
-    litellm.set_verbose = True
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    llm.set_verbose = True
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     client = HTTPHandler()
 
@@ -1115,7 +1115,7 @@ def test_logprobs():
 
     with patch.object(client, "post", return_value=mock_response):
 
-        resp = litellm.completion(
+        resp = llm.completion(
             model="gemini/gemini-1.5-flash-002",
             messages=[
                 {"role": "user", "content": "What's the weather like in San Francisco?"}
@@ -1130,10 +1130,10 @@ def test_logprobs():
 
 def test_process_gemini_image():
     """Test the _process_gemini_image function for different image sources"""
-    from litellm.llms.vertex_ai.gemini.transformation import (
+    from llm.llms.vertex_ai.gemini.transformation import (
         _process_gemini_image,
     )
-    from litellm.types.llms.vertex_ai import PartType, FileDataType, BlobType
+    from llm.types.llms.vertex_ai import PartType, FileDataType, BlobType
 
     # Test GCS URI
     gcs_result = _process_gemini_image("gs://bucket/image.png")
@@ -1186,7 +1186,7 @@ def test_process_gemini_image():
 
 def test_get_image_mime_type_from_url():
     """Test the _get_image_mime_type_from_url function for different image URLs"""
-    from litellm.llms.vertex_ai.gemini.transformation import (
+    from llm.llms.vertex_ai.gemini.transformation import (
         _get_image_mime_type_from_url,
     )
 
@@ -1237,11 +1237,11 @@ def test_vertex_embedding_url(model, expected_url):
     """
     Test URL generation for embedding models, including numeric model IDs (fine-tuned models
 
-    Relevant issue: https://github.com/BerriAI/litellm/issues/6482
+    Relevant issue: https://github.com/BerriAI/llm/issues/6482
 
     When a fine-tuned embedding model is used, the URL is different from the standard one.
     """
-    from litellm.llms.vertex_ai.common_utils import _get_vertex_url
+    from llm.llms.vertex_ai.common_utils import _get_vertex_url
 
     url, endpoint = _get_vertex_url(
         mode="embedding",
@@ -1267,7 +1267,7 @@ from typing import Dict, Any
 @pytest.fixture
 def mock_convert_url_to_base64():
     with patch(
-        "litellm.litellm_core_utils.prompt_templates.factory.convert_url_to_base64",
+        "llm.llm_core_utils.prompt_templates.factory.convert_url_to_base64",
     ) as mock:
         # Setup the mock to return a valid image object
         mock.return_value = "data:image/jpeg;base64,/9j/4AAQSkZJRg..."

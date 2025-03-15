@@ -1,12 +1,12 @@
 # Completion Token Usage & Cost
-By default LiteLLM returns token usage in all completion requests ([See here](https://litellm.readthedocs.io/en/latest/output/))
+By default Hanzo returns token usage in all completion requests ([See here](https://llm.readthedocs.io/en/latest/output/))
 
-LiteLLM returns `response_cost` in all calls. 
+Hanzo returns `response_cost` in all calls. 
 
 ```python
-from litellm import completion 
+from llm import completion 
 
-response = litellm.completion(
+response = llm.completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hey, how's it going?"}],
             mock_response="Hello world",
@@ -15,7 +15,7 @@ response = litellm.completion(
 print(response._hidden_params["response_cost"])
 ```
 
-LiteLLM also exposes some helper functions:
+Hanzo also exposes some helper functions:
 
 - `encode`: This encodes the text passed in, using the model-specific tokenizer. [**Jump to code**](#1-encode)
 
@@ -23,21 +23,21 @@ LiteLLM also exposes some helper functions:
 
 - `token_counter`: This returns the number of tokens for a given input - it uses the tokenizer based on the model, and defaults to tiktoken if no model-specific tokenizer is available. [**Jump to code**](#3-token_counter)
 
-- `create_pretrained_tokenizer` and `create_tokenizer`: LiteLLM provides default tokenizer support for OpenAI, Cohere, Anthropic, Llama2, and Llama3 models. If you are using a different model, you can create a custom tokenizer and pass it as `custom_tokenizer` to the `encode`, `decode`, and `token_counter` methods. [**Jump to code**](#4-create_pretrained_tokenizer-and-create_tokenizer)
+- `create_pretrained_tokenizer` and `create_tokenizer`: Hanzo provides default tokenizer support for OpenAI, Cohere, Anthropic, Llama2, and Llama3 models. If you are using a different model, you can create a custom tokenizer and pass it as `custom_tokenizer` to the `encode`, `decode`, and `token_counter` methods. [**Jump to code**](#4-create_pretrained_tokenizer-and-create_tokenizer)
 
-- `cost_per_token`: This returns the cost (in USD) for prompt (input) and completion (output) tokens. Uses the live list from `api.litellm.ai`. [**Jump to code**](#5-cost_per_token)
+- `cost_per_token`: This returns the cost (in USD) for prompt (input) and completion (output) tokens. Uses the live list from `api.llm.ai`. [**Jump to code**](#5-cost_per_token)
 
 - `completion_cost`: This returns the overall cost (in USD) for a given LLM API Call. It combines `token_counter` and `cost_per_token` to return the cost for that query (counting both cost of input and output). [**Jump to code**](#6-completion_cost)
 
 - `get_max_tokens`: This returns the maximum number of tokens allowed for the given model. [**Jump to code**](#7-get_max_tokens)
 
-- `model_cost`: This returns a dictionary for all models, with their max_tokens, input_cost_per_token and output_cost_per_token. It uses the `api.litellm.ai` call shown below. [**Jump to code**](#8-model_cost)
+- `model_cost`: This returns a dictionary for all models, with their max_tokens, input_cost_per_token and output_cost_per_token. It uses the `api.llm.ai` call shown below. [**Jump to code**](#8-model_cost)
 
 - `register_model`: This registers new / overrides existing models (and their pricing details) in the model cost dictionary. [**Jump to code**](#9-register_model)
 
-- `api.litellm.ai`: Live token + price count across [all supported models](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json). [**Jump to code**](#10-apilitellmai)
+- `api.llm.ai`: Live token + price count across [all supported models](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json). [**Jump to code**](#10-apillmai)
 
-📣 [This is a community maintained list](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json). Contributions are welcome! ❤️
+📣 [This is a community maintained list](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json). Contributions are welcome! ❤️
 
 ## Example Usage 
 
@@ -45,7 +45,7 @@ LiteLLM also exposes some helper functions:
 Encoding has model-specific tokenizers for anthropic, cohere, llama2 and openai. If an unsupported model is passed in, it'll default to using tiktoken (openai's tokenizer).
 
 ```python
-from litellm import encode, decode
+from llm import encode, decode
 
 sample_text = "Hellö World, this is my input string!"
 # openai encoding + decoding
@@ -58,7 +58,7 @@ print(openai_tokens)
 Decoding is supported for anthropic, cohere, llama2 and openai.
 
 ```python
-from litellm import encode, decode
+from llm import encode, decode
 
 sample_text = "Hellö World, this is my input string!"
 # openai encoding + decoding
@@ -70,7 +70,7 @@ print(openai_text)
 ### 3. `token_counter`
 
 ```python
-from litellm import token_counter
+from llm import token_counter
 
 messages = [{"user": "role", "content": "Hey, how's it going"}]
 print(token_counter(model="gpt-3.5-turbo", messages=messages))
@@ -79,7 +79,7 @@ print(token_counter(model="gpt-3.5-turbo", messages=messages))
 ### 4. `create_pretrained_tokenizer` and `create_tokenizer`
 
 ```python
-from litellm import create_pretrained_tokenizer, create_tokenizer
+from llm import create_pretrained_tokenizer, create_tokenizer
 
 # get tokenizer from huggingface repo
 custom_tokenizer_1 = create_pretrained_tokenizer("Xenova/llama-3-tokenizer")
@@ -96,7 +96,7 @@ custom_tokenizer_2 = create_tokenizer(json_str)
 ### 5. `cost_per_token`
 
 ```python
-from litellm import cost_per_token
+from llm import cost_per_token
 
 prompt_tokens =  5
 completion_tokens = 10
@@ -107,12 +107,12 @@ print(prompt_tokens_cost_usd_dollar, completion_tokens_cost_usd_dollar)
 
 ### 6. `completion_cost`
 
-* Input: Accepts a `litellm.completion()` response **OR** prompt + completion strings
+* Input: Accepts a `llm.completion()` response **OR** prompt + completion strings
 * Output: Returns a `float` of cost for the `completion` call 
 
-**litellm.completion()**
+**llm.completion()**
 ```python
-from litellm import completion, completion_cost
+from llm import completion, completion_cost
 
 response = completion(
             model="bedrock/anthropic.claude-v2",
@@ -127,18 +127,18 @@ print(formatted_string)
 
 **prompt + completion string**
 ```python
-from litellm import completion_cost
+from llm import completion_cost
 cost = completion_cost(model="bedrock/anthropic.claude-v2", prompt="Hey!", completion="How's it going?")
 formatted_string = f"${float(cost):.10f}"
 print(formatted_string)
 ```
 ### 7. `get_max_tokens`
 
-Input: Accepts a model name - e.g., gpt-3.5-turbo (to get a complete list, call litellm.model_list).
+Input: Accepts a model name - e.g., gpt-3.5-turbo (to get a complete list, call llm.model_list).
 Output: Returns the maximum number of tokens allowed for the given model
 
 ```python 
-from litellm import get_max_tokens 
+from llm import get_max_tokens 
 
 model = "gpt-3.5-turbo"
 
@@ -147,10 +147,10 @@ print(get_max_tokens(model)) # Output: 4097
 
 ### 8. `model_cost`
 
-* Output: Returns a dict object containing the max_tokens, input_cost_per_token, output_cost_per_token for all models on [community-maintained list](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json)
+* Output: Returns a dict object containing the max_tokens, input_cost_per_token, output_cost_per_token for all models on [community-maintained list](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json)
 
 ```python 
-from litellm import model_cost 
+from llm import model_cost 
 
 print(model_cost) # {'gpt-3.5-turbo': {'max_tokens': 4000, 'input_cost_per_token': 1.5e-06, 'output_cost_per_token': 2e-06}, ...}
 ```
@@ -158,18 +158,18 @@ print(model_cost) # {'gpt-3.5-turbo': {'max_tokens': 4000, 'input_cost_per_token
 ### 9. `register_model`
 
 * Input: Provide EITHER a model cost dictionary or a url to a hosted json blob
-* Output: Returns updated model_cost dictionary + updates litellm.model_cost with model details.  
+* Output: Returns updated model_cost dictionary + updates llm.model_cost with model details.  
 
 **Dictionary**
 ```python
-from litellm import register_model
+from llm import register_model
 
-litellm.register_model({
+llm.register_model({
         "gpt-4": {
         "max_tokens": 8192, 
         "input_cost_per_token": 0.00002, 
         "output_cost_per_token": 0.00006, 
-        "litellm_provider": "openai", 
+        "llm_provider": "openai", 
         "mode": "chat"
     },
 })
@@ -177,16 +177,16 @@ litellm.register_model({
 
 **URL for json blob**
 ```python
-import litellm
+import llm
 
-litellm.register_model(model_cost=
-"https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json")
+llm.register_model(model_cost=
+"https://raw.githubusercontent.com/BerriAI/llm/main/model_prices_and_context_window.json")
 ```
 
 **Don't pull hosted model_cost_map**  
 If you have firewalls, and want to just use the local copy of the model cost map, you can do so like this:
 ```bash
-export LITELLM_LOCAL_MODEL_COST_MAP="True"
+export LLM_LOCAL_MODEL_COST_MAP="True"
 ```
 
 Note: this means you will need to upgrade to get updated pricing, and newer models. 

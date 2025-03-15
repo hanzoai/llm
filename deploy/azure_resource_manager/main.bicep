@@ -1,6 +1,6 @@
-param imageName string = 'ghcr.io/berriai/litellm:main-latest'
-param containerName string = 'litellm-container'
-param dnsLabelName string = 'litellm'
+param imageName string = 'ghcr.io/berriai/llm:main-latest'
+param containerName string = 'llm-container'
+param dnsLabelName string = 'llm'
 param portNumber int = 4000
 
 resource containerGroupName 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {

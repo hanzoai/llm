@@ -2,9 +2,9 @@ import os
 import sys
 import traceback
 from dotenv import load_dotenv
-import litellm.types
+import llm.types
 import pytest
-from litellm import AmazonInvokeConfig
+from llm import AmazonInvokeConfig
 import json
 
 load_dotenv()
@@ -28,7 +28,7 @@ def test_get_complete_url_basic(bedrock_transformer):
         model="anthropic.claude-v2",
         optional_params={},
         stream=False,
-        litellm_params={},
+        llm_params={},
     )
 
     assert (
@@ -44,7 +44,7 @@ def test_get_complete_url_streaming(bedrock_transformer):
         model="anthropic.claude-v2",
         optional_params={},
         stream=True,
-        litellm_params={},
+        llm_params={},
     )
 
     assert (
@@ -62,7 +62,7 @@ def test_transform_request_invalid_provider(bedrock_transformer):
             model="invalid.model",
             messages=messages,
             optional_params={},
-            litellm_params={},
+            llm_params={},
             headers={},
         )
 
@@ -124,7 +124,7 @@ def test_transform_request_cohere_command(bedrock_transformer):
         model="cohere.command-r",
         messages=messages,
         optional_params={"max_tokens": 2048},
-        litellm_params={},
+        llm_params={},
         headers={},
     )
 
@@ -143,7 +143,7 @@ def test_transform_request_ai21(bedrock_transformer):
         model="ai21.j2-ultra",
         messages=messages,
         optional_params={"max_tokens": 2048},
-        litellm_params={},
+        llm_params={},
         headers={},
     )
 
@@ -164,7 +164,7 @@ def test_transform_request_mistral(bedrock_transformer):
         model="mistral.mistral-7b",
         messages=messages,
         optional_params={"max_tokens": 2048},
-        litellm_params={},
+        llm_params={},
         headers={},
     )
 
@@ -185,7 +185,7 @@ def test_transform_request_amazon_titan(bedrock_transformer):
         model="amazon.titan-text-express-v1",
         messages=messages,
         optional_params={"maxTokenCount": 2048},
-        litellm_params={},
+        llm_params={},
         headers={},
     )
     print("transformed request for invoke amazon titan=", json.dumps(result, indent=4))
@@ -207,7 +207,7 @@ def test_transform_request_meta_llama(bedrock_transformer):
         model="meta.llama2-70b",
         messages=messages,
         optional_params={"max_gen_len": 2048},
-        litellm_params={},
+        llm_params={},
         headers={},
     )
 

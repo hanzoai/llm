@@ -18,14 +18,14 @@ import random
 
 import pytest
 
-import litellm
-from litellm import aembedding, completion, embedding
-from litellm.caching.caching import Cache
+import llm
+from llm import aembedding, completion, embedding
+from llm.caching.caching import Cache
 
 from unittest.mock import AsyncMock, patch, MagicMock, call
 import datetime
 from datetime import timedelta
-from litellm.caching import *
+from llm.caching import *
 
 
 @pytest.mark.parametrize("is_async", [True, False])

@@ -20,8 +20,8 @@ Apply a budget across all calls on the proxy
 general_settings:
   master_key: sk-1234
 
-litellm_settings:
-  # other litellm settings
+llm_settings:
+  # other llm settings
   max_budget: 0 # (float) sets max budget as $0 USD
   budget_duration: 30d # (str) frequency of reset - You can set duration as seconds ("30s"), minutes ("30m"), hours ("30h"), days ("30d").
 ```
@@ -29,7 +29,7 @@ litellm_settings:
 **Step 2. Start proxy**
 
 ```bash
-litellm /path/to/config.yaml
+llm /path/to/config.yaml
 ```
 
 **Step 3. Send test call**
@@ -58,7 +58,7 @@ You can:
 
 **Step-by step tutorial on setting, resetting budgets on Teams here (API or using Admin UI)**
 
-👉 [https://docs.litellm.ai/docs/proxy/team_budgets](https://docs.litellm.ai/docs/proxy/team_budgets)
+👉 [https://docs.llm.ai/docs/proxy/team_budgets](https://docs.llm.ai/docs/proxy/team_budgets)
 
 :::
 
@@ -75,7 +75,7 @@ curl --location 'http://localhost:4000/team/new' \
 }' 
 ```
 
-[**See Swagger**](https://litellm-api.up.railway.app/#/team%20management/new_team_team_new_post)
+[**See Swagger**](https://llm-api.up.railway.app/#/team%20management/new_team_team_new_post)
 
 **Sample Response**
 
@@ -198,7 +198,7 @@ For most use-cases, we recommend setting team-member budgets
 
 :::
 
-LiteLLM exposes a `/user/new` endpoint to create budgets for this.
+Hanzo exposes a `/user/new` endpoint to create budgets for this.
 
 You can:
 - Add budgets to users [**Jump**](#add-budgets-to-users)
@@ -214,7 +214,7 @@ curl --location 'http://localhost:4000/user/new' \
 --data-raw '{"models": ["azure-models"], "max_budget": 0, "user_id": "krrish3@berri.ai"}' 
 ```
 
-[**See Swagger**](https://litellm-api.up.railway.app/#/user%20management/new_user_user_new_post)
+[**See Swagger**](https://llm-api.up.railway.app/#/user%20management/new_user_user_new_post)
 
 **Sample Response**
 
@@ -264,7 +264,7 @@ You can:
 - Add budget durations, to reset spend [**Jump**](#add-budget-duration-to-keys)
 
 **Expected Behaviour**
-- Costs Per key get auto-populated in `LiteLLM_VerificationToken` Table
+- Costs Per key get auto-populated in `Hanzo_VerificationToken` Table
 - After the key crosses it's `max_budget`, requests fail
 - If duration set, spend is reset at the end of the duration
 
@@ -332,7 +332,7 @@ Apply model specific budgets on a key. Example:
 
 :::info
 
-✨ This is an Enterprise only feature [Get Started with Enterprise here](https://www.litellm.ai/#pricing)
+✨ This is an Enterprise only feature [Get Started with Enterprise here](https://www.llm.ai/#pricing)
 
 :::
 
@@ -400,7 +400,7 @@ Expected response on failure
 ```json
 {
     "error": {
-        "message": "LiteLLM Virtual Key: 9769f3f6768a199f76cc29xxxx, key_alias: None, exceeded budget for model=gpt-4o",
+        "message": "Hanzo Virtual Key: 9769f3f6768a199f76cc29xxxx, key_alias: None, exceeded budget for model=gpt-4o",
         "type": "budget_exceeded",
         "param": null,
         "code": "400"
@@ -417,12 +417,12 @@ Expected response on failure
 Use this to budget `user` passed to `/chat/completions`, **without needing to create a key for every user**
 
 **Step 1. Modify config.yaml**
-Define `litellm.max_end_user_budget`
+Define `llm.max_end_user_budget`
 ```yaml
 general_settings:
   master_key: sk-1234
 
-litellm_settings:
+llm_settings:
   max_end_user_budget: 0.0001 # budget for 'user' passed to /chat/completions
 ```
 
@@ -544,7 +544,7 @@ curl --location 'http://0.0.0.0:4000/team/new' \
 --data '{"team_id": "my-prod-team", "max_parallel_requests": 10, "tpm_limit": 20, "rpm_limit": 4}' 
 ```
 
-[**See Swagger**](https://litellm-api.up.railway.app/#/team%20management/new_team_team_new_post)
+[**See Swagger**](https://llm-api.up.railway.app/#/team%20management/new_team_team_new_post)
 
 **Expected Response**
 
@@ -569,7 +569,7 @@ curl --location 'http://0.0.0.0:4000/user/new' \
 --data '{"user_id": "krrish@berri.ai", "max_parallel_requests": 10, "tpm_limit": 20, "rpm_limit": 4}' 
 ```
 
-[**See Swagger**](https://litellm-api.up.railway.app/#/user%20management/new_user_user_new_post)
+[**See Swagger**](https://llm-api.up.railway.app/#/user%20management/new_user_user_new_post)
 
 **Expected Response**
 
@@ -610,7 +610,7 @@ curl --location 'http://0.0.0.0:4000/key/generate' \
 
 Set `model_rpm_limit` and `model_tpm_limit` to set rate limits per model per api key
 
-Here `gpt-4` is the `model_name` set on the [litellm config.yaml](configs.md)
+Here `gpt-4` is the `model_name` set on the [llm config.yaml](configs.md)
 
 ```shell
 curl --location 'http://0.0.0.0:4000/key/generate' \
@@ -630,7 +630,7 @@ curl --location 'http://0.0.0.0:4000/key/generate' \
 
 **Verify Model Rate Limits set correctly for this key**
 
-**Make /chat/completions request check if `x-litellm-key-remaining-requests-gpt-4` returned**
+**Make /chat/completions request check if `x-llm-key-remaining-requests-gpt-4` returned**
 
 ```shell
 curl -i http://localhost:4000/v1/chat/completions \
@@ -648,8 +648,8 @@ curl -i http://localhost:4000/v1/chat/completions \
 **Expected headers**
 
 ```shell
-x-litellm-key-remaining-requests-gpt-4: 1
-x-litellm-key-remaining-tokens-gpt-4: 179
+x-llm-key-remaining-requests-gpt-4: 1
+x-llm-key-remaining-tokens-gpt-4: 179
 ```
 
 These headers indicate:
@@ -728,18 +728,18 @@ Use this to set a default budget for users who you give keys to.
 
 This will apply when a user has [`user_role="internal_user"`](./self_serve.md#available-roles) (set this via `/user/new` or `/user/update`). 
 
-This will NOT apply if a key has a team_id (team budgets will apply then). [Tell us how we can improve this!](https://github.com/BerriAI/litellm/issues)
+This will NOT apply if a key has a team_id (team budgets will apply then). [Tell us how we can improve this!](https://github.com/BerriAI/llm/issues)
 
 1. Define max budget in your config.yaml
 
 ```yaml
 model_list: 
   - model_name: "gpt-3.5-turbo"
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
-litellm_settings:
+llm_settings:
   max_internal_user_budget: 0 # amount in USD
   internal_user_budget_duration: "1mo" # reset every month
 ```
@@ -797,7 +797,7 @@ Difference between doing this with `/key/generate` vs. `/user/new`? If you do it
 ```yaml
 model_list:
   - model_name: text-embedding-ada-002
-    litellm_params:
+    llm_params:
       model: azure/azure-embedding-model
       api_base: "os.environ/AZURE_API_BASE"
       api_key: "os.environ/AZURE_API_KEY"

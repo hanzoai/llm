@@ -5,30 +5,30 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm import Router
-from litellm.router import Deployment, LiteLLM_Params
-from litellm.types.router import ModelInfo
+import llm
+from llm import Router
+from llm.router import Deployment, Hanzo_Params
+from llm.types.router import ModelInfo
 from concurrent.futures import ThreadPoolExecutor
 from collections import defaultdict
 from dotenv import load_dotenv
 from unittest.mock import AsyncMock, MagicMock, patch
-from litellm.integrations.prometheus import PrometheusLogger
-from litellm.router_utils.cooldown_callbacks import router_cooldown_event_callback
-from litellm.router_utils.cooldown_handlers import (
+from llm.integrations.prometheus import PrometheusLogger
+from llm.router_utils.cooldown_callbacks import router_cooldown_event_callback
+from llm.router_utils.cooldown_handlers import (
     _should_run_cooldown_logic,
     _should_cooldown_deployment,
     cast_exception_status_to_int,
 )
-from litellm.router_utils.router_callbacks.track_deployment_metrics import (
+from llm.router_utils.router_callbacks.track_deployment_metrics import (
     increment_deployment_failures_for_current_minute,
     increment_deployment_successes_for_current_minute,
 )
 
 import pytest
 from unittest.mock import patch
-from litellm import Router
-from litellm.router_utils.cooldown_handlers import _should_cooldown_deployment
+from llm import Router
+from llm.router_utils.cooldown_handlers import _should_cooldown_deployment
 
 load_dotenv()
 
@@ -41,25 +41,25 @@ class CustomPrometheusLogger(PrometheusLogger):
 
     def set_deployment_complete_outage(
         self,
-        litellm_model_name: str,
+        llm_model_name: str,
         model_id: str,
         api_base: str,
         api_provider: str,
     ):
         self.deployment_complete_outages.append(
-            [litellm_model_name, model_id, api_base, api_provider]
+            [llm_model_name, model_id, api_base, api_provider]
         )
 
     def increment_deployment_cooled_down(
         self,
-        litellm_model_name: str,
+        llm_model_name: str,
         model_id: str,
         api_base: str,
         api_provider: str,
         exception_status: str,
     ):
         self.deployment_cooled_downs.append(
-            [litellm_model_name, model_id, api_base, api_provider, exception_status]
+            [llm_model_name, model_id, api_base, api_provider, exception_status]
         )
 
 
@@ -73,7 +73,7 @@ async def test_router_cooldown_event_callback():
     # Mock Router instance
     mock_router = MagicMock()
     mock_deployment = {
-        "litellm_params": {"model": "gpt-3.5-turbo"},
+        "llm_params": {"model": "gpt-3.5-turbo"},
         "model_name": "gpt-3.5-turbo",
         "model_info": ModelInfo(id="test-model-id"),
     }
@@ -81,10 +81,10 @@ async def test_router_cooldown_event_callback():
 
     # Create a real PrometheusLogger instance
     prometheus_logger = CustomPrometheusLogger()
-    litellm.callbacks = [prometheus_logger]
+    llm.callbacks = [prometheus_logger]
 
     await router_cooldown_event_callback(
-        litellm_router_instance=mock_router,
+        llm_router_instance=mock_router,
         deployment_id="test-deployment",
         exception_status="429",
         cooldown_time=60.0,
@@ -133,14 +133,14 @@ async def test_router_cooldown_event_callback_no_prometheus():
     # Mock Router instance
     mock_router = MagicMock()
     mock_deployment = {
-        "litellm_params": {"model": "gpt-3.5-turbo"},
+        "llm_params": {"model": "gpt-3.5-turbo"},
         "model_name": "gpt-3.5-turbo",
         "model_info": ModelInfo(id="test-model-id"),
     }
     mock_router.get_deployment.return_value = mock_deployment
 
     await router_cooldown_event_callback(
-        litellm_router_instance=mock_router,
+        llm_router_instance=mock_router,
         deployment_id="test-deployment",
         exception_status="429",
         cooldown_time=60.0,
@@ -164,7 +164,7 @@ async def test_router_cooldown_event_callback_no_deployment():
     mock_router.get_deployment.return_value = None
 
     await router_cooldown_event_callback(
-        litellm_router_instance=mock_router,
+        llm_router_instance=mock_router,
         deployment_id="test-deployment",
         exception_status="429",
         cooldown_time=60.0,
@@ -175,109 +175,109 @@ async def test_router_cooldown_event_callback_no_deployment():
 
 
 @pytest.fixture
-def testing_litellm_router():
+def testing_llm_router():
     return Router(
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {"model": "gpt-3.5-turbo"},
+                "llm_params": {"model": "gpt-3.5-turbo"},
                 "model_id": "test_deployment",
             },
             {
                 "model_name": "test_deployment",
-                "litellm_params": {"model": "openai/test_deployment"},
+                "llm_params": {"model": "openai/test_deployment"},
                 "model_id": "test_deployment_2",
             },
             {
                 "model_name": "test_deployment",
-                "litellm_params": {"model": "openai/test_deployment-2"},
+                "llm_params": {"model": "openai/test_deployment-2"},
                 "model_id": "test_deployment_3",
             },
         ]
     )
 
 
-def test_should_run_cooldown_logic(testing_litellm_router):
-    testing_litellm_router.disable_cooldowns = True
+def test_should_run_cooldown_logic(testing_llm_router):
+    testing_llm_router.disable_cooldowns = True
     # don't run cooldown logic if disable_cooldowns is True
     assert (
         _should_run_cooldown_logic(
-            testing_litellm_router, "test_deployment", 500, Exception("Test")
+            testing_llm_router, "test_deployment", 500, Exception("Test")
         )
         is False
     )
 
     # don't cooldown if deployment is None
-    testing_litellm_router.disable_cooldowns = False
+    testing_llm_router.disable_cooldowns = False
     assert (
-        _should_run_cooldown_logic(testing_litellm_router, None, 500, Exception("Test"))
+        _should_run_cooldown_logic(testing_llm_router, None, 500, Exception("Test"))
         is False
     )
 
     # don't cooldown if it's a provider default deployment
-    testing_litellm_router.provider_default_deployment_ids = ["test_deployment"]
+    testing_llm_router.provider_default_deployment_ids = ["test_deployment"]
     assert (
         _should_run_cooldown_logic(
-            testing_litellm_router, "test_deployment", 500, Exception("Test")
+            testing_llm_router, "test_deployment", 500, Exception("Test")
         )
         is False
     )
 
 
-def test_should_cooldown_deployment_rate_limit_error(testing_litellm_router):
+def test_should_cooldown_deployment_rate_limit_error(testing_llm_router):
     """
     Test the _should_cooldown_deployment function when a rate limit error occurs
     """
     # Test 429 error (rate limit) -> always cooldown a deployment returning 429s
-    _exception = litellm.exceptions.RateLimitError(
+    _exception = llm.exceptions.RateLimitError(
         "Rate limit", "openai", "gpt-3.5-turbo"
     )
     assert (
         _should_cooldown_deployment(
-            testing_litellm_router, "test_deployment", 429, _exception
+            testing_llm_router, "test_deployment", 429, _exception
         )
         is True
     )
 
 
-def test_should_cooldown_deployment_auth_limit_error(testing_litellm_router):
+def test_should_cooldown_deployment_auth_limit_error(testing_llm_router):
     """
     Test the _should_cooldown_deployment function when an auth limit error occurs
     """
     # Test 401 error (auth limit) -> always cooldown a deployment returning 401s
-    _exception = litellm.exceptions.AuthenticationError(
+    _exception = llm.exceptions.AuthenticationError(
         "Unauthorized", "openai", "gpt-3.5-turbo"
     )
     assert (
         _should_cooldown_deployment(
-            testing_litellm_router, "test_deployment", 401, _exception
+            testing_llm_router, "test_deployment", 401, _exception
         )
         is True
     )
 
 
 @pytest.mark.asyncio
-async def test_should_cooldown_deployment(testing_litellm_router):
+async def test_should_cooldown_deployment(testing_llm_router):
     """
     Cooldown a deployment if it fails 60% of requests in 1 minute - DEFAULT threshold is 50%
     """
-    from litellm._logging import verbose_router_logger
+    from llm._logging import verbose_router_logger
     import logging
 
     verbose_router_logger.setLevel(logging.DEBUG)
 
     # Test 429 error (rate limit) -> always cooldown a deployment returning 429s
-    _exception = litellm.exceptions.RateLimitError(
+    _exception = llm.exceptions.RateLimitError(
         "Rate limit", "openai", "gpt-3.5-turbo"
     )
     assert (
         _should_cooldown_deployment(
-            testing_litellm_router, "test_deployment", 429, _exception
+            testing_llm_router, "test_deployment", 429, _exception
         )
         is True
     )
 
-    available_deployment = testing_litellm_router.get_available_deployment(
+    available_deployment = testing_llm_router.get_available_deployment(
         model="test_deployment"
     )
     print("available_deployment", available_deployment)
@@ -289,18 +289,18 @@ async def test_should_cooldown_deployment(testing_litellm_router):
     # set current success for deployment to 40
     for _ in range(40):
         increment_deployment_successes_for_current_minute(
-            litellm_router_instance=testing_litellm_router, deployment_id=deployment_id
+            llm_router_instance=testing_llm_router, deployment_id=deployment_id
         )
 
     # now we fail 40 requests in a row
     tasks = []
     for _ in range(41):
         tasks.append(
-            testing_litellm_router.acompletion(
+            testing_llm_router.acompletion(
                 model=deployment_id,
                 messages=[{"role": "user", "content": "Hello, world!"}],
                 max_tokens=100,
-                mock_response="litellm.InternalServerError",
+                mock_response="llm.InternalServerError",
             )
         )
     try:
@@ -313,7 +313,7 @@ async def test_should_cooldown_deployment(testing_litellm_router):
     # expect this to fail since it's now 51% of requests are failing
     assert (
         _should_cooldown_deployment(
-            testing_litellm_router, deployment_id, 500, Exception("Test")
+            testing_llm_router, deployment_id, 500, Exception("Test")
         )
         is True
     )
@@ -329,7 +329,7 @@ async def test_should_cooldown_deployment_allowed_fails_set_on_router():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {"model": "gpt-3.5-turbo"},
+                "llm_params": {"model": "gpt-3.5-turbo"},
                 "model_id": "test_deployment",
             },
         ]
@@ -354,34 +354,34 @@ async def test_should_cooldown_deployment_allowed_fails_set_on_router():
 
 
 def test_increment_deployment_successes_for_current_minute_does_not_write_to_redis(
-    testing_litellm_router,
+    testing_llm_router,
 ):
     """
     Ensure tracking deployment metrics does not write to redis
 
     Important - If it writes to redis on every request it will seriously impact performance / latency
     """
-    from litellm.caching.dual_cache import DualCache
-    from litellm.caching.redis_cache import RedisCache
-    from litellm.caching.in_memory_cache import InMemoryCache
-    from litellm.router_utils.router_callbacks.track_deployment_metrics import (
+    from llm.caching.dual_cache import DualCache
+    from llm.caching.redis_cache import RedisCache
+    from llm.caching.in_memory_cache import InMemoryCache
+    from llm.router_utils.router_callbacks.track_deployment_metrics import (
         increment_deployment_successes_for_current_minute,
     )
 
     # Mock RedisCache
     mock_redis_cache = MagicMock(spec=RedisCache)
 
-    testing_litellm_router.cache = DualCache(
+    testing_llm_router.cache = DualCache(
         redis_cache=mock_redis_cache, in_memory_cache=InMemoryCache()
     )
 
     # Call the function we're testing
     increment_deployment_successes_for_current_minute(
-        litellm_router_instance=testing_litellm_router, deployment_id="test_deployment"
+        llm_router_instance=testing_llm_router, deployment_id="test_deployment"
     )
 
     increment_deployment_failures_for_current_minute(
-        litellm_router_instance=testing_litellm_router, deployment_id="test_deployment"
+        llm_router_instance=testing_llm_router, deployment_id="test_deployment"
     )
 
     time.sleep(1)
@@ -391,10 +391,10 @@ def test_increment_deployment_successes_for_current_minute_does_not_write_to_red
 
     print(
         "in memory cache values=",
-        testing_litellm_router.cache.in_memory_cache.cache_dict,
+        testing_llm_router.cache.in_memory_cache.cache_dict,
     )
     assert (
-        testing_litellm_router.cache.in_memory_cache.get_cache(
+        testing_llm_router.cache.in_memory_cache.get_cache(
             "test_deployment:successes"
         )
         is not None
@@ -413,7 +413,7 @@ def router():
         model_list=[
             {
                 "model_name": "gpt-4",
-                "litellm_params": {"model": "gpt-4"},
+                "llm_params": {"model": "gpt-4"},
                 "model_info": {
                     "id": "gpt-4--0",
                 },
@@ -423,20 +423,20 @@ def router():
 
 
 @patch(
-    "litellm.router_utils.cooldown_handlers.get_deployment_successes_for_current_minute"
+    "llm.router_utils.cooldown_handlers.get_deployment_successes_for_current_minute"
 )
 @patch(
-    "litellm.router_utils.cooldown_handlers.get_deployment_failures_for_current_minute"
+    "llm.router_utils.cooldown_handlers.get_deployment_failures_for_current_minute"
 )
 def test_should_cooldown_high_traffic_all_fails(mock_failures, mock_successes, router):
     # Simulate 10 failures, 0 successes
-    from litellm.constants import SINGLE_DEPLOYMENT_TRAFFIC_FAILURE_THRESHOLD
+    from llm.constants import SINGLE_DEPLOYMENT_TRAFFIC_FAILURE_THRESHOLD
 
     mock_failures.return_value = SINGLE_DEPLOYMENT_TRAFFIC_FAILURE_THRESHOLD + 1
     mock_successes.return_value = 0
 
     should_cooldown = _should_cooldown_deployment(
-        litellm_router_instance=router,
+        llm_router_instance=router,
         deployment="gpt-4--0",
         exception_status=500,
         original_exception=Exception("Test error"),
@@ -448,10 +448,10 @@ def test_should_cooldown_high_traffic_all_fails(mock_failures, mock_successes, r
 
 
 @patch(
-    "litellm.router_utils.cooldown_handlers.get_deployment_successes_for_current_minute"
+    "llm.router_utils.cooldown_handlers.get_deployment_successes_for_current_minute"
 )
 @patch(
-    "litellm.router_utils.cooldown_handlers.get_deployment_failures_for_current_minute"
+    "llm.router_utils.cooldown_handlers.get_deployment_failures_for_current_minute"
 )
 def test_no_cooldown_low_traffic(mock_failures, mock_successes, router):
     # Simulate 3 failures (below MIN_TRAFFIC_THRESHOLD)
@@ -459,7 +459,7 @@ def test_no_cooldown_low_traffic(mock_failures, mock_successes, router):
     mock_successes.return_value = 0
 
     should_cooldown = _should_cooldown_deployment(
-        litellm_router_instance=router,
+        llm_router_instance=router,
         deployment="gpt-4--0",
         exception_status=500,
         original_exception=Exception("Test error"),
@@ -471,10 +471,10 @@ def test_no_cooldown_low_traffic(mock_failures, mock_successes, router):
 
 
 @patch(
-    "litellm.router_utils.cooldown_handlers.get_deployment_successes_for_current_minute"
+    "llm.router_utils.cooldown_handlers.get_deployment_successes_for_current_minute"
 )
 @patch(
-    "litellm.router_utils.cooldown_handlers.get_deployment_failures_for_current_minute"
+    "llm.router_utils.cooldown_handlers.get_deployment_failures_for_current_minute"
 )
 def test_cooldown_rate_limit(mock_failures, mock_successes, router):
     """
@@ -484,7 +484,7 @@ def test_cooldown_rate_limit(mock_failures, mock_successes, router):
     mock_successes.return_value = 0
 
     should_cooldown = _should_cooldown_deployment(
-        litellm_router_instance=router,
+        llm_router_instance=router,
         deployment="gpt-4--0",
         exception_status=429,  # Rate limit error
         original_exception=Exception("Rate limit exceeded"),
@@ -496,10 +496,10 @@ def test_cooldown_rate_limit(mock_failures, mock_successes, router):
 
 
 @patch(
-    "litellm.router_utils.cooldown_handlers.get_deployment_successes_for_current_minute"
+    "llm.router_utils.cooldown_handlers.get_deployment_successes_for_current_minute"
 )
 @patch(
-    "litellm.router_utils.cooldown_handlers.get_deployment_failures_for_current_minute"
+    "llm.router_utils.cooldown_handlers.get_deployment_failures_for_current_minute"
 )
 def test_mixed_success_failure(mock_failures, mock_successes, router):
     # Simulate 3 failures, 7 successes
@@ -507,7 +507,7 @@ def test_mixed_success_failure(mock_failures, mock_successes, router):
     mock_successes.return_value = 7
 
     should_cooldown = _should_cooldown_deployment(
-        litellm_router_instance=router,
+        llm_router_instance=router,
         deployment="gpt-4--0",
         exception_status=500,
         original_exception=Exception("Test error"),

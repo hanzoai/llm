@@ -13,12 +13,12 @@ Make an account on [Langtrace AI](https://langtrace.ai/login)
 Use just 2 lines of code, to instantly log your responses **across all providers** with langtrace
 
 ```python
-litellm.callbacks = ["langtrace"]
+llm.callbacks = ["langtrace"]
 langtrace.init()
 ```
 
 ```python
-import litellm
+import llm
 import os
 from langtrace_python_sdk import langtrace
 
@@ -28,8 +28,8 @@ os.environ["LANGTRACE_API_KEY"] = "<your-api-key>"
 # LLM API Keys
 os.environ['OPENAI_API_KEY']="<openai-api-key>"
 
-# set langtrace as a callback, litellm will send the data to langtrace
-litellm.callbacks = ["langtrace"]
+# set langtrace as a callback, llm will send the data to langtrace
+llm.callbacks = ["langtrace"]
 
 #  init langtrace
 langtrace.init()
@@ -45,17 +45,17 @@ response = completion(
 print(response)
 ```
 
-### Using with LiteLLM Proxy
+### Using with Hanzo Proxy
 
 ```yaml
 model_list:
   - model_name: gpt-4
-    litellm_params:
+    llm_params:
       model: openai/fake
       api_key: fake-key
       api_base: https://exampleopenaiendpoint-production.up.railway.app/
 
-litellm_settings:
+llm_settings:
   callbacks: ["langtrace"]
 
 environment_variables:

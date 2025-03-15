@@ -1,8 +1,8 @@
 # Enterprise
-For companies that need SSO, user management and professional support for LiteLLM Proxy
+For companies that need SSO, user management and professional support for Hanzo Proxy
 
 :::info
-Get free 7-day trial key [here](https://www.litellm.ai/#trial)
+Get free 7-day trial key [here](https://www.llm.ai/#trial)
 :::
 
 Includes all enterprise features.
@@ -43,15 +43,15 @@ Professional Support can assist with LLM/Provider integrations, deployment, upgr
 
 ### What’s the cost of the Self-Managed Enterprise edition?
 
-Self-Managed Enterprise deployments require our team to understand your exact needs. [Get in touch with us to learn more](https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat)
+Self-Managed Enterprise deployments require our team to understand your exact needs. [Get in touch with us to learn more](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
 
 
 ### How does deployment with Enterprise License work? 
 
-You just deploy [our docker image](https://docs.litellm.ai/docs/proxy/deploy) and get an enterprise license key to add to your environment to unlock additional functionality (SSO, Prometheus metrics, etc.). 
+You just deploy [our docker image](https://docs.llm.ai/docs/proxy/deploy) and get an enterprise license key to add to your environment to unlock additional functionality (SSO, Prometheus metrics, etc.). 
 
 ```env
-LITELLM_LICENSE="eyJ..."
+LLM_LICENSE="eyJ..."
 ```
 
 No data leaves your environment. 

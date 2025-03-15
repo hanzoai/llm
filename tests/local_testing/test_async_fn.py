@@ -12,15 +12,15 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm import acompletion, acreate, completion
+import llm
+from llm import acompletion, acreate, completion
 
-litellm.num_retries = 3
+llm.num_retries = 3
 
 
 @pytest.mark.skip(reason="anyscale stopped serving public api endpoints")
 def test_sync_response_anyscale():
-    litellm.set_verbose = False
+    llm.set_verbose = False
     user_message = "Hello, how are you?"
     messages = [{"content": user_message, "role": "user"}]
     try:
@@ -29,7 +29,7 @@ def test_sync_response_anyscale():
             messages=messages,
             timeout=5,
         )
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         pass
     except Exception as e:
         pytest.fail(f"An exception occurred: {e}")
@@ -41,7 +41,7 @@ def test_sync_response_anyscale():
 def test_async_response_openai():
     import asyncio
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     async def test_get_response():
         user_message = "Hello, how are you?"
@@ -79,7 +79,7 @@ def test_async_response_openai():
             )
             print(f"response: {response}")
             print(f"response ms: {response._response_ms}")
-        except litellm.Timeout as e:
+        except llm.Timeout as e:
             pass
         except Exception as e:
             pytest.fail(f"An exception occurred: {e}")
@@ -94,7 +94,7 @@ def test_async_response_openai():
 def test_async_response_azure():
     import asyncio
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     async def test_get_response():
         user_message = "What do you know?"
@@ -107,9 +107,9 @@ def test_async_response_azure():
                 api_key=os.getenv("AZURE_FRANCE_API_KEY"),
             )
             print(f"response: {response}")
-        except litellm.Timeout as e:
+        except llm.Timeout as e:
             pass
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             pass
         except Exception as e:
             pytest.fail(f"An exception occurred: {e}")
@@ -124,7 +124,7 @@ def test_async_response_azure():
 def test_async_anyscale_response():
     import asyncio
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     async def test_get_response():
         user_message = "Hello, how are you?"
@@ -137,7 +137,7 @@ def test_async_anyscale_response():
             )
             # response = await response
             print(f"response: {response}")
-        except litellm.Timeout as e:
+        except llm.Timeout as e:
             pass
         except Exception as e:
             pytest.fail(f"An exception occurred: {e}")
@@ -151,10 +151,10 @@ def test_async_anyscale_response():
 @pytest.mark.skip(reason="Flaky test-cloudflare is very unstable")
 def test_async_completion_cloudflare():
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         async def test():
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="cloudflare/@cf/meta/llama-2-7b-chat-int8",
                 messages=[{"content": "what llm are you", "role": "user"}],
                 max_tokens=5,
@@ -182,7 +182,7 @@ def test_get_cloudflare_response_streaming():
         user_message = "write a short poem in one sentence"
         messages = [{"content": user_message, "role": "user"}]
         try:
-            litellm.set_verbose = False
+            llm.set_verbose = False
             response = await acompletion(
                 model="cloudflare/@cf/meta/llama-2-7b-chat-int8",
                 messages=messages,
@@ -208,7 +208,7 @@ def test_get_cloudflare_response_streaming():
             assert isinstance(output, str), "output needs to be of type str"
             assert len(output) > 0, "Length of output needs to be greater than 0."
             print(f"output: {output}")
-        except litellm.Timeout as e:
+        except llm.Timeout as e:
             pass
         except Exception as e:
             pytest.fail(f"An exception occurred: {e}")
@@ -218,7 +218,7 @@ def test_get_cloudflare_response_streaming():
 
 @pytest.mark.asyncio
 async def test_hf_completion_tgi():
-    # litellm.set_verbose=True
+    # llm.set_verbose=True
     try:
         response = await acompletion(
             model="huggingface/HuggingFaceH4/zephyr-7b-beta",
@@ -226,13 +226,13 @@ async def test_hf_completion_tgi():
         )
         # Add any assertions here to check the response
         print(response)
-    except litellm.APIError as e:
+    except llm.APIError as e:
         print("got an api error")
         pass
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         print("got a timeout error")
         pass
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         # this will catch the model is overloaded error
         print("got a rate limit error")
         pass
@@ -253,7 +253,7 @@ def test_get_response_streaming():
         user_message = "write a short poem in one sentence"
         messages = [{"content": user_message, "role": "user"}]
         try:
-            litellm.set_verbose = True
+            llm.set_verbose = True
             response = await acompletion(
                 model="gpt-3.5-turbo", messages=messages, stream=True, timeout=5
             )
@@ -275,7 +275,7 @@ def test_get_response_streaming():
             assert isinstance(output, str), "output needs to be of type str"
             assert len(output) > 0, "Length of output needs to be greater than 0."
             print(f"output: {output}")
-        except litellm.Timeout as e:
+        except llm.Timeout as e:
             pass
         except Exception as e:
             pytest.fail(f"An exception occurred: {e}")
@@ -290,8 +290,8 @@ def test_get_response_streaming():
 def test_get_response_non_openai_streaming():
     import asyncio
 
-    litellm.set_verbose = True
-    litellm.num_retries = 0
+    llm.set_verbose = True
+    llm.num_retries = 0
 
     async def test_async_call():
         user_message = "Hello, how are you?"
@@ -322,7 +322,7 @@ def test_get_response_non_openai_streaming():
             assert output is not None, "output cannot be None."
             assert isinstance(output, str), "output needs to be of type str"
             assert len(output) > 0, "Length of output needs to be greater than 0."
-        except litellm.Timeout as e:
+        except llm.Timeout as e:
             pass
         except Exception as e:
             pytest.fail(f"An exception occurred: {e}")

@@ -1,11 +1,11 @@
 # Text to Speech
 
-## **LiteLLM Python SDK Usage**
+## **Hanzo Python SDK Usage**
 ### Quick Start 
 
 ```python
 from pathlib import Path
-from litellm import speech
+from llm import speech
 import os 
 
 os.environ["OPENAI_API_KEY"] = "sk-.."
@@ -22,7 +22,7 @@ response.stream_to_file(speech_file_path)
 ### Async Usage 
 
 ```python
-from litellm import aspeech
+from llm import aspeech
 from pathlib import Path
 import os, asyncio
 
@@ -30,7 +30,7 @@ os.environ["OPENAI_API_KEY"] = "sk-.."
 
 async def test_async_speech(): 
     speech_file_path = Path(__file__).parent / "speech.mp3"
-    response = await litellm.aspeech(
+    response = await llm.aspeech(
             model="openai/tts-1",
             voice="alloy",
             input="the quick brown fox jumped over the lazy dogs",
@@ -48,9 +48,9 @@ async def test_async_speech():
 asyncio.run(test_async_speech())
 ```
 
-## **LiteLLM Proxy Usage**
+## **Hanzo Proxy Usage**
 
-LiteLLM provides an openai-compatible `/audio/speech` endpoint for Text-to-speech calls.
+Hanzo provides an openai-compatible `/audio/speech` endpoint for Text-to-speech calls.
 
 ```bash
 curl http://0.0.0.0:4000/v1/audio/speech \
@@ -68,13 +68,13 @@ curl http://0.0.0.0:4000/v1/audio/speech \
 
 ```bash
 - model_name: tts
-  litellm_params:
+  llm_params:
     model: openai/tts-1
     api_key: os.environ/OPENAI_API_KEY
 ```
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -86,13 +86,13 @@ litellm --config /path/to/config.yaml
 | Azure OpenAI|   [Usage](../docs/providers/azure#azure-text-to-speech-tts)                 |
 | Vertex AI   |   [Usage](../docs/providers/vertex#text-to-speech-apis)                 |
 
-## ✨ Enterprise LiteLLM Proxy - Set Max Request File Size 
+## ✨ Enterprise Hanzo Proxy - Set Max Request File Size 
 
 Use this when you want to limit the file size for requests sent to `audio/transcriptions`
 
 ```yaml
 - model_name: whisper
-  litellm_params:
+  llm_params:
     model: whisper-1
     api_key: sk-*******
     max_file_size_mb: 0.00001 # 👈 max file size in MB  (Set this intentionally very small for testing)
@@ -104,7 +104,7 @@ Make a test Request with a valid file
 ```shell
 curl --location 'http://localhost:4000/v1/audio/transcriptions' \
 --header 'Authorization: Bearer sk-1234' \
---form 'file=@"/Users/ishaanjaffer/Github/litellm/tests/gettysburg.wav"' \
+--form 'file=@"/Users/ishaanjaffer/Github/llm/tests/gettysburg.wav"' \
 --form 'model="whisper"'
 ```
 

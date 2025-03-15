@@ -1,10 +1,10 @@
 from cache_unit_tests import LLMCachingUnitTests
-from litellm.caching import LiteLLMCacheType
+from llm.caching import HanzoCacheType
 
 
 class TestDiskCacheUnitTests(LLMCachingUnitTests):
-    def get_cache_type(self) -> LiteLLMCacheType:
-        return LiteLLMCacheType.DISK
+    def get_cache_type(self) -> HanzoCacheType:
+        return HanzoCacheType.DISK
 
 
 # if __name__ == "__main__":

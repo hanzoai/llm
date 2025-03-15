@@ -4,10 +4,10 @@ import sys
 from typing import List, Tuple, Optional
 
 
-def find_litellm_type_hints(directory: str) -> List[Tuple[str, int, str]]:
+def find_llm_type_hints(directory: str) -> List[Tuple[str, int, str]]:
     """
     Recursively search for Python files in the given directory
-    and find type hints containing 'litellm.'.
+    and find type hints containing 'llm.'.
 
     Args:
         directory (str): The root directory to search for Python files
@@ -15,23 +15,23 @@ def find_litellm_type_hints(directory: str) -> List[Tuple[str, int, str]]:
     Returns:
         List of tuples containing (file_path, line_number, type_hint)
     """
-    litellm_type_hints = []
+    llm_type_hints = []
 
-    def is_litellm_type_hint(node):
+    def is_llm_type_hint(node):
         """
-        Recursively check if a type annotation contains 'litellm.'
+        Recursively check if a type annotation contains 'llm.'
 
         Handles more complex type hints like:
-        - Optional[litellm.Type]
-        - Union[litellm.Type1, litellm.Type2]
+        - Optional[llm.Type]
+        - Union[llm.Type1, llm.Type2]
         - Nested type hints
         """
         try:
             # Convert node to string representation
             type_str = ast.unparse(node)
 
-            # Direct check for litellm in type string
-            if "litellm." in type_str:
+            # Direct check for llm in type string
+            if "llm." in type_str:
                 return True
 
             # Handle more complex type hints
@@ -43,34 +43,34 @@ def find_litellm_type_hints(directory: str) -> List[Tuple[str, int, str]]:
                 ]:
                     # Check each element in the Union/Optional type
                     if isinstance(node.slice, ast.Tuple):
-                        return any(is_litellm_type_hint(elt) for elt in node.slice.elts)
+                        return any(is_llm_type_hint(elt) for elt in node.slice.elts)
                     else:
-                        return is_litellm_type_hint(node.slice)
+                        return is_llm_type_hint(node.slice)
 
                 # Recursive check for subscripted types
-                return is_litellm_type_hint(node.value) or is_litellm_type_hint(
+                return is_llm_type_hint(node.value) or is_llm_type_hint(
                     node.slice
                 )
 
             # Recursive check for attribute types
             if isinstance(node, ast.Attribute):
-                return "litellm." in ast.unparse(node)
+                return "llm." in ast.unparse(node)
 
             # Recursive check for name types
             if isinstance(node, ast.Name):
-                return "litellm" in node.id
+                return "llm" in node.id
 
             return False
         except Exception:
             # Fallback to string checking if parsing fails
             try:
-                return "litellm." in ast.unparse(node)
+                return "llm." in ast.unparse(node)
             except:
                 return False
 
     def scan_file(file_path: str):
         """
-        Scan a single Python file for LiteLLM type hints
+        Scan a single Python file for Hanzo type hints
         """
         try:
             # Use utf-8-sig to handle files with BOM, ignore errors
@@ -80,22 +80,22 @@ def find_litellm_type_hints(directory: str) -> List[Tuple[str, int, str]]:
             for node in ast.walk(tree):
                 # Check type annotations in variable annotations
                 if isinstance(node, ast.AnnAssign) and node.annotation:
-                    if is_litellm_type_hint(node.annotation):
-                        litellm_type_hints.append(
+                    if is_llm_type_hint(node.annotation):
+                        llm_type_hints.append(
                             (file_path, node.lineno, ast.unparse(node.annotation))
                         )
 
                 # Check type hints in function arguments
                 elif isinstance(node, ast.FunctionDef):
                     for arg in node.args.args:
-                        if arg.annotation and is_litellm_type_hint(arg.annotation):
-                            litellm_type_hints.append(
+                        if arg.annotation and is_llm_type_hint(arg.annotation):
+                            llm_type_hints.append(
                                 (file_path, arg.lineno, ast.unparse(arg.annotation))
                             )
 
                     # Check return type annotation
-                    if node.returns and is_litellm_type_hint(node.returns):
-                        litellm_type_hints.append(
+                    if node.returns and is_llm_type_hint(node.returns):
+                        llm_type_hints.append(
                             (file_path, node.lineno, ast.unparse(node.returns))
                         )
         except SyntaxError as e:
@@ -139,23 +139,23 @@ def find_litellm_type_hints(directory: str) -> List[Tuple[str, int, str]]:
                 ):
                     scan_file(full_path)
 
-    return litellm_type_hints
+    return llm_type_hints
 
 
 def main():
     # Get directory from command line argument or use current directory
-    directory = "./litellm/"
+    directory = "./llm/"
 
-    # Find LiteLLM type hints
-    results = find_litellm_type_hints(directory)
+    # Find Hanzo type hints
+    results = find_llm_type_hints(directory)
 
     # Print results
     if results:
-        print("LiteLLM Type Hints Found:")
+        print("Hanzo Type Hints Found:")
         for file_path, line_num, type_hint in results:
             print(f"{file_path}:{line_num} - {type_hint}")
     else:
-        print("No LiteLLM type hints found.")
+        print("No Hanzo type hints found.")
 
 
 if __name__ == "__main__":

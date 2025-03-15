@@ -19,14 +19,14 @@ from typing import Dict, List, Optional, Union
 
 import pytest
 
-import litellm
-from litellm import Router
+import llm
+from llm import Router
 
 router = Router(
     model_list=[
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/very-special-endpoint",
                 "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",  # If you are Krrish, this is OpenAI Endpoint3 on our Railway endpoint :)
                 "api_key": "fake-key",
@@ -35,7 +35,7 @@ router = Router(
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/fast-endpoint",
                 "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                 "api_key": "fake-key",
@@ -47,7 +47,7 @@ router = Router(
     debug_level="DEBUG",
 )
 
-from litellm.router import CustomRoutingStrategyBase
+from llm.router import CustomRoutingStrategyBase
 
 
 class CustomRoutingStrategy(CustomRoutingStrategyBase):
@@ -70,7 +70,7 @@ class CustomRoutingStrategy(CustomRoutingStrategyBase):
             request_kwargs (Optional[Dict], optional): Additional request keyword arguments. Defaults to None.
 
         Returns:
-            Returns an element from litellm.router.model_list
+            Returns an element from llm.router.model_list
 
         """
         print("In CUSTOM async get available deployment")
@@ -78,7 +78,7 @@ class CustomRoutingStrategy(CustomRoutingStrategyBase):
         print("router model list=", model_list)
         for model in model_list:
             if isinstance(model, dict):
-                if model["litellm_params"]["model"] == "openai/very-special-endpoint":
+                if model["llm_params"]["model"] == "openai/very-special-endpoint":
                     return model
         pass
 
@@ -101,7 +101,7 @@ class CustomRoutingStrategy(CustomRoutingStrategyBase):
             request_kwargs (Optional[Dict], optional): Additional request keyword arguments. Defaults to None.
 
         Returns:
-            Returns an element from litellm.router.model_list
+            Returns an element from llm.router.model_list
 
         """
         pass
@@ -109,9 +109,9 @@ class CustomRoutingStrategy(CustomRoutingStrategyBase):
 
 @pytest.mark.asyncio
 async def test_custom_routing():
-    import litellm
+    import llm
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     router.set_custom_routing_strategy(CustomRoutingStrategy())
 
     # make 4 requests

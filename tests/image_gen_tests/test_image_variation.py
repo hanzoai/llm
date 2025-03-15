@@ -1,5 +1,5 @@
 # What this tests?
-## This tests the litellm support for the openai /generations endpoint
+## This tests the llm support for the openai /generations endpoint
 
 import logging
 import os
@@ -13,7 +13,7 @@ sys.path.insert(
 
 from dotenv import load_dotenv
 from openai.types.image import Image
-from litellm.caching import InMemoryCache
+from llm.caching import InMemoryCache
 
 logging.basicConfig(level=logging.DEBUG)
 load_dotenv()
@@ -21,12 +21,12 @@ import asyncio
 import os
 import pytest
 
-import litellm
+import llm
 import json
 import tempfile
 from base_image_generation_test import BaseImageGenTest
 import logging
-from litellm._logging import verbose_logger
+from llm._logging import verbose_logger
 import requests
 from io import BytesIO
 
@@ -36,7 +36,7 @@ verbose_logger.setLevel(logging.DEBUG)
 @pytest.fixture
 def image_url():
     # URL of the image
-    image_url = "https://litellm-listing.s3.amazonaws.com/litellm_logo.png"
+    image_url = "https://llm-listing.s3.amazonaws.com/llm_logo.png"
 
     # Fetch the image from the URL
     response = requests.get(image_url)
@@ -59,8 +59,8 @@ def test_openai_image_variation_openai_sdk(image_url):
 
 @pytest.mark.parametrize("sync_mode", [True, False])
 @pytest.mark.asyncio
-async def test_openai_image_variation_litellm_sdk(image_url, sync_mode):
-    from litellm import image_variation, aimage_variation
+async def test_openai_image_variation_llm_sdk(image_url, sync_mode):
+    from llm import image_variation, aimage_variation
 
     if sync_mode:
         image_variation(image=image_url, n=2, size="1024x1024")
@@ -69,8 +69,8 @@ async def test_openai_image_variation_litellm_sdk(image_url, sync_mode):
 
 
 def test_topaz_image_variation(image_url):
-    from litellm import image_variation, aimage_variation
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm import image_variation, aimage_variation
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
     from unittest.mock import patch
 
     client = HTTPHandler()

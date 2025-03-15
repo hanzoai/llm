@@ -1,7 +1,7 @@
 # Output 
 
 ## Format
-Here's the exact json output and type you can expect from all litellm `completion` calls for all models
+Here's the exact json output and type you can expect from all llm `completion` calls for all models
 
 ```python 
 {
@@ -56,7 +56,7 @@ Here's what an example response looks like
 You can also access information like latency. 
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 os.environ["ANTHROPIC_API_KEY"] = "your-api-key"
 

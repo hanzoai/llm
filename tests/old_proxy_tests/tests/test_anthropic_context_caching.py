@@ -1,8 +1,8 @@
 import openai
 
 client = openai.OpenAI(
-    api_key="sk-1234",  # litellm proxy api key
-    base_url="http://0.0.0.0:4000",  # litellm proxy base url
+    api_key="sk-1234",  # llm proxy api key
+    base_url="http://0.0.0.0:4000",  # llm proxy base url
 )
 
 

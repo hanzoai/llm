@@ -1,12 +1,12 @@
 # What is stored in the DB
 
-The LiteLLM Proxy uses a PostgreSQL database to store various information. Here's are the main features the DB is used for:
+The Hanzo Proxy uses a PostgreSQL database to store various information. Here's are the main features the DB is used for:
 - Virtual Keys, Organizations, Teams, Users, Budgets, and more.
 - Per request Usage Tracking
 
 ## Link to DB Schema
 
-You can see the full DB Schema [here](https://github.com/BerriAI/litellm/blob/main/schema.prisma)
+You can see the full DB Schema [here](https://github.com/BerriAI/llm/blob/main/schema.prisma)
 
 ## DB Tables
 
@@ -14,42 +14,42 @@ You can see the full DB Schema [here](https://github.com/BerriAI/litellm/blob/ma
 
 | Table Name | Description | Row Insert Frequency |
 |------------|-------------|---------------------|
-| LiteLLM_OrganizationTable | Manages organization-level configurations. Tracks organization spend, model access, and metadata. Links to budget configurations and teams. | Low |
-| LiteLLM_TeamTable | Handles team-level settings within organizations. Manages team members, admins, and their roles. Controls team-specific budgets, rate limits, and model access. | Low |
-| LiteLLM_UserTable | Stores user information and their settings. Tracks individual user spend, model access, and rate limits. Manages user roles and team memberships. | Low |
-| LiteLLM_EndUserTable | Manages end-user configurations. Controls model access and regional requirements. Tracks end-user spend. | Low |
-| LiteLLM_TeamMembership | Tracks user participation in teams. Manages team-specific user budgets and spend. | Low |
-| LiteLLM_OrganizationMembership | Manages user roles within organizations. Tracks organization-specific user permissions and spend. | Low |
-| LiteLLM_InvitationLink | Handles user invitations. Manages invitation status and expiration. Tracks who created and accepted invitations. | Low |
-| LiteLLM_UserNotifications | Handles model access requests. Tracks user requests for model access. Manages approval status. | Low |
+| Hanzo_OrganizationTable | Manages organization-level configurations. Tracks organization spend, model access, and metadata. Links to budget configurations and teams. | Low |
+| Hanzo_TeamTable | Handles team-level settings within organizations. Manages team members, admins, and their roles. Controls team-specific budgets, rate limits, and model access. | Low |
+| Hanzo_UserTable | Stores user information and their settings. Tracks individual user spend, model access, and rate limits. Manages user roles and team memberships. | Low |
+| Hanzo_EndUserTable | Manages end-user configurations. Controls model access and regional requirements. Tracks end-user spend. | Low |
+| Hanzo_TeamMembership | Tracks user participation in teams. Manages team-specific user budgets and spend. | Low |
+| Hanzo_OrganizationMembership | Manages user roles within organizations. Tracks organization-specific user permissions and spend. | Low |
+| Hanzo_InvitationLink | Handles user invitations. Manages invitation status and expiration. Tracks who created and accepted invitations. | Low |
+| Hanzo_UserNotifications | Handles model access requests. Tracks user requests for model access. Manages approval status. | Low |
 
 ### Authentication
 
 | Table Name | Description | Row Insert Frequency |
 |------------|-------------|---------------------|
-| LiteLLM_VerificationToken | Manages Virtual Keys and their permissions. Controls token-specific budgets, rate limits, and model access. Tracks key-specific spend and metadata. | **Medium** - stores all Virtual Keys |
+| Hanzo_VerificationToken | Manages Virtual Keys and their permissions. Controls token-specific budgets, rate limits, and model access. Tracks key-specific spend and metadata. | **Medium** - stores all Virtual Keys |
 
 ### Model (LLM) Management
 
 | Table Name | Description | Row Insert Frequency |
 |------------|-------------|---------------------|
-| LiteLLM_ProxyModelTable | Stores model configurations. Defines available models and their parameters. Contains model-specific information and settings. | Low - Configuration only |
+| Hanzo_ProxyModelTable | Stores model configurations. Defines available models and their parameters. Contains model-specific information and settings. | Low - Configuration only |
 
 ### Budget Management
 
 | Table Name | Description | Row Insert Frequency |
 |------------|-------------|---------------------|
-| LiteLLM_BudgetTable | Stores budget and rate limit configurations for organizations, keys, and end users. Tracks max budgets, soft budgets, TPM/RPM limits, and model-specific budgets. Handles budget duration and reset timing. | Low - Configuration only |
+| Hanzo_BudgetTable | Stores budget and rate limit configurations for organizations, keys, and end users. Tracks max budgets, soft budgets, TPM/RPM limits, and model-specific budgets. Handles budget duration and reset timing. | Low - Configuration only |
 
 
 ### Tracking & Logging
 
 | Table Name | Description | Row Insert Frequency |
 |------------|-------------|---------------------|
-| LiteLLM_SpendLogs | Detailed logs of all API requests. Records token usage, spend, and timing information. Tracks which models and keys were used. | **High - every LLM API request - Success or Failure** |
-| LiteLLM_AuditLog | Tracks changes to system configuration. Records who made changes and what was modified. Maintains history of updates to teams, users, and models. | **Off by default**, **High - when enabled** |
+| Hanzo_SpendLogs | Detailed logs of all API requests. Records token usage, spend, and timing information. Tracks which models and keys were used. | **High - every LLM API request - Success or Failure** |
+| Hanzo_AuditLog | Tracks changes to system configuration. Records who made changes and what was modified. Maintains history of updates to teams, users, and models. | **Off by default**, **High - when enabled** |
 
-## Disable `LiteLLM_SpendLogs`
+## Disable `Hanzo_SpendLogs`
 
 You can disable spend_logs and error_logs by setting `disable_spend_logs` and `disable_error_logs` to `True` on the `general_settings` section of your proxy_config.yaml file.
 
@@ -62,11 +62,11 @@ general_settings:
 ### What is the impact of disabling these logs?
 
 When disabling spend logs (`disable_spend_logs: True`):
-- You **will not** be able to view Usage on the LiteLLM UI
+- You **will not** be able to view Usage on the Hanzo UI
 - You **will** continue seeing cost metrics on s3, Prometheus, Langfuse (any other Logging integration you are using)
 
 When disabling error logs (`disable_error_logs: True`):
-- You **will not** be able to view Errors on the LiteLLM UI
+- You **will not** be able to view Errors on the Hanzo UI
 - You **will** continue seeing error logs in your application logs and any other logging integrations you are using
 
 
@@ -77,15 +77,15 @@ If you need to migrate Databases the following Tables should be copied to ensure
 
 | Table Name | Description | 
 |------------|-------------|
-| LiteLLM_VerificationToken | **Required** to ensure existing virtual keys continue working |
-| LiteLLM_UserTable | **Required** to ensure existing virtual keys continue working |
-| LiteLLM_TeamTable | **Required** to ensure Teams are migrated |
-| LiteLLM_TeamMembership | **Required** to ensure Teams member budgets are migrated |
-| LiteLLM_BudgetTable | **Required** to migrate existing budgeting settings |
-| LiteLLM_OrganizationTable | **Optional** Only migrate if you use Organizations in DB |
-| LiteLLM_OrganizationMembership | **Optional** Only migrate if you use Organizations in DB | 
-| LiteLLM_ProxyModelTable | **Optional** Only migrate if you store your LLMs in the DB (i.e you set `STORE_MODEL_IN_DB=True`) |
-| LiteLLM_SpendLogs | **Optional** Only migrate if you want historical data on LiteLLM UI |
-| LiteLLM_ErrorLogs | **Optional** Only migrate if you want historical data on LiteLLM UI |
+| Hanzo_VerificationToken | **Required** to ensure existing virtual keys continue working |
+| Hanzo_UserTable | **Required** to ensure existing virtual keys continue working |
+| Hanzo_TeamTable | **Required** to ensure Teams are migrated |
+| Hanzo_TeamMembership | **Required** to ensure Teams member budgets are migrated |
+| Hanzo_BudgetTable | **Required** to migrate existing budgeting settings |
+| Hanzo_OrganizationTable | **Optional** Only migrate if you use Organizations in DB |
+| Hanzo_OrganizationMembership | **Optional** Only migrate if you use Organizations in DB | 
+| Hanzo_ProxyModelTable | **Optional** Only migrate if you store your LLMs in the DB (i.e you set `STORE_MODEL_IN_DB=True`) |
+| Hanzo_SpendLogs | **Optional** Only migrate if you want historical data on Hanzo UI |
+| Hanzo_ErrorLogs | **Optional** Only migrate if you want historical data on Hanzo UI |
 
 

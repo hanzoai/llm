@@ -1,5 +1,5 @@
 include:
   - non-existent-file.yaml
 
-litellm_settings:
+llm_settings:
   callbacks: ["prometheus"]

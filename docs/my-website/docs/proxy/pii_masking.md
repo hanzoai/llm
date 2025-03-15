@@ -2,7 +2,7 @@ import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# PII Masking - LiteLLM Gateway (Deprecated Version)
+# PII Masking - Hanzo Gateway (Deprecated Version)
 
 :::warning
 
@@ -10,7 +10,7 @@ This is deprecated, please use [our new Presidio pii masking integration](./guar
 
 :::
 
-LiteLLM supports [Microsoft Presidio](https://github.com/microsoft/presidio/) for PII masking. 
+Hanzo supports [Microsoft Presidio](https://github.com/microsoft/presidio/) for PII masking. 
 
 
 ## Quick Start
@@ -24,7 +24,7 @@ export PRESIDIO_ANONYMIZER_API_BASE="http://localhost:5001"
 ### Step 2. Set it as a callback in config.yaml
 
 ```yaml
-litellm_settings: 
+llm_settings: 
     callbacks = ["presidio", ...] # e.g. ["presidio", custom_callbacks.proxy_handler_instance]
 ```
 
@@ -32,7 +32,7 @@ litellm_settings:
 
 
 ```
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 
@@ -44,13 +44,13 @@ This will mask the input going to the llm provider
 
 LLM responses can sometimes contain the masked tokens. 
 
-For presidio 'replace' operations, LiteLLM can check the LLM response and replace the masked token with the user-submitted values. 
+For presidio 'replace' operations, Hanzo can check the LLM response and replace the masked token with the user-submitted values. 
 
-Just set `litellm.output_parse_pii = True`, to enable this. 
+Just set `llm.output_parse_pii = True`, to enable this. 
 
 
 ```yaml
-litellm_settings:
+llm_settings:
     output_parse_pii: true
 ```
 
@@ -68,10 +68,10 @@ litellm_settings:
 
 Send ad-hoc recognizers to presidio `/analyze` by passing a json file to the proxy 
 
-[**Example** ad-hoc recognizer](../../../../litellm/proxy/hooks/example_presidio_ad_hoc_recognizer.json)
+[**Example** ad-hoc recognizer](../../../../llm/proxy/hooks/example_presidio_ad_hoc_recognizer.json)
 
 ```yaml
-litellm_settings: 
+llm_settings: 
   callbacks: ["presidio"]
   presidio_ad_hoc_recognizers: "./hooks/example_presidio_ad_hoc_recognizer.json"
 ```
@@ -79,7 +79,7 @@ litellm_settings:
 You can see this working, when you run the proxy: 
 
 ```bash
-litellm --config /path/to/config.yaml --debug
+llm --config /path/to/config.yaml --debug
 ```
 
 Make a chat completions request, example:
@@ -205,12 +205,12 @@ This is currently only applied for
 
 1. Setup config.yaml
 ```yaml
-litellm_settings:
+llm_settings:
   presidio_logging_only: true 
 
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 ```
@@ -218,7 +218,7 @@ model_list:
 2. Start proxy
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 

@@ -11,45 +11,45 @@ sys.path.insert(
 
 import httpx
 import pytest
-import litellm
-from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
+import llm
+from llm.llm_core_utils.llm_logging import Logging as HanzoLoggingObj
 
 
-from litellm.proxy.vertex_ai_endpoints.vertex_endpoints import (
-    get_litellm_virtual_key,
+from llm.proxy.vertex_ai_endpoints.vertex_endpoints import (
+    get_llm_virtual_key,
     vertex_proxy_route,
     _get_vertex_env_vars,
     set_default_vertex_config,
     VertexPassThroughCredentials,
     default_vertex_config,
 )
-from litellm.proxy.vertex_ai_endpoints.vertex_passthrough_router import (
+from llm.proxy.vertex_ai_endpoints.vertex_passthrough_router import (
     VertexPassThroughRouter,
 )
 
 
 @pytest.mark.asyncio
-async def test_get_litellm_virtual_key():
+async def test_get_llm_virtual_key():
     """
-    Test that the get_litellm_virtual_key function correctly handles the API key authentication
+    Test that the get_llm_virtual_key function correctly handles the API key authentication
     """
-    # Test with x-litellm-api-key
+    # Test with x-llm-api-key
     mock_request = Mock()
-    mock_request.headers = {"x-litellm-api-key": "test-key-123"}
-    result = get_litellm_virtual_key(mock_request)
+    mock_request.headers = {"x-llm-api-key": "test-key-123"}
+    result = get_llm_virtual_key(mock_request)
     assert result == "Bearer test-key-123"
 
     # Test with Authorization header
     mock_request.headers = {"Authorization": "Bearer auth-key-456"}
-    result = get_litellm_virtual_key(mock_request)
+    result = get_llm_virtual_key(mock_request)
     assert result == "Bearer auth-key-456"
 
-    # Test with both headers (x-litellm-api-key should take precedence)
+    # Test with both headers (x-llm-api-key should take precedence)
     mock_request.headers = {
-        "x-litellm-api-key": "test-key-123",
+        "x-llm-api-key": "test-key-123",
         "Authorization": "Bearer auth-key-456",
     }
-    result = get_litellm_virtual_key(mock_request)
+    result = get_llm_virtual_key(mock_request)
     assert result == "Bearer test-key-123"
 
 
@@ -58,21 +58,21 @@ async def test_async_vertex_proxy_route_api_key_auth():
     """
     Critical
 
-    This is how Vertex AI JS SDK will Auth to Litellm Proxy
+    This is how Vertex AI JS SDK will Auth to LLM Proxy
     """
     # Mock dependencies
     mock_request = Mock()
-    mock_request.headers = {"x-litellm-api-key": "test-key-123"}
+    mock_request.headers = {"x-llm-api-key": "test-key-123"}
     mock_request.method = "POST"
     mock_response = Mock()
 
     with patch(
-        "litellm.proxy.vertex_ai_endpoints.vertex_endpoints.user_api_key_auth"
+        "llm.proxy.vertex_ai_endpoints.vertex_endpoints.user_api_key_auth"
     ) as mock_auth:
         mock_auth.return_value = {"api_key": "test-key-123"}
 
         with patch(
-            "litellm.proxy.vertex_ai_endpoints.vertex_endpoints.create_pass_through_route"
+            "llm.proxy.vertex_ai_endpoints.vertex_endpoints.create_pass_through_route"
         ) as mock_pass_through:
             mock_pass_through.return_value = AsyncMock(
                 return_value={"status": "success"}
@@ -128,7 +128,7 @@ async def test_set_default_vertex_config():
     try:
         # Test with None config
         set_default_vertex_config()
-        from litellm.proxy.vertex_ai_endpoints.vertex_endpoints import (
+        from llm.proxy.vertex_ai_endpoints.vertex_endpoints import (
             default_vertex_config,
         )
 
@@ -143,7 +143,7 @@ async def test_set_default_vertex_config():
             "vertex_credentials": "path/to/creds",
         }
         set_default_vertex_config(test_config)
-        from litellm.proxy.vertex_ai_endpoints.vertex_endpoints import (
+        from llm.proxy.vertex_ai_endpoints.vertex_endpoints import (
             default_vertex_config,
         )
 
@@ -158,7 +158,7 @@ async def test_set_default_vertex_config():
             "vertex_credentials": "os.environ/GOOGLE_CREDS",
         }
         set_default_vertex_config(test_config)
-        from litellm.proxy.vertex_ai_endpoints.vertex_endpoints import (
+        from llm.proxy.vertex_ai_endpoints.vertex_endpoints import (
             default_vertex_config,
         )
 
@@ -183,7 +183,7 @@ async def test_vertex_passthrough_router_init():
 @pytest.mark.asyncio
 async def test_get_vertex_credentials_none():
     """Test get_vertex_credentials with various inputs"""
-    from litellm.proxy.vertex_ai_endpoints import vertex_endpoints
+    from llm.proxy.vertex_ai_endpoints import vertex_endpoints
 
     setattr(vertex_endpoints, "default_vertex_config", VertexPassThroughCredentials())
     router = VertexPassThroughRouter()

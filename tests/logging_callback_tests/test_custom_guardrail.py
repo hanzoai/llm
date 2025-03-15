@@ -18,23 +18,23 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-import litellm
-from litellm import completion
-from litellm._logging import verbose_logger
-from litellm.integrations.custom_guardrail import CustomGuardrail
+import llm
+from llm import completion
+from llm._logging import verbose_logger
+from llm.integrations.custom_guardrail import CustomGuardrail
 
 
 from typing import Any, Dict, List, Literal, Optional, Union
 
-import litellm
-from litellm._logging import verbose_proxy_logger
-from litellm.caching.caching import DualCache
-from litellm.integrations.custom_guardrail import CustomGuardrail
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.proxy.guardrails.guardrail_helpers import should_proceed_based_on_metadata
-from litellm.types.guardrails import GuardrailEventHooks
-from litellm.proxy.guardrails.guardrail_endpoints import _get_guardrails_list_response
-from litellm.types.guardrails import GuardrailInfoResponse, ListGuardrailsResponse
+import llm
+from llm._logging import verbose_proxy_logger
+from llm.caching.caching import DualCache
+from llm.integrations.custom_guardrail import CustomGuardrail
+from llm.proxy._types import UserAPIKeyAuth
+from llm.proxy.guardrails.guardrail_helpers import should_proceed_based_on_metadata
+from llm.types.guardrails import GuardrailEventHooks
+from llm.proxy.guardrails.guardrail_endpoints import _get_guardrails_list_response
+from llm.types.guardrails import GuardrailInfoResponse, ListGuardrailsResponse
 
 
 def test_get_guardrail_from_metadata():
@@ -156,7 +156,7 @@ def test_get_guardrails_list_response():
     sample_config = [
         {
             "guardrail_name": "test-guard",
-            "litellm_params": {
+            "llm_params": {
                 "guardrail": "test-guard",
                 "mode": "pre_call",
                 "api_key": "test-api-key",
@@ -197,7 +197,7 @@ def test_get_guardrails_list_response():
     minimal_config = [
         {
             "guardrail_name": "minimal-guard",
-            "litellm_params": {"guardrail": "minimal-guard", "mode": "pre_call"},
+            "llm_params": {"guardrail": "minimal-guard", "mode": "pre_call"},
         }
     ]
     minimal_response = _get_guardrails_list_response(minimal_config)

@@ -1,9 +1,9 @@
 # Oobabooga Text Web API Tutorial
 
-### Install + Import LiteLLM 
+### Install + Import Hanzo 
 ```python 
-!pip install litellm
-from litellm import completion 
+!pip install llm
+from llm import completion 
 import os
 ```
 

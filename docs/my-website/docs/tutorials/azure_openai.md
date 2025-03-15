@@ -1,16 +1,16 @@
 # Replacing OpenAI ChatCompletion with Completion()
 
-* [Supported OpenAI LLMs](https://docs.litellm.ai/docs/providers/openai)
-* [Supported Azure OpenAI LLMs](https://docs.litellm.ai/docs/providers/azure)
+* [Supported OpenAI LLMs](https://docs.llm.ai/docs/providers/openai)
+* [Supported Azure OpenAI LLMs](https://docs.llm.ai/docs/providers/azure)
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/litellm/blob/main/cookbook/LiteLLM_Azure_and_OpenAI_example.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/Hanzo_Azure_and_OpenAI_example.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
 ## Completion() - Quick Start
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 # openai configs
 os.environ["OPENAI_API_KEY"] = ""
@@ -42,7 +42,7 @@ print(response)
 ## Completion() with Streaming
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 # openai configs
 os.environ["OPENAI_API_KEY"] = ""
@@ -79,7 +79,7 @@ for chunk in response:
 ## Completion() with Streaming + Async
 ```python
 import os 
-from litellm import acompletion
+from llm import acompletion
 
 # openai configs
 os.environ["OPENAI_API_KEY"] = ""
@@ -112,7 +112,7 @@ response = acompletion(
 ```python
 import os
 import threading
-from litellm import completion
+from llm import completion
 
 # Function to make a completion call
 def make_completion(model, messages):

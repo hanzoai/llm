@@ -2,12 +2,12 @@ import Image from '@theme/IdealImage';
 
 # Create Pass Through Endpoints 
 
-Add pass through routes to LiteLLM Proxy
+Add pass through routes to Hanzo Proxy
 
-**Example:** Add a route `/v1/rerank` that forwards requests to `https://api.cohere.com/v1/rerank` through LiteLLM Proxy
+**Example:** Add a route `/v1/rerank` that forwards requests to `https://api.cohere.com/v1/rerank` through Hanzo Proxy
 
 
-💡 This allows making the following Request to LiteLLM Proxy
+💡 This allows making the following Request to Hanzo Proxy
 ```shell
 curl --request POST \
   --url http://localhost:4000/v1/rerank \
@@ -23,13 +23,13 @@ curl --request POST \
 
 ## Tutorial - Pass through Cohere Re-Rank Endpoint
 
-**Step 1** Define pass through routes on [litellm config.yaml](configs.md)
+**Step 1** Define pass through routes on [llm config.yaml](configs.md)
 
 ```yaml
 general_settings:
   master_key: sk-1234
   pass_through_endpoints:
-    - path: "/v1/rerank"                                  # route you want to add to LiteLLM Proxy Server
+    - path: "/v1/rerank"                                  # route you want to add to Hanzo Proxy Server
       target: "https://api.cohere.com/v1/rerank"          # URL this route should forward requests to
       headers:                                            # headers to forward to this URL
         Authorization: "bearer os.environ/COHERE_API_KEY" # (Optional) Auth Header to forward to your Endpoint
@@ -41,11 +41,11 @@ general_settings:
 **Step 2** Start Proxy Server in detailed_debug mode
 
 ```shell
-litellm --config config.yaml --detailed_debug
+llm --config config.yaml --detailed_debug
 ```
 **Step 3** Make Request to pass through endpoint
 
-Here `http://localhost:4000` is your litellm proxy endpoint
+Here `http://localhost:4000` is your llm proxy endpoint
 
 ```shell
 curl --request POST \
@@ -67,7 +67,7 @@ curl --request POST \
 
 🎉 **Expected Response**
 
-This request got forwarded from LiteLLM Proxy -> Defined Target URL (with headers)
+This request got forwarded from Hanzo Proxy -> Defined Target URL (with headers)
 
 ```shell
 {
@@ -100,13 +100,13 @@ This request got forwarded from LiteLLM Proxy -> Defined Target URL (with header
 ## Tutorial - Pass Through Langfuse Requests
 
 
-**Step 1** Define pass through routes on [litellm config.yaml](configs.md)
+**Step 1** Define pass through routes on [llm config.yaml](configs.md)
 
 ```yaml
 general_settings:
   master_key: sk-1234
   pass_through_endpoints:
-    - path: "/api/public/ingestion"                                # route you want to add to LiteLLM Proxy Server
+    - path: "/api/public/ingestion"                                # route you want to add to Hanzo Proxy Server
       target: "https://us.cloud.langfuse.com/api/public/ingestion" # URL this route should forward 
       headers:
         LANGFUSE_PUBLIC_KEY: "os.environ/LANGFUSE_DEV_PUBLIC_KEY" # your langfuse account public key
@@ -116,7 +116,7 @@ general_settings:
 **Step 2** Start Proxy Server in detailed_debug mode
 
 ```shell
-litellm --config config.yaml --detailed_debug
+llm --config config.yaml --detailed_debug
 ```
 **Step 3** Make Request to pass through endpoint
 
@@ -125,13 +125,13 @@ Run this code to make a sample trace
 from langfuse import Langfuse
 
 langfuse = Langfuse(
-    host="http://localhost:4000", # your litellm proxy endpoint
+    host="http://localhost:4000", # your llm proxy endpoint
     public_key="anything",        # no key required since this is a pass through
     secret_key="anything",        # no key required since this is a pass through
 )
 
 print("sending langfuse trace request")
-trace = langfuse.trace(name="test-trace-litellm-proxy-passthrough")
+trace = langfuse.trace(name="test-trace-llm-proxy-passthrough")
 print("flushing langfuse request")
 langfuse.flush()
 
@@ -146,16 +146,16 @@ Expect to see the following Trace Generated on your Langfuse Dashboard
 
 <Image img={require('../../img/proxy_langfuse.png')} />
 
-You will see the following endpoint called on your litellm proxy server logs
+You will see the following endpoint called on your llm proxy server logs
 
 ```shell
 POST /api/public/ingestion HTTP/1.1" 207 Multi-Status
 ```
 
 
-## ✨ [Enterprise] - Use LiteLLM keys/authentication on Pass Through Endpoints
+## ✨ [Enterprise] - Use Hanzo keys/authentication on Pass Through Endpoints
 
-Use this if you want the pass through endpoint to honour LiteLLM keys/authentication
+Use this if you want the pass through endpoint to honour Hanzo keys/authentication
 
 This also enforces the key's rpm limits on pass-through endpoints.
 
@@ -166,14 +166,14 @@ general_settings:
   pass_through_endpoints:
     - path: "/v1/rerank"
       target: "https://api.cohere.com/v1/rerank"
-      auth: true # 👈 Key change to use LiteLLM Auth / Keys
+      auth: true # 👈 Key change to use Hanzo Auth / Keys
       headers:
         Authorization: "bearer os.environ/COHERE_API_KEY"
         content-type: application/json
         accept: application/json
 ```
 
-Test Request with LiteLLM Key
+Test Request with Hanzo Key
 
 ```shell
 curl --request POST \
@@ -193,7 +193,7 @@ curl --request POST \
   }'
 ```
 
-### Use Langfuse client sdk w/ LiteLLM Key 
+### Use Langfuse client sdk w/ Hanzo Key 
 
 **Usage** 
 
@@ -203,7 +203,7 @@ curl --request POST \
 general_settings:
   master_key: sk-1234
   pass_through_endpoints:
-    - path: "/api/public/ingestion"                                # route you want to add to LiteLLM Proxy Server
+    - path: "/api/public/ingestion"                                # route you want to add to Hanzo Proxy Server
       target: "https://us.cloud.langfuse.com/api/public/ingestion" # URL this route should forward 
       auth: true # 👈 KEY CHANGE
       custom_auth_parser: "langfuse" # 👈 KEY CHANGE
@@ -215,7 +215,7 @@ general_settings:
 2. Start proxy
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test with langfuse sdk
@@ -226,13 +226,13 @@ litellm --config /path/to/config.yaml
 from langfuse import Langfuse
 
 langfuse = Langfuse(
-    host="http://localhost:4000", # your litellm proxy endpoint
-    public_key="sk-1234",        # your litellm proxy api key 
+    host="http://localhost:4000", # your llm proxy endpoint
+    public_key="sk-1234",        # your llm proxy api key 
     secret_key="anything",        # no key required since this is a pass through
 )
 
 print("sending langfuse trace request")
-trace = langfuse.trace(name="test-trace-litellm-proxy-passthrough")
+trace = langfuse.trace(name="test-trace-llm-proxy-passthrough")
 print("flushing langfuse request")
 langfuse.flush()
 
@@ -248,7 +248,7 @@ All possible values for `pass_through_endpoints` and what they mean
 ```yaml
 general_settings:
   pass_through_endpoints:
-    - path: "/v1/rerank"                                  # route you want to add to LiteLLM Proxy Server
+    - path: "/v1/rerank"                                  # route you want to add to Hanzo Proxy Server
       target: "https://api.cohere.com/v1/rerank"          # URL this route should forward requests to
       headers:                                            # headers to forward to this URL
         Authorization: "bearer os.environ/COHERE_API_KEY" # (Optional) Auth Header to forward to your Endpoint
@@ -259,7 +259,7 @@ general_settings:
 **Spec**
 
 * `pass_through_endpoints` *list*: A collection of endpoint configurations for request forwarding.
-  * `path` *string*: The route to be added to the LiteLLM Proxy Server.
+  * `path` *string*: The route to be added to the Hanzo Proxy Server.
   * `target` *string*: The URL to which requests for this path should be forwarded.
   * `headers` *object*: Key-value pairs of headers to be forwarded with the request. You can set any key value pair here and it will be forwarded to your target endpoint
     * `Authorization` *string*: The authentication header for the target API.
@@ -275,20 +275,20 @@ general_settings:
 
 Allow developers to call the proxy with Anthropic/boto3/etc. client sdk's.
 
-Test our [Anthropic Adapter](../anthropic_completion.md) for reference [**Code**](https://github.com/BerriAI/litellm/blob/fd743aaefd23ae509d8ca64b0c232d25fe3e39ee/litellm/adapters/anthropic_adapter.py#L50)
+Test our [Anthropic Adapter](../anthropic_completion.md) for reference [**Code**](https://github.com/BerriAI/llm/blob/fd743aaefd23ae509d8ca64b0c232d25fe3e39ee/llm/adapters/anthropic_adapter.py#L50)
 
 ### 1. Write an Adapter 
 
-Translate the request/response from your custom API schema to the OpenAI schema (used by litellm.completion()) and back. 
+Translate the request/response from your custom API schema to the OpenAI schema (used by llm.completion()) and back. 
 
 For provider-specific params 👉 [**Provider-Specific Params**](../completion/provider_specific_params.md)
 
 ```python
-from litellm import adapter_completion
-import litellm 
-from litellm import ChatCompletionRequest, verbose_logger
-from litellm.integrations.custom_logger import CustomLogger
-from litellm.types.llms.anthropic import AnthropicMessagesRequest, AnthropicResponse
+from llm import adapter_completion
+import llm 
+from llm import ChatCompletionRequest, verbose_logger
+from llm.integrations.custom_logger import CustomLogger
+from llm.types.llms.anthropic import AnthropicMessagesRequest, AnthropicResponse
 import os
 
 # What is this?
@@ -321,17 +321,17 @@ class AnthropicAdapter(CustomLogger):
         """
         request_body = AnthropicMessagesRequest(**kwargs)  # type: ignore
 
-        translated_body = litellm.AnthropicConfig().translate_anthropic_to_openai(
+        translated_body = llm.AnthropicConfig().translate_anthropic_to_openai(
             anthropic_message_request=request_body
         )
 
         return translated_body
 
     def translate_completion_output_params(
-        self, response: litellm.ModelResponse
+        self, response: llm.ModelResponse
     ) -> Optional[AnthropicResponse]:
 
-        return litellm.AnthropicConfig().translate_openai_response_to_anthropic(
+        return llm.AnthropicConfig().translate_openai_response_to_anthropic(
             response=response
         )
 
@@ -346,7 +346,7 @@ anthropic_adapter = AnthropicAdapter()
 ###########
 
 ## register CUSTOM ADAPTER
-litellm.adapters = [{"id": "anthropic", "adapter": anthropic_adapter}]
+llm.adapters = [{"id": "anthropic", "adapter": anthropic_adapter}]
 
 ## set ENV variables
 os.environ["OPENAI_API_KEY"] = "your-openai-key"
@@ -376,7 +376,7 @@ logger_instance_name: `anthropic_adapter`. This is defined in Step 1
 ```yaml
 model_list:
   - model_name: my-fake-claude-endpoint
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
@@ -384,10 +384,10 @@ model_list:
 general_settings:
   master_key: sk-1234
   pass_through_endpoints:
-    - path: "/v1/messages"                 # route you want to add to LiteLLM Proxy Server
+    - path: "/v1/messages"                 # route you want to add to Hanzo Proxy Server
       target: custom_callbacks.anthropic_adapter          # Adapter to use for this route
       headers:
-        litellm_user_api_key: "x-api-key" # Field in headers, containing LiteLLM Key
+        llm_user_api_key: "x-api-key" # Field in headers, containing Hanzo Key
 ```
 
 ### 3. Test it! 
@@ -395,7 +395,7 @@ general_settings:
 **Start proxy**
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 **Curl**

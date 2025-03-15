@@ -8,8 +8,8 @@
 # import os
 # sys.path.insert(0, os.path.abspath('../..'))  # Adds the parent directory to the system path
 # import pytest
-# import litellm
-# from litellm import embedding, completion
+# import llm
+# from llm import embedding, completion
 # import asyncio
 
 
@@ -17,24 +17,24 @@
 # messages = [{ "content": user_message,"role": "user"}]
 
 # async def test_ollama_aembeddings():
-#     litellm.set_verbose = True
+#     llm.set_verbose = True
 #     input = "The food was delicious and the waiter..."
-#     response = await litellm.aembedding(model="ollama/mistral", input=input)
+#     response = await llm.aembedding(model="ollama/mistral", input=input)
 #     print(response)
 
 # asyncio.run(test_ollama_aembeddings())
 
 # def test_ollama_embeddings():
-#     litellm.set_verbose = True
+#     llm.set_verbose = True
 #     input = "The food was delicious and the waiter..."
-#     response = litellm.embedding(model="ollama/mistral", input=input)
+#     response = llm.embedding(model="ollama/mistral", input=input)
 #     print(response)
 
 # test_ollama_embeddings()
 
 # def test_ollama_streaming():
 #     try:
-#         litellm.set_verbose = False
+#         llm.set_verbose = False
 #         messages = [
 #             {"role": "user", "content": "What is the weather like in Boston?"}
 #         ]
@@ -58,7 +58,7 @@
 #             }
 #             }
 #         ]
-#         response = litellm.completion(model="ollama/mistral",
+#         response = llm.completion(model="ollama/mistral",
 #                                              messages=messages,
 #                                              functions=functions,
 #                                              stream=True)
@@ -71,8 +71,8 @@
 
 # async def test_async_ollama_streaming():
 #     try:
-#         litellm.set_verbose = False
-#         response = await litellm.acompletion(model="ollama/mistral-openorca",
+#         llm.set_verbose = False
+#         response = await llm.acompletion(model="ollama/mistral-openorca",
 #                                              messages=[{"role": "user", "content": "Hey, how's it going?"}],
 #                                              stream=True)
 #         async for chunk in response:
@@ -84,7 +84,7 @@
 
 # def test_completion_ollama():
 #     try:
-#         litellm.set_verbose = True
+#         llm.set_verbose = True
 #         response = completion(
 #             model="ollama/mistral",
 #             messages=[{"role": "user", "content": "Hey, how's it going?"}],
@@ -102,7 +102,7 @@
 
 # def test_completion_ollama_function_calling():
 #     try:
-#         litellm.set_verbose = True
+#         llm.set_verbose = True
 #         messages = [
 #             {"role": "user", "content": "What is the weather like in Boston?"}
 #         ]
@@ -142,7 +142,7 @@
 
 # async def async_test_completion_ollama_function_calling():
 #     try:
-#         litellm.set_verbose = True
+#         llm.set_verbose = True
 #         messages = [
 #             {"role": "user", "content": "What is the weather like in Boston?"}
 #         ]
@@ -166,7 +166,7 @@
 #             }
 #             }
 #         ]
-#         response = await litellm.acompletion(
+#         response = await llm.acompletion(
 #             model="ollama/mistral",
 #             messages=messages,
 #             functions=functions,
@@ -195,8 +195,8 @@
 
 
 # def test_completion_ollama_custom_prompt_template():
-#     user_message = "what is litellm?"
-#     litellm.register_prompt_template(
+#     user_message = "what is llm?"
+#     llm.register_prompt_template(
 #         model="ollama/llama2",
 #         roles={
 #             "system": {"pre_message": "System: "},
@@ -205,7 +205,7 @@
 #         }
 #     )
 #     messages = [{ "content": user_message,"role": "user"}]
-#     litellm.set_verbose = True
+#     llm.set_verbose = True
 #     try:
 #         response = completion(
 #             model="ollama/llama2",
@@ -227,7 +227,7 @@
 #     user_message = "what is the weather"
 #     messages = [{ "content": user_message,"role": "user"}]
 #     try:
-#         response = await litellm.acompletion(
+#         response = await llm.acompletion(
 #             model="ollama/llama2",
 #             messages=messages,
 #             api_base="http://localhost:11434",
@@ -238,7 +238,7 @@
 
 
 #         print("TEST ASYNC NON Stream")
-#         response = await litellm.acompletion(
+#         response = await llm.acompletion(
 #             model="ollama/llama2",
 #             messages=messages,
 #             api_base="http://localhost:11434",
@@ -260,12 +260,12 @@
 
 # async def ask_question():
 #     params = {
-#         "messages": prepare_messages_for_chat("What is litellm? tell me 10 things about it who is sihaan.write an essay"),
+#         "messages": prepare_messages_for_chat("What is llm? tell me 10 things about it who is sihaan.write an essay"),
 #         "api_base": "http://localhost:11434",
 #         "model": "ollama/llama2",
 #         "stream": True,
 #     }
-#     response = await litellm.acompletion(**params)
+#     response = await llm.acompletion(**params)
 #     return response
 
 # async def main():
@@ -274,9 +274,9 @@
 #         print(chunk)
 
 #     print("test async completion without streaming")
-#     response = await litellm.acompletion(
+#     response = await llm.acompletion(
 #         model="ollama/llama2",
-#         messages=prepare_messages_for_chat("What is litellm? respond in 2 words"),
+#         messages=prepare_messages_for_chat("What is llm? respond in 2 words"),
 #     )
 #     print("response", response)
 
@@ -284,8 +284,8 @@
 # def test_completion_expect_error():
 #     # this tests if we can exception map correctly for ollama
 #     print("making ollama request")
-#     # litellm.set_verbose=True
-#     user_message = "what is litellm?"
+#     # llm.set_verbose=True
+#     user_message = "what is llm?"
 #     messages = [{ "content": user_message,"role": "user"}]
 #     try:
 #         response = completion(
@@ -306,7 +306,7 @@
 
 
 # def test_ollama_llava():
-#     litellm.set_verbose=True
+#     llm.set_verbose=True
 #     # same params as gpt-4 vision
 #     response = completion(
 #         model = "ollama/llava",

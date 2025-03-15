@@ -1,12 +1,12 @@
 name: 🚀 Feature Request 
-description: Submit a proposal/request for a new LiteLLM feature.
+description: Submit a proposal/request for a new Hanzo feature.
 title: "[Feature]: "
 labels: ["enhancement"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for making LiteLLM better! 
+        Thanks for making Hanzo better! 
   - type: textarea
     id: the-feature
     attributes:

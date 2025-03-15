@@ -66,9 +66,9 @@ def transform_remote_data(data):
         if "pricing" in row and "image" in row["pricing"] and float(row["pricing"]["image"]) != 0.0:
             obj['input_cost_per_image'] = float(row["pricing"]["image"])
 
-        # Add the fields 'litellm_provider' and 'mode'
+        # Add the fields 'llm_provider' and 'mode'
         obj.update({
-            "litellm_provider": "openrouter",
+            "llm_provider": "openrouter",
             "mode": "chat"
         })
 

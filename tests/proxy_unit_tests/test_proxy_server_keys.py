@@ -5,15 +5,15 @@
 # load_dotenv()
 # import os, io
 
-# # this file is to test litellm/proxy
+# # this file is to test llm/proxy
 
 # sys.path.insert(
 #     0, os.path.abspath("../..")
 # )  # Adds the parent directory to the system path
 # import pytest, logging
-# import litellm
-# from litellm import embedding, completion, completion_cost, Timeout
-# from litellm import RateLimitError
+# import llm
+# from llm import embedding, completion, completion_cost, Timeout
+# from llm import RateLimitError
 
 
 # import sys, os, time
@@ -23,7 +23,7 @@
 # load_dotenv()
 # import os, io
 
-# # this file is to test litellm/proxy
+# # this file is to test llm/proxy
 # from concurrent.futures import ThreadPoolExecutor
 
 # sys.path.insert(
@@ -31,9 +31,9 @@
 # )  # Adds the parent directory to the system path
 
 # import pytest, logging, requests
-# import litellm
-# from litellm import embedding, completion, completion_cost, Timeout
-# from litellm import RateLimitError
+# import llm
+# from llm import embedding, completion, completion_cost, Timeout
+# from llm import RateLimitError
 # from github import Github
 # import subprocess
 
@@ -55,7 +55,7 @@
 
 # # Provide the owner and name of the repository where the pull request is located
 # repository_owner = "BerriAI"
-# repository_name = "litellm"
+# repository_name = "llm"
 
 # # Get the repository object
 # repo = g.get_repo(f"{repository_owner}/{repository_name}")
@@ -88,7 +88,7 @@
 #             token = os.getenv("PROXY_MASTER_KEY")
 #             headers = {"Authorization": f"Bearer {token}"}
 
-#             endpoint = f"https://litellm-litellm-pr-{pr_number}.up.railway.app"
+#             endpoint = f"https://llm-llm-pr-{pr_number}.up.railway.app"
 
 #             # Make a request to the staging endpoint
 #             response = requests.post(
@@ -126,7 +126,7 @@
 #         token = os.getenv("PROXY_MASTER_KEY")
 #         headers = {"Authorization": f"Bearer {token}"}
 
-#         endpoint = f"https://litellm-litellm-pr-{pr_number}.up.railway.app"
+#         endpoint = f"https://llm-llm-pr-{pr_number}.up.railway.app"
 
 #         # Make a request to the staging endpoint
 #         response = requests.post(
@@ -148,7 +148,7 @@
 #         _post_data()
 #         print(f"Received response: {result}")
 #     except Exception as e:
-#         pytest.fail(f"LiteLLM Proxy test failed. Exception: {str(e)}")
+#         pytest.fail(f"Hanzo Proxy test failed. Exception: {str(e)}")
 
 # def test_add_new_key_max_parallel_limit():
 #     try:
@@ -158,7 +158,7 @@
 #         token = os.getenv("PROXY_MASTER_KEY")
 #         headers = {"Authorization": f"Bearer {token}"}
 
-#         endpoint = f"https://litellm-litellm-pr-{pr_number}.up.railway.app"
+#         endpoint = f"https://llm-llm-pr-{pr_number}.up.railway.app"
 #         print(f"endpoint: {endpoint}")
 #         # Make a request to the staging endpoint
 #         response = requests.post(
@@ -170,7 +170,7 @@
 #         # load endpoint with model
 #         model_data = {
 #             "model_name": "azure-model",
-#             "litellm_params": {
+#             "llm_params": {
 #                 "model": "azure/chatgpt-v-2",
 #                 "api_key": os.getenv("AZURE_API_KEY"),
 #                 "api_base": os.getenv("AZURE_API_BASE"),
@@ -215,7 +215,7 @@
 
 #         _run_in_parallel()
 #     except Exception as e:
-#         pytest.fail(f"LiteLLM Proxy test failed. Exception: {str(e)}")
+#         pytest.fail(f"Hanzo Proxy test failed. Exception: {str(e)}")
 
 # def test_add_new_key_max_parallel_limit_streaming():
 #     try:
@@ -225,7 +225,7 @@
 #         token = os.getenv("PROXY_MASTER_KEY")
 #         headers = {"Authorization": f"Bearer {token}"}
 
-#         endpoint = f"https://litellm-litellm-pr-{pr_number}.up.railway.app"
+#         endpoint = f"https://llm-llm-pr-{pr_number}.up.railway.app"
 
 #         # Make a request to the staging endpoint
 #         response = requests.post(
@@ -266,4 +266,4 @@
 
 #         _run_in_parallel()
 #     except Exception as e:
-#         pytest.fail(f"LiteLLM Proxy test failed. Exception: {str(e)}")
+#         pytest.fail(f"Hanzo Proxy test failed. Exception: {str(e)}")

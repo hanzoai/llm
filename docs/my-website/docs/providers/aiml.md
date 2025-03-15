@@ -21,9 +21,9 @@ If you have any questions, feel free to reach out. We’re happy to assist! 🚀
 You can choose from LLama, Qwen, Flux, and 200+ other open and closed-source models on aimlapi.com/models. For example:
 
 ```python
-import litellm
+import llm
 
-response = litellm.completion(
+response = llm.completion(
     model="openai/meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo", # The model name must include prefix "openai" + the model name from ai/ml api
     api_key="", # your aiml api-key 
     api_base="https://api.aimlapi.com/v2",
@@ -39,9 +39,9 @@ response = litellm.completion(
 ## Streaming
 
 ```python
-import litellm
+import llm
 
-response = litellm.completion(
+response = llm.completion(
     model="openai/Qwen/Qwen2-72B-Instruct",  # The model name must include prefix "openai" + the model name from ai/ml api
     api_key="",  # your aiml api-key 
     api_base="https://api.aimlapi.com/v2",
@@ -62,11 +62,11 @@ for chunk in response:
 ```python
 import asyncio
 
-import litellm
+import llm
 
 
 async def main():
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="openai/anthropic/claude-3-5-haiku",  # The model name must include prefix "openai" + the model name from ai/ml api
         api_key="",  # your aiml api-key
         api_base="https://api.aimlapi.com/v2",
@@ -90,13 +90,13 @@ if __name__ == "__main__":
 import asyncio
 import traceback
 
-import litellm
+import llm
 
 
 async def main():
     try:
         print("test acompletion + streaming")
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model="openai/nvidia/Llama-3.1-Nemotron-70B-Instruct-HF", # The model name must include prefix "openai" + the model name from ai/ml api
             api_key="", # your aiml api-key
             api_base="https://api.aimlapi.com/v2",
@@ -120,11 +120,11 @@ if __name__ == "__main__":
 ```python
 import asyncio
 
-import litellm
+import llm
 
 
 async def main():
-    response = await litellm.aembedding(
+    response = await llm.aembedding(
         model="openai/text-embedding-3-small", # The model name must include prefix "openai" + the model name from ai/ml api
         api_key="",  # your aiml api-key
         api_base="https://api.aimlapi.com/v1", # 👈 the URL has changed from v2 to v1
@@ -142,11 +142,11 @@ if __name__ == "__main__":
 ```python
 import asyncio
 
-import litellm
+import llm
 
 
 async def main():
-    response = await litellm.aimage_generation(
+    response = await llm.aimage_generation(
         model="openai/dall-e-3",  # The model name must include prefix "openai" + the model name from ai/ml api
         api_key="",  # your aiml api-key
         api_base="https://api.aimlapi.com/v1", # 👈 the URL has changed from v2 to v1

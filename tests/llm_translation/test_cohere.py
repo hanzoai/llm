@@ -15,24 +15,24 @@ import json
 
 import pytest
 
-import litellm
-from litellm import RateLimitError, Timeout, completion, completion_cost, embedding
+import llm
+from llm import RateLimitError, Timeout, completion, completion_cost, embedding
 
-litellm.num_retries = 3
+llm.num_retries = 3
 
 
 @pytest.mark.parametrize("stream", [True, False])
 @pytest.mark.asyncio
 async def test_chat_completion_cohere_citations(stream):
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         messages = [
             {
                 "role": "user",
                 "content": "Which penguins are the tallest?",
             },
         ]
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model="cohere_chat/command-r",
             messages=messages,
             documents=[
@@ -60,7 +60,7 @@ async def test_chat_completion_cohere_citations(stream):
 
 
 def test_completion_cohere_command_r_plus_function_call():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     tools = [
         {
             "type": "function",
@@ -126,7 +126,7 @@ def test_completion_cohere_command_r_plus_function_call():
             force_single_step=True,
         )
         print(second_response)
-    except litellm.Timeout:
+    except llm.Timeout:
         pass
     except Exception as e:
         pytest.fail(f"Error occurred: {e}")
@@ -136,7 +136,7 @@ def test_completion_cohere_command_r_plus_function_call():
 @pytest.mark.flaky(retries=6, delay=1)
 def test_completion_cohere():
     try:
-        # litellm.set_verbose=True
+        # llm.set_verbose=True
         messages = [
             {"role": "system", "content": "You're a good bot"},
             {"role": "assistant", "content": [{"text": "2", "type": "text"}]},
@@ -160,7 +160,7 @@ def test_completion_cohere():
 @pytest.mark.parametrize("sync_mode", [True, False])
 async def test_chat_completion_cohere(sync_mode):
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         messages = [
             {"role": "system", "content": "You're a good bot"},
             {
@@ -169,7 +169,7 @@ async def test_chat_completion_cohere(sync_mode):
             },
         ]
         if sync_mode is False:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="cohere_chat/command-r",
                 messages=messages,
                 max_tokens=10,
@@ -189,7 +189,7 @@ async def test_chat_completion_cohere(sync_mode):
 @pytest.mark.parametrize("sync_mode", [False])
 async def test_chat_completion_cohere_stream(sync_mode):
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         messages = [
             {"role": "system", "content": "You're a good bot"},
             {
@@ -198,7 +198,7 @@ async def test_chat_completion_cohere_stream(sync_mode):
             },
         ]
         if sync_mode is False:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="cohere_chat/command-r",
                 messages=messages,
                 max_tokens=10,
@@ -217,7 +217,7 @@ async def test_chat_completion_cohere_stream(sync_mode):
             print(response)
             for chunk in response:
                 print(chunk)
-    except litellm.APIConnectionError as e:
+    except llm.APIConnectionError as e:
         pass
     except Exception as e:
         pytest.fail(f"Error occurred: {e}")

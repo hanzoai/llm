@@ -1,5 +1,5 @@
 # What is this?
-## Test to make sure function call response always works with json.loads() -> no extra parsing required. Relevant issue - https://github.com/BerriAI/litellm/issues/2654
+## Test to make sure function call response always works with json.loads() -> no extra parsing required. Relevant issue - https://github.com/BerriAI/llm/issues/2654
 import os
 import sys
 import traceback
@@ -19,8 +19,8 @@ from typing import List
 
 import pytest
 
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 
 
 # Just a stub to keep the sample code simple
@@ -137,7 +137,7 @@ def trade(model_name: str) -> List[Trade]:  # type: ignore
         calls = response.choices[0].message.tool_calls
         trades = [trade for call in calls for trade in parse_call(call)]
         return trades
-    except litellm.InternalServerError:
+    except llm.InternalServerError:
         pass
 
 

@@ -64,14 +64,14 @@ OTEL_HEADERS="authorization=Bearer <project-api-key>"
 Use just 1 line of code, to instantly log your LLM responses **across all providers** with OpenTelemetry:
 
 ```python
-litellm.callbacks = ["otel"]
+llm.callbacks = ["otel"]
 ```
 
 ## Redacting Messages, Response Content from OpenTelemetry Logging
 
 ### Redact Messages and Responses from all OpenTelemetry Logging
 
-Set `litellm.turn_off_message_logging=True` This will prevent the messages and responses from being logged to OpenTelemetry, but request metadata will still be logged.
+Set `llm.turn_off_message_logging=True` This will prevent the messages and responses from being logged to OpenTelemetry, but request metadata will still be logged.
 
 ### Redact Messages and Responses from specific OpenTelemetry Logging
 
@@ -89,9 +89,9 @@ For any question or issue with the integration you can reach out to the OpenLLMe
 
 ## Troubleshooting
 
-### Trace LiteLLM Proxy user/key/org/team information on failed requests
+### Trace Hanzo Proxy user/key/org/team information on failed requests
 
-LiteLLM emits the user_api_key_metadata
+Hanzo emits the user_api_key_metadata
 - key hash
 - key_alias
 - org_id
@@ -100,6 +100,6 @@ LiteLLM emits the user_api_key_metadata
 
 for successful + failed requests 
 
-click under `litellm_request` in the trace
+click under `llm_request` in the trace
 
 <Image img={require('../../img/otel_debug_trace.png')} />

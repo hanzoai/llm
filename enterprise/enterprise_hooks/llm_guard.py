@@ -8,16 +8,16 @@
 ## This provides an LLM Guard Integration for content moderation on the proxy
 
 from typing import Optional, Literal
-import litellm
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.integrations.custom_logger import CustomLogger
+import llm
+from llm.proxy._types import UserAPIKeyAuth
+from llm.integrations.custom_logger import CustomLogger
 from fastapi import HTTPException
-from litellm._logging import verbose_proxy_logger
+from llm._logging import verbose_proxy_logger
 import aiohttp
-from litellm.utils import get_formatted_prompt
-from litellm.secret_managers.main import get_secret_str
+from llm.utils import get_formatted_prompt
+from llm.secret_managers.main import get_secret_str
 
-litellm.set_verbose = True
+llm.set_verbose = True
 
 
 class _ENTERPRISE_LLMGuard(CustomLogger):
@@ -28,7 +28,7 @@ class _ENTERPRISE_LLMGuard(CustomLogger):
         mock_redacted_text: Optional[dict] = None,
     ):
         self.mock_redacted_text = mock_redacted_text
-        self.llm_guard_mode = litellm.llm_guard_mode
+        self.llm_guard_mode = llm.llm_guard_mode
         if mock_testing == True:  # for testing purposes only
             return
         self.llm_guard_api_base = get_secret_str("LLM_GUARD_API_BASE", None)
@@ -40,7 +40,7 @@ class _ENTERPRISE_LLMGuard(CustomLogger):
     def print_verbose(self, print_statement):
         try:
             verbose_proxy_logger.debug(print_statement)
-            if litellm.set_verbose:
+            if llm.set_verbose:
                 print(print_statement)  # noqa
         except Exception:
             pass
@@ -86,7 +86,7 @@ class _ENTERPRISE_LLMGuard(CustomLogger):
                     )
         except Exception as e:
             verbose_proxy_logger.exception(
-                "litellm.enterprise.enterprise_hooks.llm_guard::moderation_check - Exception occurred - {}".format(
+                "llm.enterprise.enterprise_hooks.llm_guard::moderation_check - Exception occurred - {}".format(
                     str(e)
                 )
             )

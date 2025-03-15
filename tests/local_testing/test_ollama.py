@@ -17,10 +17,10 @@ from unittest import mock
 
 import pytest
 
-import litellm
+import llm
 
 ## for ollama we can't test making the completion call
-from litellm.utils import EmbeddingResponse, get_llm_provider, get_optional_params
+from llm.utils import EmbeddingResponse, get_llm_provider, get_optional_params
 
 
 def test_get_ollama_params():
@@ -78,14 +78,14 @@ def test_ollama_json_mode():
 
 
 def test_ollama_vision_model():
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     client = HTTPHandler()
     from unittest.mock import patch
 
     with patch.object(client, "post") as mock_post:
         try:
-            litellm.completion(
+            llm.completion(
                 model="ollama/llama3.2-vision:11b",
                 messages=[
                     {
@@ -120,13 +120,13 @@ mock_ollama_embedding_response = EmbeddingResponse(model="ollama/nomic-embed-tex
 
 
 @mock.patch(
-    "litellm.llms.ollama.completion.handler.ollama_embeddings",
+    "llm.llms.ollama.completion.handler.ollama_embeddings",
     return_value=mock_ollama_embedding_response,
 )
 def test_ollama_embeddings(mock_embeddings):
     # assert that ollama_embeddings is called with the right parameters
     try:
-        embeddings = litellm.embedding(
+        embeddings = llm.embedding(
             model="ollama/nomic-embed-text", input=["hello world"]
         )
         print(embeddings)
@@ -147,14 +147,14 @@ def test_ollama_embeddings(mock_embeddings):
 
 
 @mock.patch(
-    "litellm.llms.ollama.completion.handler.ollama_aembeddings",
+    "llm.llms.ollama.completion.handler.ollama_aembeddings",
     return_value=mock_ollama_embedding_response,
 )
 def test_ollama_aembeddings(mock_aembeddings):
     # assert that ollama_aembeddings is called with the right parameters
     try:
         embeddings = asyncio.run(
-            litellm.aembedding(model="ollama/nomic-embed-text", input=["hello world"])
+            llm.aembedding(model="ollama/nomic-embed-text", input=["hello world"])
         )
         print(embeddings)
         mock_aembeddings.assert_called_once_with(
@@ -202,7 +202,7 @@ def test_ollama_chat_function_calling():
         {"role": "user", "content": "What's the weather like in San Francisco?"}
     ]
 
-    response = litellm.completion(
+    response = llm.completion(
         model="ollama_chat/llama3.1",
         messages=messages,
         tools=tools,
@@ -217,12 +217,12 @@ def test_ollama_chat_function_calling():
 
 
 def test_ollama_ssl_verify():
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
     import ssl
     import httpx
 
     try:
-        response = litellm.completion(
+        response = llm.completion(
             model="ollama/llama3.1",
             messages=[
                 {
@@ -235,7 +235,7 @@ def test_ollama_ssl_verify():
     except Exception as e:
         print(e)
 
-    client: HTTPHandler = litellm.in_memory_llm_clients_cache.get_cache(
+    client: HTTPHandler = llm.in_memory_llm_clients_cache.get_cache(
         "httpx_clientssl_verify_False"
     )
 
@@ -250,11 +250,11 @@ def test_ollama_ssl_verify():
 @pytest.mark.parametrize("stream", [True, False])
 @pytest.mark.asyncio
 async def test_async_ollama_ssl_verify(stream):
-    from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler
+    from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler
     import httpx
 
     try:
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model="ollama/llama3.1",
             messages=[
                 {
@@ -268,7 +268,7 @@ async def test_async_ollama_ssl_verify(stream):
     except Exception as e:
         print(e)
 
-    client: AsyncHTTPHandler = litellm.in_memory_llm_clients_cache.get_cache(
+    client: AsyncHTTPHandler = llm.in_memory_llm_clients_cache.get_cache(
         "async_httpx_clientssl_verify_Falseollama"
     )
 

@@ -3,7 +3,7 @@
 When adding a new provider, you need to create a directory for the provider that follows the following structure:
 
 ```
-litellm/llms/
+llm/llms/
 └── provider_name/
     ├── completion/ # use when endpoint is equivalent to openai's `/v1/completions`
     │   ├── handler.py

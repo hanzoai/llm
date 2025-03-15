@@ -11,14 +11,14 @@ class TestDeepSeekChatCompletion(BaseLLMChatTest):
         }
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
         pass
 
     def test_multilingual_requests(self):
         """
         DeepSeek API raises a 400 BadRequest error when the request contains invalid utf-8 sequences.
 
-        Todo: if litellm.modify_params is True ensure it's a valid utf-8 sequence
+        Todo: if llm.modify_params is True ensure it's a valid utf-8 sequence
         """
         pass
 
@@ -28,10 +28,10 @@ def test_deepseek_mock_completion(stream):
     """
     Deepseek API is hanging. Mock the call, to a fake endpoint, so we can confirm our integration is working.
     """
-    import litellm
-    from litellm import completion
+    import llm
+    from llm import completion
 
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
 
     response = completion(
         model="deepseek/deepseek-reasoner",
@@ -53,12 +53,12 @@ async def test_deepseek_provider_async_completion(stream):
     """
     Test that Deepseek provider requests are formatted correctly with the proper parameters
     """
-    import litellm
+    import llm
     import json
     from unittest.mock import patch, AsyncMock, MagicMock
-    from litellm import acompletion
+    from llm import acompletion
 
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
 
     # Set up the test parameters
     api_key = "fake_api_key"
@@ -67,12 +67,12 @@ async def test_deepseek_provider_async_completion(stream):
 
     # Mock AsyncHTTPHandler.post method for async test
     with patch(
-        "litellm.llms.custom_httpx.llm_http_handler.AsyncHTTPHandler.post"
+        "llm.llms.custom_httpx.llm_http_handler.AsyncHTTPHandler.post"
     ) as mock_post:
-        mock_response_data = litellm.ModelResponse(
+        mock_response_data = llm.ModelResponse(
             choices=[
-                litellm.Choices(
-                    message=litellm.Message(content="Hello!"),
+                llm.Choices(
+                    message=llm.Message(content="Hello!"),
                     index=0,
                     finish_reason="stop",
                 )

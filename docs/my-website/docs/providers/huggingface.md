@@ -4,7 +4,7 @@ import TabItem from '@theme/TabItem';
 
 # Huggingface
 
-LiteLLM supports the following types of Hugging Face models:
+Hanzo supports the following types of Hugging Face models:
 
 - Serverless Inference API (free) - loaded and ready to use: https://huggingface.co/models?inference=warm&pipeline_tag=text-generation
 - Dedicated Inference Endpoints (paid) - manual deployment: https://ui.endpoints.huggingface.co/
@@ -12,24 +12,24 @@ LiteLLM supports the following types of Hugging Face models:
 
 ## Usage
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/litellm/blob/main/cookbook/LiteLLM_HuggingFace.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/Hanzo_HuggingFace.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
-You need to tell LiteLLM when you're calling Huggingface.
+You need to tell Hanzo when you're calling Huggingface.
 This is done by adding the "huggingface/" prefix to `model`, example `completion(model="huggingface/<model_name>",...)`.
 
 <Tabs>
 <TabItem value="serverless" label="Serverless Inference API">
 
-By default, LiteLLM will assume a Hugging Face call follows the [Messages API](https://huggingface.co/docs/text-generation-inference/messages_api), which is fully compatible with the OpenAI Chat Completion API.
+By default, Hanzo will assume a Hugging Face call follows the [Messages API](https://huggingface.co/docs/text-generation-inference/messages_api), which is fully compatible with the OpenAI Chat Completion API.
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 # [OPTIONAL] set env var
 os.environ["HUGGINGFACE_API_KEY"] = "huggingface_api_key"
@@ -54,7 +54,7 @@ print(response)
 ```yaml
 model_list:
   - model_name: llama-3.1-8B-instruct
-    litellm_params:
+    llm_params:
       model: huggingface/meta-llama/Meta-Llama-3.1-8B-Instruct
       api_key: os.environ/HUGGINGFACE_API_KEY
 ```
@@ -62,7 +62,7 @@ model_list:
 2. Start the proxy
 
 ```bash
-$ litellm --config /path/to/config.yaml --debug
+$ llm --config /path/to/config.yaml --debug
 ```
 
 3. Test it!
@@ -96,7 +96,7 @@ e.g. `huggingface/text-classification/<model-name>`
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 # [OPTIONAL] set env var
 os.environ["HUGGINGFACE_API_KEY"] = "huggingface_api_key"
@@ -121,7 +121,7 @@ print(response)
 ```yaml
 model_list:
   - model_name: bert-classifier
-    litellm_params:
+    llm_params:
       model: huggingface/text-classification/shahrukhx01/question-vs-statement-classifier
       api_key: os.environ/HUGGINGFACE_API_KEY
       api_base: "https://my-endpoint.endpoints.huggingface.cloud"
@@ -130,7 +130,7 @@ model_list:
 2. Start the proxy
 
 ```bash
-$ litellm --config /path/to/config.yaml --debug
+$ llm --config /path/to/config.yaml --debug
 ```
 
 3. Test it!
@@ -158,14 +158,14 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 Steps to use
 * Create your own Hugging Face dedicated endpoint here: https://ui.endpoints.huggingface.co/
 * Set `api_base` to your deployed api base
-* Add the `huggingface/` prefix to your model so litellm knows it's a huggingface Deployed Inference Endpoint
+* Add the `huggingface/` prefix to your model so llm knows it's a huggingface Deployed Inference Endpoint
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 os.environ["HUGGINGFACE_API_KEY"] = ""
 
@@ -188,7 +188,7 @@ print(response)
 ```yaml
 model_list:
   - model_name: glaive-coder
-    litellm_params:
+    llm_params:
       model: huggingface/glaiveai/glaive-coder-7b
       api_key: os.environ/HUGGINGFACE_API_KEY
       api_base: "https://wjiegasee9bmqke2.us-east-1.aws.endpoints.huggingface.cloud"
@@ -197,7 +197,7 @@ model_list:
 2. Start the proxy
 
 ```bash
-$ litellm --config /path/to/config.yaml --debug
+$ llm --config /path/to/config.yaml --debug
 ```
 
 3. Test it!
@@ -225,16 +225,16 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 
 ## Streaming
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/litellm/blob/main/cookbook/LiteLLM_HuggingFace.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/Hanzo_HuggingFace.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
-You need to tell LiteLLM when you're calling Huggingface.
+You need to tell Hanzo when you're calling Huggingface.
 This is done by adding the "huggingface/" prefix to `model`, example `completion(model="huggingface/<model_name>",...)`.
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 # [OPTIONAL] set env var
 os.environ["HUGGINGFACE_API_KEY"] = "huggingface_api_key"
@@ -256,15 +256,15 @@ for chunk in response:
 
 ## Embedding
 
-LiteLLM supports Hugging Face's [text-embedding-inference](https://github.com/huggingface/text-embeddings-inference) format.
+Hanzo supports Hugging Face's [text-embedding-inference](https://github.com/huggingface/text-embeddings-inference) format.
 
 ```python
-from litellm import embedding
+from llm import embedding
 import os
 os.environ['HUGGINGFACE_API_KEY'] = ""
 response = embedding(
     model='huggingface/microsoft/codebert-base',
-    input=["good morning from litellm"]
+    input=["good morning from llm"]
 )
 ```
 
@@ -272,7 +272,7 @@ response = embedding(
 
 ### Setting API KEYS + API BASE
 
-If required, you can set the api key + api base, set it in your os environment. [Code for how it's sent](https://github.com/BerriAI/litellm/blob/0100ab2382a0e720c7978fbf662cc6e6920e7e03/litellm/llms/huggingface_restapi.py#L25)
+If required, you can set the api key + api base, set it in your os environment. [Code for how it's sent](https://github.com/BerriAI/llm/blob/0100ab2382a0e720c7978fbf662cc6e6920e7e03/llm/llms/huggingface_restapi.py#L25)
 
 ```python
 import os
@@ -284,10 +284,10 @@ os.environ["HUGGINGFACE_API_BASE"] = ""
 
 #### Using `decoder_input_details` - OpenAI `echo`
 
-The `echo` param is supported by OpenAI Completions - Use `litellm.text_completion()` for this
+The `echo` param is supported by OpenAI Completions - Use `llm.text_completion()` for this
 
 ```python
-from litellm import text_completion
+from llm import text_completion
 response = text_completion(
     model="huggingface/bigcode/starcoder",
     prompt="good morning",
@@ -378,15 +378,15 @@ def default_pt(messages):
     return " ".join(message["content"] for message in messages)
 ```
 
-[Code for how prompt formats work in LiteLLM](https://github.com/BerriAI/litellm/blob/main/litellm/llms/prompt_templates/factory.py)
+[Code for how prompt formats work in Hanzo](https://github.com/BerriAI/llm/blob/main/llm/llms/prompt_templates/factory.py)
 
 #### Custom prompt templates
 
 ```python
-import litellm
+import llm
 
 # Create your own custom prompt template works
-litellm.register_prompt_template(
+llm.register_prompt_template(
 	    model="togethercomputer/LLaMA-2-7B-32K",
 	    roles={
             "system": {
@@ -412,7 +412,7 @@ def test_huggingface_custom_model():
 test_huggingface_custom_model()
 ```
 
-[Implementation Code](https://github.com/BerriAI/litellm/blob/c0b3da2c14c791a0b755f0b1e5a9ef065951ecbf/litellm/llms/huggingface_restapi.py#L52)
+[Implementation Code](https://github.com/BerriAI/llm/blob/c0b3da2c14c791a0b755f0b1e5a9ef065951ecbf/llm/llms/huggingface_restapi.py#L52)
 
 ### Deploying a model on huggingface
 
@@ -429,7 +429,7 @@ Need help deploying a model on huggingface? [Check out this guide.](https://hugg
 
 # output
 
-Same as the OpenAI format, but also includes logprobs. [See the code](https://github.com/BerriAI/litellm/blob/b4b2dbf005142e0a483d46a07a88a19814899403/litellm/llms/huggingface_restapi.py#L115)
+Same as the OpenAI format, but also includes logprobs. [See the code](https://github.com/BerriAI/llm/blob/b4b2dbf005142e0a483d46a07a88a19814899403/llm/llms/huggingface_restapi.py#L115)
 
 ```json
 {
@@ -462,6 +462,6 @@ Yes, we support stop sequences - and you can pass as many as allowed by Hugging 
 
 **How do you deal with repetition penalty?**
 
-We map the presence penalty parameter in openai to the repetition penalty parameter on Hugging Face. [See code](https://github.com/BerriAI/litellm/blob/b4b2dbf005142e0a483d46a07a88a19814899403/litellm/utils.py#L757).
+We map the presence penalty parameter in openai to the repetition penalty parameter on Hugging Face. [See code](https://github.com/BerriAI/llm/blob/b4b2dbf005142e0a483d46a07a88a19814899403/llm/utils.py#L757).
 
-We welcome any suggestions for improving our Hugging Face integration - Create an [issue](https://github.com/BerriAI/litellm/issues/new/choose)/[Join the Discord](https://discord.com/invite/wuPM9dRgDw)!
+We welcome any suggestions for improving our Hugging Face integration - Create an [issue](https://github.com/BerriAI/llm/issues/new/choose)/[Join the Discord](https://discord.com/invite/wuPM9dRgDw)!

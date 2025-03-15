@@ -8,15 +8,15 @@ from datetime import datetime
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-from litellm import Router
+from llm import Router
 import pytest
-import litellm
+import llm
 from unittest.mock import patch, MagicMock, AsyncMock
 from create_mock_standard_logging_payload import create_standard_logging_payload
-from litellm.types.utils import StandardLoggingPayload
+from llm.types.utils import StandardLoggingPayload
 import unittest
 from pydantic import BaseModel
-from litellm.router_utils.prompt_caching_cache import PromptCachingCache
+from llm.router_utils.prompt_caching_cache import PromptCachingCache
 
 
 class ExampleModel(BaseModel):

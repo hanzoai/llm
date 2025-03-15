@@ -11,10 +11,10 @@ import os
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm.exceptions import BadRequestError
-from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
-from litellm.utils import CustomStreamWrapper
+import llm
+from llm.exceptions import BadRequestError
+from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
+from llm.utils import CustomStreamWrapper
 from base_llm_unit_tests import BaseLLMChatTest
 
 try:
@@ -233,14 +233,14 @@ def test_throws_if_api_base_or_api_key_not_set_without_databricks_sdk(
         )
 
     with pytest.raises(BadRequestError) as exc:
-        litellm.completion(
+        llm.completion(
             model="databricks/dbrx-instruct-071224",
             messages=[{"role": "user", "content": "How are you?"}],
         )
     assert err_msg in str(exc)
 
     with pytest.raises(BadRequestError) as exc:
-        litellm.embedding(
+        llm.embedding(
             model="databricks/bge-12312",
             input=["Hello", "World"],
         )
@@ -268,7 +268,7 @@ def test_completions_with_sync_http_handler(monkeypatch):
     messages = [{"role": "user", "content": "How are you?"}]
 
     with patch.object(HTTPHandler, "post", return_value=mock_response) as mock_post:
-        response = litellm.completion(
+        response = llm.completion(
             model="databricks/dbrx-instruct-071224",
             messages=messages,
             client=sync_handler,
@@ -319,7 +319,7 @@ def test_completions_with_async_http_handler(monkeypatch):
         AsyncHTTPHandler, "post", return_value=mock_response
     ) as mock_post:
         response = asyncio.run(
-            litellm.acompletion(
+            llm.acompletion(
                 model="databricks/dbrx-instruct-071224",
                 messages=messages,
                 client=async_handler,
@@ -360,7 +360,7 @@ def test_completions_streaming_with_sync_http_handler(monkeypatch):
     mock_response = mock_http_handler_chat_streaming_response()
 
     with patch.object(HTTPHandler, "post", return_value=mock_response) as mock_post:
-        response_stream: CustomStreamWrapper = litellm.completion(
+        response_stream: CustomStreamWrapper = llm.completion(
             model="databricks/dbrx-instruct-071224",
             messages=messages,
             client=sync_handler,
@@ -412,7 +412,7 @@ def test_completions_streaming_with_async_http_handler(monkeypatch):
         AsyncHTTPHandler, "post", return_value=mock_response
     ) as mock_post:
         response_stream: CustomStreamWrapper = asyncio.run(
-            litellm.acompletion(
+            llm.acompletion(
                 model="databricks/dbrx-instruct-071224",
                 messages=messages,
                 client=async_handler,
@@ -490,7 +490,7 @@ def test_completions_uses_databricks_sdk_if_api_key_and_base_not_specified(monke
     with patch(
         "databricks.sdk.WorkspaceClient", return_value=mock_workspace_client
     ), patch.object(HTTPHandler, "post", return_value=mock_response) as mock_post:
-        response = litellm.completion(
+        response = llm.completion(
             model="databricks/dbrx-instruct-071224",
             messages=messages,
             client=sync_handler,
@@ -531,7 +531,7 @@ def test_embeddings_with_sync_http_handler(monkeypatch):
     inputs = ["Hello", "World"]
 
     with patch.object(HTTPHandler, "post", return_value=mock_response) as mock_post:
-        response = litellm.embedding(
+        response = llm.embedding(
             model="databricks/bge-large-en-v1.5",
             input=inputs,
             client=sync_handler,
@@ -572,7 +572,7 @@ def test_embeddings_with_async_http_handler(monkeypatch):
         AsyncHTTPHandler, "post", return_value=mock_response
     ) as mock_post:
         response = asyncio.run(
-            litellm.aembedding(
+            llm.aembedding(
                 model="databricks/bge-large-en-v1.5",
                 input=inputs,
                 client=async_handler,
@@ -629,7 +629,7 @@ def test_embeddings_uses_databricks_sdk_if_api_key_and_base_not_specified(monkey
     with patch(
         "databricks.sdk.WorkspaceClient", return_value=mock_workspace_client
     ), patch.object(HTTPHandler, "post", return_value=mock_response) as mock_post:
-        response = litellm.embedding(
+        response = llm.embedding(
             model="databricks/bge-large-en-v1.5",
             input=inputs,
             client=sync_handler,
@@ -661,7 +661,7 @@ class TestDatabricksCompletion(BaseLLMChatTest):
         pytest.skip("Databricks does not support PDF handling")
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
         pytest.skip("Databricks is openai compatible")
 
 
@@ -671,19 +671,19 @@ async def test_databricks_embeddings(sync_mode):
     import openai
 
     try:
-        litellm.set_verbose = True
-        litellm.drop_params = True
+        llm.set_verbose = True
+        llm.drop_params = True
 
         if sync_mode:
-            response = litellm.embedding(
+            response = llm.embedding(
                 model="databricks/databricks-bge-large-en",
-                input=["good morning from litellm"],
+                input=["good morning from llm"],
                 instruction="Represent this sentence for searching relevant passages:",
             )
         else:
-            response = await litellm.aembedding(
+            response = await llm.aembedding(
                 model="databricks/databricks-bge-large-en",
-                input=["good morning from litellm"],
+                input=["good morning from llm"],
                 instruction="Represent this sentence for searching relevant passages:",
             )
 

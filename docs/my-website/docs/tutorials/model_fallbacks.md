@@ -1,16 +1,16 @@
-# Model Fallbacks w/ LiteLLM
+# Model Fallbacks w/ Hanzo
 
-Here's how you can implement model fallbacks across 3 LLM providers (OpenAI, Anthropic, Azure) using LiteLLM. 
+Here's how you can implement model fallbacks across 3 LLM providers (OpenAI, Anthropic, Azure) using Hanzo. 
 
-## 1. Install LiteLLM
+## 1. Install Hanzo
 ```python 
-!pip install litellm
+!pip install llm
 ```
 
 ## 2. Basic Fallbacks Code 
 ```python 
-import litellm
-from litellm import embedding, completion
+import llm
+from llm import embedding, completion
 
 # set ENV variables
 os.environ["OPENAI_API_KEY"] = ""
@@ -32,15 +32,15 @@ for model in model_fallback_list:
 ```
 
 ## 3. Context Window Exceptions 
-LiteLLM provides a sub-class of the InvalidRequestError class for Context Window Exceeded errors ([docs](https://docs.litellm.ai/docs/exception_mapping)).
+Hanzo provides a sub-class of the InvalidRequestError class for Context Window Exceeded errors ([docs](https://docs.llm.ai/docs/exception_mapping)).
 
 Implement model fallbacks based on context window exceptions. 
 
-LiteLLM also exposes a `get_max_tokens()` function, which you can use to identify the context window limit that's been exceeded. 
+Hanzo also exposes a `get_max_tokens()` function, which you can use to identify the context window limit that's been exceeded. 
 
 ```python 
-import litellm
-from litellm import completion, ContextWindowExceededError, get_max_tokens
+import llm
+from llm import completion, ContextWindowExceededError, get_max_tokens
 
 # set ENV variables
 os.environ["OPENAI_API_KEY"] = ""

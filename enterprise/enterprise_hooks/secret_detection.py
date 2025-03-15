@@ -12,11 +12,11 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 from typing import Optional
-from litellm.caching.caching import DualCache
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm._logging import verbose_proxy_logger
+from llm.caching.caching import DualCache
+from llm.proxy._types import UserAPIKeyAuth
+from llm._logging import verbose_proxy_logger
 import tempfile
-from litellm.integrations.custom_guardrail import CustomGuardrail
+from llm.integrations.custom_guardrail import CustomGuardrail
 
 GUARDRAIL_NAME = "hide_secrets"
 

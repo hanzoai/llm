@@ -14,23 +14,23 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-from litellm.llms.bedrock.image.cost_calculator import cost_calculator
-from litellm.types.utils import ImageResponse, ImageObject
+from llm.llms.bedrock.image.cost_calculator import cost_calculator
+from llm.types.utils import ImageResponse, ImageObject
 import os
 
-import litellm
-from litellm.llms.bedrock.image.amazon_stability3_transformation import (
+import llm
+from llm.llms.bedrock.image.amazon_stability3_transformation import (
     AmazonStability3Config,
 )
-from litellm.llms.bedrock.image.amazon_stability1_transformation import (
+from llm.llms.bedrock.image.amazon_stability1_transformation import (
     AmazonStabilityConfig,
 )
-from litellm.types.llms.bedrock import (
+from llm.types.llms.bedrock import (
     AmazonStability3TextToImageRequest,
     AmazonStability3TextToImageResponse,
 )
 from unittest.mock import MagicMock, patch
-from litellm.llms.bedrock.image.image_handler import (
+from llm.llms.bedrock.image.image_handler import (
     BedrockImageGeneration,
     BedrockImagePreparedRequest,
 )
@@ -266,8 +266,8 @@ def test_cost_calculator_basic():
 
 
 def test_bedrock_image_gen_with_aws_region_name():
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
-    from litellm import image_generation
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm import image_generation
 
     client = HTTPHandler()
 

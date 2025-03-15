@@ -7,8 +7,8 @@ from vertexai.vision_models import (
     VideoSegmentConfig,
 )
 
-LITELLM_PROXY_API_KEY = "sk-1234"
-LITELLM_PROXY_BASE = "http://0.0.0.0:4000/vertex-ai"
+LLM_PROXY_API_KEY = "sk-1234"
+LLM_PROXY_BASE = "http://0.0.0.0:4000/vertex-ai"
 
 import datetime
 
@@ -34,12 +34,12 @@ class CredentialsWrapper(Credentials):
         return True  # Always consider the credentials as valid
 
 
-credentials = CredentialsWrapper(token=LITELLM_PROXY_API_KEY)
+credentials = CredentialsWrapper(token=LLM_PROXY_API_KEY)
 
 vertexai.init(
     project="pathrise-convert-1606954137718",
     location="us-central1",
-    api_endpoint=LITELLM_PROXY_BASE,
+    api_endpoint=LLM_PROXY_BASE,
     credentials=credentials,
     api_transport="rest",
 )

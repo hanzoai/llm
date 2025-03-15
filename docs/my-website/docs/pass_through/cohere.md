@@ -4,12 +4,12 @@ Pass-through endpoints for Cohere - call provider-specific endpoint, in native f
 
 | Feature | Supported | Notes | 
 |-------|-------|-------|
-| Cost Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/litellm/issues/new) |
+| Cost Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
 | Logging | ✅ | works across all integrations |
-| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/litellm/issues/new) |
+| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
 | Streaming | ✅ | |
 
-Just replace `https://api.cohere.com` with `LITELLM_PROXY_BASE_URL/cohere` 🚀
+Just replace `https://api.cohere.com` with `LLM_PROXY_BASE_URL/cohere` 🚀
 
 #### **Example Usage**
 ```bash
@@ -42,10 +42,10 @@ Let's call the Cohere [`/rerank` endpoint](https://docs.cohere.com/reference/rer
 export COHERE_API_KEY=""
 ```
 
-2. Start LiteLLM Proxy 
+2. Start Hanzo Proxy 
 
 ```bash
-litellm
+llm
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -81,13 +81,13 @@ Key Changes:
 
 | **Original Endpoint**                                | **Replace With**                  |
 |------------------------------------------------------|-----------------------------------|
-| `https://api.cohere.com`          | `http://0.0.0.0:4000/cohere` (LITELLM_PROXY_BASE_URL="http://0.0.0.0:4000")      |
-| `bearer $CO_API_KEY`                                 | `bearer anything` (use `bearer LITELLM_VIRTUAL_KEY` if Virtual Keys are setup on proxy)                    |
+| `https://api.cohere.com`          | `http://0.0.0.0:4000/cohere` (LLM_PROXY_BASE_URL="http://0.0.0.0:4000")      |
+| `bearer $CO_API_KEY`                                 | `bearer anything` (use `bearer LLM_VIRTUAL_KEY` if Virtual Keys are setup on proxy)                    |
 
 
 ### **Example 1: Rerank endpoint**
 
-#### LiteLLM Proxy Call 
+#### Hanzo Proxy Call 
 
 ```bash
 curl --request POST \
@@ -129,7 +129,7 @@ curl --request POST \
 
 ### **Example 2: Chat API**
 
-#### LiteLLM Proxy Call 
+#### Hanzo Proxy Call 
 
 ```bash
 curl --request POST \
@@ -210,12 +210,12 @@ Use this, to avoid giving developers the raw Cohere API key, but still letting t
 
 ```bash
 export DATABASE_URL=""
-export LITELLM_MASTER_KEY=""
+export LLM_MASTER_KEY=""
 export COHERE_API_KEY=""
 ```
 
 ```bash
-litellm
+llm
 
 # RUNNING on http://0.0.0.0:4000
 ```

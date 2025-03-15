@@ -24,11 +24,11 @@ from openai.types.chat import ChatCompletionMessage
 from openai.types.chat.chat_completion import ChatCompletion, Choice
 from respx import MockRouter
 
-import litellm
-from litellm import RateLimitError, Timeout, completion, completion_cost, embedding
-from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
-from litellm.litellm_core_utils.prompt_templates.factory import anthropic_messages_pt
-from litellm.router import Router
+import llm
+from llm import RateLimitError, Timeout, completion, completion_cost, embedding
+from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
+from llm.llm_core_utils.prompt_templates.factory import anthropic_messages_pt
+from llm.router import Router
 
 
 @pytest.mark.asyncio()
@@ -45,7 +45,7 @@ async def test_aaaaazure_tenant_id_auth(respx_mock: MockRouter):
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {  # params for litellm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_base": os.getenv("AZURE_API_BASE"),
                     "tenant_id": os.getenv("AZURE_TENANT_ID"),
@@ -73,7 +73,7 @@ async def test_aaaaazure_tenant_id_auth(respx_mock: MockRouter):
         ],
         created=int(datetime.now().timestamp()),
     )
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     mock_request = respx_mock.post(url__regex=r".*/chat/completions.*").mock(
         return_value=httpx.Response(200, json=obj.model_dump(mode="json"))

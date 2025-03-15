@@ -1,8 +1,8 @@
-# LiteLLM - Local Caching
+# Hanzo - Local Caching
 
 ## Caching `completion()` and `embedding()` calls when switched on
 
-liteLLM implements exact match caching and supports the following Caching:
+LLM implements exact match caching and supports the following Caching:
 * In-Memory Caching [Default]
 * Redis Caching Local
 * Redis Caching Hosted
@@ -11,10 +11,10 @@ liteLLM implements exact match caching and supports the following Caching:
 Caching - cache
 Keys in the cache are `model`, the following example will lead to a cache hit
 ```python
-import litellm
-from litellm import completion
-from litellm.caching.caching import Cache
-litellm.cache = Cache()
+import llm
+from llm import completion
+from llm.caching.caching import Cache
+llm.cache = Cache()
 
 # Make completion calls
 response1 = completion(
@@ -35,7 +35,7 @@ response2 = completion(
 Add custom key-value pairs to your cache. 
 
 ```python 
-from litellm.caching.caching import Cache
+from llm.caching.caching import Cache
 cache = Cache()
 
 cache.add_cache(cache_key="test-key", result="1234")
@@ -44,14 +44,14 @@ cache.get_cache(cache_key="test-key")
 ```
 
 ## Caching with Streaming 
-LiteLLM can cache your streamed responses for you
+Hanzo can cache your streamed responses for you
 
 ### Usage
 ```python
-import litellm
-from litellm import completion
-from litellm.caching.caching import Cache
-litellm.cache = Cache()
+import llm
+from llm import completion
+from llm.caching.caching import Cache
+llm.cache = Cache()
 
 # Make completion calls
 response1 = completion(
@@ -75,18 +75,18 @@ for chunk in response2:
 Keys in the cache are `model`, the following example will lead to a cache hit
 ```python
 import time
-import litellm
-from litellm import embedding
-from litellm.caching.caching import Cache
-litellm.cache = Cache()
+import llm
+from llm import embedding
+from llm.caching.caching import Cache
+llm.cache = Cache()
 
 start_time = time.time()
-embedding1 = embedding(model="text-embedding-ada-002", input=["hello from litellm"*5], caching=True)
+embedding1 = embedding(model="text-embedding-ada-002", input=["hello from llm"*5], caching=True)
 end_time = time.time()
 print(f"Embedding 1 response time: {end_time - start_time} seconds")
 
 start_time = time.time()
-embedding2 = embedding(model="text-embedding-ada-002", input=["hello from litellm"*5], caching=True)
+embedding2 = embedding(model="text-embedding-ada-002", input=["hello from llm"*5], caching=True)
 end_time = time.time()
 print(f"Embedding 2 response time: {end_time - start_time} seconds")
 ```

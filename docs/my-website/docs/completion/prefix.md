@@ -23,7 +23,7 @@ Supported by:
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 import os 
 
 os.environ["DEEPSEEK_API_KEY"] = ""
@@ -43,7 +43,7 @@ print(response.choices[0].message.content)
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $LITELLM_KEY" \
+  -H "Authorization: Bearer $LLM_KEY" \
   -d '{
     "model": "deepseek/deepseek-chat",
     "messages": [
@@ -93,13 +93,13 @@ curl http://0.0.0.0:4000/v1/chat/completions \
 
 ## Check Model Support 
 
-Call `litellm.get_model_info` to check if a model/provider supports `prefix`. 
+Call `llm.get_model_info` to check if a model/provider supports `prefix`. 
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import get_model_info
+from llm import get_model_info
 
 params = get_model_info(model="deepseek/deepseek-chat")
 
@@ -113,7 +113,7 @@ Call the `/model/info` endpoint to get a list of models + their supported params
 
 ```bash
 curl -X GET 'http://0.0.0.0:4000/v1/model/info' \
--H 'Authorization: Bearer $LITELLM_KEY' \
+-H 'Authorization: Bearer $LLM_KEY' \
 ```
 </TabItem>
 </Tabs>

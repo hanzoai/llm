@@ -1,32 +1,32 @@
 # ✨ Temporary Budget Increase
 
-Set temporary budget increase for a LiteLLM Virtual Key. Use this if you get asked to increase the budget for a key temporarily.
+Set temporary budget increase for a Hanzo Virtual Key. Use this if you get asked to increase the budget for a key temporarily.
 
 
 | Heirarchy | Supported | 
 |-----------|-----------|
-| LiteLLM Virtual Key | ✅ |
+| Hanzo Virtual Key | ✅ |
 | User | ❌ |
 | Team | ❌ |
 | Organization | ❌ |
 
 :::note
 
-✨ Temporary Budget Increase is a LiteLLM Enterprise feature.
+✨ Temporary Budget Increase is a Hanzo Enterprise feature.
 
-[Enterprise Pricing](https://www.litellm.ai/#pricing)
+[Enterprise Pricing](https://www.llm.ai/#pricing)
 
-[Get free 7-day trial key](https://www.litellm.ai/#trial)
+[Get free 7-day trial key](https://www.llm.ai/#trial)
 
 :::
 
 
-1. Create a LiteLLM Virtual Key with budget
+1. Create a Hanzo Virtual Key with budget
 
 ```bash
 curl -L -X POST 'http://localhost:4000/key/generate' \
 -H 'Content-Type: application/json' \
--H 'Authorization: Bearer LITELLM_MASTER_KEY' \
+-H 'Authorization: Bearer LLM_MASTER_KEY' \
 -d '{
     "max_budget": 0.0000001
 }'
@@ -44,7 +44,7 @@ Expected response:
 
 ```bash
 curl -L -X POST 'http://localhost:4000/key/update' \
--H 'Authorization: Bearer LITELLM_MASTER_KEY' \
+-H 'Authorization: Bearer LLM_MASTER_KEY' \
 -H 'Content-Type: application/json' \
 -d '{
     "key": "sk-your-new-key",
@@ -68,7 +68,7 @@ curl -L -X POST 'http://localhost:4000/chat/completions' \
 Expected Response Header:
 
 ```
-x-litellm-key-max-budget: 100.0000001
+x-llm-key-max-budget: 100.0000001
 ```
 
 

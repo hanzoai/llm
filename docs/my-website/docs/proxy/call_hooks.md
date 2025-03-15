@@ -6,23 +6,23 @@ import Image from '@theme/IdealImage';
 - Reject data before making llm api calls / before returning the response 
 - Enforce 'user' param for all openai endpoint calls
 
-See a complete example with our [parallel request rate limiter](https://github.com/BerriAI/litellm/blob/main/litellm/proxy/hooks/parallel_request_limiter.py)
+See a complete example with our [parallel request rate limiter](https://github.com/BerriAI/llm/blob/main/llm/proxy/hooks/parallel_request_limiter.py)
 
 ## Quick Start
 
 1. In your Custom Handler add a new `async_pre_call_hook` function
 
-This function is called just before a litellm completion call is made, and allows you to modify the data going into the litellm call [**See Code**](https://github.com/BerriAI/litellm/blob/589a6ca863000ba8e92c897ba0f776796e7a5904/litellm/proxy/proxy_server.py#L1000)
+This function is called just before a llm completion call is made, and allows you to modify the data going into the llm call [**See Code**](https://github.com/BerriAI/llm/blob/589a6ca863000ba8e92c897ba0f776796e7a5904/llm/proxy/proxy_server.py#L1000)
 
 ```python
-from litellm.integrations.custom_logger import CustomLogger
-import litellm
-from litellm.proxy.proxy_server import UserAPIKeyAuth, DualCache
+from llm.integrations.custom_logger import CustomLogger
+import llm
+from llm.proxy.proxy_server import UserAPIKeyAuth, DualCache
 from typing import Optional, Literal
 
-# This file includes the custom callbacks for LiteLLM Proxy
+# This file includes the custom callbacks for Hanzo Proxy
 # Once defined, these can be passed in proxy_config.yaml
-class MyCustomHandler(CustomLogger): # https://docs.litellm.ai/docs/observability/custom_callback#callback-class
+class MyCustomHandler(CustomLogger): # https://docs.llm.ai/docs/observability/custom_callback#callback-class
     # Class variables or attributes
     def __init__(self):
         pass
@@ -78,17 +78,17 @@ proxy_handler_instance = MyCustomHandler()
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
 
-litellm_settings:
-  callbacks: custom_callbacks.proxy_handler_instance # sets litellm.callbacks = [proxy_handler_instance]
+llm_settings:
+  callbacks: custom_callbacks.proxy_handler_instance # sets llm.callbacks = [proxy_handler_instance]
 ```
 
 3. Start the server + test the request
 
 ```shell
-$ litellm /path/to/config.yaml
+$ llm /path/to/config.yaml
 ```
 ```shell
 curl --location 'http://0.0.0.0:4000/chat/completions' \
@@ -123,16 +123,16 @@ We might need to update the function schema in the future, to support multiple e
 
 :::
 
-See a complete example with our [Llama Guard content moderation hook](https://github.com/BerriAI/litellm/blob/main/enterprise/enterprise_hooks/llm_guard.py)
+See a complete example with our [Llama Guard content moderation hook](https://github.com/BerriAI/llm/blob/main/enterprise/enterprise_hooks/llm_guard.py)
 
 ```python
-from litellm.integrations.custom_logger import CustomLogger
-import litellm
+from llm.integrations.custom_logger import CustomLogger
+import llm
 from fastapi import HTTPException
 
-# This file includes the custom callbacks for LiteLLM Proxy
+# This file includes the custom callbacks for Hanzo Proxy
 # Once defined, these can be passed in proxy_config.yaml
-class MyCustomHandler(CustomLogger): # https://docs.litellm.ai/docs/observability/custom_callback#callback-class
+class MyCustomHandler(CustomLogger): # https://docs.llm.ai/docs/observability/custom_callback#callback-class
     # Class variables or attributes
     def __init__(self):
         pass
@@ -174,17 +174,17 @@ proxy_handler_instance = MyCustomHandler()
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
 
-litellm_settings:
-  callbacks: custom_callbacks.proxy_handler_instance # sets litellm.callbacks = [proxy_handler_instance]
+llm_settings:
+  callbacks: custom_callbacks.proxy_handler_instance # sets llm.callbacks = [proxy_handler_instance]
 ```
 
 3. Start the server + test the request
 
 ```shell
-$ litellm /path/to/config.yaml
+$ llm /path/to/config.yaml
 ```
 ```shell
 curl --location 'http://0.0.0.0:4000/chat/completions' \
@@ -203,7 +203,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 
 Set `enforce_user_param` to true, to require all calls to the openai endpoints to have the 'user' param. 
 
-[**See Code**](https://github.com/BerriAI/litellm/blob/4777921a31c4c70e4d87b927cb233b6a09cd8b51/litellm/proxy/auth/auth_checks.py#L72)
+[**See Code**](https://github.com/BerriAI/llm/blob/4777921a31c4c70e4d87b927cb233b6a09cd8b51/llm/proxy/auth/auth_checks.py#L72)
 
 ```yaml
 general_settings:
@@ -218,7 +218,7 @@ general_settings:
 
 For chat completions and text completion calls, you can return a rejected message as a user response. 
 
-Do this by returning a string. LiteLLM takes care of returning the response in the correct format depending on the endpoint and if it's streaming/non-streaming.
+Do this by returning a string. Hanzo takes care of returning the response in the correct format depending on the endpoint and if it's streaming/non-streaming.
 
 For non-chat/text completion endpoints, this response is returned as a 400 status code exception. 
 
@@ -226,11 +226,11 @@ For non-chat/text completion endpoints, this response is returned as a 400 statu
 ### 1. Create Custom Handler 
 
 ```python
-from litellm.integrations.custom_logger import CustomLogger
-import litellm
-from litellm.utils import get_formatted_prompt
+from llm.integrations.custom_logger import CustomLogger
+import llm
+from llm.utils import get_formatted_prompt
 
-# This file includes the custom callbacks for LiteLLM Proxy
+# This file includes the custom callbacks for Hanzo Proxy
 # Once defined, these can be passed in proxy_config.yaml
 class MyCustomHandler(CustomLogger):
     def __init__(self):
@@ -261,18 +261,18 @@ proxy_handler_instance = MyCustomHandler()
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
 
-litellm_settings:
-  callbacks: custom_callbacks.proxy_handler_instance # sets litellm.callbacks = [proxy_handler_instance]
+llm_settings:
+  callbacks: custom_callbacks.proxy_handler_instance # sets llm.callbacks = [proxy_handler_instance]
 ```
 
 
 ### 3. Test it!
 
 ```shell
-$ litellm /path/to/config.yaml
+$ llm /path/to/config.yaml
 ```
 ```shell
 curl --location 'http://0.0.0.0:4000/chat/completions' \

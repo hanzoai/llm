@@ -6,7 +6,7 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
+import llm
 from base_audio_transcription_unit_tests import BaseLLMAudioTranscriptionTest
 
 
@@ -16,5 +16,5 @@ class TestDeepgramAudioTranscription(BaseLLMAudioTranscriptionTest):
             "model": "deepgram/nova-2",
         }
 
-    def get_custom_llm_provider(self) -> litellm.LlmProviders:
-        return litellm.LlmProviders.DEEPGRAM
+    def get_custom_llm_provider(self) -> llm.LlmProviders:
+        return llm.LlmProviders.DEEPGRAM

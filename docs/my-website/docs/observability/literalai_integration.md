@@ -11,24 +11,24 @@ import Image from '@theme/IdealImage';
 Ensure you have the `literalai` package installed:
 
 ```shell
-pip install literalai litellm
+pip install literalai llm
 ```
 
 ## Quick Start
 
 ```python
-import litellm
+import llm
 import os
 
 os.environ["LITERAL_API_KEY"] = ""
 os.environ['OPENAI_API_KEY']= ""
 os.environ['LITERAL_BATCH_SIZE'] = "1" # You won't see logs appear until the batch is full and sent
 
-litellm.success_callback = ["literalai"] # Log Input/Output to LiteralAI
-litellm.failure_callback = ["literalai"] # Log Errors to LiteralAI
+llm.success_callback = ["literalai"] # Log Input/Output to LiteralAI
+llm.failure_callback = ["literalai"] # Log Errors to LiteralAI
 
 # openai call
-response = litellm.completion(
+response = llm.completion(
   model="gpt-3.5-turbo",
   messages=[
     {"role": "user", "content": "Hi 👋 - i'm openai"}
@@ -41,7 +41,7 @@ response = litellm.completion(
 This integration is compatible with the Literal AI SDK decorators, enabling conversation and agent tracing
 
 ```py
-import litellm
+import llm
 from literalai import LiteralClient
 import os
 
@@ -49,16 +49,16 @@ os.environ["LITERAL_API_KEY"] = ""
 os.environ['OPENAI_API_KEY']= ""
 os.environ['LITERAL_BATCH_SIZE'] = "1" # You won't see logs appear until the batch is full and sent
 
-litellm.input_callback = ["literalai"] # Support other Literal AI decorators and prompt templates
-litellm.success_callback = ["literalai"] # Log Input/Output to LiteralAI
-litellm.failure_callback = ["literalai"] # Log Errors to LiteralAI
+llm.input_callback = ["literalai"] # Support other Literal AI decorators and prompt templates
+llm.success_callback = ["literalai"] # Log Input/Output to LiteralAI
+llm.failure_callback = ["literalai"] # Log Errors to LiteralAI
 
 literalai_client = LiteralClient()
 
 @literalai_client.run
 def my_agent(question: str):
     # agent logic here
-    response = litellm.completion(
+    response = llm.completion(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "user", "content": question}
@@ -90,8 +90,8 @@ from literalai import LiteralClient
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="anything",            # litellm proxy virtual key
-    base_url="http://0.0.0.0:4000" # litellm proxy base_url
+    api_key="anything",            # llm proxy virtual key
+    base_url="http://0.0.0.0:4000" # llm proxy base_url
 )
 
 literalai_client = LiteralClient(api_key="")
@@ -100,7 +100,7 @@ literalai_client = LiteralClient(api_key="")
 literalai_client.instrument_openai()
 
 settings = {
-    "model": "gpt-3.5-turbo", # model you want to send litellm proxy
+    "model": "gpt-3.5-turbo", # model you want to send llm proxy
     "temperature": 0,
     # ... more settings
 }

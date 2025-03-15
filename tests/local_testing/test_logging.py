@@ -4,8 +4,8 @@
 # # Test Scenarios (test across completion, streaming, embedding)
 # ## 1: Pre-API-Call
 # ## 2: Post-API-Call
-# ## 3: On LiteLLM Call success
-# ## 4: On LiteLLM Call failure
+# ## 3: On Hanzo Call success
+# ## 4: On Hanzo Call failure
 
 # import sys, os, io
 # import traceback, logging
@@ -28,10 +28,10 @@
 # sys.path.insert(
 #     0, os.path.abspath("../..")
 # )  # Adds the parent directory to the system path
-# import litellm
-# from litellm import embedding, completion
+# import llm
+# from llm import embedding, completion
 # from openai.error import AuthenticationError
-# litellm.set_verbose = True
+# llm.set_verbose = True
 
 # score = 0
 
@@ -57,7 +57,7 @@
 #             raise Exception("Required log message not found!")
 #         elif "Logging Details Post-API Call" not in output:
 #             raise Exception("Required log message not found!")
-#         elif "Logging Details LiteLLM-Success Call" not in output:
+#         elif "Logging Details Hanzo-Success Call" not in output:
 #             raise Exception("Required log message not found!")
 #         score += 1
 #     except Exception as e:
@@ -82,7 +82,7 @@
 # #             raise Exception("Required log message not found!")
 # #         elif "Logging Details Post-API Call" not in output:
 # #             raise Exception("Required log message not found!")
-# #         elif "Logging Details LiteLLM-Success Call" not in output:
+# #         elif "Logging Details Hanzo-Success Call" not in output:
 # #             raise Exception("Required log message not found!")
 # #         score += 1
 # #     except Exception as e:
@@ -94,7 +94,7 @@
 # def test_logging_success_streaming_openai():
 #     global score
 #     try:
-#         # litellm.set_verbose = False
+#         # llm.set_verbose = False
 #         def custom_callback(
 #             kwargs,                 # kwargs to completion
 #             completion_response,    # response from completion
@@ -104,7 +104,7 @@
 #                 print(f"Complete Streaming Response: {kwargs['complete_streaming_response']}")
 
 #         # Assign the custom callback function
-#         litellm.success_callback = [custom_callback]
+#         llm.success_callback = [custom_callback]
 
 #         # Redirect stdout
 #         old_stdout = sys.stdout
@@ -122,7 +122,7 @@
 #             raise Exception("Required log message not found!")
 #         elif "Logging Details Post-API Call" not in output:
 #             raise Exception("Required log message not found!")
-#         elif "Logging Details LiteLLM-Success Call" not in output:
+#         elif "Logging Details Hanzo-Success Call" not in output:
 #             raise Exception("Required log message not found!")
 #         elif "Complete Streaming Response:" not in output:
 #             raise Exception("Required log message not found!")
@@ -137,7 +137,7 @@
 # def test_logging_success_streaming_non_openai():
 #     global score
 #     try:
-#         # litellm.set_verbose = False
+#         # llm.set_verbose = False
 #         def custom_callback(
 #             kwargs,                 # kwargs to completion
 #             completion_response,    # response from completion
@@ -148,7 +148,7 @@
 #                 print(f"Complete Streaming Response: {kwargs['complete_streaming_response']}")
 
 #         # Assign the custom callback function
-#         litellm.success_callback = [custom_callback]
+#         llm.success_callback = [custom_callback]
 
 #         # Redirect stdout
 #         old_stdout = sys.stdout
@@ -166,7 +166,7 @@
 #             raise Exception("Required log message not found!")
 #         elif "Logging Details Post-API Call" not in output:
 #             raise Exception("Required log message not found!")
-#         elif "Logging Details LiteLLM-Success Call" not in output:
+#         elif "Logging Details Hanzo-Success Call" not in output:
 #             raise Exception("Required log message not found!")
 #         elif "Complete Streaming Response:" not in output:
 #             raise Exception(f"Required log message not found! {output}")
@@ -184,7 +184,7 @@
 #         old_stdout = sys.stdout
 #         sys.stdout = new_stdout = io.StringIO()
 
-#         response = embedding(model="text-embedding-ada-002", input=["good morning from litellm"])
+#         response = embedding(model="text-embedding-ada-002", input=["good morning from llm"])
 
 #         # Restore stdout
 #         sys.stdout = old_stdout
@@ -194,12 +194,12 @@
 #             raise Exception("Required log message not found!")
 #         elif "Logging Details Post-API Call" not in output:
 #             raise Exception("Required log message not found!")
-#         elif "Logging Details LiteLLM-Success Call" not in output:
+#         elif "Logging Details Hanzo-Success Call" not in output:
 #             raise Exception("Required log message not found!")
 #     except Exception as e:
 #         pytest.fail(f"Error occurred: {e}")
 
-# # ## 2. On LiteLLM Call failure
+# # ## 2. On Hanzo Call failure
 # # ## TEST BAD KEY
 
 # # # normal completion
@@ -231,7 +231,7 @@
 # #         raise Exception("Required log message not found!")
 # #     elif "Logging Details Post-API Call" not in output:
 # #         raise Exception("Required log message not found!")
-# #     elif "Logging Details LiteLLM-Failure Call" not in output:
+# #     elif "Logging Details Hanzo-Failure Call" not in output:
 # #         raise Exception("Required log message not found!")
 
 # #     os.environ["OPENAI_API_KEY"] = temporary_oai_key
@@ -263,7 +263,7 @@
 # #         raise Exception("Required log message not found!")
 # #     elif "Logging Details Post-API Call" not in output:
 # #         raise Exception("Required log message not found!")
-# #     elif "Logging Details LiteLLM-Failure Call" not in output:
+# #     elif "Logging Details Hanzo-Failure Call" not in output:
 # #         raise Exception("Required log message not found!")
 # #     os.environ["OPENAI_API_KEY"] = temporary_oai_key
 # #     os.environ["ANTHROPIC_API_KEY"] = temporary_anthropic_key
@@ -305,7 +305,7 @@
 # #         raise Exception("Required log message not found!")
 # #     elif "Logging Details Post-API Call" not in output:
 # #         raise Exception("Required log message not found!")
-# #     elif "Logging Details LiteLLM-Failure Call" not in output:
+# #     elif "Logging Details Hanzo-Failure Call" not in output:
 # #         raise Exception("Required log message not found!")
 
 # #     os.environ["OPENAI_API_KEY"] = temporary_oai_key
@@ -341,7 +341,7 @@
 # #         raise Exception("Required log message not found!")
 # #     elif "Logging Details Post-API Call" not in output:
 # #         raise Exception("Required log message not found!")
-# #     elif "Logging Details LiteLLM-Failure Call" not in output:
+# #     elif "Logging Details Hanzo-Failure Call" not in output:
 # #         raise Exception("Required log message not found!")
 # #     score += 1
 # # except Exception as e:
@@ -361,7 +361,7 @@
 # #     sys.stdout = new_stdout = io.StringIO()
 
 # #     try:
-# #         response = embedding(model="text-embedding-ada-002", input=["good morning from litellm"])
+# #         response = embedding(model="text-embedding-ada-002", input=["good morning from llm"])
 # #     except AuthenticationError:
 # #         pass
 
@@ -375,7 +375,7 @@
 # #         raise Exception("Required log message not found!")
 # #     elif "Logging Details Post-API Call" not in output:
 # #         raise Exception("Required log message not found!")
-# #     elif "Logging Details LiteLLM-Failure Call" not in output:
+# #     elif "Logging Details Hanzo-Failure Call" not in output:
 # #         raise Exception("Required log message not found!")
 # # except Exception as e:
 # #     print(f"exception type: {type(e).__name__}")

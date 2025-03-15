@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 # Replicate
 
-LiteLLM supports all models on Replicate
+Hanzo supports all models on Replicate
 
 
 ## Usage
@@ -20,7 +20,7 @@ os.environ["REPLICATE_API_KEY"] = ""
 ### Example Call
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 ## set ENV variables
 os.environ["REPLICATE_API_KEY"] = "replicate key"
@@ -40,7 +40,7 @@ response = completion(
   ```yaml
   model_list:
     - model_name: llama-3
-      litellm_params:
+      llm_params:
         model: replicate/meta/meta-llama-3-8b-instruct
         api_key: os.environ/REPLICATE_API_KEY
   ```
@@ -50,10 +50,10 @@ response = completion(
 2. Start the proxy 
 
   ```bash
-  $ litellm --config /path/to/config.yaml --debug
+  $ llm --config /path/to/config.yaml --debug
   ```
 
-3. Send Request to LiteLLM Proxy Server
+3. Send Request to Hanzo Proxy Server
 
   <Tabs>
 
@@ -62,8 +62,8 @@ response = completion(
   ```python
   import openai
   client = openai.OpenAI(
-      api_key="sk-1234",             # pass litellm proxy key, if you're using virtual keys
-      base_url="http://0.0.0.0:4000" # litellm-proxy-base url
+      api_key="sk-1234",             # pass llm proxy key, if you're using virtual keys
+      base_url="http://0.0.0.0:4000" # llm-proxy-base url
   )
 
   response = client.chat.completions.create(
@@ -112,11 +112,11 @@ response = completion(
 
 ### Expected Replicate Call 
 
-This is the call litellm will make to replicate, from the above example: 
+This is the call llm will make to replicate, from the above example: 
 
 ```bash
 
-POST Request Sent from LiteLLM:
+POST Request Sent from Hanzo:
 curl -X POST \
 https://api.replicate.com/v1/models/meta/meta-llama-3-8b-instruct \
 -H 'Authorization: Token your-api-key' -H 'Content-Type: application/json' \
@@ -129,7 +129,7 @@ https://api.replicate.com/v1/models/meta/meta-llama-3-8b-instruct \
 
 ## Advanced Usage - Prompt Formatting 
 
-LiteLLM has prompt template mappings for all `meta-llama` llama3 instruct models. [**See Code**](https://github.com/BerriAI/litellm/blob/4f46b4c3975cd0f72b8c5acb2cb429d23580c18a/litellm/llms/prompt_templates/factory.py#L1360)
+Hanzo has prompt template mappings for all `meta-llama` llama3 instruct models. [**See Code**](https://github.com/BerriAI/llm/blob/4f46b4c3975cd0f72b8c5acb2cb429d23580c18a/llm/llms/prompt_templates/factory.py#L1360)
 
 To apply a custom prompt template: 
 
@@ -137,13 +137,13 @@ To apply a custom prompt template:
 <TabItem value="sdk" label="SDK">
 
 ```python 
-import litellm
+import llm
 
 import os 
 os.environ["REPLICATE_API_KEY"] = ""
 
 # Create your own custom prompt template 
-litellm.register_prompt_template(
+llm.register_prompt_template(
 	    model="togethercomputer/LLaMA-2-7B-32K",
         initial_prompt_value="You are a good assistant" # [OPTIONAL]
 	    roles={
@@ -178,7 +178,7 @@ test_replicate_custom_model()
 # Model-specific parameters
 model_list:
   - model_name: mistral-7b # model alias
-    litellm_params: # actual params for litellm.completion()
+    llm_params: # actual params for llm.completion()
       model: "replicate/mistralai/Mistral-7B-Instruct-v0.1" 
       api_key: os.environ/REPLICATE_API_KEY
       initial_prompt_value: "\n"
@@ -195,7 +195,7 @@ model_list:
 
 ## Advanced Usage - Calling Replicate Deployments
 Calling a [deployed replicate LLM](https://replicate.com/deployments)
-Add the `replicate/deployments/` prefix to your model, so litellm will call the `deployments` endpoint. This will call `ishaan-jaff/ishaan-mistral` deployment on replicate
+Add the `replicate/deployments/` prefix to your model, so llm will call the `deployments` endpoint. This will call `ishaan-jaff/ishaan-mistral` deployment on replicate
 
 ```python
 response = completion(
@@ -206,16 +206,16 @@ response = completion(
 
 :::warning Replicate Cold Boots
 
-Replicate responses can take 3-5 mins due to replicate cold boots, if you're trying to debug try making the request with `litellm.set_verbose=True`. [More info on replicate cold boots](https://replicate.com/docs/how-does-replicate-work#cold-boots)
+Replicate responses can take 3-5 mins due to replicate cold boots, if you're trying to debug try making the request with `llm.set_verbose=True`. [More info on replicate cold boots](https://replicate.com/docs/how-does-replicate-work#cold-boots)
 
 :::
 
 ## Replicate Models
-liteLLM supports all replicate LLMs
+LLM supports all replicate LLMs
 
-For replicate models ensure to add a `replicate/` prefix to the `model` arg. liteLLM detects it using this arg. 
+For replicate models ensure to add a `replicate/` prefix to the `model` arg. LLM detects it using this arg. 
 
-Below are examples on how to call replicate LLMs using liteLLM 
+Below are examples on how to call replicate LLMs using LLM 
 
 Model Name                  | Function Call                                                  | Required OS Variables                |
 -----------------------------|----------------------------------------------------------------|--------------------------------------|
@@ -228,11 +228,11 @@ Model Name                  | Function Call                                     
 
 
 ## Passing additional params - max_tokens, temperature 
-See all litellm.completion supported params [here](https://docs.litellm.ai/docs/completion/input)
+See all llm.completion supported params [here](https://docs.llm.ai/docs/completion/input)
 
 ```python
-# !pip install litellm
-from litellm import completion
+# !pip install llm
+from llm import completion
 import os
 ## set ENV variables
 os.environ["REPLICATE_API_KEY"] = "replicate key"
@@ -251,7 +251,7 @@ response = completion(
 ```yaml
   model_list:
     - model_name: llama-3
-      litellm_params:
+      llm_params:
         model: replicate/meta/meta-llama-3-8b-instruct
         api_key: os.environ/REPLICATE_API_KEY
         max_tokens: 20
@@ -259,13 +259,13 @@ response = completion(
 ```
 
 ## Passings Replicate specific params
-Send params [not supported by `litellm.completion()`](https://docs.litellm.ai/docs/completion/input) but supported by Replicate by passing them to `litellm.completion`
+Send params [not supported by `llm.completion()`](https://docs.llm.ai/docs/completion/input) but supported by Replicate by passing them to `llm.completion`
 
 Example `seed`, `min_tokens` are Replicate specific param
 
 ```python
-# !pip install litellm
-from litellm import completion
+# !pip install llm
+from llm import completion
 import os
 ## set ENV variables
 os.environ["REPLICATE_API_KEY"] = "replicate key"
@@ -285,7 +285,7 @@ response = completion(
 ```yaml
   model_list:
     - model_name: llama-3
-      litellm_params:
+      llm_params:
         model: replicate/meta/meta-llama-3-8b-instruct
         api_key: os.environ/REPLICATE_API_KEY
         min_tokens: 2

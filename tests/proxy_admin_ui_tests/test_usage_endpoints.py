@@ -28,7 +28,7 @@ import io
 import os
 import time
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -38,14 +38,14 @@ import logging
 
 import pytest
 
-import litellm
-from litellm._logging import verbose_proxy_logger
-from litellm.proxy.management_endpoints.internal_user_endpoints import (
+import llm
+from llm._logging import verbose_proxy_logger
+from llm.proxy.management_endpoints.internal_user_endpoints import (
     new_user,
     user_info,
     user_update,
 )
-from litellm.proxy.management_endpoints.key_management_endpoints import (
+from llm.proxy.management_endpoints.key_management_endpoints import (
     delete_key_fn,
     generate_key_fn,
     generate_key_helper_fn,
@@ -53,13 +53,13 @@ from litellm.proxy.management_endpoints.key_management_endpoints import (
     regenerate_key_fn,
     update_key_fn,
 )
-from litellm.proxy.management_endpoints.team_endpoints import (
+from llm.proxy.management_endpoints.team_endpoints import (
     new_team,
     team_info,
     update_team,
 )
-from litellm.proxy.proxy_server import (
-    LitellmUserRoles,
+from llm.proxy.proxy_server import (
+    LLMUserRoles,
     audio_transcriptions,
     chat_completion,
     completion,
@@ -69,10 +69,10 @@ from litellm.proxy.proxy_server import (
     moderations,
     user_api_key_auth,
 )
-from litellm.proxy.management_endpoints.customer_endpoints import (
+from llm.proxy.management_endpoints.customer_endpoints import (
     new_end_user,
 )
-from litellm.proxy.spend_tracking.spend_management_endpoints import (
+from llm.proxy.spend_tracking.spend_management_endpoints import (
     global_spend,
     global_spend_logs,
     global_spend_models,
@@ -81,19 +81,19 @@ from litellm.proxy.spend_tracking.spend_management_endpoints import (
     spend_user_fn,
     view_spend_logs,
 )
-from litellm.proxy.utils import PrismaClient, ProxyLogging, hash_token, update_spend
+from llm.proxy.utils import PrismaClient, ProxyLogging, hash_token, update_spend
 
 verbose_proxy_logger.setLevel(level=logging.DEBUG)
 
 from starlette.datastructures import URL
 
-from litellm.caching.caching import DualCache
-from litellm.proxy._types import (
+from llm.caching.caching import DualCache
+from llm.proxy._types import (
     DynamoDBArgs,
     GenerateKeyRequest,
     RegenerateKeyRequest,
     KeyRequest,
-    LiteLLM_UpperboundKeyGenerateParams,
+    Hanzo_UpperboundKeyGenerateParams,
     NewCustomerRequest,
     NewTeamRequest,
     NewUserRequest,
@@ -110,7 +110,7 @@ proxy_logging_obj = ProxyLogging(user_api_key_cache=DualCache())
 
 @pytest.fixture
 def prisma_client():
-    from litellm.proxy.proxy_cli import append_query_params
+    from llm.proxy.proxy_cli import append_query_params
 
     ### add connection pool + pool timeout args
     params = {"connection_limit": 100, "pool_timeout": 60}
@@ -123,11 +123,11 @@ def prisma_client():
         database_url=os.environ["DATABASE_URL"], proxy_logging_obj=proxy_logging_obj
     )
 
-    # Reset litellm.proxy.proxy_server.prisma_client to None
-    litellm.proxy.proxy_server.litellm_proxy_budget_name = (
-        f"litellm-proxy-budget-{time.time()}"
+    # Reset llm.proxy.proxy_server.prisma_client to None
+    llm.proxy.proxy_server.llm_proxy_budget_name = (
+        f"llm-proxy-budget-{time.time()}"
     )
-    litellm.proxy.proxy_server.user_custom_key_generate = None
+    llm.proxy.proxy_server.user_custom_key_generate = None
 
     return prisma_client
 
@@ -135,16 +135,16 @@ def prisma_client():
 @pytest.mark.asyncio()
 async def test_view_daily_spend_ui(prisma_client):
     print("prisma client=", prisma_client)
-    setattr(litellm.proxy.proxy_server, "prisma_client", prisma_client)
-    setattr(litellm.proxy.proxy_server, "master_key", "sk-1234")
+    setattr(llm.proxy.proxy_server, "prisma_client", prisma_client)
+    setattr(llm.proxy.proxy_server, "master_key", "sk-1234")
 
-    await litellm.proxy.proxy_server.prisma_client.connect()
-    from litellm.proxy.proxy_server import user_api_key_cache
+    await llm.proxy.proxy_server.prisma_client.connect()
+    from llm.proxy.proxy_server import user_api_key_cache
 
     spend_logs_for_admin = await global_spend_logs(
         user_api_key_dict=UserAPIKeyAuth(
             api_key="sk-1234",
-            user_role=LitellmUserRoles.PROXY_ADMIN,
+            user_role=LLMUserRoles.PROXY_ADMIN,
         ),
         api_key=None,
     )
@@ -153,7 +153,7 @@ async def test_view_daily_spend_ui(prisma_client):
 
     spend_logs_for_internal_user = await global_spend_logs(
         user_api_key_dict=UserAPIKeyAuth(
-            api_key="sk-1234", user_role=LitellmUserRoles.INTERNAL_USER, user_id="1234"
+            api_key="sk-1234", user_role=LLMUserRoles.INTERNAL_USER, user_id="1234"
         ),
         api_key=None,
     )
@@ -179,17 +179,17 @@ async def test_view_daily_spend_ui(prisma_client):
 @pytest.mark.asyncio
 async def test_global_spend_models(prisma_client):
     print("prisma client=", prisma_client)
-    setattr(litellm.proxy.proxy_server, "prisma_client", prisma_client)
-    setattr(litellm.proxy.proxy_server, "master_key", "sk-1234")
+    setattr(llm.proxy.proxy_server, "prisma_client", prisma_client)
+    setattr(llm.proxy.proxy_server, "master_key", "sk-1234")
 
-    await litellm.proxy.proxy_server.prisma_client.connect()
+    await llm.proxy.proxy_server.prisma_client.connect()
 
     # Test for admin user
     models_spend_for_admin = await global_spend_models(
         limit=10,
         user_api_key_dict=UserAPIKeyAuth(
             api_key="sk-1234",
-            user_role=LitellmUserRoles.PROXY_ADMIN,
+            user_role=LLMUserRoles.PROXY_ADMIN,
         ),
     )
 
@@ -199,7 +199,7 @@ async def test_global_spend_models(prisma_client):
     models_spend_for_internal_user = await global_spend_models(
         limit=10,
         user_api_key_dict=UserAPIKeyAuth(
-            api_key="sk-1234", user_role=LitellmUserRoles.INTERNAL_USER, user_id="1234"
+            api_key="sk-1234", user_role=LLMUserRoles.INTERNAL_USER, user_id="1234"
         ),
     )
 
@@ -271,17 +271,17 @@ async def test_global_spend_models(prisma_client):
 @pytest.mark.asyncio
 async def test_global_spend_keys(prisma_client):
     print("prisma client=", prisma_client)
-    setattr(litellm.proxy.proxy_server, "prisma_client", prisma_client)
-    setattr(litellm.proxy.proxy_server, "master_key", "sk-1234")
+    setattr(llm.proxy.proxy_server, "prisma_client", prisma_client)
+    setattr(llm.proxy.proxy_server, "master_key", "sk-1234")
 
-    await litellm.proxy.proxy_server.prisma_client.connect()
+    await llm.proxy.proxy_server.prisma_client.connect()
 
     # Test for admin user
     keys_spend_for_admin = await global_spend_keys(
         limit=10,
         user_api_key_dict=UserAPIKeyAuth(
             api_key="sk-1234",
-            user_role=LitellmUserRoles.PROXY_ADMIN,
+            user_role=LLMUserRoles.PROXY_ADMIN,
         ),
     )
 
@@ -291,7 +291,7 @@ async def test_global_spend_keys(prisma_client):
     keys_spend_for_internal_user = await global_spend_keys(
         limit=10,
         user_api_key_dict=UserAPIKeyAuth(
-            api_key="sk-1234", user_role=LitellmUserRoles.INTERNAL_USER, user_id="1234"
+            api_key="sk-1234", user_role=LLMUserRoles.INTERNAL_USER, user_id="1234"
         ),
     )
 

@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 # ✨ Enterprise Features
 :::tip
 
-To get a license, get in touch with us [here](https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat)
+To get a license, get in touch with us [here](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
 
 :::
 
@@ -21,8 +21,8 @@ Features:
     - ✅ [[BETA] AWS Key Manager v2 - Key Decryption](#beta-aws-key-manager---key-decryption)
     - ✅ IP address‑based access control lists
     - ✅ Track Request IP Address
-    - ✅ [Use LiteLLM keys/authentication on Pass Through Endpoints](pass_through#✨-enterprise---use-litellm-keysauthentication-on-pass-through-endpoints)
-    - ✅ [Set Max Request Size / File Size on Requests](#set-max-request--response-size-on-litellm-proxy)
+    - ✅ [Use Hanzo keys/authentication on Pass Through Endpoints](pass_through#✨-enterprise---use-llm-keysauthentication-on-pass-through-endpoints)
+    - ✅ [Set Max Request Size / File Size on Requests](#set-max-request--response-size-on-llm-proxy)
     - ✅ [Enforce Required Params for LLM Requests (ex. Reject requests missing ["metadata"]["generation_name"])](#enforce-required-params-for-llm-requests)
     - ✅ [Key Rotations](./virtual_keys.md#-key-rotations)
 - **Customize Logging, Guardrails, Caching per project**
@@ -49,11 +49,11 @@ Store Audit logs for **Create, Update Delete Operations** done on `Teams` and `V
 
 **Step 1** Switch on audit Logs 
 ```shell
-litellm_settings:
+llm_settings:
   store_audit_logs: true
 ```
 
-Start the litellm proxy with this config
+Start the llm proxy with this config
 
 **Step 2** Test it - Create a Team
 
@@ -74,7 +74,7 @@ curl --location 'http://0.0.0.0:4000/team/new' \
  "updated_at": "2024-06-06T02:10:40.836420+00:00",
  "changed_by": "109010464461339474872",
  "action": "created",
- "table_name": "LiteLLM_TeamTable",
+ "table_name": "Hanzo_TeamTable",
  "object_id": "82e725b5-053f-459d-9a52-867191635446",
  "before_value": null,
  "updated_values": {
@@ -99,7 +99,7 @@ curl --location 'http://0.0.0.0:4000/team/new' \
 
 Requirements: 
 
-- Virtual Keys & a database should be set up, see [virtual keys](https://docs.litellm.ai/docs/proxy/virtual_keys)
+- Virtual Keys & a database should be set up, see [virtual keys](https://docs.llm.ai/docs/proxy/virtual_keys)
 
 #### Usage - /chat/completions requests with request tags 
 
@@ -251,7 +251,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -298,7 +298,7 @@ curl -X GET "http://0.0.0.0:4000/spend/tags" \
 
 Requirements: 
 
-- Virtual Keys & a database should be set up, see [virtual keys](https://docs.litellm.ai/docs/proxy/virtual_keys)
+- Virtual Keys & a database should be set up, see [virtual keys](https://docs.llm.ai/docs/proxy/virtual_keys)
 
 #### Usage - /chat/completions requests with special spend logs metadata 
 
@@ -352,7 +352,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages = [
@@ -465,7 +465,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -518,7 +518,7 @@ Use this when you want to enforce all requests to include certain params. Exampl
 
 **Step 1** Define all Params you want to enforce on config.yaml
 
-This means `["user"]` and `["metadata]["generation_name"]` are required in all LLM Requests to LiteLLM
+This means `["user"]` and `["metadata]["generation_name"]` are required in all LLM Requests to Hanzo
 
 ```yaml
 general_settings:
@@ -652,20 +652,20 @@ Expected Response
 | `admin_only_routes` | ✅ | ✅ | ✅ | ❌ | Routes that can only be accessed by [Proxy Admin](./self_serve#available-roles) |
 | `allowed_routes` | ✅ | ✅ | ✅ | ✅ | Routes are exposed on the proxy. If not set then all routes exposed.  |
 
-`LiteLLMRoutes.public_routes` is an ENUM corresponding to the default public routes on LiteLLM. [You can see this here](https://github.com/BerriAI/litellm/blob/main/litellm/proxy/_types.py)
+`HanzoRoutes.public_routes` is an ENUM corresponding to the default public routes on Hanzo. [You can see this here](https://github.com/BerriAI/llm/blob/main/llm/proxy/_types.py)
 
 ```yaml
 general_settings:
   master_key: sk-1234
-  public_routes: ["LiteLLMRoutes.public_routes", "/spend/calculate"]     # routes that can be accessed without any auth
+  public_routes: ["HanzoRoutes.public_routes", "/spend/calculate"]     # routes that can be accessed without any auth
   admin_only_routes: ["/key/generate"]  # Optional - routes that can only be accessed by Proxy Admin
-  allowed_routes: ["/chat/completions", "/spend/calculate", "LiteLLMRoutes.public_routes"] # Optional - routes that can be accessed by anyone after Authentication
+  allowed_routes: ["/chat/completions", "/spend/calculate", "HanzoRoutes.public_routes"] # Optional - routes that can be accessed by anyone after Authentication
 ```
 
 **Step 2** - start proxy 
 
 ```shell
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 **Step 3** - Test it 
@@ -752,7 +752,7 @@ curl --location 'http://0.0.0.0:4000/embeddings' \
 -H "Authorization: Bearer sk-1234" \
 --data ' {
 "model": "text-embedding-ada-002",
-"input": ["write a litellm poem"]
+"input": ["write a llm poem"]
 }'
 ```
 
@@ -814,14 +814,14 @@ Example if you want to redact the value of `OPENAI_API_KEY` in the following req
 **Step 1** Add this to your config.yaml 
 
 ```yaml
-litellm_settings:
+llm_settings:
   callbacks: ["hide_secrets"]
 ```
 
-**Step 2** Run litellm proxy with `--detailed_debug` to see the server logs
+**Step 2** Run llm proxy with `--detailed_debug` to see the server logs
 
 ```
-litellm --config config.yaml --detailed_debug
+llm --config config.yaml --detailed_debug
 ```
 
 **Step 3** Test it with request
@@ -843,16 +843,16 @@ curl --location 'http://localhost:4000/chat/completions' \
 ```
 
 
-Expect to see the following warning on your litellm server logs
+Expect to see the following warning on your llm server logs
 
 ```shell
-LiteLLM Proxy:WARNING: secret_detection.py:88 - Detected and redacted secrets in message: ['Secret Keyword']
+Hanzo Proxy:WARNING: secret_detection.py:88 - Detected and redacted secrets in message: ['Secret Keyword']
 ```
 
 
-You can also see the raw request sent from litellm to the API Provider
+You can also see the raw request sent from llm to the API Provider
 ```json
-POST Request Sent from LiteLLM:
+POST Request Sent from Hanzo:
 curl -X POST \
 https://api.groq.com/openai/v1/ \
 -H 'Authorization: Bearer gsk_mySVchjY********************************************' \
@@ -951,7 +951,7 @@ LLM_GUARD_API_BASE = "http://0.0.0.0:8192" # deployed llm guard api
 Add `llmguard_moderations` as a callback 
 
 ```yaml
-litellm_settings:
+llm_settings:
     callbacks: ["llmguard_moderations"]
 ```
 
@@ -970,7 +970,7 @@ LLM Guard: Received response - {"sanitized_prompt": "hello world", "is_valid": t
 
 **1. Update config**
 ```yaml
-litellm_settings:
+llm_settings:
     callbacks: ["llmguard_moderations"]
     llm_guard_mode: "key-specific"
 ```
@@ -1008,7 +1008,7 @@ curl --location 'http://0.0.0.0:4000/v1/chat/completions' \
 
 **1. Update config**
 ```yaml
-litellm_settings:
+llm_settings:
     callbacks: ["llmguard_moderations"]
     llm_guard_mode: "request-specific"
 ```
@@ -1038,7 +1038,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages = [
@@ -1047,7 +1047,7 @@ response = client.chat.completions.create(
             "content": "this is a test request, write a short poem"
         }
     ],
-    extra_body={ # pass in any provider-specific param, if not supported by openai, https://docs.litellm.ai/docs/completion/input#provider-specific-params
+    extra_body={ # pass in any provider-specific param, if not supported by openai, https://docs.llm.ai/docs/completion/input#provider-specific-params
         "metadata": {
             "permissions": {
                 "enable_llm_guard_check": True # 👈 KEY CHANGE
@@ -1082,7 +1082,7 @@ Currently works with Sagemaker's LlamaGuard endpoint.
 How to enable this in your config.yaml: 
 
 ```yaml 
-litellm_settings:
+llm_settings:
    callbacks: ["llamaguard_moderations"]
    llamaguard_model_name: "sagemaker/jumpstart-dft-meta-textgeneration-llama-guard-7b"
 ```
@@ -1097,7 +1097,7 @@ os.environ["AWS_REGION_NAME"] = ""
 
 #### Customize LlamaGuard prompt 
 
-To modify the unsafe categories llama guard evaluates against, just create your own version of [this category list](https://github.com/BerriAI/litellm/blob/main/litellm/proxy/llamaguard_prompt.txt)
+To modify the unsafe categories llama guard evaluates against, just create your own version of [this category list](https://github.com/BerriAI/llm/blob/main/llm/proxy/llamaguard_prompt.txt)
 
 Point your proxy to it
 
@@ -1116,7 +1116,7 @@ Requires your GOOGLE_APPLICATION_CREDENTIALS to be set in your .env (same as Ver
 How to enable this in your config.yaml: 
 
 ```yaml 
-litellm_settings:
+llm_settings:
    callbacks: ["google_text_moderation"]
 ```
 
@@ -1129,7 +1129,7 @@ Google Moderations checks the test against several categories. [Source](https://
 By default this is set to 0.8. But you can override this in your config.yaml.
 
 ```yaml
-litellm_settings: 
+llm_settings: 
     google_moderation_confidence_threshold: 0.4 
 ```
 
@@ -1138,7 +1138,7 @@ litellm_settings:
 Set a category specific confidence threshold in your config.yaml. If none set, the global default will be used. 
 
 ```yaml
-litellm_settings: 
+llm_settings: 
     toxic_confidence_threshold: 0.1
 ```
 
@@ -1168,14 +1168,14 @@ Here are the category specific values:
 
 :::info 
 
-Requires a LiteLLM Enterprise key to use. Get a free 2-week license [here](https://forms.gle/sTDVprBs18M4V8Le8)
+Requires a Hanzo Enterprise key to use. Get a free 2-week license [here](https://forms.gle/sTDVprBs18M4V8Le8)
 
 :::
 
-Set LiteLLM Key in your environment
+Set Hanzo Key in your environment
 
 ```bash
-LITELLM_LICENSE=""
+LLM_LICENSE=""
 ```
 
 #### Customize Title + Description
@@ -1204,7 +1204,7 @@ DOCS_FILTERED="True" # only shows openai routes to user
 If any call is made to proxy with this user id, it'll be rejected - use this if you want to let users opt-out of ai features 
 
 ```yaml
-litellm_settings: 
+llm_settings: 
      callbacks: ["blocked_user_check"] 
      blocked_user_list: ["user_id_1", "user_id_2", ...]  # can also be a .txt filepath e.g. `/relative/path/blocked_list.txt` 
 ```
@@ -1225,7 +1225,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages = [
@@ -1264,7 +1264,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 
 :::info 
 
-[Suggest a way to improve this](https://github.com/BerriAI/litellm/issues/new/choose)
+[Suggest a way to improve this](https://github.com/BerriAI/llm/issues/new/choose)
 
 :::
 
@@ -1296,7 +1296,7 @@ curl -X POST "http://0.0.0.0:4000/user/unblock" \
 ## Enable Banned Keywords List
 
 ```yaml 
-litellm_settings: 
+llm_settings: 
      callbacks: ["banned_keywords"]
      banned_keywords_list: ["hello"] # can also be a .txt file - e.g.: `/relative/path/keywords.txt`
 ```
@@ -1336,28 +1336,28 @@ This is a beta feature, and subject to changes.
 USE_AWS_KMS="True"
 ```
 
-**Step 2.** Add `LITELLM_SECRET_AWS_KMS_` to encrypted keys in env 
+**Step 2.** Add `LLM_SECRET_AWS_KMS_` to encrypted keys in env 
 
 ```env
-LITELLM_SECRET_AWS_KMS_DATABASE_URL="AQICAH.."
+LLM_SECRET_AWS_KMS_DATABASE_URL="AQICAH.."
 ```
 
-LiteLLM will find this and use the decrypted `DATABASE_URL="postgres://.."` value in runtime.
+Hanzo will find this and use the decrypted `DATABASE_URL="postgres://.."` value in runtime.
 
 **Step 3.** Start proxy 
 
 ```
-$ litellm
+$ llm
 ```
 
 How it works? 
-- Key Decryption runs before server starts up. [**Code**](https://github.com/BerriAI/litellm/blob/8571cb45e80cc561dc34bc6aa89611eb96b9fe3e/litellm/proxy/proxy_cli.py#L445)
+- Key Decryption runs before server starts up. [**Code**](https://github.com/BerriAI/llm/blob/8571cb45e80cc561dc34bc6aa89611eb96b9fe3e/llm/proxy/proxy_cli.py#L445)
 - It adds the decrypted value to the `os.environ` for the python process. 
 
 **Note:** Setting an environment variable within a Python script using os.environ will not make that variable accessible via SSH sessions or any other new processes that are started independently of the Python script. Environment variables set this way only affect the current process and its child processes.
 
 
-## Set Max Request / Response Size on LiteLLM Proxy
+## Set Max Request / Response Size on Hanzo Proxy
 
 Use this if you want to set a maximum request / response size for your proxy server. If a request size is above the size it gets rejected + slack alert triggered
 
@@ -1374,7 +1374,7 @@ In production we recommend setting a `max_request_size_mb` /  `max_response_size
 ```yaml
 model_list:
   - model_name: fake-openai-endpoint
-    litellm_params:
+    llm_params:
       model: openai/fake
       api_key: fake-key
       api_base: https://exampleopenaiendpoint-production.up.railway.app/

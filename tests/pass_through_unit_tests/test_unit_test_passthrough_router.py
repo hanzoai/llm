@@ -8,7 +8,7 @@ sys.path.insert(0, os.path.abspath("../.."))  #
 
 import unittest
 from unittest.mock import patch
-from litellm.proxy.pass_through_endpoints.passthrough_endpoint_router import (
+from llm.proxy.pass_through_endpoints.passthrough_endpoint_router import (
     PassthroughEndpointRouter,
 )
 
@@ -71,7 +71,7 @@ class TestPassthroughEndpointRouter(unittest.TestCase):
         """
         # Patch the get_secret_str function within the router's module.
         with patch(
-            "litellm.proxy.pass_through_endpoints.passthrough_endpoint_router.get_secret_str"
+            "llm.proxy.pass_through_endpoints.passthrough_endpoint_router.get_secret_str"
         ) as mock_get_secret:
             mock_get_secret.return_value = "env_openai_key"
             # For "openai", if credentials are not set, it should fallback to the env variable.
@@ -80,7 +80,7 @@ class TestPassthroughEndpointRouter(unittest.TestCase):
             mock_get_secret.assert_called_once_with("OPENAI_API_KEY")
 
         with patch(
-            "litellm.proxy.pass_through_endpoints.passthrough_endpoint_router.get_secret_str"
+            "llm.proxy.pass_through_endpoints.passthrough_endpoint_router.get_secret_str"
         ) as mock_get_secret:
             mock_get_secret.return_value = "env_cohere_key"
             result = self.router.get_credentials("cohere", None)
@@ -88,7 +88,7 @@ class TestPassthroughEndpointRouter(unittest.TestCase):
             mock_get_secret.assert_called_once_with("COHERE_API_KEY")
 
         with patch(
-            "litellm.proxy.pass_through_endpoints.passthrough_endpoint_router.get_secret_str"
+            "llm.proxy.pass_through_endpoints.passthrough_endpoint_router.get_secret_str"
         ) as mock_get_secret:
             mock_get_secret.return_value = "env_anthropic_key"
             result = self.router.get_credentials("anthropic", None)
@@ -96,7 +96,7 @@ class TestPassthroughEndpointRouter(unittest.TestCase):
             mock_get_secret.assert_called_once_with("ANTHROPIC_API_KEY")
 
         with patch(
-            "litellm.proxy.pass_through_endpoints.passthrough_endpoint_router.get_secret_str"
+            "llm.proxy.pass_through_endpoints.passthrough_endpoint_router.get_secret_str"
         ) as mock_get_secret:
             mock_get_secret.return_value = "env_azure_key"
             result = self.router.get_credentials("azure", None)

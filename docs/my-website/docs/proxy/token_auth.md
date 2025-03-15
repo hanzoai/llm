@@ -7,11 +7,11 @@ Use JWT's to auth admins / users / projects into the proxy.
 
 :::info
 
-✨ JWT-based Auth  is on LiteLLM Enterprise
+✨ JWT-based Auth  is on Hanzo Enterprise
 
-[Enterprise Pricing](https://www.litellm.ai/#pricing)
+[Enterprise Pricing](https://www.llm.ai/#pricing)
 
-[Contact us here to get a free trial](https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat)
+[Contact us here to get a free trial](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
 
 :::
 
@@ -36,7 +36,7 @@ general_settings:
 
 model_list:
 - model_name: azure-gpt-3.5 
-  litellm_params:
+  llm_params:
       model: azure/<your-deployment-name>
       api_base: os.environ/AZURE_API_BASE
       api_key: os.environ/AZURE_API_KEY
@@ -48,9 +48,9 @@ model_list:
 <Tabs>
 <TabItem value="admin" label="admin">
 
-Create a client scope called `litellm_proxy_admin` in your OpenID provider (e.g. Keycloak).
+Create a client scope called `llm_proxy_admin` in your OpenID provider (e.g. Keycloak).
 
-Grant your user, `litellm_proxy_admin` scope when generating a JWT. 
+Grant your user, `llm_proxy_admin` scope when generating a JWT. 
 
 ```bash
 curl --location ' 'https://demo.duendesoftware.com/connect/token'' \
@@ -60,7 +60,7 @@ curl --location ' 'https://demo.duendesoftware.com/connect/token'' \
 --data-urlencode 'username=test-{USERNAME}' \
 --data-urlencode 'password={USER_PASSWORD}' \
 --data-urlencode 'grant_type=password' \
---data-urlencode 'scope=litellm_proxy_admin' # 👈 grant this scope
+--data-urlencode 'scope=llm_proxy_admin' # 👈 grant this scope
 ```
 </TabItem>
 <TabItem value="project" label="project">
@@ -104,26 +104,26 @@ curl --location 'http://0.0.0.0:4000/v1/chat/completions' \
 
 ## Advanced - Set Accepted JWT Scope Names 
 
-Change the string in JWT 'scopes', that litellm evaluates to see if a user has admin access.
+Change the string in JWT 'scopes', that llm evaluates to see if a user has admin access.
 
 ```yaml
 general_settings:
   master_key: sk-1234
   enable_jwt_auth: True
-  litellm_jwtauth:
-    admin_jwt_scope: "litellm-proxy-admin"
+  llm_jwtauth:
+    admin_jwt_scope: "llm-proxy-admin"
 ```
 
 ## Tracking End-Users / Internal Users / Team / Org
 
-Set the field in the jwt token, which corresponds to a litellm user / team / org.
+Set the field in the jwt token, which corresponds to a llm user / team / org.
 
 ```yaml
 general_settings:
   master_key: sk-1234
   enable_jwt_auth: True
-  litellm_jwtauth:
-    admin_jwt_scope: "litellm-proxy-admin"
+  llm_jwtauth:
+    admin_jwt_scope: "llm-proxy-admin"
     team_id_jwt_field: "client_id" # 👈 CAN BE ANY FIELD
     user_id_jwt_field: "sub" # 👈 CAN BE ANY FIELD
     org_id_jwt_field: "org_id" # 👈 CAN BE ANY FIELD
@@ -140,7 +140,7 @@ Expected JWT:
 }
 ```
 
-Now litellm will automatically update the spend for the user/team/org in the db for each call. 
+Now llm will automatically update the spend for the user/team/org in the db for each call. 
 
 ### JWT Scopes
 
@@ -148,12 +148,12 @@ Here's what scopes on JWT-Auth tokens look like
 
 **Can be a list**
 ```
-scope: ["litellm-proxy-admin",...]
+scope: ["llm-proxy-admin",...]
 ```
 
 **Can be a space-separated string**
 ```
-scope: "litellm-proxy-admin ..."
+scope: "llm-proxy-admin ..."
 ```
 
 ## Control model access with Teams
@@ -164,7 +164,7 @@ scope: "litellm-proxy-admin ..."
 ```yaml
 general_settings:
   enable_jwt_auth: True
-  litellm_jwtauth:
+  llm_jwtauth:
     user_id_jwt_field: "sub"
     team_ids_jwt_field: "groups" 
     user_id_upsert: true # add user_id to the db if they don't exist
@@ -180,7 +180,7 @@ This is assuming your token looks like this:
 }
 ```
 
-2. Create the teams on LiteLLM 
+2. Create the teams on Hanzo 
 
 ```bash
 curl -X POST '<PROXY_BASE_URL>/team/new' \
@@ -201,15 +201,15 @@ OIDC Auth for API: [**See Walkthrough**](https://www.loom.com/share/00fe2deab59a
 
 ### Flow
 
-- Validate if user id is in the DB (LiteLLM_UserTable)
-- Validate if any of the groups are in the DB (LiteLLM_TeamTable)
+- Validate if user id is in the DB (Hanzo_UserTable)
+- Validate if any of the groups are in the DB (Hanzo_TeamTable)
 - Validate if any group has model access
 - If all checks pass, allow the request
 
 
 ## Advanced - Custom Validate
 
-Validate a JWT Token using custom logic, if you need an extra way to verify if tokens are valid for LiteLLM Proxy.
+Validate a JWT Token using custom logic, if you need an extra way to verify if tokens are valid for Hanzo Proxy.
 
 ### 1. Setup custom validate function
 
@@ -236,7 +236,7 @@ def my_custom_validate(token: str) -> Literal[True]:
 general_settings:
   master_key: sk-1234
   enable_jwt_auth: True
-  litellm_jwtauth:
+  llm_jwtauth:
     user_id_jwt_field: "sub"
     team_id_jwt_field: "tenant_id"
     user_id_upsert: True
@@ -274,15 +274,15 @@ By default:
 - Admins: can access only management routes (`/team/*`, `/key/*`, `/user/*`)
 - Teams: can access only openai routes (`/chat/completions`, etc.)+ info routes (`/*/info`)
 
-[**See Code**](https://github.com/BerriAI/litellm/blob/b204f0c01c703317d812a1553363ab0cb989d5b6/litellm/proxy/_types.py#L95)
+[**See Code**](https://github.com/BerriAI/llm/blob/b204f0c01c703317d812a1553363ab0cb989d5b6/llm/proxy/_types.py#L95)
 
 **Admin Routes**
 ```yaml
 general_settings:
   master_key: sk-1234
   enable_jwt_auth: True
-  litellm_jwtauth:
-    admin_jwt_scope: "litellm-proxy-admin"
+  llm_jwtauth:
+    admin_jwt_scope: "llm-proxy-admin"
     admin_allowed_routes: ["/v1/embeddings"]
 ```
 
@@ -291,9 +291,9 @@ general_settings:
 general_settings:
   master_key: sk-1234
   enable_jwt_auth: True
-  litellm_jwtauth:
+  llm_jwtauth:
     ...
-    team_id_jwt_field: "litellm-team" # 👈 Set field in the JWT token that stores the team ID
+    team_id_jwt_field: "llm-team" # 👈 Set field in the JWT token that stores the team ID
     team_allowed_routes: ["/v1/chat/completions"] # 👈 Set accepted routes
 ```
 
@@ -305,8 +305,8 @@ Control how long public keys are cached for (in seconds).
 general_settings:
   master_key: sk-1234
   enable_jwt_auth: True
-  litellm_jwtauth:
-    admin_jwt_scope: "litellm-proxy-admin"
+  llm_jwtauth:
+    admin_jwt_scope: "llm-proxy-admin"
     admin_allowed_routes: ["/v1/embeddings"]
     public_key_ttl: 600 # 👈 KEY CHANGE
 ```
@@ -319,13 +319,13 @@ Set a custom field in which the team_id exists. By default, the 'client_id' fiel
 general_settings:
   master_key: sk-1234
   enable_jwt_auth: True
-  litellm_jwtauth:
+  llm_jwtauth:
     team_id_jwt_field: "client_id" # 👈 KEY CHANGE
 ```
 
 ## All Params
 
-[**See Code**](https://github.com/BerriAI/litellm/blob/b204f0c01c703317d812a1553363ab0cb989d5b6/litellm/proxy/_types.py#L95)
+[**See Code**](https://github.com/BerriAI/llm/blob/b204f0c01c703317d812a1553363ab0cb989d5b6/llm/proxy/_types.py#L95)
 
 
 
@@ -341,7 +341,7 @@ curl --location 'http://0.0.0.0:4000/team/block' \
 --header 'Authorization: Bearer <admin-token>' \
 --header 'Content-Type: application/json' \
 --data '{
-    "team_id": "litellm-test-client-id-new" # 👈 set team id
+    "team_id": "llm-test-client-id-new" # 👈 set team id
 }'
 ```
 
@@ -352,7 +352,7 @@ curl --location 'http://0.0.0.0:4000/team/unblock' \
 --header 'Authorization: Bearer <admin-token>' \
 --header 'Content-Type: application/json' \
 --data '{
-    "team_id": "litellm-test-client-id-new" # 👈 set team id
+    "team_id": "llm-test-client-id-new" # 👈 set team id
 }'
 ```
 
@@ -365,7 +365,7 @@ Allow users who belong to a specific email domain, automatic access to the proxy
 general_settings:
   master_key: sk-1234
   enable_jwt_auth: True
-  litellm_jwtauth:
+  llm_jwtauth:
     user_email_jwt_field: "email" # 👈 checks 'email' field in jwt payload
     user_allowed_email_domain: "my-co.com" # allows user@my-co.com to call proxy
     user_id_upsert: true # 👈 upserts the user to db, if valid email but not in db
@@ -385,11 +385,11 @@ Very important, set `enforce_rbac: true` to ensure that the RBAC system is enabl
 ```yaml
 general_settings:
   enable_jwt_auth: True
-  litellm_jwtauth:
+  llm_jwtauth:
     object_id_jwt_field: "oid" # can be either user / team, inferred from the role mapping
     roles_jwt_field: "roles"
     role_mappings:
-      - role: litellm.api.consumer
+      - role: llm.api.consumer
         internal_role: "team"
     enforce_rbac: true # 👈 VERY IMPORTANT
 
@@ -399,14 +399,14 @@ general_settings:
       routes: ["/v1/chat/completions"]
 
 environment_variables:
-  JWT_AUDIENCE: "api://LiteLLM_Proxy" # ensures audience is validated
+  JWT_AUDIENCE: "api://Hanzo_Proxy" # ensures audience is validated
 ```
 
 - `object_id_jwt_field`: The field in the JWT token that contains the object id. This id can be either a user id or a team id. Use this instead of `user_id_jwt_field` and `team_id_jwt_field`. If the same field could be both. 
 
-- `roles_jwt_field`: The field in the JWT token that contains the roles. This field is a list of roles that the user has. To index into a nested field, use dot notation - eg. `resource_access.litellm-test-client-id.roles`.
+- `roles_jwt_field`: The field in the JWT token that contains the roles. This field is a list of roles that the user has. To index into a nested field, use dot notation - eg. `resource_access.llm-test-client-id.roles`.
 
-- `role_mappings`: A list of role mappings. Map the received role in the JWT token to an internal role on LiteLLM.
+- `role_mappings`: A list of role mappings. Map the received role in the JWT token to an internal role on Hanzo.
 
 - `JWT_AUDIENCE`: The audience of the JWT token. This is used to validate the audience of the JWT token. Set via an environment variable.
 
@@ -414,16 +414,16 @@ environment_variables:
 
 ```bash
 {
-  "aud": "api://LiteLLM_Proxy",
+  "aud": "api://Hanzo_Proxy",
   "oid": "eec236bd-0135-4b28-9354-8fc4032d543e",
-  "roles": ["litellm.api.consumer"] 
+  "roles": ["llm.api.consumer"] 
 }
 ```
 
 ### Role Mapping Spec 
 
 - `role`: The expected role in the JWT token. 
-- `internal_role`: The internal role on LiteLLM that will be used to control access. 
+- `internal_role`: The internal role on Hanzo that will be used to control access. 
 
 Supported internal roles:
 - `team`: Team object will be used for RBAC spend tracking. Use this for tracking spend for a 'use case'. 
@@ -442,23 +442,23 @@ Control which models a JWT can access. Set `enforce_scope_based_access: true` to
 ```yaml
 model_list:
   - model_name: anthropic-claude
-    litellm_params:
+    llm_params:
       model: anthropic/claude-3-5-sonnet
       api_key: os.environ/ANTHROPIC_API_KEY
   - model_name: gpt-3.5-turbo-testing
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
 general_settings:
   enable_jwt_auth: True
-  litellm_jwtauth:
+  llm_jwtauth:
     team_id_jwt_field: "client_id" # 👈 set the field in the JWT token that contains the team id
     team_id_upsert: true # 👈 upsert the team to db, if team id is not found in db
     scope_mappings:
-      - scope: litellm.api.consumer
+      - scope: llm.api.consumer
         models: ["anthropic-claude"]
-      - scope: litellm.api.gpt_3_5_turbo
+      - scope: llm.api.gpt_3_5_turbo
         models: ["gpt-3.5-turbo-testing"]
     enforce_scope_based_access: true # 👈 enforce scope-based access control
     enforce_rbac: true # 👈 enforces only a Team/User/ProxyAdmin can access the proxy.
@@ -475,7 +475,7 @@ Expected Token:
 
 ```bash
 {
-  "scope": ["litellm.api.consumer", "litellm.api.gpt_3_5_turbo"] # can be a list or a space-separated string
+  "scope": ["llm.api.consumer", "llm.api.gpt_3_5_turbo"] # can be a list or a space-separated string
 }
 ```
 

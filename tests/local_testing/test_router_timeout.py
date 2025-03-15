@@ -18,8 +18,8 @@ import os
 
 from dotenv import load_dotenv
 
-import litellm
-from litellm import Router
+import llm
+from llm import Router
 
 load_dotenv()
 
@@ -29,7 +29,7 @@ def test_router_timeouts():
     model_list = [
         {
             "model_name": "openai-gpt-4",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/chatgpt-v-2",
                 "api_key": "os.environ/AZURE_API_KEY",
                 "api_base": "os.environ/AZURE_API_BASE",
@@ -39,7 +39,7 @@ def test_router_timeouts():
         },
         {
             "model_name": "anthropic-claude-3-5-haiku-20241022",
-            "litellm_params": {
+            "llm_params": {
                 "model": "claude-3-5-haiku-20241022",
                 "api_key": "os.environ/ANTHROPIC_API_KEY",
                 "mock_response": "hello world",
@@ -81,7 +81,7 @@ def test_router_timeouts():
     for question in questions_list:
         messages = [{"content": question["content"], "role": "user"}]
 
-        prompt_tokens = litellm.token_counter(text=question["content"], model="gpt-4")
+        prompt_tokens = llm.token_counter(text=question["content"], model="gpt-4")
         print("prompt_tokens = ", prompt_tokens)
 
         response = router.completion(
@@ -104,7 +104,7 @@ async def test_router_timeouts_bedrock():
     _model_list = [
         {
             "model_name": "bedrock",
-            "litellm_params": {
+            "llm_params": {
                 "model": "bedrock/anthropic.claude-instant-v1",
                 "timeout": 0.00001,
             },
@@ -121,7 +121,7 @@ async def test_router_timeouts_bedrock():
         num_retries=0,
     )
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     try:
         response = await router.acompletion(
             model="bedrock",
@@ -149,17 +149,17 @@ def test_router_timeout_with_retries_anthropic_model(num_retries, expected_call_
     """
     If request hits custom timeout, ensure it's retried.
     """
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
     import time
 
-    litellm.num_retries = num_retries
-    litellm.request_timeout = 0.000001
+    llm.num_retries = num_retries
+    llm.request_timeout = 0.000001
 
     router = Router(
         model_list=[
             {
                 "model_name": "claude-3-haiku",
-                "litellm_params": {
+                "llm_params": {
                     "model": "anthropic/claude-3-haiku-20240307",
                 },
             }
@@ -182,7 +182,7 @@ def test_router_timeout_with_retries_anthropic_model(num_retries, expected_call_
                 messages=[{"role": "user", "content": "hello, who are u"}],
                 client=custom_client,
             )
-        except litellm.Timeout:
+        except llm.Timeout:
             pass
 
         assert mock_client.call_count == expected_call_count
@@ -198,15 +198,15 @@ def test_router_timeout_with_retries_anthropic_model(num_retries, expected_call_
 def test_router_stream_timeout(model):
     import os
     from dotenv import load_dotenv
-    import litellm
-    from litellm.router import Router, RetryPolicy, AllowedFailsPolicy
+    import llm
+    from llm.router import Router, RetryPolicy, AllowedFailsPolicy
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     model_list = [
         {
             "model_name": "llama3",
-            "litellm_params": {
+            "llm_params": {
                 "model": "watsonx/meta-llama/llama-3-1-8b-instruct",
                 "api_base": os.getenv("WATSONX_URL_US_SOUTH"),
                 "api_key": os.getenv("WATSONX_API_KEY"),
@@ -217,7 +217,7 @@ def test_router_stream_timeout(model):
         },
         {
             "model_name": "bedrock-anthropic",
-            "litellm_params": {
+            "llm_params": {
                 "model": "bedrock/anthropic.claude-3-5-haiku-20241022-v1:0",
                 "timeout": 0.01,
                 "stream_timeout": 0.0000001,
@@ -225,7 +225,7 @@ def test_router_stream_timeout(model):
         },
         {
             "model_name": "llama3-fallback",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
@@ -286,15 +286,15 @@ def test_router_stream_timeout(model):
 def test_unit_test_streaming_timeout(stream):
     import os
     from dotenv import load_dotenv
-    import litellm
-    from litellm.router import Router, RetryPolicy, AllowedFailsPolicy
+    import llm
+    from llm.router import Router, RetryPolicy, AllowedFailsPolicy
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     model_list = [
         {
             "model_name": "llama3",
-            "litellm_params": {
+            "llm_params": {
                 "model": "watsonx/meta-llama/llama-3-1-8b-instruct",
                 "api_base": os.getenv("WATSONX_URL_US_SOUTH"),
                 "api_key": os.getenv("WATSONX_API_KEY"),
@@ -305,7 +305,7 @@ def test_unit_test_streaming_timeout(stream):
         },
         {
             "model_name": "bedrock-anthropic",
-            "litellm_params": {
+            "llm_params": {
                 "model": "bedrock/anthropic.claude-3-5-haiku-20241022-v1:0",
                 "timeout": 0.01,
                 "stream_timeout": 0.0000001,
@@ -313,7 +313,7 @@ def test_unit_test_streaming_timeout(stream):
         },
         {
             "model_name": "llama3-fallback",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },

@@ -4,11 +4,11 @@ slug: v1.59.8-stable
 date: 2025-01-31T10:00:00
 authors:
   - name: Krrish Dholakia
-    title: CEO, LiteLLM
+    title: CEO, Hanzo
     url: https://www.linkedin.com/in/krish-d/
     image_url: https://media.licdn.com/dms/image/v2/D4D03AQGrlsJ3aqpHmQ/profile-displayphoto-shrink_400_400/B4DZSAzgP7HYAg-/0/1737327772964?e=1743638400&v=beta&t=39KOXMUFedvukiWWVPHf3qI45fuQD7lNglICwN31DrI
   - name: Ishaan Jaffer
-    title: CTO, LiteLLM
+    title: CTO, Hanzo
     url: https://www.linkedin.com/in/reffajnaahsi/
     image_url: https://media.licdn.com/dms/image/v2/D4D03AQGiM7ZrUwqu_Q/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1675971026692?e=1741824000&v=beta&t=eQnRdXPJo4eiINWTZARoYTfqh064pgZ-E21pQTSy8jc
 tags: [admin ui, logging, db schema]
@@ -23,7 +23,7 @@ import Image from '@theme/IdealImage';
 
 :::info
 
-Get a 7 day free trial for LiteLLM Enterprise [here](https://litellm.ai/#trial).
+Get a 7 day free trial for Hanzo Enterprise [here](https://llm.ai/#trial).
 
 **no call needed**
 
@@ -35,19 +35,19 @@ Get a 7 day free trial for LiteLLM Enterprise [here](https://litellm.ai/#trial).
 1. New OpenAI `/image/variations` endpoint BETA support [Docs](../../docs/image_variations)
 2. Topaz API support on OpenAI `/image/variations` BETA endpoint [Docs](../../docs/providers/topaz)
 3. Deepseek - r1 support w/ reasoning_content ([Deepseek API](../../docs/providers/deepseek#reasoning-models), [Vertex AI](../../docs/providers/vertex#model-garden), [Bedrock](../../docs/providers/bedrock#deepseek)) 
-4. Azure - Add azure o1 pricing [See Here](https://github.com/BerriAI/litellm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L952)
+4. Azure - Add azure o1 pricing [See Here](https://github.com/BerriAI/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L952)
 5. Anthropic - handle `-latest` tag in model for cost calculation
-6. Gemini-2.0-flash-thinking - add model pricing (it’s 0.0) [See Here](https://github.com/BerriAI/litellm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L3393)
-7. Bedrock - add stability sd3 model pricing [See Here](https://github.com/BerriAI/litellm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L6814)  (s/o [Marty Sullivan](https://github.com/marty-sullivan))
-8. Bedrock - add us.amazon.nova-lite-v1:0 to model cost map [See Here](https://github.com/BerriAI/litellm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L5619)
-9. TogetherAI - add new together_ai llama3.3 models [See Here](https://github.com/BerriAI/litellm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L6985)
+6. Gemini-2.0-flash-thinking - add model pricing (it’s 0.0) [See Here](https://github.com/BerriAI/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L3393)
+7. Bedrock - add stability sd3 model pricing [See Here](https://github.com/BerriAI/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L6814)  (s/o [Marty Sullivan](https://github.com/marty-sullivan))
+8. Bedrock - add us.amazon.nova-lite-v1:0 to model cost map [See Here](https://github.com/BerriAI/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L5619)
+9. TogetherAI - add new together_ai llama3.3 models [See Here](https://github.com/BerriAI/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L6985)
 
 ## LLM Translation
 
 1. LM Studio -> fix async embedding call 
 2. Gpt 4o models - fix response_format translation 
 3. Bedrock nova - expand supported document types to include .md, .csv, etc. [Start Here](../../docs/providers/bedrock#usage---pdf--document-understanding)
-4. Bedrock - docs on IAM role based access for bedrock - [Start Here](https://docs.litellm.ai/docs/providers/bedrock#sts-role-based-auth)
+4. Bedrock - docs on IAM role based access for bedrock - [Start Here](https://docs.llm.ai/docs/providers/bedrock#sts-role-based-auth)
 5. Bedrock - cache IAM role credentials when used 
 6. Google AI Studio (`gemini/`) - support gemini 'frequency_penalty' and 'presence_penalty'
 7. Azure O1 - fix model name check 
@@ -56,8 +56,8 @@ Get a 7 day free trial for LiteLLM Enterprise [here](https://litellm.ai/#trial).
 10. Bedrock - return correct bedrock status code and error message if error during streaming
 11. Anthropic - Supported nested json schema on anthropic calls
 12. OpenAI - `metadata` param preview support 
-    1. SDK - enable via `litellm.enable_preview_features = True` 
-    2. PROXY - enable via `litellm_settings::enable_preview_features: true` 
+    1. SDK - enable via `llm.enable_preview_features = True` 
+    2. PROXY - enable via `llm_settings::enable_preview_features: true` 
 13. Replicate - retry completion response on status=processing 
 
 ## Spend Tracking Improvements
@@ -85,7 +85,7 @@ Get a 7 day free trial for LiteLLM Enterprise [here](https://litellm.ai/#trial).
 8. Internal User ‘view’ - fix spend calculation when team selected
 9. Model Analytics is now on Free  
 10. Usage page - shows days when spend = 0, and round spend on charts to 2 sig figs 
-11. Public Teams - allow admins to expose teams for new users to ‘join’ on UI - [Start Here](https://docs.litellm.ai/docs/proxy/public_teams)
+11. Public Teams - allow admins to expose teams for new users to ‘join’ on UI - [Start Here](https://docs.llm.ai/docs/proxy/public_teams)
 12. Guardrails
     1. set/edit guardrails on a virtual key 
     2. Allow setting guardrails on a team 
@@ -102,17 +102,17 @@ Get a 7 day free trial for LiteLLM Enterprise [here](https://litellm.ai/#trial).
 ## Logging / Guardrail Integrations
 
 1. Log the used prompt when prompt management used. [Start Here](../../docs/proxy/prompt_management)
-2. Support s3 logging with team alias prefixes - [Start Here](https://docs.litellm.ai/docs/proxy/logging#team-alias-prefix-in-object-key)
+2. Support s3 logging with team alias prefixes - [Start Here](https://docs.llm.ai/docs/proxy/logging#team-alias-prefix-in-object-key)
 3. Prometheus [Start Here](../../docs/proxy/prometheus)
-    1. fix litellm_llm_api_time_to_first_token_metric not populating for bedrock models
+    1. fix llm_llm_api_time_to_first_token_metric not populating for bedrock models
     2. emit remaining team budget metric on regular basis (even when call isn’t made) - allows for more stable metrics on Grafana/etc. 
     3. add key and team level budget metrics
-    4. emit `litellm_overhead_latency_metric` 
-    5. Emit `litellm_team_budget_reset_at_metric` and `litellm_api_key_budget_remaining_hours_metric` 
+    4. emit `llm_overhead_latency_metric` 
+    5. Emit `llm_team_budget_reset_at_metric` and `llm_api_key_budget_remaining_hours_metric` 
 4. Datadog - support logging spend tags to Datadog. [Start Here](../../docs/proxy/enterprise#tracking-spend-for-custom-tags)
 5. Langfuse - fix logging request tags, read from standard logging payload 
 6. GCS - don’t truncate payload on logging 
-7. New GCS Pub/Sub logging support [Start Here](https://docs.litellm.ai/docs/proxy/logging#google-cloud-storage---pubsub-topic)
+7. New GCS Pub/Sub logging support [Start Here](https://docs.llm.ai/docs/proxy/logging#google-cloud-storage---pubsub-topic)
 8. Add AIM Guardrails support [Start Here](../../docs/proxy/guardrails/aim_security)
 
 ## Security
@@ -124,7 +124,7 @@ Get a 7 day free trial for LiteLLM Enterprise [here](https://litellm.ai/#trial).
 ## Health Checks
 
 1. Cleanup pricing-only model names from wildcard route list - prevent bad health checks 
-2. Allow specifying a health check model for wildcard routes - https://docs.litellm.ai/docs/proxy/health#wildcard-routes
+2. Allow specifying a health check model for wildcard routes - https://docs.llm.ai/docs/proxy/health#wildcard-routes
 3. New ‘health_check_timeout ‘ param with default 1min upperbound to prevent bad model from health check to hang and cause pod restarts. [Start Here](../../docs/proxy/health#health-check-timeout)
 4. Datadog - add data dog service health check + expose new `/health/services` endpoint. [Start Here](../../docs/proxy/health#healthservices)
 
@@ -138,10 +138,10 @@ Get a 7 day free trial for LiteLLM Enterprise [here](https://litellm.ai/#trial).
 6. Bedrock - pure async image transformation requests 
 7. Cooldowns - single deployment model group if 100% calls fail in high traffic - prevents an o1 outage from impacting other calls 
 8. Response Headers - return 
-    1. `x-litellm-timeout` 
-    2. `x-litellm-attempted-retries`
-    3. `x-litellm-overhead-duration-ms` 
-    4. `x-litellm-response-duration-ms` 
+    1. `x-llm-timeout` 
+    2. `x-llm-attempted-retries`
+    3. `x-llm-overhead-duration-ms` 
+    4. `x-llm-response-duration-ms` 
 9. ensure duplicate callbacks are not added to proxy
 10. Requirements.txt - bump certifi version
 
@@ -149,8 +149,8 @@ Get a 7 day free trial for LiteLLM Enterprise [here](https://litellm.ai/#trial).
 
 1. JWT / OIDC Auth - new `enforce_rbac` param,allows proxy admin to prevent any unmapped yet authenticated jwt tokens from calling proxy. [Start Here](../../docs/proxy/token_auth#enforce-role-based-access-control-rbac)
 2. fix custom openapi schema generation for customized swagger’s 
-3. Request Headers - support reading `x-litellm-timeout` param from request headers. Enables model timeout control when using Vercel’s AI SDK + LiteLLM Proxy. [Start Here](../../docs/proxy/request_headers#litellm-headers)
-4. JWT / OIDC Auth - new `role` based permissions for model authentication. [See Here](https://docs.litellm.ai/docs/proxy/jwt_auth_arch)
+3. Request Headers - support reading `x-llm-timeout` param from request headers. Enables model timeout control when using Vercel’s AI SDK + Hanzo Proxy. [Start Here](../../docs/proxy/request_headers#llm-headers)
+4. JWT / OIDC Auth - new `role` based permissions for model authentication. [See Here](https://docs.llm.ai/docs/proxy/jwt_auth_arch)
 
 ## Complete Git Diff
 
@@ -158,4 +158,4 @@ This is the diff between v1.57.8-stable and v1.59.8-stable.
 
 Use this to see the changes in the codebase.
 
-[**Git Diff**](https://github.com/BerriAI/litellm/compare/v1.57.8-stable...v1.59.8-stable)
+[**Git Diff**](https://github.com/BerriAI/llm/compare/v1.57.8-stable...v1.59.8-stable)

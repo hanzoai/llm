@@ -19,8 +19,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-import litellm
-from litellm.types.utils import (
+import llm
+from llm.types.utils import (
     ChatCompletionTokenLogprob,
     ChoiceLogprobs,
     Delta,

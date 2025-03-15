@@ -9,7 +9,7 @@ import sys
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
+import llm
 
 
 @dataclass
@@ -109,7 +109,7 @@ def analyze_function(func_info: FunctionInfo) -> Dict:
 
     for name, type_name in func_info.parameters:
         if type_name.endswith("Request") or type_name.endswith("Response"):
-            pydantic_model = getattr(litellm.proxy._types, type_name, None)
+            pydantic_model = getattr(llm.proxy._types, type_name, None)
             if pydantic_model is not None:
                 for param in pydantic_model.model_fields.keys():
                     pydantic_params.add(param)
@@ -178,8 +178,8 @@ def main():
         "delete_budget",
         "list_budget",
     ]
-    # directory = "../../litellm/proxy/management_endpoints"  # LOCAL
-    directory = "./litellm/proxy/management_endpoints"
+    # directory = "../../llm/proxy/management_endpoints"  # LOCAL
+    directory = "./llm/proxy/management_endpoints"
 
     # Convert function names to set for faster lookup
     target_functions = set(function_names)

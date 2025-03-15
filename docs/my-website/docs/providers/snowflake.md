@@ -6,14 +6,14 @@ import TabItem from '@theme/TabItem';
 | Property | Details |
 |-------|-------|
 | Description | The Snowflake Cortex LLM REST API lets you access the COMPLETE function via HTTP POST requests|
-| Provider Route on LiteLLM | `snowflake/` |
+| Provider Route on Hanzo | `snowflake/` |
 | Link to Provider Doc | [Snowflake ↗](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-llm-rest-api) |
 | Base URL | [https://{account-id}.snowflakecomputing.com/api/v2/cortex/inference:complete/](https://{account-id}.snowflakecomputing.com/api/v2/cortex/inference:complete) |
 | Supported OpenAI Endpoints | `/chat/completions`, `/completions` |
 
 
 
-Currently, Snowflake's REST API does not have an endpoint for `snowflake-arctic-embed` embedding models. If you want to use these embedding models with Litellm, you can call them through our Hugging Face provider. 
+Currently, Snowflake's REST API does not have an endpoint for `snowflake-arctic-embed` embedding models. If you want to use these embedding models with LLM, you can call them through our Hugging Face provider. 
 
 Find the Arctic Embed models [here](https://huggingface.co/collections/Snowflake/arctic-embed-661fd57d50fab5fc314e4c18) on Hugging Face.
 
@@ -37,7 +37,7 @@ os.environ["SNOWFLAKE_ACCOUNT_ID"] = "YOUR ACCOUNT IDENTIFIER"
 ## Usage
 
 ```python
-from litellm import completion
+from llm import completion
 
 ## set ENV variables
 os.environ["SNOWFLAKE_JWT"] = "YOUR JWT"
@@ -50,7 +50,7 @@ response = completion(
 )
 ```
 
-## Usage with LiteLLM Proxy 
+## Usage with Hanzo Proxy 
 
 #### 1. Required env variables
 ```bash
@@ -62,7 +62,7 @@ export SNOWFLAKE_ACCOUNT_ID = ""
 ```yaml
 model_list:
   - model_name: mistral-7b
-    litellm_params:
+    llm_params:
         model: snowflake/mistral-7b
         api_key: YOUR_API_KEY
         api_base: https://YOUR-ACCOUNT-ID.snowflakecomputing.com/api/v2/cortex/inference:complete
@@ -70,7 +70,7 @@ model_list:
 ```
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 #### 3. Test it

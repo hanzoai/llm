@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 # /responses [Beta]
 
-LiteLLM provides a BETA endpoint in the spec of [OpenAI's `/responses` API](https://platform.openai.com/docs/api-reference/responses)
+Hanzo provides a BETA endpoint in the spec of [OpenAI's `/responses` API](https://platform.openai.com/docs/api-reference/responses)
 
 | Feature | Supported | Notes |
 |---------|-----------|--------|
@@ -13,7 +13,7 @@ LiteLLM provides a BETA endpoint in the spec of [OpenAI's `/responses` API](http
 | Streaming | ✅ | |
 | Fallbacks | ✅ | Works between supported models |
 | Loadbalancing | ✅ | Works between supported models |
-| Supported LiteLLM Versions | 1.63.8+ | |
+| Supported Hanzo Versions | 1.63.8+ | |
 | Supported LLM providers | `openai` | |
 
 ## Usage
@@ -21,14 +21,14 @@ LiteLLM provides a BETA endpoint in the spec of [OpenAI's `/responses` API](http
 ## Create a model response
 
 <Tabs>
-<TabItem value="litellm-sdk" label="LiteLLM SDK">
+<TabItem value="llm-sdk" label="Hanzo SDK">
 
 #### Non-streaming
 ```python
-import litellm
+import llm
 
 # Non-streaming response
-response = litellm.responses(
+response = llm.responses(
     model="gpt-4o",
     input="Tell me a three sentence bedtime story about a unicorn.",
     max_output_tokens=100
@@ -39,10 +39,10 @@ print(response)
 
 #### Streaming
 ```python
-import litellm
+import llm
 
 # Streaming response
-response = litellm.responses(
+response = llm.responses(
     model="gpt-4o",
     input="Tell me a three sentence bedtime story about a unicorn.",
     stream=True
@@ -53,20 +53,20 @@ for event in response:
 ```
 
 </TabItem>
-<TabItem value="proxy" label="OpenAI SDK with LiteLLM Proxy">
+<TabItem value="proxy" label="OpenAI SDK with Hanzo Proxy">
 
-First, add this to your litellm proxy config.yaml:
+First, add this to your llm proxy config.yaml:
 ```yaml
 model_list:
   - model_name: gpt-4o
-    litellm_params:
+    llm_params:
       model: openai/gpt-4o
       api_key: os.environ/OPENAI_API_KEY
 ```
 
-Start your LiteLLM proxy:
+Start your Hanzo proxy:
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```

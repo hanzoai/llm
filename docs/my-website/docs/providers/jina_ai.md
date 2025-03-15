@@ -20,13 +20,13 @@ os.environ['JINA_AI_API_KEY']
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import embedding
+from llm import embedding
 import os
 
 os.environ['JINA_AI_API_KEY'] = ""
 response = embedding(
     model="jina_ai/jina-embeddings-v3",
-    input=["good morning from litellm"],
+    input=["good morning from llm"],
 )
 print(response)
 ```
@@ -37,7 +37,7 @@ print(response)
 ```yaml
 model_list:
   - model_name: embedding-model
-    litellm_params:
+    llm_params:
       model: jina_ai/jina-embeddings-v3
       api_key: os.environ/JINA_AI_API_KEY
 ```
@@ -45,7 +45,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 # RUNNING on http://0.0.0.0:4000/
 ```
@@ -68,7 +68,7 @@ curl -L -X POST 'http://0.0.0.0:4000/embeddings' \
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import rerank
+from llm import rerank
 import os
 
 os.environ["JINA_AI_API_KEY"] = "sk-..."
@@ -96,7 +96,7 @@ print(response)
 ```yaml
 model_list:
   - model_name: rerank-model
-    litellm_params:
+    llm_params:
       model: jina_ai/jina-reranker-v2-base-multilingual
       api_key: os.environ/JINA_AI_API_KEY
 ```
@@ -104,7 +104,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -152,7 +152,7 @@ Pass any jina ai specific parameters as a keyword argument to the `embedding` or
 ```python
 response = embedding(
     model="jina_ai/jina-embeddings-v3",
-    input=["good morning from litellm"],
+    input=["good morning from llm"],
     dimensions=1536,
     my_custom_param="my_custom_value", # any other jina ai specific parameters
 )
@@ -164,7 +164,7 @@ response = embedding(
 curl -L -X POST 'http://0.0.0.0:4000/embeddings' \
 -H 'Authorization: Bearer sk-1234' \
 -H 'Content-Type: application/json' \
--d '{"input": ["good morning from litellm"], "model": "jina_ai/jina-embeddings-v3", "dimensions": 1536, "my_custom_param": "my_custom_value"}'
+-d '{"input": ["good morning from llm"], "model": "jina_ai/jina-embeddings-v3", "dimensions": 1536, "my_custom_param": "my_custom_value"}'
 ```
 
 </TabItem>

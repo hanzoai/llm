@@ -15,8 +15,8 @@ import pytest
 from respx import MockRouter
 from unittest.mock import patch, MagicMock, AsyncMock
 
-import litellm
-from litellm import Choices, Message, ModelResponse
+import llm
+from llm import Choices, Message, ModelResponse
 
 # Adds the parent directory to the system path
 
@@ -48,9 +48,9 @@ async def test_bedrock_max_completion_tokens(model: str):
     Tests that:
     - max_completion_tokens is passed as max_tokens to bedrock models
     """
-    from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler
+    from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     client = AsyncHTTPHandler()
 
@@ -60,7 +60,7 @@ async def test_bedrock_max_completion_tokens(model: str):
 
     with patch.object(client, "post") as mock_client:
         try:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model=model,
                 max_completion_tokens=10,
                 messages=[{"role": "user", "content": "Hello!"}],
@@ -92,8 +92,8 @@ async def test_anthropic_api_max_completion_tokens(model: str):
     Tests that:
     - max_completion_tokens is passed as max_tokens to anthropic models
     """
-    litellm.set_verbose = True
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    llm.set_verbose = True
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     mock_response = {
         "content": [{"text": "Hi! My name is Claude.", "type": "text"}],
@@ -112,7 +112,7 @@ async def test_anthropic_api_max_completion_tokens(model: str):
 
     with patch.object(client, "post") as mock_client:
         try:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model=model,
                 max_completion_tokens=10,
                 messages=[{"role": "user", "content": "Hello!"}],
@@ -135,10 +135,10 @@ async def test_anthropic_api_max_completion_tokens(model: str):
 
 
 def test_all_model_configs():
-    from litellm.llms.vertex_ai.vertex_ai_partner_models.ai21.transformation import (
+    from llm.llms.vertex_ai.vertex_ai_partner_models.ai21.transformation import (
         VertexAIAi21Config,
     )
-    from litellm.llms.vertex_ai.vertex_ai_partner_models.llama3.transformation import (
+    from llm.llms.vertex_ai.vertex_ai_partner_models.llama3.transformation import (
         VertexAILlama3Config,
     )
 
@@ -155,7 +155,7 @@ def test_all_model_configs():
         {"max_completion_tokens": 10}, {}, "llama3", drop_params=False
     ) == {"max_tokens": 10}
 
-    from litellm.llms.fireworks_ai.chat.transformation import (
+    from llm.llms.fireworks_ai.chat.transformation import (
         FireworksAIConfig,
     )
 
@@ -169,7 +169,7 @@ def test_all_model_configs():
         drop_params=False,
     ) == {"max_tokens": 10}
 
-    from litellm.llms.huggingface.chat.handler import HuggingfaceConfig
+    from llm.llms.huggingface.chat.handler import HuggingfaceConfig
 
     assert "max_completion_tokens" in HuggingfaceConfig().get_supported_openai_params(
         model="llama3"
@@ -181,7 +181,7 @@ def test_all_model_configs():
         drop_params=False,
     ) == {"max_new_tokens": 10}
 
-    from litellm.llms.nvidia_nim.chat import NvidiaNimConfig
+    from llm.llms.nvidia_nim.chat import NvidiaNimConfig
 
     assert "max_completion_tokens" in NvidiaNimConfig().get_supported_openai_params(
         model="llama3"
@@ -193,7 +193,7 @@ def test_all_model_configs():
         drop_params=False,
     ) == {"max_tokens": 10}
 
-    from litellm.llms.ollama_chat import OllamaChatConfig
+    from llm.llms.ollama_chat import OllamaChatConfig
 
     assert "max_completion_tokens" in OllamaChatConfig().get_supported_openai_params(
         model="llama3"
@@ -205,7 +205,7 @@ def test_all_model_configs():
         drop_params=False,
     ) == {"num_predict": 10}
 
-    from litellm.llms.predibase.chat.transformation import PredibaseConfig
+    from llm.llms.predibase.chat.transformation import PredibaseConfig
 
     assert "max_completion_tokens" in PredibaseConfig().get_supported_openai_params(
         model="llama3"
@@ -217,7 +217,7 @@ def test_all_model_configs():
         drop_params=False,
     ) == {"max_new_tokens": 10}
 
-    from litellm.llms.codestral.completion.transformation import (
+    from llm.llms.codestral.completion.transformation import (
         CodestralTextCompletionConfig,
     )
 
@@ -232,7 +232,7 @@ def test_all_model_configs():
         drop_params=False,
     ) == {"max_tokens": 10}
 
-    from litellm.llms.volcengine import VolcEngineConfig
+    from llm.llms.volcengine import VolcEngineConfig
 
     assert "max_completion_tokens" in VolcEngineConfig().get_supported_openai_params(
         model="llama3"
@@ -244,7 +244,7 @@ def test_all_model_configs():
         drop_params=False,
     ) == {"max_tokens": 10}
 
-    from litellm.llms.ai21.chat.transformation import AI21ChatConfig
+    from llm.llms.ai21.chat.transformation import AI21ChatConfig
 
     assert "max_completion_tokens" in AI21ChatConfig().get_supported_openai_params(
         "jamba-1.5-mini@001"
@@ -256,7 +256,7 @@ def test_all_model_configs():
         drop_params=False,
     ) == {"max_tokens": 10}
 
-    from litellm.llms.azure.chat.gpt_transformation import AzureOpenAIConfig
+    from llm.llms.azure.chat.gpt_transformation import AzureOpenAIConfig
 
     assert "max_completion_tokens" in AzureOpenAIConfig().get_supported_openai_params(
         model="gpt-3.5-turbo"
@@ -269,7 +269,7 @@ def test_all_model_configs():
         drop_params=False,
     ) == {"max_completion_tokens": 10}
 
-    from litellm.llms.bedrock.chat.converse_transformation import AmazonConverseConfig
+    from llm.llms.bedrock.chat.converse_transformation import AmazonConverseConfig
 
     assert (
         "max_completion_tokens"
@@ -284,7 +284,7 @@ def test_all_model_configs():
         drop_params=False,
     ) == {"maxTokens": 10}
 
-    from litellm.llms.codestral.completion.transformation import (
+    from llm.llms.codestral.completion.transformation import (
         CodestralTextCompletionConfig,
     )
 
@@ -299,7 +299,7 @@ def test_all_model_configs():
         drop_params=False,
     ) == {"max_tokens": 10}
 
-    from litellm import (
+    from llm import (
         AmazonAnthropicClaude3Config,
         AmazonAnthropicConfig,
     )
@@ -330,7 +330,7 @@ def test_all_model_configs():
         drop_params=False,
     ) == {"max_tokens_to_sample": 10}
 
-    from litellm.llms.databricks.chat.handler import DatabricksConfig
+    from llm.llms.databricks.chat.handler import DatabricksConfig
 
     assert "max_completion_tokens" in DatabricksConfig().get_supported_openai_params()
 
@@ -341,7 +341,7 @@ def test_all_model_configs():
         optional_params={},
     ) == {"max_tokens": 10}
 
-    from litellm.llms.vertex_ai.vertex_ai_partner_models.anthropic.transformation import (
+    from llm.llms.vertex_ai.vertex_ai_partner_models.anthropic.transformation import (
         VertexAIAnthropicConfig,
     )
 
@@ -359,10 +359,10 @@ def test_all_model_configs():
         drop_params=False,
     ) == {"max_tokens": 10}
 
-    from litellm.llms.vertex_ai.gemini.vertex_and_google_ai_studio_gemini import (
+    from llm.llms.vertex_ai.gemini.vertex_and_google_ai_studio_gemini import (
         VertexGeminiConfig,
     )
-    from litellm.llms.gemini.chat.transformation import GoogleAIStudioGeminiConfig
+    from llm.llms.gemini.chat.transformation import GoogleAIStudioGeminiConfig
 
     assert "max_completion_tokens" in VertexGeminiConfig().get_supported_openai_params(
         model="gemini-1.0-pro"

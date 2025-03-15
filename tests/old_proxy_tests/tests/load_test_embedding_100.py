@@ -4,14 +4,14 @@ import uuid
 import traceback
 
 
-litellm_client = AsyncOpenAI(api_key="test", base_url="http://0.0.0.0:8000")
+llm_client = AsyncOpenAI(api_key="test", base_url="http://0.0.0.0:8000")
 
 
-async def litellm_completion():
-    # Your existing code for litellm_completion goes here
+async def llm_completion():
+    # Your existing code for llm_completion goes here
     try:
         print("starting embedding calls")
-        response = await litellm_client.embeddings.create(
+        response = await llm_client.embeddings.create(
             model="text-embedding-ada-002",
             input=[
                 "hello who are you" * 2000,
@@ -32,7 +32,7 @@ async def litellm_completion():
 async def main():
     start = time.time()
     n = 100  # Number of concurrent tasks
-    tasks = [litellm_completion() for _ in range(n)]
+    tasks = [llm_completion() for _ in range(n)]
 
     chat_completions = await asyncio.gather(*tasks)
 

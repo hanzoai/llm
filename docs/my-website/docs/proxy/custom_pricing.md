@@ -12,23 +12,23 @@ By default, the response cost is accessible in the logging object via `kwargs["r
 
 :::info
 
-LiteLLM already has pricing for any model in our [model cost map](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json). 
+Hanzo already has pricing for any model in our [model cost map](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json). 
 
 :::
 
 ## Cost Per Second (e.g. Sagemaker)
 
-### Usage with LiteLLM Proxy Server
+### Usage with Hanzo Proxy Server
 
 **Step 1: Add pricing to config.yaml**
 ```yaml
 model_list:
   - model_name: sagemaker-completion-model
-    litellm_params:
+    llm_params:
       model: sagemaker/berri-benchmarking-Llama-2-70b-chat-hf-4
       input_cost_per_second: 0.000420
   - model_name: sagemaker-embedding-model
-    litellm_params:
+    llm_params:
       model: sagemaker/berri-benchmarking-gpt-j-6b-fp16
       input_cost_per_second: 0.000420 
 ```
@@ -36,7 +36,7 @@ model_list:
 **Step 2: Start proxy**
 
 ```bash
-litellm /path/to/config.yaml
+llm /path/to/config.yaml
 ```
 
 **Step 3: View Spend Logs**
@@ -45,12 +45,12 @@ litellm /path/to/config.yaml
 
 ## Cost Per Token (e.g. Azure)
 
-### Usage with LiteLLM Proxy Server
+### Usage with Hanzo Proxy Server
 
 ```yaml
 model_list:
   - model_name: azure-model
-    litellm_params:
+    llm_params:
       model: azure/<your_deployment_name>
       api_key: os.environ/AZURE_API_KEY
       api_base: os.environ/AZURE_API_BASE
@@ -63,16 +63,16 @@ model_list:
 
 If you're custom pricing is not being used or you're seeing errors, please check the following:
 
-1. Run the proxy with `LITELLM_LOG="DEBUG"` or the `--detailed_debug` cli flag
+1. Run the proxy with `LLM_LOG="DEBUG"` or the `--detailed_debug` cli flag
 
 ```bash
-litellm --config /path/to/config.yaml --detailed_debug
+llm --config /path/to/config.yaml --detailed_debug
 ```
 
 2. Check logs for this line: 
 
 ```
-LiteLLM:DEBUG: utils.py:263 - litellm.acompletion
+Hanzo:DEBUG: utils.py:263 - llm.acompletion
 ```
 
 3. Check if 'input_cost_per_token' and 'output_cost_per_token' are top-level keys in the acompletion function. 
@@ -85,6 +85,6 @@ acompletion(
 )
 ```
 
-If these keys are not present, LiteLLM will not use your custom pricing. 
+If these keys are not present, Hanzo will not use your custom pricing. 
 
-If the problem persists, please file an issue on [GitHub](https://github.com/BerriAI/litellm/issues). 
+If the problem persists, please file an issue on [GitHub](https://github.com/BerriAI/llm/issues). 

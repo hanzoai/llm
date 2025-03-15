@@ -1,10 +1,10 @@
 # Trimming Input Messages
-**Use litellm.trim_messages() to ensure messages does not exceed a model's token limit or specified `max_tokens`**
+**Use llm.trim_messages() to ensure messages does not exceed a model's token limit or specified `max_tokens`**
 
 ## Usage 
 ```python
-from litellm import completion
-from litellm.utils import trim_messages
+from llm import completion
+from llm.utils import trim_messages
 
 response = completion(
     model=model, 
@@ -14,8 +14,8 @@ response = completion(
 
 ## Usage - set max_tokens
 ```python
-from litellm import completion
-from litellm.utils import trim_messages
+from llm import completion
+from llm.utils import trim_messages
 
 response = completion(
     model=model, 
@@ -29,7 +29,7 @@ The function uses the following parameters:
 
 - `messages`:[Required] This should be a list of input messages 
 
-- `model`:[Optional] This is the LiteLLM model being used. This parameter is optional, as you can alternatively specify the `max_tokens` parameter.
+- `model`:[Optional] This is the Hanzo model being used. This parameter is optional, as you can alternatively specify the `max_tokens` parameter.
 
 - `max_tokens`:[Optional] This is an int, manually set upper limit on messages
 

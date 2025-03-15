@@ -2,11 +2,11 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem'
 
 # AWS Sagemaker
-LiteLLM supports All Sagemaker Huggingface Jumpstart Models
+Hanzo supports All Sagemaker Huggingface Jumpstart Models
 
 :::tip
 
-**We support ALL Sagemaker models, just set `model=sagemaker/<any-model-on-sagemaker>` as a prefix when sending litellm requests**
+**We support ALL Sagemaker models, just set `model=sagemaker/<any-model-on-sagemaker>` as a prefix when sending llm requests**
 
 :::
 
@@ -21,7 +21,7 @@ os.environ["AWS_REGION_NAME"] = ""
 ### Usage
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -36,11 +36,11 @@ response = completion(
 ```
 
 ### Usage - Streaming
-Sagemaker currently does not support streaming - LiteLLM fakes streaming by returning chunks of the response string
+Sagemaker currently does not support streaming - Hanzo fakes streaming by returning chunks of the response string
 
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -58,16 +58,16 @@ for chunk in response:
 ```
 
 
-## **LiteLLM Proxy Usage**
+## **Hanzo Proxy Usage**
 
-Here's how to call Sagemaker with the LiteLLM Proxy Server
+Here's how to call Sagemaker with the Hanzo Proxy Server
 
 ### 1. Setup config.yaml
 
 ```yaml
 model_list:
   - model_name: jumpstart-model
-    litellm_params:
+    llm_params:
       model: sagemaker/jumpstart-dft-hf-textgeneration1-mp-20240815-185614
       aws_access_key_id: os.environ/CUSTOM_AWS_ACCESS_KEY_ID
       aws_secret_access_key: os.environ/CUSTOM_AWS_SECRET_ACCESS_KEY
@@ -90,7 +90,7 @@ aws_web_identity_token: Optional[str],
 ### 2. Start the proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 ### 3. Test it
 
@@ -145,7 +145,7 @@ from langchain.prompts.chat import (
 from langchain.schema import HumanMessage, SystemMessage
 
 chat = ChatOpenAI(
-    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LiteLLM Proxy
+    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the Hanzo Proxy
     model = "jumpstart-model",
     temperature=0.1
 )
@@ -155,7 +155,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -172,7 +172,7 @@ print(response)
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -193,7 +193,7 @@ response = completion(
 ```yaml
 model_list:
   - model_name: jumpstart-model
-    litellm_params:
+    llm_params:
       model: sagemaker/jumpstart-dft-hf-textgeneration1-mp-20240815-185614
       temperature: <your-temp>
       top_p: <your-top-p>
@@ -209,7 +209,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="jumpstart-model", messages = [
     {
         "role": "user",
@@ -229,7 +229,7 @@ print(response)
 
 ## **Allow setting temperature=0** for Sagemaker
 
-By default when `temperature=0` is sent in requests to LiteLLM, LiteLLM rounds up to `temperature=0.1` since Sagemaker fails most requests when `temperature=0`
+By default when `temperature=0` is sent in requests to Hanzo, Hanzo rounds up to `temperature=0.1` since Sagemaker fails most requests when `temperature=0`
 
 If you want to send `temperature=0` for your model here's how to set it up (Since Sagemaker can host any kind of model, some models allow zero temperature)
 
@@ -238,7 +238,7 @@ If you want to send `temperature=0` for your model here's how to set it up (Sinc
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -259,7 +259,7 @@ response = completion(
 ```yaml
 model_list:
   - model_name: jumpstart-model
-    litellm_params:
+    llm_params:
       model: sagemaker/jumpstart-dft-hf-textgeneration1-mp-20240815-185614
       aws_sagemaker_allow_zero_temp: true
 ```
@@ -274,7 +274,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="jumpstart-model", messages = [
     {
         "role": "user",
@@ -293,14 +293,14 @@ print(response)
 
 ## Pass provider-specific params 
 
-If you pass a non-openai param to litellm, we'll assume it's provider-specific and send it as a kwarg in the request body. [See more](../completion/input.md#provider-specific-params)
+If you pass a non-openai param to llm, we'll assume it's provider-specific and send it as a kwarg in the request body. [See more](../completion/input.md#provider-specific-params)
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -320,7 +320,7 @@ response = completion(
 ```yaml
 model_list:
   - model_name: jumpstart-model
-    litellm_params:
+    llm_params:
       model: sagemaker/jumpstart-dft-hf-textgeneration1-mp-20240815-185614
       top_k: 1 # 👈 PROVIDER-SPECIFIC PARAM
 ```
@@ -335,7 +335,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="jumpstart-model", messages = [
     {
         "role": "user",
@@ -362,7 +362,7 @@ If you have multiple models on an endpoint, you'll need to specify the individua
 
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -378,10 +378,10 @@ response = completion(
 ```
 
 ### Passing credentials as parameters - Completion()
-Pass AWS credentials as parameters to litellm.completion
+Pass AWS credentials as parameters to llm.completion
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 response = completion(
             model="sagemaker/jumpstart-dft-meta-textgeneration-llama-2-7b",
@@ -397,7 +397,7 @@ To apply the correct prompt template for your sagemaker deployment, pass in it's
 
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -428,10 +428,10 @@ model: sagemaker_chat/<your-endpoint-name>
 
 ```python
 import os
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 
-litellm.set_verbose = True # 👈 SEE RAW REQUEST
+llm.set_verbose = True # 👈 SEE RAW REQUEST
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -453,7 +453,7 @@ response = completion(
 ```yaml
 model_list:
   - model_name: "sagemaker-model"
-    litellm_params:
+    llm_params:
       model: "sagemaker_chat/jumpstart-dft-hf-textgeneration1-mp-20240815-185614"
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY
@@ -463,7 +463,7 @@ model_list:
 #### 2. Start the proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 #### 3. Test it
 
@@ -494,11 +494,11 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 
 :::tip
 
-**We support ALL Sagemaker models, just set `model=sagemaker/<any-model-on-sagemaker>` as a prefix when sending litellm requests**
+**We support ALL Sagemaker models, just set `model=sagemaker/<any-model-on-sagemaker>` as a prefix when sending llm requests**
 
 :::
 
-Here's an example of using a sagemaker model with LiteLLM 
+Here's an example of using a sagemaker model with Hanzo 
 
 | Model Name                    | Function Call                                                                                       |
 |-------------------------------|-------------------------------------------------------------------------------------------|
@@ -512,16 +512,16 @@ Here's an example of using a sagemaker model with LiteLLM
 
 ## Embedding Models
 
-LiteLLM supports all Sagemaker Jumpstart Huggingface Embedding models. Here's how to call it: 
+Hanzo supports all Sagemaker Jumpstart Huggingface Embedding models. Here's how to call it: 
 
 ```python
-from litellm import completion
+from llm import completion
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
 os.environ["AWS_REGION_NAME"] = ""
 
-response = litellm.embedding(model="sagemaker/<your-deployment-name>", input=["good morning from litellm", "this is another item"])
+response = llm.embedding(model="sagemaker/<your-deployment-name>", input=["good morning from llm", "this is another item"])
 print(f"response: {response}")
 ```
 

@@ -2,9 +2,9 @@
 
 ## Use Callbacks to send Output Data to Posthog, Sentry etc
 
-liteLLM provides `success_callbacks` and `failure_callbacks`, making it easy for you to send data to a particular provider depending on the status of your responses.
+LLM provides `success_callbacks` and `failure_callbacks`, making it easy for you to send data to a particular provider depending on the status of your responses.
 
-liteLLM supports:
+LLM supports:
 
 - [Lunary](https://lunary.ai/docs)
 - [Helicone](https://docs.helicone.ai/introduction)
@@ -15,11 +15,11 @@ liteLLM supports:
 ### Quick Start
 
 ```python
-from litellm import completion
+from llm import completion
 
 # set callbacks
-litellm.success_callback=["posthog", "helicone", "lunary"]
-litellm.failure_callback=["sentry", "lunary"]
+llm.success_callback=["posthog", "helicone", "lunary"]
+llm.failure_callback=["sentry", "lunary"]
 
 ## set env variables
 os.environ['SENTRY_DSN'], os.environ['SENTRY_API_TRACE_RATE']= ""

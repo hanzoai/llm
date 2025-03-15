@@ -3,12 +3,12 @@ import TabItem from '@theme/TabItem';
 
 # Triton Inference Server
 
-LiteLLM supports Embedding Models on Triton Inference Servers
+Hanzo supports Embedding Models on Triton Inference Servers
 
 | Property | Details |
 |-------|-------|
 | Description | NVIDIA Triton Inference Server |
-| Provider Route on LiteLLM | `triton/` |
+| Provider Route on Hanzo | `triton/` |
 | Supported Operations | `/chat/completion`, `/completion`, `/embedding` |
 | Supported Triton endpoints | `/infer`, `/generate`, `/embeddings` |
 | Link to Provider Doc | [Triton Inference Server ↗](https://developer.nvidia.com/triton-inference-server) |
@@ -21,7 +21,7 @@ LiteLLM supports Embedding Models on Triton Inference Servers
 
 Use the `triton/` prefix to route to triton server
 ```python
-from litellm import completion
+from llm import completion
 response = completion(
     model="triton/llama-3-8b-instruct",
     messages=[{"role": "user", "content": "who are u?"}],
@@ -38,7 +38,7 @@ response = completion(
   ```yaml
   model_list:
     - model_name: my-triton-model
-      litellm_params:
+      llm_params:
         model: triton/<your-triton-model>"
         api_base: https://your-triton-api-base/triton/generate
   ```
@@ -47,10 +47,10 @@ response = completion(
 2. Start the proxy 
 
   ```bash
-  $ litellm --config /path/to/config.yaml --detailed_debug
+  $ llm --config /path/to/config.yaml --detailed_debug
   ```
 
-3. Send Request to LiteLLM Proxy Server
+3. Send Request to Hanzo Proxy Server
 
   <Tabs>
 
@@ -78,7 +78,7 @@ response = completion(
 
   <TabItem value="curl" label="curl">
 
-  `--header` is optional, only required if you're using litellm proxy with Virtual Keys
+  `--header` is optional, only required if you're using llm proxy with Virtual Keys
 
     ```shell
     curl --location 'http://0.0.0.0:4000/chat/completions' \
@@ -105,7 +105,7 @@ response = completion(
 
 Use the `triton/` prefix to route to triton server
 ```python
-from litellm import completion
+from llm import completion
 
 
 response = completion(
@@ -124,7 +124,7 @@ response = completion(
   ```yaml
   model_list:
     - model_name: my-triton-model
-      litellm_params:
+      llm_params:
         model: triton/<your-triton-model>"
         api_base: https://your-triton-api-base/triton/infer
   ```
@@ -133,10 +133,10 @@ response = completion(
 2. Start the proxy 
 
   ```bash
-  $ litellm --config /path/to/config.yaml --detailed_debug
+  $ llm --config /path/to/config.yaml --detailed_debug
   ```
 
-3. Send Request to LiteLLM Proxy Server
+3. Send Request to Hanzo Proxy Server
 
   <Tabs>
 
@@ -164,7 +164,7 @@ response = completion(
 
   <TabItem value="curl" label="curl">
 
-  `--header` is optional, only required if you're using litellm proxy with Virtual Keys
+  `--header` is optional, only required if you're using llm proxy with Virtual Keys
 
     ```shell
     curl --location 'http://0.0.0.0:4000/chat/completions' \
@@ -192,13 +192,13 @@ response = completion(
 
 Use the `triton/` prefix to route to triton server
 ```python
-from litellm import embedding
+from llm import embedding
 import os
 
-response = await litellm.aembedding(
+response = await llm.aembedding(
     model="triton/<your-triton-model>",                                                       
-    api_base="https://your-triton-api-base/triton/embeddings", # /embeddings endpoint you want litellm to call on your server
-    input=["good morning from litellm"],
+    api_base="https://your-triton-api-base/triton/embeddings", # /embeddings endpoint you want llm to call on your server
+    input=["good morning from llm"],
 )
 ```
 
@@ -210,7 +210,7 @@ response = await litellm.aembedding(
   ```yaml
   model_list:
     - model_name: my-triton-model
-      litellm_params:
+      llm_params:
         model: triton/<your-triton-model>"
         api_base: https://your-triton-api-base/triton/embeddings
   ```
@@ -219,10 +219,10 @@ response = await litellm.aembedding(
 2. Start the proxy 
 
   ```bash
-  $ litellm --config /path/to/config.yaml --detailed_debug
+  $ llm --config /path/to/config.yaml --detailed_debug
   ```
 
-3. Send Request to LiteLLM Proxy Server
+3. Send Request to Hanzo Proxy Server
 
   <Tabs>
 
@@ -237,7 +237,7 @@ response = await litellm.aembedding(
     client = OpenAI(api_key="<proxy-api-key>", base_url="http://0.0.0.0:4000")
 
     response = client.embeddings.create(
-        input=["hello from litellm"],
+        input=["hello from llm"],
         model="my-triton-model"
     )
 
@@ -249,7 +249,7 @@ response = await litellm.aembedding(
 
   <TabItem value="curl" label="curl">
 
-  `--header` is optional, only required if you're using litellm proxy with Virtual Keys
+  `--header` is optional, only required if you're using llm proxy with Virtual Keys
 
     ```shell
     curl --location 'http://0.0.0.0:4000/embeddings' \
@@ -257,7 +257,7 @@ response = await litellm.aembedding(
     --header 'Authorization: Bearer sk-1234' \
     --data ' {
     "model": "my-triton-model",
-    "input": ["write a litellm poem"]
+    "input": ["write a llm poem"]
     }'
 
     ```

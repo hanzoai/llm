@@ -3,7 +3,7 @@
 Start your project with a Postgres database, Authentication, instant APIs, Edge Functions, Realtime subscriptions, Storage, and Vector embeddings.
 
 ## Use Supabase to log requests and see total spend across all LLM Providers (OpenAI, Azure, Anthropic, Cohere, Replicate, PaLM)
-liteLLM provides `success_callbacks` and `failure_callbacks`, making it easy for you to send data to a particular provider depending on the status of your responses. 
+LLM provides `success_callbacks` and `failure_callbacks`, making it easy for you to send data to a particular provider depending on the status of your responses. 
 
 In this case, we want to log requests to Supabase in both scenarios - when it succeeds and fails. 
 
@@ -34,13 +34,13 @@ create table
 Use just 2 lines of code, to instantly see costs and log your responses **across all providers** with Supabase: 
 
 ```
-litellm.success_callback=["supabase"]
-litellm.failure_callback=["supabase"]
+llm.success_callback=["supabase"]
+llm.failure_callback=["supabase"]
 ```
 
 Complete code
 ```python
-from litellm import completion
+from llm import completion
 
 ## set env variables
 ### SUPABASE
@@ -51,8 +51,8 @@ os.environ["SUPABASE_KEY"] = "your-supabase-key"
 os.environ["OPENAI_API_KEY"] = ""
 
 # set callbacks
-litellm.success_callback=["supabase"]
-litellm.failure_callback=["supabase"]
+llm.success_callback=["supabase"]
+llm.failure_callback=["supabase"]
 
 #openai call
 response = completion(model="gpt-3.5-turbo", messages=[{"role": "user", "content": "Hi 👋 - i'm openai"}]) 
@@ -68,7 +68,7 @@ response = completion(model="chatgpt-test", messages=[{"role": "user", "content"
 If you modified your table name, here's how to pass the new name.
 
 ```python 
-litellm.modify_integration("supabase",{"table_name": "litellm_logs"})
+llm.modify_integration("supabase",{"table_name": "llm_logs"})
 ```
 
 **Identify end-user**
@@ -76,5 +76,5 @@ litellm.modify_integration("supabase",{"table_name": "litellm_logs"})
 Here's how to map your llm call to an end-user 
 
 ```python
-litellm.identify({"end_user": "krrish@berri.ai"})
+llm.identify({"end_user": "krrish@berri.ai"})
 ```

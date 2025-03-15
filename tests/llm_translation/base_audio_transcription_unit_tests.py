@@ -10,15 +10,15 @@ import uuid
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm import transcription
-from litellm.litellm_core_utils.get_supported_openai_params import (
+import llm
+from llm import transcription
+from llm.llm_core_utils.get_supported_openai_params import (
     get_supported_openai_params,
 )
-from litellm.llms.base_llm.audio_transcription.transformation import (
+from llm.llms.base_llm.audio_transcription.transformation import (
     BaseAudioTranscriptionConfig,
 )
-from litellm.utils import ProviderConfigManager
+from llm.utils import ProviderConfigManager
 from abc import ABC, abstractmethod
 
 pwd = os.path.dirname(os.path.realpath(__file__))
@@ -36,7 +36,7 @@ class BaseLLMAudioTranscriptionTest(ABC):
         pass
 
     @abstractmethod
-    def get_custom_llm_provider(self) -> litellm.LlmProviders:
+    def get_custom_llm_provider(self) -> llm.LlmProviders:
         """Must return the custom llm provider"""
         pass
 
@@ -44,7 +44,7 @@ class BaseLLMAudioTranscriptionTest(ABC):
         """
         Test that the audio transcription is translated correctly.
         """
-        litellm.set_verbose = True
+        llm.set_verbose = True
         transcription_call_args = self.get_base_audio_transcription_call_args()
         transcript = transcription(**transcription_call_args, file=audio_file)
         print(f"transcript: {transcript.model_dump()}")
