@@ -2,13 +2,17 @@ version: "3.11"
 
 services:
   litellm:
+    image: ghcr.io/berriai/litellm:main-stable
+    ports:
+      - "4000:4000"  # Map container port 4000 to host
     build:
       context: .
       args:
         target: runtime
-    image: ghcr.io/berriai/litellm:main-stable
-    ports:
-      - "4000:4000"  # Map container port 4000 to host
+    deploy:
+     replicas: 1  # You can increase this number to scale the service
+     restart_policy:
+       condition: on-failure
     networks:
       - hanzo-network
     environment:
@@ -16,14 +20,6 @@ services:
       STORE_MODEL_IN_DB: "True"  # Allows adding models via UI
     env_file:
       - .env
-    volumes:
-      - ./config.yaml:/app/config.yaml  # Mount config so it’s accessible at /app/config.yaml
-    # Use the default ENTRYPOINT from the Dockerfile (docker/prod_entrypoint.sh)
-    # Pass the config file and port as arguments.
-    command:
-      - "--config=/app/config.yaml"
-      - "--port"
-      - "4000"
     depends_on:
       - db
     healthcheck:
@@ -32,15 +28,18 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    deploy:
-     replicas: 1  # You can increase this number to scale the service
-     restart_policy:
-       condition: on-failure
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.litellm.rule=Host(`api.hanzo.ai`)"
       - "traefik.http.routers.litellm.entrypoints=websecure"
       - "traefik.http.services.litellm.loadbalancer.server.port=4000"
+    #########################################
+    ## Uncomment these lines to start proxy with a config.yaml file ##
+    # volumes:
+    #  - ./config.yaml:/app/config.yaml <<- this is missing in the docker-compose file currently
+    # command:
+    #  - "--config=/app/config.yaml"
+    ##############################################
 
   db:
     image: postgres:16
