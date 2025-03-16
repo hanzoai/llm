@@ -1,2 +1,2 @@
 python3 -m build
-twine upload --verbose dist/llm-1.18.13.dev4.tar.gz -u __token__ - 
+twine upload --verbose dist/llm-1.18.13.dev4.tar.gz -u __token__ -
