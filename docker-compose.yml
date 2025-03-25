@@ -2,18 +2,17 @@ version: "3.11"
 
 services:
   llm:
+    image: ghcr.io/hanzo.ai/llm:main-stable
+    ports:
+      - "4000:4000"  # Map container port 4000 to host
     build:
       context: .
       args:
         target: runtime
-    image: ghcr.io/hanzo.ai/llm:main-stable
-    # Optional: Uncomment these lines if you have a config file for the proxy UI.
-    # volumes:
-    #   - ./config.yaml:/app/config.yaml
-    # command:
-    #   - "--config=/app/config.yaml"
-    ports:
-      - "4000:4000"  # Map container port 4000 to host
+    deploy:
+     replicas: 1  # You can increase this number to scale the service
+     restart_policy:
+       condition: on-failure
     networks:
       - hanzo-network
     environment:
@@ -37,10 +36,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    deploy:
-     replicas: 1  # You can increase this number to scale the service
-     restart_policy:
-       condition: on-failure
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.llm.rule=Host(`api.hanzo.ai`)"
