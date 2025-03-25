@@ -1,6 +1,6 @@
 model_list: 
   - model_name: Azure OpenAI GPT-4 Canada
-    litellm_params:
+    llm_params:
       model: azure/chatgpt-v-2
       api_base: os.environ/AZURE_API_BASE
       api_key: os.environ/AZURE_API_KEY
@@ -10,7 +10,7 @@ model_list:
       input_cost_per_token: 0.0002
       id: gm
   - model_name: azure-embedding-model
-    litellm_params:
+    llm_params:
       model: azure/azure-embedding-model
       api_base: os.environ/AZURE_API_BASE
       api_key: os.environ/AZURE_API_KEY
@@ -20,7 +20,7 @@ model_list:
       input_cost_per_token: 0.002
       id: hello
 
-litellm_settings:
+llm_settings:
   drop_params: True
   set_verbose: True
   callbacks: custom_callbacks.my_custom_logger

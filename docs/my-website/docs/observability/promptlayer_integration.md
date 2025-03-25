@@ -6,7 +6,7 @@ import Image from '@theme/IdealImage';
 :::tip
 
 This is community maintained, Please make an issue if you run into a bug
-https://github.com/BerriAI/litellm
+https://github.com/BerriAI/llm
 
 :::
 
@@ -17,7 +17,7 @@ Promptlayer is a platform for prompt engineers. Log OpenAI requests. Search usag
 
 ## Use Promptlayer to log requests across all LLM Providers (OpenAI, Azure, Anthropic, Cohere, Replicate, PaLM)
 
-liteLLM provides `callbacks`, making it easy for you to log data depending on the status of your responses.
+llm provides `callbacks`, making it easy for you to log data depending on the status of your responses.
 
 ### Using Callbacks
 
@@ -26,14 +26,14 @@ Get your PromptLayer API Key from https://promptlayer.com/
 Use just 2 lines of code, to instantly log your responses **across all providers** with promptlayer:
 
 ```python
-litellm.success_callback = ["promptlayer"]
+llm.success_callback = ["promptlayer"]
 
 ```
 
 Complete code
 
 ```python
-from litellm import completion
+from llm import completion
 
 ## set env variables
 os.environ["PROMPTLAYER_API_KEY"] = "your-promptlayer-key"
@@ -41,7 +41,7 @@ os.environ["PROMPTLAYER_API_KEY"] = "your-promptlayer-key"
 os.environ["OPENAI_API_KEY"], os.environ["COHERE_API_KEY"] = "", ""
 
 # set callbacks
-litellm.success_callback = ["promptlayer"]
+llm.success_callback = ["promptlayer"]
 
 #openai call
 response = completion(model="gpt-3.5-turbo", messages=[{"role": "user", "content": "Hi 👋 - i'm openai"}])
@@ -61,7 +61,7 @@ completion(model,messages, metadata={"model": "ai21"})
 
 **Complete Code**
 ```python
-from litellm import completion
+from llm import completion
 
 ## set env variables
 os.environ["PROMPTLAYER_API_KEY"] = "your-promptlayer-key"
@@ -69,7 +69,7 @@ os.environ["PROMPTLAYER_API_KEY"] = "your-promptlayer-key"
 os.environ["OPENAI_API_KEY"], os.environ["COHERE_API_KEY"] = "", ""
 
 # set callbacks
-litellm.success_callback = ["promptlayer"]
+llm.success_callback = ["promptlayer"]
 
 #openai call - log llm provider is openai
 response = completion(model="gpt-3.5-turbo", messages=[{"role": "user", "content": "Hi 👋 - i'm openai"}], metadata={"provider": "openai"})
@@ -82,7 +82,7 @@ Credits to [Nick Bradford](https://github.com/nsbradford), from [Vim-GPT](https:
 
 ## Support & Talk to Founders
 
-- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-litellm-hosted-version)
+- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 - Our numbers 📞 +1 (770) 8783-106 / ‭+1 (412) 618-6238‬
 - Our emails ✉️ ishaan@berri.ai / krrish@berri.ai

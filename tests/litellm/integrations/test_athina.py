@@ -9,7 +9,7 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system-path
 
-from litellm.integrations.athina import AthinaLogger  
+from llm.integrations.athina import AthinaLogger  
 
 class TestAthinaLogger(unittest.TestCase):
     
@@ -39,7 +39,7 @@ class TestAthinaLogger(unittest.TestCase):
             'Content-Type': 'application/json'
         })
         
-    @patch('litellm.module_level_client.post')
+    @patch('llm.module_level_client.post')
     def test_log_event_success(self, mock_post):
         """Test successful logging of an event"""
         # Setup mock response
@@ -115,7 +115,7 @@ class TestAthinaLogger(unittest.TestCase):
         # Verify the print_verbose was called
         self.print_verbose.assert_called_once_with("Athina Logger Succeeded - Success")
     
-    @patch('litellm.module_level_client.post')
+    @patch('llm.module_level_client.post')
     def test_log_event_error_response(self, mock_post):
         """Test handling of error response from the API"""
         # Setup mock error response
@@ -148,7 +148,7 @@ class TestAthinaLogger(unittest.TestCase):
         # Verify print_verbose was called with error message
         self.print_verbose.assert_called_once_with("Athina Logger Error - Bad Request, 400")
     
-    @patch('litellm.module_level_client.post')
+    @patch('llm.module_level_client.post')
     def test_log_event_exception(self, mock_post):
         """Test handling of exceptions during logging"""
         # Setup mock to raise exception
@@ -171,7 +171,7 @@ class TestAthinaLogger(unittest.TestCase):
         self.print_verbose.assert_called_once()
         self.assertIn("Athina Logger Error - Test exception", self.print_verbose.call_args[0][0])
     
-    @patch('litellm.module_level_client.post')
+    @patch('llm.module_level_client.post')
     def test_log_event_with_tools(self, mock_post):
         """Test logging with tools/functions data"""
         # Setup mock response

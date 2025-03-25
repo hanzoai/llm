@@ -2,7 +2,7 @@ import openai
 
 client = openai.OpenAI(api_key="hi", base_url="http://0.0.0.0:8000")
 
-# # request sent to model set on litellm proxy, `litellm --model`
+# # request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(
     model="azure/chatgpt-v-2",
     messages=[

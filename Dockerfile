@@ -1,10 +1,10 @@
 # Base image for building
-ARG LITELLM_BUILD_IMAGE=cgr.dev/chainguard/python:latest-dev
+ARG LLM_BUILD_IMAGE=cgr.dev/chainguard/python:latest-dev
 
 # Runtime image
-ARG LITELLM_RUNTIME_IMAGE=cgr.dev/chainguard/python:latest-dev
+ARG LLM_RUNTIME_IMAGE=cgr.dev/chainguard/python:latest-dev
 # Builder stage
-FROM $LITELLM_BUILD_IMAGE AS builder
+FROM $LLM_BUILD_IMAGE AS builder
 
 # Set the working directory to /app
 WORKDIR /app
@@ -46,7 +46,7 @@ RUN pip install PyJWT==2.9.0 --no-cache-dir
 RUN chmod +x docker/build_admin_ui.sh && ./docker/build_admin_ui.sh
 
 # Runtime stage
-FROM $LITELLM_RUNTIME_IMAGE AS runtime
+FROM $LLM_RUNTIME_IMAGE AS runtime
 
 # Ensure runtime stage runs as root
 USER root

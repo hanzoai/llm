@@ -8,8 +8,8 @@ sys.path.insert(
     0, os.path.abspath("../../..")
 )  # Adds the parent directory to the system path
 
-import litellm
-from litellm.llms.vertex_ai.common_utils import (
+import llm
+from llm.llms.vertex_ai.common_utils import (
     get_vertex_location_from_url,
     get_vertex_project_id_from_url,
 )

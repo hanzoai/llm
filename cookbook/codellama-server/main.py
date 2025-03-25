@@ -1,9 +1,9 @@
 import traceback
 from flask import Flask, request, Response
 from flask_cors import CORS
-import litellm
+import llm
 from util import handle_error
-from litellm import completion
+from llm import completion
 import os
 import dotenv
 import time
@@ -15,18 +15,18 @@ dotenv.load_dotenv()
 # os.environ["OPENAI_API_KEY"] = "" # set your openai key here
 # os.environ["ANTHROPIC_API_KEY"] = "" # set your anthropic key here
 # os.environ["TOGETHER_AI_API_KEY"] = "" # set your together ai key here
-# see supported models / keys here: https://litellm.readthedocs.io/en/latest/supported/
+# see supported models / keys here: https://llm.readthedocs.io/en/latest/supported/
 ######### ENVIRONMENT VARIABLES ##########
 verbose = True
 
-# litellm.caching_with_models = True # CACHING: caching_with_models Keys in the cache are messages + model. - to learn more: https://docs.litellm.ai/docs/caching/
+# llm.caching_with_models = True # CACHING: caching_with_models Keys in the cache are messages + model. - to learn more: https://docs.llm.ai/docs/caching/
 ######### PROMPT LOGGING ##########
 os.environ["PROMPTLAYER_API_KEY"] = (
     ""  # set your promptlayer key here - https://promptlayer.com/
 )
 
 # set callbacks
-litellm.success_callback = ["promptlayer"]
+llm.success_callback = ["promptlayer"]
 ############ HELPER FUNCTIONS ###################################
 
 
@@ -89,7 +89,7 @@ def api_completion():
 @app.route("/get_models", methods=["POST"])
 def get_models():
     try:
-        return litellm.model_list
+        return llm.model_list
     except Exception as e:
         traceback.print_exc()
         response = {"error": str(e)}

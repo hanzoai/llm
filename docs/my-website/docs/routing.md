@@ -5,37 +5,37 @@ import TabItem from '@theme/TabItem';
 
 # Router - Load Balancing
 
-LiteLLM manages:
+LLM manages:
 - Load-balance across multiple deployments (e.g. Azure/OpenAI)
 - Prioritizing important requests to ensure they don't fail (i.e. Queueing)
 - Basic reliability logic - cooldowns, fallbacks, timeouts and retries (fixed + exponential backoff) across multiple deployments/providers.
 
-In production, litellm supports using Redis as a way to track cooldown server and usage (managing tpm/rpm limits).
+In production, llm supports using Redis as a way to track cooldown server and usage (managing tpm/rpm limits).
 
 :::info
 
-If you want a server to load balance across different LLM APIs, use our [LiteLLM Proxy Server](./proxy/load_balancing.md)
+If you want a server to load balance across different LLM APIs, use our [LLM Proxy Server](./proxy/load_balancing.md)
 
 :::
 
 
 ## Load Balancing
 (s/o [@paulpierre](https://www.linkedin.com/in/paulpierre/) and [sweep proxy](https://docs.sweep.dev/blogs/openai-proxy) for their contributions to this implementation)
-[**See Code**](https://github.com/BerriAI/litellm/blob/main/litellm/router.py)
+[**See Code**](https://github.com/BerriAI/llm/blob/main/llm/router.py)
 
 ### Quick Start
 
-Loadbalance across multiple [azure](./providers/azure.md)/[bedrock](./providers/bedrock.md)/[provider](./providers/) deployments. LiteLLM will handle retrying in different regions if a call fails.
+Loadbalance across multiple [azure](./providers/azure.md)/[bedrock](./providers/bedrock.md)/[provider](./providers/) deployments. LLM will handle retrying in different regions if a call fails.
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import Router
+from llm import Router
 
 model_list = [{ # list of model deployments 
 	"model_name": "gpt-3.5-turbo", # model alias -> loadbalance between models with same `model_name`
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "azure/chatgpt-v-2", # actual model name
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_version": os.getenv("AZURE_API_VERSION"),
@@ -43,7 +43,7 @@ model_list = [{ # list of model deployments
 	}
 }, {
     "model_name": "gpt-3.5-turbo", 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "azure/chatgpt-functioncalling", 
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_version": os.getenv("AZURE_API_VERSION"),
@@ -51,13 +51,13 @@ model_list = [{ # list of model deployments
 	}
 }, {
     "model_name": "gpt-3.5-turbo", 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "gpt-3.5-turbo", 
 		"api_key": os.getenv("OPENAI_API_KEY"),
 	}
 }, {
     "model_name": "gpt-4", 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "azure/gpt-4", 
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_base": os.getenv("AZURE_API_BASE"),
@@ -65,7 +65,7 @@ model_list = [{ # list of model deployments
 	}
 }, {
     "model_name": "gpt-4", 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "gpt-4", 
 		"api_key": os.getenv("OPENAI_API_KEY"),
 	}
@@ -102,17 +102,17 @@ See detailed proxy loadbalancing/fallback docs [here](./proxy/reliability.md)
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/<your-deployment-name>
       api_base: <your-azure-endpoint>
       api_key: <your-azure-api-key>
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/gpt-turbo-small-ca
       api_base: https://my-endpoint-canada-berri992.openai.azure.com/
       api_key: <your-azure-api-key>
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/gpt-turbo-large
       api_base: https://openai-france-1234.openai.azure.com/
       api_key: <your-azure-api-key>
@@ -121,7 +121,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml 
+llm --config /path/to/config.yaml 
 ```
 
 3. Test it! 
@@ -173,12 +173,12 @@ For Azure, [you get 6 RPM per 1000 TPM](https://stackoverflow.com/questions/7736
 <TabItem value="sdk" label="sdk">
 
 ```python
-from litellm import Router 
+from llm import Router 
 
 
 model_list = [{ # list of model deployments 
 	"model_name": "gpt-3.5-turbo", # model alias 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "azure/chatgpt-v-2", # actual model name
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_version": os.getenv("AZURE_API_VERSION"),
@@ -188,7 +188,7 @@ model_list = [{ # list of model deployments
 	}, 
 }, {
     "model_name": "gpt-3.5-turbo", 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "azure/chatgpt-functioncalling", 
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_version": os.getenv("AZURE_API_VERSION"),
@@ -198,7 +198,7 @@ model_list = [{ # list of model deployments
 	},
 }, {
     "model_name": "gpt-3.5-turbo", 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "gpt-3.5-turbo", 
 		"api_key": os.getenv("OPENAI_API_KEY"),
 		"tpm": 100000,
@@ -226,7 +226,7 @@ print(response)
 ```yaml
 model_list:
 	- model_name: gpt-3.5-turbo # model alias 
-	  litellm_params: # params for litellm completion/embedding call 
+	  llm_params: # params for llm completion/embedding call 
 		model: azure/chatgpt-v-2 # actual model name
 		api_key: os.environ/AZURE_API_KEY
 		api_version: os.environ/AZURE_API_VERSION
@@ -234,7 +234,7 @@ model_list:
       tpm: 100000
 	  rpm: 10000
 	- model_name: gpt-3.5-turbo 
-	  litellm_params: # params for litellm completion/embedding call 
+	  llm_params: # params for llm completion/embedding call 
 		model: gpt-3.5-turbo 
 		api_key: os.getenv(OPENAI_API_KEY)
       tpm: 100000
@@ -254,7 +254,7 @@ general_settings:
 **2. Start proxy**
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 **3. Test it!**
@@ -281,10 +281,10 @@ Picks the deployment with the lowest response time.
 
 It caches, and updates the response times for deployments based on when a request was sent and received from a deployment.
 
-[**How to test**](https://github.com/BerriAI/litellm/blob/main/tests/local_testing/test_lowest_latency_routing.py)
+[**How to test**](https://github.com/BerriAI/llm/blob/main/tests/local_testing/test_lowest_latency_routing.py)
 
 ```python
-from litellm import Router 
+from llm import Router 
 import asyncio
 
 model_list = [{ ... }]
@@ -343,11 +343,11 @@ E.g.
 if you have 5 deployments
 
 ```
-https://litellm-prod-1.openai.azure.com/: 0.07s
-https://litellm-prod-2.openai.azure.com/: 0.1s
-https://litellm-prod-3.openai.azure.com/: 0.1s
-https://litellm-prod-4.openai.azure.com/: 0.1s
-https://litellm-prod-5.openai.azure.com/: 4.66s
+https://llm-prod-1.openai.azure.com/: 0.07s
+https://llm-prod-2.openai.azure.com/: 0.1s
+https://llm-prod-3.openai.azure.com/: 0.1s
+https://llm-prod-4.openai.azure.com/: 0.1s
+https://llm-prod-5.openai.azure.com/: 4.66s
 ```
 
 to prevent initially overloading `prod-1`, with all requests - we can set a buffer of 50%, to consider deployments `prod-2, prod-3, prod-4`. 
@@ -376,19 +376,19 @@ You can also set a `weight` param, to specify which model should get picked when
 <Tabs>
 <TabItem value="rpm" label="RPM-based shuffling">
 
-##### **LiteLLM Proxy Config.yaml**
+##### **LLM Proxy Config.yaml**
 
 ```yaml
 model_list:
 	- model_name: gpt-3.5-turbo
-	  litellm_params:
+	  llm_params:
 	  	model: azure/chatgpt-v-2
 		api_key: os.environ/AZURE_API_KEY
 		api_version: os.environ/AZURE_API_VERSION
 		api_base: os.environ/AZURE_API_BASE
 		rpm: 900 
 	- model_name: gpt-3.5-turbo
-	  litellm_params:
+	  llm_params:
 	  	model: azure/chatgpt-functioncalling
 		api_key: os.environ/AZURE_API_KEY
 		api_version: os.environ/AZURE_API_VERSION
@@ -399,12 +399,12 @@ model_list:
 ##### **Python SDK**
 
 ```python
-from litellm import Router 
+from llm import Router 
 import asyncio
 
 model_list = [{ # list of model deployments 
 	"model_name": "gpt-3.5-turbo", # model alias 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "azure/chatgpt-v-2", # actual model name
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_version": os.getenv("AZURE_API_VERSION"),
@@ -413,7 +413,7 @@ model_list = [{ # list of model deployments
 	}
 }, {
     "model_name": "gpt-3.5-turbo", 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "azure/chatgpt-functioncalling", 
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_version": os.getenv("AZURE_API_VERSION"),
@@ -438,19 +438,19 @@ asyncio.run(router_acompletion())
 </TabItem>
 <TabItem value="weight" label="Weight-based shuffling">
 
-##### **LiteLLM Proxy Config.yaml**
+##### **LLM Proxy Config.yaml**
 
 ```yaml
 model_list:
 	- model_name: gpt-3.5-turbo
-	  litellm_params:
+	  llm_params:
 	  	model: azure/chatgpt-v-2
 		api_key: os.environ/AZURE_API_KEY
 		api_version: os.environ/AZURE_API_VERSION
 		api_base: os.environ/AZURE_API_BASE
 		weight: 9
 	- model_name: gpt-3.5-turbo
-	  litellm_params:
+	  llm_params:
 	  	model: azure/chatgpt-functioncalling
 		api_key: os.environ/AZURE_API_KEY
 		api_version: os.environ/AZURE_API_VERSION
@@ -462,12 +462,12 @@ model_list:
 ##### **Python SDK**
 
 ```python
-from litellm import Router 
+from llm import Router 
 import asyncio
 
 model_list = [{
 	"model_name": "gpt-3.5-turbo", # model alias 
-	"litellm_params": { 
+	"llm_params": { 
 		"model": "azure/chatgpt-v-2", # actual model name
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_version": os.getenv("AZURE_API_VERSION"),
@@ -476,7 +476,7 @@ model_list = [{
 	}
 }, {
     "model_name": "gpt-3.5-turbo", 
-	"litellm_params": { 
+	"llm_params": { 
 		"model": "azure/chatgpt-functioncalling", 
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_version": os.getenv("AZURE_API_VERSION"),
@@ -514,12 +514,12 @@ For Azure, your RPM = TPM/6.
 
 
 ```python
-from litellm import Router 
+from llm import Router 
 
 
 model_list = [{ # list of model deployments 
 	"model_name": "gpt-3.5-turbo", # model alias 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "azure/chatgpt-v-2", # actual model name
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_version": os.getenv("AZURE_API_VERSION"),
@@ -529,7 +529,7 @@ model_list = [{ # list of model deployments
 	"rpm": 10000,
 }, {
     "model_name": "gpt-3.5-turbo", 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "azure/chatgpt-functioncalling", 
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_version": os.getenv("AZURE_API_VERSION"),
@@ -539,7 +539,7 @@ model_list = [{ # list of model deployments
 	"rpm": 1000,
 }, {
     "model_name": "gpt-3.5-turbo", 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "gpt-3.5-turbo", 
 		"api_key": os.getenv("OPENAI_API_KEY"),
 	},
@@ -567,15 +567,15 @@ print(response)
 
 Picks a deployment with the least number of ongoing calls, it's handling.
 
-[**How to test**](https://github.com/BerriAI/litellm/blob/main/tests/local_testing/test_least_busy_routing.py)
+[**How to test**](https://github.com/BerriAI/llm/blob/main/tests/local_testing/test_least_busy_routing.py)
 
 ```python
-from litellm import Router 
+from llm import Router 
 import asyncio
 
 model_list = [{ # list of model deployments 
 	"model_name": "gpt-3.5-turbo", # model alias 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "azure/chatgpt-v-2", # actual model name
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_version": os.getenv("AZURE_API_VERSION"),
@@ -583,7 +583,7 @@ model_list = [{ # list of model deployments
 	}
 }, {
     "model_name": "gpt-3.5-turbo", 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "azure/chatgpt-functioncalling", 
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_version": os.getenv("AZURE_API_VERSION"),
@@ -591,7 +591,7 @@ model_list = [{ # list of model deployments
 	}
 }, {
     "model_name": "gpt-3.5-turbo", 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "gpt-3.5-turbo", 
 		"api_key": os.getenv("OPENAI_API_KEY"),
 	}
@@ -621,7 +621,7 @@ Step 1. Define your custom routing strategy
 
 ```python
 
-from litellm.router import CustomRoutingStrategyBase
+from llm.router import CustomRoutingStrategyBase
 class CustomRoutingStrategy(CustomRoutingStrategyBase):
     async def async_get_available_deployment(
         self,
@@ -642,7 +642,7 @@ class CustomRoutingStrategy(CustomRoutingStrategyBase):
             request_kwargs (Optional[Dict], optional): Additional request keyword arguments. Defaults to None.
 
         Returns:
-            Returns an element from litellm.router.model_list
+            Returns an element from llm.router.model_list
 
         """
         print("In CUSTOM async get available deployment")
@@ -650,7 +650,7 @@ class CustomRoutingStrategy(CustomRoutingStrategyBase):
         print("router model list=", model_list)
         for model in model_list:
             if isinstance(model, dict):
-                if model["litellm_params"]["model"] == "openai/very-special-endpoint":
+                if model["llm_params"]["model"] == "openai/very-special-endpoint":
                     return model
         pass
 
@@ -673,7 +673,7 @@ class CustomRoutingStrategy(CustomRoutingStrategyBase):
             request_kwargs (Optional[Dict], optional): Additional request keyword arguments. Defaults to None.
 
         Returns:
-            Returns an element from litellm.router.model_list
+            Returns an element from llm.router.model_list
 
         """
         pass
@@ -681,13 +681,13 @@ class CustomRoutingStrategy(CustomRoutingStrategyBase):
 
 Step 2. Initialize Router with custom routing strategy
 ```python
-from litellm import Router
+from llm import Router
 
 router = Router(
     model_list=[
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/very-special-endpoint",
                 "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",  # If you are Krrish, this is OpenAI Endpoint3 on our Railway endpoint :)
                 "api_key": "fake-key",
@@ -696,7 +696,7 @@ router = Router(
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/fast-endpoint",
                 "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                 "api_key": "fake-key",
@@ -734,23 +734,23 @@ Picks a deployment based on the lowest cost
 How this works:
 - Get all healthy deployments
 - Select all deployments that are under their provided `rpm/tpm` limits
-- For each deployment check if `litellm_param["model"]` exists in [`litellm_model_cost_map`](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json) 
-	- if deployment does not exist in `litellm_model_cost_map` -> use deployment_cost= `$1`
+- For each deployment check if `llm_param["model"]` exists in [`llm_model_cost_map`](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json) 
+	- if deployment does not exist in `llm_model_cost_map` -> use deployment_cost= `$1`
 - Select deployment with lowest cost
 
 ```python
-from litellm import Router 
+from llm import Router 
 import asyncio
 
 model_list =  [
 	{
 		"model_name": "gpt-3.5-turbo",
-		"litellm_params": {"model": "gpt-4"},
+		"llm_params": {"model": "gpt-4"},
 		"model_info": {"id": "openai-gpt-4"},
 	},
 	{
 		"model_name": "gpt-3.5-turbo",
-		"litellm_params": {"model": "groq/llama3-8b-8192"},
+		"llm_params": {"model": "groq/llama3-8b-8192"},
 		"model_info": {"id": "groq-llama"},
 	},
 ]
@@ -774,13 +774,13 @@ asyncio.run(router_acompletion())
 
 #### Using Custom Input/Output pricing
 
-Set `litellm_params["input_cost_per_token"]` and `litellm_params["output_cost_per_token"]` for using custom pricing when routing
+Set `llm_params["input_cost_per_token"]` and `llm_params["output_cost_per_token"]` for using custom pricing when routing
 
 ```python
 model_list = [
 	{
 		"model_name": "gpt-3.5-turbo",
-		"litellm_params": {
+		"llm_params": {
 			"model": "azure/chatgpt-v-2",
 			"input_cost_per_token": 0.00003,
 			"output_cost_per_token": 0.00003,
@@ -789,7 +789,7 @@ model_list = [
 	},
 	{
 		"model_name": "gpt-3.5-turbo",
-		"litellm_params": {
+		"llm_params": {
 			"model": "azure/chatgpt-v-1",
 			"input_cost_per_token": 0.000000001,
 			"output_cost_per_token": 0.00000001,
@@ -798,7 +798,7 @@ model_list = [
 	},
 	{
 		"model_name": "gpt-3.5-turbo",
-		"litellm_params": {
+		"llm_params": {
 			"model": "azure/chatgpt-v-5",
 			"input_cost_per_token": 10,
 			"output_cost_per_token": 12,
@@ -836,12 +836,12 @@ This works across **simple-shuffle** routing strategy (this is the default, if n
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import Router 
+from llm import Router 
 
 model_list = [
 	{
 		"model_name": "o1",
-		"litellm_params": {
+		"llm_params": {
 			"model": "o1-preview", 
 			"api_key": os.getenv("OPENAI_API_KEY"), 
 			"weight": 1
@@ -849,7 +849,7 @@ model_list = [
 	},
 	{
 		"model_name": "o1",
-		"litellm_params": {
+		"llm_params": {
 			"model": "o1-preview", 
 			"api_key": os.getenv("OPENAI_API_KEY"), 
 			"weight": 2 # 👈 PICK THIS DEPLOYMENT 2x MORE OFTEN THAN o1-preview
@@ -871,12 +871,12 @@ print(response)
 ```yaml
 model_list:
   - model_name: o1
-  	litellm_params:
+  	llm_params:
 		model: o1
 		api_key: os.environ/OPENAI_API_KEY
 		weight: 1	
   - model_name: o1
-    litellm_params:
+    llm_params:
 		model: o1-preview
 		api_key: os.environ/OPENAI_API_KEY
 		weight: 2 # 👈 PICK THIS DEPLOYMENT 2x MORE OFTEN THAN o1-preview
@@ -893,11 +893,11 @@ If tpm/rpm is set, and no max parallel request limit given, we use the RPM or ca
 
 
 ```python
-from litellm import Router 
+from llm import Router 
 
 model_list = [{
 	"model_name": "gpt-4",
-	"litellm_params": {
+	"llm_params": {
 		"model": "azure/gpt-4",
 		...
 		"max_parallel_requests": 10 # 👈 SET PER DEPLOYMENT
@@ -912,7 +912,7 @@ router = Router(model_list=model_list, default_max_parallel_requests=20) # 👈 
 # deployment max parallel requests > default max parallel requests
 ```
 
-[**See Code**](https://github.com/BerriAI/litellm/blob/a978f2d8813c04dad34802cb95e0a0e35a3324bc/litellm/utils.py#L5605)
+[**See Code**](https://github.com/BerriAI/llm/blob/a978f2d8813c04dad34802cb95e0a0e35a3324bc/llm/utils.py#L5605)
 
 ### Cooldowns
 
@@ -922,7 +922,7 @@ Set the limit for how many calls a model is allowed to fail in a minute, before 
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import Router
+from llm import Router
 
 model_list = [{...}]
 
@@ -960,7 +960,7 @@ Defaults:
 ```yaml
 model_list:
 - model_name: fake-openai-endpoint
-  litellm_params:
+  llm_params:
     model: predibase/llama-3-8b-instruct
     api_key: os.environ/PREDIBASE_API_KEY
     tenant_id: os.environ/PREDIBASE_TENANT_ID
@@ -984,7 +984,7 @@ No deployments available for selected model, Try again in 60 seconds. Passed mod
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import Router 
+from llm import Router 
 
 
 router = Router(..., disable_cooldowns=True)
@@ -1011,7 +1011,7 @@ For generic errors, we retry immediately
 Here's a quick look at how we can set `num_retries = 3`: 
 
 ```python 
-from litellm import Router
+from llm import Router
 
 model_list = [{...}]
 
@@ -1030,7 +1030,7 @@ print(f"response: {response}")
 We also support setting minimum time to wait before retrying a failed request. This is via the `retry_after` param. 
 
 ```python 
-from litellm import Router
+from llm import Router
 
 model_list = [{...}]
 
@@ -1051,7 +1051,7 @@ print(f"response: {response}")
 - Use `RetryPolicy` if you want to set a `num_retries` based on the Exception received
 - Use `AllowedFailsPolicy` to set a custom number of `allowed_fails`/minute before cooling down a deployment
 
-[**See All Exception Types**](https://github.com/BerriAI/litellm/blob/ccda616f2f881375d4e8586c76fe4662909a7d22/litellm/types/router.py#L436)
+[**See All Exception Types**](https://github.com/BerriAI/llm/blob/ccda616f2f881375d4e8586c76fe4662909a7d22/llm/types/router.py#L436)
 
 
 <Tabs>
@@ -1074,7 +1074,7 @@ allowed_fails_policy = AllowedFailsPolicy(
 Example Usage
 
 ```python
-from litellm.router import RetryPolicy, AllowedFailsPolicy
+from llm.router import RetryPolicy, AllowedFailsPolicy
 
 retry_policy = RetryPolicy(
 	ContentPolicyViolationErrorRetries=3,         # run 3 retries for ContentPolicyViolationErrors
@@ -1089,11 +1089,11 @@ allowed_fails_policy = AllowedFailsPolicy(
 	RateLimitErrorAllowedFails=100,               # Allow 100 RateLimitErrors before cooling down a deployment
 )
 
-router = litellm.Router(
+router = llm.Router(
 	model_list=[
 		{
 			"model_name": "gpt-3.5-turbo",  # openai model name
-			"litellm_params": {  # params for litellm completion/embedding call
+			"llm_params": {  # params for llm completion/embedding call
 				"model": "azure/chatgpt-v-2",
 				"api_key": os.getenv("AZURE_API_KEY"),
 				"api_version": os.getenv("AZURE_API_VERSION"),
@@ -1102,7 +1102,7 @@ router = litellm.Router(
 		},
 		{
 			"model_name": "bad-model",  # openai model name
-			"litellm_params": {  # params for litellm completion/embedding call
+			"llm_params": {  # params for llm completion/embedding call
 				"model": "azure/chatgpt-v-2",
 				"api_key": "bad-key",
 				"api_version": os.getenv("AZURE_API_VERSION"),
@@ -1182,7 +1182,7 @@ Enable pre-call checks to filter out:
 
 **1. Enable pre-call checks**
 ```python 
-from litellm import Router 
+from llm import Router 
 # ...
 router = Router(model_list=model_list, enable_pre_call_checks=True) # 👈 Set to True
 ```
@@ -1190,20 +1190,20 @@ router = Router(model_list=model_list, enable_pre_call_checks=True) # 👈 Set t
 
 **2. Set Model List**
 
-For context window checks on azure deployments, set the base model. Pick the base model from [this list](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json), all the azure models start with `azure/`. 
+For context window checks on azure deployments, set the base model. Pick the base model from [this list](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json), all the azure models start with `azure/`. 
 
 For 'eu-region' filtering, Set 'region_name' of deployment. 
 
-**Note:** We automatically infer region_name for Vertex AI, Bedrock, and IBM WatsonxAI based on your litellm params. For Azure, set `litellm.enable_preview = True`.
+**Note:** We automatically infer region_name for Vertex AI, Bedrock, and IBM WatsonxAI based on your llm params. For Azure, set `llm.enable_preview = True`.
 
 
-[**See Code**](https://github.com/BerriAI/litellm/blob/d33e49411d6503cb634f9652873160cd534dec96/litellm/router.py#L2958)
+[**See Code**](https://github.com/BerriAI/llm/blob/d33e49411d6503cb634f9652873160cd534dec96/llm/router.py#L2958)
 
 ```python
 model_list = [
             {
                 "model_name": "gpt-3.5-turbo", # model group name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -1214,14 +1214,14 @@ model_list = [
             },
             {
                 "model_name": "gpt-3.5-turbo", # model group name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo-1106",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
             },
 			{
 				"model_name": "gemini-pro",
-				"litellm_params: {
+				"llm_params: {
 					"model": "vertex_ai/gemini-pro-1.5", 
 					"vertex_project": "adroit-crow-1234",
 					"vertex_location": "us-east1" # 👈 AUTOMATICALLY INFERS 'region_name'
@@ -1245,13 +1245,13 @@ router = Router(model_list=model_list, enable_pre_call_checks=True)
 - Send a 5k prompt
 - Assert it works
 """
-from litellm import Router
+from llm import Router
 import os
 
 model_list = [
 	{
 		"model_name": "gpt-3.5-turbo",  # model group name
-		"litellm_params": {  # params for litellm completion/embedding call
+		"llm_params": {  # params for llm completion/embedding call
 			"model": "azure/chatgpt-v-2",
 			"api_key": os.getenv("AZURE_API_KEY"),
 			"api_version": os.getenv("AZURE_API_VERSION"),
@@ -1264,7 +1264,7 @@ model_list = [
 	},
 	{
 		"model_name": "gpt-3.5-turbo",  # model group name
-		"litellm_params": {  # params for litellm completion/embedding call
+		"llm_params": {  # params for llm completion/embedding call
 			"model": "gpt-3.5-turbo-1106",
 			"api_key": os.getenv("OPENAI_API_KEY"),
 		},
@@ -1295,13 +1295,13 @@ print(f"response: {response}")
 - Assert it picks the eu-region model
 """
 
-from litellm import Router
+from llm import Router
 import os
 
 model_list = [
 	{
 		"model_name": "gpt-3.5-turbo",  # model group name
-		"litellm_params": {  # params for litellm completion/embedding call
+		"llm_params": {  # params for llm completion/embedding call
 			"model": "azure/chatgpt-v-2",
 			"api_key": os.getenv("AZURE_API_KEY"),
 			"api_version": os.getenv("AZURE_API_VERSION"),
@@ -1314,7 +1314,7 @@ model_list = [
 	},
 	{
 		"model_name": "gpt-3.5-turbo",  # model group name
-		"litellm_params": {  # params for litellm completion/embedding call
+		"llm_params": {  # params for llm completion/embedding call
 			"model": "gpt-3.5-turbo-1106",
 			"api_key": os.getenv("OPENAI_API_KEY"),
 		},
@@ -1352,8 +1352,8 @@ Go [here](./proxy/reliability.md#advanced---context-window-fallbacks) for how to
 If you want to cache across 2 different model groups (e.g. azure deployments, and openai), use caching groups. 
 
 ```python
-import litellm, asyncio, time
-from litellm import Router 
+import llm, asyncio, time
+from llm import Router 
 
 # set os env
 os.environ["OPENAI_API_KEY"] = ""
@@ -1364,18 +1364,18 @@ os.environ["AZURE_API_VERSION"] = ""
 async def test_acompletion_caching_on_router_caching_groups(): 
 	# tests acompletion + caching on router 
 	try:
-		litellm.set_verbose = True
+		llm.set_verbose = True
 		model_list = [
 			{
 				"model_name": "openai-gpt-3.5-turbo",
-				"litellm_params": {
+				"llm_params": {
 					"model": "gpt-3.5-turbo-0613",
 					"api_key": os.getenv("OPENAI_API_KEY"),
 				},
 			},
 			{
 				"model_name": "azure-gpt-3.5-turbo",
-				"litellm_params": {
+				"llm_params": {
 					"model": "azure/chatgpt-v-2",
 					"api_key": os.getenv("AZURE_API_KEY"),
 					"api_base": os.getenv("AZURE_API_BASE"),
@@ -1413,18 +1413,18 @@ Send alerts to slack / your webhook url for the following events
 Get a slack webhook url from https://api.slack.com/messaging/webhooks
 
 #### Usage
-Initialize an `AlertingConfig` and pass it to `litellm.Router`. The following code will trigger an alert because `api_key=bad-key` which is invalid
+Initialize an `AlertingConfig` and pass it to `llm.Router`. The following code will trigger an alert because `api_key=bad-key` which is invalid
 
 ```python
-from litellm.router import AlertingConfig
-import litellm
+from llm.router import AlertingConfig
+import llm
 import os
 
-router = litellm.Router(
+router = llm.Router(
 	model_list=[
 		{
 			"model_name": "gpt-3.5-turbo",
-			"litellm_params": {
+			"llm_params": {
 				"model": "gpt-3.5-turbo",
 				"api_key": "bad_key",
 			},
@@ -1448,36 +1448,36 @@ except:
 
 **Problem**: Azure returns `gpt-4` in the response when `azure/gpt-4-1106-preview` is used. This leads to inaccurate cost tracking
 
-**Solution** ✅ :  Set `model_info["base_model"]` on your router init so litellm uses the correct model for calculating azure cost
+**Solution** ✅ :  Set `model_info["base_model"]` on your router init so llm uses the correct model for calculating azure cost
 
 Step 1. Router Setup
 
 ```python
-from litellm import Router
+from llm import Router
 
 model_list = [
 	{ # list of model deployments 
 		"model_name": "gpt-4-preview", # model alias 
-		"litellm_params": { # params for litellm completion/embedding call 
+		"llm_params": { # params for llm completion/embedding call 
 			"model": "azure/chatgpt-v-2", # actual model name
 			"api_key": os.getenv("AZURE_API_KEY"),
 			"api_version": os.getenv("AZURE_API_VERSION"),
 			"api_base": os.getenv("AZURE_API_BASE")
 		},
 		"model_info": {
-			"base_model": "azure/gpt-4-1106-preview" # azure/gpt-4-1106-preview will be used for cost tracking, ensure this exists in litellm model_prices_and_context_window.json
+			"base_model": "azure/gpt-4-1106-preview" # azure/gpt-4-1106-preview will be used for cost tracking, ensure this exists in llm model_prices_and_context_window.json
 		}
 	}, 
 	{
 		"model_name": "gpt-4-32k", 
-		"litellm_params": { # params for litellm completion/embedding call 
+		"llm_params": { # params for llm completion/embedding call 
 			"model": "azure/chatgpt-functioncalling", 
 			"api_key": os.getenv("AZURE_API_KEY"),
 			"api_version": os.getenv("AZURE_API_VERSION"),
 			"api_base": os.getenv("AZURE_API_BASE")
 		},
 		"model_info": {
-			"base_model": "azure/gpt-4-32k" # azure/gpt-4-32k will be used for cost tracking, ensure this exists in litellm model_prices_and_context_window.json
+			"base_model": "azure/gpt-4-32k" # azure/gpt-4-32k will be used for cost tracking, ensure this exists in llm model_prices_and_context_window.json
 		}
 	}
 ]
@@ -1486,11 +1486,11 @@ router = Router(model_list=model_list)
 
 ```
 
-Step 2. Access `response_cost` in the custom callback, **litellm calculates the response cost for you**
+Step 2. Access `response_cost` in the custom callback, **llm calculates the response cost for you**
 
 ```python
-import litellm
-from litellm.integrations.custom_logger import CustomLogger
+import llm
+from llm.integrations.custom_logger import CustomLogger
 
 class MyCustomHandler(CustomLogger):        
 	def log_success_event(self, kwargs, response_obj, start_time, end_time): 
@@ -1499,7 +1499,7 @@ class MyCustomHandler(CustomLogger):
 		print("response_cost=", response_cost)
 
 customHandler = MyCustomHandler()
-litellm.callbacks = [customHandler]
+llm.callbacks = [customHandler]
 
 # router completion call
 response = router.completion(
@@ -1509,17 +1509,17 @@ response = router.completion(
 ```
 
 
-#### Default litellm.completion/embedding params
+#### Default llm.completion/embedding params
 
-You can also set default params for litellm completion/embedding calls. Here's how to do that: 
+You can also set default params for llm completion/embedding calls. Here's how to do that: 
 
 ```python 
-from litellm import Router
+from llm import Router
 
 fallback_dict = {"gpt-3.5-turbo": "gpt-3.5-turbo-16k"}
 
 router = Router(model_list=model_list, 
-                default_litellm_params={"context_window_fallback_dict": fallback_dict})
+                default_llm_params={"context_window_fallback_dict": fallback_dict})
 
 user_message = "Hello, whats the weather in San Francisco??"
 messages = [{"content": user_message, "role": "user"}]
@@ -1532,22 +1532,22 @@ print(f"response: {response}")
 
 ## Custom Callbacks - Track API Key, API Endpoint, Model Used 
 
-If you need to track the api_key, api endpoint, model, custom_llm_provider used for each completion call, you can setup a [custom callback](https://docs.litellm.ai/docs/observability/custom_callback) 
+If you need to track the api_key, api endpoint, model, custom_llm_provider used for each completion call, you can setup a [custom callback](https://docs.llm.ai/docs/observability/custom_callback) 
 
 ### Usage
 
 ```python
-import litellm
-from litellm.integrations.custom_logger import CustomLogger
+import llm
+from llm.integrations.custom_logger import CustomLogger
 
 class MyCustomHandler(CustomLogger):        
 	def log_success_event(self, kwargs, response_obj, start_time, end_time): 
 		print(f"On Success")
 		print("kwargs=", kwargs)
-		litellm_params= kwargs.get("litellm_params")
-		api_key = litellm_params.get("api_key")
-		api_base = litellm_params.get("api_base")
-		custom_llm_provider= litellm_params.get("custom_llm_provider")
+		llm_params= kwargs.get("llm_params")
+		api_key = llm_params.get("api_key")
+		api_base = llm_params.get("api_base")
+		custom_llm_provider= llm_params.get("custom_llm_provider")
 		response_cost = kwargs.get("response_cost")
 
 		# print the values
@@ -1562,7 +1562,7 @@ class MyCustomHandler(CustomLogger):
 
 customHandler = MyCustomHandler()
 
-litellm.callbacks = [customHandler]
+llm.callbacks = [customHandler]
 
 # Init Router
 router = Router(model_list=model_list, routing_strategy="simple-shuffle")
@@ -1576,7 +1576,7 @@ response = router.completion(
 
 ## Deploy Router 
 
-If you want a server to load balance across different LLM APIs, use our [LiteLLM Proxy Server](./simple_proxy#load-balancing---multiple-instances-of-1-model)
+If you want a server to load balance across different LLM APIs, use our [LLM Proxy Server](./simple_proxy#load-balancing---multiple-instances-of-1-model)
 
 
 
@@ -1585,7 +1585,7 @@ If you want a server to load balance across different LLM APIs, use our [LiteLLM
 Set `Router(set_verbose=True)`
 
 ```python
-from litellm import Router
+from llm import Router
 
 router = Router(
     model_list=model_list,
@@ -1597,7 +1597,7 @@ router = Router(
 Set `Router(set_verbose=True,debug_level="DEBUG")`
 
 ```python
-from litellm import Router
+from llm import Router
 
 router = Router(
     model_list=model_list,
@@ -1607,13 +1607,13 @@ router = Router(
 ```
 
 ### Very Detailed Debugging
-Set `litellm.set_verbose=True` and `Router(set_verbose=True,debug_level="DEBUG")`
+Set `llm.set_verbose=True` and `Router(set_verbose=True,debug_level="DEBUG")`
 
 ```python
-from litellm import Router
-import litellm
+from llm import Router
+import llm
 
-litellm.set_verbose = True
+llm.set_verbose = True
 
 router = Router(
     model_list=model_list,
@@ -1638,5 +1638,5 @@ class RouterGeneralSettings(BaseModel):
     )  # this will only initialize async clients. Good for memory utils
     pass_through_all_models: bool = Field(
         default=False
-    )  # if passed a model not llm_router model list, pass through the request to litellm.acompletion/embedding
+    )  # if passed a model not llm_router model list, pass through the request to llm.acompletion/embedding
 ```

@@ -1,5 +1,5 @@
 """
-python script to pre-create all views required by LiteLLM Proxy Server
+python script to pre-create all views required by LLM Proxy Server
 """
 
 import asyncio
@@ -17,9 +17,9 @@ db = Prisma(
 
 async def check_view_exists():  # noqa: PLR0915
     """
-    Checks if the LiteLLM_VerificationTokenView and MonthlyGlobalSpend exists in the user's db.
+    Checks if the LLM_VerificationTokenView and MonthlyGlobalSpend exists in the user's db.
 
-    LiteLLM_VerificationTokenView: This view is used for getting the token + team data in user_api_key_auth
+    LLM_VerificationTokenView: This view is used for getting the token + team data in user_api_key_auth
 
     MonthlyGlobalSpend: This view is used for the admin view to see global spend for this month
 
@@ -30,25 +30,25 @@ async def check_view_exists():  # noqa: PLR0915
     await db.connect()
     try:
         # Try to select one row from the view
-        await db.query_raw("""SELECT 1 FROM "LiteLLM_VerificationTokenView" LIMIT 1""")
-        print("LiteLLM_VerificationTokenView Exists!")  # noqa
+        await db.query_raw("""SELECT 1 FROM "LLM_VerificationTokenView" LIMIT 1""")
+        print("LLM_VerificationTokenView Exists!")  # noqa
     except Exception:
         # If an error occurs, the view does not exist, so create it
         await db.execute_raw(
             """
-                CREATE VIEW "LiteLLM_VerificationTokenView" AS
+                CREATE VIEW "LLM_VerificationTokenView" AS
                 SELECT 
                 v.*, 
                 t.spend AS team_spend, 
                 t.max_budget AS team_max_budget, 
                 t.tpm_limit AS team_tpm_limit, 
                 t.rpm_limit AS team_rpm_limit
-                FROM "LiteLLM_VerificationToken" v
-                LEFT JOIN "LiteLLM_TeamTable" t ON v.team_id = t.team_id;
+                FROM "LLM_VerificationToken" v
+                LEFT JOIN "LLM_TeamTable" t ON v.team_id = t.team_id;
             """
         )
 
-        print("LiteLLM_VerificationTokenView Created!")  # noqa
+        print("LLM_VerificationTokenView Created!")  # noqa
 
     try:
         await db.query_raw("""SELECT 1 FROM "MonthlyGlobalSpend" LIMIT 1""")
@@ -60,7 +60,7 @@ async def check_view_exists():  # noqa: PLR0915
         DATE("startTime") AS date, 
         SUM("spend") AS spend 
         FROM 
-        "LiteLLM_SpendLogs" 
+        "LLM_SpendLogs" 
         WHERE 
         "startTime" >= (CURRENT_DATE - INTERVAL '30 days')
         GROUP BY 
@@ -82,9 +82,9 @@ async def check_view_exists():  # noqa: PLR0915
         V."key_name",
         SUM(L."spend") AS total_spend
         FROM
-        "LiteLLM_SpendLogs" L
+        "LLM_SpendLogs" L
         LEFT JOIN 
-        "LiteLLM_VerificationToken" V
+        "LLM_VerificationToken" V
         ON
         L."api_key" = V."token"
         WHERE
@@ -108,7 +108,7 @@ async def check_view_exists():  # noqa: PLR0915
         "model",
         SUM("spend") AS total_spend
         FROM
-        "LiteLLM_SpendLogs"
+        "LLM_SpendLogs"
         WHERE
         "startTime" >= (CURRENT_DATE - INTERVAL '30 days')
         AND "model" != ''
@@ -131,7 +131,7 @@ async def check_view_exists():  # noqa: PLR0915
             SUM("spend") AS spend,
             api_key as api_key
             FROM 
-            "LiteLLM_SpendLogs" 
+            "LLM_SpendLogs" 
             WHERE 
             "startTime" >= (CURRENT_DATE - INTERVAL '30 days')
             GROUP BY 
@@ -155,7 +155,7 @@ async def check_view_exists():  # noqa: PLR0915
             api_key as api_key,
             "user" as "user"
             FROM 
-            "LiteLLM_SpendLogs" 
+            "LLM_SpendLogs" 
             WHERE 
             "startTime" >= (CURRENT_DATE - INTERVAL '30 days')
             GROUP BY 
@@ -178,7 +178,7 @@ async def check_view_exists():  # noqa: PLR0915
             DATE(s."startTime") AS spend_date,
             COUNT(*) AS log_count,
             SUM(spend) AS total_spend
-        FROM "LiteLLM_SpendLogs" s
+        FROM "LLM_SpendLogs" s
         GROUP BY individual_request_tag, DATE(s."startTime");
         """
         await db.execute_raw(query=sql_query)
@@ -192,7 +192,7 @@ async def check_view_exists():  # noqa: PLR0915
         sql_query = """
         CREATE VIEW "Last30dTopEndUsersSpend" AS
         SELECT end_user, COUNT(*) AS total_events, SUM(spend) AS total_spend
-        FROM "LiteLLM_SpendLogs"
+        FROM "LLM_SpendLogs"
         WHERE end_user <> '' AND end_user <> user
         AND "startTime" >= CURRENT_DATE - INTERVAL '30 days'
         GROUP BY end_user

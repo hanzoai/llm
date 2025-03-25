@@ -15,18 +15,18 @@ import json
 
 import pytest
 
-import litellm
-from litellm import completion
-from litellm.llms.cohere.completion.transformation import CohereTextConfig
+import llm
+from llm import completion
+from llm.llms.cohere.completion.transformation import CohereTextConfig
 
 
 def test_cohere_generate_api_completion():
     try:
-        from litellm.llms.custom_httpx.http_handler import HTTPHandler
+        from llm.llms.custom_httpx.http_handler import HTTPHandler
         from unittest.mock import patch, MagicMock
 
         client = HTTPHandler()
-        litellm.set_verbose = True
+        llm.set_verbose = True
         messages = [
             {"role": "system", "content": "You're a good bot"},
             {
@@ -63,7 +63,7 @@ def test_cohere_generate_api_completion():
 @pytest.mark.asyncio
 async def test_cohere_generate_api_stream():
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         messages = [
             {"role": "system", "content": "You're a good bot"},
             {
@@ -71,7 +71,7 @@ async def test_cohere_generate_api_stream():
                 "content": "Hey",
             },
         ]
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model="cohere/command",
             messages=messages,
             max_tokens=10,
@@ -102,7 +102,7 @@ def test_completion_cohere_stream_bad_key():
             api_key=api_key,
         )
 
-    except litellm.AuthenticationError as e:
+    except llm.AuthenticationError as e:
         pass
     except Exception as e:
         pytest.fail(f"Error occurred: {e}")

@@ -17,8 +17,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 from dotenv import load_dotenv
 
-import litellm
-from litellm import Router
+import llm
+from llm import Router
 
 load_dotenv()
 
@@ -28,7 +28,7 @@ def test_weighted_selection_router():
     # it's a fast test, only tests get_available_deployment
     # users can pass rpms as a litellm_param
     try:
-        litellm.set_verbose = False
+        llm.set_verbose = False
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
@@ -84,7 +84,7 @@ def test_weighted_selection_router_tpm():
     # users can pass rpms as a litellm_param
     try:
         print("\ntest weighted selection based on TPM\n")
-        litellm.set_verbose = False
+        llm.set_verbose = False
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
@@ -140,7 +140,7 @@ def test_weighted_selection_router_tpm_as_router_param():
     # users can pass rpms as a litellm_param
     try:
         print("\ntest weighted selection based on TPM\n")
-        litellm.set_verbose = False
+        llm.set_verbose = False
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
@@ -196,7 +196,7 @@ def test_weighted_selection_router_rpm_as_router_param():
     # users can pass rpms as a litellm_param
     try:
         print("\ntest weighted selection based on RPM\n")
-        litellm.set_verbose = False
+        llm.set_verbose = False
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
@@ -253,7 +253,7 @@ def test_weighted_selection_router_no_rpm_set():
     # it's a fast test, only tests get_available_deployment
     # users can pass rpms as a litellm_param
     try:
-        litellm.set_verbose = False
+        llm.set_verbose = False
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
@@ -312,7 +312,7 @@ def test_weighted_selection_router_no_rpm_set():
 
 def test_model_group_aliases():
     try:
-        litellm.set_verbose = False
+        llm.set_verbose = False
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
@@ -538,7 +538,7 @@ async def test_weighted_selection_router_async(rpm_list, tpm_list):
     # it's a fast test, only tests get_available_deployment
     # users can pass rpms as a litellm_param
     try:
-        litellm.set_verbose = False
+        llm.set_verbose = False
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",

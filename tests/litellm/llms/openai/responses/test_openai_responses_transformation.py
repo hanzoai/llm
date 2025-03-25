@@ -10,8 +10,8 @@ sys.path.insert(
     0, os.path.abspath("../../../../..")
 )  # Adds the parent directory to the system path
 
-from litellm.llms.openai.responses.transformation import OpenAIResponsesAPIConfig
-from litellm.types.llms.openai import (
+from llm.llms.openai.responses.transformation import OpenAIResponsesAPIConfig
+from llm.types.llms.openai import (
     OutputTextDeltaEvent,
     ResponseCompletedEvent,
     ResponsesAPIRequestParams,
@@ -160,7 +160,7 @@ class TestOpenAIResponsesAPIConfig:
         # Test with empty headers
         headers = {}
 
-        with patch("litellm.api_key", "litellm_api_key"):
+        with patch("llm.api_key", "litellm_api_key"):
             result = self.config.validate_environment(headers=headers, model=self.model)
 
             assert "Authorization" in result
@@ -169,8 +169,8 @@ class TestOpenAIResponsesAPIConfig:
         # Test with existing headers
         headers = {"Content-Type": "application/json"}
 
-        with patch("litellm.openai_key", "openai_key"):
-            with patch("litellm.api_key", None):
+        with patch("llm.openai_key", "openai_key"):
+            with patch("llm.api_key", None):
                 result = self.config.validate_environment(
                     headers=headers, model=self.model
                 )
@@ -183,10 +183,10 @@ class TestOpenAIResponsesAPIConfig:
         # Test with environment variable
         headers = {}
 
-        with patch("litellm.api_key", None):
-            with patch("litellm.openai_key", None):
+        with patch("llm.api_key", None):
+            with patch("llm.openai_key", None):
                 with patch(
-                    "litellm.llms.openai.responses.transformation.get_secret_str",
+                    "llm.llms.openai.responses.transformation.get_secret_str",
                     return_value="env_api_key",
                 ):
                     result = self.config.validate_environment(
@@ -205,16 +205,16 @@ class TestOpenAIResponsesAPIConfig:
 
         assert result == "https://custom-openai.example.com/v1/responses"
 
-        # Test with litellm.api_base
-        with patch("litellm.api_base", "https://litellm-api-base.example.com/v1"):
+        # Test with llm.api_base
+        with patch("llm.api_base", "https://litellm-api-base.example.com/v1"):
             result = self.config.get_complete_url(api_base=None, model=self.model)
 
             assert result == "https://litellm-api-base.example.com/v1/responses"
 
         # Test with environment variable
-        with patch("litellm.api_base", None):
+        with patch("llm.api_base", None):
             with patch(
-                "litellm.llms.openai.responses.transformation.get_secret_str",
+                "llm.llms.openai.responses.transformation.get_secret_str",
                 return_value="https://env-api-base.example.com/v1",
             ):
                 result = self.config.get_complete_url(api_base=None, model=self.model)
@@ -222,9 +222,9 @@ class TestOpenAIResponsesAPIConfig:
                 assert result == "https://env-api-base.example.com/v1/responses"
 
         # Test with default API base
-        with patch("litellm.api_base", None):
+        with patch("llm.api_base", None):
             with patch(
-                "litellm.llms.openai.responses.transformation.get_secret_str",
+                "llm.llms.openai.responses.transformation.get_secret_str",
                 return_value=None,
             ):
                 result = self.config.get_complete_url(api_base=None, model=self.model)

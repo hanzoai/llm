@@ -11,8 +11,8 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm import acompletion, completion
+import llm
+from llm import acompletion, completion
 
 
 def my_pre_call_rule(input: str):
@@ -26,7 +26,7 @@ def my_pre_call_rule(input: str):
 ## Test 1: Pre-call rule
 def test_pre_call_rule():
     try:
-        litellm.pre_call_rules = [my_pre_call_rule]
+        llm.pre_call_rules = [my_pre_call_rule]
         ### completion
         response = completion(
             model="gpt-3.5-turbo",
@@ -47,7 +47,7 @@ def test_pre_call_rule():
             pass
 
     asyncio.run(test_async_response())
-    litellm.pre_call_rules = []
+    llm.pre_call_rules = []
 
 
 def my_post_call_rule(input: str):
@@ -57,7 +57,7 @@ def my_post_call_rule(input: str):
     if len(input) < 200:
         return {
             "decision": False,
-            "message": "This violates LiteLLM Proxy Rules. Response too short",
+            "message": "This violates LLM Proxy Rules. Response too short",
         }
     return {"decision": True}
 
@@ -69,7 +69,7 @@ def my_post_call_rule_2(input: str):
     if len(input) < 200 and len(input) > 0:
         return {
             "decision": False,
-            "message": "This violates LiteLLM Proxy Rules. Response too short",
+            "message": "This violates LLM Proxy Rules. Response too short",
         }
     return {"decision": True}
 
@@ -79,8 +79,8 @@ def my_post_call_rule_2(input: str):
 # commenting out of ci/cd since llm's have variable output which was causing our pipeline to fail erratically.
 def test_post_call_rule():
     try:
-        litellm.pre_call_rules = []
-        litellm.post_call_rules = [my_post_call_rule]
+        llm.pre_call_rules = []
+        llm.post_call_rules = [my_post_call_rule]
         ### completion
         response = completion(
             model="gpt-3.5-turbo",
@@ -92,10 +92,10 @@ def test_post_call_rule():
         print("Got exception", e)
         print(type(e))
         print(vars(e))
-        assert e.message == "This violates LiteLLM Proxy Rules. Response too short"
+        assert e.message == "This violates LLM Proxy Rules. Response too short"
         pass
     # print(f"MAKING ACOMPLETION CALL")
-    # litellm.set_verbose = True
+    # llm.set_verbose = True
     ### async completion
     # async def test_async_response():
     #     messages=[{"role": "user", "content": "say sorry"}]
@@ -105,8 +105,8 @@ def test_post_call_rule():
     #     except Exception as e:
     #         pass
     # asyncio.run(test_async_response())
-    litellm.pre_call_rules = []
-    litellm.post_call_rules = []
+    llm.pre_call_rules = []
+    llm.post_call_rules = []
 
 
 # test_post_call_rule()
@@ -114,8 +114,8 @@ def test_post_call_rule():
 
 def test_post_call_rule_streaming():
     try:
-        litellm.pre_call_rules = []
-        litellm.post_call_rules = [my_post_call_rule_2]
+        llm.pre_call_rules = []
+        llm.post_call_rules = [my_post_call_rule_2]
         ### completion
         response = completion(
             model="gpt-3.5-turbo",
@@ -130,7 +130,7 @@ def test_post_call_rule_streaming():
         print("Got exception", e)
         print(type(e))
         print(vars(e))
-        assert "This violates LiteLLM Proxy Rules. Response too short" in e.message
+        assert "This violates LLM Proxy Rules. Response too short" in e.message
 
 
 @pytest.mark.asyncio

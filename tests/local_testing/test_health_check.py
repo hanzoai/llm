@@ -13,12 +13,12 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 import asyncio
 
-import litellm
+import llm
 
 
 @pytest.mark.asyncio
 async def test_azure_health_check():
-    response = await litellm.ahealth_check(
+    response = await llm.ahealth_check(
         model_params={
             "model": "azure/chatgpt-v-2",
             "messages": [{"role": "user", "content": "Hey, how's it going?"}],
@@ -38,7 +38,7 @@ async def test_azure_health_check():
 
 @pytest.mark.asyncio
 async def test_text_completion_health_check():
-    response = await litellm.ahealth_check(
+    response = await llm.ahealth_check(
         model_params={"model": "gpt-3.5-turbo-instruct"},
         mode="completion",
         prompt="What's the weather in SF?",
@@ -49,7 +49,7 @@ async def test_text_completion_health_check():
 
 @pytest.mark.asyncio
 async def test_azure_embedding_health_check():
-    response = await litellm.ahealth_check(
+    response = await llm.ahealth_check(
         model_params={
             "model": "azure/azure-embedding-model",
             "api_key": os.getenv("AZURE_API_KEY"),
@@ -67,7 +67,7 @@ async def test_azure_embedding_health_check():
 
 @pytest.mark.asyncio
 async def test_openai_img_gen_health_check():
-    response = await litellm.ahealth_check(
+    response = await llm.ahealth_check(
         model_params={
             "model": "dall-e-3",
             "api_key": os.getenv("OPENAI_API_KEY"),
@@ -85,7 +85,7 @@ async def test_openai_img_gen_health_check():
 
 
 async def test_azure_img_gen_health_check():
-    response = await litellm.ahealth_check(
+    response = await llm.ahealth_check(
         model_params={
             "model": "azure/",
             "api_base": os.getenv("AZURE_API_BASE"),
@@ -106,13 +106,13 @@ async def test_azure_img_gen_health_check():
 @pytest.mark.skip(reason="AWS Suspended Account")
 @pytest.mark.asyncio
 async def test_sagemaker_embedding_health_check():
-    response = await litellm.ahealth_check(
+    response = await llm.ahealth_check(
         model_params={
             "model": "sagemaker/berri-benchmarking-gpt-j-6b-fp16",
             "messages": [{"role": "user", "content": "Hey, how's it going?"}],
         },
         mode="embedding",
-        input=["test from litellm"],
+        input=["test from llm"],
     )
     print(f"response: {response}")
 
@@ -130,8 +130,8 @@ async def test_groq_health_check():
 
     ensure that provider wildcard model passes health check
     """
-    litellm.set_verbose = True
-    response = await litellm.ahealth_check(
+    llm.set_verbose = True
+    response = await llm.ahealth_check(
         model_params={
             "api_key": os.environ.get("GROQ_API_KEY"),
             "model": "groq/*",
@@ -139,7 +139,7 @@ async def test_groq_health_check():
         },
         mode=None,
         prompt="What's 1 + 1?",
-        input=["test from litellm"],
+        input=["test from llm"],
     )
     print(f"response: {response}")
     assert response == {}
@@ -149,7 +149,7 @@ async def test_groq_health_check():
 
 @pytest.mark.asyncio
 async def test_cohere_rerank_health_check():
-    response = await litellm.ahealth_check(
+    response = await llm.ahealth_check(
         model_params={
             "model": "cohere/rerank-english-v3.0",
             "api_key": os.getenv("COHERE_API_KEY"),
@@ -165,7 +165,7 @@ async def test_cohere_rerank_health_check():
 
 @pytest.mark.asyncio
 async def test_audio_speech_health_check():
-    response = await litellm.ahealth_check(
+    response = await llm.ahealth_check(
         model_params={
             "model": "openai/tts-1",
             "api_key": os.getenv("OPENAI_API_KEY"),
@@ -181,8 +181,8 @@ async def test_audio_speech_health_check():
 
 @pytest.mark.asyncio
 async def test_audio_transcription_health_check():
-    litellm.set_verbose = True
-    response = await litellm.ahealth_check(
+    llm.set_verbose = True
+    response = await llm.ahealth_check(
         model_params={
             "model": "openai/whisper-1",
             "api_key": os.getenv("OPENAI_API_KEY"),
@@ -208,7 +208,7 @@ async def test_async_realtime_health_check(model, mocker):
     mock_connect = AsyncMock().__aenter__.return_value = mock_websocket
     mocker.patch("websockets.connect", return_value=mock_connect)
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     model_params = {
         "model": model,
     }
@@ -216,7 +216,7 @@ async def test_async_realtime_health_check(model, mocker):
         model_params["api_base"] = os.getenv("AZURE_REALTIME_API_BASE")
         model_params["api_key"] = os.getenv("AZURE_REALTIME_API_KEY")
         model_params["api_version"] = os.getenv("AZURE_REALTIME_API_VERSION")
-    response = await litellm.ahealth_check(
+    response = await llm.ahealth_check(
         model_params=model_params,
         mode="realtime",
     )
@@ -230,7 +230,7 @@ def test_update_litellm_params_for_health_check():
     1. Updates messages with a random message
     2. Updates model name when health_check_model is provided
     """
-    from litellm.proxy.health_check import _update_litellm_params_for_health_check
+    from llm.proxy.health_check import _update_litellm_params_for_health_check
 
     # Test with health_check_model
     model_info = {"health_check_model": "gpt-3.5-turbo"}
@@ -266,7 +266,7 @@ async def test_perform_health_check_with_health_check_model():
     1. Verifies that health_check_model overrides the original model when model=`openai/*`
     2. Ensures the health check is performed with the override model
     """
-    from litellm.proxy.health_check import _perform_health_check
+    from llm.proxy.health_check import _perform_health_check
 
     # Mock model list with health_check_model specified
     model_list = [
@@ -286,7 +286,7 @@ async def test_perform_health_check_with_health_check_model():
         health_check_calls.append(litellm_params["model"])
         return {"status": "healthy"}
 
-    with patch("litellm.ahealth_check", side_effect=mock_health_check):
+    with patch("llm.ahealth_check", side_effect=mock_health_check):
         healthy_endpoints, unhealthy_endpoints = await _perform_health_check(model_list)
         print("health check calls: ", health_check_calls)
 
@@ -301,7 +301,7 @@ async def test_perform_health_check_with_health_check_model():
 
 @pytest.mark.asyncio
 async def test_health_check_bad_model():
-    from litellm.proxy.health_check import _perform_health_check
+    from llm.proxy.health_check import _perform_health_check
     import time
 
     model_list = [
@@ -337,7 +337,7 @@ async def test_health_check_bad_model():
         return {"status": "healthy"}
 
     with patch(
-        "litellm.ahealth_check", side_effect=mock_health_check
+        "llm.ahealth_check", side_effect=mock_health_check
     ) as mock_health_check:
         start_time = time.time()
         healthy_endpoints, unhealthy_endpoints = await _perform_health_check(model_list)

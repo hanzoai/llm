@@ -1,7 +1,7 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# [OLD PROXY 👉 [NEW proxy here](./simple_proxy)] Local LiteLLM Proxy Server
+# [OLD PROXY 👉 [NEW proxy here](./simple_proxy)] Local LLM Proxy Server
 
 A fast, and lightweight OpenAI-compatible server to call 100+ LLM APIs. 
 
@@ -13,10 +13,10 @@ Docs outdated. New docs 👉 [here](./simple_proxy)
 
 ## Usage 
 ```shell
-pip install 'litellm[proxy]'
+pip install 'llm[proxy]'
 ```
 ```shell 
-$ litellm --model ollama/codellama 
+$ llm --model ollama/codellama 
 
 #INFO: Ollama running on http://0.0.0.0:8000
 ```
@@ -24,7 +24,7 @@ $ litellm --model ollama/codellama
 ### Test
 In a new shell, run: 
 ```shell
-$ litellm --test
+$ llm --test
 ``` 
 
 ### Replace openai base
@@ -43,20 +43,20 @@ print(openai.ChatCompletion.create(model="test", messages=[{"role":"user", "cont
 Assuming you're running vllm locally
 
 ```shell
-$ litellm --model vllm/facebook/opt-125m
+$ llm --model vllm/facebook/opt-125m
 ```
 </TabItem>
 <TabItem value="openai-proxy" label="OpenAI Compatible Server">
 
 ```shell
-$ litellm --model openai/<model_name> --api_base <your-api-base>
+$ llm --model openai/<model_name> --api_base <your-api-base>
 ```
 </TabItem>
 <TabItem value="huggingface" label="Huggingface">
 
 ```shell
 $ export HUGGINGFACE_API_KEY=my-api-key #[OPTIONAL]
-$ litellm --model claude-instant-1
+$ llm --model claude-instant-1
 ```
 
 </TabItem>
@@ -64,7 +64,7 @@ $ litellm --model claude-instant-1
 
 ```shell
 $ export ANTHROPIC_API_KEY=my-api-key
-$ litellm --model claude-instant-1
+$ llm --model claude-instant-1
 ```
 
 </TabItem>
@@ -73,7 +73,7 @@ $ litellm --model claude-instant-1
 
 ```shell
 $ export TOGETHERAI_API_KEY=my-api-key
-$ litellm --model together_ai/lmsys/vicuna-13b-v1.5-16k
+$ llm --model together_ai/lmsys/vicuna-13b-v1.5-16k
 ```
 
 </TabItem>
@@ -82,7 +82,7 @@ $ litellm --model together_ai/lmsys/vicuna-13b-v1.5-16k
 
 ```shell
 $ export REPLICATE_API_KEY=my-api-key
-$ litellm \
+$ llm \
   --model replicate/meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3
 ```
 
@@ -91,7 +91,7 @@ $ litellm \
 <TabItem value="petals" label="Petals">
 
 ```shell
-$ litellm --model petals/meta-llama/Llama-2-70b-chat-hf
+$ llm --model petals/meta-llama/Llama-2-70b-chat-hf
 ```
 
 </TabItem>
@@ -100,7 +100,7 @@ $ litellm --model petals/meta-llama/Llama-2-70b-chat-hf
 
 ```shell
 $ export PALM_API_KEY=my-palm-key
-$ litellm --model palm/chat-bison
+$ llm --model palm/chat-bison
 ```
 
 </TabItem>
@@ -111,7 +111,7 @@ $ litellm --model palm/chat-bison
 $ export AZURE_API_KEY=my-api-key
 $ export AZURE_API_BASE=my-api-base
 
-$ litellm --model azure/my-deployment-name
+$ llm --model azure/my-deployment-name
 ```
 
 </TabItem>
@@ -120,7 +120,7 @@ $ litellm --model azure/my-deployment-name
 
 ```shell
 $ export AI21_API_KEY=my-api-key
-$ litellm --model j2-light
+$ llm --model j2-light
 ```
 
 </TabItem>
@@ -129,7 +129,7 @@ $ litellm --model j2-light
 
 ```shell
 $ export COHERE_API_KEY=my-api-key
-$ litellm --model command-nightly
+$ llm --model command-nightly
 ```
 
 </TabItem>
@@ -221,7 +221,7 @@ from autogen import AssistantAgent, UserProxyAgent, oai
 config_list=[
     {
         "model": "my-fake-model",
-        "api_base": "http://0.0.0.0:8000",  #litellm compatible endpoint
+        "api_base": "http://0.0.0.0:8000",  #llm compatible endpoint
         "api_type": "open_ai",
         "api_key": "NULL", # just a placeholder
     }
@@ -250,7 +250,7 @@ from autogen.agentchat import GroupChat
 config_list = [
     {
         "model": "ollama/mistralorca",
-        "api_base": "http://0.0.0.0:8000",  # litellm compatible endpoint
+        "api_base": "http://0.0.0.0:8000",  # llm compatible endpoint
         "api_type": "open_ai",
         "api_key": "NULL",  # just a placeholder
     }
@@ -260,7 +260,7 @@ llm_config = {"config_list": config_list, "seed": 42}
 code_config_list = [
     {
         "model": "ollama/phind-code",
-        "api_base": "http://0.0.0.0:8000",  # litellm compatible endpoint
+        "api_base": "http://0.0.0.0:8000",  # llm compatible endpoint
         "api_type": "open_ai",
         "api_key": "NULL",  # just a placeholder
     }
@@ -383,13 +383,13 @@ Credits [@pchalasani](https://github.com/pchalasani) and [Langroid](https://gith
 Here's how to use the local proxy to test codellama/mistral/etc. models for different github repos 
 
 ```shell
-pip install litellm
+pip install llm
 ```
 
 ```shell
 $ ollama pull codellama # OUR Local CodeLlama  
 
-$ litellm --model ollama/codellama --temperature 0.3 --max_tokens 2048
+$ llm --model ollama/codellama --temperature 0.3 --max_tokens 2048
 ```
 
 ### Tutorial: Use with Multiple LLMs + Aider/AutoGen/Langroid/etc.
@@ -397,9 +397,9 @@ $ litellm --model ollama/codellama --temperature 0.3 --max_tokens 2048
 <TabItem value="multiple-LLMs" label="Multiple LLMs">
 
 ```shell 
-$ litellm
+$ llm
 
-#INFO: litellm proxy running on http://0.0.0.0:8000
+#INFO: llm proxy running on http://0.0.0.0:8000
 ```
 
 #### Send a request to your proxy
@@ -456,7 +456,7 @@ from autogen import AssistantAgent, UserProxyAgent, oai
 config_list=[
     {
         "model": "my-fake-model",
-        "api_base": "http://localhost:8000",  #litellm compatible endpoint
+        "api_base": "http://localhost:8000",  #llm compatible endpoint
         "api_type": "open_ai",
         "api_key": "NULL", # just a placeholder
     }
@@ -485,7 +485,7 @@ from autogen.agentchat import GroupChat
 config_list = [
     {
         "model": "ollama/mistralorca",
-        "api_base": "http://localhost:8000",  # litellm compatible endpoint
+        "api_base": "http://localhost:8000",  # llm compatible endpoint
         "api_type": "open_ai",
         "api_key": "NULL",  # just a placeholder
     }
@@ -495,7 +495,7 @@ llm_config = {"config_list": config_list, "seed": 42}
 code_config_list = [
     {
         "model": "ollama/phind-code",
-        "api_base": "http://localhost:8000",  # litellm compatible endpoint
+        "api_base": "http://localhost:8000",  # llm compatible endpoint
         "api_type": "open_ai",
         "api_key": "NULL",  # just a placeholder
     }
@@ -589,7 +589,7 @@ from langroid.language_models.openai_gpt import OpenAIGPTConfig, OpenAIGPT
 
 # configure the LLM
 my_llm_config = OpenAIGPTConfig(
-    #format: "local/[URL where LiteLLM proxy is listening]
+    #format: "local/[URL where LLM proxy is listening]
     chat_model="local/localhost:8000", 
     chat_context_length=2048,  # adjust based on model
 )
@@ -631,7 +631,7 @@ https://github.com/guidance-ai/guidance
 **Fix**: Start your proxy using the `--drop_params` flag
 
 ```shell
-litellm --model ollama/codellama --temperature 0.3 --max_tokens 2048 --drop_params
+llm --model ollama/codellama --temperature 0.3 --max_tokens 2048 --drop_params
 ```
 
 ```python
@@ -665,7 +665,7 @@ print(result)
 </Tabs>
 
 :::note
-**Contribute** Using this server with a project? Contribute your tutorial [here!](https://github.com/BerriAI/litellm)
+**Contribute** Using this server with a project? Contribute your tutorial [here!](https://github.com/BerriAI/llm)
 
 ::: 
 
@@ -674,7 +674,7 @@ print(result)
 ### Logs
 
 ```shell
-$ litellm --logs
+$ llm --logs
 ```
 
 This will return the most recent log (the call that went to the LLM API + the received response).
@@ -685,38 +685,38 @@ All logs are saved to a file called `api_logs.json` in the current directory.
 
 If you need to: 
 * save API keys 
-* set litellm params (e.g. drop unmapped params, set fallback models, etc.)
+* set llm params (e.g. drop unmapped params, set fallback models, etc.)
 * set model-specific params (max tokens, temperature, api base, prompt template)
 
 You can do set these just for that session (via cli), or persist these across restarts (via config file).
 
 #### Save API Keys 
 ```shell 
-$ litellm --api_key OPENAI_API_KEY=sk-...
+$ llm --api_key OPENAI_API_KEY=sk-...
 ```
-LiteLLM will save this to a locally stored config file, and persist this across sessions. 
+LLM will save this to a locally stored config file, and persist this across sessions. 
 
-LiteLLM Proxy supports all litellm supported api keys. To add keys for a specific provider, check this list:
+LLM Proxy supports all llm supported api keys. To add keys for a specific provider, check this list:
 
 <Tabs>
 <TabItem value="huggingface" label="Huggingface">
 
 ```shell
-$ litellm --add_key HUGGINGFACE_API_KEY=my-api-key #[OPTIONAL]
+$ llm --add_key HUGGINGFACE_API_KEY=my-api-key #[OPTIONAL]
 ```
 
 </TabItem>
 <TabItem value="anthropic" label="Anthropic">
 
 ```shell
-$ litellm --add_key ANTHROPIC_API_KEY=my-api-key
+$ llm --add_key ANTHROPIC_API_KEY=my-api-key
 ```
 
 </TabItem>
 <TabItem value="perplexity" label="PerplexityAI">
 
 ```shell
-$ litellm --add_key PERPLEXITYAI_API_KEY=my-api-key
+$ llm --add_key PERPLEXITYAI_API_KEY=my-api-key
 ```
 
 </TabItem>
@@ -724,7 +724,7 @@ $ litellm --add_key PERPLEXITYAI_API_KEY=my-api-key
 <TabItem value="together_ai" label="TogetherAI">
 
 ```shell
-$ litellm --add_key TOGETHERAI_API_KEY=my-api-key
+$ llm --add_key TOGETHERAI_API_KEY=my-api-key
 ```
 
 </TabItem>
@@ -732,7 +732,7 @@ $ litellm --add_key TOGETHERAI_API_KEY=my-api-key
 <TabItem value="replicate" label="Replicate">
 
 ```shell
-$ litellm --add_key REPLICATE_API_KEY=my-api-key
+$ llm --add_key REPLICATE_API_KEY=my-api-key
 ```
 
 </TabItem>
@@ -740,8 +740,8 @@ $ litellm --add_key REPLICATE_API_KEY=my-api-key
 <TabItem value="bedrock" label="Bedrock">
 
 ```shell
-$ litellm --add_key AWS_ACCESS_KEY_ID=my-key-id
-$ litellm --add_key AWS_SECRET_ACCESS_KEY=my-secret-access-key
+$ llm --add_key AWS_ACCESS_KEY_ID=my-key-id
+$ llm --add_key AWS_SECRET_ACCESS_KEY=my-secret-access-key
 ```
 
 </TabItem>
@@ -749,7 +749,7 @@ $ litellm --add_key AWS_SECRET_ACCESS_KEY=my-secret-access-key
 <TabItem value="palm" label="Palm">
 
 ```shell
-$ litellm --add_key PALM_API_KEY=my-palm-key
+$ llm --add_key PALM_API_KEY=my-palm-key
 ```
 
 </TabItem>
@@ -757,8 +757,8 @@ $ litellm --add_key PALM_API_KEY=my-palm-key
 <TabItem value="azure" label="Azure OpenAI">
 
 ```shell
-$ litellm --add_key AZURE_API_KEY=my-api-key
-$ litellm --add_key AZURE_API_BASE=my-api-base
+$ llm --add_key AZURE_API_KEY=my-api-key
+$ llm --add_key AZURE_API_BASE=my-api-base
 
 ```
 
@@ -767,7 +767,7 @@ $ litellm --add_key AZURE_API_BASE=my-api-base
 <TabItem value="ai21" label="AI21">
 
 ```shell
-$ litellm --add_key AI21_API_KEY=my-api-key
+$ llm --add_key AI21_API_KEY=my-api-key
 ```
 
 </TabItem>
@@ -775,7 +775,7 @@ $ litellm --add_key AI21_API_KEY=my-api-key
 <TabItem value="cohere" label="Cohere">
 
 ```shell
-$ litellm --add_key COHERE_API_KEY=my-api-key
+$ llm --add_key COHERE_API_KEY=my-api-key
 ```
 
 </TabItem>
@@ -786,7 +786,7 @@ E.g.: Set api base, max tokens and temperature.
 
 **For that session**: 
 ```shell
-litellm --model ollama/llama2 \
+llm --model ollama/llama2 \
   --api_base http://localhost:11434 \
   --max_tokens 250 \
   --temperature 0.5
@@ -811,7 +811,7 @@ Thread Stats   Avg      Stdev     Max   +/- Stdev
 
 ## Support/ talk with founders
 
-- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-litellm-hosted-version)
+- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 - Our numbers 📞 +1 (770) 8783-106 / ‭+1 (412) 618-6238‬
 - Our emails ✉️ ishaan@berri.ai / krrish@berri.ai

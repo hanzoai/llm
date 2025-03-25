@@ -1,5 +1,5 @@
 # What this tests?
-## This tests the litellm support for the openai /generations endpoint
+## This tests the llm support for the openai /generations endpoint
 
 import logging
 import os
@@ -13,7 +13,7 @@ sys.path.insert(
 
 from dotenv import load_dotenv
 from openai.types.image import Image
-from litellm.caching import InMemoryCache
+from llm.caching import InMemoryCache
 
 logging.basicConfig(level=logging.DEBUG)
 load_dotenv()
@@ -21,12 +21,12 @@ import asyncio
 import os
 import pytest
 
-import litellm
+import llm
 import json
 import tempfile
 from base_image_generation_test import BaseImageGenTest
 import logging
-from litellm._logging import verbose_logger
+from llm._logging import verbose_logger
 
 verbose_logger.setLevel(logging.DEBUG)
 
@@ -109,7 +109,7 @@ class TestVertexImageGeneration(BaseImageGenTest):
         # comment this when running locally
         load_vertex_ai_credentials()
 
-        litellm.in_memory_llm_clients_cache = InMemoryCache()
+        llm.in_memory_llm_clients_cache = InMemoryCache()
         return {
             "model": "vertex_ai/imagegeneration@006",
             "vertex_ai_project": "pathrise-convert-1606954137718",
@@ -120,19 +120,19 @@ class TestVertexImageGeneration(BaseImageGenTest):
 
 class TestBedrockSd3(BaseImageGenTest):
     def get_base_image_generation_call_args(self) -> dict:
-        litellm.in_memory_llm_clients_cache = InMemoryCache()
+        llm.in_memory_llm_clients_cache = InMemoryCache()
         return {"model": "bedrock/stability.sd3-large-v1:0"}
 
 
 class TestBedrockSd1(BaseImageGenTest):
     def get_base_image_generation_call_args(self) -> dict:
-        litellm.in_memory_llm_clients_cache = InMemoryCache()
+        llm.in_memory_llm_clients_cache = InMemoryCache()
         return {"model": "bedrock/stability.sd3-large-v1:0"}
 
 
 class TestBedrockNovaCanvasTextToImage(BaseImageGenTest):
     def get_base_image_generation_call_args(self) -> dict:
-        litellm.in_memory_llm_clients_cache = InMemoryCache()
+        llm.in_memory_llm_clients_cache = InMemoryCache()
         return {
             "model": "bedrock/amazon.nova-canvas-v1:0",
             "n": 1,
@@ -150,7 +150,7 @@ class TestOpenAIDalle3(BaseImageGenTest):
 
 class TestAzureOpenAIDalle3(BaseImageGenTest):
     def get_base_image_generation_call_args(self) -> dict:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         return {
             "model": "azure/dall-e-3-test",
             "api_version": "2023-09-01-preview",
@@ -165,8 +165,8 @@ class TestAzureOpenAIDalle3(BaseImageGenTest):
 @pytest.mark.flaky(retries=3, delay=1)
 def test_image_generation_azure_dall_e_3():
     try:
-        litellm.set_verbose = True
-        response = litellm.image_generation(
+        llm.set_verbose = True
+        response = llm.image_generation(
             prompt="A cute baby sea otter",
             model="azure/dall-e-3-test",
             api_version="2023-12-01-preview",
@@ -182,11 +182,11 @@ def test_image_generation_azure_dall_e_3():
 
         print("response", response._hidden_params)
         assert len(response.data) > 0
-    except litellm.InternalServerError as e:
+    except llm.InternalServerError as e:
         pass
-    except litellm.ContentPolicyViolationError:
+    except llm.ContentPolicyViolationError:
         pass  # OpenAI randomly raises these errors - skip when they occur
-    except litellm.InternalServerError:
+    except llm.InternalServerError:
         pass
     except Exception as e:
         if "Your task failed as a result of our safety system." in str(e):
@@ -203,16 +203,16 @@ def test_image_generation_azure_dall_e_3():
 @pytest.mark.asyncio
 async def test_aimage_generation_bedrock_with_optional_params():
     try:
-        litellm.in_memory_llm_clients_cache = InMemoryCache()
-        response = await litellm.aimage_generation(
+        llm.in_memory_llm_clients_cache = InMemoryCache()
+        response = await llm.aimage_generation(
             prompt="A cute baby sea otter",
             model="bedrock/stability.stable-diffusion-xl-v1",
             size="256x256",
         )
         print(f"response: {response}")
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
-    except litellm.ContentPolicyViolationError:
+    except llm.ContentPolicyViolationError:
         pass  # Azure randomly raises these errors skip when they occur
     except Exception as e:
         if "Your task failed as a result of our safety system." in str(e):

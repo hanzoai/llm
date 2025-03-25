@@ -1,9 +1,9 @@
 {{- if .Values.migrationJob.enabled }}
-# This job runs the prisma migrations for the LiteLLM DB.
+# This job runs the prisma migrations for the LLM DB.
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "litellm.fullname" . }}-migrations
+  name: {{ include "llm.fullname" . }}-migrations
   annotations:
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation # delete old migration on a new deploy in case the migration needs to make updates
@@ -22,7 +22,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          command: ["python", "litellm/proxy/prisma_migration.py"]
+          command: ["python", "llm/proxy/prisma_migration.py"]
           workingDir: "/app"
           env:
             {{- if .Values.db.useExisting }}

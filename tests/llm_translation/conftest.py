@@ -9,7 +9,7 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
+import llm
 
 
 @pytest.fixture(scope="session")
@@ -25,8 +25,8 @@ def setup_and_teardown(event_loop):  # Add event_loop as a dependency
     curr_dir = os.getcwd()
     sys.path.insert(0, os.path.abspath("../.."))
 
-    import litellm
-    from litellm import Router
+    import llm
+    from llm import Router
 
     importlib.reload(litellm)
 

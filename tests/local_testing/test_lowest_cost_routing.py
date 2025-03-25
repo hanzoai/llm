@@ -13,9 +13,9 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-from litellm import Router
-from litellm.router_strategy.lowest_cost import LowestCostLoggingHandler
-from litellm.caching.caching import DualCache
+from llm import Router
+from llm.router_strategy.lowest_cost import LowestCostLoggingHandler
+from llm.caching.caching import DualCache
 
 ### UNIT TESTS FOR cost ROUTING ###
 
@@ -51,7 +51,7 @@ async def test_get_available_deployments():
 
 @pytest.mark.asyncio
 async def test_get_available_deployments_custom_price():
-    from litellm._logging import verbose_router_logger
+    from llm._logging import verbose_router_logger
     import logging
 
     verbose_router_logger.setLevel(logging.DEBUG)
@@ -164,7 +164,7 @@ async def test_get_available_endpoints_tpm_rpm_check_async(ans_rpm):
 
     assert that only the valid model is returned
     """
-    from litellm._logging import verbose_router_logger
+    from llm._logging import verbose_router_logger
     import logging
 
     verbose_router_logger.setLevel(logging.DEBUG)

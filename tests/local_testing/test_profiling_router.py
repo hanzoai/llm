@@ -9,13 +9,13 @@
 # sys.path.insert(
 #     0, os.path.abspath("../..")
 # )  # Adds the parent directory to the system path
-# import litellm
-# from litellm import Router
+# import llm
+# from llm import Router
 # from concurrent.futures import ThreadPoolExecutor
 # from dotenv import load_dotenv
 # from aiodebug import log_slow_callbacks  # Import the aiodebug utility for logging slow callbacks
 
-# # litellm.telemetry = False
+# # llm.telemetry = False
 
 # load_dotenv()
 
@@ -31,7 +31,7 @@
 # exception_counts = {}
 # exception_data = []
 
-# litellm.telemetry = False
+# llm.telemetry = False
 
 # num_task_cancelled_errors = 0
 

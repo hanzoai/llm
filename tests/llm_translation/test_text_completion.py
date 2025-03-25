@@ -7,17 +7,17 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 
-import litellm
+import llm
 import pytest
 
-from litellm.utils import (
-    LiteLLMResponseObjectHandler,
+from llm.utils import (
+    LLMResponseObjectHandler,
 )
 
 
 from datetime import timedelta
 
-from litellm.types.utils import (
+from llm.types.utils import (
     ModelResponse,
     TextCompletionResponse,
     TextChoices,
@@ -44,7 +44,7 @@ def test_convert_chat_to_text_completion():
     )
 
     text_completion = TextCompletionResponse()
-    result = LiteLLMResponseObjectHandler.convert_chat_to_text_completion(
+    result = LLMResponseObjectHandler.convert_chat_to_text_completion(
         response=chat_response, text_completion_response=text_completion
     )
 
@@ -75,12 +75,12 @@ def test_convert_provider_response_logprobs():
         },
     )
 
-    result = LiteLLMResponseObjectHandler._convert_provider_response_logprobs_to_text_completion_logprobs(
+    result = LLMResponseObjectHandler._convert_provider_response_logprobs_to_text_completion_logprobs(
         response=response, custom_llm_provider="huggingface"
     )
 
     # Note: The actual assertion here depends on the implementation of
-    # litellm.huggingface._transform_logprobs, but we can at least test the function call
+    # llm.huggingface._transform_logprobs, but we can at least test the function call
     assert (
         result is not None or result is None
     )  # Will depend on the actual implementation
@@ -90,7 +90,7 @@ def test_convert_provider_response_logprobs_non_huggingface():
     """Test converting provider logprobs for non-huggingface provider"""
     response = ModelResponse(id="test123", _hidden_params={})
 
-    result = LiteLLMResponseObjectHandler._convert_provider_response_logprobs_to_text_completion_logprobs(
+    result = LLMResponseObjectHandler._convert_provider_response_logprobs_to_text_completion_logprobs(
         response=response, custom_llm_provider="openai"
     )
 
@@ -120,7 +120,7 @@ def test_convert_chat_to_text_completion_multiple_choices():
     )
 
     text_completion = TextCompletionResponse()
-    result = LiteLLMResponseObjectHandler.convert_chat_to_text_completion(
+    result = LLMResponseObjectHandler.convert_chat_to_text_completion(
         response=chat_response, text_completion_response=text_completion
     )
 
@@ -147,7 +147,7 @@ async def test_text_completion_include_usage(sync_mode):
     """Test text completion with include_usage"""
     last_chunk = None
     if sync_mode:
-        response = await litellm.atext_completion(
+        response = await llm.atext_completion(
             model="gpt-3.5-turbo",
             prompt="Hello, world!",
             stream=True,
@@ -158,7 +158,7 @@ async def test_text_completion_include_usage(sync_mode):
             print(chunk)
             last_chunk = chunk
     else:
-        response = litellm.text_completion(
+        response = llm.text_completion(
             model="gpt-3.5-turbo",
             prompt="Hello, world!",
             stream=True,

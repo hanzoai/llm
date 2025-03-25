@@ -24,9 +24,9 @@ import logging
 from typing import Optional
 import pytest
 
-import litellm
-from litellm.proxy.spend_tracking.spend_tracking_utils import get_logging_payload
-from litellm.proxy._types import SpendLogsMetadata, SpendLogsPayload
+import llm
+from llm.proxy.spend_tracking.spend_tracking_utils import get_logging_payload
+from llm.proxy._types import SpendLogsMetadata, SpendLogsPayload
 
 
 @pytest.mark.parametrize(
@@ -99,7 +99,7 @@ def test_spend_logs_payload(model_id: Optional[str]):
                     "error_information": None,
                     "status": "success",
                     "proxy_server_request": "{}",
-                    "raw_request": "\n\nPOST Request Sent from LiteLLM:\ncurl -X POST \\\nhttps://openai-gpt-4-test-v-1.openai.azure.com//openai/ \\\n-H 'Authorization: *****' \\\n-d '{'model': 'chatgpt-v-2', 'messages': [{'role': 'system', 'content': 'you are a helpful assistant.\\n'}, {'role': 'user', 'content': 'bom dia'}], 'stream': False, 'max_tokens': 10, 'user': '116544810872468347480', 'extra_body': {}}'\n",
+                    "raw_request": "\n\nPOST Request Sent from LLM:\ncurl -X POST \\\nhttps://openai-gpt-4-test-v-1.openai.azure.com//openai/ \\\n-H 'Authorization: *****' \\\n-d '{'model': 'chatgpt-v-2', 'messages': [{'role': 'system', 'content': 'you are a helpful assistant.\\n'}, {'role': 'user', 'content': 'bom dia'}], 'stream': False, 'max_tokens': 10, 'user': '116544810872468347480', 'extra_body': {}}'\n",
                 },
                 "model_info": {
                     "id": "4bad40a1eb6bebd1682800f16f44b9f06c52a6703444c99c7f9f32e9de3693b4",
@@ -180,13 +180,13 @@ def test_spend_logs_payload(model_id: Optional[str]):
                 },
             },
         },
-        "response_obj": litellm.ModelResponse(
+        "response_obj": llm.ModelResponse(
             id=model_id,
             choices=[
-                litellm.Choices(
+                llm.Choices(
                     finish_reason="length",
                     index=0,
-                    message=litellm.Message(
+                    message=llm.Message(
                         content="Bom dia! Como posso ajudar você", role="assistant"
                     ),
                 )
@@ -195,7 +195,7 @@ def test_spend_logs_payload(model_id: Optional[str]):
             model="gpt-35-turbo",
             object="chat.completion",
             system_fingerprint=None,
-            usage=litellm.Usage(
+            usage=llm.Usage(
                 completion_tokens=10, prompt_tokens=20, total_tokens=30
             ),
         ),
@@ -297,7 +297,7 @@ def test_spend_logs_payload_whisper():
         "response_cost": 0.00023398580000000003,
     }
 
-    response = litellm.utils.TranscriptionResponse(
+    response = llm.utils.TranscriptionResponse(
         text="Four score and seven years ago, our fathers brought forth on this continent a new nation, conceived in liberty and dedicated to the proposition that all men are created equal. Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure."
     )
 
@@ -319,7 +319,7 @@ def test_spend_logs_payload_with_prompts_enabled(monkeypatch):
     Test that messages and responses are logged in spend logs when store_prompts_in_spend_logs is enabled
     """
     # Mock general_settings
-    from litellm.proxy.proxy_server import general_settings
+    from llm.proxy.proxy_server import general_settings
 
     general_settings["store_prompts_in_spend_logs"] = True
 
@@ -333,17 +333,17 @@ def test_spend_logs_payload_with_prompts_enabled(monkeypatch):
                 }
             },
         },
-        "response_obj": litellm.ModelResponse(
+        "response_obj": llm.ModelResponse(
             id="chatcmpl-123",
             choices=[
-                litellm.Choices(
+                llm.Choices(
                     finish_reason="stop",
                     index=0,
-                    message=litellm.Message(content="Hi there!", role="assistant"),
+                    message=llm.Message(content="Hi there!", role="assistant"),
                 )
             ],
             model="gpt-3.5-turbo",
-            usage=litellm.Usage(completion_tokens=2, prompt_tokens=1, total_tokens=3),
+            usage=llm.Usage(completion_tokens=2, prompt_tokens=1, total_tokens=3),
         ),
         "start_time": datetime.datetime.now(),
         "end_time": datetime.datetime.now(),

@@ -14,7 +14,7 @@ Use just 1 lines of code, to instantly log your responses **across all providers
 Get your Lago [API Key](https://docs.getlago.com/guide/self-hosted/docker#find-your-api-key)
 
 ```python
-litellm.callbacks = ["lago"] # logs cost + usage of successful calls to lago
+llm.callbacks = ["lago"] # logs cost + usage of successful calls to lago
 ```
 
 
@@ -23,7 +23,7 @@ litellm.callbacks = ["lago"] # logs cost + usage of successful calls to lago
 
 ```python
 # pip install lago 
-import litellm
+import llm
 import os
 
 os.environ["LAGO_API_BASE"] = "" # http://0.0.0.0:3000
@@ -33,11 +33,11 @@ os.environ["LAGO_API_EVENT_CODE"] = "" # The billable metric's code - https://do
 # LLM API Keys
 os.environ['OPENAI_API_KEY']=""
 
-# set lago as a callback, litellm will send the data to lago
-litellm.success_callback = ["lago"] 
+# set lago as a callback, llm will send the data to lago
+llm.success_callback = ["lago"] 
  
 # openai call
-response = litellm.completion(
+response = llm.completion(
   model="gpt-3.5-turbo",
   messages=[
     {"role": "user", "content": "Hi 👋 - i'm openai"}
@@ -52,20 +52,20 @@ response = litellm.completion(
 1. Add to Config.yaml
 ```yaml
 model_list:
-- litellm_params:
+- llm_params:
     api_base: https://openai-function-calling-workers.tasslexyz.workers.dev/
     api_key: my-fake-key
     model: openai/my-fake-model
   model_name: fake-openai-endpoint
 
-litellm_settings:
+llm_settings:
   callbacks: ["lago"] # 👈 KEY CHANGE
 ```
 
 2. Start Proxy
 
 ```
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -98,7 +98,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="gpt-3.5-turbo", messages = [
     {
         "role": "user",
@@ -137,7 +137,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -154,19 +154,19 @@ print(response)
 
 ## Advanced - Lagos Logging object 
 
-This is what LiteLLM will log to Lagos
+This is what LLM will log to Lagos
 
 ```
 {
     "event": {
       "transaction_id": "<generated_unique_id>",
-      "external_customer_id": <litellm_end_user_id>, # passed via `user` param in /chat/completion call - https://platform.openai.com/docs/api-reference/chat/create
+      "external_customer_id": <llm_end_user_id>, # passed via `user` param in /chat/completion call - https://platform.openai.com/docs/api-reference/chat/create
       "code": os.getenv("LAGO_API_EVENT_CODE"), 
       "properties": {
           "input_tokens": <number>,
           "output_tokens": <number>,
           "model": <string>,
-          "response_cost": <number>, # 👈 LITELLM CALCULATED RESPONSE COST - https://github.com/BerriAI/litellm/blob/d43f75150a65f91f60dc2c0c9462ce3ffc713c1f/litellm/utils.py#L1473
+          "response_cost": <number>, # 👈 LITELLM CALCULATED RESPONSE COST - https://github.com/BerriAI/llm/blob/d43f75150a65f91f60dc2c0c9462ce3ffc713c1f/llm/utils.py#L1473
       }
     }
 }

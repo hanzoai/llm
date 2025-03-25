@@ -7,7 +7,7 @@ import TabItem from '@theme/TabItem';
 | Property | Details |
 |-------|-------|
 | Description | Google AI Studio is a fully-managed AI development platform for building and using generative AI. |
-| Provider Route on LiteLLM | `gemini/` |
+| Provider Route on LLM | `gemini/` |
 | Provider Doc | [Google AI Studio ↗](https://ai.google.dev/aistudio) |
 | API Endpoint for Provider | https://generativelanguage.googleapis.com |
 | Supported OpenAI Endpoints | `/chat/completions`, [`/embeddings`](../embedding/supported_embedding#gemini-ai-embedding-models), `/completions` |
@@ -25,13 +25,13 @@ os.environ["GEMINI_API_KEY"] = "your-api-key"
 
 ## Sample Usage
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['GEMINI_API_KEY'] = ""
 response = completion(
     model="gemini/gemini-pro", 
-    messages=[{"role": "user", "content": "write code for saying hi from LiteLLM"}]
+    messages=[{"role": "user", "content": "write code for saying hi from LLM"}]
 )
 ```
 
@@ -46,18 +46,18 @@ response = completion(
 - n
 - stop
 
-[**See Updated List**](https://github.com/BerriAI/litellm/blob/1c747f3ad372399c5b95cc5696b06a5fbe53186b/litellm/llms/vertex_httpx.py#L122)
+[**See Updated List**](https://github.com/BerriAI/llm/blob/1c747f3ad372399c5b95cc5696b06a5fbe53186b/llm/llms/vertex_httpx.py#L122)
 
 ## Passing Gemini Specific Params
 ### Response schema 
-LiteLLM supports sending `response_schema` as a param for Gemini-1.5-Pro on Google AI Studio. 
+LLM supports sending `response_schema` as a param for Gemini-1.5-Pro on Google AI Studio. 
 
 **Response Schema**
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion 
+from llm import completion 
 import json 
 import os 
 
@@ -100,7 +100,7 @@ print(json.loads(completion.choices[0].message.content))
 ```yaml
 model_list:
   - model_name: gemini-pro
-    litellm_params:
+    llm_params:
       model: gemini/gemini-1.5-pro
       api_key: os.environ/GEMINI_API_KEY
 ```
@@ -108,7 +108,7 @@ model_list:
 2. Start Proxy 
 
 ```
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 3. Make Request!
@@ -149,7 +149,7 @@ To validate the response_schema, set `enforce_validation: true`.
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion, JSONSchemaValidationError
+from llm import completion, JSONSchemaValidationError
 try: 
 	completion(
     model="gemini/gemini-1.5-pro", 
@@ -171,7 +171,7 @@ except JSONSchemaValidationError as e:
 ```yaml
 model_list:
   - model_name: gemini-pro
-    litellm_params:
+    llm_params:
       model: gemini/gemini-1.5-pro
       api_key: os.environ/GEMINI_API_KEY
 ```
@@ -179,7 +179,7 @@ model_list:
 2. Start Proxy 
 
 ```
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 3. Make Request!
@@ -214,7 +214,7 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 </TabItem>
 </Tabs>
 
-LiteLLM will validate the response against the schema, and raise a `JSONSchemaValidationError` if the response does not match the schema. 
+LLM will validate the response against the schema, and raise a `JSONSchemaValidationError` if the response does not match the schema. 
 
 JSONSchemaValidationError inherits from `openai.APIError` 
 
@@ -224,7 +224,7 @@ Access the raw response with `e.raw_response`
 
 ### GenerationConfig Params 
 
-To pass additional GenerationConfig params - e.g. `topK`, just pass it in the request body of the call, and LiteLLM will pass it straight through as a key-value pair in the request body. 
+To pass additional GenerationConfig params - e.g. `topK`, just pass it in the request body of the call, and LLM will pass it straight through as a key-value pair in the request body. 
 
 [**See Gemini GenerationConfigParams**](https://ai.google.dev/api/generate-content#v1beta.GenerationConfig)
 
@@ -232,7 +232,7 @@ To pass additional GenerationConfig params - e.g. `topK`, just pass it in the re
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion 
+from llm import completion 
 import json 
 import os 
 
@@ -261,7 +261,7 @@ print(json.loads(completion.choices[0].message.content))
 ```yaml
 model_list:
   - model_name: gemini-pro
-    litellm_params:
+    llm_params:
       model: gemini/gemini-1.5-pro
       api_key: os.environ/GEMINI_API_KEY
 ```
@@ -269,7 +269,7 @@ model_list:
 2. Start Proxy 
 
 ```
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 3. Make Request!
@@ -299,7 +299,7 @@ To validate the response_schema, set `enforce_validation: true`.
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion, JSONSchemaValidationError
+from llm import completion, JSONSchemaValidationError
 try: 
 	completion(
     model="gemini/gemini-1.5-pro", 
@@ -321,7 +321,7 @@ except JSONSchemaValidationError as e:
 ```yaml
 model_list:
   - model_name: gemini-pro
-    litellm_params:
+    llm_params:
       model: gemini/gemini-1.5-pro
       api_key: os.environ/GEMINI_API_KEY
 ```
@@ -329,7 +329,7 @@ model_list:
 2. Start Proxy 
 
 ```
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 3. Make Request!
@@ -370,7 +370,7 @@ In certain use-cases you may need to make calls to the models and pass [safety s
 ```python
 response = completion(
     model="gemini/gemini-pro", 
-    messages=[{"role": "user", "content": "write code for saying hi from LiteLLM"}],
+    messages=[{"role": "user", "content": "write code for saying hi from LLM"}],
     safety_settings=[
         {
             "category": "HARM_CATEGORY_HARASSMENT",
@@ -395,7 +395,7 @@ response = completion(
 ## Tool Calling 
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 # set env
 os.environ["GEMINI_API_KEY"] = ".."
@@ -444,7 +444,7 @@ assert isinstance(
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion 
+from llm import completion 
 import json 
 import os 
 
@@ -475,7 +475,7 @@ print(json.loads(completion.choices[0].message.content))
 ```yaml
 model_list:
   - model_name: gemini-pro
-    litellm_params:
+    llm_params:
       model: gemini/gemini-1.5-pro
       api_key: os.environ/GEMINI_API_KEY
 ```
@@ -483,7 +483,7 @@ model_list:
 2. Start Proxy 
 
 ```
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 3. Make Request!
@@ -505,14 +505,14 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 </TabItem>
 </Tabs>
 # Gemini-Pro-Vision
-LiteLLM Supports the following image types passed in `url`
+LLM Supports the following image types passed in `url`
 - Images with direct links - https://storage.googleapis.com/github-repo/img/gemini/intro/landmark3.jpg
 - Image in local storage - ./localimage.jpeg
 
 ## Sample Usage
 ```python
 import os
-import litellm
+import llm
 from dotenv import load_dotenv
 
 # Load the environment variables from .env file
@@ -541,7 +541,7 @@ messages = [
 ]
 
 # Make the API call to Gemini model
-response = litellm.completion(
+response = llm.completion(
     model="gemini/gemini-pro-vision",
     messages=messages,
 )
@@ -557,7 +557,7 @@ print(content)
 
 ### Inline Data (e.g. audio stream)
 
-LiteLLM follows the OpenAI format and accepts sending inline data as an encoded base64 string. 
+LLM follows the OpenAI format and accepts sending inline data as an encoded base64 string. 
 
 The format to follow is 
 
@@ -568,20 +568,20 @@ data:<mime_type>;base64,<encoded_data>
 ** LITELLM CALL **
 
 ```python
-import litellm
+import llm
 from pathlib import Path
 import base64
 import os
 
 os.environ["GEMINI_API_KEY"] = "" 
 
-litellm.set_verbose = True # 👈 See Raw call 
+llm.set_verbose = True # 👈 See Raw call 
 
 audio_bytes = Path("speech_vertex.mp3").read_bytes()
 encoded_data = base64.b64encode(audio_bytes).decode("utf-8")
 print("Audio Bytes = {}".format(audio_bytes))
 model = "gemini/gemini-1.5-flash"
-response = litellm.completion(
+response = llm.completion(
     model=model,
     messages=[
         {
@@ -624,15 +624,15 @@ print(response.text)
 ### https:// file 
 
 ```python
-import litellm
+import llm
 import os
 
 os.environ["GEMINI_API_KEY"] = "" 
 
-litellm.set_verbose = True # 👈 See Raw call 
+llm.set_verbose = True # 👈 See Raw call 
 
 model = "gemini/gemini-1.5-flash"
-response = litellm.completion(
+response = llm.completion(
     model=model,
     messages=[
         {
@@ -652,15 +652,15 @@ response = litellm.completion(
 ### gs:// file 
 
 ```python
-import litellm
+import llm
 import os
 
 os.environ["GEMINI_API_KEY"] = "" 
 
-litellm.set_verbose = True # 👈 See Raw call 
+llm.set_verbose = True # 👈 See Raw call 
 
 model = "gemini/gemini-1.5-flash"
-response = litellm.completion(
+response = llm.completion(
     model=model,
     messages=[
         {
@@ -681,7 +681,7 @@ response = litellm.completion(
 ## Chat Models
 :::tip
 
-**We support ALL Gemini models, just set `model=gemini/<any-model-on-gemini>` as a prefix when sending litellm requests**
+**We support ALL Gemini models, just set `model=gemini/<any-model-on-gemini>` as a prefix when sending llm requests**
 
 :::
 | Model Name            | Function Call                                          | Required OS Variables          |
@@ -719,7 +719,7 @@ in your message content block.
 
 **Notes:**
 
-- [Relevant code](https://github.com/BerriAI/litellm/blob/main/litellm/llms/vertex_ai/context_caching/vertex_ai_context_caching.py#L255)
+- [Relevant code](https://github.com/BerriAI/llm/blob/main/llm/llms/vertex_ai/context_caching/vertex_ai_context_caching.py#L255)
 
 - Gemini Context Caching only allows 1 block of continuous messages to be cached. 
 
@@ -752,7 +752,7 @@ curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion 
+from llm import completion 
 
 for _ in range(2): 
     resp = completion(
@@ -793,7 +793,7 @@ for _ in range(2):
 ```yaml
 model_list:
     - model_name: gemini-1.5-pro
-      litellm_params:
+      llm_params:
         model: gemini/gemini-1.5-pro
         api_key: os.environ/GEMINI_API_KEY
 ```
@@ -801,7 +801,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -847,8 +847,8 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 ```python 
 import openai
 client = openai.AsyncOpenAI(
-    api_key="anything",            # litellm proxy api key
-    base_url="http://0.0.0.0:4000" # litellm proxy base url
+    api_key="anything",            # llm proxy api key
+    base_url="http://0.0.0.0:4000" # llm proxy base url
 )
 
 

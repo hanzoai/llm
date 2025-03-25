@@ -1,13 +1,13 @@
 # Add Rerank Provider
 
-LiteLLM **follows the Cohere Rerank API format** for all rerank providers. Here's how to add a new rerank provider:
+LLM **follows the Cohere Rerank API format** for all rerank providers. Here's how to add a new rerank provider:
 
 ## 1. Create a transformation.py file
 
-Create a config class named `<Provider><Endpoint>Config` that inherits from [`BaseRerankConfig`](https://github.com/BerriAI/litellm/blob/main/litellm/llms/base_llm/rerank/transformation.py):
+Create a config class named `<Provider><Endpoint>Config` that inherits from [`BaseRerankConfig`](https://github.com/BerriAI/llm/blob/main/llm/llms/base_llm/rerank/transformation.py):
 
 ```python
-from litellm.types.rerank import OptionalRerankParams, RerankRequest, RerankResponse
+from llm.types.rerank import OptionalRerankParams, RerankRequest, RerankResponse
 class YourProviderRerankConfig(BaseRerankConfig):
     def get_supported_cohere_rerank_params(self, model: str) -> list:
         return [
@@ -28,11 +28,11 @@ class YourProviderRerankConfig(BaseRerankConfig):
 
 
 ## 2. Register Your Provider
-Add your provider to `litellm.utils.get_provider_rerank_config()`:
+Add your provider to `llm.utils.get_provider_rerank_config()`:
 
 ```python
-elif litellm.LlmProviders.YOUR_PROVIDER == provider:
-    return litellm.YourProviderRerankConfig()
+elif llm.LlmProviders.YOUR_PROVIDER == provider:
+    return llm.YourProviderRerankConfig()
 ```
 
 
@@ -48,12 +48,12 @@ elif _custom_llm_provider == "your_provider":
         model=model,
         custom_llm_provider=_custom_llm_provider,
         optional_rerank_params=optional_rerank_params,
-        logging_obj=litellm_logging_obj,
+        logging_obj=llm_logging_obj,
         timeout=optional_params.timeout,
         api_key=dynamic_api_key or optional_params.api_key,
         api_base=api_base,
         _is_async=_is_async,
-        headers=headers or litellm.headers or {},
+        headers=headers or llm.headers or {},
         client=client,
         mod el_response=model_response,
     )
@@ -62,11 +62,11 @@ elif _custom_llm_provider == "your_provider":
 
 ## 4. Add Tests
 
-Add a test file to [`tests/llm_translation`](https://github.com/BerriAI/litellm/tree/main/tests/llm_translation)
+Add a test file to [`tests/llm_translation`](https://github.com/BerriAI/llm/tree/main/tests/llm_translation)
 
 ```python
 def test_basic_rerank_cohere():
-    response = litellm.rerank(
+    response = llm.rerank(
         model="cohere/rerank-english-v3.0",
         query="hello",
         documents=["hello", "world"],
@@ -81,4 +81,4 @@ def test_basic_rerank_cohere():
 
 
 ## Reference PRs
-- [Add Infinity Rerank](https://github.com/BerriAI/litellm/pull/7321)
+- [Add Infinity Rerank](https://github.com/BerriAI/llm/pull/7321)

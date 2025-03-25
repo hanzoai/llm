@@ -15,14 +15,14 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-import litellm
-from litellm.proxy.enterprise.enterprise_hooks.openai_moderation import (
+import llm
+from llm.proxy.enterprise.enterprise_hooks.openai_moderation import (
     _ENTERPRISE_OpenAI_Moderation,
 )
-from litellm import Router, mock_completion
-from litellm.proxy.utils import ProxyLogging, hash_token
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.caching.caching import DualCache
+from llm import Router, mock_completion
+from llm.proxy.utils import ProxyLogging, hash_token
+from llm.proxy._types import UserAPIKeyAuth
+from llm.caching.caching import DualCache
 
 ### UNIT TESTS FOR OpenAI Moderation ###
 
@@ -34,15 +34,15 @@ async def test_openai_moderation_error_raising():
     """
 
     openai_mod = _ENTERPRISE_OpenAI_Moderation()
-    litellm.openai_moderations_model_name = "text-moderation-latest"
+    llm.openai_moderations_model_name = "text-moderation-latest"
     _api_key = "sk-12345"
     _api_key = hash_token("sk-12345")
     user_api_key_dict = UserAPIKeyAuth(api_key=_api_key)
     local_cache = DualCache()
 
-    from litellm.proxy.proxy_server import llm_router
+    from llm.proxy.proxy_server import llm_router
 
-    llm_router = litellm.Router(
+    llm_router = llm.Router(
         model_list=[
             {
                 "model_name": "text-moderation-latest",
@@ -54,7 +54,7 @@ async def test_openai_moderation_error_raising():
         ]
     )
 
-    setattr(litellm.proxy.proxy_server, "llm_router", llm_router)
+    setattr(llm.proxy.proxy_server, "llm_router", llm_router)
 
     try:
         await openai_mod.async_moderation_hook(

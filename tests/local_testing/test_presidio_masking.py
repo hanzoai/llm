@@ -19,14 +19,14 @@ sys.path.insert(
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-import litellm
-from litellm import Router, mock_completion
-from litellm.caching.caching import DualCache
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.proxy.guardrails.guardrail_hooks.presidio import (
+import llm
+from llm import Router, mock_completion
+from llm.caching.caching import DualCache
+from llm.proxy._types import UserAPIKeyAuth
+from llm.proxy.guardrails.guardrail_hooks.presidio import (
     _OPTIONAL_PresidioPIIMasking,
 )
-from litellm.proxy.utils import ProxyLogging
+from llm.proxy.utils import ProxyLogging
 
 
 @pytest.mark.parametrize(
@@ -64,8 +64,8 @@ async def test_output_parsing():
     - have presidio pii masking - output parse message
     - assert that no masked tokens are in the input message
     """
-    litellm.set_verbose = True
-    litellm.output_parse_pii = True
+    llm.set_verbose = True
+    llm.output_parse_pii = True
     pii_masking = _OPTIONAL_PresidioPIIMasking(mock_testing=True)
 
     initial_message = [
@@ -208,7 +208,7 @@ async def test_presidio_pii_masking_input_b():
 
 @pytest.mark.asyncio
 async def test_presidio_pii_masking_logging_output_only_no_pre_api_hook():
-    from litellm.types.guardrails import GuardrailEventHooks
+    from llm.types.guardrails import GuardrailEventHooks
 
     pii_masking = _OPTIONAL_PresidioPIIMasking(
         logging_only=True,
@@ -242,9 +242,9 @@ async def test_presidio_pii_masking_logging_output_only_no_pre_api_hook():
 )
 @pytest.mark.asyncio
 async def test_presidio_pii_masking_logging_output_only_logged_response(sync_mode):
-    import litellm
+    import llm
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     pii_masking = _OPTIONAL_PresidioPIIMasking(
         logging_only=True,
         mock_testing=True,
@@ -267,14 +267,14 @@ async def test_presidio_pii_masking_logging_output_only_logged_response(sync_mod
         mock_call = AsyncMock()
 
     with patch.object(pii_masking, target_function, new=mock_call) as mock_call:
-        litellm.callbacks = [pii_masking]
+        llm.callbacks = [pii_masking]
         if sync_mode:
-            response = litellm.completion(
+            response = llm.completion(
                 model="gpt-3.5-turbo", messages=test_messages, mock_response="Hi Peter!"
             )
             time.sleep(3)
         else:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="gpt-3.5-turbo", messages=test_messages, mock_response="Hi Peter!"
             )
             await asyncio.sleep(3)
@@ -295,15 +295,15 @@ async def test_presidio_pii_masking_logging_output_only_logged_response(sync_mod
 async def test_presidio_pii_masking_logging_output_only_logged_response_guardrails_config():
     from typing import Dict, List, Optional
 
-    import litellm
-    from litellm.proxy.guardrails.init_guardrails import initialize_guardrails
-    from litellm.types.guardrails import (
+    import llm
+    from llm.proxy.guardrails.init_guardrails import initialize_guardrails
+    from llm.types.guardrails import (
         GuardrailItem,
         GuardrailItemSpec,
         GuardrailEventHooks,
     )
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     os.environ["PRESIDIO_ANALYZER_API_BASE"] = "http://localhost:5002"
     os.environ["PRESIDIO_ANONYMIZER_API_BASE"] = "http://localhost:5001"
 
@@ -318,7 +318,7 @@ async def test_presidio_pii_masking_logging_output_only_logged_response_guardrai
     ]
     litellm_settings = {"guardrails": guardrails_config}
 
-    assert len(litellm.guardrail_name_config_map) == 0
+    assert len(llm.guardrail_name_config_map) == 0
     initialize_guardrails(
         guardrails_config=guardrails_config,
         premium_user=True,
@@ -326,10 +326,10 @@ async def test_presidio_pii_masking_logging_output_only_logged_response_guardrai
         litellm_settings=litellm_settings,
     )
 
-    assert len(litellm.guardrail_name_config_map) == 1
+    assert len(llm.guardrail_name_config_map) == 1
 
     pii_masking_obj: Optional[_OPTIONAL_PresidioPIIMasking] = None
-    for callback in litellm.callbacks:
+    for callback in llm.callbacks:
         print(f"CALLBACK: {callback}")
         if isinstance(callback, _OPTIONAL_PresidioPIIMasking):
             pii_masking_obj = callback

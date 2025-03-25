@@ -11,8 +11,8 @@ from typing import Optional
 sys.path.insert(
     0, os.path.abspath("../")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm.proxy._types import LitellmUserRoles
+import llm
+from llm.proxy._types import LitellmUserRoles
 
 
 async def generate_team(
@@ -262,7 +262,7 @@ async def chat_completion_streaming(session, key, model="gpt-4"):
         {"role": "system", "content": "You are a helpful assistant"},
         {"role": "user", "content": f"Hello! {time.time()}"},
     ]
-    prompt_tokens = litellm.token_counter(model="gpt-35-turbo", messages=messages)
+    prompt_tokens = llm.token_counter(model="gpt-35-turbo", messages=messages)
     data = {
         "model": model,
         "messages": messages,
@@ -276,7 +276,7 @@ async def chat_completion_streaming(session, key, model="gpt-4"):
 
     print(f"content: {content}")
 
-    completion_tokens = litellm.token_counter(
+    completion_tokens = llm.token_counter(
         model="gpt-35-turbo", text=content, count_response_tokens=True
     )
 
@@ -511,8 +511,8 @@ async def test_key_info_spend_values():
         prompt_tokens = spend_logs[0]["prompt_tokens"]
         print(f"prompt_tokens: {prompt_tokens}; completion_tokens: {completion_tokens}")
 
-        litellm.set_verbose = True
-        prompt_cost, completion_cost = litellm.cost_per_token(
+        llm.set_verbose = True
+        prompt_cost, completion_cost = llm.cost_per_token(
             model="gpt-35-turbo",
             prompt_tokens=prompt_tokens,
             completion_tokens=completion_tokens,
@@ -550,7 +550,7 @@ async def test_aaaaakey_info_spend_values_streaming():
             session=session, key=new_key
         )
         print(f"prompt_tokens: {prompt_tokens}, completion_tokens: {completion_tokens}")
-        prompt_cost, completion_cost = litellm.cost_per_token(
+        prompt_cost, completion_cost = llm.cost_per_token(
             model="azure/gpt-35-turbo",
             prompt_tokens=prompt_tokens,
             completion_tokens=completion_tokens,
@@ -614,7 +614,7 @@ async def test_key_with_budgets():
     - wait 10min (budget reset runs every 10mins.)
     - Check if value updated
     """
-    from litellm.proxy.utils import hash_token
+    from llm.proxy.utils import hash_token
 
     async def retry_request(func, *args, _max_attempts=5, **kwargs):
         for attempt in range(_max_attempts):
@@ -661,7 +661,7 @@ async def test_key_crossing_budget():
 
     - Check if value updated
     """
-    from litellm.proxy.utils import hash_token
+    from llm.proxy.utils import hash_token
 
     async with aiohttp.ClientSession() as session:
         key_gen = await generate_key(session=session, i=0, budget=0.0000001)

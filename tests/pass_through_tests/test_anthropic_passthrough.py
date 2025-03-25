@@ -46,7 +46,7 @@ async def test_anthropic_basic_completion_with_headers():
             anthropic_api_output_tokens = reported_usage.get("output_tokens", None)
             litellm_call_id = response_headers.get("x-litellm-call-id")
 
-            print(f"LiteLLM Call ID: {litellm_call_id}")
+            print(f"LLM Call ID: {litellm_call_id}")
 
             # Wait for spend to be logged
             await asyncio.sleep(15)
@@ -156,7 +156,7 @@ async def test_anthropic_streaming_with_headers():
             response_headers = response.headers
             print(f"Response headers: {response_headers}")
             litellm_call_id = response_headers.get("x-litellm-call-id")
-            print(f"LiteLLM Call ID: {litellm_call_id}")
+            print(f"LLM Call ID: {litellm_call_id}")
 
             collected_output = []
             async for line in response.content:

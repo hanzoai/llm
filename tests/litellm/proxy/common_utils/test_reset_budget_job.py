@@ -12,9 +12,9 @@ sys.path.insert(
     0, os.path.abspath("../../..")
 )  # Adds the parent directory to the system path
 
-from litellm._logging import verbose_proxy_logger
-from litellm.proxy.common_utils.reset_budget_job import ResetBudgetJob
-from litellm.proxy.utils import ProxyLogging
+from llm._logging import verbose_proxy_logger
+from llm.proxy.common_utils.reset_budget_job import ResetBudgetJob
+from llm.proxy.utils import ProxyLogging
 
 
 # Mock classes for testing
@@ -71,7 +71,7 @@ def test_reset_budget_for_key(reset_budget_job, mock_prisma_client):
     # Setup test data
     now = datetime.utcnow()
     test_key = type(
-        "LiteLLM_VerificationToken",
+        "LLM_VerificationToken",
         (),
         {
             "spend": 100.0,
@@ -97,7 +97,7 @@ def test_reset_budget_for_user(reset_budget_job, mock_prisma_client):
     # Setup test data
     now = datetime.utcnow()
     test_user = type(
-        "LiteLLM_UserTable",
+        "LLM_UserTable",
         (),
         {
             "spend": 200.0,
@@ -123,7 +123,7 @@ def test_reset_budget_for_team(reset_budget_job, mock_prisma_client):
     # Setup test data
     now = datetime.utcnow()
     test_team = type(
-        "LiteLLM_TeamTable",
+        "LLM_TeamTable",
         (),
         {
             "spend": 500.0,
@@ -151,7 +151,7 @@ def test_reset_budget_all(reset_budget_job, mock_prisma_client):
 
     # Create test objects for all three types
     test_key = type(
-        "LiteLLM_VerificationToken",
+        "LLM_VerificationToken",
         (),
         {
             "spend": 100.0,
@@ -162,7 +162,7 @@ def test_reset_budget_all(reset_budget_job, mock_prisma_client):
     )
 
     test_user = type(
-        "LiteLLM_UserTable",
+        "LLM_UserTable",
         (),
         {
             "spend": 200.0,
@@ -173,7 +173,7 @@ def test_reset_budget_all(reset_budget_job, mock_prisma_client):
     )
 
     test_team = type(
-        "LiteLLM_TeamTable",
+        "LLM_TeamTable",
         (),
         {
             "spend": 500.0,

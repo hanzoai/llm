@@ -4,7 +4,7 @@
 :::tip
 
 This is community maintained, Please make an issue if you run into a bug
-https://github.com/BerriAI/litellm
+https://github.com/BerriAI/llm
 
 :::
 
@@ -15,7 +15,7 @@ https://github.com/BerriAI/litellm
 
 Use Greenscale to log requests across all LLM Providers
 
-liteLLM provides `callbacks`, making it easy for you to log data depending on the status of your responses.
+llm provides `callbacks`, making it easy for you to log data depending on the status of your responses.
 
 ## Using Callbacks
 
@@ -24,13 +24,13 @@ First, email `hello@greenscale.ai` to get an API_KEY.
 Use just 1 line of code, to instantly log your responses **across all providers** with Greenscale:
 
 ```python
-litellm.success_callback = ["greenscale"]
+llm.success_callback = ["greenscale"]
 ```
 
 ### Complete code
 
 ```python
-from litellm import completion
+from llm import completion
 
 ## set env variables
 os.environ['GREENSCALE_API_KEY'] = 'your-greenscale-api-key'
@@ -38,7 +38,7 @@ os.environ['GREENSCALE_ENDPOINT'] = 'greenscale-endpoint'
 os.environ["OPENAI_API_KEY"]= ""
 
 # set callback
-litellm.success_callback = ["greenscale"]
+llm.success_callback = ["greenscale"]
 
 #openai call
 response = completion(

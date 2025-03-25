@@ -10,33 +10,33 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../../../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm.llms.azure.common_utils import BaseAzureLLM
-from litellm.types.utils import CallTypes
+import llm
+from llm.llms.azure.common_utils import BaseAzureLLM
+from llm.types.utils import CallTypes
 
 
 # Mock the necessary dependencies
 @pytest.fixture
 def setup_mocks():
     with patch(
-        "litellm.llms.azure.common_utils.get_azure_ad_token_from_entrata_id"
+        "llm.llms.azure.common_utils.get_azure_ad_token_from_entrata_id"
     ) as mock_entrata_token, patch(
-        "litellm.llms.azure.common_utils.get_azure_ad_token_from_username_password"
+        "llm.llms.azure.common_utils.get_azure_ad_token_from_username_password"
     ) as mock_username_password_token, patch(
-        "litellm.llms.azure.common_utils.get_azure_ad_token_from_oidc"
+        "llm.llms.azure.common_utils.get_azure_ad_token_from_oidc"
     ) as mock_oidc_token, patch(
-        "litellm.llms.azure.common_utils.get_azure_ad_token_provider"
+        "llm.llms.azure.common_utils.get_azure_ad_token_provider"
     ) as mock_token_provider, patch(
-        "litellm.llms.azure.common_utils.litellm"
+        "llm.llms.azure.common_utils.litellm"
     ) as mock_litellm, patch(
-        "litellm.llms.azure.common_utils.verbose_logger"
+        "llm.llms.azure.common_utils.verbose_logger"
     ) as mock_logger, patch(
-        "litellm.llms.azure.common_utils.select_azure_base_url_or_endpoint"
+        "llm.llms.azure.common_utils.select_azure_base_url_or_endpoint"
     ) as mock_select_url:
 
         # Configure mocks
-        mock_litellm.AZURE_DEFAULT_API_VERSION = "2023-05-15"
-        mock_litellm.enable_azure_ad_token_refresh = False
+        mock_llm.AZURE_DEFAULT_API_VERSION = "2023-05-15"
+        mock_llm.enable_azure_ad_token_refresh = False
 
         mock_entrata_token.return_value = lambda: "mock-entrata-token"
         mock_username_password_token.return_value = (
@@ -244,7 +244,7 @@ def test_select_azure_base_url_called(setup_mocks):
 )
 @pytest.mark.asyncio
 async def test_ensure_initialize_azure_sdk_client_always_used(call_type):
-    from litellm.router import Router
+    from llm.router import Router
 
     # Create a router with an Azure model
     azure_model_name = "azure/chatgpt-v-2"
@@ -309,15 +309,15 @@ async def test_ensure_initialize_azure_sdk_client_always_used(call_type):
     input_kwarg = test_inputs.get(call_type.value, {})
 
     patch_target = (
-        "litellm.llms.azure.common_utils.BaseAzureLLM.initialize_azure_sdk_client"
+        "llm.llms.azure.common_utils.BaseAzureLLM.initialize_azure_sdk_client"
     )
     if call_type == CallTypes.arerank:
         patch_target = (
-            "litellm.rerank_api.main.azure_rerank.initialize_azure_sdk_client"
+            "llm.rerank_api.main.azure_rerank.initialize_azure_sdk_client"
         )
     elif call_type == CallTypes.acreate_batch or call_type == CallTypes.aretrieve_batch:
         patch_target = (
-            "litellm.batches.main.azure_batches_instance.initialize_azure_sdk_client"
+            "llm.batches.main.azure_batches_instance.initialize_azure_sdk_client"
         )
     elif (
         call_type == CallTypes.aget_assistants
@@ -330,11 +330,11 @@ async def test_ensure_initialize_azure_sdk_client_always_used(call_type):
         or call_type == CallTypes.arun_thread
     ):
         patch_target = (
-            "litellm.assistants.main.azure_assistants_api.initialize_azure_sdk_client"
+            "llm.assistants.main.azure_assistants_api.initialize_azure_sdk_client"
         )
     elif call_type == CallTypes.acreate_file or call_type == CallTypes.afile_content:
         patch_target = (
-            "litellm.files.main.azure_files_instance.initialize_azure_sdk_client"
+            "llm.files.main.azure_files_instance.initialize_azure_sdk_client"
         )
 
     # Mock the initialize_azure_sdk_client function
@@ -388,7 +388,7 @@ async def test_ensure_initialize_azure_sdk_client_always_used(call_type):
 )
 @pytest.mark.asyncio
 async def test_ensure_initialize_azure_sdk_client_always_used_azure_text(call_type):
-    from litellm.router import Router
+    from llm.router import Router
 
     # Create a router with an Azure model
     azure_model_name = "azure_text/chatgpt-v-2"
@@ -419,7 +419,7 @@ async def test_ensure_initialize_azure_sdk_client_always_used_azure_text(call_ty
     # Get appropriate input for this call type
     input_kwarg = test_inputs.get(call_type.value, {})
 
-    patch_target = "litellm.main.azure_text_completions.initialize_azure_sdk_client"
+    patch_target = "llm.main.azure_text_completions.initialize_azure_sdk_client"
 
     # Mock the initialize_azure_sdk_client function
     with patch(patch_target) as mock_init_azure:
@@ -568,13 +568,13 @@ async def test_azure_client_reuse(function_name, is_async, args):
     """
     Test that multiple Azure API calls reuse the same Azure OpenAI client
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     # Determine which client class to mock based on whether the test is async
     client_path = (
-        "litellm.llms.azure.common_utils.AsyncAzureOpenAI"
+        "llm.llms.azure.common_utils.AsyncAzureOpenAI"
         if is_async
-        else "litellm.llms.azure.common_utils.AzureOpenAI"
+        else "llm.llms.azure.common_utils.AzureOpenAI"
     )
 
     # Create a proper mock class that can pass isinstance checks

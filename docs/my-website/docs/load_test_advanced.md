@@ -1,28 +1,28 @@
 import Image from '@theme/IdealImage';
 
 
-# LiteLLM Proxy - 1K RPS Load test on locust 
+# LLM Proxy - 1K RPS Load test on locust 
 
-Tutorial on how to get to 1K+ RPS with LiteLLM Proxy on locust
+Tutorial on how to get to 1K+ RPS with LLM Proxy on locust
 
 
 ## Pre-Testing Checklist
-- [ ] Ensure you're using the **latest `-stable` version** of litellm
-    - [Github releases](https://github.com/BerriAI/litellm/releases)
-    - [litellm docker containers](https://github.com/BerriAI/litellm/pkgs/container/litellm)
-    - [litellm database docker container](https://github.com/BerriAI/litellm/pkgs/container/litellm-database)
+- [ ] Ensure you're using the **latest `-stable` version** of llm
+    - [Github releases](https://github.com/BerriAI/llm/releases)
+    - [llm docker containers](https://github.com/BerriAI/llm/pkgs/container/llm)
+    - [llm database docker container](https://github.com/BerriAI/llm/pkgs/container/llm-database)
 - [ ] Ensure you're following **ALL** [best practices for production](./proxy/production_setup.md)
 - [ ] Locust - Ensure you're Locust instance can create 1K+ requests per second
     - 👉 You can use our **[maintained locust instance here](https://locust-load-tester-production.up.railway.app/)**
     - If you're self hosting locust
         - [here's the spec used for our locust machine](#machine-specifications-for-running-locust)
         - [here  is the locustfile.py used for our tests](#locust-file-used-for-testing)
-- [ ] Use this [**machine specification for running litellm proxy**](#machine-specifications-for-running-litellm-proxy)
-- [ ] **Enterprise LiteLLM** - Use `prometheus` as a callback in your `proxy_config.yaml` to get metrics on your load test
-    Set `litellm_settings.callbacks` to monitor success/failures/all types of errors
+- [ ] Use this [**machine specification for running llm proxy**](#machine-specifications-for-running-llm-proxy)
+- [ ] **Enterprise LLM** - Use `prometheus` as a callback in your `proxy_config.yaml` to get metrics on your load test
+    Set `llm_settings.callbacks` to monitor success/failures/all types of errors
     ```yaml
-    litellm_settings:
-        callbacks: ["prometheus"] # Enterprise LiteLLM Only - use prometheus to get metrics on your load test
+    llm_settings:
+        callbacks: ["prometheus"] # Enterprise LLM Only - use prometheus to get metrics on your load test
     ```
 
 **Use this config for testing:**
@@ -32,7 +32,7 @@ Tutorial on how to get to 1K+ RPS with LiteLLM Proxy on locust
 ```yaml
 model_list:
   - model_name: "fake-openai-endpoint"
-    litellm_params:
+    llm_params:
       model: aiohttp_openai/any
       api_base: https://your-fake-openai-endpoint.com/chat/completions
       api_key: "test"
@@ -51,24 +51,24 @@ model_list:
 
 ### Run Test
 
-1. Add `fake-openai-endpoint` to your proxy config.yaml and start your litellm proxy
-litellm provides a hosted `fake-openai-endpoint` you can load test against
+1. Add `fake-openai-endpoint` to your proxy config.yaml and start your llm proxy
+llm provides a hosted `fake-openai-endpoint` you can load test against
 
 ```yaml
 model_list:
   - model_name: fake-openai-endpoint
-    litellm_params:
+    llm_params:
       model: aiohttp_openai/fake
       api_key: fake-key
       api_base: https://exampleopenaiendpoint-production.up.railway.app/
 
-litellm_settings:
-  callbacks: ["prometheus"] # Enterprise LiteLLM Only - use prometheus to get metrics on your load test
+llm_settings:
+  callbacks: ["prometheus"] # Enterprise LLM Only - use prometheus to get metrics on your load test
 ```
 
 2. `pip install locust`
 
-3. Create a file called `locustfile.py` on your local machine. Copy the contents from the litellm load test located [here](https://github.com/BerriAI/litellm/blob/main/.github/workflows/locustfile.py)
+3. Create a file called `locustfile.py` on your local machine. Copy the contents from the llm load test located [here](https://github.com/BerriAI/llm/blob/main/.github/workflows/locustfile.py)
 
 4. Start locust
   Run `locust` in the same directory as your `locustfile.py` from step 2
@@ -81,7 +81,7 @@ litellm_settings:
 
   Head to the locust UI on http://0.0.0.0:8089
 
-  Set **Users=1000, Ramp Up Users=1000**, Host=Base URL of your LiteLLM Proxy
+  Set **Users=1000, Ramp Up Users=1000**, Host=Base URL of your LLM Proxy
 
 6. Expected results 
 
@@ -116,27 +116,27 @@ All requests with `model="gemini-vision"` will be load balanced equally across t
 ```yaml
 model_list:
   - model_name: gemini-vision
-    litellm_params:
+    llm_params:
       model: vertex_ai/gemini-1.0-pro-vision-001
       api_base: https://exampleopenaiendpoint-production.up.railway.app/v1/projects/bad-adroit-crow-413218/locations/us-central1/publishers/google/models/gemini-1.0-pro-vision-001
       vertex_project: "adroit-crow-413218"
       vertex_location: "us-central1"
       vertex_credentials: /etc/secrets/adroit_crow.json
   - model_name: gemini-vision
-    litellm_params:
+    llm_params:
       model: vertex_ai/gemini-1.0-pro-vision-001
       api_base: https://exampleopenaiendpoint-production-c715.up.railway.app/v1/projects/bad-adroit-crow-413218/locations/us-central1/publishers/google/models/gemini-1.0-pro-vision-001
       vertex_project: "adroit-crow-413218"
       vertex_location: "us-central1"
       vertex_credentials: /etc/secrets/adroit_crow.json
 
-litellm_settings:
-  callbacks: ["prometheus"] # Enterprise LiteLLM Only - use prometheus to get metrics on your load test
+llm_settings:
+  callbacks: ["prometheus"] # Enterprise LLM Only - use prometheus to get metrics on your load test
 ```
 
 2. `pip install locust`
 
-3. Create a file called `locustfile.py` on your local machine. Copy the contents from the litellm load test located [here](https://github.com/BerriAI/litellm/blob/main/.github/workflows/locustfile.py)
+3. Create a file called `locustfile.py` on your local machine. Copy the contents from the llm load test located [here](https://github.com/BerriAI/llm/blob/main/.github/workflows/locustfile.py)
 
 4. Start locust
   Run `locust` in the same directory as your `locustfile.py` from step 2
@@ -166,8 +166,8 @@ Use the following [prometheus metrics to debug your load tests / failures](./pro
 
 | Metric Name          | Description                          |
 |----------------------|--------------------------------------|
-| `litellm_deployment_failure_responses`              | Total number of failed LLM API calls for a specific LLM deployment. Labels: `"requested_model", "litellm_model_name", "model_id", "api_base", "api_provider", "hashed_api_key", "api_key_alias", "team", "team_alias", "exception_status", "exception_class"` |
-| `litellm_deployment_cooled_down`             | Number of times a deployment has been cooled down by LiteLLM load balancing logic. Labels: `"litellm_model_name", "model_id", "api_base", "api_provider", "exception_status"` |
+| `llm_deployment_failure_responses`              | Total number of failed LLM API calls for a specific LLM deployment. Labels: `"requested_model", "llm_model_name", "model_id", "api_base", "api_provider", "hashed_api_key", "api_key_alias", "team", "team_alias", "exception_status", "exception_class"` |
+| `llm_deployment_cooled_down`             | Number of times a deployment has been cooled down by LLM load balancing logic. Labels: `"llm_model_name", "model_id", "api_base", "api_provider", "exception_status"` |
 
 
 
@@ -180,9 +180,9 @@ Use the following [prometheus metrics to debug your load tests / failures](./pro
 | `Memory` on Load Testing Machine | 450 MB |
 | `Replicas` of Load Testing Machine | 1 |
 
-## Machine Specifications for Running LiteLLM Proxy
+## Machine Specifications for Running LLM Proxy
 
-👉 **Number of Replicas of LiteLLM Proxy=4** for getting 1K+ RPS
+👉 **Number of Replicas of LLM Proxy=4** for getting 1K+ RPS
 
 | Service | Spec | CPUs | Memory | Architecture | Version|
 | --- | --- | --- | --- | --- | --- | 
@@ -200,7 +200,7 @@ class MyUser(HttpUser):
     wait_time = between(0.5, 1)  # Random wait time between requests
 
     @task(100)
-    def litellm_completion(self):
+    def llm_completion(self):
         # no cache hits with this
         payload = {
             "model": "fake-openai-endpoint",

@@ -16,8 +16,8 @@ from unittest.mock import MagicMock, patch
 
 from botocore.credentials import Credentials
 
-import litellm
-from litellm.llms.bedrock.base_aws_llm import (
+import llm
+from llm.llms.bedrock.base_aws_llm import (
     AwsAuthError,
     BaseAWSLLM,
     Boto3CredentialsInfo,
@@ -34,7 +34,7 @@ def test_boto3_init_tracer_wrapping():
     """
     Test that all boto3 initializations are wrapped in tracer.trace or @tracer.wrap
 
-    Ensures observability of boto3 calls in litellm.
+    Ensures observability of boto3 calls in llm.
     """
     # Get the source code of base_aws_llm.py
     with open(BASE_AWS_LLM_PATH, "r") as f:
@@ -72,7 +72,7 @@ def test_auth_functions_tracer_wrapping():
     """
     Test that all _auth functions in base_aws_llm.py are wrapped with @tracer.wrap
 
-    Ensures observability of AWS authentication calls in litellm.
+    Ensures observability of AWS authentication calls in llm.
     """
     # Get the source code of base_aws_llm.py
     with open(BASE_AWS_LLM_PATH, "r") as f:

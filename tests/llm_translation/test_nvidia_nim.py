@@ -14,15 +14,15 @@ import pytest
 from respx import MockRouter
 from unittest.mock import patch, MagicMock, AsyncMock
 
-import litellm
-from litellm import Choices, Message, ModelResponse, EmbeddingResponse, Usage
-from litellm import completion
+import llm
+from llm import Choices, Message, ModelResponse, EmbeddingResponse, Usage
+from llm import completion
 
 
 def test_completion_nvidia_nim():
     from openai import OpenAI
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     model_name = "nvidia_nim/databricks/dbrx-instruct"
     client = OpenAI(
         api_key="fake-api-key",
@@ -65,7 +65,7 @@ def test_completion_nvidia_nim():
 
 
 def test_embedding_nvidia_nim():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     from openai import OpenAI
 
     client = OpenAI(
@@ -73,7 +73,7 @@ def test_embedding_nvidia_nim():
     )
     with patch.object(client.embeddings.with_raw_response, "create") as mock_client:
         try:
-            litellm.embedding(
+            llm.embedding(
                 model="nvidia_nim/nvidia/nv-embedqa-e5-v5",
                 input="What is the meaning of life?",
                 input_type="passage",

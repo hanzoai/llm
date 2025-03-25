@@ -9,14 +9,14 @@ import pytest
 from fastapi.exceptions import HTTPException
 from httpx import Request, Response
 
-from litellm import DualCache
-from litellm.proxy.guardrails.guardrail_hooks.aim import AimGuardrail, AimGuardrailMissingSecrets
-from litellm.proxy.proxy_server import StreamingCallbackError, UserAPIKeyAuth
-from litellm.types.utils import ModelResponseStream
+from llm import DualCache
+from llm.proxy.guardrails.guardrail_hooks.aim import AimGuardrail, AimGuardrailMissingSecrets
+from llm.proxy.proxy_server import StreamingCallbackError, UserAPIKeyAuth
+from llm.types.utils import ModelResponseStream
 
 sys.path.insert(0, os.path.abspath("../.."))  # Adds the parent directory to the system path
-import litellm
-from litellm.proxy.guardrails.init_guardrails import init_guardrails_v2
+import llm
+from llm.proxy.guardrails.init_guardrails import init_guardrails_v2
 
 
 class ReceiveMock:
@@ -30,8 +30,8 @@ class ReceiveMock:
 
 
 def test_aim_guard_config():
-    litellm.set_verbose = True
-    litellm.guardrail_name_config_map = {}
+    llm.set_verbose = True
+    llm.guardrail_name_config_map = {}
 
     init_guardrails_v2(
         all_guardrails=[
@@ -50,8 +50,8 @@ def test_aim_guard_config():
 
 
 def test_aim_guard_config_no_api_key():
-    litellm.set_verbose = True
-    litellm.guardrail_name_config_map = {}
+    llm.set_verbose = True
+    llm.guardrail_name_config_map = {}
     with pytest.raises(AimGuardrailMissingSecrets, match="Couldn't get Aim api key"):
         init_guardrails_v2(
             all_guardrails=[
@@ -84,7 +84,7 @@ async def test_callback(mode: str):
         ],
         config_file_path="",
     )
-    aim_guardrails = [callback for callback in litellm.callbacks if isinstance(callback, AimGuardrail)]
+    aim_guardrails = [callback for callback in llm.callbacks if isinstance(callback, AimGuardrail)]
     assert len(aim_guardrails) == 1
     aim_guardrail = aim_guardrails[0]
 
@@ -96,7 +96,7 @@ async def test_callback(mode: str):
 
     with pytest.raises(HTTPException, match="Jailbreak detected"):
         with patch(
-            "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
+            "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post",
             return_value=Response(
                 json={"detected": True, "details": {}, "detection_message": "Jailbreak detected"},
                 status_code=200,
@@ -134,7 +134,7 @@ async def test_post_call_stream__all_chunks_are_valid(monkeypatch, length: int):
         ],
         config_file_path="",
     )
-    aim_guardrails = [callback for callback in litellm.callbacks if isinstance(callback, AimGuardrail)]
+    aim_guardrails = [callback for callback in llm.callbacks if isinstance(callback, AimGuardrail)]
     assert len(aim_guardrails) == 1
     aim_guardrail = aim_guardrails[0]
 
@@ -158,7 +158,7 @@ async def test_post_call_stream__all_chunks_are_valid(monkeypatch, length: int):
     async def connect_mock(*args, **kwargs):
         yield websocket_mock
 
-    monkeypatch.setattr("litellm.proxy.guardrails.guardrail_hooks.aim.connect", connect_mock)
+    monkeypatch.setattr("llm.proxy.guardrails.guardrail_hooks.aim.connect", connect_mock)
 
     results = []
     async for result in aim_guardrail.async_post_call_streaming_iterator_hook(
@@ -188,7 +188,7 @@ async def test_post_call_stream__blocked_chunks(monkeypatch):
         ],
         config_file_path="",
     )
-    aim_guardrails = [callback for callback in litellm.callbacks if isinstance(callback, AimGuardrail)]
+    aim_guardrails = [callback for callback in llm.callbacks if isinstance(callback, AimGuardrail)]
     assert len(aim_guardrails) == 1
     aim_guardrail = aim_guardrails[0]
 
@@ -213,7 +213,7 @@ async def test_post_call_stream__blocked_chunks(monkeypatch):
     async def connect_mock(*args, **kwargs):
         yield websocket_mock
 
-    monkeypatch.setattr("litellm.proxy.guardrails.guardrail_hooks.aim.connect", connect_mock)
+    monkeypatch.setattr("llm.proxy.guardrails.guardrail_hooks.aim.connect", connect_mock)
 
     results = []
     with pytest.raises(StreamingCallbackError, match="Jailbreak detected"):

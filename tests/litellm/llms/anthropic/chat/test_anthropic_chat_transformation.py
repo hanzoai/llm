@@ -10,7 +10,7 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 from unittest.mock import MagicMock, patch
 
-from litellm.llms.anthropic.chat.transformation import AnthropicConfig
+from llm.llms.anthropic.chat.transformation import AnthropicConfig
 
 
 def test_response_format_transformation_unit_test():

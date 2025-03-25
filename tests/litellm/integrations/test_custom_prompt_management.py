@@ -12,11 +12,11 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system-path
-import litellm
-from litellm.integrations.custom_prompt_management import CustomPromptManagement
-from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler
-from litellm.types.llms.openai import AllMessageValues
-from litellm.types.utils import StandardCallbackDynamicParams
+import llm
+from llm.integrations.custom_prompt_management import CustomPromptManagement
+from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler
+from llm.types.llms.openai import AllMessageValues
+from llm.types.utils import StandardCallbackDynamicParams
 
 
 class TestCustomPromptManagement(CustomPromptManagement):
@@ -52,12 +52,12 @@ class TestCustomPromptManagement(CustomPromptManagement):
 @pytest.mark.asyncio
 async def test_custom_prompt_management_with_prompt_id():
     custom_prompt_management = TestCustomPromptManagement()
-    litellm.callbacks = [custom_prompt_management]
+    llm.callbacks = [custom_prompt_management]
 
     # Mock AsyncHTTPHandler.post method
     client = AsyncHTTPHandler()
     with patch.object(client, "post", return_value=MagicMock()) as mock_post:
-        await litellm.acompletion(
+        await llm.acompletion(
             model="anthropic/claude-3-5-sonnet",
             messages=[{"role": "user", "content": "Hello, how are you?"}],
             client=client,
@@ -80,12 +80,12 @@ async def test_custom_prompt_management_with_prompt_id():
 @pytest.mark.asyncio
 async def test_custom_prompt_management_with_prompt_id_and_prompt_variables():
     custom_prompt_management = TestCustomPromptManagement()
-    litellm.callbacks = [custom_prompt_management]
+    llm.callbacks = [custom_prompt_management]
 
     # Mock AsyncHTTPHandler.post method
     client = AsyncHTTPHandler()
     with patch.object(client, "post", return_value=MagicMock()) as mock_post:
-        await litellm.acompletion(
+        await llm.acompletion(
             model="anthropic/claude-3-5-sonnet",
             messages=[],
             client=client,
@@ -109,12 +109,12 @@ async def test_custom_prompt_management_with_prompt_id_and_prompt_variables():
 @pytest.mark.asyncio
 async def test_custom_prompt_management_without_prompt_id():
     custom_prompt_management = TestCustomPromptManagement()
-    litellm.callbacks = [custom_prompt_management]
+    llm.callbacks = [custom_prompt_management]
 
     # Mock AsyncHTTPHandler.post method
     client = AsyncHTTPHandler()
     with patch.object(client, "post", return_value=MagicMock()) as mock_post:
-        await litellm.acompletion(
+        await llm.acompletion(
             model="anthropic/claude-3-5-sonnet",
             messages=[{"role": "user", "content": "Hello, how are you?"}],
             client=client,

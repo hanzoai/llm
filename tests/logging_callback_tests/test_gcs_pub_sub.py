@@ -6,7 +6,7 @@ import sys
 sys.path.insert(0, os.path.abspath("../.."))
 
 import asyncio
-import litellm
+import llm
 import gzip
 import json
 import logging
@@ -15,12 +15,12 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-import litellm
-from litellm import completion
-from litellm._logging import verbose_logger
-from litellm.integrations.gcs_pubsub.pub_sub import *
+import llm
+from llm import completion
+from llm._logging import verbose_logger
+from llm.integrations.gcs_pubsub.pub_sub import *
 from datetime import datetime, timedelta
-from litellm.types.utils import (
+from llm.types.utils import (
     StandardLoggingPayload,
     StandardLoggingModelInformation,
     StandardLoggingMetadata,
@@ -130,10 +130,10 @@ async def test_async_gcs_pub_sub():
     mock_construct_request_headers = AsyncMock()
     mock_construct_request_headers.return_value = {"Authorization": "Bearer mock_token"}
     gcs_pub_sub_logger.construct_request_headers = mock_construct_request_headers
-    litellm.callbacks = [gcs_pub_sub_logger]
+    llm.callbacks = [gcs_pub_sub_logger]
 
     # Make the completion call
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="gpt-4o",
         messages=[{"role": "user", "content": "Hello, world!"}],
         mock_response="hi",
@@ -173,7 +173,7 @@ async def test_async_gcs_pub_sub():
 @pytest.mark.asyncio
 async def test_async_gcs_pub_sub_v1():
     # Create a mock for the async_httpx_client's post method
-    litellm.gcs_pub_sub_use_v1 = True
+    llm.gcs_pub_sub_use_v1 = True
     mock_post = AsyncMock()
     mock_post.return_value.status_code = 202
     mock_post.return_value.text = "Accepted"
@@ -185,10 +185,10 @@ async def test_async_gcs_pub_sub_v1():
     mock_construct_request_headers = AsyncMock()
     mock_construct_request_headers.return_value = {"Authorization": "Bearer mock_token"}
     gcs_pub_sub_logger.construct_request_headers = mock_construct_request_headers
-    litellm.callbacks = [gcs_pub_sub_logger]
+    llm.callbacks = [gcs_pub_sub_logger]
 
     # Make the completion call
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="gpt-4o",
         messages=[{"role": "user", "content": "Hello, world!"}],
         mock_response="hi",

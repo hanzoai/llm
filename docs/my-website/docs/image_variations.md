@@ -5,7 +5,7 @@ OpenAI's `/image/variations` endpoint is now supported.
 ## Quick Start
 
 ```python
-from litellm import image_variation
+from llm import image_variation
 import os 
 
 # set env vars 

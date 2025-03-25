@@ -9,12 +9,12 @@ sys.path.insert(
     0, os.path.abspath("../../..")
 )  # Adds the parent directory to the system path
 
-import litellm
-from litellm.llms.base_llm.responses.transformation import BaseResponsesAPIConfig
-from litellm.llms.openai.responses.transformation import OpenAIResponsesAPIConfig
-from litellm.responses.utils import ResponseAPILoggingUtils, ResponsesAPIRequestUtils
-from litellm.types.llms.openai import ResponsesAPIOptionalRequestParams
-from litellm.types.utils import Usage
+import llm
+from llm.llms.base_llm.responses.transformation import BaseResponsesAPIConfig
+from llm.llms.openai.responses.transformation import OpenAIResponsesAPIConfig
+from llm.responses.utils import ResponseAPILoggingUtils, ResponsesAPIRequestUtils
+from llm.types.llms.openai import ResponsesAPIOptionalRequestParams
+from llm.types.utils import Usage
 
 
 class TestResponsesAPIRequestUtils:
@@ -51,7 +51,7 @@ class TestResponsesAPIRequestUtils:
         )
 
         # Execute and Assert
-        with pytest.raises(litellm.UnsupportedParamsError) as excinfo:
+        with pytest.raises(llm.UnsupportedParamsError) as excinfo:
             ResponsesAPIRequestUtils.get_optional_params_responses_api(
                 model=model,
                 responses_api_provider_config=config,

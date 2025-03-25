@@ -15,12 +15,12 @@ Files are used to upload documents that can be used with features like Assistant
 - Get File Content
 
 <Tabs>
-<TabItem value="proxy" label="LiteLLM PROXY Server">
+<TabItem value="proxy" label="LLM PROXY Server">
 
 ```bash
 $ export OPENAI_API_KEY="sk-..."
 
-$ litellm
+$ llm
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -63,12 +63,12 @@ curl http://localhost:4000/v1/files/file-abc123/content \
 
 **Upload a File**
 ```python
-from litellm
+from llm
 import os 
 
 os.environ["OPENAI_API_KEY"] = "sk-.."
 
-file_obj = await litellm.acreate_file(
+file_obj = await llm.acreate_file(
     file=open("mydata.jsonl", "rb"),
     purpose="fine-tune",
     custom_llm_provider="openai",
@@ -78,7 +78,7 @@ print("Response from creating file=", file_obj)
 
 **List Files**
 ```python
-files = await litellm.alist_files(
+files = await llm.alist_files(
     custom_llm_provider="openai",
     limit=10
 )
@@ -87,7 +87,7 @@ print("files=", files)
 
 **Retrieve File Information**
 ```python
-file = await litellm.aretrieve_file(
+file = await llm.aretrieve_file(
     file_id="file-abc123",
     custom_llm_provider="openai"
 )
@@ -96,7 +96,7 @@ print("file=", file)
 
 **Delete File**
 ```python
-response = await litellm.adelete_file(
+response = await llm.adelete_file(
     file_id="file-abc123",
     custom_llm_provider="openai"
 )
@@ -105,7 +105,7 @@ print("delete response=", response)
 
 **Get File Content**
 ```python
-content = await litellm.afile_content(
+content = await llm.afile_content(
     file_id="file-abc123",
     custom_llm_provider="openai"
 )
@@ -124,4 +124,4 @@ print("file content=", content)
 
 ### [Vertex AI](./providers/vertex#batch-apis)
 
-## [Swagger API Reference](https://litellm-api.up.railway.app/#/files)
+## [Swagger API Reference](https://llm-api.up.railway.app/#/files)

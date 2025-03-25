@@ -5,9 +5,9 @@ import traceback
 
 from dotenv import load_dotenv
 
-import litellm.types
-import litellm.types.utils
-from litellm.llms.anthropic.chat import ModelResponseIterator
+import llm.types
+import llm.types.utils
+from llm.llms.anthropic.chat import ModelResponseIterator
 
 load_dotenv()
 import io
@@ -27,7 +27,7 @@ import pytest
 @pytest.mark.flaky(retries=6, delay=1)
 async def test_acompletion_claude2(model):
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         messages = [
             {
                 "role": "system",
@@ -36,14 +36,14 @@ async def test_acompletion_claude2(model):
             {"role": "user", "content": "Generate a 3 liner joke for me"},
         ]
         # test without max-tokens
-        response = await litellm.acompletion(model=model, messages=messages)
+        response = await llm.acompletion(model=model, messages=messages)
         # Add any assertions here to check the response
         print(response)
         print(response.usage)
         print(response.usage.completion_tokens)
         print(response["usage"]["completion_tokens"])
         # print("new cost tracking")
-    except litellm.InternalServerError:
+    except llm.InternalServerError:
         pytest.skip("model is overloaded.")
     except Exception as e:
         pytest.fail(f"Error occurred: {e}")
@@ -52,7 +52,7 @@ async def test_acompletion_claude2(model):
 @pytest.mark.asyncio
 async def test_acompletion_claude2_stream():
     try:
-        litellm.set_verbose = False
+        llm.set_verbose = False
         messages = [
             {
                 "role": "system",
@@ -61,7 +61,7 @@ async def test_acompletion_claude2_stream():
             {"role": "user", "content": "Generate a 3 liner joke for me"},
         ]
         # test without max-tokens
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model="anthropic_text/claude-2",
             messages=messages,
             stream=True,

@@ -9,10 +9,10 @@ sys.path.insert(0, os.path.abspath("../.."))
 
 from typing import Union
 
-# from litellm.litellm_core_utils.prompt_templates.factory import prompt_factory
-import litellm
-from litellm import completion
-from litellm.litellm_core_utils.prompt_templates.factory import (
+# from llm.litellm_core_utils.prompt_templates.factory import prompt_factory
+import llm
+from llm import completion
+from llm.litellm_core_utils.prompt_templates.factory import (
     _bedrock_tools_pt,
     anthropic_messages_pt,
     anthropic_pt,
@@ -22,10 +22,10 @@ from litellm.litellm_core_utils.prompt_templates.factory import (
     llama_2_chat_pt,
     prompt_factory,
 )
-from litellm.litellm_core_utils.prompt_templates.common_utils import (
+from llm.litellm_core_utils.prompt_templates.common_utils import (
     get_completion_messages,
 )
-from litellm.llms.vertex_ai.gemini.transformation import (
+from llm.llms.vertex_ai.gemini.transformation import (
     _gemini_convert_messages_with_history,
 )
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -126,7 +126,7 @@ def test_anthropic_pt_formatting():
 
 
 def test_anthropic_messages_nested_pt():
-    from litellm.types.llms.anthropic import (
+    from llm.types.llms.anthropic import (
         AnthopicMessagesAssistantMessageParam,
         AnthropicMessagesUserMessageParam,
     )
@@ -305,10 +305,10 @@ def test_bedrock_parallel_tool_calling_pt(provider):
     """
     Make sure parallel tool call blocks are merged correctly - https://github.com/BerriAI/litellm/issues/5277
     """
-    from litellm.litellm_core_utils.prompt_templates.factory import (
+    from llm.litellm_core_utils.prompt_templates.factory import (
         _bedrock_converse_messages_pt,
     )
-    from litellm.types.utils import ChatCompletionMessageToolCall, Function, Message
+    from llm.types.utils import ChatCompletionMessageToolCall, Function, Message
 
     messages = [
         {
@@ -429,7 +429,7 @@ def test_azure_tool_call_invoke_helper():
         {"role": "assistant", "function_call": {"name": "get_weather"}},
     ]
 
-    transformed_messages = litellm.AzureOpenAIConfig().transform_request(
+    transformed_messages = llm.AzureOpenAIConfig().transform_request(
         model="gpt-4o",
         messages=messages,
         optional_params={},
@@ -590,14 +590,14 @@ def test_ensure_alternating_roles(
 
 
 def test_alternating_roles_e2e():
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
     import json
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     http_handler = HTTPHandler()
 
     with patch.object(http_handler, "post", new=MagicMock()) as mock_post:
-        response = litellm.completion(
+        response = llm.completion(
             **{
                 "model": "databricks/databricks-meta-llama-3-1-70b-instruct",
                 "messages": [
@@ -662,11 +662,11 @@ def test_alternating_roles_e2e():
 
 
 def test_just_system_message():
-    from litellm.litellm_core_utils.prompt_templates.factory import (
+    from llm.litellm_core_utils.prompt_templates.factory import (
         _bedrock_converse_messages_pt,
     )
 
-    with pytest.raises(litellm.BadRequestError) as e:
+    with pytest.raises(llm.BadRequestError) as e:
         _bedrock_converse_messages_pt(
             messages=[],
             model="anthropic.claude-3-sonnet-20240229-v1:0",
@@ -676,7 +676,7 @@ def test_just_system_message():
 
 
 def test_convert_generic_image_chunk_to_openai_image_obj():
-    from litellm.litellm_core_utils.prompt_templates.factory import (
+    from llm.litellm_core_utils.prompt_templates.factory import (
         convert_generic_image_chunk_to_openai_image_obj,
         convert_to_anthropic_image_obj,
     )
@@ -689,12 +689,12 @@ def test_convert_generic_image_chunk_to_openai_image_obj():
 
 
 def test_hf_chat_template():
-    from litellm.litellm_core_utils.prompt_templates.factory import (
+    from llm.litellm_core_utils.prompt_templates.factory import (
         hf_chat_template,
     )
 
     model = "llama/arn:aws:bedrock:us-east-1:1234:imported-model/45d34re"
-    litellm.register_prompt_template(
+    llm.register_prompt_template(
         model=model,
         tokenizer_config={
             "add_bos_token": True,
@@ -746,7 +746,7 @@ def test_hf_chat_template():
 
 
 def test_ollama_pt():
-    from litellm.litellm_core_utils.prompt_templates.factory import ollama_pt
+    from llm.litellm_core_utils.prompt_templates.factory import ollama_pt
 
     messages = [
         {"role": "system", "content": "You are a helpful assistant."},

@@ -12,17 +12,17 @@ import asyncio
 import traceback
 from typing import Optional
 
-import litellm
-from litellm.litellm_core_utils.litellm_logging import Logging
-from litellm.litellm_core_utils.streaming_handler import CustomStreamWrapper
-from litellm.types.utils import (
+import llm
+from llm.litellm_core_utils.litellm_logging import Logging
+from llm.litellm_core_utils.streaming_handler import CustomStreamWrapper
+from llm.types.utils import (
     Delta,
     ModelResponseStream,
     PromptTokensDetailsWrapper,
     StreamingChoices,
     Usage,
 )
-from litellm.utils import ModelResponseListIterator
+from llm.utils import ModelResponseListIterator
 
 
 @pytest.fixture
@@ -479,14 +479,14 @@ async def test_streaming_handler_with_usage(
 async def test_streaming_with_usage_and_logging(sync_mode: bool):
     import time
 
-    from litellm.integrations.custom_logger import CustomLogger
+    from llm.integrations.custom_logger import CustomLogger
 
     class MockCallback(CustomLogger):
         pass
 
     mock_callback = MockCallback()
-    litellm.success_callback = [mock_callback]
-    litellm._async_success_callback = [mock_callback]
+    llm.success_callback = [mock_callback]
+    llm._async_success_callback = [mock_callback]
 
     final_usage_block = Usage(
         completion_tokens=392,

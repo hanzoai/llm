@@ -10,7 +10,7 @@ AI Observability and Evaluation Platform
 :::tip
 
 This is community maintained, Please make an issue if you run into a bug
-https://github.com/BerriAI/litellm
+https://github.com/BerriAI/llm
 
 :::
 
@@ -24,15 +24,15 @@ Make an account on [Arize AI](https://app.arize.com/auth/login)
 ## Quick Start
 Use just 2 lines of code, to instantly log your responses **across all providers** with arize
 
-You can also use the instrumentor option instead of the callback, which you can find [here](https://docs.arize.com/arize/llm-tracing/tracing-integrations-auto/litellm).
+You can also use the instrumentor option instead of the callback, which you can find [here](https://docs.arize.com/arize/llm-tracing/tracing-integrations-auto/llm).
 
 ```python
-litellm.callbacks = ["arize"]
+llm.callbacks = ["arize"]
 ```
 
 ```python
 
-import litellm
+import llm
 import os
 
 os.environ["ARIZE_SPACE_KEY"] = ""
@@ -41,11 +41,11 @@ os.environ["ARIZE_API_KEY"] = ""
 # LLM API Keys
 os.environ['OPENAI_API_KEY']=""
 
-# set arize as a callback, litellm will send the data to arize
-litellm.callbacks = ["arize"]
+# set arize as a callback, llm will send the data to arize
+llm.callbacks = ["arize"]
  
 # openai call
-response = litellm.completion(
+response = llm.completion(
   model="gpt-3.5-turbo",
   messages=[
     {"role": "user", "content": "Hi 👋 - i'm openai"}
@@ -53,18 +53,18 @@ response = litellm.completion(
 )
 ```
 
-### Using with LiteLLM Proxy
+### Using with LLM Proxy
 
 1. Setup config.yaml
 ```yaml
 model_list:
   - model_name: gpt-4
-    litellm_params:
+    llm_params:
       model: openai/fake
       api_key: fake-key
       api_base: https://exampleopenaiendpoint-production.up.railway.app/
 
-litellm_settings:
+llm_settings:
   callbacks: ["arize"]
 
 general_settings:
@@ -80,7 +80,7 @@ environment_variables:
 2. Start the proxy
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 3. Test it!
@@ -102,17 +102,17 @@ Supported parameters:
 <TabItem value="sdk" label="SDK">
 
 ```python
-import litellm
+import llm
 import os
 
 # LLM API Keys
 os.environ['OPENAI_API_KEY']=""
 
-# set arize as a callback, litellm will send the data to arize
-litellm.callbacks = ["arize"]
+# set arize as a callback, llm will send the data to arize
+llm.callbacks = ["arize"]
  
 # openai call
-response = litellm.completion(
+response = llm.completion(
   model="gpt-3.5-turbo",
   messages=[
     {"role": "user", "content": "Hi 👋 - i'm openai"}
@@ -129,12 +129,12 @@ response = litellm.completion(
 ```yaml
 model_list:
   - model_name: gpt-4
-    litellm_params:
+    llm_params:
       model: openai/fake
       api_key: fake-key
       api_base: https://exampleopenaiendpoint-production.up.railway.app/
 
-litellm_settings:
+llm_settings:
   callbacks: ["arize"]
 
 general_settings:
@@ -144,7 +144,7 @@ general_settings:
 2. Start the proxy
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it!
@@ -173,7 +173,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages = [
@@ -197,7 +197,7 @@ print(response)
 
 ## Support & Talk to Founders
 
-- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-litellm-hosted-version)
+- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 - Our numbers 📞 +1 (770) 8783-106 / ‭+1 (412) 618-6238‬
 - Our emails ✉️ ishaan@berri.ai / krrish@berri.ai

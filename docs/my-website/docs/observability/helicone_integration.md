@@ -3,15 +3,15 @@
 :::tip
 
 This is community maintained. Please make an issue if you run into a bug:
-https://github.com/BerriAI/litellm
+https://github.com/BerriAI/llm
 
 :::
 
 [Helicone](https://helicone.ai/) is an open source observability platform that proxies your LLM requests and provides key insights into your usage, spend, latency and more.
 
-## Using Helicone with LiteLLM
+## Using Helicone with LLM
 
-LiteLLM provides `success_callbacks` and `failure_callbacks`, allowing you to easily log data to Helicone based on the status of your responses.
+LLM provides `success_callbacks` and `failure_callbacks`, allowing you to easily log data to Helicone based on the status of your responses.
 
 ### Supported LLM Providers
 
@@ -28,7 +28,7 @@ Helicone can log requests across [various LLM providers](https://docs.helicone.a
 
 ### Integration Methods
 
-There are two main approaches to integrate Helicone with LiteLLM:
+There are two main approaches to integrate Helicone with LLM:
 
 1. Using callbacks
 2. Using Helicone as a proxy
@@ -40,21 +40,21 @@ Let's explore each method in detail.
 Use just 1 line of code to instantly log your responses **across all providers** with Helicone:
 
 ```python
-litellm.success_callback = ["helicone"]
+llm.success_callback = ["helicone"]
 ```
 
 Complete Code
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 ## Set env variables
 os.environ["HELICONE_API_KEY"] = "your-helicone-key"
 os.environ["OPENAI_API_KEY"] = "your-openai-key"
 
 # Set callbacks
-litellm.success_callback = ["helicone"]
+llm.success_callback = ["helicone"]
 
 # OpenAI call
 response = completion(
@@ -71,22 +71,22 @@ Helicone's proxy provides [advanced functionality](https://docs.helicone.ai/gett
 
 To use Helicone as a proxy for your LLM requests:
 
-1. Set Helicone as your base URL via: litellm.api_base
-2. Pass in Helicone request headers via: litellm.metadata
+1. Set Helicone as your base URL via: llm.api_base
+2. Pass in Helicone request headers via: llm.metadata
 
 Complete Code:
 
 ```python
 import os
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 
-litellm.api_base = "https://oai.hconeai.com/v1"
-litellm.headers = {
+llm.api_base = "https://oai.hconeai.com/v1"
+llm.headers = {
     "Helicone-Auth": f"Bearer {os.getenv('HELICONE_API_KEY')}",  # Authenticate to send requests to Helicone API
 }
 
-response = litellm.completion(
+response = llm.completion(
     model="gpt-3.5-turbo",
     messages=[{"role": "user", "content": "How does a court case get to the Supreme Court?"}]
 )
@@ -99,7 +99,7 @@ print(response)
 You can add custom metadata and properties to your requests using Helicone headers. Here are some examples:
 
 ```python
-litellm.metadata = {
+llm.metadata = {
     "Helicone-Auth": f"Bearer {os.getenv('HELICONE_API_KEY')}",  # Authenticate to send requests to Helicone API
     "Helicone-User-Id": "user-abc",  # Specify the user making the request
     "Helicone-Property-App": "web",  # Custom property to add additional information
@@ -127,7 +127,7 @@ litellm.metadata = {
 Enable caching and set up rate limiting policies:
 
 ```python
-litellm.metadata = {
+llm.metadata = {
     "Helicone-Auth": f"Bearer {os.getenv('HELICONE_API_KEY')}",  # Authenticate to send requests to Helicone API
     "Helicone-Cache-Enabled": "true",  # Enable caching of responses
     "Cache-Control": "max-age=3600",  # Set cache limit to 1 hour
@@ -140,7 +140,7 @@ litellm.metadata = {
 Track multi-step and agentic LLM interactions using session IDs and paths:
 
 ```python
-litellm.metadata = {
+llm.metadata = {
     "Helicone-Auth": f"Bearer {os.getenv('HELICONE_API_KEY')}",  # Authenticate to send requests to Helicone API
     "Helicone-Session-Id": "session-abc-123",  # The session ID you want to track
     "Helicone-Session-Path": "parent-trace/child-trace",  # The path of the session
@@ -157,7 +157,7 @@ By using these two headers, you can effectively group and visualize multi-step L
 Set up retry mechanisms and fallback options:
 
 ```python
-litellm.metadata = {
+llm.metadata = {
     "Helicone-Auth": f"Bearer {os.getenv('HELICONE_API_KEY')}",  # Authenticate to send requests to Helicone API
     "Helicone-Retry-Enabled": "true",  # Enable retry mechanism
     "helicone-retry-num": "3",  # Set number of retries
@@ -167,4 +167,4 @@ litellm.metadata = {
 ```
 
 > **Supported Headers** - For a full list of supported Helicone headers and their descriptions, please refer to the [Helicone documentation](https://docs.helicone.ai/getting-started/quick-start).
-> By utilizing these headers and metadata options, you can gain deeper insights into your LLM usage, optimize performance, and better manage your AI workflows with Helicone and LiteLLM.
+> By utilizing these headers and metadata options, you can gain deeper insights into your LLM usage, optimize performance, and better manage your AI workflows with Helicone and LLM.

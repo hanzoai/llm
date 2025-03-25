@@ -1,4 +1,4 @@
 model_list:
   - model_name: included-model
-    litellm_params:
+    llm_params:
       model: gpt-4

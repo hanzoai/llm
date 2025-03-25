@@ -12,8 +12,8 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 
-import litellm
-from litellm.types.utils import TextCompletionResponse
+import llm
+from llm.types.utils import TextCompletionResponse
 
 
 def test_convert_dict_to_text_completion_response():
@@ -76,8 +76,8 @@ def test_convert_dict_to_text_completion_response():
 @pytest.mark.respx
 async def test_huggingface_text_completion_logprobs():
     """Test text completion with Hugging Face, focusing on logprobs structure"""
-    litellm.set_verbose = True
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler, AsyncHTTPHandler
+    llm.set_verbose = True
+    from llm.llms.custom_httpx.http_handler import HTTPHandler, AsyncHTTPHandler
 
     mock_response = [
         {
@@ -101,7 +101,7 @@ async def test_huggingface_text_completion_logprobs():
 
     client = AsyncHTTPHandler()
     with patch.object(client, "post", return_value=return_val) as mock_post:
-        response = await litellm.atext_completion(
+        response = await llm.atext_completion(
             model="huggingface/mistralai/Mistral-7B-Instruct-v0.3",
             prompt="good morning",
             client=client,

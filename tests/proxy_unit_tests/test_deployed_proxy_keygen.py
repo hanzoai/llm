@@ -11,9 +11,9 @@
 #     0, os.path.abspath("../..")
 # )  # Adds the parent directory to the system path
 # import pytest, logging, requests
-# import litellm
-# from litellm import embedding, completion, completion_cost, Timeout
-# from litellm import RateLimitError
+# import llm
+# from llm import embedding, completion, completion_cost, Timeout
+# from llm import RateLimitError
 
 
 # def test_add_new_key():

@@ -17,8 +17,8 @@ import logging
 
 import pytest
 
-import litellm
-from litellm import RateLimitError, Timeout, completion, completion_cost, embedding
+import llm
+from llm import RateLimitError, Timeout, completion, completion_cost, embedding
 
 # Configure logging
 logging.basicConfig(
@@ -31,7 +31,7 @@ from fastapi import FastAPI
 # test /chat/completion request to the proxy
 from fastapi.testclient import TestClient
 
-from litellm.proxy.proxy_server import (  # Replace with the actual module where your FastAPI router is defined
+from llm.proxy.proxy_server import (  # Replace with the actual module where your FastAPI router is defined
     router,
     save_worker_config,
 )
@@ -89,4 +89,4 @@ def test_chat_completion(client):
         result = response.json()
         print(f"Received response: {result}")
     except Exception as e:
-        pytest.fail(f"LiteLLM Proxy test failed. Exception - {str(e)}")
+        pytest.fail(f"LLM Proxy test failed. Exception - {str(e)}")

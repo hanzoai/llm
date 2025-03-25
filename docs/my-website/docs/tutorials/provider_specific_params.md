@@ -4,10 +4,10 @@ Goal: Set max tokens across OpenAI + Cohere
 
 **1. via completion**
 
-LiteLLM will automatically translate max_tokens to the naming convention followed by that specific model provider.
+LLM will automatically translate max_tokens to the naming convention followed by that specific model provider.
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 ## set ENV variables 
@@ -26,7 +26,7 @@ print(response)
 
 **2. via provider-specific config**
 
-For every provider on LiteLLM, we've gotten their specific params (following their naming conventions, etc.). You can just set it for that provider by pulling up that provider via `litellm.<provider_name>Config`. 
+For every provider on LLM, we've gotten their specific params (following their naming conventions, etc.). You can just set it for that provider by pulling up that provider via `llm.<provider_name>Config`. 
 
 All provider configs are typed and have docstrings, so you should see them autocompleted for you in VSCode with an explanation of what it means. 
 

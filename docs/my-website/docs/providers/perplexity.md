@@ -12,7 +12,7 @@ os.environ['PERPLEXITYAI_API_KEY']
 
 ## Sample Usage
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['PERPLEXITYAI_API_KEY'] = ""
@@ -25,7 +25,7 @@ print(response)
 
 ## Sample Usage - Streaming
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['PERPLEXITYAI_API_KEY'] = ""

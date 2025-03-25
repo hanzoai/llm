@@ -7,7 +7,7 @@ from typing import List, Tuple, Optional
 def find_litellm_type_hints(directory: str) -> List[Tuple[str, int, str]]:
     """
     Recursively search for Python files in the given directory
-    and find type hints containing 'litellm.'.
+    and find type hints containing 'llm.'.
 
     Args:
         directory (str): The root directory to search for Python files
@@ -19,19 +19,19 @@ def find_litellm_type_hints(directory: str) -> List[Tuple[str, int, str]]:
 
     def is_litellm_type_hint(node):
         """
-        Recursively check if a type annotation contains 'litellm.'
+        Recursively check if a type annotation contains 'llm.'
 
         Handles more complex type hints like:
-        - Optional[litellm.Type]
-        - Union[litellm.Type1, litellm.Type2]
+        - Optional[llm.Type]
+        - Union[llm.Type1, llm.Type2]
         - Nested type hints
         """
         try:
             # Convert node to string representation
             type_str = ast.unparse(node)
 
-            # Direct check for litellm in type string
-            if "litellm." in type_str:
+            # Direct check for llm in type string
+            if "llm." in type_str:
                 return True
 
             # Handle more complex type hints
@@ -54,23 +54,23 @@ def find_litellm_type_hints(directory: str) -> List[Tuple[str, int, str]]:
 
             # Recursive check for attribute types
             if isinstance(node, ast.Attribute):
-                return "litellm." in ast.unparse(node)
+                return "llm." in ast.unparse(node)
 
             # Recursive check for name types
             if isinstance(node, ast.Name):
-                return "litellm" in node.id
+                return "llm" in node.id
 
             return False
         except Exception:
             # Fallback to string checking if parsing fails
             try:
-                return "litellm." in ast.unparse(node)
+                return "llm." in ast.unparse(node)
             except:
                 return False
 
     def scan_file(file_path: str):
         """
-        Scan a single Python file for LiteLLM type hints
+        Scan a single Python file for LLM type hints
         """
         try:
             # Use utf-8-sig to handle files with BOM, ignore errors
@@ -146,16 +146,16 @@ def main():
     # Get directory from command line argument or use current directory
     directory = "./litellm/"
 
-    # Find LiteLLM type hints
+    # Find LLM type hints
     results = find_litellm_type_hints(directory)
 
     # Print results
     if results:
-        print("LiteLLM Type Hints Found:")
+        print("LLM Type Hints Found:")
         for file_path, line_num, type_hint in results:
             print(f"{file_path}:{line_num} - {type_hint}")
     else:
-        print("No LiteLLM type hints found.")
+        print("No LLM type hints found.")
 
 
 if __name__ == "__main__":

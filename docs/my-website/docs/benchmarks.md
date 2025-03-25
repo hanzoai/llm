@@ -3,7 +3,7 @@ import Image from '@theme/IdealImage';
 
 # Benchmarks
 
-Benchmarks for LiteLLM Gateway (Proxy Server) tested against a fake OpenAI endpoint.
+Benchmarks for LLM Gateway (Proxy Server) tested against a fake OpenAI endpoint.
 
 Use this config for testing:
 
@@ -12,13 +12,13 @@ Use this config for testing:
 ```yaml
 model_list:
   - model_name: "fake-openai-endpoint"
-    litellm_params:
+    llm_params:
       model: aiohttp_openai/any
       api_base: https://your-fake-openai-endpoint.com/chat/completions
       api_key: "test"
 ```
 
-### 1 Instance LiteLLM Proxy
+### 1 Instance LLM Proxy
 
 In these tests the median latency of directly calling the fake-openai-endpoint is 60ms.
 
@@ -26,7 +26,7 @@ In these tests the median latency of directly calling the fake-openai-endpoint i
 |--------|------------------------|
 | RPS | 475 |
 | Median Latency (ms) | 100 |
-| Latency overhead added by LiteLLM Proxy | 40ms |
+| Latency overhead added by LLM Proxy | 40ms |
 
 <!-- <Image img={require('../img/1_instance_proxy.png')} /> -->
 
@@ -36,8 +36,8 @@ In these tests the median latency of directly calling the fake-openai-endpoint i
 
 #### Key Findings
 - Single instance: 475 RPS @ 100ms latency
-- 2 LiteLLM instances: 950 RPS @ 100ms latency
-- 4 LiteLLM instances: 1900 RPS @ 100ms latency
+- 2 LLM instances: 950 RPS @ 100ms latency
+- 4 LLM instances: 1900 RPS @ 100ms latency
 
 ### 2 Instances
 
@@ -51,7 +51,7 @@ In these tests the median latency of directly calling the fake-openai-endpoint i
 
 ## Machine Spec used for testing
 
-Each machine deploying LiteLLM had the following specs:
+Each machine deploying LLM had the following specs:
 
 - 2 CPU
 - 4GB RAM
@@ -60,21 +60,21 @@ Each machine deploying LiteLLM had the following specs:
 
 ## Logging Callbacks
 
-### [GCS Bucket Logging](https://docs.litellm.ai/docs/proxy/bucket)
+### [GCS Bucket Logging](https://docs.llm.ai/docs/proxy/bucket)
 
 Using GCS Bucket has **no impact on latency, RPS compared to Basic Litellm Proxy**
 
-| Metric | Basic Litellm Proxy | LiteLLM Proxy with GCS Bucket Logging |
+| Metric | Basic Litellm Proxy | LLM Proxy with GCS Bucket Logging |
 |--------|------------------------|---------------------|
 | RPS | 1133.2 | 1137.3 |
 | Median Latency (ms) | 140 | 138 |
 
 
-### [LangSmith logging](https://docs.litellm.ai/docs/proxy/logging)
+### [LangSmith logging](https://docs.llm.ai/docs/proxy/logging)
 
 Using LangSmith has **no impact on latency, RPS compared to Basic Litellm Proxy**
 
-| Metric | Basic Litellm Proxy | LiteLLM Proxy with LangSmith |
+| Metric | Basic Litellm Proxy | LLM Proxy with LangSmith |
 |--------|------------------------|---------------------|
 | RPS | 1133.2 | 1135 |
 | Median Latency (ms) | 140 | 132 |

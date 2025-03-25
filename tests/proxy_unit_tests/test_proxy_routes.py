@@ -19,11 +19,11 @@ import pytest
 from fastapi import Request
 from starlette.datastructures import URL, Headers, QueryParams
 
-import litellm
-from litellm.proxy._types import LiteLLMRoutes
-from litellm.proxy.auth.auth_utils import get_request_route
-from litellm.proxy.auth.route_checks import RouteChecks
-from litellm.proxy.proxy_server import app
+import llm
+from llm.proxy._types import LLMRoutes
+from llm.proxy.auth.auth_utils import get_request_route
+from llm.proxy.auth.route_checks import RouteChecks
+from llm.proxy.proxy_server import app
 
 # Configure logging
 logging.basicConfig(
@@ -48,11 +48,11 @@ def test_routes_on_litellm_proxy():
             _path_as_str = _path_as_str.replace(":path", "")
         _all_routes.append(_path_as_str)
 
-    print("ALL ROUTES on LiteLLM Proxy:", _all_routes)
+    print("ALL ROUTES on LLM Proxy:", _all_routes)
     print("\n\n")
-    print("ALL OPENAI ROUTES:", LiteLLMRoutes.openai_routes.value)
+    print("ALL OPENAI ROUTES:", LLMRoutes.openai_routes.value)
 
-    for route in LiteLLMRoutes.openai_routes.value:
+    for route in LLMRoutes.openai_routes.value:
         # realtime routes - /realtime?model=gpt-4o
         if "realtime" in route:
             assert "/realtime" in _all_routes

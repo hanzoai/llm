@@ -16,7 +16,7 @@ sys.path.insert(
     0, os.path.abspath("../../..")
 )  # Adds the parent directory to the system-path
 
-import litellm
+import llm
 
 
 @pytest.mark.asyncio
@@ -26,8 +26,8 @@ async def test_initialize_scheduled_jobs_credentials(monkeypatch):
     """
     monkeypatch.delenv("DISABLE_PRISMA_SCHEMA_UPDATE", raising=False)
     monkeypatch.delenv("STORE_MODEL_IN_DB", raising=False)
-    from litellm.proxy.proxy_server import ProxyStartupEvent
-    from litellm.proxy.utils import ProxyLogging
+    from llm.proxy.proxy_server import ProxyStartupEvent
+    from llm.proxy.utils import ProxyLogging
 
     # Mock dependencies
     mock_prisma_client = MagicMock()
@@ -35,8 +35,8 @@ async def test_initialize_scheduled_jobs_credentials(monkeypatch):
     mock_proxy_logging.slack_alerting_instance = MagicMock()
     mock_proxy_config = AsyncMock()
 
-    with patch("litellm.proxy.proxy_server.proxy_config", mock_proxy_config), patch(
-        "litellm.proxy.proxy_server.store_model_in_db", False
+    with patch("llm.proxy.proxy_server.proxy_config", mock_proxy_config), patch(
+        "llm.proxy.proxy_server.store_model_in_db", False
     ):  # set store_model_in_db to False
 
         # Test when store_model_in_db is False
@@ -53,9 +53,9 @@ async def test_initialize_scheduled_jobs_credentials(monkeypatch):
         mock_proxy_config.get_credentials.assert_not_called()
 
     # Now test with store_model_in_db = True
-    with patch("litellm.proxy.proxy_server.proxy_config", mock_proxy_config), patch(
-        "litellm.proxy.proxy_server.store_model_in_db", True
-    ), patch("litellm.proxy.proxy_server.get_secret_bool", return_value=True):
+    with patch("llm.proxy.proxy_server.proxy_config", mock_proxy_config), patch(
+        "llm.proxy.proxy_server.store_model_in_db", True
+    ), patch("llm.proxy.proxy_server.get_secret_bool", return_value=True):
 
         await ProxyStartupEvent.initialize_scheduled_background_jobs(
             general_settings={},

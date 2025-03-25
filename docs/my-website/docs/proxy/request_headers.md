@@ -1,14 +1,14 @@
 # Request Headers
 
-Special headers that are supported by LiteLLM.
+Special headers that are supported by LLM.
 
-## LiteLLM Headers
+## LLM Headers
 
-`x-litellm-timeout` Optional[float]: The timeout for the request in seconds.
+`x-llm-timeout` Optional[float]: The timeout for the request in seconds.
 
-`x-litellm-enable-message-redaction`: Optional[bool]: Don't log the message content to logging integrations. Just track spend. [Learn More](./logging#redact-messages-response-content)
+`x-llm-enable-message-redaction`: Optional[bool]: Don't log the message content to logging integrations. Just track spend. [Learn More](./logging#redact-messages-response-content)
 
-`x-litellm-tags`: Optional[str]: A comma separated list (e.g. `tag1,tag2,tag3`) of tags to use for [tag-based routing](./tag_routing) **OR** [spend-tracking](./enterprise.md#tracking-spend-for-custom-tags).
+`x-llm-tags`: Optional[str]: A comma separated list (e.g. `tag1,tag2,tag3`) of tags to use for [tag-based routing](./tag_routing) **OR** [spend-tracking](./enterprise.md#tracking-spend-for-custom-tags).
 
 ## Anthropic Headers
 

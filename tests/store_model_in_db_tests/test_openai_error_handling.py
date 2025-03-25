@@ -114,7 +114,7 @@ def test_missing_model_parameter_curl(curl_command):
     assert "error" in response
     print("error in response", json.dumps(response, indent=4))
 
-    assert "litellm.BadRequestError" in response["error"]["message"]
+    assert "llm.BadRequestError" in response["error"]["message"]
 
 
 @pytest.mark.asyncio
@@ -137,11 +137,11 @@ async def test_chat_completion_bad_model_with_spend_logs():
     with httpx.Client() as client:
         response = client.post(url, headers=headers, json=payload)
 
-        # Extract the litellm call ID from headers
+        # Extract the llm call ID from headers
         litellm_call_id = response.headers.get("x-litellm-call-id")
         print(f"Status code: {response.status_code}")
         print(f"Headers: {dict(response.headers)}")
-        print(f"LiteLLM Call ID: {litellm_call_id}")
+        print(f"LLM Call ID: {litellm_call_id}")
 
         # Parse the JSON response body
         try:
@@ -152,7 +152,7 @@ async def test_chat_completion_bad_model_with_spend_logs():
 
     assert (
         litellm_call_id is not None
-    ), "Failed to get LiteLLM Call ID from response headers"
+    ), "Failed to get LLM Call ID from response headers"
     print("waiting for flushing error log to db....")
     await asyncio.sleep(15)
 
@@ -200,7 +200,7 @@ async def test_chat_completion_bad_model_with_spend_logs():
         assert "traceback" in error_info
         assert error_info["error_code"] == "400"
         assert error_info["error_class"] == "BadRequestError"
-        assert "litellm.BadRequestError" in error_info["error_message"]
+        assert "llm.BadRequestError" in error_info["error_message"]
         assert "non-existent-model" in error_info["error_message"]
 
         # Verify request details

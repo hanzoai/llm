@@ -13,9 +13,9 @@ import httpx
 import pytest
 from respx import MockRouter
 
-import litellm
-from litellm import Choices, Message, ModelResponse
-from litellm.types.utils import StreamingChoices, ChatCompletionAudioResponse
+import llm
+from llm import Choices, Message, ModelResponse
+from llm.types.utils import StreamingChoices, ChatCompletionAudioResponse
 import base64
 import requests
 
@@ -55,16 +55,16 @@ async def test_audio_output_from_model(stream):
     audio_format = "pcm16"
     if stream is False:
         audio_format = "wav"
-    litellm.set_verbose = False
+    llm.set_verbose = False
     try:
-        completion = await litellm.acompletion(
+        completion = await llm.acompletion(
             model="gpt-4o-audio-preview",
             modalities=["text", "audio"],
             audio={"voice": "alloy", "format": "pcm16"},
             messages=[{"role": "user", "content": "response in 1 word - yes or no"}],
             stream=stream,
         )
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         print(e)
         pytest.skip("Skipping test due to timeout")
     except Exception as e:
@@ -89,14 +89,14 @@ async def test_audio_input_to_model(stream):
     audio_format = "pcm16"
     if stream is False:
         audio_format = "wav"
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
     url = "https://openaiassets.blob.core.windows.net/$web/API/docs/audio/alloy.wav"
     response = requests.get(url)
     response.raise_for_status()
     wav_data = response.content
     encoded_string = base64.b64encode(wav_data).decode("utf-8")
     try:
-        completion = await litellm.acompletion(
+        completion = await llm.acompletion(
             model="gpt-4o-audio-preview",
             modalities=["text", "audio"],
             audio={"voice": "alloy", "format": audio_format},
@@ -114,7 +114,7 @@ async def test_audio_input_to_model(stream):
                 },
             ],
         )
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         print(e)
         pytest.skip("Skipping test due to timeout")
     except Exception as e:

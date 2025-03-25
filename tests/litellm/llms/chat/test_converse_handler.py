@@ -1,12 +1,12 @@
 import os
 import sys
 
-from litellm.llms.bedrock.chat import BedrockConverseLLM
+from llm.llms.bedrock.chat import BedrockConverseLLM
 
 sys.path.insert(
     0, os.path.abspath("../../../../..")
 )  # Adds the parent directory to the system path
-import litellm
+import llm
 
 
 def test_encode_model_id_with_inference_profile():

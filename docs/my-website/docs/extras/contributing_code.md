@@ -2,7 +2,7 @@
 
 ## **Checklist before submitting a PR**
 
-Here are the core requirements for any PR submitted to LiteLLM
+Here are the core requirements for any PR submitted to LLM
 
 
 - [ ] Add testing, **Adding at least 1 test is a hard requirement** - [see details](#2-adding-testing-to-your-pr)
@@ -23,7 +23,7 @@ Here's how to modify the repo locally:
 Step 1: Clone the repo
 
 ```shell
-git clone https://github.com/BerriAI/litellm.git
+git clone https://github.com/BerriAI/llm.git
 ```
 
 Step 2: Install dev dependencies:
@@ -36,21 +36,21 @@ That's it, your local dev environment is ready!
 
 ## 2. Adding Testing to your PR
 
-- Add your test to the [`tests/litellm/` directory](https://github.com/BerriAI/litellm/tree/main/tests/litellm)
+- Add your test to the [`tests/llm/` directory](https://github.com/BerriAI/llm/tree/main/tests/llm)
 
-- This directory 1:1 maps the the `litellm/` directory, and can only contain mocked tests.
+- This directory 1:1 maps the the `llm/` directory, and can only contain mocked tests.
 - Do not add real llm api calls to this directory.
 
-### 2.1 File Naming Convention for `tests/litellm/`
+### 2.1 File Naming Convention for `tests/llm/`
 
-The `tests/litellm/` directory follows the same directory structure as `litellm/`.
+The `tests/llm/` directory follows the same directory structure as `llm/`.
 
-- `litellm/proxy/test_caching_routes.py` maps to `litellm/proxy/caching_routes.py`
-- `test_{filename}.py` maps to `litellm/{filename}.py`
+- `llm/proxy/test_caching_routes.py` maps to `llm/proxy/caching_routes.py`
+- `test_{filename}.py` maps to `llm/{filename}.py`
 
 ## 3. Running Unit Tests
 
-run the following command on the root of the litellm directory
+run the following command on the root of the llm directory
 
 ```shell
 make test-unit
@@ -58,13 +58,13 @@ make test-unit
 
 ## 3.5 Running Linting Tests
 
-run the following command on the root of the litellm directory
+run the following command on the root of the llm directory
 
 ```shell
 make lint
 ```
 
-LiteLLM uses mypy for linting. On ci/cd we also run `black` for formatting.
+LLM uses mypy for linting. On ci/cd we also run `black` for formatting.
 
 ## 4. Submit a PR with your changes!
 
@@ -73,14 +73,14 @@ LiteLLM uses mypy for linting. On ci/cd we also run `black` for formatting.
 
 
 ## Advanced
-### Building LiteLLM Docker Image 
+### Building LLM Docker Image 
 
-Some people might want to build the LiteLLM docker image themselves. Follow these instructions if you want to build / run the LiteLLM Docker Image yourself.
+Some people might want to build the LLM docker image themselves. Follow these instructions if you want to build / run the LLM Docker Image yourself.
 
 Step 1: Clone the repo
 
 ```shell
-git clone https://github.com/BerriAI/litellm.git
+git clone https://github.com/BerriAI/llm.git
 ```
 
 Step 2: Build the Docker Image
@@ -88,12 +88,12 @@ Step 2: Build the Docker Image
 Build using Dockerfile.non_root
 
 ```shell
-docker build -f docker/Dockerfile.non_root -t litellm_test_image .
+docker build -f docker/Dockerfile.non_root -t llm_test_image .
 ```
 
 Step 3: Run the Docker Image
 
-Make sure config.yaml is present in the root directory. This is your litellm proxy config file.
+Make sure config.yaml is present in the root directory. This is your llm proxy config file.
 
 ```shell
 docker run \
@@ -101,6 +101,6 @@ docker run \
     -e DATABASE_URL="postgresql://xxxxxxxx" \
     -e LITELLM_MASTER_KEY="sk-1234" \
     -p 4000:4000 \
-    litellm_test_image \
+    llm_test_image \
     --config /app/config.yaml --detailed_debug
 ```

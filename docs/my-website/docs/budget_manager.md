@@ -7,39 +7,39 @@ Don't want to get crazy bills because either while you're calling LLM APIs **or*
 
 :::info
 
-If you want a server to manage user keys, budgets, etc. use our [LiteLLM Proxy Server](./proxy/virtual_keys.md)
+If you want a server to manage user keys, budgets, etc. use our [LLM Proxy Server](./proxy/virtual_keys.md)
 
 :::
 
-LiteLLM exposes: 
-* `litellm.max_budget`: a global variable you can use to set the max budget (in USD) across all your litellm calls. If this budget is exceeded, it will raise a BudgetExceededError 
+LLM exposes: 
+* `llm.max_budget`: a global variable you can use to set the max budget (in USD) across all your llm calls. If this budget is exceeded, it will raise a BudgetExceededError 
 * `BudgetManager`: A class to help set budgets per user. BudgetManager creates a dictionary to manage the user budgets, where the key is user and the object is their current cost + model-specific costs. 
-* `LiteLLM Proxy Server`: A server to call 100+ LLMs with an openai-compatible endpoint. Manages user budgets, spend tracking, load balancing etc. 
+* `LLM Proxy Server`: A server to call 100+ LLMs with an openai-compatible endpoint. Manages user budgets, spend tracking, load balancing etc. 
 
 ## quick start
 
 ```python 
-import litellm, os 
-from litellm import completion
+import llm, os 
+from llm import completion
 
 # set env variable 
 os.environ["OPENAI_API_KEY"] = "your-api-key"
 
-litellm.max_budget = 0.001 # sets a max budget of $0.001
+llm.max_budget = 0.001 # sets a max budget of $0.001
 
 messages = [{"role": "user", "content": "Hey, how's it going"}]
 completion(model="gpt-4", messages=messages)
-print(litellm._current_cost)
+print(llm._current_cost)
 completion(model="gpt-4", messages=messages)
 ```
 
 ## User-based rate limiting 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/litellm/blob/main/cookbook/LiteLLM_User_Based_Rate_Limits.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/LLM_User_Based_Rate_Limits.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
 ```python
-from litellm import BudgetManager, completion 
+from llm import BudgetManager, completion 
 
 budget_manager = BudgetManager(project_name="test_project")
 
@@ -57,14 +57,14 @@ else:
     response = "Sorry - no budget!"
 ```
 
-[**Implementation Code**](https://github.com/BerriAI/litellm/blob/main/litellm/budget_manager.py)
+[**Implementation Code**](https://github.com/BerriAI/llm/blob/main/llm/budget_manager.py)
 
 ## use with Text Input / Output
 
 Update cost by just passing in the text input / output and model name. 
 
 ```python
-from litellm import BudgetManager
+from llm import BudgetManager
 
 budget_manager = BudgetManager(project_name="test_project")
 user = "12345"
@@ -85,9 +85,9 @@ In production, we will need to
 
 
 
-### LiteLLM API
+### LLM API
 
-The LiteLLM API provides both. It stores the user object in a hosted db, and runs a cron job daily to reset user-budgets based on the set duration (e.g. reset budget daily/weekly/monthly/etc.). 
+The LLM API provides both. It stores the user object in a hosted db, and runs a cron job daily to reset user-budgets based on the set duration (e.g. reset budget daily/weekly/monthly/etc.). 
 
 **Usage**
 ```python
@@ -96,7 +96,7 @@ budget_manager = BudgetManager(project_name="<my-unique-project>", client_type="
 
 **Complete Code**
 ```python
-from litellm import BudgetManager, completion 
+from llm import BudgetManager, completion 
 
 budget_manager = BudgetManager(project_name="<my-unique-project>", client_type="hosted")
 
@@ -118,7 +118,7 @@ else:
 
 To use your own db, set the BudgetManager client type to `hosted` **and** set the api_base. 
 
-Your api is expected to expose `/get_budget` and `/set_budget` endpoints. [See code for details](https://github.com/BerriAI/litellm/blob/27f1051792176a7eb1fe3b72b72bccd6378d24e9/litellm/budget_manager.py#L7)
+Your api is expected to expose `/get_budget` and `/set_budget` endpoints. [See code for details](https://github.com/BerriAI/llm/blob/27f1051792176a7eb1fe3b72b72bccd6378d24e9/llm/budget_manager.py#L7)
 
 **Usage**
 ```python
@@ -126,7 +126,7 @@ budget_manager = BudgetManager(project_name="<my-unique-project>", client_type="
 ```
 **Complete Code**
 ```python
-from litellm import BudgetManager, completion 
+from llm import BudgetManager, completion 
 
 budget_manager = BudgetManager(project_name="<my-unique-project>", client_type="hosted", api_base="your_custom_api")
 

@@ -11,16 +11,16 @@ import time
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm.exceptions import BadRequestError
-from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
-from litellm.utils import (
+import llm
+from llm.exceptions import BadRequestError
+from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
+from llm.utils import (
     CustomStreamWrapper,
     get_supported_openai_params,
     get_optional_params,
     ProviderConfigManager,
 )
-from litellm.main import stream_chunk_builder
+from llm.main import stream_chunk_builder
 from typing import Union
 
 # test_example.py
@@ -28,7 +28,7 @@ from abc import ABC, abstractmethod
 from openai import OpenAI
 
 
-def _usage_format_tests(usage: litellm.Usage):
+def _usage_format_tests(usage: llm.Usage):
     """
     OpenAI prompt caching
     - prompt_tokens = sum of non-cache hit tokens + cache-hit tokens
@@ -64,11 +64,11 @@ class BaseLLMChatTest(ABC):
 
     @property
     def completion_function(self):
-        return litellm.completion
+        return llm.completion
 
     @property
     def async_completion_function(self):
-        return litellm.acompletion
+        return llm.acompletion
 
     @abstractmethod
     def get_base_completion_call_args(self) -> dict:
@@ -98,7 +98,7 @@ class BaseLLMChatTest(ABC):
                 messages=messages,
             )
             assert response is not None
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             pytest.skip("Model is overloaded")
 
         assert response.choices[0].message.content is not None
@@ -118,16 +118,16 @@ class BaseLLMChatTest(ABC):
                 messages=messages,
             )
             assert response is not None
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             pytest.skip("Model is overloaded")
 
         # for OpenAI the content contains the JSON schema, so we need to assert that the content is not None
         assert response.choices[0].message.content is not None
 
     def test_streaming(self):
-        """Check if litellm handles streaming correctly"""
+        """Check if llm handles streaming correctly"""
         base_completion_call_args = self.get_base_completion_call_args()
-        litellm.set_verbose = True
+        llm.set_verbose = True
         messages = [
             {
                 "role": "user",
@@ -142,7 +142,7 @@ class BaseLLMChatTest(ABC):
             )
             assert response is not None
             assert isinstance(response, CustomStreamWrapper)
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             pytest.skip("Model is overloaded")
 
         # for OpenAI the content contains the JSON schema, so we need to assert that the content is not None
@@ -151,7 +151,7 @@ class BaseLLMChatTest(ABC):
             print(chunk)
             chunks.append(chunk)
 
-        resp = litellm.stream_chunk_builder(chunks=chunks)
+        resp = llm.stream_chunk_builder(chunks=chunks)
         print(resp)
 
         # assert resp.usage.prompt_tokens > 0
@@ -159,9 +159,9 @@ class BaseLLMChatTest(ABC):
         # assert resp.usage.total_tokens > 0
 
     def test_pydantic_model_input(self):
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
-        from litellm import completion, Message
+        from llm import completion, Message
 
         base_completion_call_args = self.get_base_completion_call_args()
         messages = [Message(content="Hello, how are you?", role="user")]
@@ -170,7 +170,7 @@ class BaseLLMChatTest(ABC):
 
     @pytest.mark.parametrize("image_url", ["str", "dict"])
     def test_pdf_handling(self, pdf_messages, image_url):
-        from litellm.utils import supports_pdf_input
+        from llm.utils import supports_pdf_input
 
         if image_url == "str":
             image_url = pdf_messages
@@ -200,7 +200,7 @@ class BaseLLMChatTest(ABC):
 
     def test_message_with_name(self):
         try:
-            litellm.set_verbose = True
+            llm.set_verbose = True
             base_completion_call_args = self.get_base_completion_call_args()
             messages = [
                 {"role": "user", "content": "Hello", "name": "test_name"},
@@ -209,7 +209,7 @@ class BaseLLMChatTest(ABC):
                 **base_completion_call_args, messages=messages
             )
             assert response is not None
-        except litellm.RateLimitError:
+        except llm.RateLimitError:
             pass
 
     @pytest.mark.parametrize(
@@ -224,10 +224,10 @@ class BaseLLMChatTest(ABC):
         """
         Test that the JSON response format is supported by the LLM API
         """
-        from litellm.utils import supports_response_schema
+        from llm.utils import supports_response_schema
 
         base_completion_call_args = self.get_base_completion_call_args()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         if not supports_response_schema(base_completion_call_args["model"], None):
             pytest.skip("Model does not support response schema")
@@ -300,7 +300,7 @@ class BaseLLMChatTest(ABC):
                 tools=tools,
                 drop_params=True,
             )
-        except litellm.ContextWindowExceededError:
+        except llm.ContextWindowExceededError:
             pytest.skip("Model exceeded context window")
         assert response is not None
 
@@ -308,12 +308,12 @@ class BaseLLMChatTest(ABC):
         """
         Test that the response format type text does not lead to tool calls
         """
-        from litellm import LlmProviders
+        from llm import LlmProviders
 
         base_completion_call_args = self.get_base_completion_call_args()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
-        _, provider, _, _ = litellm.get_llm_provider(
+        _, provider, _, _ = llm.get_llm_provider(
             model=base_completion_call_args["model"]
         )
 
@@ -339,12 +339,12 @@ class BaseLLMChatTest(ABC):
 
     @pytest.mark.flaky(retries=6, delay=1)
     def test_json_response_pydantic_obj(self):
-        litellm._turn_on_debug()
+        llm._turn_on_debug()
         from pydantic import BaseModel
-        from litellm.utils import supports_response_schema
+        from llm.utils import supports_response_schema
 
         os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-        litellm.model_cost = litellm.get_model_cost_map(url="")
+        llm.model_cost = llm.get_model_cost_map(url="")
 
         class TestModel(BaseModel):
             first_response: str
@@ -372,27 +372,27 @@ class BaseLLMChatTest(ABC):
 
             assert res.choices[0].message.content is not None
             assert res.choices[0].message.tool_calls is None
-        except litellm.Timeout:
+        except llm.Timeout:
             pytest.skip("Model took too long to respond")
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             pytest.skip("Model is overloaded")
 
     @pytest.mark.flaky(retries=6, delay=1)
     def test_json_response_pydantic_obj_nested_obj(self):
-        litellm.set_verbose = True
+        llm.set_verbose = True
         from pydantic import BaseModel
-        from litellm.utils import supports_response_schema
+        from llm.utils import supports_response_schema
 
         os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-        litellm.model_cost = litellm.get_model_cost_map(url="")
+        llm.model_cost = llm.get_model_cost_map(url="")
 
     @pytest.mark.flaky(retries=6, delay=1)
     def test_json_response_nested_pydantic_obj(self):
         from pydantic import BaseModel
-        from litellm.utils import supports_response_schema
+        from llm.utils import supports_response_schema
 
         os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-        litellm.model_cost = litellm.get_model_cost_map(url="")
+        llm.model_cost = llm.get_model_cost_map(url="")
 
         class CalendarEvent(BaseModel):
             name: str
@@ -425,9 +425,9 @@ class BaseLLMChatTest(ABC):
 
             assert res.choices[0].message.content is not None
             assert res.choices[0].message.tool_calls is None
-        except litellm.Timeout:
+        except llm.Timeout:
             pytest.skip("Model took too long to respond")
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             pytest.skip("Model is overloaded")
 
     @pytest.mark.flaky(retries=6, delay=1)
@@ -436,11 +436,11 @@ class BaseLLMChatTest(ABC):
         PROD Test: ensure nested json schema sent to proxy works as expected.
         """
         from pydantic import BaseModel
-        from litellm.utils import supports_response_schema
-        from litellm.llms.base_llm.base_utils import type_to_response_format_param
+        from llm.utils import supports_response_schema
+        from llm.llms.base_llm.base_utils import type_to_response_format_param
 
         os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-        litellm.model_cost = litellm.get_model_cost_map(url="")
+        llm.model_cost = llm.get_model_cost_map(url="")
 
         class CalendarEvent(BaseModel):
             name: str
@@ -475,9 +475,9 @@ class BaseLLMChatTest(ABC):
 
             assert res.choices[0].message.content is not None
             assert res.choices[0].message.tool_calls is None
-        except litellm.Timeout:
+        except llm.Timeout:
             pytest.skip("Model took too long to respond")
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             pytest.skip("Model is overloaded")
 
     @pytest.mark.flaky(retries=6, delay=1)
@@ -485,10 +485,10 @@ class BaseLLMChatTest(ABC):
         """
         Test that the JSON response format with streaming is supported by the LLM API
         """
-        from litellm.utils import supports_response_schema
+        from llm.utils import supports_response_schema
 
         base_completion_call_args = self.get_base_completion_call_args()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         base_completion_call_args = self.get_base_completion_call_args()
         if not supports_response_schema(base_completion_call_args["model"], None):
@@ -512,7 +512,7 @@ class BaseLLMChatTest(ABC):
                 response_format={"type": "json_object"},
                 stream=True,
             )
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             pytest.skip("Model is overloaded")
 
         print(response)
@@ -558,11 +558,11 @@ class BaseLLMChatTest(ABC):
     )
     @pytest.mark.flaky(retries=4, delay=2)
     def test_image_url(self, detail, image_url):
-        litellm.set_verbose = True
-        from litellm.utils import supports_vision
+        llm.set_verbose = True
+        from llm.utils import supports_vision
 
         os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-        litellm.model_cost = litellm.get_model_cost_map(url="")
+        llm.model_cost = llm.get_model_cost_map(url="")
 
         base_completion_call_args = self.get_base_completion_call_args()
         if not supports_vision(base_completion_call_args["model"], None):
@@ -607,17 +607,17 @@ class BaseLLMChatTest(ABC):
             response = self.completion_function(
                 **base_completion_call_args, messages=messages
             )
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             pytest.skip("Model is overloaded")
 
         assert response is not None
 
     def test_image_url_string(self):
-        litellm.set_verbose = True
-        from litellm.utils import supports_vision
+        llm.set_verbose = True
+        from llm.utils import supports_vision
 
         os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-        litellm.model_cost = litellm.get_model_cost_map(url="")
+        llm.model_cost = llm.get_model_cost_map(url="")
 
         image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
 
@@ -647,18 +647,18 @@ class BaseLLMChatTest(ABC):
             response = self.completion_function(
                 **base_completion_call_args, messages=messages
             )
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             pytest.skip("Model is overloaded")
 
         assert response is not None
 
     @pytest.mark.flaky(retries=4, delay=1)
     def test_prompt_caching(self):
-        litellm.set_verbose = True
-        from litellm.utils import supports_prompt_caching
+        llm.set_verbose = True
+        from llm.utils import supports_prompt_caching
 
         os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-        litellm.model_cost = litellm.get_model_cost_map(url="")
+        llm.model_cost = llm.get_model_cost_map(url="")
 
         base_completion_call_args = self.get_base_completion_call_args()
         if not supports_prompt_caching(base_completion_call_args["model"], None):
@@ -746,7 +746,7 @@ class BaseLLMChatTest(ABC):
             assert (
                 response.usage.prompt_tokens_details.cached_tokens > 0
             ), f"cached_tokens={response.usage.prompt_tokens_details.cached_tokens} should be greater than 0. Got usage={response.usage}"
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             pass
 
     @pytest.fixture
@@ -768,14 +768,14 @@ class BaseLLMChatTest(ABC):
 
     def test_basic_tool_calling(self):
         try:
-            from litellm import completion, ModelResponse
+            from llm import completion, ModelResponse
 
-            litellm.set_verbose = True
-            litellm._turn_on_debug()
-            from litellm.utils import supports_function_calling
+            llm.set_verbose = True
+            llm._turn_on_debug()
+            from llm.utils import supports_function_calling
 
             os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-            litellm.model_cost = litellm.get_model_cost_map(url="")
+            llm.model_cost = llm.get_model_cost_map(url="")
 
             base_completion_call_args = self.get_base_completion_call_args()
             if not supports_function_calling(base_completion_call_args["model"], None):
@@ -862,9 +862,9 @@ class BaseLLMChatTest(ABC):
                 second_response.choices[0].message.content is not None
                 or second_response.choices[0].message.tool_calls is not None
             )
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             pytest.skip("Model is overloaded")
-        except litellm.RateLimitError:
+        except llm.RateLimitError:
             pass
         except Exception as e:
             pytest.fail(f"Error occurred: {e}")
@@ -872,14 +872,14 @@ class BaseLLMChatTest(ABC):
     @pytest.mark.flaky(retries=3, delay=1)
     @pytest.mark.asyncio
     async def test_completion_cost(self):
-        from litellm import completion_cost
+        from llm import completion_cost
 
-        litellm._turn_on_debug()
+        llm._turn_on_debug()
 
         os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-        litellm.model_cost = litellm.get_model_cost_map(url="")
+        llm.model_cost = llm.get_model_cost_map(url="")
 
-        litellm.set_verbose = True
+        llm.set_verbose = True
         response = await self.async_completion_function(
             **self.get_base_completion_call_args(),
             messages=[{"role": "user", "content": "Hello, how are you?"}],
@@ -902,7 +902,7 @@ class BaseOSeriesModelsTest(ABC):  # test across azure/openai
     def test_reasoning_effort(self):
         """Test that reasoning_effort is passed correctly to the model"""
 
-        from litellm import completion
+        from llm import completion
 
         client = self.get_client()
 
@@ -928,7 +928,7 @@ class BaseOSeriesModelsTest(ABC):  # test across azure/openai
 
     def test_developer_role_translation(self):
         """Test that developer role is translated correctly to system role for non-OpenAI providers"""
-        from litellm import completion
+        from llm import completion
 
         client = self.get_client()
 
@@ -963,7 +963,7 @@ class BaseOSeriesModelsTest(ABC):  # test across azure/openai
         Test that temperature is not passed to O-series models
         """
         try:
-            from litellm import completion
+            from llm import completion
 
             client = self.get_client()
 
@@ -1010,10 +1010,10 @@ class BaseAnthropicChatTest(ABC):
 
     @property
     def completion_function(self):
-        return litellm.completion
+        return llm.completion
 
     def test_anthropic_response_format_streaming_vs_non_streaming(self):
-        litellm.set_verbose = True
+        llm.set_verbose = True
         args = {
             "messages": [
                 {

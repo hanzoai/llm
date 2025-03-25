@@ -25,12 +25,12 @@ Set 'lago' as a callback on your proxy config.yaml
 ```yaml
 model_list:
   - model_name: fake-openai-endpoint
-    litellm_params:
+    llm_params:
       model: openai/fake
       api_key: fake-key
       api_base: https://exampleopenaiendpoint-production.up.railway.app/
 
-litellm_settings:
+llm_settings:
   callbacks: ["lago"] # 👈 KEY CHANGE
 
 general_settings:
@@ -49,7 +49,7 @@ export LAGO_API_CHARGE_BY="team_id" # 👈 Charges 'team_id' attached to proxy k
 Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 ### 2. Create Key for Internal Team 
@@ -100,7 +100,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="gpt-3.5-turbo", messages = [
     {
         "role": "user",
@@ -136,7 +136,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -153,7 +153,7 @@ print(response)
 
 ## Advanced - Lago Logging object 
 
-This is what LiteLLM will log to Lagos
+This is what LLM will log to Lagos
 
 ```
 {
@@ -165,7 +165,7 @@ This is what LiteLLM will log to Lagos
           "input_tokens": <number>,
           "output_tokens": <number>,
           "model": <string>,
-          "response_cost": <number>, # 👈 LITELLM CALCULATED RESPONSE COST - https://github.com/BerriAI/litellm/blob/d43f75150a65f91f60dc2c0c9462ce3ffc713c1f/litellm/utils.py#L1473
+          "response_cost": <number>, # 👈 LITELLM CALCULATED RESPONSE COST - https://github.com/BerriAI/llm/blob/d43f75150a65f91f60dc2c0c9462ce3ffc713c1f/llm/utils.py#L1473
       }
     }
 }
@@ -175,8 +175,8 @@ This is what LiteLLM will log to Lagos
 
 For:
 - Customers (id passed via 'user' param in /chat/completion call) = 'end_user_id'
-- Internal Users (id set when [creating keys](https://docs.litellm.ai/docs/proxy/virtual_keys#advanced---spend-tracking)) = 'user_id' 
-- Teams (id set when [creating keys](https://docs.litellm.ai/docs/proxy/virtual_keys#advanced---spend-tracking)) = 'team_id' 
+- Internal Users (id set when [creating keys](https://docs.llm.ai/docs/proxy/virtual_keys#advanced---spend-tracking)) = 'user_id' 
+- Teams (id set when [creating keys](https://docs.llm.ai/docs/proxy/virtual_keys#advanced---spend-tracking)) = 'team_id' 
 
 
 
@@ -219,7 +219,7 @@ For:
       base_url="http://0.0.0.0:4000"
   )
 
-  # request sent to model set on litellm proxy, `litellm --model`
+  # request sent to model set on llm proxy, `llm --model`
   response = client.chat.completions.create(model="gpt-3.5-turbo", messages = [
       {
           "role": "user",
@@ -259,7 +259,7 @@ For:
           content="You are a helpful assistant that im using to make a test request to."
       ),
       HumanMessage(
-          content="test from litellm. tell me why it's amazing in 1 sentence"
+          content="test from llm. tell me why it's amazing in 1 sentence"
       ),
   ]
   response = chat(messages)
@@ -305,7 +305,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="gpt-3.5-turbo", messages = [
     {
         "role": "user",

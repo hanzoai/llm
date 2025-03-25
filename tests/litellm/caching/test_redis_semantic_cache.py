@@ -17,7 +17,7 @@ def test_redis_semantic_cache_initialization(monkeypatch):
         "redisvl.extensions.llmcache": MagicMock(SemanticCache=semantic_cache_mock),
         "redisvl.utils.vectorize": MagicMock(CustomTextVectorizer=MagicMock())
     }):
-        from litellm.caching.redis_semantic_cache import RedisSemanticCache
+        from llm.caching.redis_semantic_cache import RedisSemanticCache
         
         # Set environment variables
         monkeypatch.setenv("REDIS_HOST", "localhost")
@@ -48,7 +48,7 @@ def test_redis_semantic_cache_get_cache(monkeypatch):
         "redisvl.extensions.llmcache": MagicMock(SemanticCache=semantic_cache_mock),
         "redisvl.utils.vectorize": MagicMock(CustomTextVectorizer=custom_vectorizer_mock)
     }):
-        from litellm.caching.redis_semantic_cache import RedisSemanticCache
+        from llm.caching.redis_semantic_cache import RedisSemanticCache
         
         # Set environment variables
         monkeypatch.setenv("REDIS_HOST", "localhost")
@@ -69,7 +69,7 @@ def test_redis_semantic_cache_get_cache(monkeypatch):
         redis_semantic_cache.llmcache.check = MagicMock(return_value=mock_result)
         
         # Mock the embedding function
-        with patch("litellm.embedding", return_value={"data": [{"embedding": [0.1, 0.2, 0.3]}]}):
+        with patch("llm.embedding", return_value={"data": [{"embedding": [0.1, 0.2, 0.3]}]}):
             # Test get_cache with a message
             result = redis_semantic_cache.get_cache(
                 key="test_key",
@@ -93,7 +93,7 @@ async def test_redis_semantic_cache_async_get_cache(monkeypatch):
         "redisvl.extensions.llmcache": MagicMock(SemanticCache=semantic_cache_mock),
         "redisvl.utils.vectorize": MagicMock(CustomTextVectorizer=custom_vectorizer_mock)
     }):
-        from litellm.caching.redis_semantic_cache import RedisSemanticCache
+        from llm.caching.redis_semantic_cache import RedisSemanticCache
         
         # Set environment variables
         monkeypatch.setenv("REDIS_HOST", "localhost")

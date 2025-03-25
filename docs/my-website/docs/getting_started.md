@@ -2,14 +2,14 @@
 
 import QuickStart from '../src/components/QuickStart.js'
 
-LiteLLM simplifies LLM API calls by mapping them all to the [OpenAI ChatCompletion format](https://platform.openai.com/docs/api-reference/chat).
+LLM simplifies LLM API calls by mapping them all to the [OpenAI ChatCompletion format](https://platform.openai.com/docs/api-reference/chat).
 
 ## basic usage
 
-By default we provide a free $10 community-key to try all providers supported on LiteLLM.
+By default we provide a free $10 community-key to try all providers supported on LLM.
 
 ```python
-from litellm import completion
+from llm import completion
 
 ## set ENV variables
 os.environ["OPENAI_API_KEY"] = "your-api-key"
@@ -32,15 +32,15 @@ Next Steps 👉 [Call all supported models - e.g. Claude-2, Llama2-70b, etc.](./
 More details 👉
 
 - [Completion() function details](./completion/)
-- [All supported models / providers on LiteLLM](./providers/)
-- [Build your own OpenAI proxy](https://github.com/BerriAI/liteLLM-proxy/tree/main)
+- [All supported models / providers on LLM](./providers/)
+- [Build your own OpenAI proxy](https://github.com/BerriAI/llm-proxy/tree/main)
 
 ## streaming
 
 Same example from before. Just pass in `stream=True` in the completion args.
 
 ```python
-from litellm import completion
+from llm import completion
 
 ## set ENV variables
 os.environ["OPENAI_API_KEY"] = "openai key"
@@ -60,15 +60,15 @@ print(response)
 More details 👉
 
 - [streaming + async](./completion/stream.md)
-- [tutorial for streaming Llama2 on TogetherAI](./tutorials/TogetherAI_liteLLM.md)
+- [tutorial for streaming Llama2 on TogetherAI](./tutorials/TogetherAI_llm.md)
 
 ## exception handling
 
-LiteLLM maps exceptions across all supported providers to the OpenAI exceptions. All our exceptions inherit from OpenAI's exception types, so any error-handling you have for that, should work out of the box with LiteLLM.
+LLM maps exceptions across all supported providers to the OpenAI exceptions. All our exceptions inherit from OpenAI's exception types, so any error-handling you have for that, should work out of the box with LLM.
 
 ```python
 from openai.error import OpenAIError
-from litellm import completion
+from llm import completion
 
 os.environ["ANTHROPIC_API_KEY"] = "bad-key"
 try:
@@ -78,12 +78,12 @@ except OpenAIError as e:
     print(e)
 ```
 
-## Logging Observability - Log LLM Input/Output ([Docs](https://docs.litellm.ai/docs/observability/callbacks))
+## Logging Observability - Log LLM Input/Output ([Docs](https://docs.llm.ai/docs/observability/callbacks))
 
-LiteLLM exposes pre defined callbacks to send data to MLflow, Lunary, Langfuse, Helicone, Promptlayer, Traceloop, Slack
+LLM exposes pre defined callbacks to send data to MLflow, Lunary, Langfuse, Helicone, Promptlayer, Traceloop, Slack
 
 ```python
-from litellm import completion
+from llm import completion
 
 ## set env variables for logging tools (API key set up is not required when using MLflow)
 os.environ["LUNARY_PUBLIC_KEY"] = "your-lunary-public-key" # get your public key at https://app.lunary.ai/settings
@@ -94,7 +94,7 @@ os.environ["LANGFUSE_SECRET_KEY"] = ""
 os.environ["OPENAI_API_KEY"]
 
 # set callbacks
-litellm.success_callback = ["lunary", "mlflow", "langfuse", "helicone"] # log input/output to MLflow, langfuse, lunary, helicone
+llm.success_callback = ["lunary", "mlflow", "langfuse", "helicone"] # log input/output to MLflow, langfuse, lunary, helicone
 
 #openai call
 response = completion(model="gpt-3.5-turbo", messages=[{"role": "user", "content": "Hi 👋 - i'm openai"}])

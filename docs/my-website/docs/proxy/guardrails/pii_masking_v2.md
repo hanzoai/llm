@@ -6,21 +6,21 @@ import TabItem from '@theme/TabItem';
 
 ## Quick Start
 
-LiteLLM supports [Microsoft Presidio](https://github.com/microsoft/presidio/) for PII masking. 
+LLM supports [Microsoft Presidio](https://github.com/microsoft/presidio/) for PII masking. 
 
-### 1. Define Guardrails on your LiteLLM config.yaml 
+### 1. Define Guardrails on your LLM config.yaml 
 
 Define your guardrails under the `guardrails` section
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: openai/gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
 guardrails:
   - guardrail_name: "presidio-pre-guard"
-    litellm_params:
+    llm_params:
       guardrail: presidio  # supported values: "aporia", "bedrock", "lakera", "presidio"
       mode: "pre_call"
 ```
@@ -39,11 +39,11 @@ export PRESIDIO_ANONYMIZER_API_BASE="http://localhost:5001"
 - `logging_only` Run **after** LLM call, only apply PII Masking before logging to Langfuse, etc. Not on the actual llm api request / response.
 
 
-### 2. Start LiteLLM Gateway 
+### 2. Start LLM Gateway 
 
 
 ```shell
-litellm --config config.yaml --detailed_debug
+llm --config config.yaml --detailed_debug
 ```
 
 ### 3. Test request 
@@ -156,7 +156,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages = [
@@ -185,19 +185,19 @@ print(response)
 
 LLM responses can sometimes contain the masked tokens. 
 
-For presidio 'replace' operations, LiteLLM can check the LLM response and replace the masked token with the user-submitted values. 
+For presidio 'replace' operations, LLM can check the LLM response and replace the masked token with the user-submitted values. 
 
 Define your guardrails under the `guardrails` section
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: openai/gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
 guardrails:
   - guardrail_name: "presidio-pre-guard"
-    litellm_params:
+    llm_params:
       guardrail: presidio  # supported values: "aporia", "bedrock", "lakera", "presidio"
       mode: "pre_call"
       output_parse_pii: True
@@ -218,21 +218,21 @@ guardrails:
 
 Send ad-hoc recognizers to presidio `/analyze` by passing a json file to the proxy 
 
-[**Example** ad-hoc recognizer](../../../../litellm/proxy/hooks/example_presidio_ad_hoc_recognize)
+[**Example** ad-hoc recognizer](../../../../llm/proxy/hooks/example_presidio_ad_hoc_recognize)
 
-#### Define ad-hoc recognizer on your LiteLLM config.yaml 
+#### Define ad-hoc recognizer on your LLM config.yaml 
 
 Define your guardrails under the `guardrails` section
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: openai/gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
 guardrails:
   - guardrail_name: "presidio-pre-guard"
-    litellm_params:
+    llm_params:
       guardrail: presidio  # supported values: "aporia", "bedrock", "lakera", "presidio"
       mode: "pre_call"
       presidio_ad_hoc_recognizers: "./hooks/example_presidio_ad_hoc_recognizer.json"
@@ -249,7 +249,7 @@ export PRESIDIO_ANONYMIZER_API_BASE="http://localhost:5001"
 You can see this working, when you run the proxy: 
 
 ```bash
-litellm --config /path/to/config.yaml --debug
+llm --config /path/to/config.yaml --debug
 ```
 
 Make a chat completions request, example:
@@ -280,19 +280,19 @@ This is currently only applied for
 
 :::
 
-1. Define mode: `logging_only` on your LiteLLM config.yaml 
+1. Define mode: `logging_only` on your LLM config.yaml 
 
 Define your guardrails under the `guardrails` section
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: openai/gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
 guardrails:
   - guardrail_name: "presidio-pre-guard"
-    litellm_params:
+    llm_params:
       guardrail: presidio  # supported values: "aporia", "bedrock", "lakera", "presidio"
       mode: "logging_only"
 ```
@@ -308,7 +308,7 @@ export PRESIDIO_ANONYMIZER_API_BASE="http://localhost:5001"
 2. Start proxy
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 

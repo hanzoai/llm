@@ -1,17 +1,17 @@
 # Exception Mapping
 
-LiteLLM maps exceptions across all providers to their OpenAI counterparts.
+LLM maps exceptions across all providers to their OpenAI counterparts.
 
-All exceptions can be imported from `litellm` - e.g. `from litellm import BadRequestError`
+All exceptions can be imported from `llm` - e.g. `from llm import BadRequestError`
 
-## LiteLLM Exceptions
+## LLM Exceptions
 
 | Status Code | Error Type               | Inherits from | Description |
 |-------------|--------------------------|---------------|-------------|
 | 400         | BadRequestError          | openai.BadRequestError |
-| 400 | UnsupportedParamsError | litellm.BadRequestError | Raised when unsupported params are passed |
-| 400         | ContextWindowExceededError| litellm.BadRequestError | Special error type for context window exceeded error messages - enables context window fallbacks |
-| 400         | ContentPolicyViolationError| litellm.BadRequestError | Special error type for content policy violation error messages - enables content policy fallbacks |
+| 400 | UnsupportedParamsError | llm.BadRequestError | Raised when unsupported params are passed |
+| 400         | ContextWindowExceededError| llm.BadRequestError | Special error type for context window exceeded error messages - enables context window fallbacks |
+| 400         | ContentPolicyViolationError| llm.BadRequestError | Special error type for content policy violation error messages - enables content policy fallbacks |
 | 400 | InvalidRequestError | openai.BadRequestError | Deprecated error, use BadRequestError instead |
 | 401         | AuthenticationError      | openai.AuthenticationError |
 | 403         | PermissionDeniedError    | openai.PermissionDeniedError |
@@ -25,7 +25,7 @@ All exceptions can be imported from `litellm` - e.g. `from litellm import BadReq
 | >=500       | InternalServerError      | openai.InternalServerError | If any unmapped 500-status code error is returned, this error is raised |
 | N/A         | APIResponseValidationError | openai.APIResponseValidationError | If Rules are used, and request/response fails a rule, this error is raised |
 | N/A | BudgetExceededError | Exception | Raised for proxy, when budget is exceeded |
-| N/A | JSONSchemaValidationError | litellm.APIResponseValidationError | Raised when response does not match expected json schema - used if `response_schema` param passed in with `enforce_validation=True` |
+| N/A | JSONSchemaValidationError | llm.APIResponseValidationError | Raised when response does not match expected json schema - used if `response_schema` param passed in with `enforce_validation=True` |
 | N/A | MockException | Exception | Internal exception, raised by mock_completion class. Do not use directly | 
 | N/A | OpenAIError | openai.OpenAIError | Deprecated internal exception, inherits from openai.OpenAIError. |
 
@@ -33,7 +33,7 @@ All exceptions can be imported from `litellm` - e.g. `from litellm import BadReq
 
 Base case we return APIConnectionError
 
-All our exceptions inherit from OpenAI's exception types, so any error-handling you have for that, should work out of the box with LiteLLM. 
+All our exceptions inherit from OpenAI's exception types, so any error-handling you have for that, should work out of the box with LLM. 
 
 For all cases, the exception returned inherits from the original OpenAI Exception but contains 3 additional attributes: 
 * status_code - the http status code of the exception
@@ -43,11 +43,11 @@ For all cases, the exception returned inherits from the original OpenAI Exceptio
 ## Usage
 
 ```python 
-import litellm
+import llm
 import openai
 
 try:
-    response = litellm.completion(
+    response = llm.completion(
                 model="gpt-4",
                 messages=[
                     {
@@ -65,9 +65,9 @@ except openai.APITimeoutError as e:
 
 ## Usage - Catching Streaming Exceptions
 ```python
-import litellm
+import llm
 try:
-    response = litellm.completion(
+    response = llm.completion(
         model="gpt-3.5-turbo",
         messages=[
             {
@@ -92,11 +92,11 @@ except Exception as e:
 ## Usage - Should you retry exception? 
 
 ```
-import litellm
+import llm
 import openai
 
 try:
-    response = litellm.completion(
+    response = llm.completion(
                 model="gpt-4",
                 messages=[
                     {
@@ -107,21 +107,21 @@ try:
                 timeout=0.01, # this will raise a timeout exception
             )
 except openai.APITimeoutError as e:
-    should_retry = litellm._should_retry(e.status_code)
+    should_retry = llm._should_retry(e.status_code)
     print(f"should_retry: {should_retry}")
 ```
 
 ## Details 
 
-To see how it's implemented - [check out the code](https://github.com/BerriAI/litellm/blob/a42c197e5a6de56ea576c73715e6c7c6b19fa249/litellm/utils.py#L1217)
+To see how it's implemented - [check out the code](https://github.com/BerriAI/llm/blob/a42c197e5a6de56ea576c73715e6c7c6b19fa249/llm/utils.py#L1217)
 
-[Create an issue](https://github.com/BerriAI/litellm/issues/new) **or** [make a PR](https://github.com/BerriAI/litellm/pulls) if you want to improve the exception mapping. 
+[Create an issue](https://github.com/BerriAI/llm/issues/new) **or** [make a PR](https://github.com/BerriAI/llm/pulls) if you want to improve the exception mapping. 
 
-**Note** For OpenAI and Azure we return the original exception (since they're of the OpenAI Error type). But we add the 'llm_provider' attribute to them. [See code](https://github.com/BerriAI/litellm/blob/a42c197e5a6de56ea576c73715e6c7c6b19fa249/litellm/utils.py#L1221)
+**Note** For OpenAI and Azure we return the original exception (since they're of the OpenAI Error type). But we add the 'llm_provider' attribute to them. [See code](https://github.com/BerriAI/llm/blob/a42c197e5a6de56ea576c73715e6c7c6b19fa249/llm/utils.py#L1221)
 
 ## Custom mapping list
 
-Base case - we return `litellm.APIConnectionError` exception (inherits from openai's APIConnectionError exception).
+Base case - we return `llm.APIConnectionError` exception (inherits from openai's APIConnectionError exception).
 
 | custom_llm_provider        | Timeout | ContextWindowExceededError | BadRequestError | NotFoundError | ContentPolicyViolationError | AuthenticationError | APIError | RateLimitError | ServiceUnavailableError | PermissionDeniedError | UnprocessableEntityError |
 |----------------------------|---------|----------------------------|------------------|---------------|-----------------------------|---------------------|----------|----------------|-------------------------|-----------------------|-------------------------|
@@ -154,8 +154,8 @@ Base case - we return `litellm.APIConnectionError` exception (inherits from open
 - Empty cells indicate the lack of association or that the provider does not raise that particular exception type as indicated by the function.
 
 
-> For a deeper understanding of these exceptions, you can check out [this](https://github.com/BerriAI/litellm/blob/d7e58d13bf9ba9edbab2ab2f096f3de7547f35fa/litellm/utils.py#L1544) implementation for additional insights.
+> For a deeper understanding of these exceptions, you can check out [this](https://github.com/BerriAI/llm/blob/d7e58d13bf9ba9edbab2ab2f096f3de7547f35fa/llm/utils.py#L1544) implementation for additional insights.
 
-The `ContextWindowExceededError` is a sub-class of `InvalidRequestError`. It was introduced to provide more granularity for exception-handling scenarios. Please refer to [this issue to learn more](https://github.com/BerriAI/litellm/issues/228).
+The `ContextWindowExceededError` is a sub-class of `InvalidRequestError`. It was introduced to provide more granularity for exception-handling scenarios. Please refer to [this issue to learn more](https://github.com/BerriAI/llm/issues/228).
 
-Contributions to improve exception mapping are [welcome](https://github.com/BerriAI/litellm#contributing)
+Contributions to improve exception mapping are [welcome](https://github.com/BerriAI/llm#contributing)

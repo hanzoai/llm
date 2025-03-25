@@ -8,12 +8,12 @@ import io, asyncio
 
 sys.path.insert(0, os.path.abspath("../.."))
 import pytest
-from litellm import acompletion, Cache
-from litellm._service_logger import ServiceLogging
-from litellm.integrations.prometheus_services import PrometheusServicesLogger
-from litellm.proxy.utils import ServiceTypes
+from llm import acompletion, Cache
+from llm._service_logger import ServiceLogging
+from llm.integrations.prometheus_services import PrometheusServicesLogger
+from llm.proxy.utils import ServiceTypes
 from unittest.mock import patch, AsyncMock
-import litellm
+import llm
 
 """
 - Check if it receives a call when redis is used 
@@ -38,13 +38,13 @@ async def test_completion_with_caching():
     - Assert success callback gets called
     """
 
-    litellm.set_verbose = True
-    litellm.cache = Cache(type="redis")
-    litellm.service_callback = ["prometheus_system"]
+    llm.set_verbose = True
+    llm.cache = Cache(type="redis")
+    llm.service_callback = ["prometheus_system"]
 
     sl = ServiceLogging(mock_testing=True)
     sl.prometheusServicesLogger.mock_testing = True
-    litellm.cache.cache.service_logger_obj = sl
+    llm.cache.cache.service_logger_obj = sl
 
     messages = [{"role": "user", "content": "Hey, how's it going?"}]
     response1 = await acompletion(
@@ -66,12 +66,12 @@ async def test_completion_with_caching_bad_call():
     - Run completion with caching (incorrect credentials)
     - Assert failure callback gets called
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     try:
-        from litellm.caching.caching import RedisCache
+        from llm.caching.caching import RedisCache
 
-        litellm.service_callback = ["prometheus_system"]
+        llm.service_callback = ["prometheus_system"]
         sl = ServiceLogging(mock_testing=True)
 
         RedisCache(host="hello-world", service_logger_obj=sl)
@@ -114,7 +114,7 @@ async def test_router_with_caching():
             },
         ]
 
-        router = litellm.Router(
+        router = llm.Router(
             model_list=model_list,
             set_verbose=True,
             debug_level="DEBUG",
@@ -124,7 +124,7 @@ async def test_router_with_caching():
             redis_password=os.environ["REDIS_PASSWORD"],
         )
 
-        litellm.service_callback = ["prometheus_system"]
+        llm.service_callback = ["prometheus_system"]
 
         sl = ServiceLogging(mock_testing=True)
         sl.prometheusServicesLogger.mock_testing = True
@@ -148,7 +148,7 @@ async def test_service_logger_db_monitoring():
     """
     Test prometheus monitoring for database operations
     """
-    litellm.service_callback = ["prometheus_system"]
+    llm.service_callback = ["prometheus_system"]
     sl = ServiceLogging()
 
     # Create spy on prometheus logger's async_service_success_hook
@@ -181,7 +181,7 @@ async def test_service_logger_db_monitoring_failure():
     """
     Test prometheus monitoring for failed database operations
     """
-    litellm.service_callback = ["prometheus_system"]
+    llm.service_callback = ["prometheus_system"]
     sl = ServiceLogging()
 
     # Create spy on prometheus logger's async_service_failure_hook

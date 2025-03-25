@@ -8,18 +8,18 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system-path
 
-import litellm
-from litellm import completion, embedding
+import llm
+from llm import completion, embedding
 import pytest
 from unittest.mock import MagicMock, patch
-from litellm.llms.custom_httpx.http_handler import HTTPHandler, AsyncHTTPHandler
+from llm.llms.custom_httpx.http_handler import HTTPHandler, AsyncHTTPHandler
 import pytest_asyncio
 from openai import AsyncOpenAI
 
 
 @pytest.mark.asyncio
 async def test_litellm_gateway_from_sdk():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     messages = [
         {
             "role": "user",
@@ -59,7 +59,7 @@ async def test_litellm_gateway_from_sdk_structured_output():
     class Result(BaseModel):
         answer: str
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     from openai import OpenAI
 
     openai_client = OpenAI(api_key="fake-key")
@@ -68,7 +68,7 @@ async def test_litellm_gateway_from_sdk_structured_output():
         openai_client.chat.completions, "create", new=MagicMock()
     ) as mock_call:
         try:
-            litellm.completion(
+            llm.completion(
                 model="litellm_proxy/openai/gpt-4o",
                 messages=[
                     {"role": "user", "content": "What is the capital of France?"}
@@ -76,7 +76,7 @@ async def test_litellm_gateway_from_sdk_structured_output():
                 api_key="my-test-api-key",
                 user="test",
                 response_format=Result,
-                base_url="https://litellm.ml-serving-internal.scale.com",
+                base_url="https://llm.ml-serving-internal.scale.com",
                 client=openai_client,
             )
         except Exception as e:
@@ -92,8 +92,8 @@ async def test_litellm_gateway_from_sdk_structured_output():
 @pytest.mark.parametrize("is_async", [False, True])
 @pytest.mark.asyncio
 async def test_litellm_gateway_from_sdk_embedding(is_async):
-    litellm.set_verbose = True
-    litellm._turn_on_debug()
+    llm.set_verbose = True
+    llm._turn_on_debug()
 
     if is_async:
         from openai import AsyncOpenAI
@@ -111,14 +111,14 @@ async def test_litellm_gateway_from_sdk_embedding(is_async):
     with patch.object(patch_target.__self__, patch_target.__name__, new=mock_method):
         try:
             if is_async:
-                await litellm.aembedding(
+                await llm.aembedding(
                     model="litellm_proxy/my-vllm-model",
                     input="Hello world",
                     client=openai_client,
                     api_base="my-custom-api-base",
                 )
             else:
-                litellm.embedding(
+                llm.embedding(
                     model="litellm_proxy/my-vllm-model",
                     input="Hello world",
                     client=openai_client,
@@ -138,7 +138,7 @@ async def test_litellm_gateway_from_sdk_embedding(is_async):
 @pytest.mark.parametrize("is_async", [False, True])
 @pytest.mark.asyncio
 async def test_litellm_gateway_from_sdk_image_generation(is_async):
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
 
     if is_async:
         from openai import AsyncOpenAI
@@ -156,14 +156,14 @@ async def test_litellm_gateway_from_sdk_image_generation(is_async):
     with patch.object(patch_target.__self__, patch_target.__name__, new=mock_method):
         try:
             if is_async:
-                response = await litellm.aimage_generation(
+                response = await llm.aimage_generation(
                     model="litellm_proxy/dall-e-3",
                     prompt="A beautiful sunset over mountains",
                     client=openai_client,
                     api_base="my-custom-api-base",
                 )
             else:
-                response = litellm.image_generation(
+                response = llm.image_generation(
                     model="litellm_proxy/dall-e-3",
                     prompt="A beautiful sunset over mountains",
                     client=openai_client,
@@ -187,8 +187,8 @@ async def test_litellm_gateway_from_sdk_image_generation(is_async):
 @pytest.mark.parametrize("is_async", [False, True])
 @pytest.mark.asyncio
 async def test_litellm_gateway_from_sdk_transcription(is_async):
-    litellm.set_verbose = True
-    litellm._turn_on_debug()
+    llm.set_verbose = True
+    llm._turn_on_debug()
 
     if is_async:
         from openai import AsyncOpenAI
@@ -206,14 +206,14 @@ async def test_litellm_gateway_from_sdk_transcription(is_async):
     with patch.object(patch_target.__self__, patch_target.__name__, new=mock_method):
         try:
             if is_async:
-                await litellm.atranscription(
+                await llm.atranscription(
                     model="litellm_proxy/whisper-1",
                     file=b"sample_audio",
                     client=openai_client,
                     api_base="my-custom-api-base",
                 )
             else:
-                litellm.transcription(
+                llm.transcription(
                     model="litellm_proxy/whisper-1",
                     file=b"sample_audio",
                     client=openai_client,
@@ -232,7 +232,7 @@ async def test_litellm_gateway_from_sdk_transcription(is_async):
 @pytest.mark.parametrize("is_async", [False, True])
 @pytest.mark.asyncio
 async def test_litellm_gateway_from_sdk_speech(is_async):
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     if is_async:
         from openai import AsyncOpenAI
@@ -250,7 +250,7 @@ async def test_litellm_gateway_from_sdk_speech(is_async):
     with patch.object(patch_target.__self__, patch_target.__name__, new=mock_method):
         try:
             if is_async:
-                await litellm.aspeech(
+                await llm.aspeech(
                     model="litellm_proxy/tts-1",
                     input="Hello, this is a test of text to speech",
                     voice="alloy",
@@ -258,7 +258,7 @@ async def test_litellm_gateway_from_sdk_speech(is_async):
                     api_base="my-custom-api-base",
                 )
             else:
-                litellm.speech(
+                llm.speech(
                     model="litellm_proxy/tts-1",
                     input="Hello, this is a test of text to speech",
                     voice="alloy",
@@ -283,8 +283,8 @@ async def test_litellm_gateway_from_sdk_speech(is_async):
 @pytest.mark.parametrize("is_async", [False, True])
 @pytest.mark.asyncio
 async def test_litellm_gateway_from_sdk_rerank(is_async):
-    litellm.set_verbose = True
-    litellm._turn_on_debug()
+    llm.set_verbose = True
+    llm._turn_on_debug()
 
     if is_async:
         client = AsyncHTTPHandler()
@@ -337,7 +337,7 @@ async def test_litellm_gateway_from_sdk_rerank(is_async):
 
         try:
             if is_async:
-                response = await litellm.arerank(
+                response = await llm.arerank(
                     model="litellm_proxy/rerank-english-v2.0",
                     query="What is machine learning?",
                     documents=[
@@ -348,7 +348,7 @@ async def test_litellm_gateway_from_sdk_rerank(is_async):
                     api_base="my-custom-api-base",
                 )
             else:
-                response = litellm.rerank(
+                response = llm.rerank(
                     model="litellm_proxy/rerank-english-v2.0",
                     query="What is machine learning?",
                     documents=[

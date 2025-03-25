@@ -9,7 +9,7 @@ Here's how:
 Make sure the response type follows the `UserAPIKeyAuth` pydantic object. This is used by for logging usage specific to that user key.
 
 ```python
-from litellm.proxy._types import UserAPIKeyAuth
+from llm.proxy._types import UserAPIKeyAuth
 
 async def user_api_key_auth(request: Request, api_key: str) -> UserAPIKeyAuth: 
     try: 
@@ -29,10 +29,10 @@ e.g. if they're both in the same dir - `./config.yaml` and `./custom_auth.py`, t
 ```yaml 
 model_list: 
   - model_name: "openai-model"
-    litellm_params: 
+    llm_params: 
       model: "gpt-3.5-turbo"
 
-litellm_settings:
+llm_settings:
   drop_params: True
   set_verbose: True
 
@@ -40,9 +40,9 @@ general_settings:
   custom_auth: custom_auth.user_api_key_auth
 ```
 
-[**Implementation Code**](https://github.com/BerriAI/litellm/blob/caf2a6b279ddbe89ebd1d8f4499f65715d684851/litellm/proxy/utils.py#L122)
+[**Implementation Code**](https://github.com/BerriAI/llm/blob/caf2a6b279ddbe89ebd1d8f4499f65715d684851/llm/proxy/utils.py#L122)
 
 #### 3. Start the proxy
 ```shell
-$ litellm --config /path/to/config.yaml 
+$ llm --config /path/to/config.yaml 
 ```

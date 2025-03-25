@@ -1,14 +1,14 @@
 # Local Debugging
-There's 2 ways to do local debugging - `litellm._turn_on_debug()` and by passing in a custom function `completion(...logger_fn=<your_local_function>)`. Warning: Make sure to not use `_turn_on_debug()` in production. It logs API keys, which might end up in log files.
+There's 2 ways to do local debugging - `llm._turn_on_debug()` and by passing in a custom function `completion(...logger_fn=<your_local_function>)`. Warning: Make sure to not use `_turn_on_debug()` in production. It logs API keys, which might end up in log files.
 
 ## Set Verbose 
 
-This is good for getting print statements for everything litellm is doing.
+This is good for getting print statements for everything llm is doing.
 ```python
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 
-litellm._turn_on_debug() # 👈 this is the 1-line change you need to make
+llm._turn_on_debug() # 👈 this is the 1-line change you need to make
 
 ## set ENV variables
 os.environ["OPENAI_API_KEY"] = "openai key"
@@ -25,16 +25,16 @@ response = completion("command-nightly", messages)
 
 ## JSON Logs 
 
-If you need to store the logs as JSON, just set the `litellm.json_logs = True`.
+If you need to store the logs as JSON, just set the `llm.json_logs = True`.
 
-We currently just log the raw POST request from litellm as a JSON - [**See Code**]. 
+We currently just log the raw POST request from llm as a JSON - [**See Code**]. 
 
-[Share feedback here](https://github.com/BerriAI/litellm/issues)
+[Share feedback here](https://github.com/BerriAI/llm/issues)
 
 ## Logger Function 
 But sometimes all you care about is seeing exactly what's getting sent to your api call and what's being returned - e.g. if the api call is failing, why is that happening? what are the exact params being set? 
 
-In that case, LiteLLM allows you to pass in a custom logging function to see / modify the model call Input/Outputs. 
+In that case, LLM allows you to pass in a custom logging function to see / modify the model call Input/Outputs. 
 
 **Note**: We expect you to accept a dict object. 
 
@@ -47,7 +47,7 @@ def my_custom_logging_fn(model_call_dict):
 
 ### Complete Example
 ```python
-from litellm import completion
+from llm import completion
 
 def my_custom_logging_fn(model_call_dict):
     print(f"model call details: {model_call_dict}")

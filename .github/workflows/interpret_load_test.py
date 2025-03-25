@@ -55,7 +55,7 @@ def interpret_results(csv_file):
 def _get_docker_run_command_stable_release(release_version):
     return f"""
 \n\n
-## Docker Run LiteLLM Proxy
+## Docker Run LLM Proxy
 
 ```
 docker run \\
@@ -69,7 +69,7 @@ ghcr.io/berriai/litellm:litellm_stable_release_branch-{release_version}
 def _get_docker_run_command(release_version):
     return f"""
 \n\n
-## Docker Run LiteLLM Proxy
+## Docker Run LLM Proxy
 
 ```
 docker run \\
@@ -107,11 +107,11 @@ if __name__ == "__main__":
     print("latest release body: ", latest_release.body)
     print("markdown table: ", markdown_table)
 
-    # check if "Load Test LiteLLM Proxy Results" exists
+    # check if "Load Test LLM Proxy Results" exists
     existing_release_body = latest_release.body
-    if "Load Test LiteLLM Proxy Results" in latest_release.body:
-        # find the "Load Test LiteLLM Proxy Results" section and delete it
-        start_index = latest_release.body.find("Load Test LiteLLM Proxy Results")
+    if "Load Test LLM Proxy Results" in latest_release.body:
+        # find the "Load Test LLM Proxy Results" section and delete it
+        start_index = latest_release.body.find("Load Test LLM Proxy Results")
         existing_release_body = latest_release.body[:start_index]
 
     docker_run_command = get_docker_run_command(release_version)
@@ -124,7 +124,7 @@ if __name__ == "__main__":
         + "### Don't want to maintain your internal proxy? get in touch 🎉"
         + "\nHosted Proxy Alpha: https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat"
         + "\n\n"
-        + "## Load Test LiteLLM Proxy Results"
+        + "## Load Test LLM Proxy Results"
         + "\n\n"
         + markdown_table
     )

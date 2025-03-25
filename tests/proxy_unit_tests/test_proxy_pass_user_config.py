@@ -11,9 +11,9 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest, logging, asyncio
-import litellm
-from litellm import embedding, completion, completion_cost, Timeout
-from litellm import RateLimitError
+import llm
+from llm import embedding, completion, completion_cost, Timeout
+from llm import RateLimitError
 
 # Configure logging
 logging.basicConfig(
@@ -25,7 +25,7 @@ logging.basicConfig(
 from fastapi.testclient import TestClient
 from fastapi import FastAPI
 import os
-from litellm.proxy.proxy_server import (
+from llm.proxy.proxy_server import (
     router,
     save_worker_config,
     initialize,
@@ -39,8 +39,8 @@ headers = {"Authorization": f"Bearer {token}"}
 
 @pytest.fixture(scope="function")
 def client_no_auth():
-    # Assuming litellm.proxy.proxy_server is an object
-    from litellm.proxy.proxy_server import cleanup_router_config_variables
+    # Assuming llm.proxy.proxy_server is an object
+    from llm.proxy.proxy_server import cleanup_router_config_variables
 
     cleanup_router_config_variables()
     filepath = os.path.dirname(os.path.abspath(__file__))
@@ -56,8 +56,8 @@ def client_no_auth():
 def test_chat_completion(client_no_auth):
     global headers
 
-    from litellm.types.router import RouterConfig, ModelConfig
-    from litellm.types.completion import CompletionRequest
+    from llm.types.router import RouterConfig, ModelConfig
+    from llm.types.completion import CompletionRequest
 
     user_config = RouterConfig(
         model_list=[
@@ -107,7 +107,7 @@ def test_chat_completion(client_no_auth):
         result = response.json()
         print(f"Received response: {result}")
     except Exception as e:
-        pytest.fail(f"LiteLLM Proxy test failed. Exception - {str(e)}")
+        pytest.fail(f"LLM Proxy test failed. Exception - {str(e)}")
 
 
 # Run the test

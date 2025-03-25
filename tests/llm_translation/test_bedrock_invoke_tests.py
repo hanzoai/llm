@@ -7,13 +7,13 @@ import os
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm.types.llms.bedrock import BedrockInvokeNovaRequest
+import llm
+from llm.types.llms.bedrock import BedrockInvokeNovaRequest
 
 
 class TestBedrockInvokeClaudeJson(BaseLLMChatTest):
     def get_base_completion_call_args(self) -> dict:
-        litellm._turn_on_debug()
+        llm._turn_on_debug()
         return {
             "model": "bedrock/invoke/anthropic.claude-3-5-sonnet-20240620-v1:0",
         }
@@ -49,7 +49,7 @@ def test_nova_invoke_remove_empty_system_messages():
         inferenceConfig={"temperature": 0.7},
     )
 
-    litellm.AmazonInvokeNovaConfig()._remove_empty_system_messages(input_request)
+    llm.AmazonInvokeNovaConfig()._remove_empty_system_messages(input_request)
 
     assert "system" not in input_request
     assert "messages" in input_request
@@ -73,7 +73,7 @@ def test_nova_invoke_filter_allowed_fields():
 
     input_request = BedrockInvokeNovaRequest(**_input_request)
 
-    result = litellm.AmazonInvokeNovaConfig()._filter_allowed_fields(input_request)
+    result = llm.AmazonInvokeNovaConfig()._filter_allowed_fields(input_request)
 
     assert "additionalModelRequestFields" not in result
     assert "additionalModelResponseFieldPaths" not in result
@@ -87,7 +87,7 @@ def test_nova_invoke_streaming_chunk_parsing():
     Test that the AWSEventStreamDecoder correctly handles Nova's /bedrock/invoke/ streaming format
     where content is nested under 'contentBlockDelta'.
     """
-    from litellm.llms.bedrock.chat.invoke_handler import AWSEventStreamDecoder
+    from llm.llms.bedrock.chat.invoke_handler import AWSEventStreamDecoder
 
     # Initialize the decoder with a Nova model
     decoder = AWSEventStreamDecoder(model="bedrock/invoke/us.amazon.nova-micro-v1:0")

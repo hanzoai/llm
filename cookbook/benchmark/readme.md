@@ -4,7 +4,7 @@
     <p align="center">
         <p align="center">Benchmark LLMs response, cost and response time</p>
         <p>LLM vs Cost per input + output token ($)</p>
-        <img width="806" alt="Screenshot 2023-11-13 at 2 51 06 PM" src="https://github.com/BerriAI/litellm/assets/29436595/6d1bed71-d062-40b8-a113-28359672636a">
+        <img width="806" alt="Screenshot 2023-11-13 at 2 51 06 PM" src="https://github.com/BerriAI/llm/assets/29436595/6d1bed71-d062-40b8-a113-28359672636a">
     </p>
         <a href="https://docs.google.com/spreadsheets/d/1mvPbP02OLFgc-5-Ubn1KxGuQQdbMyG1jhMSWxAldWy4/edit?usp=sharing">
                Bar Graph Excel Sheet here
@@ -108,22 +108,22 @@
 
 ## Setup:
 ```
-git clone https://github.com/BerriAI/litellm
+git clone https://github.com/BerriAI/llm
 ```
 cd to `benchmark` dir
 ```
-cd litellm/cookbook/benchmark
+cd llm/cookbook/benchmark
 ```
 
 ### Install Dependencies
 ```
-pip install litellm click tqdm tabulate termcolor
+pip install llm click tqdm tabulate termcolor
 ```
 
 ### Configuration
 In `benchmark/benchmark.py` select your LLMs, LLM API Key and questions
 
-Supported LLMs: https://docs.litellm.ai/docs/providers
+Supported LLMs: https://docs.llm.ai/docs/providers
 
 ```python
 # Define the list of models to benchmark
@@ -137,7 +137,7 @@ os.environ['TOGETHERAI_API_KEY'] = ""
 # List of questions to benchmark (replace with your questions)
 questions = [
     "When will BerriAI IPO?",
-    "When will LiteLLM hit $100M ARR?"
+    "When will LLM hit $100M ARR?"
 ]
 
 ```
@@ -178,4 +178,4 @@ Benchmark Results for 'When will BerriAI IPO?':
 ```
 
 ## Support 
-**🤝 Schedule a 1-on-1 Session:** Book a [1-on-1 session](https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat) with Krrish and Ishaan, the founders, to discuss any issues, provide feedback, or explore how we can improve LiteLLM for you.
+**🤝 Schedule a 1-on-1 Session:** Book a [1-on-1 session](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat) with Krrish and Ishaan, the founders, to discuss any issues, provide feedback, or explore how we can improve LLM for you.

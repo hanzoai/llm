@@ -26,7 +26,7 @@
 #     }
 # ]
 
-# router = litellm.Router(model_list=model_list)  # type: ignore
+# router = llm.Router(model_list=model_list)  # type: ignore
 
 
 # async def _openai_completion():

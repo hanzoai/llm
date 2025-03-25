@@ -3,7 +3,7 @@ https://deepinfra.com/
 
 :::tip
 
-**We support ALL DeepInfra models, just set `model=deepinfra/<any-model-on-deepinfra>` as a prefix when sending litellm requests**
+**We support ALL DeepInfra models, just set `model=deepinfra/<any-model-on-deepinfra>` as a prefix when sending llm requests**
 
 :::
 
@@ -16,25 +16,25 @@ os.environ['DEEPINFRA_API_KEY']
 
 ## Sample Usage
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['DEEPINFRA_API_KEY'] = ""
 response = completion(
     model="deepinfra/meta-llama/Llama-2-70b-chat-hf", 
-    messages=[{"role": "user", "content": "write code for saying hi from LiteLLM"}]
+    messages=[{"role": "user", "content": "write code for saying hi from LLM"}]
 )
 ```
 
 ## Sample Usage - Streaming
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['DEEPINFRA_API_KEY'] = ""
 response = completion(
     model="deepinfra/meta-llama/Llama-2-70b-chat-hf", 
-    messages=[{"role": "user", "content": "write code for saying hi from LiteLLM"}],
+    messages=[{"role": "user", "content": "write code for saying hi from LLM"}],
     stream=True
 )
 

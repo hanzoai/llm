@@ -1,6 +1,6 @@
 # Using Text Completion Format - with Completion()
 
-If your prefer interfacing with the OpenAI Text Completion format this tutorial covers how to use LiteLLM in this format
+If your prefer interfacing with the OpenAI Text Completion format this tutorial covers how to use LLM in this format
 ```python
 response = openai.Completion.create(
     model="text-davinci-003",
@@ -9,10 +9,10 @@ response = openai.Completion.create(
     max_tokens=100)
 ```
 
-## Using LiteLLM in the Text Completion format
+## Using LLM in the Text Completion format
 ### With gpt-3.5-turbo
 ```python
-from litellm import text_completion
+from llm import text_completion
 response = text_completion(
     model="gpt-3.5-turbo",
     prompt='Write a tagline for a traditional bavarian tavern',

@@ -13,9 +13,9 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from litellm.caching.caching import DualCache
-from litellm.caching.redis_cache import RedisPipelineIncrementOperation
-from litellm.router_strategy.base_routing_strategy import BaseRoutingStrategy
+from llm.caching.caching import DualCache
+from llm.caching.redis_cache import RedisPipelineIncrementOperation
+from llm.router_strategy.base_routing_strategy import BaseRoutingStrategy
 
 
 @pytest.fixture

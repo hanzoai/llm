@@ -18,8 +18,8 @@ import pytest
 from fastapi import Response
 from fastapi.testclient import TestClient
 
-import litellm
-from litellm.proxy.proxy_server import (  # Replace with the actual module where your FastAPI router is defined
+import llm
+from llm.proxy.proxy_server import (  # Replace with the actual module where your FastAPI router is defined
     initialize,
     router,
     save_worker_config,
@@ -31,7 +31,7 @@ def client():
     filepath = os.path.dirname(os.path.abspath(__file__))
     config_fp = f"{filepath}/test_configs/test_guardrails_config.yaml"
     asyncio.run(initialize(config=config_fp))
-    from litellm.proxy.proxy_server import app
+    from llm.proxy.proxy_server import app
 
     return TestClient(app)
 
@@ -46,7 +46,7 @@ def test_active_callbacks(client):
 
     json_response = response.json()
     print(f"json_response={json_response}")
-    _active_callbacks = json_response["litellm.callbacks"]
+    _active_callbacks = json_response["llm.callbacks"]
 
     expected_callback_names = [
         "lakeraAI_Moderation",

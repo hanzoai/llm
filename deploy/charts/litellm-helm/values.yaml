@@ -1,19 +1,19 @@
-# Default values for litellm.
+# Default values for llm.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  # Use "ghcr.io/berriai/litellm-database" for optimized image with database
-  repository: ghcr.io/berriai/litellm-database
+  # Use "ghcr.io/berriai/llm-database" for optimized image with database
+  repository: ghcr.io/berriai/llm-database
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   # tag: "main-latest"
   tag: ""
 
 imagePullSecrets: []
-nameOverride: "litellm"
+nameOverride: "llm"
 fullnameOverride: ""
 
 serviceAccount:
@@ -30,7 +30,7 @@ serviceAccount:
 podAnnotations: {}
 podLabels: {}
 
-# At the time of writing, the litellm docker image requires write access to the
+# At the time of writing, the llm docker image requires write access to the
 #  filesystem on startup so that prisma can install some dependencies.
 podSecurityContext: {}
 securityContext: {}
@@ -41,17 +41,17 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-# A list of Kubernetes Secret objects that will be exported to the LiteLLM proxy
+# A list of Kubernetes Secret objects that will be exported to the LLM proxy
 #  pod as environment variables.  These secrets can then be referenced in the
-#  configuration file (or "litellm" ConfigMap) with `os.environ/<Env Var Name>`
+#  configuration file (or "llm" ConfigMap) with `os.environ/<Env Var Name>`
 environmentSecrets: []
-  # - litellm-env-secret
+  # - llm-env-secret
 
-# A list of Kubernetes ConfigMap objects that will be exported to the LiteLLM proxy
+# A list of Kubernetes ConfigMap objects that will be exported to the LLM proxy
 #  pod as environment variables.  The ConfigMap kv-pairs can then be referenced in the
-#  configuration file (or "litellm" ConfigMap) with `os.environ/<Env Var Name>`
+#  configuration file (or "llm" ConfigMap) with `os.environ/<Env Var Name>`
 environmentConfigMaps: []
-  # - litellm-env-configmap
+  # - llm-env-configmap
 
 service:
   type: ClusterIP
@@ -82,17 +82,17 @@ masterkeySecretName: ""
 masterkeySecretKey: ""
 
 # The elements within proxy_config are rendered as config.yaml for the proxy
-#  Examples: https://github.com/BerriAI/litellm/tree/main/litellm/proxy/example_config_yaml
-#  Reference: https://docs.litellm.ai/docs/proxy/configs
+#  Examples: https://github.com/BerriAI/llm/tree/main/llm/proxy/example_config_yaml
+#  Reference: https://docs.llm.ai/docs/proxy/configs
 proxy_config:
   model_list:
     # At least one model must exist for the proxy to start.
     - model_name: gpt-3.5-turbo
-      litellm_params:
+      llm_params:
         model: gpt-3.5-turbo
         api_key: eXaMpLeOnLy
     - model_name: fake-openai-endpoint
-      litellm_params:
+      llm_params:
         model: openai/fake
         api_key: fake-key
         api_base: https://exampleopenaiendpoint-production.up.railway.app/
@@ -143,7 +143,7 @@ db:
 
   # How to connect to the existing postgres server/cluster
   endpoint: localhost
-  database: litellm
+  database: llm
   url: postgresql://$(DATABASE_USERNAME):$(DATABASE_PASSWORD)@$(DATABASE_HOST)/$(DATABASE_NAME)
   secret:
     name: postgres
@@ -165,15 +165,15 @@ db:
 postgresql:
   architecture: standalone
   auth:
-    username: litellm
-    database: litellm
+    username: llm
+    database: llm
 
     # You should override these on the helm command line with
     #  `--set postgresql.auth.postgres-password=<some good password>,postgresql.auth.password=<some good password>`
     password: NoTaGrEaTpAsSwOrD
     postgres-password: NoTaGrEaTpAsSwOrD
 
-    # A secret is created by this chart (litellm-helm) with the credentials that
+    # A secret is created by this chart (llm-helm) with the credentials that
     #  the new Postgres instance should use.
     # existingSecret: ""
     # secretKeys:

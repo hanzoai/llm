@@ -1,4 +1,4 @@
-# Reliability test Multiple LLM Providers with LiteLLM
+# Reliability test Multiple LLM Providers with LLM
 
 
 
@@ -10,13 +10,13 @@
 
 
 ```python
-!pip install litellm python-dotenv
+!pip install llm python-dotenv
 ```
 
 
 ```python
-import litellm
-from litellm import load_test_model, testing_batch_completion
+import llm
+from llm import load_test_model, testing_batch_completion
 import time
 ```
 
@@ -85,7 +85,7 @@ plt.show()
 
 
     
-![png](litellm_Test_Multiple_Providers_files/litellm_Test_Multiple_Providers_11_0.png)
+![png](llm_Test_Multiple_Providers_files/llm_Test_Multiple_Providers_11_0.png)
     
 
 
@@ -131,6 +131,6 @@ plt.show()
 
 
     
-![png](litellm_Test_Multiple_Providers_files/litellm_Test_Multiple_Providers_14_0.png)
+![png](llm_Test_Multiple_Providers_files/llm_Test_Multiple_Providers_14_0.png)
     
 

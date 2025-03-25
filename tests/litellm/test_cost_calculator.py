@@ -12,7 +12,7 @@ from unittest.mock import MagicMock, patch
 
 from pydantic import BaseModel
 
-from litellm.cost_calculator import response_cost_calculator
+from llm.cost_calculator import response_cost_calculator
 
 
 def test_cost_calculator():

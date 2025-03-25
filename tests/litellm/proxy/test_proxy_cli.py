@@ -16,8 +16,8 @@ sys.path.insert(
     0, os.path.abspath("../../..")
 )  # Adds the parent directory to the system-path
 
-import litellm
-from litellm.proxy.proxy_cli import ProxyInitializationHelpers
+import llm
+from llm.proxy.proxy_cli import ProxyInitializationHelpers
 
 
 class TestProxyInitializationHelpers:
@@ -33,7 +33,7 @@ class TestProxyInitializationHelpers:
 
         # Assert
         mock_version.assert_called_once_with("litellm")
-        mock_echo.assert_called_once_with("\nLiteLLM: Current Version = 1.0.0\n")
+        mock_echo.assert_called_once_with("\nLLM: Current Version = 1.0.0\n")
 
     @patch("httpx.get")
     @patch("builtins.print")
@@ -93,7 +93,7 @@ class TestProxyInitializationHelpers:
         args = ProxyInitializationHelpers._get_default_unvicorn_init_args(
             "localhost", 8000
         )
-        assert args["app"] == "litellm.proxy.proxy_server:app"
+        assert args["app"] == "llm.proxy.proxy_server:app"
         assert args["host"] == "localhost"
         assert args["port"] == 8000
 
@@ -104,7 +104,7 @@ class TestProxyInitializationHelpers:
         assert args["log_config"] == "log_config.json"
 
         # Test with json_logs=True
-        with patch("litellm.json_logs", True):
+        with patch("llm.json_logs", True):
             args = ProxyInitializationHelpers._get_default_unvicorn_init_args(
                 "localhost", 8000
             )

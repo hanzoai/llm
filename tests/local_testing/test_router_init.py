@@ -15,8 +15,8 @@
 
 # from dotenv import load_dotenv
 
-# import litellm
-# from litellm import Router
+# import llm
+# from llm import Router
 
 # load_dotenv()
 
@@ -28,10 +28,10 @@
 
 
 # def test_init_clients():
-#     litellm.set_verbose = True
+#     llm.set_verbose = True
 #     import logging
 
-#     from litellm._logging import verbose_router_logger
+#     from llm._logging import verbose_router_logger
 
 #     verbose_router_logger.setLevel(logging.DEBUG)
 #     try:
@@ -89,7 +89,7 @@
 
 
 # def test_init_clients_basic():
-#     litellm.set_verbose = True
+#     llm.set_verbose = True
 #     try:
 #         print("Test basic client init")
 #         model_list = [
@@ -127,7 +127,7 @@
 #     # init OpenAI text-embedding
 #     # init OpenAI comptaible - Mistral/mistral-medium
 #     # init OpenAI compatible - xinference/bge
-#     litellm.set_verbose = True
+#     llm.set_verbose = True
 #     try:
 #         print("Test basic client init")
 #         model_list = [
@@ -194,7 +194,7 @@
 #     """
 #     import openai
 
-#     litellm.set_verbose = True
+#     llm.set_verbose = True
 #     try:
 #         print("testing init 4 clients with diff timeouts")
 #         model_list = [
@@ -247,7 +247,7 @@
 #     """
 #     import openai
 
-#     litellm.set_verbose = True
+#     llm.set_verbose = True
 #     try:
 #         print("testing init 4 clients with diff timeouts")
 #         model_list = [
@@ -332,7 +332,7 @@
 #     )
 
 #     assert openai_client._base_url == "http://0.0.0.0:9997"
-#     assert "xinference" in litellm.openai_compatible_providers
+#     assert "xinference" in llm.openai_compatible_providers
 #     print("passed")
 
 
@@ -498,10 +498,10 @@
 # def test_init_clients_azure_command_r_plus():
 #     # This tests that the router uses the OpenAI client for Azure/Command-R+
 #     # For azure/command-r-plus we need to use openai.OpenAI because of how the Azure provider requires requests being sent
-#     litellm.set_verbose = True
+#     llm.set_verbose = True
 #     import logging
 
-#     from litellm._logging import verbose_router_logger
+#     from llm._logging import verbose_router_logger
 
 #     verbose_router_logger.setLevel(logging.DEBUG)
 #     try:
@@ -602,11 +602,11 @@
 
 
 # def test_init_clients_async_mode():
-#     litellm.set_verbose = True
+#     llm.set_verbose = True
 #     import logging
 
-#     from litellm._logging import verbose_router_logger
-#     from litellm.types.router import RouterGeneralSettings
+#     from llm._logging import verbose_router_logger
+#     from llm.types.router import RouterGeneralSettings
 
 #     verbose_router_logger.setLevel(logging.DEBUG)
 #     try:

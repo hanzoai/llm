@@ -26,7 +26,7 @@ Turn on/off logging and caching for a specific team id.
 This config would send langfuse logs to 2 different langfuse projects, based on the team id 
 
 ```yaml
-litellm_settings:
+llm_settings:
   default_team_settings: 
     - team_id: "dbe2f686-a686-4896-864a-4c3924458709"
       success_callback: ["langfuse"]
@@ -53,7 +53,7 @@ All requests made with these keys will log data to their team-specific logging. 
 
 :::info
 
-✨ This is an Enterprise only feature [Get Started with Enterprise here](https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat)
+✨ This is an Enterprise only feature [Get Started with Enterprise here](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
 
 :::
 
@@ -184,8 +184,8 @@ curl -X GET 'http://localhost:4000/team/dbe2f686-a686-4896-864a-4c3924458709/cal
 
 ### Team Logging Endpoints
 
-- [`POST /team/{team_id}/callback` Add a success/failure callback to a team](https://litellm-api.up.railway.app/#/team%20management/add_team_callbacks_team__team_id__callback_post)
-- [`GET /team/{team_id}/callback` - Get the success/failure callbacks and variables for a team](https://litellm-api.up.railway.app/#/team%20management/get_team_callbacks_team__team_id__callback_get)
+- [`POST /team/{team_id}/callback` Add a success/failure callback to a team](https://llm-api.up.railway.app/#/team%20management/add_team_callbacks_team__team_id__callback_post)
+- [`GET /team/{team_id}/callback` - Get the success/failure callbacks and variables for a team](https://llm-api.up.railway.app/#/team%20management/get_team_callbacks_team__team_id__callback_get)
 
 
 
@@ -197,7 +197,7 @@ Use the `/key/generate` or `/key/update` endpoints to add logging callbacks to a
 
 :::info
 
-✨ This is an Enterprise only feature [Get Started with Enterprise here](https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat)
+✨ This is an Enterprise only feature [Get Started with Enterprise here](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
 
 :::
 
@@ -329,7 +329,7 @@ curl -X POST 'http://0.0.0.0:4000/key/generate' \
 
 ---
 
-Help us improve this feature, by filing a [ticket here](https://github.com/BerriAI/litellm/issues)
+Help us improve this feature, by filing a [ticket here](https://github.com/BerriAI/llm/issues)
 
 ### Check if key callbacks are configured correctly `/key/health`
 
@@ -395,9 +395,9 @@ Example config.yaml with globally disabled prompt logging (message redaction)
 ```yaml
 model_list:
  - model_name: gpt-4o
-    litellm_params:
+    llm_params:
       model: gpt-4o
-litellm_settings:
+llm_settings:
   callbacks: ["datadog"]
   turn_off_message_logging: True # 👈 Globally logging prompt / response is disabled
 ```

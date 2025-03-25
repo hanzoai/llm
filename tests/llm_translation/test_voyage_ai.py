@@ -11,14 +11,14 @@ sys.path.insert(
 
 
 from base_embedding_unit_tests import BaseLLMEmbeddingTest
-import litellm
-from litellm.llms.custom_httpx.http_handler import HTTPHandler
+import llm
+from llm.llms.custom_httpx.http_handler import HTTPHandler
 from unittest.mock import patch, MagicMock
 
 
 class TestVoyageAI(BaseLLMEmbeddingTest):
-    def get_custom_llm_provider(self) -> litellm.LlmProviders:
-        return litellm.LlmProviders.VOYAGE
+    def get_custom_llm_provider(self) -> llm.LlmProviders:
+        return llm.LlmProviders.VOYAGE
 
     def get_base_embedding_call_args(self) -> dict:
         return {
@@ -30,10 +30,10 @@ def test_voyage_ai_embedding_extra_params():
     try:
 
         client = HTTPHandler()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         with patch.object(client, "post") as mock_client:
-            response = litellm.embedding(
+            response = llm.embedding(
                 model="voyage/voyage-3-lite",
                 input=["a"],
                 dimensions=512,
@@ -60,10 +60,10 @@ def test_voyage_ai_embedding_prompt_token_mapping():
     try:
 
         client = HTTPHandler()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         with patch.object(client, "post", return_value=MagicMock(status_code=200, json=lambda: {"usage": {"total_tokens": 120}})) as mock_client:
-            response = litellm.embedding(
+            response = llm.embedding(
                 model="voyage/voyage-3-lite",
                 input=["a"],
                 dimensions=512,

@@ -31,8 +31,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import httpx
 from dotenv import load_dotenv
 
-import litellm
-from litellm import (
+import llm
+from llm import (
     ChatCompletionDeltaChunk,
     ChatCompletionUsageBlock,
     CustomLLM,
@@ -43,9 +43,9 @@ from litellm import (
     get_llm_provider,
     image_generation,
 )
-from litellm.utils import ModelResponseIterator
-from litellm.types.utils import ImageResponse, ImageObject
-from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
+from llm.utils import ModelResponseIterator
+from llm.types.utils import ImageResponse, ImageObject
+from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
 
 
 class CustomModelResponseIterator:
@@ -122,9 +122,9 @@ class MyCustomLLM(CustomLLM):
         logger_fn=None,
         headers={},
         timeout: Optional[Union[float, openai.Timeout]] = None,
-        client: Optional[litellm.HTTPHandler] = None,
+        client: Optional[llm.HTTPHandler] = None,
     ) -> ModelResponse:
-        return litellm.completion(
+        return llm.completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hello world"}],
             mock_response="Hi!",
@@ -147,9 +147,9 @@ class MyCustomLLM(CustomLLM):
         logger_fn=None,
         headers={},
         timeout: Optional[Union[float, openai.Timeout]] = None,
-        client: Optional[litellm.AsyncHTTPHandler] = None,
-    ) -> litellm.ModelResponse:
-        return litellm.completion(
+        client: Optional[llm.AsyncHTTPHandler] = None,
+    ) -> llm.ModelResponse:
+        return llm.completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hello world"}],
             mock_response="Hi!",
@@ -172,7 +172,7 @@ class MyCustomLLM(CustomLLM):
         logger_fn=None,
         headers={},
         timeout: Optional[Union[float, openai.Timeout]] = None,
-        client: Optional[litellm.HTTPHandler] = None,
+        client: Optional[llm.HTTPHandler] = None,
     ) -> Iterator[GenericStreamingChunk]:
         generic_streaming_chunk: GenericStreamingChunk = {
             "finish_reason": "stop",
@@ -208,7 +208,7 @@ class MyCustomLLM(CustomLLM):
         logger_fn=None,
         headers={},
         timeout: Optional[Union[float, openai.Timeout]] = None,
-        client: Optional[litellm.AsyncHTTPHandler] = None,
+        client: Optional[llm.AsyncHTTPHandler] = None,
     ) -> AsyncIterator[GenericStreamingChunk]:  # type: ignore
         generic_streaming_chunk: GenericStreamingChunk = {
             "finish_reason": "stop",
@@ -260,10 +260,10 @@ class MyCustomLLM(CustomLLM):
 
 def test_get_llm_provider():
     """"""
-    from litellm.utils import custom_llm_setup
+    from llm.utils import custom_llm_setup
 
     my_custom_llm = MyCustomLLM()
-    litellm.custom_provider_map = [
+    llm.custom_provider_map = [
         {"provider": "custom_llm", "custom_handler": my_custom_llm}
     ]
 
@@ -276,7 +276,7 @@ def test_get_llm_provider():
 
 def test_simple_completion():
     my_custom_llm = MyCustomLLM()
-    litellm.custom_provider_map = [
+    llm.custom_provider_map = [
         {"provider": "custom_llm", "custom_handler": my_custom_llm}
     ]
     resp = completion(
@@ -290,7 +290,7 @@ def test_simple_completion():
 @pytest.mark.asyncio
 async def test_simple_acompletion():
     my_custom_llm = MyCustomLLM()
-    litellm.custom_provider_map = [
+    llm.custom_provider_map = [
         {"provider": "custom_llm", "custom_handler": my_custom_llm}
     ]
     resp = await acompletion(
@@ -303,7 +303,7 @@ async def test_simple_acompletion():
 
 def test_simple_completion_streaming():
     my_custom_llm = MyCustomLLM()
-    litellm.custom_provider_map = [
+    llm.custom_provider_map = [
         {"provider": "custom_llm", "custom_handler": my_custom_llm}
     ]
     resp = completion(
@@ -323,10 +323,10 @@ def test_simple_completion_streaming():
 @pytest.mark.asyncio
 async def test_simple_completion_async_streaming():
     my_custom_llm = MyCustomLLM()
-    litellm.custom_provider_map = [
+    llm.custom_provider_map = [
         {"provider": "custom_llm", "custom_handler": my_custom_llm}
     ]
-    resp = await litellm.acompletion(
+    resp = await llm.acompletion(
         model="custom_llm/my-fake-model",
         messages=[{"role": "user", "content": "Hello world!"}],
         stream=True,
@@ -342,7 +342,7 @@ async def test_simple_completion_async_streaming():
 
 def test_simple_image_generation():
     my_custom_llm = MyCustomLLM()
-    litellm.custom_provider_map = [
+    llm.custom_provider_map = [
         {"provider": "custom_llm", "custom_handler": my_custom_llm}
     ]
     resp = image_generation(
@@ -356,10 +356,10 @@ def test_simple_image_generation():
 @pytest.mark.asyncio
 async def test_simple_image_generation_async():
     my_custom_llm = MyCustomLLM()
-    litellm.custom_provider_map = [
+    llm.custom_provider_map = [
         {"provider": "custom_llm", "custom_handler": my_custom_llm}
     ]
-    resp = await litellm.aimage_generation(
+    resp = await llm.aimage_generation(
         model="custom_llm/my-fake-model",
         prompt="Hello world",
     )
@@ -370,7 +370,7 @@ async def test_simple_image_generation_async():
 @pytest.mark.asyncio
 async def test_image_generation_async_additional_params():
     my_custom_llm = MyCustomLLM()
-    litellm.custom_provider_map = [
+    llm.custom_provider_map = [
         {"provider": "custom_llm", "custom_handler": my_custom_llm}
     ]
 
@@ -378,7 +378,7 @@ async def test_image_generation_async_additional_params():
         my_custom_llm, "aimage_generation", new=AsyncMock()
     ) as mock_client:
         try:
-            resp = await litellm.aimage_generation(
+            resp = await llm.aimage_generation(
                 model="custom_llm/my-fake-model",
                 prompt="Hello world",
                 api_key="my-api-key",
@@ -427,8 +427,8 @@ def test_get_supported_openai_params():
                 "logit_bias",
             ]
 
-        def completion(self, *args, **kwargs) -> litellm.ModelResponse:
-            return litellm.completion(
+        def completion(self, *args, **kwargs) -> llm.ModelResponse:
+            return llm.completion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Hello world"}],
                 mock_response="Hi!",
@@ -436,7 +436,7 @@ def test_get_supported_openai_params():
 
     my_custom_llm = MyCustomLLM()
 
-    litellm.custom_provider_map = [  # 👈 KEY STEP - REGISTER HANDLER
+    llm.custom_provider_map = [  # 👈 KEY STEP - REGISTER HANDLER
         {"provider": "my-custom-llm", "custom_handler": my_custom_llm}
     ]
 
@@ -448,7 +448,7 @@ def test_get_supported_openai_params():
     assert resp.choices[0].message.content == "Hi!"
 
     # Get supported openai params
-    from litellm import get_supported_openai_params
+    from llm import get_supported_openai_params
 
     response = get_supported_openai_params(model="my-custom-llm/my-fake-model")
     assert response is not None

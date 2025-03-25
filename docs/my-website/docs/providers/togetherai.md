@@ -2,7 +2,7 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # Together AI 
-LiteLLM supports all models on Together AI. 
+LLM supports all models on Together AI. 
 
 ## API Keys
 
@@ -13,7 +13,7 @@ os.environ["TOGETHERAI_API_KEY"] = "your-api-key"
 ## Sample Usage
 
 ```python
-from litellm import completion 
+from llm import completion 
 
 os.environ["TOGETHERAI_API_KEY"] = "your-api-key"
 
@@ -23,9 +23,9 @@ completion(model="together_ai/togethercomputer/Llama-2-7B-32K-Instruct", message
 ```
 
 ## Together AI Models
-liteLLM supports `non-streaming` and `streaming` requests to all models on https://api.together.xyz/
+llm supports `non-streaming` and `streaming` requests to all models on https://api.together.xyz/
 
-Example TogetherAI Usage - Note: liteLLM supports all models deployed on TogetherAI
+Example TogetherAI Usage - Note: llm supports all models deployed on TogetherAI
 
 
 ### Llama LLMs - Chat
@@ -82,10 +82,10 @@ Example TogetherAI Usage - Note: liteLLM supports all models deployed on Togethe
 Using a chat model on Together AI with it's own prompt format?
 
 ### Using Llama2 Instruct models
-If you're using Together AI's Llama2 variants( `model=togethercomputer/llama-2..-instruct`), LiteLLM can automatically translate between the OpenAI prompt format and the TogetherAI Llama2 one (`[INST]..[/INST]`). 
+If you're using Together AI's Llama2 variants( `model=togethercomputer/llama-2..-instruct`), LLM can automatically translate between the OpenAI prompt format and the TogetherAI Llama2 one (`[INST]..[/INST]`). 
 
 ```python
-from litellm import completion 
+from llm import completion 
 
 # set env variable 
 os.environ["TOGETHERAI_API_KEY"] = ""
@@ -97,7 +97,7 @@ completion(model="together_ai/togethercomputer/Llama-2-7B-32K-Instruct", message
 
 ### Using another model
 
-You can create a custom prompt template on LiteLLM (and we [welcome PRs](https://github.com/BerriAI/litellm) to add them to the main repo 🤗)
+You can create a custom prompt template on LLM (and we [welcome PRs](https://github.com/BerriAI/llm) to add them to the main repo 🤗)
 
 Let's make one for `OpenAssistant/llama2-70b-oasst-sft-v10`!
 
@@ -112,11 +112,11 @@ The accepted template format is: [Reference](https://huggingface.co/OpenAssistan
 """
 ```
 
-Let's register our custom prompt template: [Implementation Code](https://github.com/BerriAI/litellm/blob/64f3d3c56ef02ac5544983efc78293de31c1c201/litellm/llms/prompt_templates/factory.py#L77)
+Let's register our custom prompt template: [Implementation Code](https://github.com/BerriAI/llm/blob/64f3d3c56ef02ac5544983efc78293de31c1c201/llm/llms/prompt_templates/factory.py#L77)
 ```python
-import litellm 
+import llm 
 
-litellm.register_prompt_template(
+llm.register_prompt_template(
 	    model="OpenAssistant/llama2-70b-oasst-sft-v10",
 	    roles={
             "system": {
@@ -138,7 +138,7 @@ litellm.register_prompt_template(
 Let's use it! 
 
 ```python
-from litellm import completion 
+from llm import completion 
 
 # set env variable 
 os.environ["TOGETHERAI_API_KEY"] = ""
@@ -151,13 +151,13 @@ completion(model="together_ai/OpenAssistant/llama2-70b-oasst-sft-v10", messages=
 **Complete Code**
 
 ```python
-import litellm 
-from litellm import completion
+import llm 
+from llm import completion
 
 # set env variable 
 os.environ["TOGETHERAI_API_KEY"] = ""
 
-litellm.register_prompt_template(
+llm.register_prompt_template(
 	    model="OpenAssistant/llama2-70b-oasst-sft-v10",
 	    roles={
             "system": {
@@ -203,7 +203,7 @@ print(response)
     "completion_tokens": 16,
     "total_tokens": 23
   },
-  "litellm_call_id": "f21315db-afd6-4c1e-b43a-0b5682de4b06"
+  "llm_call_id": "f21315db-afd6-4c1e-b43a-0b5682de4b06"
 }
 ```
 
@@ -215,10 +215,10 @@ print(response)
 
 
 <Tabs>
-<TabItem value="sdk" label="LiteLLM SDK Usage">
+<TabItem value="sdk" label="LLM SDK Usage">
 
 ```python
-from litellm import rerank
+from llm import rerank
 import os
 
 os.environ["TOGETHERAI_API_KEY"] = "sk-.."
@@ -241,26 +241,26 @@ print(response)
 ```
 </TabItem>
 
-<TabItem value="proxy" label="LiteLLM Proxy Usage">
+<TabItem value="proxy" label="LLM Proxy Usage">
 
-LiteLLM provides an cohere api compatible `/rerank` endpoint for Rerank calls.
+LLM provides an cohere api compatible `/rerank` endpoint for Rerank calls.
 
 **Setup**
 
-Add this to your litellm proxy config.yaml
+Add this to your llm proxy config.yaml
 
 ```yaml
 model_list:
   - model_name: Salesforce/Llama-Rank-V1
-    litellm_params:
+    llm_params:
       model: together_ai/Salesforce/Llama-Rank-V1
       api_key: os.environ/TOGETHERAI_API_KEY
 ```
 
-Start litellm
+Start llm
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```

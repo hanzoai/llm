@@ -1,4 +1,4 @@
-from litellm.types.files import (
+from llm.types.files import (
     FILE_EXTENSIONS,
     FILE_MIME_TYPES,
     FileType,

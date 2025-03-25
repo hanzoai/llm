@@ -1,6 +1,6 @@
 apiVersion: v1
 entries:
-  litellm-helm:
+  llm-helm:
   - apiVersion: v2
     appVersion: v1.43.18
     created: "2024-08-19T23:58:25.331689+08:00"
@@ -15,10 +15,10 @@ entries:
       version: '>=18.0.0'
     description: Call all LLM APIs using the OpenAI format
     digest: 0411df3dc42868be8af3ad3e00cb252790e6bd7ad15f5b77f1ca5214573a8531
-    name: litellm-helm
+    name: llm-helm
     type: application
     urls:
-    - https://berriai.github.io/litellm/litellm-helm-0.2.3.tgz
+    - https://berriai.github.io/llm/llm-helm-0.2.3.tgz
     version: 0.2.3
   postgresql:
   - annotations:
@@ -60,7 +60,7 @@ entries:
     sources:
     - https://github.com/bitnami/charts/tree/main/bitnami/postgresql
     urls:
-    - https://berriai.github.io/litellm/charts/postgresql-14.3.1.tgz
+    - https://berriai.github.io/llm/charts/postgresql-14.3.1.tgz
     version: 14.3.1
   redis:
   - annotations:
@@ -103,6 +103,6 @@ entries:
     sources:
     - https://github.com/bitnami/charts/tree/main/bitnami/redis
     urls:
-    - https://berriai.github.io/litellm/charts/redis-18.19.1.tgz
+    - https://berriai.github.io/llm/charts/redis-18.19.1.tgz
     version: 18.19.1
 generated: "2024-08-19T23:58:25.322532+08:00"

@@ -10,9 +10,9 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../../../..")
 )  # Adds the parent directory to the system path
-import litellm
+import llm
 
-from litellm.llms.custom_httpx.llm_http_handler import BaseLLMHTTPHandler
+from llm.llms.custom_httpx.llm_http_handler import BaseLLMHTTPHandler
 
 @pytest.fixture
 def test_bytes():

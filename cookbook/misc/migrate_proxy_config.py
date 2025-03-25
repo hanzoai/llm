@@ -1,5 +1,5 @@
 """
-LiteLLM Migration Script!
+LLM Migration Script!
 
 Takes a config.yaml and calls /model/new 
 

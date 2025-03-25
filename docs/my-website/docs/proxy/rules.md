@@ -11,7 +11,7 @@ def my_custom_rule(input): # receives the model response
     if len(input) < 5: 
       return {
             "decision": False,
-            "message": "This violates LiteLLM Proxy Rules. Response too short"
+            "message": "This violates LLM Proxy Rules. Response too short"
       }
     return {"decision": True}   # message not required since, request will pass
 ```
@@ -19,14 +19,14 @@ def my_custom_rule(input): # receives the model response
 ### Step 2. Point it to your proxy
 
 ```python
-litellm_settings:
+llm_settings:
   post_call_rules: post_call_rules.my_custom_rule
 ```
 
 ### Step 3. Start + test your proxy
 
 ```bash
-$ litellm /path/to/config.yaml
+$ llm /path/to/config.yaml
 ```
 
 ```bash
@@ -46,13 +46,13 @@ This will now check if a response is > len 5, and if it fails, it'll retry a cal
 
 ### Response that fail the rule
 
-This is the response from LiteLLM Proxy on failing a rule
+This is the response from LLM Proxy on failing a rule
 
 ```json
 {
   "error":
     {
-      "message":"This violates LiteLLM Proxy Rules. Response too short",
+      "message":"This violates LLM Proxy Rules. Response too short",
       "type":null,
       "param":null,
       "code":500

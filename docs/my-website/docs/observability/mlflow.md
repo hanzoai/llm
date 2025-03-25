@@ -6,7 +6,7 @@ import Image from '@theme/IdealImage';
 
 **MLflow** is an end-to-end open source MLOps platform for [experiment tracking](https://www.mlflow.org/docs/latest/tracking.html), [model management](https://www.mlflow.org/docs/latest/models.html), [evaluation](https://www.mlflow.org/docs/latest/llms/llm-evaluate/index.html), [observability (tracing)](https://www.mlflow.org/docs/latest/llms/tracing/index.html), and [deployment](https://www.mlflow.org/docs/latest/deployment/index.html). MLflow empowers teams to collaboratively develop and refine LLM applications efficiently.
 
-MLflow’s integration with LiteLLM supports advanced observability compatible with OpenTelemetry.
+MLflow’s integration with LLM supports advanced observability compatible with OpenTelemetry.
 
 
 <Image img={require('../../img/mlflow_tracing.png')} />
@@ -20,28 +20,28 @@ Install MLflow:
 pip install mlflow
 ```
 
-To enable MLflow auto tracing for LiteLLM:
+To enable MLflow auto tracing for LLM:
 
 ```python
 import mlflow
 
-mlflow.litellm.autolog()
+mlflow.llm.autolog()
 
-# Alternative, you can set the callback manually in LiteLLM
-# litellm.callbacks = ["mlflow"]
+# Alternative, you can set the callback manually in LLM
+# llm.callbacks = ["mlflow"]
 ```
 
 Since MLflow is open-source and free, **no sign-up or API key is needed to log traces!**
 
 ```python
-import litellm
+import llm
 import os
 
 # Set your LLM provider's API key
 os.environ["OPENAI_API_KEY"] = ""
 
-# Call LiteLLM as usual
-response = litellm.completion(
+# Call LLM as usual
+response = llm.completion(
     model="gpt-4o-mini",
     messages=[
       {"role": "user", "content": "Hi 👋 - i'm openai"}
@@ -57,13 +57,13 @@ mlflow ui
 
 ## Tracing Tool Calls
 
-MLflow integration with LiteLLM support tracking tool calls in addition to the messages.
+MLflow integration with LLM support tracking tool calls in addition to the messages.
 
 ```python
 import mlflow
 
-# Enable MLflow auto-tracing for LiteLLM
-mlflow.litellm.autolog()
+# Enable MLflow auto-tracing for LLM
+mlflow.llm.autolog()
 
 # Define the tool function.
 def get_weather(location: str) -> str:
@@ -92,8 +92,8 @@ get_weather_tool = {
     },
 }
 
-# Call LiteLLM as usual
-response = litellm.completion(
+# Call LLM as usual
+response = llm.completion(
     model="gpt-4o-mini",
     messages=[
       {"role": "user", "content": "What's the weather like in Paris today?"}
@@ -107,9 +107,9 @@ response = litellm.completion(
 
 ## Evaluation
 
-MLflow LiteLLM integration allow you to run qualitative assessment against LLM to evaluate or/and monitor your GenAI application.
+MLflow LLM integration allow you to run qualitative assessment against LLM to evaluate or/and monitor your GenAI application.
 
-Visit [Evaluate LLMs Tutorial](../tutorials/eval_suites.md) for the complete guidance on how to run evaluation suite with LiteLLM and MLflow.
+Visit [Evaluate LLMs Tutorial](../tutorials/eval_suites.md) for the complete guidance on how to run evaluation suite with LLM and MLflow.
 
 
 ## Exporting Traces to OpenTelemetry collectors
@@ -125,17 +125,17 @@ os.environ["OTEL_SERVICE_NAME"] = "<your-service-name>"
 
 See [MLflow documentation](https://mlflow.org/docs/latest/llms/tracing/index.html#using-opentelemetry-collector-for-exporting-traces) for more details.
 
-## Combine LiteLLM Trace with Your Application Trace
+## Combine LLM Trace with Your Application Trace
 
-LiteLLM is often part of larger LLM applications, such as agentic models. MLflow Tracing allows you to instrument custom Python code, which can then be combined with LiteLLM traces.
+LLM is often part of larger LLM applications, such as agentic models. MLflow Tracing allows you to instrument custom Python code, which can then be combined with LLM traces.
 
 ```python
-import litellm
+import llm
 import mlflow
 from mlflow.entities import SpanType
 
-# Enable MLflow auto-tracing for LiteLLM
-mlflow.litellm.autolog()
+# Enable MLflow auto-tracing for LLM
+mlflow.llm.autolog()
 
 
 class CustomAgent:
@@ -145,7 +145,7 @@ class CustomAgent:
         # do something
 
         while i < self.max_turns:
-            response = litellm.completion(
+            response = llm.completion(
                 model="gpt-4o-mini",
                 messages=messages,
             )
@@ -158,7 +158,7 @@ class CustomAgent:
         ...
 ```
 
-This approach generates a unified trace, combining your custom Python code with LiteLLM calls.
+This approach generates a unified trace, combining your custom Python code with LLM calls.
 
 
 ## Support

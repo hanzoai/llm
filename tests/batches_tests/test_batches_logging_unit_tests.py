@@ -15,10 +15,10 @@ import time
 
 import pytest
 from typing import Optional
-import litellm
-from litellm import create_batch, create_file
-from litellm._logging import verbose_logger
-from litellm.batches.batch_utils import (
+import llm
+from llm import create_batch, create_file
+from llm._logging import verbose_logger
+from llm.batches.batch_utils import (
     _batch_cost_calculator,
     _get_file_content_as_dictionary,
     _get_batch_job_cost_from_file_content,
@@ -150,13 +150,13 @@ def test_get_batch_job_total_usage_from_file_content(sample_file_content_dict):
 @pytest.mark.asyncio
 async def test_batch_cost_calculator(sample_file_content_dict):
     """
-    mock litellm.completion_cost to return 0.5
+    mock llm.completion_cost to return 0.5
 
     we know sample_file_content_dict has 2 successful responses
 
     so we expect the cost to be 0.5 * 2 = 1.0
     """
-    with patch("litellm.completion_cost", return_value=0.5):
+    with patch("llm.completion_cost", return_value=0.5):
         cost = await _batch_cost_calculator(
             file_content_dictionary=sample_file_content_dict,
             custom_llm_provider="openai",

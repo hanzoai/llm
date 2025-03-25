@@ -18,8 +18,8 @@ import os
 
 from dotenv import load_dotenv
 
-import litellm
-from litellm import Router
+import llm
+from llm import Router
 
 load_dotenv()
 
@@ -81,7 +81,7 @@ def test_router_timeouts():
     for question in questions_list:
         messages = [{"content": question["content"], "role": "user"}]
 
-        prompt_tokens = litellm.token_counter(text=question["content"], model="gpt-4")
+        prompt_tokens = llm.token_counter(text=question["content"], model="gpt-4")
         print("prompt_tokens = ", prompt_tokens)
 
         response = router.completion(
@@ -121,7 +121,7 @@ async def test_router_timeouts_bedrock():
         num_retries=0,
     )
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     try:
         response = await router.acompletion(
             model="bedrock",
@@ -149,11 +149,11 @@ def test_router_timeout_with_retries_anthropic_model(num_retries, expected_call_
     """
     If request hits custom timeout, ensure it's retried.
     """
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
     import time
 
-    litellm.num_retries = num_retries
-    litellm.request_timeout = 0.000001
+    llm.num_retries = num_retries
+    llm.request_timeout = 0.000001
 
     router = Router(
         model_list=[
@@ -182,7 +182,7 @@ def test_router_timeout_with_retries_anthropic_model(num_retries, expected_call_
                 messages=[{"role": "user", "content": "hello, who are u"}],
                 client=custom_client,
             )
-        except litellm.Timeout:
+        except llm.Timeout:
             pass
 
         assert mock_client.call_count == expected_call_count
@@ -198,10 +198,10 @@ def test_router_timeout_with_retries_anthropic_model(num_retries, expected_call_
 def test_router_stream_timeout(model):
     import os
     from dotenv import load_dotenv
-    import litellm
-    from litellm.router import Router, RetryPolicy, AllowedFailsPolicy
+    import llm
+    from llm.router import Router, RetryPolicy, AllowedFailsPolicy
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     model_list = [
         {
@@ -286,10 +286,10 @@ def test_router_stream_timeout(model):
 def test_unit_test_streaming_timeout(stream):
     import os
     from dotenv import load_dotenv
-    import litellm
-    from litellm.router import Router, RetryPolicy, AllowedFailsPolicy
+    import llm
+    from llm.router import Router, RetryPolicy, AllowedFailsPolicy
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     model_list = [
         {

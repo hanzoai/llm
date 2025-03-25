@@ -10,14 +10,14 @@ sys.path.insert(
 
 import httpx
 import pytest
-import litellm
+import llm
 from typing import AsyncGenerator
-from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
-from litellm.proxy.pass_through_endpoints.types import EndpointType
-from litellm.proxy.pass_through_endpoints.success_handler import (
+from llm.litellm_core_utils.litellm_logging import Logging as LLMLoggingObj
+from llm.proxy.pass_through_endpoints.types import EndpointType
+from llm.proxy.pass_through_endpoints.success_handler import (
     PassThroughEndpointLogging,
 )
-from litellm.proxy.pass_through_endpoints.streaming_handler import (
+from llm.proxy.pass_through_endpoints.streaming_handler import (
     PassThroughStreamingHandler,
 )
 

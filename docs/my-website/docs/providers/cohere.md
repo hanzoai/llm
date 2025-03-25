@@ -14,7 +14,7 @@ os.environ["COHERE_API_KEY"] = ""
 ## Usage
 
 ```python
-from litellm import completion
+from llm import completion
 
 ## set ENV variables
 os.environ["COHERE_API_KEY"] = "cohere key"
@@ -29,7 +29,7 @@ response = completion(
 ## Usage - Streaming
 
 ```python
-from litellm import completion
+from llm import completion
 
 ## set ENV variables
 os.environ["COHERE_API_KEY"] = "cohere key"
@@ -60,18 +60,18 @@ for chunk in response:
 ## Embedding
 
 ```python
-from litellm import embedding
+from llm import embedding
 os.environ["COHERE_API_KEY"] = "cohere key"
 
 # cohere call
 response = embedding(
     model="embed-english-v3.0", 
-    input=["good morning from litellm", "this is another item"], 
+    input=["good morning from llm", "this is another item"], 
 )
 ```
 
 ### Setting - Input Type for v3 models
-v3 Models have a required parameter: `input_type`. LiteLLM defaults to `search_document`. It can be one of the following four values:
+v3 Models have a required parameter: `input_type`. LLM defaults to `search_document`. It can be one of the following four values:
 
 - `input_type="search_document"`: (default) Use this for texts (documents) you want to store in your vector database
 - `input_type="search_query"`: Use this for search queries to find the most relevant documents in your vector database
@@ -82,13 +82,13 @@ https://txt.cohere.com/introducing-embed-v3/
 
 
 ```python
-from litellm import embedding
+from llm import embedding
 os.environ["COHERE_API_KEY"] = "cohere key"
 
 # cohere call
 response = embedding(
     model="embed-english-v3.0", 
-    input=["good morning from litellm", "this is another item"], 
+    input=["good morning from llm", "this is another item"], 
     input_type="search_document" 
 )
 ```
@@ -96,25 +96,25 @@ response = embedding(
 ### Supported Embedding Models
 | Model Name               | Function Call                                                |
 |--------------------------|--------------------------------------------------------------|
-| embed-english-v3.0       | `embedding(model="embed-english-v3.0", input=["good morning from litellm", "this is another item"])` |
-| embed-english-light-v3.0 | `embedding(model="embed-english-light-v3.0", input=["good morning from litellm", "this is another item"])` |
-| embed-multilingual-v3.0  | `embedding(model="embed-multilingual-v3.0", input=["good morning from litellm", "this is another item"])` |
-| embed-multilingual-light-v3.0 | `embedding(model="embed-multilingual-light-v3.0", input=["good morning from litellm", "this is another item"])` |
-| embed-english-v2.0       | `embedding(model="embed-english-v2.0", input=["good morning from litellm", "this is another item"])` |
-| embed-english-light-v2.0 | `embedding(model="embed-english-light-v2.0", input=["good morning from litellm", "this is another item"])` |
-| embed-multilingual-v2.0  | `embedding(model="embed-multilingual-v2.0", input=["good morning from litellm", "this is another item"])` |
+| embed-english-v3.0       | `embedding(model="embed-english-v3.0", input=["good morning from llm", "this is another item"])` |
+| embed-english-light-v3.0 | `embedding(model="embed-english-light-v3.0", input=["good morning from llm", "this is another item"])` |
+| embed-multilingual-v3.0  | `embedding(model="embed-multilingual-v3.0", input=["good morning from llm", "this is another item"])` |
+| embed-multilingual-light-v3.0 | `embedding(model="embed-multilingual-light-v3.0", input=["good morning from llm", "this is another item"])` |
+| embed-english-v2.0       | `embedding(model="embed-english-v2.0", input=["good morning from llm", "this is another item"])` |
+| embed-english-light-v2.0 | `embedding(model="embed-english-light-v2.0", input=["good morning from llm", "this is another item"])` |
+| embed-multilingual-v2.0  | `embedding(model="embed-multilingual-v2.0", input=["good morning from llm", "this is another item"])` |
 
 ## Rerank 
 
 ### Usage
 
-LiteLLM supports the v1 and v2 clients for Cohere rerank. By default, the `rerank` endpoint uses the v2 client, but you can specify the v1 client by explicitly calling `v1/rerank`
+LLM supports the v1 and v2 clients for Cohere rerank. By default, the `rerank` endpoint uses the v2 client, but you can specify the v1 client by explicitly calling `v1/rerank`
 
 <Tabs>
-<TabItem value="sdk" label="LiteLLM SDK Usage">
+<TabItem value="sdk" label="LLM SDK Usage">
 
 ```python
-from litellm import rerank
+from llm import rerank
 import os
 
 os.environ["COHERE_API_KEY"] = "sk-.."
@@ -137,30 +137,30 @@ print(response)
 ```
 </TabItem>
 
-<TabItem value="proxy" label="LiteLLM Proxy Usage">
+<TabItem value="proxy" label="LLM Proxy Usage">
 
-LiteLLM provides an cohere api compatible `/rerank` endpoint for Rerank calls.
+LLM provides an cohere api compatible `/rerank` endpoint for Rerank calls.
 
 **Setup**
 
-Add this to your litellm proxy config.yaml
+Add this to your llm proxy config.yaml
 
 ```yaml
 model_list:
   - model_name: Salesforce/Llama-Rank-V1
-    litellm_params:
+    llm_params:
       model: together_ai/Salesforce/Llama-Rank-V1
       api_key: os.environ/TOGETHERAI_API_KEY
   - model_name: rerank-english-v3.0
-    litellm_params:
+    llm_params:
       model: cohere/rerank-english-v3.0
       api_key: os.environ/COHERE_API_KEY
 ```
 
-Start litellm
+Start llm
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```

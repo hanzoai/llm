@@ -11,9 +11,9 @@
 #     0, os.path.abspath("../..")
 # )  # Adds the parent directory to the system path
 # import pytest, logging
-# import litellm
-# from litellm import embedding, completion, completion_cost, Timeout
-# from litellm import RateLimitError
+# import llm
+# from llm import embedding, completion, completion_cost, Timeout
+# from llm import RateLimitError
 
 
 # import sys, os, time
@@ -31,9 +31,9 @@
 # )  # Adds the parent directory to the system path
 
 # import pytest, logging, requests
-# import litellm
-# from litellm import embedding, completion, completion_cost, Timeout
-# from litellm import RateLimitError
+# import llm
+# from llm import embedding, completion, completion_cost, Timeout
+# from llm import RateLimitError
 # from github import Github
 # import subprocess
 
@@ -55,7 +55,7 @@
 
 # # Provide the owner and name of the repository where the pull request is located
 # repository_owner = "BerriAI"
-# repository_name = "litellm"
+# repository_name = "llm"
 
 # # Get the repository object
 # repo = g.get_repo(f"{repository_owner}/{repository_name}")
@@ -148,7 +148,7 @@
 #         _post_data()
 #         print(f"Received response: {result}")
 #     except Exception as e:
-#         pytest.fail(f"LiteLLM Proxy test failed. Exception: {str(e)}")
+#         pytest.fail(f"LLM Proxy test failed. Exception: {str(e)}")
 
 # def test_add_new_key_max_parallel_limit():
 #     try:
@@ -215,7 +215,7 @@
 
 #         _run_in_parallel()
 #     except Exception as e:
-#         pytest.fail(f"LiteLLM Proxy test failed. Exception: {str(e)}")
+#         pytest.fail(f"LLM Proxy test failed. Exception: {str(e)}")
 
 # def test_add_new_key_max_parallel_limit_streaming():
 #     try:
@@ -266,4 +266,4 @@
 
 #         _run_in_parallel()
 #     except Exception as e:
-#         pytest.fail(f"LiteLLM Proxy test failed. Exception: {str(e)}")
+#         pytest.fail(f"LLM Proxy test failed. Exception: {str(e)}")

@@ -7,31 +7,31 @@ import pytest
 # Add parent directory to system path
 sys.path.insert(0, os.path.abspath("../.."))
 
-import litellm
-from litellm.utils import get_llm_provider, ProviderConfigManager, _check_provider_match
-from litellm import LlmProviders
+import llm
+from llm.utils import get_llm_provider, ProviderConfigManager, _check_provider_match
+from llm import LlmProviders
 
 
 def test_supports_tool_choice_simple_tests():
     """
     simple sanity checks
     """
-    assert litellm.utils.supports_tool_choice(model="gpt-4o") == True
+    assert llm.utils.supports_tool_choice(model="gpt-4o") == True
     assert (
-        litellm.utils.supports_tool_choice(
+        llm.utils.supports_tool_choice(
             model="bedrock/anthropic.claude-3-sonnet-20240229-v1:0"
         )
         == True
     )
     assert (
-        litellm.utils.supports_tool_choice(
+        llm.utils.supports_tool_choice(
             model="anthropic.claude-3-sonnet-20240229-v1:0"
         )
         is True
     )
 
     assert (
-        litellm.utils.supports_tool_choice(
+        llm.utils.supports_tool_choice(
             model="anthropic.claude-3-sonnet-20240229-v1:0",
             custom_llm_provider="bedrock_converse",
         )
@@ -39,20 +39,20 @@ def test_supports_tool_choice_simple_tests():
     )
 
     assert (
-        litellm.utils.supports_tool_choice(model="us.amazon.nova-micro-v1:0") is False
+        llm.utils.supports_tool_choice(model="us.amazon.nova-micro-v1:0") is False
     )
     assert (
-        litellm.utils.supports_tool_choice(model="bedrock/us.amazon.nova-micro-v1:0")
+        llm.utils.supports_tool_choice(model="bedrock/us.amazon.nova-micro-v1:0")
         is False
     )
     assert (
-        litellm.utils.supports_tool_choice(
+        llm.utils.supports_tool_choice(
             model="us.amazon.nova-micro-v1:0", custom_llm_provider="bedrock_converse"
         )
         is False
     )
 
-    assert litellm.utils.supports_tool_choice(model="perplexity/sonar") is False
+    assert llm.utils.supports_tool_choice(model="perplexity/sonar") is False
 
 
 def test_check_provider_match():
@@ -61,17 +61,17 @@ def test_check_provider_match():
     """
     # Test bedrock and bedrock_converse cases
     model_info = {"litellm_provider": "bedrock"}
-    assert litellm.utils._check_provider_match(model_info, "bedrock") is True
-    assert litellm.utils._check_provider_match(model_info, "bedrock_converse") is True
+    assert llm.utils._check_provider_match(model_info, "bedrock") is True
+    assert llm.utils._check_provider_match(model_info, "bedrock_converse") is True
 
     # Test bedrock_converse provider
     model_info = {"litellm_provider": "bedrock_converse"}
-    assert litellm.utils._check_provider_match(model_info, "bedrock") is True
-    assert litellm.utils._check_provider_match(model_info, "bedrock_converse") is True
+    assert llm.utils._check_provider_match(model_info, "bedrock") is True
+    assert llm.utils._check_provider_match(model_info, "bedrock_converse") is True
 
     # Test non-matching provider
     model_info = {"litellm_provider": "bedrock"}
-    assert litellm.utils._check_provider_match(model_info, "openai") is False
+    assert llm.utils._check_provider_match(model_info, "openai") is False
 
 
 # Models that should be skipped during testing
@@ -107,7 +107,7 @@ print("block_list", block_list)
 @pytest.mark.asyncio
 async def test_supports_tool_choice():
     """
-    Test that litellm.utils.supports_tool_choice() returns the correct value
+    Test that llm.utils.supports_tool_choice() returns the correct value
     for all models in model_prices_and_context_window.json.
 
     The test:
@@ -116,12 +116,12 @@ async def test_supports_tool_choice():
     3. Checks if tool_choice support matches the model's supported parameters
     """
     # Load model prices
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
     local_path = "../../model_prices_and_context_window.json"
     prod_path = "./model_prices_and_context_window.json"
     with open(prod_path, "r") as f:
         model_prices = json.load(f)
-    litellm.model_cost = model_prices
+    llm.model_cost = model_prices
     config_manager = ProviderConfigManager()
 
     for model_name, model_info in model_prices.items():
@@ -154,7 +154,7 @@ async def test_supports_tool_choice():
         print("supported_params", supported_params)
 
         # Check tool_choice support
-        supports_tool_choice_result = litellm.utils.supports_tool_choice(
+        supports_tool_choice_result = llm.utils.supports_tool_choice(
             model=model_name, custom_llm_provider=provider
         )
         tool_choice_in_params = "tool_choice" in supported_params

@@ -25,10 +25,10 @@ Let's call the Assembly AI [`/v2/transcripts` endpoint](https://www.assemblyai.c
 export ASSEMBLYAI_API_KEY=""
 ```
 
-2. Start LiteLLM Proxy 
+2. Start LLM Proxy 
 
 ```bash
-litellm
+llm
 
 # RUNNING on http://0.0.0.0:4000
 ```

@@ -8,14 +8,14 @@ sys.path.insert(
 )  # Adds the parent directory to the system-path
 
 import pytest
-from litellm.integrations.langfuse.langfuse import (
+from llm.integrations.langfuse.langfuse import (
     LangFuseLogger,
 )
-from litellm.integrations.langfuse.langfuse_handler import LangFuseHandler
-from litellm.litellm_core_utils.litellm_logging import DynamicLoggingCache
+from llm.integrations.langfuse.langfuse_handler import LangFuseHandler
+from llm.litellm_core_utils.litellm_logging import DynamicLoggingCache
 from unittest.mock import Mock, patch
 from respx import MockRouter
-from litellm.types.utils import (
+from llm.types.utils import (
     StandardLoggingPayload,
     StandardLoggingModelInformation,
     StandardLoggingMetadata,
@@ -322,13 +322,13 @@ def test_get_langfuse_flush_interval():
 
 
 def test_langfuse_e2e_sync(monkeypatch):
-    from litellm import completion
-    import litellm
+    from llm import completion
+    import llm
     import respx
     import httpx
     import time
 
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
     monkeypatch.setattr(litellm, "success_callback", ["langfuse"])
 
     with respx.mock:
@@ -339,9 +339,9 @@ def test_langfuse_e2e_sync(monkeypatch):
         ).mock(return_value=httpx.Response(200))
         completion(
             model="openai/my-fake-endpoint",
-            messages=[{"role": "user", "content": "hello from litellm"}],
+            messages=[{"role": "user", "content": "hello from llm"}],
             stream=False,
-            mock_response="Hello from litellm 2",
+            mock_response="Hello from llm 2",
         )
 
         time.sleep(3)

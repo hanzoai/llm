@@ -16,11 +16,11 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-import litellm
-from litellm.llms.azure.azure import get_azure_ad_token_from_oidc
-from litellm.llms.bedrock.chat import BedrockConverseLLM, BedrockLLM
-from litellm.secret_managers.aws_secret_manager_v2 import AWSSecretsManagerV2
-from litellm.secret_managers.main import (
+import llm
+from llm.llms.azure.azure import get_azure_ad_token_from_oidc
+from llm.llms.bedrock.chat import BedrockConverseLLM, BedrockLLM
+from llm.secret_managers.aws_secret_manager_v2 import AWSSecretsManagerV2
+from llm.secret_managers.main import (
     get_secret,
     _should_read_secret_from_secret_manager,
 )
@@ -152,7 +152,7 @@ def test_oidc_circleci_with_azure():
 def test_oidc_circle_v1_with_amazon():
     # The purpose of this test is to get logs using the older v1 of the CircleCI OIDC token
 
-    # TODO: This is using ai.moda's IAM role, we should use LiteLLM's IAM role eventually
+    # TODO: This is using ai.moda's IAM role, we should use LLM's IAM role eventually
     aws_role_name = "arn:aws:iam::335785316107:role/litellm-github-unit-tests-circleci-v1-assume-only"
     aws_web_identity_token = "oidc/circleci/"
 
@@ -172,7 +172,7 @@ def test_oidc_circle_v1_with_amazon():
 def test_oidc_circle_v1_with_amazon_fips():
     # The purpose of this test is to validate that we can assume a role in a FIPS region
 
-    # TODO: This is using ai.moda's IAM role, we should use LiteLLM's IAM role eventually
+    # TODO: This is using ai.moda's IAM role, we should use LLM's IAM role eventually
     aws_role_name = "arn:aws:iam::335785316107:role/litellm-github-unit-tests-circleci-v1-assume-only"
     aws_web_identity_token = "oidc/circleci/"
 
@@ -246,7 +246,7 @@ def test_google_secret_manager():
     """
     os.environ["GOOGLE_SECRET_MANAGER_PROJECT_ID"] = "pathrise-convert-1606954137718"
 
-    from litellm.secret_managers.google_secret_manager import GoogleSecretManager
+    from llm.secret_managers.google_secret_manager import GoogleSecretManager
 
     load_vertex_ai_credentials()
     secret_manager = GoogleSecretManager()
@@ -267,7 +267,7 @@ def test_google_secret_manager_read_in_memory():
     """
     Test that Google Secret manager returs in memory value when it exists
     """
-    from litellm.secret_managers.google_secret_manager import GoogleSecretManager
+    from llm.secret_managers.google_secret_manager import GoogleSecretManager
 
     load_vertex_ai_credentials()
     os.environ["GOOGLE_SECRET_MANAGER_PROJECT_ID"] = "pathrise-convert-1606954137718"
@@ -292,38 +292,38 @@ def test_should_read_secret_from_secret_manager():
     """
     Test that _should_read_secret_from_secret_manager returns correct values based on access mode
     """
-    from litellm.proxy._types import KeyManagementSettings
+    from llm.proxy._types import KeyManagementSettings
 
     # Test when secret manager client is None
-    litellm.secret_manager_client = None
-    litellm._key_management_settings = KeyManagementSettings()
+    llm.secret_manager_client = None
+    llm._key_management_settings = KeyManagementSettings()
     assert _should_read_secret_from_secret_manager() is False
 
     # Test with secret manager client and read_only access
-    litellm.secret_manager_client = "dummy_client"
-    litellm._key_management_settings = KeyManagementSettings(access_mode="read_only")
+    llm.secret_manager_client = "dummy_client"
+    llm._key_management_settings = KeyManagementSettings(access_mode="read_only")
     assert _should_read_secret_from_secret_manager() is True
 
     # Test with secret manager client and read_and_write access
-    litellm._key_management_settings = KeyManagementSettings(
+    llm._key_management_settings = KeyManagementSettings(
         access_mode="read_and_write"
     )
     assert _should_read_secret_from_secret_manager() is True
 
     # Test with secret manager client and write_only access
-    litellm._key_management_settings = KeyManagementSettings(access_mode="write_only")
+    llm._key_management_settings = KeyManagementSettings(access_mode="write_only")
     assert _should_read_secret_from_secret_manager() is False
 
     # Reset global variables
-    litellm.secret_manager_client = None
-    litellm._key_management_settings = KeyManagementSettings()
+    llm.secret_manager_client = None
+    llm._key_management_settings = KeyManagementSettings()
 
 
 def test_get_secret_with_access_mode():
     """
     Test that get_secret respects access mode settings
     """
-    from litellm.proxy._types import KeyManagementSettings
+    from llm.proxy._types import KeyManagementSettings
 
     # Set up test environment
     test_secret_name = "TEST_SECRET_KEY"
@@ -331,26 +331,26 @@ def test_get_secret_with_access_mode():
     os.environ[test_secret_name] = test_secret_value
 
     # Test with write_only access (should read from os.environ)
-    litellm.secret_manager_client = "dummy_client"
-    litellm._key_management_settings = KeyManagementSettings(access_mode="write_only")
+    llm.secret_manager_client = "dummy_client"
+    llm._key_management_settings = KeyManagementSettings(access_mode="write_only")
     assert get_secret(test_secret_name) == test_secret_value
 
     # Test with no KeyManagementSettings but secret_manager_client set
-    litellm.secret_manager_client = "dummy_client"
-    litellm._key_management_settings = KeyManagementSettings()
+    llm.secret_manager_client = "dummy_client"
+    llm._key_management_settings = KeyManagementSettings()
     assert _should_read_secret_from_secret_manager() is True
 
     # Test with read_only access
-    litellm._key_management_settings = KeyManagementSettings(access_mode="read_only")
+    llm._key_management_settings = KeyManagementSettings(access_mode="read_only")
     assert _should_read_secret_from_secret_manager() is True
 
     # Test with read_and_write access
-    litellm._key_management_settings = KeyManagementSettings(
+    llm._key_management_settings = KeyManagementSettings(
         access_mode="read_and_write"
     )
     assert _should_read_secret_from_secret_manager() is True
 
     # Reset global variables
-    litellm.secret_manager_client = None
-    litellm._key_management_settings = KeyManagementSettings()
+    llm.secret_manager_client = None
+    llm._key_management_settings = KeyManagementSettings()
     del os.environ[test_secret_name]

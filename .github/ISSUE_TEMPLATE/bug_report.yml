@@ -35,7 +35,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: What LiteLLM version are you on ? 
+      label: What LLM version are you on ? 
       placeholder: v1.53.1
     validations:
       required: true

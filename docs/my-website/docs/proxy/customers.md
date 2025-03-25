@@ -54,7 +54,7 @@ Expected Response:
     "spend": 0.001413,
     "allowed_model_region": null,
     "default_model": null,
-    "litellm_budget_table": null
+    "llm_budget_table": null
 }
 ```
 
@@ -125,7 +125,7 @@ Expected Response
 
 ## Setting Customer Budgets 
 
-Set customer budgets (e.g. monthly budgets, tpm/rpm limits) on LiteLLM Proxy 
+Set customer budgets (e.g. monthly budgets, tpm/rpm limits) on LLM Proxy 
 
 ### Quick Start 
 
@@ -178,7 +178,7 @@ Create and assign customers to pricing tiers.
 </TabItem>
 <TabItem value="api" label="API">
 
-Use the `/budget/new` endpoint for creating a new budget. [API Reference](https://litellm-api.up.railway.app/#/budget%20management/new_budget_budget_new_post)
+Use the `/budget/new` endpoint for creating a new budget. [API Reference](https://llm-api.up.railway.app/#/budget%20management/new_budget_budget_new_post)
 
 ```bash
 curl -X POST 'http://localhost:4000/budget/new' \

@@ -2,15 +2,15 @@
 
 :::tip
 
-LiteLLM Follows the [cohere api request / response for the rerank api](https://cohere.com/rerank)
+LLM Follows the [cohere api request / response for the rerank api](https://cohere.com/rerank)
 
 :::
 
-## **LiteLLM Python SDK Usage**
+## **LLM Python SDK Usage**
 ### Quick Start 
 
 ```python
-from litellm import rerank
+from llm import rerank
 import os
 
 os.environ["COHERE_API_KEY"] = "sk-.."
@@ -35,7 +35,7 @@ print(response)
 ### Async Usage 
 
 ```python
-from litellm import arerank
+from llm import arerank
 import os, asyncio
 
 os.environ["COHERE_API_KEY"] = "sk-.."
@@ -60,30 +60,30 @@ async def test_async_rerank():
 asyncio.run(test_async_rerank())
 ```
 
-## **LiteLLM Proxy Usage**
+## **LLM Proxy Usage**
 
-LiteLLM provides an cohere api compatible `/rerank` endpoint for Rerank calls.
+LLM provides an cohere api compatible `/rerank` endpoint for Rerank calls.
 
 **Setup**
 
-Add this to your litellm proxy config.yaml
+Add this to your llm proxy config.yaml
 
 ```yaml
 model_list:
   - model_name: Salesforce/Llama-Rank-V1
-    litellm_params:
+    llm_params:
       model: together_ai/Salesforce/Llama-Rank-V1
       api_key: os.environ/TOGETHERAI_API_KEY
   - model_name: rerank-english-v3.0
-    litellm_params:
+    llm_params:
       model: cohere/rerank-english-v3.0
       api_key: os.environ/COHERE_API_KEY
 ```
 
-Start litellm
+Start llm
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```

@@ -19,13 +19,13 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import httpx
 import openai
 
-import litellm
-from litellm import Router
-from litellm.integrations.custom_logger import CustomLogger
-from litellm.router_utils.cooldown_handlers import _async_get_cooldown_deployments
-from litellm.types.router import (
+import llm
+from llm import Router
+from llm.integrations.custom_logger import CustomLogger
+from llm.router_utils.cooldown_handlers import _async_get_cooldown_deployments
+from llm.types.router import (
     DeploymentTypedDict,
-    LiteLLMParamsTypedDict,
+    LLMParamsTypedDict,
     AllowedFailsPolicy,
 )
 
@@ -36,7 +36,7 @@ async def test_cooldown_badrequest_error():
     Test 1. It SHOULD NOT cooldown a deployment on a BadRequestError
     """
 
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
@@ -84,10 +84,10 @@ async def test_dynamic_cooldowns():
     """
     Assert kwargs for completion/embedding have 'cooldown_time' as a litellm_param
     """
-    # litellm.set_verbose = True
+    # llm.set_verbose = True
     tmp_mock = MagicMock()
 
-    litellm.failure_callback = [tmp_mock]
+    llm.failure_callback = [tmp_mock]
 
     router = Router(
         model_list=[
@@ -132,7 +132,7 @@ def test_single_deployment_no_cooldowns(num_deployments):
     for i in range(num_deployments):
         model = DeploymentTypedDict(
             model_name="gpt-3.5-turbo",
-            litellm_params=LiteLLMParamsTypedDict(
+            litellm_params=LLMParamsTypedDict(
                 model="gpt-3.5-turbo",
             ),
         )
@@ -147,9 +147,9 @@ def test_single_deployment_no_cooldowns(num_deployments):
             router.completion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Hey, how's it going?"}],
-                mock_response="litellm.RateLimitError",
+                mock_response="llm.RateLimitError",
             )
-        except litellm.RateLimitError:
+        except llm.RateLimitError:
             pass
 
         if num_deployments == 1:
@@ -195,9 +195,9 @@ async def test_single_deployment_no_cooldowns_test_prod():
             await router.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Hey, how's it going?"}],
-                mock_response="litellm.RateLimitError",
+                mock_response="llm.RateLimitError",
             )
-        except litellm.RateLimitError:
+        except llm.RateLimitError:
             pass
 
         await asyncio.sleep(2)
@@ -245,7 +245,7 @@ async def test_single_deployment_cooldown_with_allowed_fails():
                     messages=[{"role": "user", "content": "Hey, how's it going?"}],
                     timeout=0.0001,
                 )
-            except litellm.Timeout:
+            except llm.Timeout:
                 pass
 
         await asyncio.sleep(2)
@@ -295,7 +295,7 @@ async def test_single_deployment_cooldown_with_allowed_fail_policy():
                     messages=[{"role": "user", "content": "Hey, how's it going?"}],
                     timeout=0.0001,
                 )
-            except litellm.Timeout:
+            except llm.Timeout:
                 pass
 
         await asyncio.sleep(2)
@@ -337,9 +337,9 @@ async def test_single_deployment_no_cooldowns_test_prod_mock_completion_calls():
             await router.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Hey, how's it going?"}],
-                mock_response="litellm.RateLimitError",
+                mock_response="llm.RateLimitError",
             )
-        except litellm.RateLimitError:
+        except llm.RateLimitError:
             pass
 
     cooldown_list = await _async_get_cooldown_deployments(
@@ -406,7 +406,7 @@ async def test_high_traffic_cooldowns_all_healthy_deployments():
     # Create a defaultdict to track successes and failures for each model ID
     model_stats = defaultdict(lambda: {"successes": 0, "failures": 0})
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     for _ in range(100):
         try:
             model_id = random.choice(all_deployment_ids)
@@ -431,7 +431,7 @@ async def test_high_traffic_cooldowns_all_healthy_deployments():
                 if random.random() < 0.5:
                     mock_response = "hi"
                 else:
-                    mock_response = "litellm.InternalServerError"
+                    mock_response = "llm.InternalServerError"
             else:
                 mock_response = "hi"
 
@@ -443,7 +443,7 @@ async def test_high_traffic_cooldowns_all_healthy_deployments():
             model_stats[model_id]["successes"] += 1
 
             await asyncio.sleep(0.0001)
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             model_stats[model_id]["failures"] += 1
             pass
         except Exception as e:
@@ -499,7 +499,7 @@ async def test_high_traffic_cooldowns_one_bad_deployment():
     # Create a defaultdict to track successes and failures for each model ID
     model_stats = defaultdict(lambda: {"successes": 0, "failures": 0})
     bad_deployment_id = random.choice(all_deployment_ids)
-    litellm.set_verbose = True
+    llm.set_verbose = True
     for _ in range(100):
         try:
             model_id = random.choice(all_deployment_ids)
@@ -522,14 +522,14 @@ async def test_high_traffic_cooldowns_one_bad_deployment():
             elif bad_deployment_id == model_id:
                 if num_failures / total_requests <= 0.6:
 
-                    mock_response = "litellm.InternalServerError"
+                    mock_response = "llm.InternalServerError"
 
             elif num_failures / total_requests <= 0.25:
                 # Randomly decide between fail and succeed
                 if random.random() < 0.5:
                     mock_response = "hi"
                 else:
-                    mock_response = "litellm.InternalServerError"
+                    mock_response = "llm.InternalServerError"
             else:
                 mock_response = "hi"
 
@@ -541,7 +541,7 @@ async def test_high_traffic_cooldowns_one_bad_deployment():
             model_stats[model_id]["successes"] += 1
 
             await asyncio.sleep(0.0001)
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             model_stats[model_id]["failures"] += 1
             pass
         except Exception as e:
@@ -597,7 +597,7 @@ async def test_high_traffic_cooldowns_one_rate_limited_deployment():
     # Create a defaultdict to track successes and failures for each model ID
     model_stats = defaultdict(lambda: {"successes": 0, "failures": 0})
     bad_deployment_id = random.choice(all_deployment_ids)
-    litellm.set_verbose = True
+    llm.set_verbose = True
     for _ in range(100):
         try:
             model_id = random.choice(all_deployment_ids)
@@ -620,14 +620,14 @@ async def test_high_traffic_cooldowns_one_rate_limited_deployment():
             elif bad_deployment_id == model_id:
                 if num_failures / total_requests <= 0.6:
 
-                    mock_response = "litellm.RateLimitError"
+                    mock_response = "llm.RateLimitError"
 
             elif num_failures / total_requests <= 0.25:
                 # Randomly decide between fail and succeed
                 if random.random() < 0.5:
                     mock_response = "hi"
                 else:
-                    mock_response = "litellm.InternalServerError"
+                    mock_response = "llm.InternalServerError"
             else:
                 mock_response = "hi"
 
@@ -639,10 +639,10 @@ async def test_high_traffic_cooldowns_one_rate_limited_deployment():
             model_stats[model_id]["successes"] += 1
 
             await asyncio.sleep(0.0001)
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             model_stats[model_id]["failures"] += 1
             pass
-        except litellm.RateLimitError:
+        except llm.RateLimitError:
             model_stats[bad_deployment_id]["failures"] += 1
             pass
         except Exception as e:
@@ -683,9 +683,9 @@ def test_router_fallbacks_with_cooldowns_and_model_id():
         router.completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "hi"}],
-            mock_response="litellm.RateLimitError",
+            mock_response="llm.RateLimitError",
         )
-    except litellm.RateLimitError:
+    except llm.RateLimitError:
         pass
 
     router.completion(
@@ -699,9 +699,9 @@ async def test_router_fallbacks_with_cooldowns_and_dynamic_credentials():
     """
     Ensure cooldown on credential 1 does not affect credential 2
     """
-    from litellm.router_utils.cooldown_handlers import _async_get_cooldown_deployments
+    from llm.router_utils.cooldown_handlers import _async_get_cooldown_deployments
 
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
     router = Router(
         model_list=[
             {
@@ -720,10 +720,10 @@ async def test_router_fallbacks_with_cooldowns_and_dynamic_credentials():
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "hi"}],
             api_key="my-bad-key-1",
-            mock_response="litellm.RateLimitError",
+            mock_response="llm.RateLimitError",
         )
         pytest.fail("Expected RateLimitError")
-    except litellm.RateLimitError:
+    except llm.RateLimitError:
         pass
 
     await asyncio.sleep(1)

@@ -1,13 +1,13 @@
-# litellm.aembedding()
+# llm.aembedding()
 
-LiteLLM provides an asynchronous version of the `embedding` function called `aembedding`
+LLM provides an asynchronous version of the `embedding` function called `aembedding`
 ### Usage
 ```python
-from litellm import aembedding
+from llm import aembedding
 import asyncio
 
 async def test_get_response():
-    response = await aembedding('text-embedding-ada-002', input=["good morning from litellm"])
+    response = await aembedding('text-embedding-ada-002', input=["good morning from llm"])
     return response
 
 response = asyncio.run(test_get_response())

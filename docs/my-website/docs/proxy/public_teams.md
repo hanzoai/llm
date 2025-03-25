@@ -7,7 +7,7 @@ Expose available teams to your users to join on signup.
 
 ## Quick Start
 
-1. Create a team on LiteLLM
+1. Create a team on LLM
 
 ```bash
 curl -X POST '<PROXY_BASE_URL>/team/new' \
@@ -19,7 +19,7 @@ curl -X POST '<PROXY_BASE_URL>/team/new' \
 2. Expose the team to your users
 
 ```yaml
-litellm_settings:
+llm_settings:
     default_internal_user_params:
         available_teams: ["team_id_1"] # 👈 Make team available to new SSO users
 ```

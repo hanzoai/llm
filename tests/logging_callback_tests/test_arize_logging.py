@@ -9,12 +9,12 @@ from typing import Optional
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system-path
-from litellm.integrations._types.open_inference import SpanAttributes
-from litellm.integrations.arize.arize import ArizeConfig, ArizeLogger
-from litellm.integrations.custom_logger import CustomLogger
-from litellm.main import completion
-import litellm
-from litellm.types.utils import Choices, StandardCallbackDynamicParams
+from llm.integrations._types.open_inference import SpanAttributes
+from llm.integrations.arize.arize import ArizeConfig, ArizeLogger
+from llm.integrations.custom_logger import CustomLogger
+from llm.main import completion
+import llm
+from llm.types.utils import Choices, StandardCallbackDynamicParams
 import pytest
 import asyncio
 
@@ -24,7 +24,7 @@ def test_arize_set_attributes():
     Test setting attributes for Arize
     """
     from unittest.mock import MagicMock
-    from litellm.types.utils import ModelResponse
+    from llm.types.utils import ModelResponse
 
     span = MagicMock()
     kwargs = {
@@ -89,8 +89,8 @@ class TestArizeLogger(CustomLogger):
 async def test_arize_dynamic_params():
     """verify arize ai dynamic params are recieved by a callback"""
     test_arize_logger = TestArizeLogger()
-    litellm.callbacks = [test_arize_logger]
-    await litellm.acompletion(
+    llm.callbacks = [test_arize_logger]
+    await llm.acompletion(
         model="gpt-4o",
         messages=[{"role": "user", "content": "basic arize test"}],
         mock_response="test",

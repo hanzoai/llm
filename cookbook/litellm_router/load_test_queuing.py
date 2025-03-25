@@ -8,16 +8,16 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 
-from litellm import Router
-import litellm
+from llm import Router
+import llm
 
-litellm.set_verbose = False
+llm.set_verbose = False
 # os.environ.pop("AZURE_AD_TOKEN")
 
 model_list = [
     {  # list of model deployments
         "model_name": "gpt-3.5-turbo",  # model alias
-        "litellm_params": {  # params for litellm completion/embedding call
+        "litellm_params": {  # params for llm completion/embedding call
             "model": "azure/chatgpt-v-2",  # actual model name
             "api_key": os.getenv("AZURE_API_KEY"),
             "api_version": os.getenv("AZURE_API_VERSION"),
@@ -26,7 +26,7 @@ model_list = [
     },
     {
         "model_name": "gpt-3.5-turbo",
-        "litellm_params": {  # params for litellm completion/embedding call
+        "litellm_params": {  # params for llm completion/embedding call
             "model": "azure/chatgpt-functioncalling",
             "api_key": os.getenv("AZURE_API_KEY"),
             "api_version": os.getenv("AZURE_API_VERSION"),
@@ -35,7 +35,7 @@ model_list = [
     },
     {
         "model_name": "gpt-3.5-turbo",
-        "litellm_params": {  # params for litellm completion/embedding call
+        "litellm_params": {  # params for llm completion/embedding call
             "model": "gpt-3.5-turbo",
             "api_key": os.getenv("OPENAI_API_KEY"),
         },
@@ -66,7 +66,7 @@ for file_path in file_paths:
 #     print(q)
 
 
-# make X concurrent calls to litellm.completion(model=gpt-35-turbo, messages=[]), pick a random question in questions array.
+# make X concurrent calls to llm.completion(model=gpt-35-turbo, messages=[]), pick a random question in questions array.
 #  Allow me to tune X concurrent calls.. Log question, output/exception, response time somewhere
 # show me a summary of requests made, success full calls, failed calls. For failed calls show me the exceptions
 

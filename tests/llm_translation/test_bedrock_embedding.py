@@ -11,8 +11,8 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 
-import litellm
-from litellm.llms.custom_httpx.http_handler import HTTPHandler, AsyncHTTPHandler
+import llm
+from llm.llms.custom_httpx.http_handler import HTTPHandler, AsyncHTTPHandler
 
 titan_embedding_response = {
         "embedding": [0.1, 0.2, 0.3],
@@ -38,7 +38,7 @@ img_base_64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkBAMAAACCzIh
 )
 def test_bedrock_embedding_models(model, input_type, embed_response):
     """Test embedding functionality for all Bedrock models with different input types"""
-    litellm.set_verbose = True
+    llm.set_verbose = True
     client = HTTPHandler()
 
     with patch.object(client, "post") as mock_post:
@@ -49,10 +49,10 @@ def test_bedrock_embedding_models(model, input_type, embed_response):
         mock_post.return_value = mock_response
 
         # Prepare input based on type
-        input_data = img_base_64 if input_type == "image" else "Hello world from litellm"
+        input_data = img_base_64 if input_type == "image" else "Hello world from llm"
 
         try:
-            response = litellm.embedding(
+            response = llm.embedding(
                 model=model,
                 input=input_data,
                 client=client,
@@ -61,7 +61,7 @@ def test_bedrock_embedding_models(model, input_type, embed_response):
             )
 
             # Verify response structure
-            assert isinstance(response, litellm.EmbeddingResponse)
+            assert isinstance(response, llm.EmbeddingResponse)
             print(response.data)
             assert isinstance(response.data[0]['embedding'], list)
             assert len(response.data[0]['embedding']) == 3  # Based on mock response

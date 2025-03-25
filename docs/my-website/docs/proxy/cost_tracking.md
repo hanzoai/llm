@@ -6,11 +6,11 @@ import Image from '@theme/IdealImage';
 
 Track spend for keys, users, and teams across 100+ LLMs.
 
-### How to Track Spend with LiteLLM
+### How to Track Spend with LLM
 
 **Step 1**
 
-👉 [Setup LiteLLM with a Database](https://docs.litellm.ai/docs/proxy/virtual_keys#setup)
+👉 [Setup LLM with a Database](https://docs.llm.ai/docs/proxy/virtual_keys#setup)
 
 
 **Step2** Send `/chat/completions` request
@@ -100,7 +100,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -117,24 +117,24 @@ That's IT. Now Verify your spend was tracked
 <Tabs>
 <TabItem value="curl" label="Response Headers">
 
-Expect to see `x-litellm-response-cost` in the response headers with calculated cost
+Expect to see `x-llm-response-cost` in the response headers with calculated cost
 
 <Image img={require('../../img/response_cost_img.png')} />
 
 </TabItem>
 <TabItem value="db" label="DB + UI">
 
-The following spend gets tracked in Table `LiteLLM_SpendLogs`
+The following spend gets tracked in Table `LLM_SpendLogs`
 
 ```json
 {
   "api_key": "fe6b0cab4ff5a5a8df823196cc8a450*****",                            # Hash of API Key used
-  "user": "default_user",                                                       # Internal User (LiteLLM_UserTable) that owns `api_key=sk-1234`. 
-  "team_id": "e8d1460f-846c-45d7-9b43-55f3cc52ac32",                            # Team (LiteLLM_TeamTable) that owns `api_key=sk-1234`
+  "user": "default_user",                                                       # Internal User (LLM_UserTable) that owns `api_key=sk-1234`. 
+  "team_id": "e8d1460f-846c-45d7-9b43-55f3cc52ac32",                            # Team (LLM_TeamTable) that owns `api_key=sk-1234`
   "request_tags": ["jobID:214590dsff09fds", "taskName:run_page_classification"],# Tags sent in request
   "end_user": "palantir",                                                       # Customer - the `user` sent in the request
-  "model_group": "llama3",                                                      # "model" passed to LiteLLM
-  "api_base": "https://api.groq.com/openai/v1/",                                # "api_base" of model used by LiteLLM
+  "model_group": "llama3",                                                      # "model" passed to LLM
+  "api_base": "https://api.groq.com/openai/v1/",                                # "api_base" of model used by LLM
   "spend": 0.000002,                                                            # Spend in $
   "total_tokens": 100,
   "completion_tokens": 80,
@@ -143,7 +143,7 @@ The following spend gets tracked in Table `LiteLLM_SpendLogs`
 }
 ```
 
-Navigate to the Usage Tab on the LiteLLM UI (found on https://your-proxy-endpoint/ui) and verify you see spend tracked under `Usage`
+Navigate to the Usage Tab on the LLM UI (found on https://your-proxy-endpoint/ui) and verify you see spend tracked under `Usage`
 
 <Image img={require('../../img/admin_ui_spend.png')} />
 
@@ -284,8 +284,8 @@ Output from script
 
 :::info
 
-Customer [this is `user` passed to `/chat/completions` request](#how-to-track-spend-with-litellm)
-- [LiteLLM API key](virtual_keys.md)
+Customer [this is `user` passed to `/chat/completions` request](#how-to-track-spend-with-llm)
+- [LLM API key](virtual_keys.md)
 
 
 :::
@@ -391,7 +391,7 @@ curl -X GET 'http://localhost:4000/global/spend/report?start_date=2024-04-01&end
 
 :::info
 
-Internal User (Key Owner): This is the value of `user_id` passed when calling [`/key/generate`](https://litellm-api.up.railway.app/#/key%20management/generate_key_fn_key_generate_post)
+Internal User (Key Owner): This is the value of `user_id` passed when calling [`/key/generate`](https://llm-api.up.railway.app/#/key%20management/generate_key_fn_key_generate_post)
 
 :::
 
@@ -476,7 +476,7 @@ Use this when you want non-proxy admins to access `/spend` endpoints
 
 :::info
 
-Schedule a [meeting with us to get your Enterprise License](https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat)
+Schedule a [meeting with us to get your Enterprise License](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
 
 :::
 
@@ -504,9 +504,9 @@ curl -X GET 'http://localhost:4000/global/spend/report?start_date=2024-04-01&end
 #### Reset Team, API Key Spend - MASTER KEY ONLY
 
 Use `/global/spend/reset` if you want to:
-- Reset the Spend for all API Keys, Teams. The `spend` for ALL Teams and Keys in `LiteLLM_TeamTable` and `LiteLLM_VerificationToken` will be set to `spend=0`
+- Reset the Spend for all API Keys, Teams. The `spend` for ALL Teams and Keys in `LLM_TeamTable` and `LLM_VerificationToken` will be set to `spend=0`
 
-- LiteLLM will maintain all the logs in `LiteLLMSpendLogs` for Auditing Purposes
+- LLM will maintain all the logs in `LLMSpendLogs` for Auditing Purposes
 
 ##### Request 
 Only the `LITELLM_MASTER_KEY` you set can access this route
@@ -535,7 +535,7 @@ Set base model for cost tracking azure image-gen call
 ```yaml
 model_list: 
   - model_name: dall-e-3
-    litellm_params:
+    llm_params:
         model: azure/dall-e-3-test
         api_version: 2023-06-01-preview
         api_base: https://openai-gpt-4-test-v-1.openai.azure.com/
@@ -549,15 +549,15 @@ model_list:
 
 **Problem**: Azure returns `gpt-4` in the response when `azure/gpt-4-1106-preview` is used. This leads to inaccurate cost tracking
 
-**Solution** ✅ :  Set `base_model` on your config so litellm uses the correct model for calculating azure cost
+**Solution** ✅ :  Set `base_model` on your config so llm uses the correct model for calculating azure cost
 
-Get the base model name from [here](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json)
+Get the base model name from [here](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json)
 
 Example config with `base_model`
 ```yaml
 model_list:
   - model_name: azure-gpt-3.5
-    litellm_params:
+    llm_params:
       model: azure/chatgpt-v-2
       api_base: os.environ/AZURE_API_BASE
       api_key: os.environ/AZURE_API_KEY
@@ -568,7 +568,7 @@ model_list:
 
 ## Custom Input/Output Pricing
 
-👉 Head to [Custom Input/Output Pricing](https://docs.litellm.ai/docs/proxy/custom_pricing) to setup custom pricing or your models
+👉 Head to [Custom Input/Output Pricing](https://docs.llm.ai/docs/proxy/custom_pricing) to setup custom pricing or your models
 
 ## ✨ Custom Spend Log metadata
 

@@ -2,12 +2,12 @@ import json
 import unittest
 from unittest.mock import patch, MagicMock
 
-from litellm.llms.vertex_ai.gemini.vertex_and_google_ai_studio_gemini import (
+from llm.llms.vertex_ai.gemini.vertex_and_google_ai_studio_gemini import (
     make_call,
     make_sync_call,
     VertexAIError,
 )
-from litellm.llms.custom_httpx.http_handler import HTTPHandler
+from llm.llms.custom_httpx.http_handler import HTTPHandler
 
 
 class TestVertexAIHTTPStatus201(unittest.TestCase):
@@ -28,7 +28,7 @@ class TestVertexAIHTTPStatus201(unittest.TestCase):
         self.mock_logging_obj = MagicMock()
         self.mock_logging_obj.post_call = MagicMock()
 
-    @patch("litellm.llms.vertex_ai.gemini.vertex_and_google_ai_studio_gemini.get_async_httpx_client")
+    @patch("llm.llms.vertex_ai.gemini.vertex_and_google_ai_studio_gemini.get_async_httpx_client")
     async def test_async_http_status_201(self, mock_get_client):
         """Test that async make_call handles HTTP 201 status code correctly"""
         # Create a mock response with status code 201

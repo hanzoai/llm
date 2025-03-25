@@ -9,7 +9,7 @@ os.environ['ANYSCALE_API_KEY']
 
 ## Sample Usage
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['ANYSCALE_API_KEY'] = ""
@@ -22,7 +22,7 @@ print(response)
 
 ## Sample Usage - Streaming
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['ANYSCALE_API_KEY'] = ""
@@ -38,7 +38,7 @@ for chunk in response:
 
 
 ## Supported Models
-All models listed here https://app.endpoints.anyscale.com/ are supported. We actively maintain the list of models, pricing, token window, etc. [here](https://github.com/BerriAI/litellm/blob/31fbb095c2c365ef30caf132265fe12cff0ef153/model_prices_and_context_window.json#L957).
+All models listed here https://app.endpoints.anyscale.com/ are supported. We actively maintain the list of models, pricing, token window, etc. [here](https://github.com/BerriAI/llm/blob/31fbb095c2c365ef30caf132265fe12cff0ef153/model_prices_and_context_window.json#L957).
 
 | Model Name               | Function Call                                                                                                                                                      |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|

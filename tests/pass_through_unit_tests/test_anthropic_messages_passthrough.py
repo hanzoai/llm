@@ -10,17 +10,17 @@ from unittest.mock import AsyncMock, MagicMock
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
+import llm
 import pytest
 from dotenv import load_dotenv
-from litellm.llms.anthropic.experimental_pass_through.messages.handler import (
+from llm.llms.anthropic.experimental_pass_through.messages.handler import (
     anthropic_messages,
 )
 from typing import Optional
-from litellm.types.utils import StandardLoggingPayload
-from litellm.integrations.custom_logger import CustomLogger
-from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler
-from litellm.router import Router
+from llm.types.utils import StandardLoggingPayload
+from llm.integrations.custom_logger import CustomLogger
+from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler
+from llm.router import Router
 import importlib
 
 # Load environment variables
@@ -40,8 +40,8 @@ def setup_and_teardown(event_loop):  # Add event_loop as a dependency
     curr_dir = os.getcwd()
     sys.path.insert(0, os.path.abspath("../.."))
 
-    import litellm
-    from litellm import Router
+    import llm
+    from llm import Router
 
     importlib.reload(litellm)
 
@@ -188,7 +188,7 @@ async def test_anthropic_messages_litellm_router_non_streaming():
     """
     Test the anthropic_messages with non-streaming request
     """
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
     router = Router(
         model_list=[
             {
@@ -241,8 +241,8 @@ async def test_anthropic_messages_litellm_router_non_streaming_with_logging():
     - Ensure Cost + Usage is tracked
     """
     test_custom_logger = TestCustomLogger()
-    litellm.callbacks = [test_custom_logger]
-    litellm._turn_on_debug()
+    llm.callbacks = [test_custom_logger]
+    llm._turn_on_debug()
     router = Router(
         model_list=[
             {
@@ -298,8 +298,8 @@ async def test_anthropic_messages_litellm_router_streaming_with_logging():
     - Ensure Cost + Usage is tracked
     """
     test_custom_logger = TestCustomLogger()
-    litellm.callbacks = [test_custom_logger]
-    # litellm._turn_on_debug()
+    llm.callbacks = [test_custom_logger]
+    # llm._turn_on_debug()
     router = Router(
         model_list=[
             {

@@ -10,11 +10,11 @@ from unittest.mock import MagicMock, patch
 logging.basicConfig(level=logging.DEBUG)
 sys.path.insert(0, os.path.abspath("../.."))
 
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 
-litellm.num_retries = 3
-litellm.success_callback = ["helicone"]
+llm.num_retries = 3
+llm.success_callback = ["helicone"]
 os.environ["HELICONE_DEBUG"] = "True"
 os.environ["LITELLM_LOG"] = "DEBUG"
 
@@ -39,12 +39,12 @@ def pre_helicone_setup():
 def test_helicone_logging_async():
     try:
         pre_helicone_setup()
-        litellm.success_callback = []
+        llm.success_callback = []
         start_time_empty_callback = asyncio.run(make_async_calls())
         print("done with no callback test")
 
         print("starting helicone test")
-        litellm.success_callback = ["helicone"]
+        llm.success_callback = ["helicone"]
         start_time_helicone = asyncio.run(make_async_calls())
         print("done with helicone test")
 
@@ -53,7 +53,7 @@ def test_helicone_logging_async():
 
         assert abs(start_time_helicone - start_time_empty_callback) < 1
 
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         pass
     except Exception as e:
         pytest.fail(f"An exception occurred - {e}")
@@ -88,7 +88,7 @@ def create_async_task(**completion_kwargs):
         "mock_response": "It's simple to use and easy to get started",
     }
     completion_args.update(completion_kwargs)
-    return asyncio.create_task(litellm.acompletion(**completion_args))
+    return asyncio.create_task(llm.acompletion(**completion_args))
 
 
 @pytest.mark.asyncio
@@ -99,7 +99,7 @@ def create_async_task(**completion_kwargs):
 async def test_helicone_logging_metadata():
     import uuid
 
-    litellm.success_callback = ["helicone"]
+    llm.success_callback = ["helicone"]
 
     request_id = str(uuid.uuid4())
     trace_common_metadata = {"Helicone-Property-Request-Id": request_id}

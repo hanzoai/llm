@@ -10,10 +10,10 @@ sys.path.insert(
     0, os.path.abspath("../../../../..")
 )  # Adds the parent directory to the system path
 
-from litellm.llms.vertex_ai.multimodal_embeddings.embedding_handler import (
+from llm.llms.vertex_ai.multimodal_embeddings.embedding_handler import (
     VertexMultimodalEmbedding,
 )
-from litellm.types.llms.vertex_ai import Instance, InstanceImage
+from llm.types.llms.vertex_ai import Instance, InstanceImage
 
 
 class TestVertexMultimodalEmbedding:

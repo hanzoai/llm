@@ -12,12 +12,12 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 from unittest.mock import patch, MagicMock
 import logging
-from litellm._logging import verbose_logger
+from llm._logging import verbose_logger
 import uuid
 
 verbose_logger.setLevel(logging.DEBUG)
 
-from litellm.secret_managers.hashicorp_secret_manager import HashicorpSecretManager
+from llm.secret_managers.hashicorp_secret_manager import HashicorpSecretManager
 
 hashicorp_secret_manager = HashicorpSecretManager()
 
@@ -64,7 +64,7 @@ mock_write_response = {
 
 
 def test_hashicorp_secret_manager_get_secret():
-    with patch("litellm.llms.custom_httpx.http_handler.HTTPHandler.get") as mock_get:
+    with patch("llm.llms.custom_httpx.http_handler.HTTPHandler.get") as mock_get:
         # Configure the mock response using MagicMock
         mock_response = MagicMock()
         mock_response.json.return_value = mock_vault_response
@@ -90,7 +90,7 @@ def test_hashicorp_secret_manager_get_secret():
 @pytest.mark.asyncio
 async def test_hashicorp_secret_manager_write_secret():
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post"
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post"
     ) as mock_post:
         # Configure the mock response
         mock_response = MagicMock()
@@ -134,7 +134,7 @@ async def test_hashicorp_secret_manager_write_secret():
 @pytest.mark.asyncio
 async def test_hashicorp_secret_manager_delete_secret():
     with patch(
-        "litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.delete"
+        "llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.delete"
     ) as mock_delete:
         # Configure the mock response
         mock_response = MagicMock()

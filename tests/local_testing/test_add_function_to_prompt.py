@@ -7,7 +7,7 @@ import traceback
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
+import llm
 
 
 ## case 1: set_function_to_prompt not set
@@ -32,7 +32,7 @@ def test_function_call_non_openai_model():
                 },
             }
         ]
-        response = litellm.completion(
+        response = llm.completion(
             model=model, messages=messages, functions=functions
         )
         pytest.fail(f"An error occurred")

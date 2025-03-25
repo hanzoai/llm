@@ -4,9 +4,9 @@
             "id": "7e00e081-468b-4fe9-a409-eb12ac7d3d2d",
             "type": "trace-create",
             "body": {
-                "id": "litellm-test-793c217f-9417-4e77-84a7-8dcc16e5b72b",
+                "id": "llm-test-793c217f-9417-4e77-84a7-8dcc16e5b72b",
                 "timestamp": "2025-01-16T19:28:55.124873Z",
-                "name": "litellm-acompletion",
+                "name": "llm-acompletion",
                 "input": {
                     "messages": [
                         {
@@ -29,7 +29,7 @@
             "id": "b9ec2c0f-18df-46c7-9e90-624c60bf78ee",
             "type": "generation-create",
             "body": {
-                "name": "litellm-acompletion",
+                "name": "llm-acompletion",
                 "startTime": "2025-01-16T11:28:54.796360-08:00",
                 "metadata": {
                     "hidden_params": {
@@ -39,7 +39,7 @@
                         "response_cost": 5.4999999999999995e-05,
                         "additional_headers": {}
                     },
-                    "litellm_response_cost": 5.4999999999999995e-05,
+                    "llm_response_cost": 5.4999999999999995e-05,
                     "cache_hit": false,
                     "requester_metadata": {}
                 },
@@ -77,7 +77,7 @@
     ],
     "metadata": {
         "batch_size": 2,
-        "sdk_integration": "litellm",
+        "sdk_integration": "llm",
         "sdk_name": "python",
         "sdk_version": "2.44.1",
         "public_key": "pk-lf-03734ab3-8790-4c09-b5fb-8c3b663413b6"

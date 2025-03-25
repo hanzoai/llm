@@ -8,9 +8,9 @@ import traceback
 
 from dotenv import load_dotenv
 
-import litellm.types
-import litellm.types.utils
-from litellm.llms.anthropic.chat import ModelResponseIterator
+import llm.types
+import llm.types.utils
+from llm.llms.anthropic.chat import ModelResponseIterator
 
 load_dotenv()
 import io
@@ -24,17 +24,17 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-import litellm
-from litellm import (
+import llm
+from llm import (
     AnthropicConfig,
     Router,
     adapter_completion,
 )
-from litellm.types.llms.anthropic import AnthropicResponse
-from litellm.types.utils import GenericStreamingChunk, ChatCompletionToolCallChunk
-from litellm.types.llms.openai import ChatCompletionToolCallFunctionChunk
-from litellm.llms.anthropic.common_utils import process_anthropic_headers
-from litellm.llms.anthropic.chat.handler import AnthropicChatCompletion
+from llm.types.llms.anthropic import AnthropicResponse
+from llm.types.utils import GenericStreamingChunk, ChatCompletionToolCallChunk
+from llm.types.llms.openai import ChatCompletionToolCallFunctionChunk
+from llm.llms.anthropic.common_utils import process_anthropic_headers
+from llm.llms.anthropic.chat.handler import AnthropicChatCompletion
 from httpx import Headers
 from base_llm_unit_tests import BaseLLMChatTest, BaseAnthropicChatTest
 
@@ -248,7 +248,7 @@ def test_anthropic_tool_streaming():
     Anthropic gives tool_use indexes starting at the first chunk, meaning they often start at 1
     when they should start at 0
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
     response_iter = ModelResponseIterator([], False)
 
     # First index is 0, we'll start earlier because incrementing is easier
@@ -331,7 +331,7 @@ def test_process_anthropic_headers_with_no_matching_headers():
 
 
 def test_anthropic_computer_tool_use():
-    from litellm import completion
+    from llm import completion
 
     tools = [
         {
@@ -357,7 +357,7 @@ def test_anthropic_computer_tool_use():
             # headers={"anthropic-beta": "computer-use-2024-10-22"},
         )
         print(resp)
-    except litellm.InternalServerError:
+    except llm.InternalServerError:
         pass
 
 
@@ -373,7 +373,7 @@ def test_anthropic_computer_tool_use():
 def test_anthropic_beta_header(
     computer_tool_used, prompt_caching_set, expected_beta_header
 ):
-    headers = litellm.AnthropicConfig().get_anthropic_headers(
+    headers = llm.AnthropicConfig().get_anthropic_headers(
         api_key="fake-api-key",
         computer_tool_used=computer_tool_used,
         prompt_caching_set=prompt_caching_set,
@@ -393,7 +393,7 @@ def test_anthropic_beta_header(
     ],
 )
 def test_anthropic_tool_helper(cache_control_location):
-    from litellm.llms.anthropic.chat.transformation import AnthropicConfig
+    from llm.llms.anthropic.chat.transformation import AnthropicConfig
 
     tool = {
         "type": "function",
@@ -460,7 +460,7 @@ def test_create_json_tool_call_for_response_format():
     assert "additionalProperties" not in _input_schema
 
 
-from litellm import completion
+from llm import completion
 
 
 class TestAnthropicCompletion(BaseLLMChatTest, BaseAnthropicChatTest):
@@ -469,7 +469,7 @@ class TestAnthropicCompletion(BaseLLMChatTest, BaseAnthropicChatTest):
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
         """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
-        from litellm.litellm_core_utils.prompt_templates.factory import (
+        from llm.litellm_core_utils.prompt_templates.factory import (
             convert_to_anthropic_tool_invoke,
         )
 
@@ -480,7 +480,7 @@ class TestAnthropicCompletion(BaseLLMChatTest, BaseAnthropicChatTest):
         """
         Anthropic API raises a 400 BadRequest error when the request contains invalid utf-8 sequences.
 
-        Todo: if litellm.modify_params is True ensure it's a valid utf-8 sequence
+        Todo: if llm.modify_params is True ensure it's a valid utf-8 sequence
         """
         pass
 
@@ -488,12 +488,12 @@ class TestAnthropicCompletion(BaseLLMChatTest, BaseAnthropicChatTest):
         """
         Test that the tool call and JSON response format is supported by the LLM API
         """
-        litellm.set_verbose = True
+        llm.set_verbose = True
         from pydantic import BaseModel
-        from litellm.utils import supports_response_schema
+        from llm.utils import supports_response_schema
 
         os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-        litellm.model_cost = litellm.get_model_cost_map(url="")
+        llm.model_cost = llm.get_model_cost_map(url="")
 
         class RFormat(BaseModel):
             question: str
@@ -504,7 +504,7 @@ class TestAnthropicCompletion(BaseLLMChatTest, BaseAnthropicChatTest):
             pytest.skip("Model does not support response schema")
 
         try:
-            res = litellm.completion(
+            res = llm.completion(
                 **base_completion_call_args,
                 messages=[
                     {
@@ -542,7 +542,7 @@ class TestAnthropicCompletion(BaseLLMChatTest, BaseAnthropicChatTest):
             assert res is not None
 
             assert res.choices[0].message.tool_calls is not None
-        except litellm.InternalServerError:
+        except llm.InternalServerError:
             pytest.skip("Model is overloaded")
 
 
@@ -627,7 +627,7 @@ def test_convert_tool_response_to_message_no_arguments():
 
 
 def test_anthropic_tool_with_image():
-    from litellm.litellm_core_utils.prompt_templates.factory import prompt_factory
+    from llm.litellm_core_utils.prompt_templates.factory import prompt_factory
     import json
 
     b64_data = "iVBORw0KGgoAAAANSUhEu6U3//C9t/fKv5wDgpP1r5796XwC4zyH1D565bHGDqbY85AMb0nIQe+u3J390Xbtb9XgXxcK0/aqRXpdYcwgARbCN03FJk"
@@ -740,7 +740,7 @@ def test_anthropic_map_openai_params_tools_and_json_schema():
         }
     }
 
-    mapped_params = litellm.AnthropicConfig().map_openai_params(
+    mapped_params = llm.AnthropicConfig().map_openai_params(
         non_default_params=args["non_default_params"],
         optional_params={},
         model="claude-3-5-sonnet-20240620",
@@ -750,7 +750,7 @@ def test_anthropic_map_openai_params_tools_and_json_schema():
     assert "Question" in json.dumps(mapped_params)
 
 
-from litellm.constants import RESPONSE_FORMAT_TOOL_NAME
+from llm.constants import RESPONSE_FORMAT_TOOL_NAME
 
 
 @pytest.mark.parametrize(
@@ -806,7 +806,7 @@ from litellm.constants import RESPONSE_FORMAT_TOOL_NAME
 def test_anthropic_json_mode_and_tool_call_response(
     json_mode, tool_calls, expect_null_response
 ):
-    result = litellm.AnthropicConfig()._transform_response_for_json_mode(
+    result = llm.AnthropicConfig()._transform_response_for_json_mode(
         json_mode=json_mode,
         tool_calls=tool_calls,
     )
@@ -846,7 +846,7 @@ def test_anthropic_json_mode_and_tool_call_response(
 )
 def test_map_stop_sequences(stop_input, expected_output, drop_params):
     """Test the _map_stop_sequences method of AnthropicConfig"""
-    litellm.drop_params = drop_params
+    llm.drop_params = drop_params
     config = AnthropicConfig()
     result = config._map_stop_sequences(stop_input)
     assert result == expected_output
@@ -859,7 +859,7 @@ async def test_anthropic_structured_output():
 
     Relevant Issue: https://github.com/BerriAI/litellm/issues/8291
     """
-    from litellm import acompletion
+    from llm import acompletion
 
     args = {
         "model": "claude-3-5-sonnet-20240620",
@@ -887,7 +887,7 @@ def test_anthropic_citations_api():
     """
     Test the citations API
     """
-    from litellm import completion
+    from llm import completion
 
     resp = completion(
         model="claude-3-5-sonnet-20241022",
@@ -921,7 +921,7 @@ def test_anthropic_citations_api():
 
 
 def test_anthropic_citations_api_streaming():
-    from litellm import completion
+    from llm import completion
 
     resp = completion(
         model="claude-3-5-sonnet-20241022",
@@ -970,9 +970,9 @@ def test_anthropic_citations_api_streaming():
     ],
 )
 def test_anthropic_thinking_output(model):
-    from litellm import completion
+    from llm import completion
 
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
 
     resp = completion(
         model=model,
@@ -999,10 +999,10 @@ def test_anthropic_thinking_output(model):
     ],
 )
 def test_anthropic_thinking_output_stream(model):
-    litellm.set_verbose = True
+    llm.set_verbose = True
     try:
-        # litellm._turn_on_debug()
-        resp = litellm.completion(
+        # llm._turn_on_debug()
+        resp = llm.completion(
             model=model,
             messages=[{"role": "user", "content": "Tell me a joke."}],
             stream=True,
@@ -1032,13 +1032,13 @@ def test_anthropic_thinking_output_stream(model):
         assert not tool_call_exists
         assert reasoning_content_exists
         assert signature_block_exists
-    except litellm.Timeout:
+    except llm.Timeout:
         pytest.skip("Model is timing out")
 
 
 def test_anthropic_custom_headers():
-    from litellm import completion
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm import completion
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     client = HTTPHandler()
 
@@ -1083,7 +1083,7 @@ def test_anthropic_custom_headers():
     ],
 )
 def test_anthropic_thinking_in_assistant_message(model):
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
     params = {
         "model": model,
         "messages": [
@@ -1107,6 +1107,6 @@ def test_anthropic_thinking_in_assistant_message(model):
         "thinking": {"type": "enabled", "budget_tokens": 30720},
     }
 
-    response = litellm.completion(**params)
+    response = llm.completion(**params)
 
     assert response is not None

@@ -11,7 +11,7 @@ Pass-through endpoints for Google AI Studio - call provider-specific endpoint, i
 |-------|-------|-------|
 | Cost Tracking | ✅ | supports all models on `/generateContent` endpoint |
 | Logging | ✅ | works across all integrations |
-| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/litellm/issues/new) |
+| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
 | Streaming | ✅ | |
 
 
@@ -48,7 +48,7 @@ const requestOptions = {
     baseUrl: 'http://localhost:4000/gemini', // http://<proxy-base-url>/gemini
 };
   
-const genAI = new GoogleGenerativeAI("sk-1234"); // litellm proxy API key
+const genAI = new GoogleGenerativeAI("sk-1234"); // llm proxy API key
 const model = genAI.getGenerativeModel(modelParams, requestOptions);
 
 async function main() {
@@ -95,10 +95,10 @@ Let's call the Gemini [`/countTokens` endpoint](https://ai.google.dev/api/tokens
 export GEMINI_API_KEY=""
 ```
 
-2. Start LiteLLM Proxy 
+2. Start LLM Proxy 
 
 ```bash
-litellm
+llm
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -134,7 +134,7 @@ Key Changes:
 
 ### **Example 1: Counting tokens**
 
-#### LiteLLM Proxy Call 
+#### LLM Proxy Call 
 
 ```bash
 curl http://0.0.0.0:4000/gemini/v1beta/models/gemini-1.5-flash:countTokens?key=anything \
@@ -166,7 +166,7 @@ curl https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:co
 
 ### **Example 2: Generate content**
 
-#### LiteLLM Proxy Call 
+#### LLM Proxy Call 
 
 ```bash
 curl "http://0.0.0.0:4000/gemini/v1beta/models/gemini-1.5-flash:generateContent?key=anything" \
@@ -248,7 +248,7 @@ export GEMINI_API_KEY=""
 ```
 
 ```bash
-litellm
+llm
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -289,7 +289,7 @@ http://0.0.0.0:4000/gemini/v1beta/models/gemini-1.5-flash:countTokens?key=sk-123
 
 ### Send `tags` in request headers
 
-Use this if you want `tags` to be tracked in the LiteLLM DB and on logging callbacks.
+Use this if you want `tags` to be tracked in the LLM DB and on logging callbacks.
 
 Pass tags in request headers as a comma separated list. In the example below the following tags will be tracked
 

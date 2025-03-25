@@ -9,21 +9,21 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
+import llm
 
 
 @pytest.fixture(scope="function", autouse=True)
 def setup_and_teardown():
     """
-    This fixture reloads litellm before every function. To speed up testing by removing callbacks being chained.
+    This fixture reloads llm before every function. To speed up testing by removing callbacks being chained.
     """
     curr_dir = os.getcwd()  # Get the current working directory
     sys.path.insert(
         0, os.path.abspath("../..")
     )  # Adds the project directory to the system path
 
-    import litellm
-    from litellm import Router
+    import llm
+    from llm import Router
 
     importlib.reload(litellm)
     import asyncio
@@ -31,7 +31,7 @@ def setup_and_teardown():
     loop = asyncio.get_event_loop_policy().new_event_loop()
     asyncio.set_event_loop(loop)
     print(litellm)
-    # from litellm import Router, completion, aembedding, acompletion, embedding
+    # from llm import Router, completion, aembedding, acompletion, embedding
     yield
 
     # Teardown code (executes after the yield point)

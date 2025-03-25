@@ -9,7 +9,7 @@ Opik is an open source end-to-end [LLM Evaluation Platform](https://www.comet.co
 <Image img={require('../../img/opik.png')} />
 
 :::info
-We want to learn how we can make the callbacks better! Meet the LiteLLM [founders](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-litellm-hosted-version) or
+We want to learn how we can make the callbacks better! Meet the LLM [founders](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version) or
 join our [discord](https://discord.gg/wuPM9dRgDw)
 :::
 
@@ -23,8 +23,8 @@ Use just 4 lines of code, to instantly log your responses **across all providers
 Get your Opik API Key by signing up [here](https://www.comet.com/signup?utm_source=litelllm&utm_medium=docs&utm_content=api_key_cell)!
 
 ```python
-import litellm
-litellm.callbacks = ["opik"]
+import llm
+llm.callbacks = ["opik"]
 ```
 
 Full examples:
@@ -33,7 +33,7 @@ Full examples:
 <TabItem value="sdk" label="SDK">
 
 ```python
-import litellm
+import llm
 import os
 
 # Configure the Opik API key or call opik.configure()
@@ -43,11 +43,11 @@ os.environ["OPIK_WORKSPACE"] = ""
 # LLM provider API Keys:
 os.environ["OPENAI_API_KEY"] = ""
 
-# set "opik" as a callback, litellm will send the data to an Opik server (such as comet.com)
-litellm.callbacks = ["opik"]
+# set "opik" as a callback, llm will send the data to an Opik server (such as comet.com)
+llm.callbacks = ["opik"]
 
 # openai call
-response = litellm.completion(
+response = llm.completion(
     model="gpt-3.5-turbo",
     messages=[
         {"role": "user", "content": "Why is tracking and evaluation of LLMs important?"}
@@ -55,21 +55,21 @@ response = litellm.completion(
 )
 ```
 
-If you are using liteLLM within a function tracked using Opik's `@track` decorator,
+If you are using llm within a function tracked using Opik's `@track` decorator,
 you will need provide the `current_span_data` field in the metadata attribute
 so that the LLM call is assigned to the correct trace:
 
 ```python
 from opik import track
 from opik.opik_context import get_current_span_data
-import litellm
+import llm
 
-litellm.callbacks = ["opik"]
+llm.callbacks = ["opik"]
 
 @track()
 def streaming_function(input):
     messages = [{"role": "user", "content": input}]
-    response = litellm.completion(
+    response = llm.completion(
         model="gpt-3.5-turbo",
         messages=messages,
         metadata = {
@@ -93,11 +93,11 @@ chunks = list(response)
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo-testing
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
-litellm_settings:
+llm_settings:
   callbacks: ["opik"]
 
 environment_variables:
@@ -108,7 +108,7 @@ environment_variables:
 2. Run proxy
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 3. Test it! 
@@ -149,12 +149,12 @@ These can be passed inside metadata with the `opik` key.
 ```python
 from opik import track
 from opik.opik_context import get_current_span_data
-import litellm
+import llm
 
-litellm.callbacks = ["opik"]
+llm.callbacks = ["opik"]
 
 messages = [{"role": "user", "content": input}]
-response = litellm.completion(
+response = llm.completion(
     model="gpt-3.5-turbo",
     messages=messages,
     metadata = {
@@ -207,7 +207,7 @@ curl -L -X POST 'http://0.0.0.0:4000/v1/chat/completions' \
 
 ## Support & Talk to Founders
 
-- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-litellm-hosted-version)
+- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 - Our numbers 📞 +1 (770) 8783-106 / ‭+1 (412) 618-6238‬
 - Our emails ✉️ ishaan@berri.ai / krrish@berri.ai

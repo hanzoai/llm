@@ -10,15 +10,15 @@ import uuid
 
 import pytest
 
-import litellm
-from litellm import completion
-from litellm._logging import verbose_logger
-from litellm.integrations.langsmith import LangsmithLogger
-from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler
+import llm
+from llm import completion
+from llm._logging import verbose_logger
+from llm.integrations.langsmith import LangsmithLogger
+from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler
 
 verbose_logger.setLevel(logging.DEBUG)
 
-litellm.set_verbose = True
+llm.set_verbose = True
 import time
 
 
@@ -28,8 +28,8 @@ import time
 @pytest.mark.skip(reason="Flaky test. covered by unit tests on custom logger.")
 def test_async_langsmith_logging_with_metadata():
     try:
-        litellm.success_callback = ["langsmith"]
-        litellm.set_verbose = True
+        llm.success_callback = ["langsmith"]
+        llm.set_verbose = True
         response = completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "what llm are u"}],
@@ -39,7 +39,7 @@ def test_async_langsmith_logging_with_metadata():
         print(response)
         time.sleep(3)
 
-        for cb in litellm.callbacks:
+        for cb in llm.callbacks:
             if isinstance(cb, LangsmithLogger):
                 cb.async_httpx_client.close()
 
@@ -53,11 +53,11 @@ def test_async_langsmith_logging_with_metadata():
 @pytest.mark.asyncio
 async def test_async_langsmith_logging_with_streaming_and_metadata(sync_mode):
     try:
-        litellm.DEFAULT_BATCH_SIZE = 1
-        litellm.DEFAULT_FLUSH_INTERVAL_SECONDS = 1
+        llm.DEFAULT_BATCH_SIZE = 1
+        llm.DEFAULT_FLUSH_INTERVAL_SECONDS = 1
         test_langsmith_logger = LangsmithLogger()
-        litellm.success_callback = ["langsmith"]
-        litellm.set_verbose = True
+        llm.success_callback = ["langsmith"]
+        llm.set_verbose = True
         run_id = "497f6eca-6276-4993-bfeb-53cbbbba6f08"
         run_name = "litellmRUN"
         test_metadata = {
@@ -75,14 +75,14 @@ async def test_async_langsmith_logging_with_streaming_and_metadata(sync_mode):
                 stream=True,
                 metadata=test_metadata,
             )
-            for cb in litellm.callbacks:
+            for cb in llm.callbacks:
                 if isinstance(cb, LangsmithLogger):
                     cb.async_httpx_client = AsyncHTTPHandler()
             for chunk in response:
                 continue
             time.sleep(3)
         else:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=messages,
                 max_tokens=10,
@@ -91,7 +91,7 @@ async def test_async_langsmith_logging_with_streaming_and_metadata(sync_mode):
                 stream=True,
                 metadata=test_metadata,
             )
-            for cb in litellm.callbacks:
+            for cb in llm.callbacks:
                 if isinstance(cb, LangsmithLogger):
                     cb.async_httpx_client = AsyncHTTPHandler()
             async for chunk in response:

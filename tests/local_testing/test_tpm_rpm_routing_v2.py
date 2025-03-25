@@ -18,16 +18,16 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 from unittest.mock import AsyncMock, MagicMock, patch
-from litellm.types.utils import StandardLoggingPayload
+from llm.types.utils import StandardLoggingPayload
 import pytest
-from litellm.types.router import DeploymentTypedDict
-import litellm
-from litellm import Router
-from litellm.caching.caching import DualCache
-from litellm.router_strategy.lowest_tpm_rpm_v2 import (
+from llm.types.router import DeploymentTypedDict
+import llm
+from llm import Router
+from llm.caching.caching import DualCache
+from llm.router_strategy.lowest_tpm_rpm_v2 import (
     LowestTPMLoggingHandler_v2 as LowestTPMLoggingHandler,
 )
-from litellm.utils import get_utc_datetime
+from llm.utils import get_utc_datetime
 from create_mock_standard_logging_payload import create_standard_logging_payload
 
 ### UNIT TESTS FOR TPM/RPM ROUTING ###
@@ -406,7 +406,7 @@ def test_single_deployment_tpm_zero():
     import os
     from datetime import datetime
 
-    import litellm
+    import llm
 
     model_list = [
         {
@@ -419,7 +419,7 @@ def test_single_deployment_tpm_zero():
         }
     ]
 
-    router = litellm.Router(
+    router = llm.Router(
         model_list=model_list,
         routing_strategy="usage-based-routing-v2",
         cache_responses=True,
@@ -656,7 +656,7 @@ def test_return_potential_deployments():
     """
     Assert deployment at limit is filtered out
     """
-    from litellm.router_strategy.lowest_tpm_rpm_v2 import LowestTPMLoggingHandler_v2
+    from llm.router_strategy.lowest_tpm_rpm_v2 import LowestTPMLoggingHandler_v2
 
     test_cache = DualCache()
     model_list = []

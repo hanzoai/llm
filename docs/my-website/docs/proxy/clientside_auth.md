@@ -2,13 +2,13 @@
 
 
 ### Pass User LLM API Keys, Fallbacks
-Allow your end-users to pass their model list, api base, OpenAI API key (any LiteLLM supported provider) to make requests 
+Allow your end-users to pass their model list, api base, OpenAI API key (any LLM supported provider) to make requests 
 
 **Note** This is not related to [virtual keys](./virtual_keys.md). This is for when you want to pass in your users actual LLM API keys. 
 
 :::info
 
-**You can pass a litellm.RouterConfig as `user_config`, See all supported params here https://github.com/BerriAI/litellm/blob/main/litellm/types/router.py **
+**You can pass a llm.RouterConfig as `user_config`, See all supported params here https://github.com/BerriAI/llm/blob/main/llm/types/router.py **
 
 :::
 
@@ -24,7 +24,7 @@ user_config = {
     'model_list': [
         {
             'model_name': 'user-azure-instance',
-            'litellm_params': {
+            'llm_params': {
                 'model': 'azure/chatgpt-v-2',
                 'api_key': os.getenv('AZURE_API_KEY'),
                 'api_version': os.getenv('AZURE_API_VERSION'),
@@ -36,7 +36,7 @@ user_config = {
         },
         {
             'model_name': 'user-openai-instance',
-            'litellm_params': {
+            'llm_params': {
                 'model': 'gpt-3.5-turbo',
                 'api_key': os.getenv('OPENAI_API_KEY'),
                 'timeout': 10,
@@ -92,7 +92,7 @@ const userConfig = {
     model_list: [
         {
             model_name: 'user-azure-instance',
-            litellm_params: {
+            llm_params: {
                 model: 'azure/chatgpt-v-2',
                 api_key: process.env.AZURE_API_KEY,
                 api_version: process.env.AZURE_API_VERSION,
@@ -104,7 +104,7 @@ const userConfig = {
         },
         {
             model_name: 'user-openai-instance',
-            litellm_params: {
+            llm_params: {
                 model: 'gpt-3.5-turbo',
                 api_key: process.env.OPENAI_API_KEY,
                 timeout: 10,
@@ -149,7 +149,7 @@ main();
 </Tabs>
 
 ### Pass User LLM API Keys / API Base
-Allows your users to pass in their OpenAI API key/API base (any LiteLLM supported provider) to make requests 
+Allows your users to pass in their OpenAI API key/API base (any LLM supported provider) to make requests 
 
 Here's how to do it: 
 
@@ -158,11 +158,11 @@ Here's how to do it:
 ```yaml
 model_list:
   - model_name: "fireworks_ai/*"
-    litellm_params:
+    llm_params:
       model: "fireworks_ai/*"
       configurable_clientside_auth_params: ["api_base"]
       # OR 
-      configurable_clientside_auth_params: [{"api_base": "^https://litellm.*direct\.fireworks\.ai/v1$"}] # 👈 regex
+      configurable_clientside_auth_params: [{"api_base": "^https://llm.*direct\.fireworks\.ai/v1$"}] # 👈 regex
 ```
 
 Specify any/all auth params you want the user to be able to configure:
@@ -183,14 +183,14 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="gpt-3.5-turbo", messages = [
     {
         "role": "user",
         "content": "this is a test request, write a short poem"
     }
 ], 
-    extra_body={"api_key": "my-bad-key", "api_base": "https://litellm-dev.direct.fireworks.ai/v1"}) # 👈 clientside credentials
+    extra_body={"api_key": "my-bad-key", "api_base": "https://llm-dev.direct.fireworks.ai/v1"}) # 👈 clientside credentials
 
 print(response)
 ```
@@ -199,7 +199,7 @@ More examples:
 <Tabs>
 <TabItem value="openai-py" label="Azure Credentials">
 
-Pass in the litellm_params (E.g. api_key, api_base, etc.) via the `extra_body` parameter in the OpenAI client. 
+Pass in the llm_params (E.g. api_key, api_base, etc.) via the `extra_body` parameter in the OpenAI client. 
 
 ```python
 import openai
@@ -208,7 +208,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="gpt-3.5-turbo", messages = [
     {
         "role": "user",
@@ -255,7 +255,7 @@ main();
 
 Specify the region, project id, etc. to use for making requests to Vertex AI on the clientside.
 
-Any value passed in the Proxy's request body, will be checked by LiteLLM against the mapped openai / litellm auth params. 
+Any value passed in the Proxy's request body, will be checked by LLM against the mapped openai / llm auth params. 
 
 Unmapped params, will be assumed to be provider-specific params, and will be passed through to the provider in the LLM API's request body.
 
@@ -266,7 +266,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages = [
@@ -275,7 +275,7 @@ response = client.chat.completions.create(
             "content": "this is a test request, write a short poem"
         }
     ],
-    extra_body={ # pass any additional litellm_params here
+    extra_body={ # pass any additional llm_params here
         vertex_ai_location: "us-east1" 
     }
 )

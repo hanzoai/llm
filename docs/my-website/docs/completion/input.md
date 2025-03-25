@@ -4,17 +4,17 @@ import TabItem from '@theme/TabItem';
 # Input Params
 
 ## Common Params 
-LiteLLM accepts and translates the [OpenAI Chat Completion params](https://platform.openai.com/docs/api-reference/chat/create) across all providers. 
+LLM accepts and translates the [OpenAI Chat Completion params](https://platform.openai.com/docs/api-reference/chat/create) across all providers. 
 
 ### Usage
 ```python
-import litellm
+import llm
 
 # set env variables
 os.environ["OPENAI_API_KEY"] = "your-openai-key"
 
 ## SET MAX TOKENS - via completion() 
-response = litellm.completion(
+response = llm.completion(
             model="gpt-3.5-turbo",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             max_tokens=10
@@ -28,7 +28,7 @@ print(response)
 Use this function to get an up-to-date list of supported openai params for any model + provider. 
 
 ```python
-from litellm import get_supported_openai_params
+from llm import get_supported_openai_params
 
 response = get_supported_openai_params(model="anthropic.claude-3", custom_llm_provider="bedrock")
 
@@ -37,7 +37,7 @@ print(response) # ["max_tokens", "tools", "tool_choice", "stream"]
 
 This is a list of openai params we translate across providers.
 
-Use `litellm.get_supported_openai_params()` for an updated list of params for each model + provider 
+Use `llm.get_supported_openai_params()` for an updated list of params for each model + provider 
 
 | Provider | temperature | max_completion_tokens | max_tokens | top_p | stream | stream_options | stop | n | presence_penalty | frequency_penalty | functions | function_call | logit_bias | user | response_format | seed | tools | tool_choice | logprobs | top_logprobs | extra_headers |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -64,13 +64,13 @@ Use `litellm.get_supported_openai_params()` for an updated list of params for ea
 |Github| ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | | | | | ✅ |✅ (model dependent)|✅ (model dependent)| | |
 :::note
 
-By default, LiteLLM raises an exception if the openai param being passed in isn't supported. 
+By default, LLM raises an exception if the openai param being passed in isn't supported. 
 
-To drop the param instead, set `litellm.drop_params = True` or `completion(..drop_params=True)`.
+To drop the param instead, set `llm.drop_params = True` or `completion(..drop_params=True)`.
 
 This **ONLY DROPS UNSUPPORTED OPENAI PARAMS**. 
 
-LiteLLM assumes any non-openai param is provider specific and passes it in as a kwarg in the request body
+LLM assumes any non-openai param is provider specific and passes it in as a kwarg in the request body
 
 ::: 
 
@@ -111,7 +111,7 @@ def completion(
     api_version: Optional[str] = None,
     api_key: Optional[str] = None,
     model_list: Optional[list] = None,  # pass in a list of api_base,keys, etc.
-    # Optional liteLLM function params
+    # Optional llm function params
     **kwargs,
 
 ) -> ModelResponse:
@@ -136,7 +136,7 @@ def completion(
 - `tool_call_id`: *str (optional)* - Tool call that this message is responding to.
 
 
-[**See All Message Values**](https://github.com/BerriAI/litellm/blob/8600ec77042dacad324d3879a2bd918fc6a719fa/litellm/types/llms/openai.py#L392)
+[**See All Message Values**](https://github.com/BerriAI/llm/blob/8600ec77042dacad324d3879a2bd918fc6a719fa/llm/types/llms/openai.py#L392)
 
 ## Optional Fields
 
@@ -208,7 +208,7 @@ def completion(
 - `function_call`: *string or object (optional)* - Controls how the model responds to function calls.
 
 
-#### litellm-specific params 
+#### llm-specific params 
 
 - `api_base`: *string (optional)* - The api endpoint you want to call the model with
 

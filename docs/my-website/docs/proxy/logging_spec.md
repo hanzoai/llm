@@ -43,7 +43,7 @@ Found under `kwargs["standard_logging_object"]`. This is a standard payload, log
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `user_api_key_hash` | `Optional[str]` | Hash of the litellm virtual key |
+| `user_api_key_hash` | `Optional[str]` | Hash of the llm virtual key |
 | `user_api_key_alias` | `Optional[str]` | Alias of the API key |
 | `user_api_key_org_id` | `Optional[str]` | Organization ID associated with the key |
 | `user_api_key_team_id` | `Optional[str]` | Team ID associated with the key |
@@ -79,7 +79,7 @@ Inherits from `StandardLoggingUserAPIKeyMetadata` and adds:
 | `response_cost` | `Optional[str]` | Optional response cost |
 | `additional_headers` | `Optional[StandardLoggingAdditionalHeaders]` | Additional headers |
 | `batch_models` | `Optional[List[str]]` | Only set for Batches API. Lists the models used for cost calculation |
-| `litellm_model_name` | `Optional[str]` | Model name sent in request |
+| `llm_model_name` | `Optional[str]` | Model name sent in request |
 
 ## StandardLoggingModelInformation
 

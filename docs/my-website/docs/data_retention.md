@@ -1,9 +1,9 @@
 # Data Retention Policy
 
-## LiteLLM Cloud
+## LLM Cloud
 
 ### Purpose
-This policy outlines the requirements and controls/procedures LiteLLM Cloud has implemented to manage the retention and deletion of customer data.
+This policy outlines the requirements and controls/procedures LLM Cloud has implemented to manage the retention and deletion of customer data.
 
 ### Policy
 
@@ -16,7 +16,7 @@ For Customers
 
 - Data enters an “expired” state when the account is voluntarily closed.
 - Expired account data will be retained for 30 days (adjust as needed).
-- After this period, the account and all related data will be permanently removed from LiteLLM Cloud systems.
+- After this period, the account and all related data will be permanently removed from LLM Cloud systems.
 - Customers who wish to voluntarily close their account should download or back up their data (manually or via available APIs) before initiating the closure process.
 
 3. Involuntary Suspension
@@ -36,12 +36,12 @@ For Customers
 - Enterprise customers can configure custom data retention periods based on their specific compliance and business requirements.
 - Available customization options include:
   - Adjusting the retention period for active data (0-365 days)
-- Custom retention policies must be configured through the LiteLLM Cloud dashboard or via API
+- Custom retention policies must be configured through the LLM Cloud dashboard or via API
 
 
 ### Protection of Records
 
-- LiteLLM Cloud takes measures to ensure that all records under its control are protected against loss, destruction, falsification, and unauthorized access or disclosure. These measures are aligned with relevant legislative, regulatory, contractual, and business obligations.
-- When working with a third-party CSP, LiteLLM Cloud requests comprehensive information regarding the CSP’s security mechanisms to protect data, including records stored or processed on behalf of LiteLLM Cloud.
-- Cloud service providers engaged by LiteLLM Cloud must disclose their safeguarding practices for records they gather and store on LiteLLM Cloud’s behalf.
+- LLM Cloud takes measures to ensure that all records under its control are protected against loss, destruction, falsification, and unauthorized access or disclosure. These measures are aligned with relevant legislative, regulatory, contractual, and business obligations.
+- When working with a third-party CSP, LLM Cloud requests comprehensive information regarding the CSP’s security mechanisms to protect data, including records stored or processed on behalf of LLM Cloud.
+- Cloud service providers engaged by LLM Cloud must disclose their safeguarding practices for records they gather and store on LLM Cloud’s behalf.
 

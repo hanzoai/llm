@@ -1,6 +1,6 @@
 # Usage 
 
-LiteLLM returns the OpenAI compatible usage object across all providers.
+LLM returns the OpenAI compatible usage object across all providers.
 
 ```bash
 "usage": {
@@ -13,7 +13,7 @@ LiteLLM returns the OpenAI compatible usage object across all providers.
 ## Quick Start 
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 ## set ENV variables
@@ -33,7 +33,7 @@ if `stream_options={"include_usage": True}` is set, an additional chunk will be 
 
 
 ```python
-from litellm import completion 
+from llm import completion 
 
 completion = completion(
   model="gpt-4o",

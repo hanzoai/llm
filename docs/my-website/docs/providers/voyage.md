@@ -9,13 +9,13 @@ os.environ['VOYAGE_API_KEY']
 
 ## Sample Usage - Embedding
 ```python
-from litellm import embedding
+from llm import embedding
 import os
 
 os.environ['VOYAGE_API_KEY'] = ""
 response = embedding(
     model="voyage/voyage-3-large",
-    input=["good morning from litellm"],
+    input=["good morning from llm"],
 )
 print(response)
 ```

@@ -5,7 +5,7 @@ from anthropic import Anthropic
 client = Anthropic(
     # This is the default and can be omitted
     base_url="http://localhost:4000",
-    # this is a litellm proxy key :) - not a real anthropic key
+    # this is a llm proxy key :) - not a real anthropic key
     api_key="sk-s4xN1IiLTCytwtZFJaYQrA",
 )
 

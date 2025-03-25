@@ -5,7 +5,7 @@ from typing import List
 
 def get_function_names_from_file(file_path: str) -> List[str]:
     """
-    Extracts all static method names from litellm_logging.py
+    Extracts all static method names from llm_logging.py
     """
     with open(file_path, "r") as file:
         tree = ast.parse(file.read())

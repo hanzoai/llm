@@ -15,10 +15,10 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-import litellm
-from litellm._logging import verbose_logger
-from litellm.integrations.custom_logger import CustomLogger
-from litellm.types.utils import StandardLoggingPayload
+import llm
+from llm._logging import verbose_logger
+from llm.integrations.custom_logger import CustomLogger
+from llm.types.utils import StandardLoggingPayload
 
 
 class TestCustomLogger(CustomLogger):
@@ -33,10 +33,10 @@ class TestCustomLogger(CustomLogger):
 
 @pytest.mark.asyncio
 async def test_global_redaction_on():
-    litellm.turn_off_message_logging = True
+    llm.turn_off_message_logging = True
     test_custom_logger = TestCustomLogger()
-    litellm.callbacks = [test_custom_logger]
-    response = await litellm.acompletion(
+    llm.callbacks = [test_custom_logger]
+    response = await llm.acompletion(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": "hi"}],
         mock_response="hello",
@@ -56,10 +56,10 @@ async def test_global_redaction_on():
 @pytest.mark.parametrize("turn_off_message_logging", [True, False])
 @pytest.mark.asyncio
 async def test_global_redaction_with_dynamic_params(turn_off_message_logging):
-    litellm.turn_off_message_logging = True
+    llm.turn_off_message_logging = True
     test_custom_logger = TestCustomLogger()
-    litellm.callbacks = [test_custom_logger]
-    response = await litellm.acompletion(
+    llm.callbacks = [test_custom_logger]
+    response = await llm.acompletion(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": "hi"}],
         turn_off_message_logging=turn_off_message_logging,
@@ -90,10 +90,10 @@ async def test_global_redaction_with_dynamic_params(turn_off_message_logging):
 @pytest.mark.parametrize("turn_off_message_logging", [True, False])
 @pytest.mark.asyncio
 async def test_global_redaction_off_with_dynamic_params(turn_off_message_logging):
-    litellm.turn_off_message_logging = False
+    llm.turn_off_message_logging = False
     test_custom_logger = TestCustomLogger()
-    litellm.callbacks = [test_custom_logger]
-    response = await litellm.acompletion(
+    llm.callbacks = [test_custom_logger]
+    response = await llm.acompletion(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": "hi"}],
         turn_off_message_logging=turn_off_message_logging,

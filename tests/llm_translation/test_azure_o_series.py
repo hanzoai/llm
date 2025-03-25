@@ -13,8 +13,8 @@ import httpx
 import pytest
 from respx import MockRouter
 
-import litellm
-from litellm import Choices, Message, ModelResponse
+import llm
+from llm import Choices, Message, ModelResponse
 from base_llm_unit_tests import BaseLLMChatTest, BaseOSeriesModelsTest
 
 
@@ -48,7 +48,7 @@ class TestAzureOpenAIO1(BaseOSeriesModelsTest, BaseLLMChatTest):
 
     def test_override_fake_stream(self):
         """Test that native streaming is not supported for o1."""
-        router = litellm.Router(
+        router = llm.Router(
             model_list=[
                 {
                     "model_name": "azure/o1-preview",
@@ -66,12 +66,12 @@ class TestAzureOpenAIO1(BaseOSeriesModelsTest, BaseLLMChatTest):
 
         ## check model info
 
-        model_info = litellm.get_model_info(
+        model_info = llm.get_model_info(
             model="azure/o1-preview", custom_llm_provider="azure"
         )
         assert model_info["supports_native_streaming"] is True
 
-        fake_stream = litellm.AzureOpenAIO1Config().should_fake_stream(
+        fake_stream = llm.AzureOpenAIO1Config().should_fake_stream(
             model="azure/o1-preview", stream=True
         )
         assert fake_stream is False
@@ -100,7 +100,7 @@ def test_azure_o3_streaming():
     Test that o3 models handles fake streaming correctly.
     """
     from openai import AzureOpenAI
-    from litellm import completion
+    from llm import completion
 
     client = AzureOpenAI(
         api_key="my-fake-o1-key",
@@ -131,7 +131,7 @@ def test_azure_o_series_routing():
     Allows user to pass model="azure/o_series/<any-deployment-name>" for explicit o_series model routing.
     """
     from openai import AzureOpenAI
-    from litellm import completion
+    from llm import completion
 
     client = AzureOpenAI(
         api_key="my-fake-o1-key",
@@ -157,12 +157,12 @@ def test_azure_o_series_routing():
         assert "stream" not in mock_create.call_args.kwargs
 
 
-@patch("litellm.main.azure_o1_chat_completions._get_openai_client")
+@patch("llm.main.azure_o1_chat_completions._get_openai_client")
 def test_openai_o_series_max_retries_0(mock_get_openai_client):
-    import litellm
+    import llm
 
-    litellm.set_verbose = True
-    response = litellm.completion(
+    llm.set_verbose = True
+    response = llm.completion(
         model="azure/o1-preview",
         messages=[{"role": "user", "content": "hi"}],
         max_retries=0,

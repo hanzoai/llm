@@ -21,14 +21,14 @@ from datetime import datetime
 
 import pytest
 
-import litellm
-from litellm import Router
-from litellm.caching.caching import DualCache
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.proxy.hooks.parallel_request_limiter import (
+import llm
+from llm import Router
+from llm.caching.caching import DualCache
+from llm.proxy._types import UserAPIKeyAuth
+from llm.proxy.hooks.parallel_request_limiter import (
     _PROXY_MaxParallelRequestsHandler as MaxParallelRequestsHandler,
 )
-from litellm.proxy.utils import InternalUsageCache, ProxyLogging, hash_token
+from llm.proxy.utils import InternalUsageCache, ProxyLogging, hash_token
 
 ## On Request received
 ## On Request success
@@ -216,7 +216,7 @@ async def test_pre_call_hook_team_rpm_limits():
     """
     Test if error raised on hitting team rpm limits
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
     _api_key = "sk-12345"
     _team_id = "unique-team-id"
     user_api_key_dict = UserAPIKeyAuth(
@@ -282,7 +282,7 @@ async def test_pre_call_hook_tpm_limits():
 
     await parallel_request_handler.async_log_success_event(
         kwargs=kwargs,
-        response_obj=litellm.ModelResponse(usage=litellm.Usage(total_tokens=10)),
+        response_obj=llm.ModelResponse(usage=llm.Usage(total_tokens=10)),
         start_time="",
         end_time="",
     )
@@ -344,7 +344,7 @@ async def test_pre_call_hook_user_tpm_limits():
 
     await parallel_request_handler.async_log_success_event(
         kwargs=kwargs,
-        response_obj=litellm.ModelResponse(usage=litellm.Usage(total_tokens=10)),
+        response_obj=llm.ModelResponse(usage=llm.Usage(total_tokens=10)),
         start_time="",
         end_time="",
     )
@@ -503,7 +503,7 @@ async def test_normal_router_call():
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
     pl._init_litellm_callbacks()
-    print(f"litellm callbacks: {litellm.callbacks}")
+    print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
     await parallel_request_handler.async_pre_call_hook(
@@ -546,7 +546,7 @@ async def test_normal_router_call():
 async def test_normal_router_tpm_limit():
     import logging
 
-    from litellm._logging import verbose_proxy_logger
+    from llm._logging import verbose_proxy_logger
 
     verbose_proxy_logger.setLevel(level=logging.DEBUG)
     model_list = [
@@ -585,7 +585,7 @@ async def test_normal_router_tpm_limit():
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
     pl._init_litellm_callbacks()
-    print(f"litellm callbacks: {litellm.callbacks}")
+    print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
     await parallel_request_handler.async_pre_call_hook(
@@ -666,7 +666,7 @@ async def test_streaming_router_call():
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
     pl._init_litellm_callbacks()
-    print(f"litellm callbacks: {litellm.callbacks}")
+    print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
     await parallel_request_handler.async_pre_call_hook(
@@ -708,7 +708,7 @@ async def test_streaming_router_call():
 @pytest.mark.flaky(retries=6, delay=2)
 @pytest.mark.asyncio
 async def test_streaming_router_tpm_limit():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     model_list = [
         {
             "model_name": "azure-model",
@@ -745,7 +745,7 @@ async def test_streaming_router_tpm_limit():
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
     pl._init_litellm_callbacks()
-    print(f"litellm callbacks: {litellm.callbacks}")
+    print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
     await parallel_request_handler.async_pre_call_hook(
@@ -788,7 +788,7 @@ async def test_streaming_router_tpm_limit():
 @pytest.mark.asyncio
 @pytest.mark.flaky(retries=3, delay=1)
 async def test_bad_router_call():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     model_list = [
         {
             "model_name": "azure-model",
@@ -823,7 +823,7 @@ async def test_bad_router_call():
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
     pl._init_litellm_callbacks()
-    print(f"litellm callbacks: {litellm.callbacks}")
+    print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
     await parallel_request_handler.async_pre_call_hook(
@@ -900,7 +900,7 @@ async def test_bad_router_tpm_limit():
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
     pl._init_litellm_callbacks()
-    print(f"litellm callbacks: {litellm.callbacks}")
+    print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
     await parallel_request_handler.async_pre_call_hook(
@@ -987,7 +987,7 @@ async def test_bad_router_tpm_limit_per_model():
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
     pl._init_litellm_callbacks()
-    print(f"litellm callbacks: {litellm.callbacks}")
+    print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
     await parallel_request_handler.async_pre_call_hook(
@@ -1049,7 +1049,7 @@ async def test_pre_call_hook_rpm_limits_per_model():
     """
     import logging
 
-    from litellm._logging import (
+    from llm._logging import (
         verbose_logger,
         verbose_proxy_logger,
         verbose_router_logger,
@@ -1073,7 +1073,7 @@ async def test_pre_call_hook_rpm_limits_per_model():
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
     pl._init_litellm_callbacks()
-    print(f"litellm callbacks: {litellm.callbacks}")
+    print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
     await parallel_request_handler.async_pre_call_hook(
@@ -1126,7 +1126,7 @@ async def test_pre_call_hook_tpm_limits_per_model():
     """
     import logging
 
-    from litellm._logging import (
+    from llm._logging import (
         verbose_logger,
         verbose_proxy_logger,
         verbose_router_logger,
@@ -1151,7 +1151,7 @@ async def test_pre_call_hook_tpm_limits_per_model():
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
     pl._init_litellm_callbacks()
-    print(f"litellm callbacks: {litellm.callbacks}")
+    print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
     model = "azure-model"
 
@@ -1178,7 +1178,7 @@ async def test_pre_call_hook_tpm_limits_per_model():
 
     await parallel_request_handler.async_log_success_event(
         kwargs=kwargs,
-        response_obj=litellm.ModelResponse(usage=litellm.Usage(total_tokens=11)),
+        response_obj=llm.ModelResponse(usage=llm.Usage(total_tokens=11)),
         start_time="",
         end_time="",
     )
@@ -1224,9 +1224,9 @@ async def test_post_call_success_hook_rpm_limits_per_model():
     Test if openai-compatible x-ratelimit-* headers are added to the response
     """
     import logging
-    from litellm import ModelResponse
+    from llm import ModelResponse
 
-    from litellm._logging import (
+    from llm._logging import (
         verbose_logger,
         verbose_proxy_logger,
         verbose_router_logger,
@@ -1251,7 +1251,7 @@ async def test_post_call_success_hook_rpm_limits_per_model():
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
     pl._init_litellm_callbacks()
-    print(f"litellm callbacks: {litellm.callbacks}")
+    print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
     model = "azure-model"
 
@@ -1278,7 +1278,7 @@ async def test_post_call_success_hook_rpm_limits_per_model():
 
     await parallel_request_handler.async_log_success_event(
         kwargs=kwargs,
-        response_obj=litellm.ModelResponse(usage=litellm.Usage(total_tokens=11)),
+        response_obj=llm.ModelResponse(usage=llm.Usage(total_tokens=11)),
         start_time="",
         end_time="",
     )

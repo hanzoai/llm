@@ -9,13 +9,13 @@ import logging
 
 import pytest
 
-import litellm
-from litellm._logging import verbose_logger
+import llm
+from llm._logging import verbose_logger
 from unittest.mock import AsyncMock, Mock
 
 verbose_logger.setLevel(logging.DEBUG)
 
-litellm.set_verbose = True
+llm.set_verbose = True
 import time
 
 @pytest.mark.asyncio
@@ -25,7 +25,7 @@ async def test_opik_logging_http_request():
     - Traces and spans are batched correctly
     """
     try:
-        from litellm.integrations.opik.opik import OpikLogger
+        from llm.integrations.opik.opik import OpikLogger
 
         os.environ["OPIK_URL_OVERRIDE"] = "https://fake.comet.com/opik/api"
         os.environ["OPIK_API_KEY"] = "anything"
@@ -34,9 +34,9 @@ async def test_opik_logging_http_request():
         # Initialize OpikLogger
         test_opik_logger = OpikLogger()
 
-        litellm.callbacks = [test_opik_logger]
+        llm.callbacks = [test_opik_logger]
         test_opik_logger.batch_size = 12
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         # Create a mock for the async_client's post method
         mock_post = AsyncMock()
@@ -46,7 +46,7 @@ async def test_opik_logging_http_request():
 
         # Make multiple calls to ensure we don't hit the batch size
         for _ in range(5):
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Test message"}],
                 max_tokens=10,
@@ -61,7 +61,7 @@ async def test_opik_logging_http_request():
 
         # Now make calls to exceed the batch size
         for _ in range(3):
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Test message"}],
                 max_tokens=10,
@@ -80,7 +80,7 @@ async def test_opik_logging_http_request():
         assert len(test_opik_logger.log_queue) == 0
 
         # Clean up
-        for cb in litellm.callbacks:
+        for cb in llm.callbacks:
             if isinstance(cb, OpikLogger):
                 await cb.async_httpx_client.client.aclose()
 
@@ -93,7 +93,7 @@ def test_sync_opik_logging_http_request():
     - Traces and spans are batched correctly
     """
     try:
-        from litellm.integrations.opik.opik import OpikLogger
+        from llm.integrations.opik.opik import OpikLogger
 
         os.environ["OPIK_URL_OVERRIDE"] = "https://fake.comet.com/opik/api"
         os.environ["OPIK_API_KEY"] = "anything"
@@ -102,8 +102,8 @@ def test_sync_opik_logging_http_request():
         # Initialize OpikLogger
         test_opik_logger = OpikLogger()
 
-        litellm.callbacks = [test_opik_logger]
-        litellm.set_verbose = True
+        llm.callbacks = [test_opik_logger]
+        llm.set_verbose = True
 
         # Create a mock for the clients's post method
         mock_post = Mock()
@@ -113,7 +113,7 @@ def test_sync_opik_logging_http_request():
 
         # Make multiple calls to ensure we don't hit the batch size
         for _ in range(5):
-            response = litellm.completion(
+            response = llm.completion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Test message"}],
                 max_tokens=10,
@@ -134,15 +134,15 @@ def test_sync_opik_logging_http_request():
 @pytest.mark.skip(reason="local-only test, to test if everything works fine.")
 async def test_opik_logging():
     try:
-        from litellm.integrations.opik.opik import OpikLogger
+        from llm.integrations.opik.opik import OpikLogger
         
         # Initialize OpikLogger
         test_opik_logger = OpikLogger()
-        litellm.callbacks = [test_opik_logger]
-        litellm.set_verbose = True
+        llm.callbacks = [test_opik_logger]
+        llm.set_verbose = True
 
         # Log a chat completion call
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "What LLM are you ?"}],
             max_tokens=10,
@@ -152,7 +152,7 @@ async def test_opik_logging():
         print("Non-streaming response:", response)
         
         # Log a streaming completion call
-        stream_response = await litellm.acompletion(
+        stream_response = await llm.acompletion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Stream = True - What llm are you ?"}],
             max_tokens=10,

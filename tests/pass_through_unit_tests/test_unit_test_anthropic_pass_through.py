@@ -11,11 +11,11 @@ sys.path.insert(
 
 import httpx
 import pytest
-import litellm
-from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
+import llm
+from llm.litellm_core_utils.litellm_logging import Logging as LLMLoggingObj
 
 # Import the class we're testing
-from litellm.proxy.pass_through_endpoints.llm_provider_handlers.anthropic_passthrough_logging_handler import (
+from llm.proxy.pass_through_endpoints.llm_provider_handlers.anthropic_passthrough_logging_handler import (
     AnthropicPassthroughLoggingHandler,
 )
 
@@ -49,7 +49,7 @@ def mock_httpx_response():
 
 @pytest.fixture
 def mock_logging_obj():
-    logging_obj = LiteLLMLoggingObj(
+    logging_obj = LLMLoggingObj(
         model="claude-3-opus-20240229",
         messages=[],
         stream=False,
@@ -68,7 +68,7 @@ async def test_anthropic_passthrough_handler(
     mock_httpx_response, mock_response, mock_logging_obj
 ):
     """
-    Unit test - Assert that the anthropic passthrough handler calls the litellm logging object's async_success_handler
+    Unit test - Assert that the anthropic passthrough handler calls the llm logging object's async_success_handler
     """
     start_time = datetime.now()
     end_time = datetime.now()
@@ -84,7 +84,7 @@ async def test_anthropic_passthrough_handler(
         cache_hit=False,
     )
 
-    assert isinstance(result["result"], litellm.ModelResponse)
+    assert isinstance(result["result"], llm.ModelResponse)
 
 
 @pytest.mark.parametrize(
@@ -93,7 +93,7 @@ async def test_anthropic_passthrough_handler(
 )
 def test_create_anthropic_response_logging_payload(mock_logging_obj, metadata_params):
     # Test the logging payload creation
-    model_response = litellm.ModelResponse()
+    model_response = llm.ModelResponse()
     model_response.choices = [{"message": {"content": "Test response"}}]
 
     start_time = datetime.now()
@@ -207,7 +207,7 @@ def test_create_anthropic_response_logging_payload(mock_logging_obj, metadata_pa
     [{"litellm_metadata": {"user": "test"}}, {"metadata": {"user_id": "test"}}],
 )
 def test_get_user_from_metadata(end_user_id):
-    from litellm.proxy.pass_through_endpoints.llm_provider_handlers.anthropic_passthrough_logging_handler import (
+    from llm.proxy.pass_through_endpoints.llm_provider_handlers.anthropic_passthrough_logging_handler import (
         AnthropicPassthroughLoggingHandler,
         PassthroughStandardLoggingPayload,
     )
@@ -310,12 +310,12 @@ def all_chunks():
 
 
 def test_handle_logging_anthropic_collected_chunks(all_chunks):
-    from litellm.proxy.pass_through_endpoints.llm_provider_handlers.anthropic_passthrough_logging_handler import (
+    from llm.proxy.pass_through_endpoints.llm_provider_handlers.anthropic_passthrough_logging_handler import (
         AnthropicPassthroughLoggingHandler,
         PassthroughStandardLoggingPayload,
         EndpointType,
     )
-    from litellm.types.utils import ModelResponse
+    from llm.types.utils import ModelResponse
 
     litellm_logging_obj = Mock()
     pass_through_logging_obj = Mock()
@@ -357,10 +357,10 @@ def test_handle_logging_anthropic_collected_chunks(all_chunks):
 
 
 def test_build_complete_streaming_response(all_chunks):
-    from litellm.proxy.pass_through_endpoints.llm_provider_handlers.anthropic_passthrough_logging_handler import (
+    from llm.proxy.pass_through_endpoints.llm_provider_handlers.anthropic_passthrough_logging_handler import (
         AnthropicPassthroughLoggingHandler,
     )
-    from litellm.types.utils import ModelResponse
+    from llm.types.utils import ModelResponse
 
     litellm_logging_obj = Mock()
 

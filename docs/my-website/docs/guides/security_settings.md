@@ -6,7 +6,7 @@ import TabItem from '@theme/TabItem';
 If you're in an environment using an older TTS bundle, with an older encryption, follow this guide. 
 
 
-LiteLLM uses HTTPX for network requests, unless otherwise specified. 
+LLM uses HTTPX for network requests, unless otherwise specified. 
 
 1. Disable SSL verification
 
@@ -15,14 +15,14 @@ LiteLLM uses HTTPX for network requests, unless otherwise specified.
 <TabItem value="sdk" label="SDK">
 
 ```python
-import litellm
-litellm.ssl_verify = False
+import llm
+llm.ssl_verify = False
 ```
 </TabItem>
 <TabItem value="proxy" label="PROXY">
 
 ```yaml
-litellm_settings:
+llm_settings:
   ssl_verify: false
 ```
 
@@ -41,15 +41,15 @@ export SSL_VERIFY="False"
 <TabItem value="sdk" label="SDK">
 
 ```python
-import litellm
-litellm.ssl_security_level = 1
-litellm.ssl_certificate = "/path/to/certificate.pem"
+import llm
+llm.ssl_security_level = 1
+llm.ssl_certificate = "/path/to/certificate.pem"
 ```
 </TabItem>
 <TabItem value="proxy" label="PROXY">
 
 ```yaml
-litellm_settings:
+llm_settings:
   ssl_security_level: 1
   ssl_certificate: "/path/to/certificate.pem"
 ```

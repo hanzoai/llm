@@ -1,8 +1,8 @@
 import os
 import pytest
 from fastapi.testclient import TestClient
-from litellm.proxy.proxy_server import app, ProxyLogging
-from litellm.caching import DualCache
+from llm.proxy.proxy_server import app, ProxyLogging
+from llm.caching import DualCache
 
 TEST_DB_ENV_VAR_NAME = "MASTER_KEY_CHECK_DB_URL"
 
@@ -35,7 +35,7 @@ async def test_master_key_not_inserted(test_client):
     response = test_client.get("/health/liveliness")
     assert response.status_code == 200
 
-    from litellm.proxy.utils import PrismaClient
+    from llm.proxy.utils import PrismaClient
 
     prisma_client = PrismaClient(
         database_url=os.environ[TEST_DB_ENV_VAR_NAME],

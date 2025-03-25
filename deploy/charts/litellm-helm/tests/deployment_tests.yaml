@@ -1,7 +1,7 @@
 suite: test deployment
 templates:
   - deployment.yaml
-  - configmap-litellm.yaml
+  - configmap-llm.yaml
 tests:
   - it: should work
     template: deployment.yaml
@@ -12,10 +12,10 @@ tests:
           of: Deployment
       - matchRegex:
           path: metadata.name
-          pattern: -litellm$
+          pattern: -llm$
       - equal:
           path: spec.template.spec.containers[0].image
-          value: ghcr.io/berriai/litellm-database:test
+          value: ghcr.io/berriai/llm-database:test
   - it: should work with tolerations
     template: deployment.yaml
     set:
@@ -64,7 +64,7 @@ tests:
             name: PROXY_MASTER_KEY
             valueFrom:
               secretKeyRef:
-                name: RELEASE-NAME-litellm-masterkey
+                name: RELEASE-NAME-llm-masterkey
                 key: masterkey
   - it: should work with masterkeySecretName and masterkeySecretKey
     template: deployment.yaml

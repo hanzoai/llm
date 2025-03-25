@@ -20,8 +20,8 @@ import pytest
 from fastapi import Response
 from fastapi.testclient import TestClient
 
-import litellm
-from litellm.proxy.proxy_server import (  # Replace with the actual module where your FastAPI router is defined
+import llm
+from llm.proxy.proxy_server import (  # Replace with the actual module where your FastAPI router is defined
     initialize,
     router,
     save_worker_config,
@@ -50,7 +50,7 @@ def client():
     filepath = os.path.dirname(os.path.abspath(__file__))
     config_fp = f"{filepath}/test_configs/test_bad_config.yaml"
     asyncio.run(initialize(config=config_fp))
-    from litellm.proxy.proxy_server import app
+    from llm.proxy.proxy_server import app
 
     return TestClient(app)
 
@@ -75,7 +75,7 @@ def test_chat_completion_exception(client):
         print("ERROR=", json_response["error"])
         assert isinstance(json_response["error"]["message"], str)
         assert (
-            "litellm.AuthenticationError: AuthenticationError"
+            "llm.AuthenticationError: AuthenticationError"
             in json_response["error"]["message"]
         )
 
@@ -83,7 +83,7 @@ def test_chat_completion_exception(client):
         # OpenAI SDK required code to be STR, https://github.com/BerriAI/litellm/issues/4970
         # If we look on official python OpenAI lib, the code should be a string:
         # https://github.com/openai/openai-python/blob/195c05a64d39c87b2dfdf1eca2d339597f1fce03/src/openai/types/shared/error_object.py#L11
-        # Related LiteLLM issue: https://github.com/BerriAI/litellm/discussions/4834
+        # Related LLM issue: https://github.com/BerriAI/litellm/discussions/4834
         assert type(code_in_error) == str
 
         # make an openai client to call _make_status_error_from_response
@@ -94,12 +94,12 @@ def test_chat_completion_exception(client):
         assert isinstance(openai_exception, openai.AuthenticationError)
 
     except Exception as e:
-        pytest.fail(f"LiteLLM Proxy test failed. Exception {str(e)}")
+        pytest.fail(f"LLM Proxy test failed. Exception {str(e)}")
 
 
 # raise openai.AuthenticationError
 @mock.patch(
-    "litellm.proxy.proxy_server.llm_router.acompletion",
+    "llm.proxy.proxy_server.llm_router.acompletion",
     return_value=invalid_authentication_error_response,
 )
 def test_chat_completion_exception_azure(mock_acompletion, client):
@@ -137,12 +137,12 @@ def test_chat_completion_exception_azure(mock_acompletion, client):
         assert isinstance(openai_exception, openai.AuthenticationError)
 
     except Exception as e:
-        pytest.fail(f"LiteLLM Proxy test failed. Exception {str(e)}")
+        pytest.fail(f"LLM Proxy test failed. Exception {str(e)}")
 
 
 # raise openai.AuthenticationError
 @mock.patch(
-    "litellm.proxy.proxy_server.llm_router.aembedding",
+    "llm.proxy.proxy_server.llm_router.aembedding",
     return_value=invalid_authentication_error_response,
 )
 def test_embedding_auth_exception_azure(mock_aembedding, client):
@@ -171,7 +171,7 @@ def test_embedding_auth_exception_azure(mock_aembedding, client):
         assert isinstance(openai_exception, openai.AuthenticationError)
 
     except Exception as e:
-        pytest.fail(f"LiteLLM Proxy test failed. Exception {str(e)}")
+        pytest.fail(f"LLM Proxy test failed. Exception {str(e)}")
 
 
 # raise openai.BadRequestError
@@ -202,7 +202,7 @@ def test_exception_openai_bad_model(client):
         assert isinstance(openai_exception, openai.BadRequestError)
 
     except Exception as e:
-        pytest.fail(f"LiteLLM Proxy test failed. Exception {str(e)}")
+        pytest.fail(f"LLM Proxy test failed. Exception {str(e)}")
 
 
 # chat/completions any model
@@ -235,7 +235,7 @@ def test_chat_completion_exception_any_model(client):
         )
 
     except Exception as e:
-        pytest.fail(f"LiteLLM Proxy test failed. Exception {str(e)}")
+        pytest.fail(f"LLM Proxy test failed. Exception {str(e)}")
 
 
 # embeddings any model
@@ -265,12 +265,12 @@ def test_embedding_exception_any_model(client):
         )
 
     except Exception as e:
-        pytest.fail(f"LiteLLM Proxy test failed. Exception {str(e)}")
+        pytest.fail(f"LLM Proxy test failed. Exception {str(e)}")
 
 
 # raise openai.BadRequestError
 @mock.patch(
-    "litellm.proxy.proxy_server.llm_router.acompletion",
+    "llm.proxy.proxy_server.llm_router.acompletion",
     return_value=context_length_exceeded_error_response,
 )
 def test_chat_completion_exception_azure_context_window(mock_acompletion, client):
@@ -315,4 +315,4 @@ def test_chat_completion_exception_azure_context_window(mock_acompletion, client
         print("passed exception is of type BadRequestError")
 
     except Exception as e:
-        pytest.fail(f"LiteLLM Proxy test failed. Exception {str(e)}")
+        pytest.fail(f"LLM Proxy test failed. Exception {str(e)}")

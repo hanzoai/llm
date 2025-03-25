@@ -2,9 +2,9 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # Ollama 
-LiteLLM supports all models from [Ollama](https://github.com/ollama/ollama)
+LLM supports all models from [Ollama](https://github.com/ollama/ollama)
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/litellm/blob/main/cookbook/liteLLM_Ollama.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/llm_Ollama.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
@@ -19,7 +19,7 @@ Ensure you have your ollama server running
 
 ## Example usage
 ```python
-from litellm import completion
+from llm import completion
 
 response = completion(
     model="ollama/llama2", 
@@ -32,7 +32,7 @@ print(response)
 
 ## Example usage - Streaming
 ```python
-from litellm import completion
+from llm import completion
 
 response = completion(
     model="ollama/llama2", 
@@ -54,7 +54,7 @@ pip install async_generator
 
 ```python
 async def async_ollama():
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="ollama/llama2", 
         messages=[{ "content": "what's the weather" ,"role": "user"}], 
         api_base="http://localhost:11434", 
@@ -70,10 +70,10 @@ asyncio.run(async_ollama())
 ```
 
 ## Example Usage - JSON Mode
-To use ollama JSON Mode pass `format="json"` to `litellm.completion()`
+To use ollama JSON Mode pass `format="json"` to `llm.completion()`
 
 ```python
-from litellm import completion
+from llm import completion
 response = completion(
   model="ollama/llama2",
   messages=[
@@ -89,18 +89,18 @@ response = completion(
 
 ## Example Usage - Tool Calling 
 
-To use ollama tool calling, pass `tools=[{..}]` to `litellm.completion()` 
+To use ollama tool calling, pass `tools=[{..}]` to `llm.completion()` 
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
-import litellm 
+from llm import completion
+import llm 
 
-## [OPTIONAL] REGISTER MODEL - not all ollama models support function calling, litellm defaults to json mode tool calls if native tool calling not supported.
+## [OPTIONAL] REGISTER MODEL - not all ollama models support function calling, llm defaults to json mode tool calls if native tool calling not supported.
 
-# litellm.register_model(model_cost={
+# llm.register_model(model_cost={
 #                 "ollama_chat/llama3.1": { 
 #                   "supports_function_calling": true
 #                 },
@@ -145,7 +145,7 @@ response = completion(
 ```yaml
 model_list:
   - model_name: "llama3.1"             
-    litellm_params:
+    llm_params:
       model: "ollama_chat/llama3.1"
       keep_alive: "8m" # Optional: Overrides default keep_alive, use -1 for Forever
     model_info:
@@ -155,7 +155,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -205,15 +205,15 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 
 ## Using Ollama FIM on `/v1/completions`
 
-LiteLLM supports calling Ollama's `/api/generate` endpoint on `/v1/completions` requests. 
+LLM supports calling Ollama's `/api/generate` endpoint on `/v1/completions` requests. 
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
-import litellm 
-litellm._turn_on_debug() # turn on debug to see the request
-from litellm import completion
+import llm 
+llm._turn_on_debug() # turn on debug to see the request
+from llm import completion
 
 response = completion(
     model="ollama/llama3.1",
@@ -230,7 +230,7 @@ print(response)
 ```yaml
 model_list:
   - model_name: "llama3.1"             
-    litellm_params:
+    llm_params:
       model: "ollama/llama3.1"
       api_base: "http://localhost:11434"
 ```
@@ -238,7 +238,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml --detailed_debug
+llm --config /path/to/config.yaml --detailed_debug
 
 # RUNNING ON http://0.0.0.0:4000 
 ```
@@ -267,7 +267,7 @@ print(response)
 In order to send ollama requests to `POST /api/chat` on your ollama server, set the model prefix to `ollama_chat`
 
 ```python
-from litellm import completion
+from llm import completion
 
 response = completion(
     model="ollama_chat/llama2", 
@@ -306,7 +306,7 @@ Ollama supported models: https://github.com/ollama/ollama
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 
 response = completion(
     model="ollama_chat/deepseek-r1", 
@@ -323,7 +323,7 @@ print(response)
 ```yaml
 model_list:
   - model_name: "deepseek-r1"             
-    litellm_params:
+    llm_params:
       model: "ollama_chat/deepseek-r1"
       api_base: "http://localhost:11434"
 ```
@@ -331,7 +331,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 # RUNNING ON http://0.0.0.0:4000
 ```
@@ -376,16 +376,16 @@ math_reasoning = completion.choices[0].message.parsed
 
 #### Using Ollama Vision Models
 
-Call `ollama/llava` in the same input/output format as OpenAI [`gpt-4-vision`](https://docs.litellm.ai/docs/providers/openai#openai-vision-models)
+Call `ollama/llava` in the same input/output format as OpenAI [`gpt-4-vision`](https://docs.llm.ai/docs/providers/openai#openai-vision-models)
 
-LiteLLM Supports the following image types passed in `url`
+LLM Supports the following image types passed in `url`
 - Base64 encoded svgs
 
 **Example Request**
 ```python
-import litellm
+import llm
 
-response = litellm.completion(
+response = llm.completion(
   model = "ollama/llava",
   messages=[
       {
@@ -410,9 +410,9 @@ print(response)
 
 
 
-## LiteLLM/Ollama Docker Image 
+## LLM/Ollama Docker Image 
 
-For Ollama LiteLLM Provides a Docker Image for an OpenAI API compatible server for local LLMs - llama2, mistral, codellama
+For Ollama LLM Provides a Docker Image for an OpenAI API compatible server for local LLMs - llama2, mistral, codellama
 
 
 [![Chat on WhatsApp](https://img.shields.io/static/v1?label=Chat%20on&message=WhatsApp&color=success&logo=WhatsApp&style=flat-square)](https://wa.link/huol9n) [![Chat on Discord](https://img.shields.io/static/v1?label=Chat%20on&message=Discord&color=blue&logo=Discord&style=flat-square)](https://discord.gg/wuPM9dRgDw) 
@@ -420,14 +420,14 @@ For Ollama LiteLLM Provides a Docker Image for an OpenAI API compatible server f
 
 ### Quick Start:
 Docker Hub: 
-For ARM Processors: https://hub.docker.com/repository/docker/litellm/ollama/general
+For ARM Processors: https://hub.docker.com/repository/docker/llm/ollama/general
 For Intel/AMD Processors: to be added
 ```shell
-docker pull litellm/ollama
+docker pull llm/ollama
 ```
 
 ```shell
-docker run --name ollama litellm/ollama
+docker run --name ollama llm/ollama
 ```
 
 #### Test the server container
@@ -445,7 +445,7 @@ openai.api_key = "temp-key"
 print(openai.api_base)
 
 
-print(f'LiteLLM: response from proxy with streaming')
+print(f'LLM: response from proxy with streaming')
 response = openai.chat.completions.create(
     model="ollama/llama2", 
     messages = [
@@ -458,7 +458,7 @@ response = openai.chat.completions.create(
 )
 
 for chunk in response:
-    print(f'LiteLLM: streaming response from proxy {chunk}')
+    print(f'LLM: streaming response from proxy {chunk}')
 ```
 
 ### Responses from this server 
@@ -489,4 +489,4 @@ for chunk in response:
 
 ## Calling Docker Container (host.docker.internal)
 
-[Follow these instructions](https://github.com/BerriAI/litellm/issues/1517#issuecomment-1922022209/)
+[Follow these instructions](https://github.com/BerriAI/llm/issues/1517#issuecomment-1922022209/)

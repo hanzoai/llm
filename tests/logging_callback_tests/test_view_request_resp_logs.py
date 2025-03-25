@@ -16,14 +16,14 @@ from datetime import datetime
 
 import pytest
 
-import litellm
-from litellm import completion
-from litellm._logging import verbose_logger
-from litellm.integrations.gcs_bucket.gcs_bucket import (
+import llm
+from llm import completion
+from llm._logging import verbose_logger
+from llm.integrations.gcs_bucket.gcs_bucket import (
     GCSBucketLogger,
     StandardLoggingPayload,
 )
-from litellm.types.utils import StandardCallbackDynamicParams
+from llm.types.utils import StandardCallbackDynamicParams
 
 
 # This is the response payload that GCS would return.

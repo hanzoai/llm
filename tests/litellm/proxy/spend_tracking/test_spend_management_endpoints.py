@@ -14,11 +14,11 @@ sys.path.insert(
 
 from unittest.mock import MagicMock, patch
 
-import litellm
-from litellm.proxy._types import SpendLogsPayload
-from litellm.proxy.hooks.proxy_track_cost_callback import _ProxyDBLogger
-from litellm.proxy.proxy_server import app, prisma_client
-from litellm.router import Router
+import llm
+from llm.proxy._types import SpendLogsPayload
+from llm.proxy.hooks.proxy_track_cost_callback import _ProxyDBLogger
+from llm.proxy.proxy_server import app, prisma_client
+from llm.router import Router
 
 
 @pytest.fixture
@@ -82,7 +82,7 @@ async def test_ui_view_spend_logs_with_user_id(client, monkeypatch):
 
     # Apply the monkeypatch to replace the prisma_client
     mock_prisma_client = MockPrismaClient()
-    monkeypatch.setattr("litellm.proxy.proxy_server.prisma_client", mock_prisma_client)
+    monkeypatch.setattr("llm.proxy.proxy_server.prisma_client", mock_prisma_client)
 
     # Set up test dates
     start_date = (
@@ -173,7 +173,7 @@ async def test_ui_view_spend_logs_with_team_id(client, monkeypatch):
 
     # Apply the monkeypatch
     mock_prisma_client = MockPrismaClient()
-    monkeypatch.setattr("litellm.proxy.proxy_server.prisma_client", mock_prisma_client)
+    monkeypatch.setattr("llm.proxy.proxy_server.prisma_client", mock_prisma_client)
 
     # Set up test dates
     start_date = (
@@ -237,7 +237,7 @@ async def test_ui_view_spend_logs_pagination(client, monkeypatch):
 
     # Apply the monkeypatch
     mock_prisma_client = MockPrismaClient()
-    monkeypatch.setattr("litellm.proxy.proxy_server.prisma_client", mock_prisma_client)
+    monkeypatch.setattr("llm.proxy.proxy_server.prisma_client", mock_prisma_client)
 
     # Set up test dates
     start_date = (
@@ -373,7 +373,7 @@ async def test_ui_view_spend_logs_date_range_filter(client, monkeypatch):
 
     # Apply the monkeypatch
     mock_prisma_client = MockPrismaClient()
-    monkeypatch.setattr("litellm.proxy.proxy_server.prisma_client", mock_prisma_client)
+    monkeypatch.setattr("llm.proxy.proxy_server.prisma_client", mock_prisma_client)
 
     # Test with a date range that should only include the second log
     start_date = (today - datetime.timedelta(days=5)).strftime("%Y-%m-%d %H:%M:%S")
@@ -412,13 +412,13 @@ async def test_ui_view_spend_logs_unauthorized(client):
 class TestSpendLogsPayload:
     @pytest.mark.asyncio
     async def test_spend_logs_payload_e2e(self):
-        litellm.callbacks = [_ProxyDBLogger(message_logging=False)]
-        # litellm._turn_on_debug()
+        llm.callbacks = [_ProxyDBLogger(message_logging=False)]
+        # llm._turn_on_debug()
 
         with patch.object(
-            litellm.proxy.proxy_server, "_set_spend_logs_payload"
-        ) as mock_client, patch.object(litellm.proxy.proxy_server, "prisma_client"):
-            response = await litellm.acompletion(
+            llm.proxy.proxy_server, "_set_spend_logs_payload"
+        ) as mock_client, patch.object(llm.proxy.proxy_server, "prisma_client"):
+            response = await llm.acompletion(
                 model="gpt-4o",
                 messages=[{"role": "user", "content": "Hello, world!"}],
                 mock_response="Hello, world!",
@@ -501,21 +501,21 @@ class TestSpendLogsPayload:
 
     @pytest.mark.asyncio
     async def test_spend_logs_payload_success_log_with_api_base(self):
-        from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler
+        from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler
 
-        litellm.callbacks = [_ProxyDBLogger(message_logging=False)]
-        # litellm._turn_on_debug()
+        llm.callbacks = [_ProxyDBLogger(message_logging=False)]
+        # llm._turn_on_debug()
 
         client = AsyncHTTPHandler()
 
         with patch.object(
-            litellm.proxy.proxy_server, "_set_spend_logs_payload"
+            llm.proxy.proxy_server, "_set_spend_logs_payload"
         ) as mock_client, patch.object(
-            litellm.proxy.proxy_server, "prisma_client"
+            llm.proxy.proxy_server, "prisma_client"
         ), patch.object(
             client, "post", side_effect=self.mock_anthropic_response
         ):
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="claude-3-7-sonnet-20250219",
                 messages=[{"role": "user", "content": "Hello, world!"}],
                 metadata={"user_api_key_end_user_id": "test_user_1"},
@@ -582,10 +582,10 @@ class TestSpendLogsPayload:
 
     @pytest.mark.asyncio
     async def test_spend_logs_payload_success_log_with_router(self):
-        from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler
+        from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler
 
-        litellm.callbacks = [_ProxyDBLogger(message_logging=False)]
-        # litellm._turn_on_debug()
+        llm.callbacks = [_ProxyDBLogger(message_logging=False)]
+        # llm._turn_on_debug()
 
         client = AsyncHTTPHandler()
 
@@ -604,9 +604,9 @@ class TestSpendLogsPayload:
         )
 
         with patch.object(
-            litellm.proxy.proxy_server, "_set_spend_logs_payload"
+            llm.proxy.proxy_server, "_set_spend_logs_payload"
         ) as mock_client, patch.object(
-            litellm.proxy.proxy_server, "prisma_client"
+            llm.proxy.proxy_server, "prisma_client"
         ), patch.object(
             client, "post", side_effect=self.mock_anthropic_response
         ):

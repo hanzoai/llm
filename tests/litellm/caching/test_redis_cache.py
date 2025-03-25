@@ -10,7 +10,7 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 from unittest.mock import AsyncMock
 
-from litellm.caching.redis_cache import RedisCache
+from llm.caching.redis_cache import RedisCache
 
 
 @pytest.fixture

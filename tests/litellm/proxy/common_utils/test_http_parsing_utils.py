@@ -13,8 +13,8 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 
 
-import litellm
-from litellm.proxy.common_utils.http_parsing_utils import (
+import llm
+from llm.proxy.common_utils.http_parsing_utils import (
     _read_request_body,
     _safe_get_request_parsed_body,
     _safe_set_request_parsed_body,

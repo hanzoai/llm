@@ -15,16 +15,16 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 
 
-import litellm.types
-import litellm.types.utils
-from litellm.router import Router
+import llm.types
+import llm.types.utils
+from llm.router import Router
 from typing import Optional
 from unittest.mock import MagicMock, patch
 
 import asyncio
 import pytest
 import os
-import litellm
+import llm
 from typing import Callable, Any
 
 import tracemalloc
@@ -32,7 +32,7 @@ import gc
 from typing import Type
 from pydantic import BaseModel
 
-from litellm.proxy.proxy_server import app
+from llm.proxy.proxy_server import app
 
 
 async def get_memory_usage() -> float:
@@ -69,7 +69,7 @@ async def run_memory_test(request_func: Callable, name: str) -> None:
 
 
 async def make_completion_request():
-    return await litellm.acompletion(
+    return await llm.acompletion(
         model="openai/gpt-4o",
         messages=[{"role": "user", "content": "Test message for memory usage"}],
         api_base="https://exampleopenaiendpoint-production.up.railway.app/",
@@ -77,7 +77,7 @@ async def make_completion_request():
 
 
 async def make_text_completion_request():
-    return await litellm.atext_completion(
+    return await llm.atext_completion(
         model="openai/gpt-4o",
         prompt="Test message for memory usage",
         api_base="https://exampleopenaiendpoint-production.up.railway.app/",
@@ -89,7 +89,7 @@ async def make_text_completion_request():
     reason="This test is too slow to run on every commit. We can use this after nightly release"
 )
 async def test_acompletion_memory():
-    """Test memory usage for litellm.acompletion"""
+    """Test memory usage for llm.acompletion"""
     await run_memory_test(make_completion_request, "acompletion")
 
 
@@ -98,7 +98,7 @@ async def test_acompletion_memory():
     reason="This test is too slow to run on every commit. We can use this after nightly release"
 )
 async def test_atext_completion_memory():
-    """Test memory usage for litellm.atext_completion"""
+    """Test memory usage for llm.atext_completion"""
     await run_memory_test(make_text_completion_request, "atext_completion")
 
 
@@ -138,7 +138,7 @@ async def make_router_atext_completion_request():
     reason="This test is too slow to run on every commit. We can use this after nightly release"
 )
 async def test_router_atext_completion_memory():
-    """Test memory usage for litellm.atext_completion"""
+    """Test memory usage for llm.atext_completion"""
     await run_memory_test(
         make_router_atext_completion_request, "router_atext_completion"
     )

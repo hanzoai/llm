@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "litellm.fullname" . }}
+  name: {{ include "llm.fullname" . }}
   labels:
-    {{- include "litellm.labels" . | nindent 4 }}
+    {{- include "llm.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "litellm.selectorLabels" . | nindent 6 }}
+      {{- include "llm.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       annotations:
-        checksum/config: {{ include (print $.Template.BasePath "/configmap-litellm.yaml") . | sha256sum }}
+        checksum/config: {{ include (print $.Template.BasePath "/configmap-llm.yaml") . | sha256sum }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
-        {{- include "litellm.labels" . | nindent 8 }}
+        {{- include "llm.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -28,11 +28,11 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "litellm.serviceAccountName" . }}
+      serviceAccountName: {{ include "llm.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ include "litellm.name" . }}
+        - name: {{ include "llm.name" . }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default (printf "main-%s" .Chart.AppVersion) }}"
@@ -46,17 +46,17 @@ spec:
             - name: DATABASE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "litellm.fullname" . }}-dbcredentials
+                  name: {{ include "llm.fullname" . }}-dbcredentials
                   key: username
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "litellm.fullname" . }}-dbcredentials
+                  name: {{ include "llm.fullname" . }}-dbcredentials
                   key: password
             - name: DATABASE_HOST
               value: {{ .Release.Name }}-postgresql
             - name: DATABASE_NAME
-              value: litellm
+              value: llm
             {{- else if .Values.db.useExisting }}
             - name: DATABASE_USERNAME
               valueFrom:
@@ -78,13 +78,13 @@ spec:
             - name: PROXY_MASTER_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.masterkeySecretName | default (printf "%s-masterkey" (include "litellm.fullname" .)) }}
+                  name: {{ .Values.masterkeySecretName | default (printf "%s-masterkey" (include "llm.fullname" .)) }}
                   key: {{ .Values.masterkeySecretKey | default "masterkey" }}
             {{- if .Values.redis.enabled }}
             - name: REDIS_HOST
-              value: {{ include "litellm.redis.serviceName" . }}
+              value: {{ include "llm.redis.serviceName" . }}
             - name: REDIS_PORT
-              value: {{ include "litellm.redis.port" . | quote }}
+              value: {{ include "llm.redis.port" . | quote }}
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -108,7 +108,7 @@ spec:
           {{- end }}
           args:
             - --config
-            - /etc/litellm/config.yaml
+            - /etc/llm/config.yaml
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -131,8 +131,8 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - name: litellm-config
-              mountPath: /etc/litellm/
+            - name: llm-config
+              mountPath: /etc/llm/
           {{ if .Values.securityContext.readOnlyRootFilesystem }}
             - name: tmp
               mountPath: /tmp
@@ -159,9 +159,9 @@ spec:
           emptyDir:
             sizeLimit: 500Mi
         {{- end }}
-        - name: litellm-config
+        - name: llm-config
           configMap:
-            name: {{ include "litellm.fullname" . }}-config
+            name: {{ include "llm.fullname" . }}-config
             items:
               - key: "config.yaml"
                 path: "config.yaml"

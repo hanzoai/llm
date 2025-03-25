@@ -9,7 +9,7 @@ import traceback
 
 from dotenv import load_dotenv
 
-import litellm.types
+import llm.types
 
 load_dotenv()
 import io
@@ -23,8 +23,8 @@ from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
 
-import litellm
-from litellm import (
+import llm
+from llm import (
     ModelResponse,
     RateLimitError,
     Timeout,
@@ -32,16 +32,16 @@ from litellm import (
     completion_cost,
     embedding,
 )
-from litellm.llms.bedrock.chat import BedrockLLM
-from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
-from litellm.litellm_core_utils.prompt_templates.factory import _bedrock_tools_pt
+from llm.llms.bedrock.chat import BedrockLLM
+from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
+from llm.litellm_core_utils.prompt_templates.factory import _bedrock_tools_pt
 from base_llm_unit_tests import BaseLLMChatTest
 from base_rerank_unit_tests import BaseLLMRerankTest
 from base_embedding_unit_tests import BaseLLMEmbeddingTest
 
-# litellm.num_retries = 3
-litellm.cache = None
-litellm.success_callback = []
+# llm.num_retries = 3
+llm.cache = None
+llm.success_callback = []
 user_message = "Write a short poem about the sky"
 messages = [{"content": user_message, "role": "user"}]
 
@@ -49,10 +49,10 @@ messages = [{"content": user_message, "role": "user"}]
 @pytest.fixture(autouse=True)
 def reset_callbacks():
     print("\npytest fixture - resetting callbacks")
-    litellm.success_callback = []
-    litellm._async_success_callback = []
-    litellm.failure_callback = []
-    litellm.callbacks = []
+    llm.success_callback = []
+    llm._async_success_callback = []
+    llm.failure_callback = []
+    llm.callbacks = []
 
 
 def test_completion_bedrock_claude_completion_auth():
@@ -96,10 +96,10 @@ def test_completion_bedrock_claude_completion_auth():
 def test_completion_bedrock_guardrails(streaming):
     import os
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     import logging
 
-    from litellm._logging import verbose_logger
+    from llm._logging import verbose_logger
 
     # verbose_logger.setLevel(logging.DEBUG)
     try:
@@ -131,7 +131,7 @@ def test_completion_bedrock_guardrails(streaming):
 
             print("TRACE=", response.trace)
         else:
-            litellm.set_verbose = True
+            llm.set_verbose = True
             response = completion(
                 model="anthropic.claude-v2",
                 messages=[
@@ -217,7 +217,7 @@ def test_completion_bedrock_claude_external_client_auth():
     try:
         import boto3
 
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         bedrock = boto3.client(
             service_name="bedrock-runtime",
@@ -262,7 +262,7 @@ def test_completion_bedrock_claude_sts_client_auth():
     try:
         import boto3
 
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         response = completion(
             model="bedrock/anthropic.claude-instant-v1",
@@ -323,7 +323,7 @@ def bedrock_session_token_creds():
     else:
         # For circle-ci testing
         # aws_role_name = os.environ["AWS_TEMP_ROLE_NAME"]
-        # TODO: This is using ai.moda's IAM role, we should use LiteLLM's IAM role eventually
+        # TODO: This is using ai.moda's IAM role, we should use LLM's IAM role eventually
         aws_role_name = (
             "arn:aws:iam::335785316107:role/litellm-github-unit-tests-circleci"
         )
@@ -341,13 +341,13 @@ def bedrock_session_token_creds():
 def process_stream_response(res, messages):
     import types
 
-    if isinstance(res, litellm.utils.CustomStreamWrapper):
+    if isinstance(res, llm.utils.CustomStreamWrapper):
         chunks = []
         for part in res:
             chunks.append(part)
             text = part.choices[0].delta.content or ""
             print(text, end="")
-        res = litellm.stream_chunk_builder(chunks, messages=messages)
+        res = llm.stream_chunk_builder(chunks, messages=messages)
     else:
         raise ValueError("Response object is not a streaming response")
 
@@ -369,7 +369,7 @@ def test_completion_bedrock_claude_aws_session_token(bedrock_session_token_creds
     aws_session_token = bedrock_session_token_creds.token
 
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         response_1 = completion(
             model="bedrock/anthropic.claude-3-haiku-20240307-v1:0",
@@ -465,7 +465,7 @@ def test_completion_bedrock_claude_aws_bedrock_client(bedrock_session_token_cred
     )
 
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         response_1 = completion(
             model="bedrock/anthropic.claude-3-haiku-20240307-v1:0",
@@ -545,11 +545,11 @@ def test_completion_bedrock_claude_sts_oidc_auth():
     aws_web_identity_token = "oidc/circleci_v2/"
     aws_region_name = os.environ["AWS_REGION_NAME"]
     # aws_role_name = os.environ["AWS_TEMP_ROLE_NAME"]
-    # TODO: This is using ai.moda's IAM role, we should use LiteLLM's IAM role eventually
+    # TODO: This is using ai.moda's IAM role, we should use LLM's IAM role eventually
     aws_role_name = "arn:aws:iam::335785316107:role/litellm-github-unit-tests-circleci"
 
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         response_1 = completion(
             model="bedrock/anthropic.claude-3-haiku-20240307-v1:0",
@@ -612,11 +612,11 @@ def test_completion_bedrock_httpx_command_r_sts_oidc_auth():
     aws_web_identity_token = "oidc/circleci_v2/"
     aws_region_name = "us-west-2"
     # aws_role_name = os.environ["AWS_TEMP_ROLE_NAME"]
-    # TODO: This is using ai.moda's IAM role, we should use LiteLLM's IAM role eventually
+    # TODO: This is using ai.moda's IAM role, we should use LLM's IAM role eventually
     aws_role_name = "arn:aws:iam::335785316107:role/litellm-github-unit-tests-circleci"
 
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         response = completion(
             model="bedrock/cohere.command-r-v1:0",
@@ -647,7 +647,7 @@ def test_completion_bedrock_httpx_command_r_sts_oidc_auth():
 )
 def test_bedrock_claude_3(image_url):
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         data = {
             "max_tokens": 100,
             "stream": False,
@@ -679,7 +679,7 @@ def test_bedrock_claude_3(image_url):
         assert len(response.choices) > 0
         assert len(response.choices[0].message.content) > 0
 
-    except litellm.InternalServerError:
+    except llm.InternalServerError:
         pass
     except RateLimitError:
         pass
@@ -702,7 +702,7 @@ def test_bedrock_claude_3(image_url):
 )
 def test_bedrock_stop_value(stop, model):
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         data = {
             "max_tokens": 100,
             "stream": False,
@@ -741,7 +741,7 @@ def test_bedrock_stop_value(stop, model):
 )
 def test_bedrock_system_prompt(system, model):
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         data = {
             "max_tokens": 100,
             "stream": False,
@@ -768,8 +768,8 @@ def test_bedrock_system_prompt(system, model):
 
 def test_bedrock_claude_3_tool_calling():
     try:
-        litellm.set_verbose = True
-        litellm._turn_on_debug()
+        llm.set_verbose = True
+        llm._turn_on_debug()
         tools = [
             {
                 "type": "function",
@@ -853,12 +853,12 @@ def encode_image(image_path):
 )
 def test_completion_claude_3_base64():
     try:
-        litellm.set_verbose = True
-        litellm.num_retries = 3
+        llm.set_verbose = True
+        llm.num_retries = 3
         image_path = "../proxy/cached_logo.jpg"
         # Getting the base64 string
         base64_image = encode_image(image_path)
-        resp = litellm.completion(
+        resp = llm.completion(
             model="bedrock/anthropic.claude-3-sonnet-20240229-v1:0",
             messages=[
                 {
@@ -890,7 +890,7 @@ def test_completion_bedrock_mistral_completion_auth():
 
     import os
 
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
 
     # aws_access_key_id = os.environ["AWS_ACCESS_KEY_ID"]
     # aws_secret_access_key = os.environ["AWS_SECRET_ACCESS_KEY"]
@@ -931,14 +931,14 @@ def test_bedrock_ptu():
     client = HTTPHandler()
 
     with patch.object(client, "post", new=Mock()) as mock_client_post:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         from openai.types.chat import ChatCompletion
 
         model_id = (
             "arn:aws:bedrock:us-west-2:888602223428:provisioned-model/8fxff74qyhs3"
         )
         try:
-            response = litellm.completion(
+            response = llm.completion(
                 model="bedrock/anthropic.claude-instant-v1",
                 messages=[{"role": "user", "content": "What's AWS?"}],
                 model_id=model_id,
@@ -966,11 +966,11 @@ async def test_bedrock_custom_api_base():
     client = AsyncHTTPHandler()
 
     with patch.object(client, "post", new=AsyncMock()) as mock_client_post:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         from openai.types.chat import ChatCompletion
 
         try:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="anthropic.claude-3-sonnet-20240229-v1:0",
                 messages=[{"role": "user", "content": "What's AWS?"}],
                 client=client,
@@ -1009,11 +1009,11 @@ async def test_bedrock_extra_headers(model):
     client = AsyncHTTPHandler()
 
     with patch.object(client, "post", new=AsyncMock()) as mock_client_post:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         from openai.types.chat import ChatCompletion
 
         try:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model=model,
                 messages=[{"role": "user", "content": "What's AWS?"}],
                 client=client,
@@ -1045,7 +1045,7 @@ async def test_bedrock_custom_prompt_template():
         import json
 
         try:
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="bedrock/mistral.OpenOrca",
                 messages=[{"role": "user", "content": "What's AWS?"}],
                 client=client,
@@ -1093,7 +1093,7 @@ def test_completion_bedrock_external_client_region():
     try:
         import boto3
 
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         bedrock = boto3.client(
             service_name="bedrock-runtime",
@@ -1135,8 +1135,8 @@ def test_bedrock_tool_calling():
     # related issue: https://github.com/BerriAI/litellm/issues/5007
     # Bedrock tool names must satisfy regular expression pattern: [a-zA-Z][a-zA-Z0-9_]* ensure this is true
     """
-    litellm.set_verbose = True
-    response = litellm.completion(
+    llm.set_verbose = True
+    response = llm.completion(
         model="bedrock/anthropic.claude-3-sonnet-20240229-v1:0",
         fallbacks=["bedrock/meta.llama3-1-8b-instruct-v1:0"],
         messages=[
@@ -1265,7 +1265,7 @@ def test_bedrock_tools_pt_invalid_names():
 
 
 def test_not_found_error():
-    with pytest.raises(litellm.NotFoundError):
+    with pytest.raises(llm.NotFoundError):
         completion(
             model="bedrock/bad_model",
             messages=[
@@ -1285,7 +1285,7 @@ def test_not_found_error():
     ],
 )
 def test_bedrock_cross_region_inference(model):
-    litellm.set_verbose = True
+    llm.set_verbose = True
     response = completion(
         model=model,
         messages=messages,
@@ -1304,20 +1304,20 @@ def test_bedrock_cross_region_inference(model):
     ],
 )
 def test_bedrock_get_base_model(model, expected_base_model):
-    from litellm.llms.bedrock.common_utils import BedrockModelInfo
+    from llm.llms.bedrock.common_utils import BedrockModelInfo
 
     assert BedrockModelInfo.get_base_model(model) == expected_base_model
 
 
-from litellm.litellm_core_utils.prompt_templates.factory import (
+from llm.litellm_core_utils.prompt_templates.factory import (
     _bedrock_converse_messages_pt,
 )
 
 
 def test_bedrock_converse_translation_tool_message():
-    from litellm.types.utils import ChatCompletionMessageToolCall, Function
+    from llm.types.utils import ChatCompletionMessageToolCall, Function
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     messages = [
         {
@@ -1369,7 +1369,7 @@ def test_base_aws_llm_get_credentials():
 
     import boto3
 
-    from litellm.llms.bedrock.base_aws_llm import BaseAWSLLM
+    from llm.llms.bedrock.base_aws_llm import BaseAWSLLM
 
     start_time = time.time()
     session = boto3.Session(
@@ -1403,7 +1403,7 @@ def test_base_aws_llm_get_credentials():
 
 
 def test_bedrock_completion_test_2():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     data = {
         "model": "bedrock/anthropic.claude-3-opus-20240229-v1:0",
         "messages": [
@@ -1628,7 +1628,7 @@ def test_bedrock_completion_test_2():
         ],
     }
 
-    from litellm.llms.bedrock.chat.converse_transformation import AmazonConverseConfig
+    from llm.llms.bedrock.chat.converse_transformation import AmazonConverseConfig
 
     request = AmazonConverseConfig()._transform_request(
         model=data["model"],
@@ -1651,8 +1651,8 @@ def test_bedrock_completion_test_3():
     """
     Check if content in tool result is formatted correctly
     """
-    from litellm.types.utils import ChatCompletionMessageToolCall, Function, Message
-    from litellm.litellm_core_utils.prompt_templates.factory import (
+    from llm.types.utils import ChatCompletionMessageToolCall, Function, Message
+    from llm.litellm_core_utils.prompt_templates.factory import (
         _bedrock_converse_messages_pt,
     )
 
@@ -1708,8 +1708,8 @@ def test_bedrock_completion_test_3():
 @pytest.mark.skip(reason="Skipping this test as Bedrock now supports this behavior.")
 @pytest.mark.parametrize("modify_params", [True, False])
 def test_bedrock_completion_test_4(modify_params):
-    litellm.set_verbose = True
-    litellm.modify_params = modify_params
+    llm.set_verbose = True
+    llm.modify_params = modify_params
 
     data = {
         "model": "anthropic.claude-3-opus-20240229-v1:0",
@@ -1990,13 +1990,13 @@ def test_bedrock_completion_test_4(modify_params):
         assert transformed_messages == expected_messages
     else:
         with pytest.raises(Exception) as e:
-            litellm.completion(**data)
-        assert "litellm.modify_params" in str(e.value)
+            llm.completion(**data)
+        assert "llm.modify_params" in str(e.value)
 
 
 def test_bedrock_context_window_error():
-    with pytest.raises(litellm.ContextWindowExceededError) as e:
-        litellm.completion(
+    with pytest.raises(llm.ContextWindowExceededError) as e:
+        llm.completion(
             model="bedrock/claude-3-5-sonnet-20240620",
             messages=[{"role": "user", "content": "Hello, world!"}],
             mock_response=Exception("prompt is too long"),
@@ -2004,26 +2004,26 @@ def test_bedrock_context_window_error():
 
 
 def test_bedrock_converse_route():
-    litellm.set_verbose = True
-    litellm.completion(
+    llm.set_verbose = True
+    llm.completion(
         model="bedrock/converse/us.amazon.nova-pro-v1:0",
         messages=[{"role": "user", "content": "Hello, world!"}],
     )
 
 
 def test_bedrock_mapped_converse_models():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-    litellm.model_cost = litellm.get_model_cost_map(url="")
-    litellm.add_known_models()
-    litellm.completion(
+    llm.model_cost = llm.get_model_cost_map(url="")
+    llm.add_known_models()
+    llm.completion(
         model="bedrock/us.amazon.nova-pro-v1:0",
         messages=[{"role": "user", "content": "Hello, world!"}],
     )
 
 
 def test_bedrock_base_model_helper():
-    from litellm.llms.bedrock.common_utils import BedrockModelInfo
+    from llm.llms.bedrock.common_utils import BedrockModelInfo
 
     model = "us.amazon.nova-pro-v1:0"
     base_model = BedrockModelInfo.get_base_model(model)
@@ -2060,7 +2060,7 @@ def test_bedrock_base_model_helper():
 )
 def test_bedrock_route_detection(model, expected_route):
     """Test all scenarios for BedrockModelInfo.get_bedrock_route"""
-    from litellm.llms.bedrock.common_utils import BedrockModelInfo
+    from llm.llms.bedrock.common_utils import BedrockModelInfo
 
     route = BedrockModelInfo.get_bedrock_route(model)
     assert (
@@ -2107,10 +2107,10 @@ def test_bedrock_route_detection(model, expected_route):
     ],
 )
 def test_bedrock_prompt_caching_message(messages, expected_cache_control):
-    import litellm
+    import llm
     import json
 
-    transformed_messages = litellm.AmazonConverseConfig()._transform_request(
+    transformed_messages = llm.AmazonConverseConfig()._transform_request(
         model="bedrock/anthropic.claude-3-5-haiku-20241022-v1:0",
         messages=messages,
         optional_params={},
@@ -2136,7 +2136,7 @@ def test_bedrock_prompt_caching_message(messages, expected_cache_control):
 )
 def test_bedrock_supports_tool_call(model, expected_supports_tool_call):
     supported_openai_params = (
-        litellm.AmazonConverseConfig().get_supported_openai_params(model=model)
+        llm.AmazonConverseConfig().get_supported_openai_params(model=model)
     )
     if expected_supports_tool_call:
         assert "tools" in supported_openai_params
@@ -2147,8 +2147,8 @@ def test_bedrock_supports_tool_call(model, expected_supports_tool_call):
 class TestBedrockConverseChatCrossRegion(BaseLLMChatTest):
     def get_base_completion_call_args(self) -> dict:
         os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-        litellm.model_cost = litellm.get_model_cost_map(url="")
-        litellm.add_known_models()
+        llm.model_cost = llm.get_model_cost_map(url="")
+        llm.add_known_models()
         return {
             "model": "bedrock/us.anthropic.claude-3-5-sonnet-20241022-v2:0",
         }
@@ -2161,7 +2161,7 @@ class TestBedrockConverseChatCrossRegion(BaseLLMChatTest):
         """
         Bedrock API raises a 400 BadRequest error when the request contains invalid utf-8 sequences.
 
-        Todo: if litellm.modify_params is True ensure it's a valid utf-8 sequence
+        Todo: if llm.modify_params is True ensure it's a valid utf-8 sequence
         """
         pass
 
@@ -2176,13 +2176,13 @@ class TestBedrockConverseChatCrossRegion(BaseLLMChatTest):
         Test if region models info is correctly used for cost calculation. Using the base model info for cost calculation.
         """
         os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-        litellm.model_cost = litellm.get_model_cost_map(url="")
+        llm.model_cost = llm.get_model_cost_map(url="")
         bedrock_model = "us.anthropic.claude-3-5-sonnet-20241022-v2:0"
-        litellm.model_cost.pop(bedrock_model, None)
+        llm.model_cost.pop(bedrock_model, None)
         model = f"bedrock/{bedrock_model}"
 
-        litellm.set_verbose = True
-        response = litellm.completion(
+        llm.set_verbose = True
+        response = llm.completion(
             model=model,
             messages=[{"role": "user", "content": "Hello, how are you?"}],
         )
@@ -2194,8 +2194,8 @@ class TestBedrockConverseChatCrossRegion(BaseLLMChatTest):
 class TestBedrockConverseChatNormal(BaseLLMChatTest):
     def get_base_completion_call_args(self) -> dict:
         os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-        litellm.model_cost = litellm.get_model_cost_map(url="")
-        litellm.add_known_models()
+        llm.model_cost = llm.get_model_cost_map(url="")
+        llm.add_known_models()
         return {
             "model": "bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0",
             "aws_region_name": "us-east-1",
@@ -2209,14 +2209,14 @@ class TestBedrockConverseChatNormal(BaseLLMChatTest):
         """
         Bedrock API raises a 400 BadRequest error when the request contains invalid utf-8 sequences.
 
-        Todo: if litellm.modify_params is True ensure it's a valid utf-8 sequence
+        Todo: if llm.modify_params is True ensure it's a valid utf-8 sequence
         """
         pass
 
 
 class TestBedrockRerank(BaseLLMRerankTest):
-    def get_custom_llm_provider(self) -> litellm.LlmProviders:
-        return litellm.LlmProviders.BEDROCK
+    def get_custom_llm_provider(self) -> llm.LlmProviders:
+        return llm.LlmProviders.BEDROCK
 
     def get_base_rerank_call_args(self) -> dict:
         return {
@@ -2225,8 +2225,8 @@ class TestBedrockRerank(BaseLLMRerankTest):
 
 
 class TestBedrockCohereRerank(BaseLLMRerankTest):
-    def get_custom_llm_provider(self) -> litellm.LlmProviders:
-        return litellm.LlmProviders.BEDROCK
+    def get_custom_llm_provider(self) -> llm.LlmProviders:
+        return llm.LlmProviders.BEDROCK
 
     def get_base_rerank_call_args(self) -> dict:
         return {
@@ -2258,7 +2258,7 @@ def test_bedrock_empty_content_handling(messages, continue_message_index):
     Test that empty content in messages is handled correctly with default messages
     """
     # Test with default behavior (modify_params=True)
-    litellm.modify_params = True
+    llm.modify_params = True
     formatted_messages = _bedrock_converse_messages_pt(
         messages=messages,
         model="anthropic.claude-3-sonnet-20240229-v1:0",
@@ -2311,7 +2311,7 @@ def test_bedrock_no_default_message():
         {"role": "assistant", "content": "Valid response"},
     ]
 
-    litellm.modify_params = False
+    llm.modify_params = False
     formatted_messages = _bedrock_converse_messages_pt(
         messages=messages,
         model="anthropic.claude-3-sonnet-20240229-v1:0",
@@ -2331,13 +2331,13 @@ def test_bedrock_no_default_message():
 
 @pytest.mark.parametrize("top_k_param", ["top_k", "topK"])
 def test_bedrock_nova_topk(top_k_param):
-    litellm.set_verbose = True
+    llm.set_verbose = True
     data = {
         "model": "bedrock/us.amazon.nova-pro-v1:0",
         "messages": [{"role": "user", "content": "Hello, world!"}],
         top_k_param: 10,
     }
-    original_transform = litellm.AmazonConverseConfig()._transform_request
+    original_transform = llm.AmazonConverseConfig()._transform_request
     captured_data = None
 
     def mock_transform(*args, **kwargs):
@@ -2347,9 +2347,9 @@ def test_bedrock_nova_topk(top_k_param):
         return result
 
     with patch(
-        "litellm.AmazonConverseConfig._transform_request", side_effect=mock_transform
+        "llm.AmazonConverseConfig._transform_request", side_effect=mock_transform
     ):
-        litellm.completion(**data)
+        llm.completion(**data)
 
         # Assert that additionalRequestParameters exists and contains topK
         assert "additionalModelRequestFields" in captured_data
@@ -2361,13 +2361,13 @@ def test_bedrock_nova_topk(top_k_param):
 
 
 def test_bedrock_cross_region_inference(monkeypatch):
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     monkeypatch.setenv("LITELLM_LOCAL_MODEL_COST_MAP", "True")
-    litellm.model_cost = litellm.get_model_cost_map(url="")
-    litellm.add_known_models()
+    llm.model_cost = llm.get_model_cost_map(url="")
+    llm.add_known_models()
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     client = HTTPHandler()
 
     with patch.object(client, "post") as mock_post:
@@ -2405,7 +2405,7 @@ def test_bedrock_empty_content_real_call():
 
 
 def test_bedrock_process_empty_text_blocks():
-    from litellm.litellm_core_utils.prompt_templates.factory import (
+    from llm.litellm_core_utils.prompt_templates.factory import (
         process_empty_text_blocks,
     )
 
@@ -2418,9 +2418,9 @@ def test_bedrock_process_empty_text_blocks():
 
 
 def test_nova_optional_params_tool_choice():
-    litellm.drop_params = True
-    litellm.set_verbose = True
-    litellm.completion(
+    llm.drop_params = True
+    llm.set_verbose = True
+    llm.completion(
         messages=[
             {"role": "user", "content": "A WWII competitive game for 4-8 players"}
         ],
@@ -2481,11 +2481,11 @@ class TestBedrockEmbedding(BaseLLMEmbeddingTest):
             "model": "bedrock/amazon.titan-embed-image-v1",
         }
 
-    def get_custom_llm_provider(self) -> litellm.LlmProviders:
-        return litellm.LlmProviders.BEDROCK
+    def get_custom_llm_provider(self) -> llm.LlmProviders:
+        return llm.LlmProviders.BEDROCK
 
     def test_bedrock_image_embedding_transformation(self):
-        from litellm.llms.bedrock.embed.amazon_titan_multimodal_transformation import (
+        from llm.llms.bedrock.embed.amazon_titan_multimodal_transformation import (
             AmazonTitanMultimodalEmbeddingG1Config,
         )
 
@@ -2504,13 +2504,13 @@ class TestBedrockEmbedding(BaseLLMEmbeddingTest):
 
 @pytest.mark.asyncio
 async def test_bedrock_image_url_sync_client():
-    from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler
+    from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler
     import logging
-    from litellm import verbose_logger
+    from llm import verbose_logger
 
     verbose_logger.setLevel(level=logging.DEBUG)
 
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
     client = AsyncHTTPHandler()
 
     messages = [
@@ -2530,7 +2530,7 @@ async def test_bedrock_image_url_sync_client():
 
     with patch.object(client, "post") as mock_post:
         try:
-            await litellm.acompletion(
+            await llm.acompletion(
                 model="bedrock/us.amazon.nova-pro-v1:0",
                 messages=messages,
                 client=client,
@@ -2541,7 +2541,7 @@ async def test_bedrock_image_url_sync_client():
 
 
 def test_bedrock_error_handling_streaming():
-    from litellm.llms.bedrock.chat.invoke_handler import (
+    from llm.llms.bedrock.chat.invoke_handler import (
         AWSEventStreamDecoder,
         BedrockError,
     )
@@ -2584,9 +2584,9 @@ def test_bedrock_error_handling_streaming():
 @pytest.mark.flaky(retries=6, delay=2)
 @pytest.mark.asyncio
 async def test_bedrock_document_understanding(image_url):
-    from litellm import acompletion
+    from llm import acompletion
 
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
     model = "bedrock/us.amazon.nova-pro-v1:0"
 
     image_content = [
@@ -2604,12 +2604,12 @@ async def test_bedrock_document_understanding(image_url):
         )
         assert response is not None
         assert response.choices[0].message.content != ""
-    except litellm.ServiceUnavailableError as e:
+    except llm.ServiceUnavailableError as e:
         pytest.skip("Skipping test due to ServiceUnavailableError")
 
 
 def test_bedrock_custom_proxy():
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     client = HTTPHandler()
 
@@ -2632,10 +2632,10 @@ def test_bedrock_custom_proxy():
 
 
 def test_bedrock_custom_deepseek():
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
     import json
 
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
     client = HTTPHandler()
 
     with patch.object(client, "post") as mock_post:
@@ -2692,11 +2692,11 @@ def test_bedrock_custom_deepseek():
 )
 def test_handle_top_k_value_helper(model, expected_output):
     assert (
-        litellm.AmazonConverseConfig()._handle_top_k_value(model, {"topK": 3})
+        llm.AmazonConverseConfig()._handle_top_k_value(model, {"topK": 3})
         == expected_output
     )
     assert (
-        litellm.AmazonConverseConfig()._handle_top_k_value(model, {"top_k": 3})
+        llm.AmazonConverseConfig()._handle_top_k_value(model, {"top_k": 3})
         == expected_output
     )
 
@@ -2742,7 +2742,7 @@ def test_bedrock_top_k_param(model, expected_params):
         mock_response.json = lambda: json.loads(mock_response.text)
         mock_post.return_value = mock_response
 
-        litellm.completion(
+        llm.completion(
             model=model,
             messages=[{"role": "user", "content": "Hello, world!"}],
             top_k=2,
@@ -2757,25 +2757,25 @@ def test_bedrock_top_k_param(model, expected_params):
 
 def test_bedrock_invoke_provider():
     assert (
-        litellm.AmazonInvokeConfig().get_bedrock_invoke_provider(
+        llm.AmazonInvokeConfig().get_bedrock_invoke_provider(
             "bedrock/invoke/us.anthropic.claude-3-5-sonnet-20240620-v1:0"
         )
         == "anthropic"
     )
     assert (
-        litellm.AmazonInvokeConfig().get_bedrock_invoke_provider(
+        llm.AmazonInvokeConfig().get_bedrock_invoke_provider(
             "bedrock/us.anthropic.claude-3-5-sonnet-20240620-v1:0"
         )
         == "anthropic"
     )
     assert (
-        litellm.AmazonInvokeConfig().get_bedrock_invoke_provider(
+        llm.AmazonInvokeConfig().get_bedrock_invoke_provider(
             "bedrock/llama/arn:aws:bedrock:us-east-1:086734376398:imported-model/r4c4kewx2s0n"
         )
         == "llama"
     )
     assert (
-        litellm.AmazonInvokeConfig().get_bedrock_invoke_provider(
+        llm.AmazonInvokeConfig().get_bedrock_invoke_provider(
             "us.amazon.nova-pro-v1:0"
         )
         == "nova"
@@ -2783,8 +2783,8 @@ def test_bedrock_invoke_provider():
 
 
 def test_bedrock_description_param():
-    from litellm import completion
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm import completion
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     client = HTTPHandler()
 
@@ -2830,8 +2830,8 @@ def test_bedrock_description_param():
 )
 @pytest.mark.asyncio
 async def test_bedrock_thinking_in_assistant_message(sync_mode):
-    litellm._turn_on_debug()
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler, AsyncHTTPHandler
+    llm._turn_on_debug()
+    from llm.llms.custom_httpx.http_handler import HTTPHandler, AsyncHTTPHandler
 
     if sync_mode:
         client = HTTPHandler()
@@ -2864,9 +2864,9 @@ async def test_bedrock_thinking_in_assistant_message(sync_mode):
     with patch.object(client, "post") as mock_post:
         try:
             if sync_mode:
-                response = litellm.completion(**params, client=client)
+                response = llm.completion(**params, client=client)
             else:
-                response = await litellm.acompletion(**params, client=client)
+                response = await llm.acompletion(**params, client=client)
         except Exception as e:
             print(e)
 
@@ -2897,7 +2897,7 @@ async def test_bedrock_stream_thinking_content_openwebui():
 
     ```
     """
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="bedrock/us.anthropic.claude-3-7-sonnet-20250219-v1:0",
         messages=[{"role": "user", "content": "Hello who is this?"}],
         stream=True,
@@ -2951,7 +2951,7 @@ async def test_bedrock_stream_thinking_content_openwebui():
 
 
 def test_bedrock_application_inference_profile():
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler, AsyncHTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler, AsyncHTTPHandler
 
     client = HTTPHandler()
     client2 = HTTPHandler()

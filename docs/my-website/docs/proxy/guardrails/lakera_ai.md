@@ -5,25 +5,25 @@ import TabItem from '@theme/TabItem';
 # Lakera AI
 
 ## Quick Start
-### 1. Define Guardrails on your LiteLLM config.yaml 
+### 1. Define Guardrails on your LLM config.yaml 
 
 Define your guardrails under the `guardrails` section
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: openai/gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
 guardrails:
   - guardrail_name: "lakera-guard"
-    litellm_params:
+    llm_params:
       guardrail: lakera  # supported values: "aporia", "bedrock", "lakera"
       mode: "during_call"
       api_key: os.environ/LAKERA_API_KEY
       api_base: os.environ/LAKERA_API_BASE
   - guardrail_name: "lakera-pre-guard"
-    litellm_params:
+    llm_params:
       guardrail: lakera  # supported values: "aporia", "bedrock", "lakera"
       mode: "pre_call"
       api_key: os.environ/LAKERA_API_KEY
@@ -37,11 +37,11 @@ guardrails:
 - `post_call` Run **after** LLM call, on **input & output**
 - `during_call` Run **during** LLM call, on **input** Same as `pre_call` but runs in parallel as LLM call.  Response not returned until guardrail check completes
 
-### 2. Start LiteLLM Gateway 
+### 2. Start LLM Gateway 
 
 
 ```shell
-litellm --config config.yaml --detailed_debug
+llm --config config.yaml --detailed_debug
 ```
 
 ### 3. Test request 
@@ -136,14 +136,14 @@ Lakera has 2 categories for prompt_injection attacks:
 ```yaml
 model_list:
   - model_name: fake-openai-endpoint
-    litellm_params:
+    llm_params:
       model: openai/fake
       api_key: fake-key
       api_base: https://exampleopenaiendpoint-production.up.railway.app/
 
 guardrails:
   - guardrail_name: "lakera-guard"
-    litellm_params:
+    llm_params:
       guardrail: lakera  # supported values: "aporia", "bedrock", "lakera"
       mode: "during_call"
       api_key: os.environ/LAKERA_API_KEY

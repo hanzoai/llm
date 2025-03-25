@@ -16,9 +16,9 @@ sys.path.insert(
 import httpx
 import openai
 
-import litellm
-from litellm import Router
-from litellm.integrations.custom_logger import CustomLogger
+import llm
+from llm import Router
+from llm.integrations.custom_logger import CustomLogger
 
 
 class MyCustomHandler(CustomLogger):
@@ -80,7 +80,7 @@ async def test_router_retries_errors(sync_mode, error_type):
     model_list = [
         {
             "model_name": "azure/gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for litellm completion/embedding call
+            "litellm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-functioncalling",
                 "api_key": _api_key,
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -91,7 +91,7 @@ async def test_router_retries_errors(sync_mode, error_type):
         },
         {
             "model_name": "azure/gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for litellm completion/embedding call
+            "litellm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-functioncalling",
                 "api_key": _api_key,
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -105,7 +105,7 @@ async def test_router_retries_errors(sync_mode, error_type):
     router = Router(model_list=model_list, set_verbose=True, debug_level="DEBUG")
 
     customHandler = MyCustomHandler()
-    litellm.callbacks = [customHandler]
+    llm.callbacks = [customHandler]
     user_message = "Hello, how are you?"
     messages = [{"content": user_message, "role": "user"}]
 
@@ -150,7 +150,7 @@ async def test_router_retries_errors(sync_mode, error_type):
     ["ContentPolicyViolationErrorRetries"],  # "AuthenticationErrorRetries",
 )
 async def test_router_retry_policy(error_type):
-    from litellm.router import AllowedFailsPolicy, RetryPolicy
+    from llm.router import AllowedFailsPolicy, RetryPolicy
 
     retry_policy = RetryPolicy(
         ContentPolicyViolationErrorRetries=3, AuthenticationErrorRetries=0
@@ -165,7 +165,7 @@ async def test_router_retry_policy(error_type):
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -174,7 +174,7 @@ async def test_router_retry_policy(error_type):
             },
             {
                 "model_name": "bad-model",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -187,7 +187,7 @@ async def test_router_retry_policy(error_type):
     )
 
     customHandler = MyCustomHandler()
-    litellm.callbacks = [customHandler]
+    llm.callbacks = [customHandler]
     data = {}
     if error_type == "AuthenticationErrorRetries":
         model = "bad-model"
@@ -200,7 +200,7 @@ async def test_router_retry_policy(error_type):
         data = {"model": model, "messages": messages, "mock_response": mock_response}
 
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         await router.acompletion(**data)
     except Exception as e:
         print("got an exception", e)
@@ -220,7 +220,7 @@ async def test_router_retry_policy(error_type):
     reason="This is a local only test, use this to confirm if retry policy works"
 )
 async def test_router_retry_policy_on_429_errprs():
-    from litellm.router import RetryPolicy
+    from llm.router import RetryPolicy
 
     retry_policy = RetryPolicy(
         RateLimitErrorRetries=2,
@@ -241,9 +241,9 @@ async def test_router_retry_policy_on_429_errprs():
     )
 
     customHandler = MyCustomHandler()
-    litellm.callbacks = [customHandler]
+    llm.callbacks = [customHandler]
     try:
-        # litellm.set_verbose = True
+        # llm.set_verbose = True
         _one_message = [{"role": "user", "content": "Hello good morning"}]
 
         messages = [_one_message] * 5
@@ -263,18 +263,18 @@ async def test_router_retry_policy_on_429_errprs():
 @pytest.mark.parametrize("model_group", ["gpt-3.5-turbo", "bad-model"])
 @pytest.mark.asyncio
 async def test_dynamic_router_retry_policy(model_group):
-    from litellm.router import RetryPolicy
+    from llm.router import RetryPolicy
 
     model_group_retry_policy = {
         "gpt-3.5-turbo": RetryPolicy(ContentPolicyViolationErrorRetries=2),
         "bad-model": RetryPolicy(AuthenticationErrorRetries=0),
     }
 
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -286,7 +286,7 @@ async def test_dynamic_router_retry_policy(model_group):
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -298,7 +298,7 @@ async def test_dynamic_router_retry_policy(model_group):
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -310,7 +310,7 @@ async def test_dynamic_router_retry_policy(model_group):
             },
             {
                 "model_name": "bad-model",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -322,7 +322,7 @@ async def test_dynamic_router_retry_policy(model_group):
     )
 
     customHandler = MyCustomHandler()
-    litellm.callbacks = [customHandler]
+    llm.callbacks = [customHandler]
     data = {}
     if model_group == "bad-model":
         model = "bad-model"
@@ -339,7 +339,7 @@ async def test_dynamic_router_retry_policy(model_group):
         }
 
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         response = await router.acompletion(**data)
     except Exception as e:
         print("got an exception", e)
@@ -388,7 +388,7 @@ def test_retry_rate_limit_error_with_healthy_deployments():
         "deployment2",
     ]  # multiple healthy deployments mocked up
 
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
@@ -450,7 +450,7 @@ def test_raise_context_window_exceeded_error():
     """
     Trigger Context Window fallback, when context_window_fallbacks is not None
     """
-    context_window_error = litellm.ContextWindowExceededError(
+    context_window_error = llm.ContextWindowExceededError(
         message="Context window exceeded",
         response=httpx.Response(
             status_code=400,
@@ -492,7 +492,7 @@ def test_raise_context_window_exceeded_error_no_retry():
     """
     Do not Retry Context Window Exceeded Error, when context_window_fallbacks is None
     """
-    context_window_error = litellm.ContextWindowExceededError(
+    context_window_error = llm.ContextWindowExceededError(
         message="Context window exceeded",
         response=httpx.Response(
             status_code=400,
@@ -526,7 +526,7 @@ def test_raise_context_window_exceeded_error_no_retry():
         assert (
             response == True
         ), "Should not have raised exception since we do not have context window fallbacks"
-    except litellm.ContextWindowExceededError:
+    except llm.ContextWindowExceededError:
         pass
 
 
@@ -547,7 +547,7 @@ def test_timeout_for_rate_limit_error_with_healthy_deployments(
     Test 1. Timeout is 0.0 when RateLimit Error and healthy deployments are > 0
     """
     cooldown_time = 60
-    rate_limit_error = litellm.RateLimitError(
+    rate_limit_error = llm.RateLimitError(
         message="{RouterErrors.no_deployments_available.value}. 12345 Passed model={model_group}. Deployments={deployment_dict}",
         llm_provider="",
         model="gpt-3.5-turbo",
@@ -577,7 +577,7 @@ def test_timeout_for_rate_limit_error_with_healthy_deployments(
             }
         )
 
-    router = litellm.Router(model_list=model_list)
+    router = llm.Router(model_list=model_list)
 
     _timeout = router._time_to_sleep_before_retry(
         e=rate_limit_error,
@@ -623,7 +623,7 @@ def test_timeout_for_rate_limit_error_with_no_healthy_deployments():
         }
     ]
 
-    router = litellm.Router(model_list=model_list)
+    router = llm.Router(model_list=model_list)
 
     _timeout = router._time_to_sleep_before_retry(
         e=rate_limit_error,
@@ -660,7 +660,7 @@ def test_no_retry_for_not_found_error_404():
     )
 
     # Act & Assert
-    error = litellm.NotFoundError(
+    error = llm.NotFoundError(
         message="404 model not found",
         model="gpt-12",
         llm_provider="azure",
@@ -676,25 +676,25 @@ def test_no_retry_for_not_found_error_404():
         print("got exception", e)
 
 
-internal_server_error = litellm.InternalServerError(
+internal_server_error = llm.InternalServerError(
     message="internal server error",
     model="gpt-12",
     llm_provider="azure",
 )
 
-rate_limit_error = litellm.RateLimitError(
+rate_limit_error = llm.RateLimitError(
     message="rate limit error",
     model="gpt-12",
     llm_provider="azure",
 )
 
-service_unavailable_error = litellm.ServiceUnavailableError(
+service_unavailable_error = llm.ServiceUnavailableError(
     message="service unavailable error",
     model="gpt-12",
     llm_provider="azure",
 )
 
-timeout_error = litellm.Timeout(
+timeout_error = llm.Timeout(
     message="timeout error",
     model="gpt-12",
     llm_provider="azure",
@@ -739,7 +739,7 @@ def test_no_retry_when_no_healthy_deployments():
 async def test_router_retries_model_specific_and_global():
     from unittest.mock import patch, MagicMock
 
-    litellm.num_retries = 0
+    llm.num_retries = 0
     router = Router(
         model_list=[
             {
@@ -760,7 +760,7 @@ async def test_router_retries_model_specific_and_global():
             await router.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Hello, how are you?"}],
-                mock_response="litellm.RateLimitError",
+                mock_response="llm.RateLimitError",
             )
         except Exception as e:
             print("got exception", e)
@@ -773,7 +773,7 @@ async def test_router_retries_model_specific_and_global():
 @pytest.mark.asyncio
 async def test_router_timeout_model_specific_and_global():
     from unittest.mock import patch, MagicMock
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     router = Router(
         model_list=[

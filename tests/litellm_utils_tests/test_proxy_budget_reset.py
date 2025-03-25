@@ -20,16 +20,16 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 
-from litellm.proxy.common_utils.reset_budget_job import ResetBudgetJob
-from litellm.proxy._types import (
-    LiteLLM_VerificationToken,
-    LiteLLM_UserTable,
-    LiteLLM_TeamTable,
+from llm.proxy.common_utils.reset_budget_job import ResetBudgetJob
+from llm.proxy._types import (
+    LLM_VerificationToken,
+    LLM_UserTable,
+    LLM_TeamTable,
 )
-from litellm.types.services import ServiceTypes
+from llm.types.services import ServiceTypes
 
 # Note: In our "fake" items we use dicts with fields that our fake reset functions modify.
-# In a real-world scenario, these would be instances of LiteLLM_VerificationToken, LiteLLM_UserTable, etc.
+# In a real-world scenario, these would be instances of LLM_VerificationToken, LLM_UserTable, etc.
 
 
 @pytest.mark.asyncio
@@ -386,7 +386,7 @@ async def test_service_logger_keys_success():
         side_effect=fake_reset_key,
     ):
         with patch(
-            "litellm.proxy.common_utils.reset_budget_job.verbose_proxy_logger.exception"
+            "llm.proxy.common_utils.reset_budget_job.verbose_proxy_logger.exception"
         ) as mock_verbose_exc:
             await job.reset_budget_for_litellm_keys()
             # Allow async logging task to complete
@@ -443,7 +443,7 @@ async def test_service_logger_keys_failure():
         side_effect=fake_reset_key,
     ):
         with patch(
-            "litellm.proxy.common_utils.reset_budget_job.verbose_proxy_logger.exception"
+            "llm.proxy.common_utils.reset_budget_job.verbose_proxy_logger.exception"
         ) as mock_verbose_exc:
             await job.reset_budget_for_litellm_keys()
             await asyncio.sleep(0.1)
@@ -501,7 +501,7 @@ async def test_service_logger_users_success():
         side_effect=fake_reset_user,
     ):
         with patch(
-            "litellm.proxy.common_utils.reset_budget_job.verbose_proxy_logger.exception"
+            "llm.proxy.common_utils.reset_budget_job.verbose_proxy_logger.exception"
         ) as mock_verbose_exc:
             await job.reset_budget_for_litellm_users()
             await asyncio.sleep(0.1)
@@ -554,7 +554,7 @@ async def test_service_logger_users_failure():
         side_effect=fake_reset_user,
     ):
         with patch(
-            "litellm.proxy.common_utils.reset_budget_job.verbose_proxy_logger.exception"
+            "llm.proxy.common_utils.reset_budget_job.verbose_proxy_logger.exception"
         ) as mock_verbose_exc:
             await job.reset_budget_for_litellm_users()
             await asyncio.sleep(0.1)
@@ -611,7 +611,7 @@ async def test_service_logger_teams_success():
         side_effect=fake_reset_team,
     ):
         with patch(
-            "litellm.proxy.common_utils.reset_budget_job.verbose_proxy_logger.exception"
+            "llm.proxy.common_utils.reset_budget_job.verbose_proxy_logger.exception"
         ) as mock_verbose_exc:
             await job.reset_budget_for_litellm_teams()
             await asyncio.sleep(0.1)
@@ -664,7 +664,7 @@ async def test_service_logger_teams_failure():
         side_effect=fake_reset_team,
     ):
         with patch(
-            "litellm.proxy.common_utils.reset_budget_job.verbose_proxy_logger.exception"
+            "llm.proxy.common_utils.reset_budget_job.verbose_proxy_logger.exception"
         ) as mock_verbose_exc:
             await job.reset_budget_for_litellm_teams()
             await asyncio.sleep(0.1)

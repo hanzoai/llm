@@ -8,8 +8,8 @@
 # sys.path.insert(
 #     0, os.path.abspath("../..")
 # )  # Adds the parent directory to the system path
-# import litellm
-# from litellm import Router
+# import llm
+# from llm import Router
 # from concurrent.futures import ThreadPoolExecutor
 # from collections import defaultdict
 # from dotenv import load_dotenv
@@ -28,7 +28,7 @@
 # model_list = [
 #     {
 #         "model_name": "gpt-3.5-turbo",  # openai model name
-#         "litellm_params": {  # params for litellm completion/embedding call
+#         "litellm_params": {  # params for llm completion/embedding call
 #             "model": "azure/chatgpt-v-2",
 #             "api_key": os.getenv("AZURE_API_KEY"),
 #             "api_version": os.getenv("AZURE_API_VERSION"),
@@ -39,7 +39,7 @@
 #     },
 #     {
 #         "model_name": "bad-model",  # openai model name
-#         "litellm_params": {  # params for litellm completion/embedding call
+#         "litellm_params": {  # params for llm completion/embedding call
 #             "model": "azure/chatgpt-v-2",
 #             "api_key": "bad-key",
 #             "api_version": os.getenv("AZURE_API_VERSION"),
@@ -59,8 +59,8 @@
 #         "rpm": 10000,
 #     },
 # ]
-# litellm.set_verbose = True
-# litellm.cache = litellm.Cache(
+# llm.set_verbose = True
+# llm.cache = llm.Cache(
 #     type="s3", s3_bucket_name="litellm-my-test-bucket-2", s3_region_name="us-east-1"
 # )
 # router = Router(

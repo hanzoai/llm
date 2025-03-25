@@ -9,8 +9,8 @@ sys.path.insert(
     0, os.path.abspath("../../..")
 )  # Adds the parent directory to the system path
 
-from litellm.proxy._types import DefaultInternalUserParams, LitellmUserRoles
-from litellm.proxy.proxy_server import app
+from llm.proxy._types import DefaultInternalUserParams, LitellmUserRoles
+from llm.proxy.proxy_server import app
 
 client = TestClient(app)
 
@@ -42,7 +42,7 @@ def mock_proxy_config(monkeypatch):
             mock_config = new_config
         return mock_config
 
-    from litellm.proxy.proxy_server import proxy_config
+    from llm.proxy.proxy_server import proxy_config
 
     monkeypatch.setattr(proxy_config, "get_config", mock_get_config)
     monkeypatch.setattr(proxy_config, "save_config", mock_save_config)
@@ -58,12 +58,12 @@ def mock_auth(monkeypatch):
     async def mock_user_api_key_auth():
         return {"user_id": "test_user"}
 
-    from litellm.proxy.ui_crud_endpoints.proxy_setting_endpoints import (
+    from llm.proxy.ui_crud_endpoints.proxy_setting_endpoints import (
         user_api_key_auth,
     )
 
     monkeypatch.setattr(
-        "litellm.proxy.ui_crud_endpoints.proxy_setting_endpoints.user_api_key_auth",
+        "llm.proxy.ui_crud_endpoints.proxy_setting_endpoints.user_api_key_auth",
         mock_user_api_key_auth,
     )
 
@@ -100,8 +100,8 @@ class TestProxySettingEndpoints:
         self, mock_proxy_config, mock_auth, monkeypatch
     ):
         """Test updating the internal user settings"""
-        # Mock litellm.default_internal_user_params
-        import litellm
+        # Mock llm.default_internal_user_params
+        import llm
 
         monkeypatch.setattr(litellm, "default_internal_user_params", {})
 

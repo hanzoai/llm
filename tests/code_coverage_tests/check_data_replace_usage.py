@@ -123,7 +123,7 @@ def main():
 
         # Fail the test if issues are found
         raise Exception(
-            f"Found {len(issues)} instances of .replace('data:', ...) which may be unsafe. Use litellm.CustomStreamWrapper._strip_sse_data_from_chunk instead."
+            f"Found {len(issues)} instances of .replace('data:', ...) which may be unsafe. Use llm.CustomStreamWrapper._strip_sse_data_from_chunk instead."
         )
     else:
         print("✅ No instances of .replace('data:', ...) found.")

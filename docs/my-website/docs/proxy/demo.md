@@ -6,4 +6,4 @@ Here is a demo of the proxy. To log in pass in:
 - Password: sk-1234
 
 
-[Demo UI](https://demo.litellm.ai/ui)
+[Demo UI](https://demo.llm.ai/ui)

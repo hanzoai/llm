@@ -3,7 +3,7 @@ https://www.volcengine.com/docs/82379/1263482
 
 :::tip
 
-**We support ALL Volcengine NIM models, just set `model=volcengine/<any-model-on-volcengine>` as a prefix when sending litellm requests**
+**We support ALL Volcengine NIM models, just set `model=volcengine/<any-model-on-volcengine>` as a prefix when sending llm requests**
 
 :::
 
@@ -15,7 +15,7 @@ os.environ['VOLCENGINE_API_KEY']
 
 ## Sample Usage
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['VOLCENGINE_API_KEY'] = ""
@@ -39,7 +39,7 @@ print(response)
 
 ## Sample Usage - Streaming
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['VOLCENGINE_API_KEY'] = ""
@@ -68,14 +68,14 @@ for chunk in response:
 ## Supported Models - 💥 ALL Volcengine NIM Models Supported!
 We support ALL `volcengine` models, just set `volcengine/<OUR_ENDPOINT_ID>` as a prefix when sending completion requests
 
-## Sample Usage - LiteLLM Proxy
+## Sample Usage - LLM Proxy
 
 ### Config.yaml setting
 
 ```yaml
 model_list:
   - model_name: volcengine-model
-    litellm_params:
+    llm_params:
       model: volcengine/<OUR_ENDPOINT_ID>
       api_key: os.environ/VOLCENGINE_API_KEY
 ```

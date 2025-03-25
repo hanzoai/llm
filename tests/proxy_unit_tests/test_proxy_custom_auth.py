@@ -21,9 +21,9 @@ from fastapi import FastAPI
 # test /chat/completion request to the proxy
 from fastapi.testclient import TestClient
 
-import litellm
-from litellm import RateLimitError, Timeout, completion, completion_cost, embedding
-from litellm.proxy.proxy_server import (  # Replace with the actual module where your FastAPI router is defined
+import llm
+from llm import RateLimitError, Timeout, completion, completion_cost, embedding
+from llm.proxy.proxy_server import (  # Replace with the actual module where your FastAPI router is defined
     ProxyConfig,
     initialize,
     router,
@@ -35,7 +35,7 @@ from litellm.proxy.proxy_server import (  # Replace with the actual module where
 # Make sure the fixture returns TestClient(app)
 @pytest.fixture(scope="function")
 def client():
-    from litellm.proxy.proxy_server import cleanup_router_config_variables
+    from llm.proxy.proxy_server import cleanup_router_config_variables
 
     cleanup_router_config_variables()
     filepath = os.path.dirname(os.path.abspath(__file__))
@@ -63,7 +63,7 @@ def test_custom_auth(client):
         print(f"token: {token}")
         headers = {"Authorization": f"Bearer {token}"}
         response = client.post("/chat/completions", json=test_data, headers=headers)
-        pytest.fail("LiteLLM Proxy test failed. This request should have been rejected")
+        pytest.fail("LLM Proxy test failed. This request should have been rejected")
     except Exception as e:
         print(vars(e))
         print("got an exception")
@@ -87,7 +87,7 @@ def test_custom_auth_bearer(client):
 
         headers = {"Authorization": f"WITHOUT BEAR Er  {token}"}
         response = client.post("/chat/completions", json=test_data, headers=headers)
-        pytest.fail("LiteLLM Proxy test failed. This request should have been rejected")
+        pytest.fail("LLM Proxy test failed. This request should have been rejected")
     except Exception as e:
         print(vars(e))
         print("got an exception")

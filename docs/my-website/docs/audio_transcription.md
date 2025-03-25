@@ -8,7 +8,7 @@ Use this to loadbalance across Azure + OpenAI.
 ## Quick Start
 
 ```python
-from litellm import transcription
+from llm import transcription
 import os 
 
 # set api keys 
@@ -31,7 +31,7 @@ print(f"response: {response}")
 ```yaml
 model_list:
 - model_name: whisper
-  litellm_params:
+  llm_params:
     model: whisper-1
     api_key: os.environ/OPENAI_API_KEY
   model_info:
@@ -46,13 +46,13 @@ general_settings:
 ```yaml
 model_list:
 - model_name: whisper
-  litellm_params:
+  llm_params:
     model: whisper-1
     api_key: os.environ/OPENAI_API_KEY
   model_info:
     mode: audio_transcription
 - model_name: whisper
-  litellm_params:
+  llm_params:
     model: azure/azure-whisper
     api_version: 2024-02-15-preview
     api_base: os.environ/AZURE_EUROPE_API_BASE
@@ -70,7 +70,7 @@ general_settings:
 ### Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml 
+llm --config /path/to/config.yaml 
 
 # RUNNING on http://0.0.0.0:8000
 ```

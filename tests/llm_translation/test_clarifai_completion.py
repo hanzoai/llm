@@ -10,8 +10,8 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-import litellm
-from litellm import (
+import llm
+from llm import (
     embedding,
     completion,
     acompletion,
@@ -20,11 +20,11 @@ from litellm import (
     Timeout,
     ModelResponse,
 )
-from litellm import RateLimitError
+from llm import RateLimitError
 
-# litellm.num_retries = 3
-litellm.cache = None
-litellm.success_callback = []
+# llm.num_retries = 3
+llm.cache = None
+llm.success_callback = []
 user_message = "Write a short poem about the sky"
 messages = [{"content": user_message, "role": "user"}]
 
@@ -32,10 +32,10 @@ messages = [{"content": user_message, "role": "user"}]
 @pytest.fixture(autouse=True)
 def reset_callbacks():
     print("\npytest fixture - resetting callbacks")
-    litellm.success_callback = []
-    litellm._async_success_callback = []
-    litellm.failure_callback = []
-    litellm.callbacks = []
+    llm.success_callback = []
+    llm._async_success_callback = []
+    llm.failure_callback = []
+    llm.callbacks = []
 
 
 @pytest.mark.skip(reason="Account rate limited.")
@@ -65,7 +65,7 @@ def test_completion_clarifai_claude_2_1():
 @pytest.mark.skip(reason="Account rate limited")
 def test_completion_clarifai_mistral_large():
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         response: ModelResponse = completion(
             model="clarifai/mistralai.completion.mistral-small",
             messages=messages,
@@ -87,7 +87,7 @@ def test_completion_clarifai_mistral_large():
 def test_async_completion_clarifai():
     import asyncio
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     async def test_get_response():
         user_message = "Hello, how are you?"
@@ -101,7 +101,7 @@ def test_async_completion_clarifai():
                 api_key=os.getenv("CLARIFAI_API_KEY"),
             )
             print(f"response: {response}")
-        except litellm.Timeout as e:
+        except llm.Timeout as e:
             pass
         except Exception as e:
             pytest.fail(f"An exception occurred: {e}")

@@ -15,15 +15,15 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 import pytest
 
-import litellm
+import llm
 
-litellm.set_verbose = False
+llm.set_verbose = False
 
 
 question = "embed this very long text" * 100
 
 
-# make X concurrent calls to litellm.completion(model=gpt-35-turbo, messages=[]), pick a random question in questions array.
+# make X concurrent calls to llm.completion(model=gpt-35-turbo, messages=[]), pick a random question in questions array.
 #  Allow me to tune X concurrent calls.. Log question, output/exception, response time somewhere
 # show me a summary of requests made, success full calls, failed calls. For failed calls show me the exceptions
 

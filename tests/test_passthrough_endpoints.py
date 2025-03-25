@@ -55,7 +55,7 @@ async def test_basic_passthrough():
     """
     - Make request to pass through endpoint
 
-    - This SHOULD not go through LiteLLM user_api_key_auth
+    - This SHOULD not go through LLM user_api_key_auth
     - This should forward headers from request to pass through endpoint
     """
     async with aiohttp.ClientSession() as session:

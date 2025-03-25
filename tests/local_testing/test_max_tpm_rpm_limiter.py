@@ -15,12 +15,12 @@
 #     0, os.path.abspath("../..")
 # )  # Adds the parent directory to the system path
 # import pytest
-# import litellm
-# from litellm import Router
-# from litellm.proxy.utils import ProxyLogging, hash_token
-# from litellm.proxy._types import UserAPIKeyAuth
-# from litellm.caching.caching import DualCache, RedisCache
-# from litellm.proxy.hooks.tpm_rpm_limiter import _PROXY_MaxTPMRPMLimiter
+# import llm
+# from llm import Router
+# from llm.proxy.utils import ProxyLogging, hash_token
+# from llm.proxy._types import UserAPIKeyAuth
+# from llm.caching.caching import DualCache, RedisCache
+# from llm.proxy.hooks.tpm_rpm_limiter import _PROXY_MaxTPMRPMLimiter
 # from datetime import datetime
 
 
@@ -29,7 +29,7 @@
 #     """
 #     Test if error raised on hitting rpm limits
 #     """
-#     litellm.set_verbose = True
+#     llm.set_verbose = True
 #     _api_key = hash_token("sk-12345")
 #     user_api_key_dict = UserAPIKeyAuth(api_key=_api_key, tpm_limit=9, rpm_limit=1)
 #     local_cache = DualCache()
@@ -76,7 +76,7 @@
 #     """
 #     Test if error raised on hitting team rpm limits
 #     """
-#     litellm.set_verbose = True
+#     llm.set_verbose = True
 #     _api_key = "sk-12345"
 #     _team_id = "unique-team-id"
 #     _user_api_key_dict = {
@@ -133,19 +133,19 @@
 #     - test if default namespace set via `proxyconfig._init_cache`
 #     - respected for tpm/rpm caching
 #     """
-#     from litellm.proxy.proxy_server import ProxyConfig
+#     from llm.proxy.proxy_server import ProxyConfig
 
 #     redis_usage_cache: Optional[RedisCache] = None
 #     cache_params = {"type": "redis", "namespace": "litellm_default"}
 
 #     ## INIT CACHE ##
 #     proxy_config = ProxyConfig()
-#     setattr(litellm.proxy.proxy_server, "proxy_config", proxy_config)
+#     setattr(llm.proxy.proxy_server, "proxy_config", proxy_config)
 
 #     proxy_config._init_cache(cache_params=cache_params)
 
 #     redis_cache: Optional[RedisCache] = getattr(
-#         litellm.proxy.proxy_server, "redis_usage_cache"
+#         llm.proxy.proxy_server, "redis_usage_cache"
 #     )
 
 #     ## CHECK IF NAMESPACE SET ##

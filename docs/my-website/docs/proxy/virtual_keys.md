@@ -6,9 +6,9 @@ Track Spend, and control model access via virtual keys for the proxy
 
 :::info
 
-- 🔑 [UI to Generate, Edit, Delete Keys (with SSO)](https://docs.litellm.ai/docs/proxy/ui)
-- [Deploy LiteLLM Proxy with Key Management](https://docs.litellm.ai/docs/proxy/deploy#deploy-with-database)
-- [Dockerfile.database for LiteLLM Proxy + Key Management](https://github.com/BerriAI/litellm/blob/main/docker/Dockerfile.database)
+- 🔑 [UI to Generate, Edit, Delete Keys (with SSO)](https://docs.llm.ai/docs/proxy/ui)
+- [Deploy LLM Proxy with Key Management](https://docs.llm.ai/docs/proxy/deploy#deploy-with-database)
+- [Dockerfile.database for LLM Proxy + Key Management](https://github.com/BerriAI/llm/blob/main/docker/Dockerfile.database)
 
 
 :::
@@ -32,7 +32,7 @@ export DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<dbname>
 
 You can then generate keys by hitting the `/key/generate` endpoint.
 
-[**See code**](https://github.com/BerriAI/litellm/blob/7a669a36d2689c7f7890bc9c93e04ff3c2641299/litellm/proxy/proxy_server.py#L672)
+[**See code**](https://github.com/BerriAI/llm/blob/7a669a36d2689c7f7890bc9c93e04ff3c2641299/llm/proxy/proxy_server.py#L672)
 
 ## **Quick Start - Generate a Key**
 **Step 1: Save postgres db url**
@@ -40,10 +40,10 @@ You can then generate keys by hitting the `/key/generate` endpoint.
 ```yaml
 model_list:
   - model_name: gpt-4
-    litellm_params:
+    llm_params:
         model: ollama/llama2
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
         model: ollama/llama2
 
 general_settings: 
@@ -51,10 +51,10 @@ general_settings:
   database_url: "postgresql://<user>:<password>@<host>:<port>/<dbname>" # 👈 KEY CHANGE
 ```
 
-**Step 2: Start litellm**
+**Step 2: Start llm**
 
 ```shell
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 **Step 3: Generate keys**
@@ -69,18 +69,18 @@ curl 'http://0.0.0.0:4000/key/generate' \
 ## Spend Tracking 
 
 Get spend per:
-- key - via `/key/info` [Swagger](https://litellm-api.up.railway.app/#/key%20management/info_key_fn_key_info_get)
-- user - via `/user/info` [Swagger](https://litellm-api.up.railway.app/#/user%20management/user_info_user_info_get)
-- team - via `/team/info` [Swagger](https://litellm-api.up.railway.app/#/team%20management/team_info_team_info_get)  
-- ⏳ end-users - via `/end_user/info` - [Comment on this issue for end-user cost tracking](https://github.com/BerriAI/litellm/issues/2633)
+- key - via `/key/info` [Swagger](https://llm-api.up.railway.app/#/key%20management/info_key_fn_key_info_get)
+- user - via `/user/info` [Swagger](https://llm-api.up.railway.app/#/user%20management/user_info_user_info_get)
+- team - via `/team/info` [Swagger](https://llm-api.up.railway.app/#/team%20management/team_info_team_info_get)  
+- ⏳ end-users - via `/end_user/info` - [Comment on this issue for end-user cost tracking](https://github.com/BerriAI/llm/issues/2633)
 
 **How is it calculated?**
 
-The cost per model is stored [here](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json) and calculated by the [`completion_cost`](https://github.com/BerriAI/litellm/blob/db7974f9f216ee50b53c53120d1e3fc064173b60/litellm/utils.py#L3771) function.
+The cost per model is stored [here](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json) and calculated by the [`completion_cost`](https://github.com/BerriAI/llm/blob/db7974f9f216ee50b53c53120d1e3fc064173b60/llm/utils.py#L3771) function.
 
 **How is it tracking?**
 
-Spend is automatically tracked for the key in the "LiteLLM_VerificationTokenTable". If the key has an attached 'user_id' or 'team_id', the spend for that user is tracked in the "LiteLLM_UserTable", and team in the "LiteLLM_TeamTable".
+Spend is automatically tracked for the key in the "LLM_VerificationTokenTable". If the key has an attached 'user_id' or 'team_id', the spend for that user is tracked in the "LLM_UserTable", and team in the "LLM_TeamTable".
 
 <Tabs>
 <TabItem value="key-info" label="Key Spend">
@@ -93,7 +93,7 @@ curl 'http://0.0.0.0:4000/key/info?key=<user-key>' \
      -H 'Authorization: Bearer <your-master-key>'
 ```
 
-This is automatically updated (in USD) when calls are made to /completions, /chat/completions, /embeddings using litellm's completion_cost() function. [**See Code**](https://github.com/BerriAI/litellm/blob/1a6ea20a0bb66491968907c2bfaabb7fe45fc064/litellm/utils.py#L1654). 
+This is automatically updated (in USD) when calls are made to /completions, /chat/completions, /embeddings using llm's completion_cost() function. [**See Code**](https://github.com/BerriAI/llm/blob/1a6ea20a0bb66491968907c2bfaabb7fe45fc064/llm/utils.py#L1654). 
 
 **Sample response**
 
@@ -239,19 +239,19 @@ Here's how you can do that:
 ```yaml
 model_list:
   - model_name: my-free-tier
-    litellm_params:
+    llm_params:
         model: huggingface/HuggingFaceH4/zephyr-7b-beta
         api_base: http://0.0.0.0:8001
   - model_name: my-free-tier
-    litellm_params:
+    llm_params:
         model: huggingface/HuggingFaceH4/zephyr-7b-beta
         api_base: http://0.0.0.0:8002
   - model_name: my-free-tier
-    litellm_params:
+    llm_params:
         model: huggingface/HuggingFaceH4/zephyr-7b-beta
         api_base: http://0.0.0.0:8003
   - model_name: my-paid-tier
-    litellm_params:
+    llm_params:
         model: gpt-4
         api_key: my-api-key
 ```
@@ -291,29 +291,29 @@ curl -X POST "https://0.0.0.0:4000/key/generate" \
 
 ## Advanced
 
-### Pass LiteLLM Key in custom header
+### Pass LLM Key in custom header
 
-Use this to make LiteLLM proxy look for the virtual key in a custom header instead of the default `"Authorization"` header
+Use this to make LLM proxy look for the virtual key in a custom header instead of the default `"Authorization"` header
 
-**Step 1** Define `litellm_key_header_name` name on litellm config.yaml
+**Step 1** Define `llm_key_header_name` name on llm config.yaml
 
 ```yaml
 model_list:
   - model_name: fake-openai-endpoint
-    litellm_params:
+    llm_params:
       model: openai/fake
       api_key: fake-key
       api_base: https://exampleopenaiendpoint-production.up.railway.app/
 
 general_settings: 
   master_key: sk-1234 
-  litellm_key_header_name: "X-Litellm-Key" # 👈 Key Change
+  llm_key_header_name: "X-Litellm-Key" # 👈 Key Change
 
 ```
 
 **Step 2** Test it
 
-In this request, litellm will use the Virtual key in the `X-Litellm-Key` header
+In this request, llm will use the Virtual key in the `X-Litellm-Key` header
 
 <Tabs>
 <TabItem value="curl" label="curl">
@@ -333,7 +333,7 @@ curl http://localhost:4000/v1/chat/completions \
 
 **Expected Response**
 
-Expect to see a successfull response from the litellm proxy since the key passed in `X-Litellm-Key` is valid
+Expect to see a successfull response from the llm proxy since the key passed in `X-Litellm-Key` is valid
 ```shell
 {"id":"chatcmpl-f9b2b79a7c30477ab93cd0e717d1773e","choices":[{"finish_reason":"stop","index":0,"message":{"content":"\n\nHello there, how may I assist you today?","role":"assistant","tool_calls":null,"function_call":null}}],"created":1677652288,"model":"gpt-3.5-turbo-0125","object":"chat.completion","system_fingerprint":"fp_44709d6fcb","usage":{"completion_tokens":12,"prompt_tokens":9,"total_tokens":21}
 ```
@@ -345,10 +345,10 @@ Expect to see a successfull response from the litellm proxy since the key passed
 ```python
 client = openai.OpenAI(
     api_key="not-used",
-    base_url="https://api-gateway-url.com/llmservc/api/litellmp",
+    base_url="https://api-gateway-url.com/llmservc/api/llmp",
     default_headers={
         "Authorization": f"Bearer {API_GATEWAY_TOKEN}", # (optional) For your API Gateway
-        "X-Litellm-Key": f"Bearer sk-1234"              # For LiteLLM Proxy
+        "X-Litellm-Key": f"Bearer sk-1234"              # For LLM Proxy
     }
 )
 ```
@@ -400,13 +400,13 @@ If you need to add custom logic before generating a Proxy API Key (Example Valid
 #### 1. Write a custom `custom_generate_key_fn`
 
 
-The input to the custom_generate_key_fn function is a single parameter: `data` [(Type: GenerateKeyRequest)](https://github.com/BerriAI/litellm/blob/main/litellm/proxy/_types.py#L125)
+The input to the custom_generate_key_fn function is a single parameter: `data` [(Type: GenerateKeyRequest)](https://github.com/BerriAI/llm/blob/main/llm/proxy/_types.py#L125)
 
 The output of your `custom_generate_key_fn` should be a dictionary with the following structure
 ```python
 {
     "decision": False,
-    "message": "This violates LiteLLM Proxy Rules. No team id provided.",
+    "message": "This violates LLM Proxy Rules. No team id provided.",
 }
 
 ```
@@ -428,7 +428,7 @@ async def custom_generate_key_fn(data: GenerateKeyRequest)-> dict:
             dict: A dictionary containing the decision and an optional message.
             {
                 "decision": False,
-                "message": "This violates LiteLLM Proxy Rules. No team id provided.",
+                "message": "This violates LLM Proxy Rules. No team id provided.",
             }
         """
         
@@ -449,8 +449,8 @@ async def custom_generate_key_fn(data: GenerateKeyRequest)-> dict:
         tpm_limit = data_json.get("tpm_limit")
         rpm_limit = data_json.get("rpm_limit")
 
-        if team_id is not None and team_id == "litellm-core-infra@gmail.com":
-            # only team_id="litellm-core-infra@gmail.com" can make keys
+        if team_id is not None and team_id == "llm-core-infra@gmail.com":
+            # only team_id="llm-core-infra@gmail.com" can make keys
             return {
                 "decision": True,
             }
@@ -458,7 +458,7 @@ async def custom_generate_key_fn(data: GenerateKeyRequest)-> dict:
             print("Failed custom auth")
             return {
                 "decision": False,
-                "message": "This violates LiteLLM Proxy Rules. No team id provided.",
+                "message": "This violates LLM Proxy Rules. No team id provided.",
             }
 ```
 
@@ -471,10 +471,10 @@ e.g. if they're both in the same dir - `./config.yaml` and `./custom_auth.py`, t
 ```yaml 
 model_list: 
   - model_name: "openai-model"
-    litellm_params: 
+    llm_params: 
       model: "gpt-3.5-turbo"
 
-litellm_settings:
+llm_settings:
   drop_params: True
   set_verbose: True
 
@@ -486,9 +486,9 @@ general_settings:
 ### Upperbound /key/generate params
 Use this, if you need to set default upperbounds for `max_budget`, `budget_duration` or any `key/generate` param per key. 
 
-Set `litellm_settings:upperbound_key_generate_params`:
+Set `llm_settings:upperbound_key_generate_params`:
 ```yaml
-litellm_settings:
+llm_settings:
   upperbound_key_generate_params:
     max_budget: 100 # Optional[float], optional): upperbound of $100, for all /key/generate requests
     budget_duration: "10d" # Optional[str], optional): upperbound of 10 days for budget_duration values
@@ -508,9 +508,9 @@ Use this, if you need to control the default `max_budget` or any `key/generate` 
 
 When a `/key/generate` request does not specify `max_budget`, it will use the `max_budget` specified in `default_key_generate_params`
 
-Set `litellm_settings:default_key_generate_params`:
+Set `llm_settings:default_key_generate_params`:
 ```yaml
-litellm_settings:
+llm_settings:
   default_key_generate_params:
     max_budget: 1.5000
     models: ["azure-gpt-3.5"]
@@ -525,9 +525,9 @@ litellm_settings:
 
 This is an Enterprise feature.
 
-[Enterprise Pricing](https://www.litellm.ai/#pricing)
+[Enterprise Pricing](https://www.llm.ai/#pricing)
 
-[Get free 7-day trial key](https://www.litellm.ai/#trial)
+[Get free 7-day trial key](https://www.llm.ai/#trial)
 
 
 :::
@@ -555,9 +555,9 @@ curl 'http://localhost:4000/key/sk-1234/regenerate' \
 
 **Read More**
 
-- [Write rotated keys to secrets manager](https://docs.litellm.ai/docs/secret#aws-secret-manager)
+- [Write rotated keys to secrets manager](https://docs.llm.ai/docs/secret#aws-secret-manager)
 
-[**👉 API REFERENCE DOCS**](https://litellm-api.up.railway.app/#/key%20management/regenerate_key_fn_key__key__regenerate_post)
+[**👉 API REFERENCE DOCS**](https://llm-api.up.railway.app/#/key%20management/regenerate_key_fn_key__key__regenerate_post)
 
 
 ### Temporary Budget Increase
@@ -571,7 +571,7 @@ curl -L -X POST 'http://localhost:4000/key/update' \
 -d '{"key": "sk-b3Z3Lqdb_detHXSUp4ol4Q", "temp_budget_increase": 100, "temp_budget_expiry": "10d"}'
 ```
 
-[API Reference](https://litellm-api.up.railway.app/#/key%20management/update_key_fn_key_update_post)
+[API Reference](https://llm-api.up.railway.app/#/key%20management/update_key_fn_key_update_post)
 
 
 ### Restricting Key Generation
@@ -579,7 +579,7 @@ curl -L -X POST 'http://localhost:4000/key/update' \
 Use this to control who can generate keys. Useful when letting others create keys on the UI. 
 
 ```yaml
-litellm_settings:
+llm_settings:
   key_generation_settings:
     team_key_generation:
       allowed_team_member_roles: ["admin"]
@@ -653,22 +653,22 @@ class LitellmUserRoles(str, enum.Enum):
 
 ## **Next Steps - Set Budgets, Rate Limits per Virtual Key**
 
-[Follow this doc to set budgets, rate limiters per virtual key with LiteLLM](users)
+[Follow this doc to set budgets, rate limiters per virtual key with LLM](users)
 
 ## Endpoint Reference (Spec)
 
 ### Keys 
 
-#### [**👉 API REFERENCE DOCS**](https://litellm-api.up.railway.app/#/key%20management/)
+#### [**👉 API REFERENCE DOCS**](https://llm-api.up.railway.app/#/key%20management/)
 
 ### Users
 
-#### [**👉 API REFERENCE DOCS**](https://litellm-api.up.railway.app/#/user%20management/)
+#### [**👉 API REFERENCE DOCS**](https://llm-api.up.railway.app/#/user%20management/)
 
 
 ### Teams
 
-#### [**👉 API REFERENCE DOCS**](https://litellm-api.up.railway.app/#/team%20management)
+#### [**👉 API REFERENCE DOCS**](https://llm-api.up.railway.app/#/team%20management)
 
 
 

@@ -5,12 +5,12 @@ import sys
 import pytest
 from fastapi.testclient import TestClient
 
-import litellm
-from litellm.litellm_core_utils.llm_cost_calc.tool_call_cost_tracking import (
+import llm
+from llm.litellm_core_utils.llm_cost_calc.tool_call_cost_tracking import (
     StandardBuiltInToolCostTracking,
 )
-from litellm.types.llms.openai import FileSearchTool, WebSearchOptions
-from litellm.types.utils import ModelInfo, ModelResponse, StandardBuiltInToolsParams
+from llm.types.llms.openai import FileSearchTool, WebSearchOptions
+from llm.types.utils import ModelInfo, ModelResponse, StandardBuiltInToolsParams
 
 sys.path.insert(
     0, os.path.abspath("../../..")
@@ -20,7 +20,7 @@ sys.path.insert(
 # Test basic web search cost calculations
 def test_web_search_cost_low():
     web_search_options = WebSearchOptions(search_context_size="low")
-    model_info = litellm.get_model_info("gpt-4o-search-preview")
+    model_info = llm.get_model_info("gpt-4o-search-preview")
 
     cost = StandardBuiltInToolCostTracking.get_cost_for_web_search(
         web_search_options=web_search_options, model_info=model_info
@@ -33,7 +33,7 @@ def test_web_search_cost_low():
 
 def test_web_search_cost_medium():
     web_search_options = WebSearchOptions(search_context_size="medium")
-    model_info = litellm.get_model_info("gpt-4o-search-preview")
+    model_info = llm.get_model_info("gpt-4o-search-preview")
 
     cost = StandardBuiltInToolCostTracking.get_cost_for_web_search(
         web_search_options=web_search_options, model_info=model_info
@@ -47,7 +47,7 @@ def test_web_search_cost_medium():
 
 def test_web_search_cost_high():
     web_search_options = WebSearchOptions(search_context_size="high")
-    model_info = litellm.get_model_info("gpt-4o-search-preview")
+    model_info = llm.get_model_info("gpt-4o-search-preview")
 
     cost = StandardBuiltInToolCostTracking.get_cost_for_web_search(
         web_search_options=web_search_options, model_info=model_info

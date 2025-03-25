@@ -10,12 +10,12 @@ Pass-through endpoints for Vertex AI - call provider-specific endpoint, in nativ
 |-------|-------|-------|
 | Cost Tracking | ✅ | supports all models on `/generateContent` endpoint |
 | Logging | ✅ | works across all integrations |
-| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/litellm/issues/new) |
+| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
 | Streaming | ✅ | |
 
 Just replace `https://REGION-aiplatform.googleapis.com` with `LITELLM_PROXY_BASE_URL/vertex_ai`
 
-LiteLLM supports 3 flows for calling Vertex AI endpoints via pass-through:
+LLM supports 3 flows for calling Vertex AI endpoints via pass-through:
 
 1. **Specific Credentials**: Admin sets passthrough credentials for a specific project/region.
 
@@ -32,7 +32,7 @@ LiteLLM supports 3 flows for calling Vertex AI endpoints via pass-through:
 ```yaml
 model_list:
   - model_name: gemini-1.0-pro
-    litellm_params:
+    llm_params:
       model: vertex_ai/gemini-1.0-pro
       vertex_project: adroit-crow-413218
       vertex_region: us-central1
@@ -109,7 +109,7 @@ curl \
 ```bash
 curl http://localhost:4000/vertex_ai/vertex_ai/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/${MODEL_ID}:generateContent \
   -H "Content-Type: application/json" \
-  -H "x-litellm-api-key: Bearer sk-1234" \
+  -H "x-llm-api-key: Bearer sk-1234" \
   -d '{
     "contents":[{
       "role": "user", 
@@ -134,7 +134,7 @@ const model = vertexAI.getGenerativeModel({
     model: 'gemini-1.0-pro'
 }, {
     customHeaders: {
-        "x-litellm-api-key": "sk-1234" // Your litellm Virtual Key
+        "x-llm-api-key": "sk-1234" // Your llm Virtual Key
     }
 });
 
@@ -173,10 +173,10 @@ export DEFAULT_VERTEXAI_LOCATION="" # "us-central1"
 export DEFAULT_GOOGLE_APPLICATION_CREDENTIALS="" # "/Users/Downloads/adroit-crow-413218-a956eef1a2a8.json"
 ```
 
-2. Start LiteLLM Proxy 
+2. Start LLM Proxy 
 
 ```bash
-litellm
+llm
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -211,7 +211,7 @@ curl http://localhost:4000/vertex-ai/v1/projects/${PROJECT_ID}/locations/us-cent
 
 #### Authentication to Vertex AI
 
-LiteLLM Proxy Server supports two methods of authentication to Vertex AI:
+LLM Proxy Server supports two methods of authentication to Vertex AI:
 
 1. Pass Vertex Credetials client side to proxy server
 
@@ -227,7 +227,7 @@ LiteLLM Proxy Server supports two methods of authentication to Vertex AI:
 ```shell
 curl http://localhost:4000/vertex_ai/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/gemini-1.5-flash-001:generateContent \
   -H "Content-Type: application/json" \
-  -H "x-litellm-api-key: Bearer sk-1234" \
+  -H "x-llm-api-key: Bearer sk-1234" \
   -d '{"contents":[{"role": "user", "parts":[{"text": "hi"}]}]}'
 ```
 
@@ -239,7 +239,7 @@ curl http://localhost:4000/vertex_ai/v1/projects/${PROJECT_ID}/locations/us-cent
 ```shell
 curl http://localhost:4000/vertex_ai/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/textembedding-gecko@001:predict \
   -H "Content-Type: application/json" \
-  -H "x-litellm-api-key: Bearer sk-1234" \
+  -H "x-llm-api-key: Bearer sk-1234" \
   -d '{"instances":[{"content": "gm"}]}'
 ```
 
@@ -249,7 +249,7 @@ curl http://localhost:4000/vertex_ai/v1/projects/${PROJECT_ID}/locations/us-cent
 ```shell
 curl http://localhost:4000/vertex_ai/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/imagen-3.0-generate-001:predict \
   -H "Content-Type: application/json" \
-  -H "x-litellm-api-key: Bearer sk-1234" \
+  -H "x-llm-api-key: Bearer sk-1234" \
   -d '{"instances":[{"prompt": "make an otter"}], "parameters": {"sampleCount": 1}}'
 ```
 
@@ -259,7 +259,7 @@ curl http://localhost:4000/vertex_ai/v1/projects/${PROJECT_ID}/locations/us-cent
 ```shell
 curl http://localhost:4000/vertex_ai/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/gemini-1.5-flash-001:countTokens \
   -H "Content-Type: application/json" \
-  -H "x-litellm-api-key: Bearer sk-1234" \
+  -H "x-llm-api-key: Bearer sk-1234" \
   -d '{"contents":[{"role": "user", "parts":[{"text": "hi"}]}]}'
 ```
 ### Tuning API 
@@ -270,7 +270,7 @@ Create Fine Tuning Job
 ```shell
 curl http://localhost:4000/vertex_ai/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/gemini-1.5-flash-001:tuningJobs \
       -H "Content-Type: application/json" \
-      -H "x-litellm-api-key: Bearer sk-1234" \
+      -H "x-llm-api-key: Bearer sk-1234" \
       -d '{
   "baseModel": "gemini-1.0-pro-002",
   "supervisedTuningSpec" : {
@@ -301,7 +301,7 @@ export DEFAULT_GOOGLE_APPLICATION_CREDENTIALS="" # "/Users/Downloads/adroit-crow
 ```
 
 ```bash
-litellm
+llm
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -310,7 +310,7 @@ litellm
 
 ```bash
 curl -X POST 'http://0.0.0.0:4000/key/generate' \
--H 'x-litellm-api-key: Bearer sk-1234' \
+-H 'x-llm-api-key: Bearer sk-1234' \
 -H 'Content-Type: application/json' \
 -d '{}'
 ```
@@ -330,7 +330,7 @@ Expected Response
 ```bash
 curl http://localhost:4000/vertex_ai/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/gemini-1.0-pro:generateContent \
   -H "Content-Type: application/json" \
-  -H "x-litellm-api-key: Bearer sk-1234" \
+  -H "x-llm-api-key: Bearer sk-1234" \
   -d '{
     "contents":[{
       "role": "user", 
@@ -341,7 +341,7 @@ curl http://localhost:4000/vertex_ai/v1/projects/${PROJECT_ID}/locations/us-cent
 
 ### Send `tags` in request headers
 
-Use this if you wants `tags` to be tracked in the LiteLLM DB and on logging callbacks
+Use this if you wants `tags` to be tracked in the LLM DB and on logging callbacks
 
 Pass `tags` in request headers as a comma separated list. In the example below the following tags will be tracked 
 
@@ -355,7 +355,7 @@ tags: ["vertex-js-sdk", "pass-through-endpoint"]
 ```bash
 curl http://localhost:4000/vertex_ai/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/gemini-1.0-pro:generateContent \
   -H "Content-Type: application/json" \
-  -H "x-litellm-api-key: Bearer sk-1234" \
+  -H "x-llm-api-key: Bearer sk-1234" \
   -H "tags: vertex-js-sdk,pass-through-endpoint" \
   -d '{
     "contents":[{
@@ -381,7 +381,7 @@ const model = vertexAI.getGenerativeModel({
     model: 'gemini-1.0-pro'
 }, {
     customHeaders: {
-        "x-litellm-api-key": "sk-1234", // Your litellm Virtual Key
+        "x-llm-api-key": "sk-1234", // Your llm Virtual Key
         "tags": "vertex-js-sdk,pass-through-endpoint"
     }
 });

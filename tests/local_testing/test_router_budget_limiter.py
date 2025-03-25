@@ -10,16 +10,16 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system-path
 import pytest
-from litellm import Router
-from litellm.router_strategy.budget_limiter import RouterBudgetLimiting
-from litellm.types.router import (
+from llm import Router
+from llm.router_strategy.budget_limiter import RouterBudgetLimiting
+from llm.types.router import (
     RoutingStrategy,
 )
-from litellm.types.utils import GenericBudgetConfigType, BudgetConfig
-from litellm.caching.caching import DualCache, RedisCache
+from llm.types.utils import GenericBudgetConfigType, BudgetConfig
+from llm.caching.caching import DualCache, RedisCache
 import logging
-from litellm._logging import verbose_router_logger
-import litellm
+from llm._logging import verbose_router_logger
+import llm
 from datetime import timezone, timedelta
 
 verbose_router_logger.setLevel(logging.DEBUG)
@@ -73,7 +73,7 @@ async def test_provider_budgets_e2e_test():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -243,7 +243,7 @@ async def test_prometheus_metric_tracking():
     """
     cleanup_redis()
     from unittest.mock import MagicMock
-    from litellm.integrations.prometheus import PrometheusLogger
+    from llm.integrations.prometheus import PrometheusLogger
 
     # Create a mock PrometheusLogger
     mock_prometheus = MagicMock(spec=PrometheusLogger)
@@ -256,7 +256,7 @@ async def test_prometheus_metric_tracking():
         },
     )
 
-    litellm._async_success_callback = [mock_prometheus]
+    llm._async_success_callback = [mock_prometheus]
 
     provider_budget_config: GenericBudgetConfigType = {
         "openai": BudgetConfig(budget_duration="1d", max_budget=0.000000000001),
@@ -267,7 +267,7 @@ async def test_prometheus_metric_tracking():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -577,7 +577,7 @@ async def test_deployment_budget_limits_e2e_test():
     - Next 3 requests all go to openai/gpt-4o-mini
 
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
     cleanup_redis()
     # Modify for test
 
@@ -585,7 +585,7 @@ async def test_deployment_budget_limits_e2e_test():
         model_list=[
             {
                 "model_name": "gpt-4o",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "openai/gpt-4o",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "max_budget": 0.000000000001,
@@ -684,7 +684,7 @@ async def test_tag_budgets_e2e_test_expect_to_fail():
     cleanup_redis()
     TAG_NAME = "product:chat-bot"
     TAG_NAME_2 = "product:chat-bot-2"
-    litellm.tag_budget_config = {
+    llm.tag_budget_config = {
         TAG_NAME: BudgetConfig(max_budget=0.000000000001, budget_duration="1d"),
         TAG_NAME_2: BudgetConfig(max_budget=100, budget_duration="1d"),
     }

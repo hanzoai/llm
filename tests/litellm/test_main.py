@@ -11,7 +11,7 @@ sys.path.insert(
 
 from unittest.mock import MagicMock, patch
 
-import litellm
+import llm
 
 
 @pytest.fixture
@@ -58,7 +58,7 @@ def openai_api_response():
 def test_completion_missing_role(openai_api_response):
     from openai import OpenAI
 
-    from litellm.types.utils import ModelResponse
+    from llm.types.utils import ModelResponse
 
     client = OpenAI(api_key="test_api_key")
 
@@ -76,7 +76,7 @@ def test_completion_missing_role(openai_api_response):
     with patch.object(
         client.chat.completions.with_raw_response, "create", mock_raw_response
     ) as mock_create:
-        litellm.completion(
+        llm.completion(
             model="gpt-4o-mini",
             messages=[
                 {"role": "user", "content": "Hey"},
@@ -131,8 +131,8 @@ def test_completion_missing_role(openai_api_response):
 @pytest.mark.parametrize("sync_mode", [True, False])
 @pytest.mark.asyncio
 async def test_url_with_format_param(model, sync_mode):
-    from litellm import acompletion, completion
-    from litellm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
+    from llm import acompletion, completion
+    from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
 
     if sync_mode:
         client = HTTPHandler()
@@ -185,7 +185,7 @@ async def test_url_with_format_param(model, sync_mode):
 async def test_url_with_format_param_openai(model, sync_mode):
     from openai import AsyncOpenAI, OpenAI
 
-    from litellm import acompletion, completion
+    from llm import acompletion, completion
 
     if sync_mode:
         client = OpenAI()

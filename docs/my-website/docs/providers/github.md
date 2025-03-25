@@ -6,7 +6,7 @@ https://github.com/marketplace/models
 
 :::tip
 
-**We support ALL Github models, just set `model=github/<any-model-on-github>` as a prefix when sending litellm requests**
+**We support ALL Github models, just set `model=github/<any-model-on-github>` as a prefix when sending llm requests**
 
 :::
 
@@ -18,14 +18,14 @@ os.environ['GITHUB_API_KEY']
 
 ## Sample Usage
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['GITHUB_API_KEY'] = ""
 response = completion(
     model="github/llama3-8b-8192", 
     messages=[
-       {"role": "user", "content": "hello from litellm"}
+       {"role": "user", "content": "hello from llm"}
    ],
 )
 print(response)
@@ -33,14 +33,14 @@ print(response)
 
 ## Sample Usage - Streaming
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ['GITHUB_API_KEY'] = ""
 response = completion(
     model="github/llama3-8b-8192", 
     messages=[
-       {"role": "user", "content": "hello from litellm"}
+       {"role": "user", "content": "hello from llm"}
    ],
     stream=True
 )
@@ -51,14 +51,14 @@ for chunk in response:
 
 
 
-## Usage with LiteLLM Proxy 
+## Usage with LLM Proxy 
 
 ### 1. Set Github Models on config.yaml
 
 ```yaml
 model_list:
   - model_name: github-llama3-8b-8192 # Model Alias to use for requests
-    litellm_params:
+    llm_params:
       model: github/llama3-8b-8192
       api_key: "os.environ/GITHUB_API_KEY" # ensure you have `GITHUB_API_KEY` in your .env
 ```
@@ -66,12 +66,12 @@ model_list:
 ### 2. Start Proxy 
 
 ```
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 ### 3. Test it
 
-Make request to litellm proxy
+Make request to llm proxy
 
 <Tabs>
 <TabItem value="Curl" label="Curl Request">
@@ -123,7 +123,7 @@ from langchain.prompts.chat import (
 from langchain.schema import HumanMessage, SystemMessage
 
 chat = ChatOpenAI(
-    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LiteLLM Proxy
+    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LLM Proxy
     model = "github-llama3-8b-8192",
     temperature=0.1
 )
@@ -133,7 +133,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -213,7 +213,7 @@ tools = [
         },
     }
 ]
-response = litellm.completion(
+response = llm.completion(
     model="github/llama3-8b-8192",
     messages=messages,
     tools=tools,
@@ -253,7 +253,7 @@ if tool_calls:
             }
         )  # extend conversation with function response
     print(f"messages: {messages}")
-    second_response = litellm.completion(
+    second_response = llm.completion(
         model="github/llama3-8b-8192", messages=messages
     )  # get a new response from the model where it can see the function response
     print("second response\n", second_response)

@@ -8,8 +8,8 @@ sys.path.insert(
     0, os.path.abspath("../../..")
 )  # Adds the parent directory to the system path
 
-import litellm
-from litellm.llms.openai.common_utils import BaseOpenAILLM
+import llm
+from llm.llms.openai.common_utils import BaseOpenAILLM
 
 # Test parameters for different API functions
 API_FUNCTION_PARAMS = [
@@ -83,13 +83,13 @@ async def test_openai_client_reuse(function_name, is_async, args):
     """
     Test that multiple API calls reuse the same OpenAI client
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     # Determine which client class to mock based on whether the test is async
     client_path = (
-        "litellm.llms.openai.openai.AsyncOpenAI"
+        "llm.llms.openai.openai.AsyncOpenAI"
         if is_async
-        else "litellm.llms.openai.openai.OpenAI"
+        else "llm.llms.openai.openai.OpenAI"
     )
 
     # Create the appropriate patches

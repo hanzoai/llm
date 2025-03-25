@@ -8,12 +8,12 @@
 #     0, os.path.abspath("../..")
 # )  # Adds the parent directory to the system path
 # import asyncio
-# from litellm import Router, Timeout
+# from llm import Router, Timeout
 # import time
-# from litellm.caching.caching import Cache
-# import litellm
+# from llm.caching.caching import Cache
+# import llm
 
-# litellm.cache = Cache(
+# llm.cache = Cache(
 #     type="s3", s3_bucket_name="litellm-my-test-bucket-2", s3_region_name="us-west-2"
 # )
 

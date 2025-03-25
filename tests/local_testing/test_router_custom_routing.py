@@ -19,8 +19,8 @@ from typing import Dict, List, Optional, Union
 
 import pytest
 
-import litellm
-from litellm import Router
+import llm
+from llm import Router
 
 router = Router(
     model_list=[
@@ -47,7 +47,7 @@ router = Router(
     debug_level="DEBUG",
 )
 
-from litellm.router import CustomRoutingStrategyBase
+from llm.router import CustomRoutingStrategyBase
 
 
 class CustomRoutingStrategy(CustomRoutingStrategyBase):
@@ -70,7 +70,7 @@ class CustomRoutingStrategy(CustomRoutingStrategyBase):
             request_kwargs (Optional[Dict], optional): Additional request keyword arguments. Defaults to None.
 
         Returns:
-            Returns an element from litellm.router.model_list
+            Returns an element from llm.router.model_list
 
         """
         print("In CUSTOM async get available deployment")
@@ -101,7 +101,7 @@ class CustomRoutingStrategy(CustomRoutingStrategyBase):
             request_kwargs (Optional[Dict], optional): Additional request keyword arguments. Defaults to None.
 
         Returns:
-            Returns an element from litellm.router.model_list
+            Returns an element from llm.router.model_list
 
         """
         pass
@@ -109,9 +109,9 @@ class CustomRoutingStrategy(CustomRoutingStrategyBase):
 
 @pytest.mark.asyncio
 async def test_custom_routing():
-    import litellm
+    import llm
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
     router.set_custom_routing_strategy(CustomRoutingStrategy())
 
     # make 4 requests

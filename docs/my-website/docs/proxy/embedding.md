@@ -4,7 +4,7 @@ import TabItem from '@theme/TabItem';
 
 # Embeddings - `/embeddings`
 
-See supported Embedding Providers & Models [here](https://docs.litellm.ai/docs/embedding/supported_embedding)
+See supported Embedding Providers & Models [here](https://docs.llm.ai/docs/embedding/supported_embedding)
 
 
 ## Quick start
@@ -14,13 +14,13 @@ Here's how to route between GPT-J embedding (sagemaker endpoint), Amazon Titan e
 ```yaml
 model_list:
   - model_name: sagemaker-embeddings
-    litellm_params: 
+    llm_params: 
       model: "sagemaker/berri-benchmarking-gpt-j-6b-fp16"
   - model_name: amazon-embeddings
-    litellm_params:
+    llm_params:
       model: "bedrock/amazon.titan-embed-text-v1"
   - model_name: azure-embeddings
-    litellm_params: 
+    llm_params: 
       model: "azure/azure-embedding-model"
       api_base: "os.environ/AZURE_API_BASE" # os.getenv("AZURE_API_BASE")
       api_key: "os.environ/AZURE_API_KEY" # os.getenv("AZURE_API_KEY")
@@ -32,7 +32,7 @@ general_settings:
 
 2. Start the proxy
 ```shell
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 3. Test the embedding call

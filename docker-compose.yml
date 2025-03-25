@@ -14,7 +14,7 @@ services:
      restart_policy:
        condition: on-failure
     networks:
-      - hanzo-network
+      - llm-network
     environment:
       DATABASE_URL: "postgresql://llmproxy:dbpassword9090@db:5432/llm"
       STORE_MODEL_IN_DB: "True"  # Allows adding models via UI
@@ -36,11 +36,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.llm.rule=Host(`api.hanzo.ai`)"
-      - "traefik.http.routers.llm.entrypoints=websecure"
-      - "traefik.http.services.llm.loadbalancer.server.port=4000"
 
   db:
     image: postgres:16
@@ -59,7 +54,7 @@ services:
       timeout: 5s
       retries: 10
     networks:
-      - hanzo-network
+      - llm-network
 
   prometheus:
     image: prom/prometheus
@@ -74,7 +69,7 @@ services:
       - '--storage.tsdb.retention.time=15d'
     restart: always
     networks:
-      - hanzo-network
+      - llm-network
 
 volumes:
   prometheus_data:
@@ -83,5 +78,5 @@ volumes:
     name: llm_postgres_data
 
 networks:
-  hanzo-network:
-    external: true
+  llm-network:
+    driver: bridge

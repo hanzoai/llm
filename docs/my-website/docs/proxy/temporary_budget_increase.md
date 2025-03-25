@@ -1,27 +1,27 @@
 # ✨ Temporary Budget Increase
 
-Set temporary budget increase for a LiteLLM Virtual Key. Use this if you get asked to increase the budget for a key temporarily.
+Set temporary budget increase for a LLM Virtual Key. Use this if you get asked to increase the budget for a key temporarily.
 
 
 | Heirarchy | Supported | 
 |-----------|-----------|
-| LiteLLM Virtual Key | ✅ |
+| LLM Virtual Key | ✅ |
 | User | ❌ |
 | Team | ❌ |
 | Organization | ❌ |
 
 :::note
 
-✨ Temporary Budget Increase is a LiteLLM Enterprise feature.
+✨ Temporary Budget Increase is a LLM Enterprise feature.
 
-[Enterprise Pricing](https://www.litellm.ai/#pricing)
+[Enterprise Pricing](https://www.llm.ai/#pricing)
 
-[Get free 7-day trial key](https://www.litellm.ai/#trial)
+[Get free 7-day trial key](https://www.llm.ai/#trial)
 
 :::
 
 
-1. Create a LiteLLM Virtual Key with budget
+1. Create a LLM Virtual Key with budget
 
 ```bash
 curl -L -X POST 'http://localhost:4000/key/generate' \
@@ -68,7 +68,7 @@ curl -L -X POST 'http://localhost:4000/chat/completions' \
 Expected Response Header:
 
 ```
-x-litellm-key-max-budget: 100.0000001
+x-llm-key-max-budget: 100.0000001
 ```
 
 

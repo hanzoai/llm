@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 # Predibase
 
-LiteLLM supports all models on Predibase
+LLM supports all models on Predibase
 
 
 ## Usage
@@ -20,7 +20,7 @@ os.environ["PREDIBASE_API_KEY"] = ""
 ### Example Call
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 ## set ENV variables
 os.environ["PREDIBASE_API_KEY"] = "predibase key"
@@ -41,7 +41,7 @@ response = completion(
   ```yaml
   model_list:
     - model_name: llama-3
-      litellm_params:
+      llm_params:
         model: predibase/llama-3-8b-instruct
         api_key: os.environ/PREDIBASE_API_KEY
         tenant_id: os.environ/PREDIBASE_TENANT_ID
@@ -52,10 +52,10 @@ response = completion(
 2. Start the proxy 
 
   ```bash
-  $ litellm --config /path/to/config.yaml --debug
+  $ llm --config /path/to/config.yaml --debug
   ```
 
-3. Send Request to LiteLLM Proxy Server
+3. Send Request to LLM Proxy Server
 
   <Tabs>
 
@@ -64,8 +64,8 @@ response = completion(
   ```python
   import openai
   client = openai.OpenAI(
-      api_key="sk-1234",             # pass litellm proxy key, if you're using virtual keys
-      base_url="http://0.0.0.0:4000" # litellm-proxy-base url
+      api_key="sk-1234",             # pass llm proxy key, if you're using virtual keys
+      base_url="http://0.0.0.0:4000" # llm-proxy-base url
   )
 
   response = client.chat.completions.create(
@@ -118,7 +118,7 @@ response = completion(
 
 ## Advanced Usage - Prompt Formatting 
 
-LiteLLM has prompt template mappings for all `meta-llama` llama3 instruct models. [**See Code**](https://github.com/BerriAI/litellm/blob/4f46b4c3975cd0f72b8c5acb2cb429d23580c18a/litellm/llms/prompt_templates/factory.py#L1360)
+LLM has prompt template mappings for all `meta-llama` llama3 instruct models. [**See Code**](https://github.com/BerriAI/llm/blob/4f46b4c3975cd0f72b8c5acb2cb429d23580c18a/llm/llms/prompt_templates/factory.py#L1360)
 
 To apply a custom prompt template: 
 
@@ -126,13 +126,13 @@ To apply a custom prompt template:
 <TabItem value="sdk" label="SDK">
 
 ```python 
-import litellm
+import llm
 
 import os 
 os.environ["PREDIBASE_API_KEY"] = ""
 
 # Create your own custom prompt template 
-litellm.register_prompt_template(
+llm.register_prompt_template(
 	    model="togethercomputer/LLaMA-2-7B-32K",
         initial_prompt_value="You are a good assistant" # [OPTIONAL]
 	    roles={
@@ -167,7 +167,7 @@ predibase_custom_model()
 # Model-specific parameters
 model_list:
   - model_name: mistral-7b # model alias
-    litellm_params: # actual params for litellm.completion()
+    llm_params: # actual params for llm.completion()
       model: "predibase/mistralai/Mistral-7B-Instruct-v0.1" 
       api_key: os.environ/PREDIBASE_API_KEY
       initial_prompt_value: "\n"
@@ -183,11 +183,11 @@ model_list:
 </Tabs>
 
 ## Passing additional params - max_tokens, temperature 
-See all litellm.completion supported params [here](https://docs.litellm.ai/docs/completion/input)
+See all llm.completion supported params [here](https://docs.llm.ai/docs/completion/input)
 
 ```python
-# !pip install litellm
-from litellm import completion
+# !pip install llm
+from llm import completion
 import os
 ## set ENV variables
 os.environ["PREDIBASE_API_KEY"] = "predibase key"
@@ -206,7 +206,7 @@ response = completion(
 ```yaml
   model_list:
     - model_name: llama-3
-      litellm_params:
+      llm_params:
         model: predibase/llama-3-8b-instruct
         api_key: os.environ/PREDIBASE_API_KEY
         max_tokens: 20
@@ -214,13 +214,13 @@ response = completion(
 ```
 
 ## Passings Predibase specific params - adapter_id, adapter_source, 
-Send params [not supported by `litellm.completion()`](https://docs.litellm.ai/docs/completion/input) but supported by Predibase by passing them to `litellm.completion`
+Send params [not supported by `llm.completion()`](https://docs.llm.ai/docs/completion/input) but supported by Predibase by passing them to `llm.completion`
 
-Example `adapter_id`, `adapter_source` are Predibase specific param - [See List](https://github.com/BerriAI/litellm/blob/8a35354dd6dbf4c2fcefcd6e877b980fcbd68c58/litellm/llms/predibase.py#L54)
+Example `adapter_id`, `adapter_source` are Predibase specific param - [See List](https://github.com/BerriAI/llm/blob/8a35354dd6dbf4c2fcefcd6e877b980fcbd68c58/llm/llms/predibase.py#L54)
 
 ```python
-# !pip install litellm
-from litellm import completion
+# !pip install llm
+from llm import completion
 import os
 ## set ENV variables
 os.environ["PREDIBASE_API_KEY"] = "predibase key"
@@ -239,7 +239,7 @@ response = completion(
 ```yaml
   model_list:
     - model_name: llama-3
-      litellm_params:
+      llm_params:
         model: predibase/llama-3-8b-instruct
         api_key: os.environ/PREDIBASE_API_KEY
         adapter_id: my_repo/3

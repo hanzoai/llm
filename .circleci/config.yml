@@ -87,14 +87,14 @@ jobs:
       - run:
           name: Black Formatting
           command: |
-            cd litellm
+            cd llm
             python -m pip install black
             python -m black .
             cd ..
       - run:
           name: Linting Testing
           command: |
-            cd litellm
+            cd llm
             python -m pip install types-requests types-setuptools types-redis types-PyYAML
             if ! python -m mypy . --ignore-missing-imports; then
               echo "mypy detected errors"
@@ -108,7 +108,7 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest -vv tests/local_testing --cov=litellm --cov-report=xml -x --junitxml=test-results/junit.xml --durations=5 -k "not test_python_38.py and not test_basic_python_version.py and not router and not assistants and not langfuse and not caching and not cache" -n 4
+            python -m pytest -vv tests/local_testing --cov=llm --cov-report=xml -x --junitxml=test-results/junit.xml --durations=5 -k "not test_python_38.py and not test_basic_python_version.py and not router and not assistants and not langfuse and not caching and not cache" -n 4
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
@@ -208,7 +208,7 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest -vv tests/local_testing --cov=litellm --cov-report=xml -x --junitxml=test-results/junit.xml --durations=5 -k "langfuse"
+            python -m pytest -vv tests/local_testing --cov=llm --cov-report=xml -x --junitxml=test-results/junit.xml --durations=5 -k "langfuse"
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
@@ -308,7 +308,7 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest -vv tests/local_testing --cov=litellm --cov-report=xml -x --junitxml=test-results/junit.xml --durations=5 -k "caching or cache"
+            python -m pytest -vv tests/local_testing --cov=llm --cov-report=xml -x --junitxml=test-results/junit.xml --durations=5 -k "caching or cache"
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
@@ -360,7 +360,7 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest -vv tests/proxy_admin_ui_tests -x --cov=litellm --cov-report=xml --junitxml=test-results/junit.xml --durations=5
+            python -m pytest -vv tests/proxy_admin_ui_tests -x --cov=llm --cov-report=xml --junitxml=test-results/junit.xml --durations=5
           no_output_timeout: 120m
 
       - run:
@@ -378,7 +378,7 @@ jobs:
           paths:
             - auth_ui_unit_tests_coverage.xml
             - auth_ui_unit_tests_coverage
-  litellm_router_testing: # Runs all tests with the "router" keyword
+  llm_router_testing: # Runs all tests with the "router" keyword
     docker:
       - image: cimg/python:3.11
         auth:
@@ -404,13 +404,13 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest tests/local_testing tests/router_unit_tests --cov=litellm --cov-report=xml -vv -k "router" -x -s -v --junitxml=test-results/junit.xml --durations=5
+            python -m pytest tests/local_testing tests/router_unit_tests --cov=llm --cov-report=xml -vv -k "router" -x -s -v --junitxml=test-results/junit.xml --durations=5
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
           command: |
-            mv coverage.xml litellm_router_coverage.xml
-            mv .coverage litellm_router_coverage
+            mv coverage.xml llm_router_coverage.xml
+            mv .coverage llm_router_coverage
       # Store test results
       - store_test_results:
           path: test-results
@@ -418,9 +418,9 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - litellm_router_coverage.xml
-            - litellm_router_coverage
-  litellm_proxy_security_tests:
+            - llm_router_coverage.xml
+            - llm_router_coverage
+  llm_proxy_security_tests:
     docker:
       - image: cimg/python:3.11
         auth:
@@ -455,22 +455,22 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest tests/proxy_security_tests --cov=litellm --cov-report=xml -vv -x -v --junitxml=test-results/junit.xml --durations=5
+            python -m pytest tests/proxy_security_tests --cov=llm --cov-report=xml -vv -x -v --junitxml=test-results/junit.xml --durations=5
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
           command: |
-            mv coverage.xml litellm_proxy_security_tests_coverage.xml
-            mv .coverage litellm_proxy_security_tests_coverage
+            mv coverage.xml llm_proxy_security_tests_coverage.xml
+            mv .coverage llm_proxy_security_tests_coverage
       # Store test results
       - store_test_results:
           path: test-results
       - persist_to_workspace:
           root: .
           paths:
-            - litellm_proxy_security_tests_coverage.xml
-            - litellm_proxy_security_tests_coverage
-  litellm_proxy_unit_testing: # Runs all tests with the "proxy", "key", "jwt" filenames
+            - llm_proxy_security_tests_coverage.xml
+            - llm_proxy_security_tests_coverage
+  llm_proxy_unit_testing: # Runs all tests with the "proxy", "key", "jwt" filenames
     docker:
       - image: cimg/python:3.11
         auth:
@@ -551,13 +551,13 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest tests/proxy_unit_tests --cov=litellm --cov-report=xml -vv -x -v --junitxml=test-results/junit.xml --durations=5
+            python -m pytest tests/proxy_unit_tests --cov=llm --cov-report=xml -vv -x -v --junitxml=test-results/junit.xml --durations=5
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
           command: |
-            mv coverage.xml litellm_proxy_unit_tests_coverage.xml
-            mv .coverage litellm_proxy_unit_tests_coverage
+            mv coverage.xml llm_proxy_unit_tests_coverage.xml
+            mv .coverage llm_proxy_unit_tests_coverage
       # Store test results
       - store_test_results:
           path: test-results
@@ -565,9 +565,9 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - litellm_proxy_unit_tests_coverage.xml
-            - litellm_proxy_unit_tests_coverage
-  litellm_assistants_api_testing: # Runs all tests with the "assistants" keyword
+            - llm_proxy_unit_tests_coverage.xml
+            - llm_proxy_unit_tests_coverage
+  llm_assistants_api_testing: # Runs all tests with the "assistants" keyword
     docker:
       - image: cimg/python:3.11
         auth:
@@ -593,21 +593,21 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest tests/local_testing/ -vv -k "assistants" --cov=litellm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
+            python -m pytest tests/local_testing/ -vv -k "assistants" --cov=llm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
           command: |
-            mv coverage.xml litellm_assistants_api_coverage.xml
-            mv .coverage litellm_assistants_api_coverage
+            mv coverage.xml llm_assistants_api_coverage.xml
+            mv .coverage llm_assistants_api_coverage
       # Store test results
       - store_test_results:
           path: test-results
       - persist_to_workspace:
           root: .
           paths:
-            - litellm_assistants_api_coverage.xml
-            - litellm_assistants_api_coverage
+            - llm_assistants_api_coverage.xml
+            - llm_assistants_api_coverage
   load_testing:
     docker:
       - image: cimg/python:3.11
@@ -670,7 +670,7 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest -vv tests/llm_translation --cov=litellm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
+            python -m pytest -vv tests/llm_translation --cov=llm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
@@ -714,7 +714,7 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest -vv tests/mcp_tests --cov=litellm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
+            python -m pytest -vv tests/mcp_tests --cov=llm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
@@ -756,7 +756,7 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest -vv tests/llm_responses_api_testing --cov=litellm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
+            python -m pytest -vv tests/llm_responses_api_testing --cov=llm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
@@ -772,7 +772,7 @@ jobs:
           paths:
             - llm_responses_api_coverage.xml
             - llm_responses_api_coverage
-  litellm_mapped_tests:
+  llm_mapped_tests:
     docker:
       - image: cimg/python:3.11
         auth:
@@ -802,13 +802,13 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest -vv tests/litellm --cov=litellm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
+            python -m pytest -vv tests/llm --cov=llm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
           command: |
-            mv coverage.xml litellm_mapped_tests_coverage.xml
-            mv .coverage litellm_mapped_tests_coverage
+            mv coverage.xml llm_mapped_tests_coverage.xml
+            mv .coverage llm_mapped_tests_coverage
 
       # Store test results
       - store_test_results:
@@ -816,8 +816,8 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - litellm_mapped_tests_coverage.xml
-            - litellm_mapped_tests_coverage
+            - llm_mapped_tests_coverage.xml
+            - llm_mapped_tests_coverage
   batches_testing:
     docker:
       - image: cimg/python:3.11
@@ -846,7 +846,7 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest -vv tests/batches_tests --cov=litellm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
+            python -m pytest -vv tests/batches_tests --cov=llm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
@@ -862,7 +862,7 @@ jobs:
           paths:
             - batches_coverage.xml
             - batches_coverage
-  litellm_utils_testing:
+  llm_utils_testing:
     docker:
       - image: cimg/python:3.11
         auth:
@@ -891,13 +891,13 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest -vv tests/litellm_utils_tests --cov=litellm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
+            python -m pytest -vv tests/llm_utils_tests --cov=llm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
           command: |
-            mv coverage.xml litellm_utils_coverage.xml
-            mv .coverage litellm_utils_coverage
+            mv coverage.xml llm_utils_coverage.xml
+            mv .coverage llm_utils_coverage
 
       # Store test results
       - store_test_results:
@@ -905,8 +905,8 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - litellm_utils_coverage.xml
-            - litellm_utils_coverage
+            - llm_utils_coverage.xml
+            - llm_utils_coverage
 
   pass_through_unit_testing:
     docker:
@@ -934,7 +934,7 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest -vv tests/pass_through_unit_tests --cov=litellm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
+            python -m pytest -vv tests/pass_through_unit_tests --cov=llm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
@@ -976,7 +976,7 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest -vv tests/image_gen_tests --cov=litellm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
+            python -m pytest -vv tests/image_gen_tests --cov=llm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
@@ -1022,7 +1022,7 @@ jobs:
           command: |
             pwd
             ls
-            python -m pytest -vv tests/logging_callback_tests --cov=litellm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
+            python -m pytest -vv tests/logging_callback_tests --cov=llm --cov-report=xml -x -s -v --junitxml=test-results/junit.xml --durations=5
           no_output_timeout: 120m
       - run:
           name: Rename the coverage files
@@ -1038,7 +1038,7 @@ jobs:
           paths:
             - logging_coverage.xml
             - logging_coverage
-  installing_litellm_on_python:
+  installing_llm_on_python:
     docker:
       - image: circleci/python:3.8
         auth:
@@ -1070,7 +1070,7 @@ jobs:
             ls
             python -m pytest -vv tests/local_testing/test_basic_python_version.py
 
-  installing_litellm_on_python_3_13:
+  installing_llm_on_python_3_13:
     docker:
       - image: cimg/python:3.13.1
         auth:
@@ -1130,36 +1130,36 @@ jobs:
       - run:
           name: Create Kind Cluster
           command: |
-            kind create cluster --name litellm-test
+            kind create cluster --name llm-test
       
       # Run helm lint
       - run:
           name: Run helm lint
           command: |
-            helm lint ./deploy/charts/litellm-helm
+            helm lint ./deploy/charts/llm-helm
       
       # Run helm tests
       - run:
           name: Run helm tests
           command: |
-            helm install litellm ./deploy/charts/litellm-helm -f ./deploy/charts/litellm-helm/ci/test-values.yaml
+            helm install llm ./deploy/charts/llm-helm -f ./deploy/charts/llm-helm/ci/test-values.yaml
             # Wait for pod to be ready
             echo "Waiting 30 seconds for pod to be ready..."
             sleep 30
             
             # Print pod logs before running tests
             echo "Printing pod logs..."
-            kubectl logs $(kubectl get pods -l app.kubernetes.io/name=litellm -o jsonpath="{.items[0].metadata.name}")
+            kubectl logs $(kubectl get pods -l app.kubernetes.io/name=llm -o jsonpath="{.items[0].metadata.name}")
             
             # Run the helm tests
-            helm test litellm --logs
-            helm test litellm --logs
+            helm test llm --logs
+            helm test llm --logs
       
       # Cleanup
       - run:
           name: Cleanup
           command: |
-            kind delete cluster --name litellm-test
+            kind delete cluster --name llm-test
           when: always  # This ensures cleanup runs even if previous steps fail
 
 
@@ -1169,7 +1169,7 @@ jobs:
         auth:
           username: ${DOCKERHUB_USERNAME}
           password: ${DOCKERHUB_PASSWORD}
-    working_directory: ~/project/litellm
+    working_directory: ~/project/llm
 
     steps:
       - checkout
@@ -1183,15 +1183,15 @@ jobs:
             pip install beautifulsoup4
             pip install .
             curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-      - run: python -c "from litellm import *" || (echo '🚨 import failed, this means you introduced unprotected imports! 🚨'; exit 1)
-      - run: ruff check ./litellm
+      - run: python -c "from llm import *" || (echo '🚨 import failed, this means you introduced unprotected imports! 🚨'; exit 1)
+      - run: ruff check ./llm
       # - run: python ./tests/documentation_tests/test_general_setting_keys.py
       - run: python ./tests/code_coverage_tests/check_licenses.py
       - run: python ./tests/code_coverage_tests/router_code_coverage.py
       - run: python ./tests/code_coverage_tests/callback_manager_test.py
       - run: python ./tests/code_coverage_tests/recursive_detector.py
       - run: python ./tests/code_coverage_tests/test_router_strategy_async.py
-      - run: python ./tests/code_coverage_tests/litellm_logging_code_coverage.py
+      - run: python ./tests/code_coverage_tests/llm_logging_code_coverage.py
       - run: python ./tests/code_coverage_tests/bedrock_pricing.py
       - run: python ./tests/documentation_tests/test_env_keys.py
       - run: python ./tests/documentation_tests/test_router_settings.py
@@ -1200,7 +1200,7 @@ jobs:
       - run: python ./tests/code_coverage_tests/enforce_llms_folder_style.py
       - run: python ./tests/documentation_tests/test_circular_imports.py
       - run: python ./tests/code_coverage_tests/prevent_key_leaks_in_exceptions.py
-      - run: helm lint ./deploy/charts/litellm-helm
+      - run: helm lint ./deploy/charts/llm-helm
 
   db_migration_disable_update_check:
     machine:
@@ -1237,9 +1237,9 @@ jobs:
               -p 4000:4000 \
               -e DATABASE_URL=$PROXY_DATABASE_URL \
               -e DISABLE_SCHEMA_UPDATE="True" \
-              -v $(pwd)/litellm/proxy/example_config_yaml/bad_schema.prisma:/app/schema.prisma \
-              -v $(pwd)/litellm/proxy/example_config_yaml/bad_schema.prisma:/app/litellm/proxy/schema.prisma \
-              -v $(pwd)/litellm/proxy/example_config_yaml/disable_schema_update.yaml:/app/config.yaml \
+              -v $(pwd)/llm/proxy/example_config_yaml/bad_schema.prisma:/app/schema.prisma \
+              -v $(pwd)/llm/proxy/example_config_yaml/bad_schema.prisma:/app/llm/proxy/schema.prisma \
+              -v $(pwd)/llm/proxy/example_config_yaml/disable_schema_update.yaml:/app/config.yaml \
               --name my-app \
               myapp:latest \
               --config /app/config.yaml \
@@ -1340,13 +1340,13 @@ jobs:
           command: |
             # Build and scan Dockerfile.database
             echo "Building and scanning Dockerfile.database..."
-            docker build -t litellm-database:latest -f ./docker/Dockerfile.database .
-            grype litellm-database:latest --fail-on high
+            docker build -t llm-database:latest -f ./docker/Dockerfile.database .
+            grype llm-database:latest --fail-on high
 
             # Build and scan main Dockerfile
             echo "Building and scanning main Dockerfile..."
-            docker build -t litellm:latest .
-            grype litellm:latest --fail-on high
+            docker build -t llm:latest .
+            grype llm:latest --fail-on high
       - run:
           name: Build Docker image
           command: docker build -t my-app:latest -f ./docker/Dockerfile.database .
@@ -1504,7 +1504,7 @@ jobs:
               -e LANGFUSE_PROJECT1_SECRET=$LANGFUSE_PROJECT1_SECRET \
               -e LANGFUSE_PROJECT2_SECRET=$LANGFUSE_PROJECT2_SECRET \
               --name my-app \
-              -v $(pwd)/litellm/proxy/example_config_yaml/oai_misc_config.yaml:/app/config.yaml \
+              -v $(pwd)/llm/proxy/example_config_yaml/oai_misc_config.yaml:/app/config.yaml \
               my-app:latest \
               --config /app/config.yaml \
               --port 4000 \
@@ -1621,8 +1621,8 @@ jobs:
               -e COHERE_API_KEY=$COHERE_API_KEY \
               -e GCS_FLUSH_INTERVAL="1" \
               --name my-app \
-              -v $(pwd)/litellm/proxy/example_config_yaml/otel_test_config.yaml:/app/config.yaml \
-              -v $(pwd)/litellm/proxy/example_config_yaml/custom_guardrail.py:/app/custom_guardrail.py \
+              -v $(pwd)/llm/proxy/example_config_yaml/otel_test_config.yaml:/app/config.yaml \
+              -v $(pwd)/llm/proxy/example_config_yaml/custom_guardrail.py:/app/custom_guardrail.py \
               my-app:latest \
               --config /app/config.yaml \
               --port 4000 \
@@ -1672,7 +1672,7 @@ jobs:
               -e OPENAI_API_KEY=$OPENAI_API_KEY \
               -e LITELLM_LICENSE="bad-license" \
               --name my-app-3 \
-              -v $(pwd)/litellm/proxy/example_config_yaml/enterprise_config.yaml:/app/config.yaml \
+              -v $(pwd)/llm/proxy/example_config_yaml/enterprise_config.yaml:/app/config.yaml \
               my-app:latest \
               --config /app/config.yaml \
               --port 4000 \
@@ -1752,7 +1752,7 @@ jobs:
               -e DD_API_KEY=$DD_API_KEY \
               -e DD_SITE=$DD_SITE \
               --name my-app \
-              -v $(pwd)/litellm/proxy/example_config_yaml/multi_instance_simple_config.yaml:/app/config.yaml \
+              -v $(pwd)/llm/proxy/example_config_yaml/multi_instance_simple_config.yaml:/app/config.yaml \
               my-app:latest \
               --config /app/config.yaml \
               --port 4000 \
@@ -1772,7 +1772,7 @@ jobs:
               -e DD_API_KEY=$DD_API_KEY \
               -e DD_SITE=$DD_SITE \
               --name my-app-2 \
-              -v $(pwd)/litellm/proxy/example_config_yaml/multi_instance_simple_config.yaml:/app/config.yaml \
+              -v $(pwd)/llm/proxy/example_config_yaml/multi_instance_simple_config.yaml:/app/config.yaml \
               my-app:latest \
               --config /app/config.yaml \
               --port 4001 \
@@ -1859,7 +1859,7 @@ jobs:
               -e LITELLM_MASTER_KEY="sk-1234" \
               -e LITELLM_LICENSE=$LITELLM_LICENSE \
               --name my-app \
-              -v $(pwd)/litellm/proxy/example_config_yaml/store_model_db_config.yaml:/app/config.yaml \
+              -v $(pwd)/llm/proxy/example_config_yaml/store_model_db_config.yaml:/app/config.yaml \
               my-app:latest \
               --config /app/config.yaml \
               --port 4000 \
@@ -1955,7 +1955,7 @@ jobs:
               -e DD_SITE=$DD_SITE \
               -e GCS_FLUSH_INTERVAL="1" \
               --name my-app \
-              -v $(pwd)/litellm_config.yaml:/app/config.yaml \
+              -v $(pwd)/llm_config.yaml:/app/config.yaml \
               my-app:latest \
               --config /app/config.yaml \
               --port 4000 \
@@ -2061,8 +2061,8 @@ jobs:
               -e DD_SITE=$DD_SITE \
               -e LITELLM_LICENSE=$LITELLM_LICENSE \
               --name my-app \
-              -v $(pwd)/litellm/proxy/example_config_yaml/pass_through_config.yaml:/app/config.yaml \
-              -v $(pwd)/litellm/proxy/example_config_yaml/custom_auth_basic.py:/app/custom_auth_basic.py \
+              -v $(pwd)/llm/proxy/example_config_yaml/pass_through_config.yaml:/app/config.yaml \
+              -v $(pwd)/llm/proxy/example_config_yaml/custom_auth_basic.py:/app/custom_auth_basic.py \
               my-app:latest \
               --config /app/config.yaml \
               --port 4000 \
@@ -2168,7 +2168,7 @@ jobs:
             python -m venv venv
             . venv/bin/activate
             pip install coverage
-            coverage combine llm_translation_coverage llm_responses_api_coverage mcp_coverage logging_coverage litellm_router_coverage local_testing_coverage litellm_assistants_api_coverage auth_ui_unit_tests_coverage langfuse_coverage caching_coverage litellm_proxy_unit_tests_coverage image_gen_coverage pass_through_unit_tests_coverage batches_coverage litellm_proxy_security_tests_coverage
+            coverage combine llm_translation_coverage llm_responses_api_coverage mcp_coverage logging_coverage llm_router_coverage local_testing_coverage llm_assistants_api_coverage auth_ui_unit_tests_coverage langfuse_coverage caching_coverage llm_proxy_unit_tests_coverage image_gen_coverage pass_through_unit_tests_coverage batches_coverage llm_proxy_security_tests_coverage
             coverage xml
       - codecov/upload:
           file: ./coverage.xml
@@ -2187,15 +2187,15 @@ jobs:
       - run:
           name: Copy model_prices_and_context_window File to model_prices_and_context_window_backup
           command: |
-            cp model_prices_and_context_window.json litellm/model_prices_and_context_window_backup.json
+            cp model_prices_and_context_window.json llm/model_prices_and_context_window_backup.json
 
       - run:
-          name: Check if litellm dir, tests dir, or pyproject.toml was modified
+          name: Check if llm dir, tests dir, or pyproject.toml was modified
           command: |
-            if [ -n "$(git diff --name-only $CIRCLE_SHA1^..$CIRCLE_SHA1 | grep -E 'pyproject\.toml|litellm/|tests/')" ]; then
-              echo "litellm, tests, or pyproject.toml updated"
+            if [ -n "$(git diff --name-only $CIRCLE_SHA1^..$CIRCLE_SHA1 | grep -E 'pyproject\.toml|llm/|tests/')" ]; then
+              echo "llm, tests, or pyproject.toml updated"
             else
-              echo "No changes to litellm, tests, or pyproject.toml. Skipping PyPI publish."
+              echo "No changes to llm, tests, or pyproject.toml. Skipping PyPI publish."
               circleci step halt
             fi
 
@@ -2237,11 +2237,11 @@ jobs:
             echo "Install TOML package."
             python3 -m pip install toml
             VERSION=$(python3 -c "import toml; print(toml.load('pyproject.toml')['tool']['poetry']['version'])")
-            echo "LiteLLM Version ${VERSION}"
+            echo "LLM Version ${VERSION}"
             curl -X POST \
               -H "Accept: application/vnd.github.v3+json" \
               -H "Authorization: Bearer $GITHUB_TOKEN" \
-              "https://api.github.com/repos/BerriAI/litellm/actions/workflows/ghcr_deploy.yml/dispatches" \
+              "https://api.github.com/repos/BerriAI/llm/actions/workflows/ghcr_deploy.yml/dispatches" \
               -d "{\"ref\":\"main\", \"inputs\":{\"tag\":\"v${VERSION}-nightly\", \"commit_hash\":\"$CIRCLE_SHA1\"}}"
             echo "triggering load testing server for version ${VERSION} and commit ${CIRCLE_SHA1}"
             curl -X POST "https://proxyloadtester-production.up.railway.app/start/load/test?version=${VERSION}&commit_hash=${CIRCLE_SHA1}&release_type=nightly"
@@ -2265,7 +2265,7 @@ jobs:
             nvm install v18.17.0
             nvm use v18.17.0
             
-            cd ui/litellm-dashboard
+            cd ui/llm-dashboard
             
             # Install dependencies first
             npm install
@@ -2332,7 +2332,7 @@ jobs:
               -e UI_PASSWORD="gm" \
               -e LITELLM_LICENSE=$LITELLM_LICENSE \
               --name my-app \
-              -v $(pwd)/litellm/proxy/example_config_yaml/simple_config.yaml:/app/config.yaml \
+              -v $(pwd)/llm/proxy/example_config_yaml/simple_config.yaml:/app/config.yaml \
               my-app:latest \
               --config /app/config.yaml \
               --port 4000 \
@@ -2426,212 +2426,212 @@ workflows:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - langfuse_logging_unit_tests:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - caching_unit_tests:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
-      - litellm_proxy_unit_testing:
+                - /llm_.*/
+      - llm_proxy_unit_testing:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
-      - litellm_proxy_security_tests:
+                - /llm_.*/
+      - llm_proxy_security_tests:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
-      - litellm_assistants_api_testing:
+                - /llm_.*/
+      - llm_assistants_api_testing:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
-      - litellm_router_testing:
+                - /llm_.*/
+      - llm_router_testing:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - check_code_and_doc_quality:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - auth_ui_unit_tests:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - e2e_ui_testing:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - build_and_test:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - e2e_openai_endpoints:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - proxy_logging_guardrails_model_info_tests:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - proxy_multi_instance_tests:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - proxy_store_model_in_db_tests:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - proxy_build_from_pip_tests:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - proxy_pass_through_endpoint_tests:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - llm_translation_testing:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - mcp_testing:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - llm_responses_api_testing:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
-      - litellm_mapped_tests:
+                - /llm_.*/
+      - llm_mapped_tests:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - batches_testing:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
-      - litellm_utils_testing:
+                - /llm_.*/
+      - llm_utils_testing:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - pass_through_unit_testing:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - image_gen_testing:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - logging_testing:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - upload-coverage:
           requires:
             - llm_translation_testing
             - mcp_testing
             - llm_responses_api_testing
-            - litellm_mapped_tests
+            - llm_mapped_tests
             - batches_testing
-            - litellm_utils_testing
+            - llm_utils_testing
             - pass_through_unit_testing
             - image_gen_testing
             - logging_testing
-            - litellm_router_testing
+            - llm_router_testing
             - caching_unit_tests
-            - litellm_proxy_unit_testing
-            - litellm_proxy_security_tests
+            - llm_proxy_unit_testing
+            - llm_proxy_security_tests
             - langfuse_logging_unit_tests
             - local_testing
-            - litellm_assistants_api_testing
+            - llm_assistants_api_testing
             - auth_ui_unit_tests
       - db_migration_disable_update_check:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
-      - installing_litellm_on_python:
+                - /llm_.*/
+      - installing_llm_on_python:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
-      - installing_litellm_on_python_3_13:
+                - /llm_.*/
+      - installing_llm_on_python_3_13:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - helm_chart_testing:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - load_testing:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - test_bad_database_url:
           filters:
             branches:
               only:
                 - main
-                - /litellm_.*/
+                - /llm_.*/
       - publish_to_pypi:
           requires:
             - local_testing
@@ -2642,23 +2642,23 @@ workflows:
             - llm_translation_testing
             - mcp_testing
             - llm_responses_api_testing
-            - litellm_mapped_tests
+            - llm_mapped_tests
             - batches_testing
-            - litellm_utils_testing
+            - llm_utils_testing
             - pass_through_unit_testing
             - image_gen_testing
             - logging_testing
-            - litellm_router_testing
+            - llm_router_testing
             - caching_unit_tests
             - langfuse_logging_unit_tests
-            - litellm_assistants_api_testing
+            - llm_assistants_api_testing
             - auth_ui_unit_tests
             - db_migration_disable_update_check
             - e2e_ui_testing
-            - litellm_proxy_unit_testing
-            - litellm_proxy_security_tests
-            - installing_litellm_on_python
-            - installing_litellm_on_python_3_13
+            - llm_proxy_unit_testing
+            - llm_proxy_security_tests
+            - installing_llm_on_python
+            - installing_llm_on_python_3_13
             - proxy_logging_guardrails_model_info_tests
             - proxy_multi_instance_tests
             - proxy_store_model_in_db_tests

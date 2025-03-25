@@ -4,9 +4,9 @@ Pass-through endpoints for Cohere - call provider-specific endpoint, in native f
 
 | Feature | Supported | Notes | 
 |-------|-------|-------|
-| Cost Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/litellm/issues/new) |
+| Cost Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
 | Logging | ✅ | works across all integrations |
-| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/litellm/issues/new) |
+| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
 | Streaming | ✅ | |
 
 Just replace `https://api.cohere.com` with `LITELLM_PROXY_BASE_URL/cohere` 🚀
@@ -42,10 +42,10 @@ Let's call the Cohere [`/rerank` endpoint](https://docs.cohere.com/reference/rer
 export COHERE_API_KEY=""
 ```
 
-2. Start LiteLLM Proxy 
+2. Start LLM Proxy 
 
 ```bash
-litellm
+llm
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -87,7 +87,7 @@ Key Changes:
 
 ### **Example 1: Rerank endpoint**
 
-#### LiteLLM Proxy Call 
+#### LLM Proxy Call 
 
 ```bash
 curl --request POST \
@@ -129,7 +129,7 @@ curl --request POST \
 
 ### **Example 2: Chat API**
 
-#### LiteLLM Proxy Call 
+#### LLM Proxy Call 
 
 ```bash
 curl --request POST \
@@ -215,7 +215,7 @@ export COHERE_API_KEY=""
 ```
 
 ```bash
-litellm
+llm
 
 # RUNNING on http://0.0.0.0:4000
 ```

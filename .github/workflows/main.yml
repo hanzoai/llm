@@ -29,6 +29,6 @@ jobs:
         id: check-version
         run: |
           set -e
-          if twine check --repository-url https://pypi.org/simple/ "litellm==$LITELLM_VERSION" >/dev/null 2>&1; then
+          if twine check --repository-url https://pypi.org/simple/ "llm==$LITELLM_VERSION" >/dev/null 2>&1; then
             echo "Version $LITELLM_VERSION already exists on PyPI. Skipping publish."
      

@@ -6,9 +6,9 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm import transcription
-from litellm.llms.fireworks_ai.chat.transformation import FireworksAIConfig
+import llm
+from llm import transcription
+from llm.llms.fireworks_ai.chat.transformation import FireworksAIConfig
 from base_llm_unit_tests import BaseLLMChatTest
 from base_audio_transcription_unit_tests import BaseLLMAudioTranscriptionTest
 
@@ -105,14 +105,14 @@ class TestFireworksAIChatCompletion(BaseLLMChatTest):
         """
         Test that the JSON response format is supported by the LLM API
         """
-        from litellm.utils import supports_response_schema
+        from llm.utils import supports_response_schema
         from openai import OpenAI
         from unittest.mock import patch
 
         client = OpenAI()
 
         base_completion_call_args = self.get_base_completion_call_args()
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         messages = [
             {
@@ -152,8 +152,8 @@ class TestFireworksAIAudioTranscription(BaseLLMAudioTranscriptionTest):
             "api_base": "https://audio-prod.us-virginia-1.direct.fireworks.ai/v1",
         }
 
-    def get_custom_llm_provider(self) -> litellm.LlmProviders:
-        return litellm.LlmProviders.FIREWORKS_AI
+    def get_custom_llm_provider(self) -> llm.LlmProviders:
+        return llm.LlmProviders.FIREWORKS_AI
 
 
 @pytest.mark.parametrize(
@@ -161,10 +161,10 @@ class TestFireworksAIAudioTranscription(BaseLLMAudioTranscriptionTest):
     [True, False],
 )
 def test_document_inlining_example(disable_add_transform_inline_image_block):
-    litellm.set_verbose = True
+    llm.set_verbose = True
     if disable_add_transform_inline_image_block is True:
         with pytest.raises(Exception):
-            completion = litellm.completion(
+            completion = llm.completion(
                 model="fireworks_ai/accounts/fireworks/models/llama-v3p3-70b-instruct",
                 messages=[
                     {
@@ -186,7 +186,7 @@ def test_document_inlining_example(disable_add_transform_inline_image_block):
                 disable_add_transform_inline_image_block=disable_add_transform_inline_image_block,
             )
     else:
-        completion = litellm.completion(
+        completion = llm.completion(
             model="fireworks_ai/accounts/fireworks/models/llama-v3p3-70b-instruct",
             messages=[
                 {
@@ -221,7 +221,7 @@ def test_document_inlining_example(disable_add_transform_inline_image_block):
 )
 def test_transform_inline(content, model, expected_url):
 
-    result = litellm.FireworksAIConfig()._add_transform_inline_image_block(
+    result = llm.FireworksAIConfig()._add_transform_inline_image_block(
         content=content, model=model, disable_add_transform_inline_image_block=False
     )
     if isinstance(expected_url, str):
@@ -240,19 +240,19 @@ def test_transform_inline(content, model, expected_url):
 )
 def test_global_disable_flag(model, is_disabled, expected_url):
     content = {"image_url": "http://example.com/image.png"}
-    result = litellm.FireworksAIConfig()._add_transform_inline_image_block(
+    result = llm.FireworksAIConfig()._add_transform_inline_image_block(
         content=content,
         model=model,
         disable_add_transform_inline_image_block=is_disabled,
     )
     assert result["image_url"] == expected_url
-    litellm.disable_add_transform_inline_image_block = False  # Reset for other tests
+    llm.disable_add_transform_inline_image_block = False  # Reset for other tests
 
 
 def test_global_disable_flag_with_transform_messages_helper(monkeypatch):
     from openai import OpenAI
     from unittest.mock import patch
-    from litellm import completion
+    from llm import completion
 
     monkeypatch.setattr(litellm, "disable_add_transform_inline_image_block", True)
 

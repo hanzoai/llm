@@ -10,7 +10,7 @@ Use this config.yaml in production (with your own LLMs)
 ```yaml
 model_list:
   - model_name: fake-openai-endpoint
-    litellm_params:
+    llm_params:
       model: openai/fake
       api_key: fake-key
       api_base: https://exampleopenaiendpoint-production.up.railway.app/
@@ -19,14 +19,14 @@ general_settings:
   master_key: sk-1234      # enter your own master key, ensure it starts with 'sk-'
   alerting: ["slack"]      # Setup slack alerting - get alerts on LLM exceptions, Budget Alerts, Slow LLM Responses
   proxy_batch_write_at: 60 # Batch write spend updates every 60s
-  database_connection_pool_limit: 10 # limit the number of database connections to = MAX Number of DB Connections/Number of instances of litellm proxy (Around 10-20 is good number)
+  database_connection_pool_limit: 10 # limit the number of database connections to = MAX Number of DB Connections/Number of instances of llm proxy (Around 10-20 is good number)
 
   # OPTIONAL Best Practices
-  disable_spend_logs: True # turn off writing each transaction to the db. We recommend doing this is you don't need to see Usage on the LiteLLM UI and are tracking metrics via Prometheus
+  disable_spend_logs: True # turn off writing each transaction to the db. We recommend doing this is you don't need to see Usage on the LLM UI and are tracking metrics via Prometheus
   disable_error_logs: True # turn off writing LLM Exceptions to DB
-  allow_requests_on_db_unavailable: True # Only USE when running LiteLLM on your VPC. Allow requests to still be processed even if the DB is unavailable. We recommend doing this if you're running LiteLLM on VPC that cannot be accessed from the public internet.
+  allow_requests_on_db_unavailable: True # Only USE when running LLM on your VPC. Allow requests to still be processed even if the DB is unavailable. We recommend doing this if you're running LLM on VPC that cannot be accessed from the public internet.
 
-litellm_settings:
+llm_settings:
   request_timeout: 600    # raise Timeout error if call takes longer than 600 seconds. Default value is 6000seconds if not set
   set_verbose: False      # Switch off Debug Logging, ensure your logs do not have any debugging on
   json_logs: true         # Get debug logs in json format
@@ -44,7 +44,7 @@ export LITELLM_LOG="ERROR"
 
 :::info
 
-Need Help or want dedicated support ? Talk to a founder [here]: (https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat)
+Need Help or want dedicated support ? Talk to a founder [here]: (https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
 
 :::
 
@@ -65,7 +65,7 @@ If you decide to use Redis, DO NOT use 'redis_url'. We recommend usig redis port
 
 `redis_url`is 80 RPS slower
 
-This is still something we're investigating. Keep track of it [here](https://github.com/BerriAI/litellm/issues/3188)
+This is still something we're investigating. Keep track of it [here](https://github.com/BerriAI/llm/issues/3188)
 
 Recommended to do this for prod: 
 
@@ -77,7 +77,7 @@ router_settings:
   redis_port: os.environ/REDIS_PORT
   redis_password: os.environ/REDIS_PASSWORD
 
-litellm_settings:
+llm_settings:
   cache: True
   cache_params:
     type: redis
@@ -92,24 +92,24 @@ Set `export LITELLM_MODE="PRODUCTION"`
 
 This disables the load_dotenv() functionality, which will automatically load your environment credentials from the local `.env`. 
 
-## 5. If running LiteLLM on VPC, gracefully handle DB unavailability
+## 5. If running LLM on VPC, gracefully handle DB unavailability
 
-This will allow LiteLLM to continue to process requests even if the DB is unavailable. This is better handling for DB unavailability.
+This will allow LLM to continue to process requests even if the DB is unavailable. This is better handling for DB unavailability.
 
-**WARNING: Only do this if you're running LiteLLM on VPC, that cannot be accessed from the public internet.**
+**WARNING: Only do this if you're running LLM on VPC, that cannot be accessed from the public internet.**
 
 ```yaml
 general_settings:
   allow_requests_on_db_unavailable: True
 ```
 
-## 6. Disable spend_logs & error_logs if not using the LiteLLM UI
+## 6. Disable spend_logs & error_logs if not using the LLM UI
 
-By default, LiteLLM writes several types of logs to the database:
-- Every LLM API request to the `LiteLLM_SpendLogs` table
-- LLM Exceptions to the `LiteLLM_SpendLogs` table
+By default, LLM writes several types of logs to the database:
+- Every LLM API request to the `LLM_SpendLogs` table
+- LLM Exceptions to the `LLM_SpendLogs` table
 
-If you're not viewing these logs on the LiteLLM UI, you can disable them by setting the following flags to `True`:
+If you're not viewing these logs on the LLM UI, you can disable them by setting the following flags to `True`:
 
 ```yaml
 general_settings:
@@ -121,7 +121,7 @@ general_settings:
 
 ## 7. Use Helm PreSync Hook for Database Migrations [BETA]
 
-To ensure only one service manages database migrations, use our [Helm PreSync hook for Database Migrations](https://github.com/BerriAI/litellm/blob/main/deploy/charts/litellm-helm/templates/migrations-job.yaml). This ensures migrations are handled during `helm upgrade` or `helm install`, while LiteLLM pods explicitly disable migrations.
+To ensure only one service manages database migrations, use our [Helm PreSync hook for Database Migrations](https://github.com/BerriAI/llm/blob/main/deploy/charts/llm-helm/templates/migrations-job.yaml). This ensures migrations are handled during `helm upgrade` or `helm install`, while LLM pods explicitly disable migrations.
 
 
 1. **Helm PreSync Hook**:
@@ -136,10 +136,10 @@ To ensure only one service manages database migrations, use our [Helm PreSync ho
     url: postgresql://ishaanjaffer0324:... # url of existing Postgres DB
   ```
 
-2. **LiteLLM Pods**:
-   - Set `DISABLE_SCHEMA_UPDATE=true` in LiteLLM pod configurations to prevent them from running migrations.
+2. **LLM Pods**:
+   - Set `DISABLE_SCHEMA_UPDATE=true` in LLM pod configurations to prevent them from running migrations.
    
-   Example configuration for LiteLLM pod:
+   Example configuration for LLM pod:
    ```yaml
    env:
      - name: DISABLE_SCHEMA_UPDATE
@@ -147,24 +147,24 @@ To ensure only one service manages database migrations, use our [Helm PreSync ho
    ```
 
 
-## 8. Set LiteLLM Salt Key 
+## 8. Set LLM Salt Key 
 
 If you plan on using the DB, set a salt key for encrypting/decrypting variables in the DB. 
 
 Do not change this after adding a model. It is used to encrypt / decrypt your LLM API Key credentials
 
-We recommned - https://1password.com/password-generator/ password generator to get a random hash for litellm salt key.
+We recommned - https://1password.com/password-generator/ password generator to get a random hash for llm salt key.
 
 ```bash
 export LITELLM_SALT_KEY="sk-1234"
 ```
 
-[**See Code**](https://github.com/BerriAI/litellm/blob/036a6821d588bd36d170713dcf5a72791a694178/litellm/proxy/common_utils/encrypt_decrypt_utils.py#L15)
+[**See Code**](https://github.com/BerriAI/llm/blob/036a6821d588bd36d170713dcf5a72791a694178/llm/proxy/common_utils/encrypt_decrypt_utils.py#L15)
 
 ## Extras
 ### Expected Performance in Production
 
-1 LiteLLM Uvicorn Worker on Kubernetes
+1 LLM Uvicorn Worker on Kubernetes
 
 | Description | Value |
 |--------------|-------|
@@ -185,7 +185,7 @@ You should only see the following level of details in logs on the proxy server
 ```
 
 
-### Machine Specifications to Deploy LiteLLM
+### Machine Specifications to Deploy LLM
 
 | Service | Spec | CPUs | Memory | Architecture | Version|
 | --- | --- | --- | --- | --- | --- | 
@@ -201,20 +201,20 @@ Reference Kubernetes `deployment.yaml` that was load tested by us
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: litellm-deployment
+  name: llm-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: litellm
+      app: llm
   template:
     metadata:
       labels:
-        app: litellm
+        app: llm
     spec:
       containers:
-        - name: litellm-container
-          image: ghcr.io/berriai/litellm:main-latest
+        - name: llm-container
+          image: ghcr.io/berriai/llm:main-latest
           imagePullPolicy: Always
           env:
             - name: AZURE_API_KEY
@@ -253,7 +253,7 @@ spec:
       volumes:  # Define volume to mount proxy_config.yaml
         - name: config-volume
           configMap:
-            name: litellm-config  
+            name: llm-config  
 
 ```
 
@@ -263,10 +263,10 @@ Reference Kubernetes `service.yaml` that was load tested by us
 apiVersion: v1
 kind: Service
 metadata:
-  name: litellm-service
+  name: llm-service
 spec:
   selector:
-    app: litellm
+    app: llm
   ports:
     - protocol: TCP
       port: 4000

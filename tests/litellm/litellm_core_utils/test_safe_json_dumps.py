@@ -8,7 +8,7 @@ sys.path.insert(
     0, os.path.abspath("../../..")
 )  # Adds the parent directory to the system path
 
-from litellm.litellm_core_utils.safe_json_dumps import safe_dumps
+from llm.litellm_core_utils.safe_json_dumps import safe_dumps
 
 
 def test_primitive_types():

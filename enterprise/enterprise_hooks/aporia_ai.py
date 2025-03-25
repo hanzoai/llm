@@ -12,25 +12,25 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 from typing import Optional, Literal, Any
-import litellm
+import llm
 import sys
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.integrations.custom_guardrail import CustomGuardrail
+from llm.proxy._types import UserAPIKeyAuth
+from llm.integrations.custom_guardrail import CustomGuardrail
 from fastapi import HTTPException
-from litellm._logging import verbose_proxy_logger
-from litellm.proxy.guardrails.guardrail_helpers import should_proceed_based_on_metadata
-from litellm.litellm_core_utils.logging_utils import (
+from llm._logging import verbose_proxy_logger
+from llm.proxy.guardrails.guardrail_helpers import should_proceed_based_on_metadata
+from llm.litellm_core_utils.logging_utils import (
     convert_litellm_response_object_to_str,
 )
 from typing import List
-from litellm.llms.custom_httpx.http_handler import (
+from llm.llms.custom_httpx.http_handler import (
     get_async_httpx_client,
     httpxSpecialProvider,
 )
 import json
-from litellm.types.guardrails import GuardrailEventHooks
+from llm.types.guardrails import GuardrailEventHooks
 
-litellm.set_verbose = True
+llm.set_verbose = True
 
 GUARDRAIL_NAME = "aporia"
 
@@ -140,7 +140,7 @@ class AporiaGuardrail(CustomGuardrail):
         user_api_key_dict: UserAPIKeyAuth,
         response,
     ):
-        from litellm.proxy.common_utils.callback_utils import (
+        from llm.proxy.common_utils.callback_utils import (
             add_guardrail_to_applied_guardrails_header,
         )
 
@@ -176,7 +176,7 @@ class AporiaGuardrail(CustomGuardrail):
             "responses",
         ],
     ):
-        from litellm.proxy.common_utils.callback_utils import (
+        from llm.proxy.common_utils.callback_utils import (
             add_guardrail_to_applied_guardrails_header,
         )
 

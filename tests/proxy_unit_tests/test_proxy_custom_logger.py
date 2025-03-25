@@ -11,15 +11,15 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest, time
-import litellm
-from litellm import embedding, completion, completion_cost, Timeout
-from litellm import RateLimitError
+import llm
+from llm import embedding, completion, completion_cost, Timeout
+from llm import RateLimitError
 import importlib, inspect
 
 # test /chat/completion request to the proxy
 from fastapi.testclient import TestClient
 from fastapi import FastAPI
-from litellm.proxy.proxy_server import (
+from llm.proxy.proxy_server import (
     router,
     save_worker_config,
     initialize,
@@ -50,20 +50,20 @@ print("Testing proxy custom logger")
 
 def test_embedding(client):
     try:
-        litellm.set_verbose = False
-        from litellm.proxy.types_utils.utils import get_instance_fn
+        llm.set_verbose = False
+        from llm.proxy.types_utils.utils import get_instance_fn
 
         my_custom_logger = get_instance_fn(
             value="custom_callbacks.my_custom_logger", config_file_path=python_file_path
         )
         print("id of initialized custom logger", id(my_custom_logger))
-        litellm.callbacks = [my_custom_logger]
+        llm.callbacks = [my_custom_logger]
         # Your test data
         print("initialized proxy")
         # import the initialized custom logger
-        print(litellm.callbacks)
+        print(llm.callbacks)
 
-        # assert len(litellm.callbacks) == 1 # assert litellm is initialized with 1 callback
+        # assert len(llm.callbacks) == 1 # assert llm is initialized with 1 callback
         print("my_custom_logger", my_custom_logger)
         assert my_custom_logger.async_success_embedding is False
 
@@ -115,14 +115,14 @@ def test_embedding(client):
         print(f"Received response: {result}")
         print("Passed Embedding custom logger on proxy!")
     except Exception as e:
-        pytest.fail(f"LiteLLM Proxy test failed. Exception {str(e)}")
+        pytest.fail(f"LLM Proxy test failed. Exception {str(e)}")
 
 
 def test_chat_completion(client):
     try:
         # Your test data
-        litellm.set_verbose = False
-        from litellm.proxy.types_utils.utils import get_instance_fn
+        llm.set_verbose = False
+        from llm.proxy.types_utils.utils import get_instance_fn
 
         my_custom_logger = get_instance_fn(
             value="custom_callbacks.my_custom_logger", config_file_path=python_file_path
@@ -130,27 +130,27 @@ def test_chat_completion(client):
 
         print("id of initialized custom logger", id(my_custom_logger))
 
-        litellm.callbacks = [my_custom_logger]
+        llm.callbacks = [my_custom_logger]
         # import the initialized custom logger
-        print(litellm.callbacks)
+        print(llm.callbacks)
 
-        # assert len(litellm.callbacks) == 1 # assert litellm is initialized with 1 callback
+        # assert len(llm.callbacks) == 1 # assert llm is initialized with 1 callback
 
-        print("LiteLLM Callbacks", litellm.callbacks)
+        print("LLM Callbacks", llm.callbacks)
         print("my_custom_logger", my_custom_logger)
         assert my_custom_logger.async_success == False
 
         test_data = {
             "model": "Azure OpenAI GPT-4 Canada",
             "messages": [
-                {"role": "user", "content": "write a litellm poem"},
+                {"role": "user", "content": "write a llm poem"},
             ],
             "max_tokens": 10,
         }
 
         response = client.post("/chat/completions", json=test_data, headers=headers)
         print("made request", response.status_code, response.text)
-        print("LiteLLM Callbacks", litellm.callbacks)
+        print("LLM Callbacks", llm.callbacks)
         time.sleep(1)  # sleep while waiting for callback to run
 
         print(
@@ -202,7 +202,7 @@ def test_chat_completion(client):
             },
             "body": {
                 "model": "Azure OpenAI GPT-4 Canada",
-                "messages": [{"role": "user", "content": "write a litellm poem"}],
+                "messages": [{"role": "user", "content": "write a llm poem"}],
                 "max_tokens": 10,
             },
         }
@@ -210,14 +210,14 @@ def test_chat_completion(client):
         print(f"Received response: {result}")
         print("\nPassed /chat/completions with Custom Logger!")
     except Exception as e:
-        pytest.fail(f"LiteLLM Proxy test failed. Exception {str(e)}")
+        pytest.fail(f"LLM Proxy test failed. Exception {str(e)}")
 
 
 def test_chat_completion_stream(client):
     try:
         # Your test data
-        litellm.set_verbose = False
-        from litellm.proxy.types_utils.utils import get_instance_fn
+        llm.set_verbose = False
+        from llm.proxy.types_utils.utils import get_instance_fn
 
         my_custom_logger = get_instance_fn(
             value="custom_callbacks.my_custom_logger", config_file_path=python_file_path
@@ -225,14 +225,14 @@ def test_chat_completion_stream(client):
 
         print("id of initialized custom logger", id(my_custom_logger))
 
-        litellm.callbacks = [my_custom_logger]
+        llm.callbacks = [my_custom_logger]
         import json
 
         print("initialized proxy")
         # import the initialized custom logger
-        print(litellm.callbacks)
+        print(llm.callbacks)
 
-        print("LiteLLM Callbacks", litellm.callbacks)
+        print("LLM Callbacks", llm.callbacks)
         print("my_custom_logger", my_custom_logger)
 
         assert (
@@ -242,7 +242,7 @@ def test_chat_completion_stream(client):
         test_data = {
             "model": "Azure OpenAI GPT-4 Canada",
             "messages": [
-                {"role": "user", "content": "write 1 line poem about LiteLLM"},
+                {"role": "user", "content": "write 1 line poem about LLM"},
             ],
             "max_tokens": 40,
             "stream": True,  # streaming  call
@@ -289,4 +289,4 @@ def test_chat_completion_stream(client):
         )
 
     except Exception as e:
-        pytest.fail(f"LiteLLM Proxy test failed. Exception {str(e)}")
+        pytest.fail(f"LLM Proxy test failed. Exception {str(e)}")

@@ -35,7 +35,7 @@ This ensures the key used for decryption from db is the new key.
 
 **4. Test it**
 
-Make a test request to a model stored on proxy with a litellm key (new master key or virtual key) and see if it works
+Make a test request to a model stored on proxy with a llm key (new master key or virtual key) and see if it works
 
 ```bash
  curl -L -X POST 'http://0.0.0.0:4000/v1/chat/completions' \

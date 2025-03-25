@@ -1,8 +1,8 @@
-# Helm Chart for LiteLLM
+# Helm Chart for LLM
 
 > [!IMPORTANT]
 > This is community maintained, Please make an issue if you run into a bug
-> We recommend using [Docker or Kubernetes for production deployments](https://docs.litellm.ai/docs/proxy/prod)
+> We recommend using [Docker or Kubernetes for production deployments](https://docs.llm.ai/docs/proxy/prod)
 
 ## Prerequisites
 
@@ -17,26 +17,26 @@ If `db.useStackgresOperator` is used (not yet implemented):
 
 ## Parameters
 
-### LiteLLM Proxy Deployment Settings
+### LLM Proxy Deployment Settings
 
 | Name                                                       | Description                                                                                                                                                                           | Value |
 | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
-| `replicaCount`                                             | The number of LiteLLM Proxy pods to be deployed                                                                                                                                       | `1`  |
-| `masterkeySecretName`                                      | The name of the Kubernetes Secret that contains the Master API Key for LiteLLM.  If not specified, use the generated secret name.                                                                                                         | N/A  |
-| `masterkeySecretKey`                                      | The key within the Kubernetes Secret that contains the Master API Key for LiteLLM.  If not specified, use `masterkey` as the key.                                                                                                         | N/A  |
-| `masterkey`                                                | The Master API Key for LiteLLM.  If not specified, a random key is generated.                                                                                                         | N/A  |
-| `environmentSecrets`                                       | An optional array of Secret object names.  The keys and values in these secrets will be presented to the LiteLLM proxy pod as environment variables.  See below for an example Secret object.  | `[]`  |
-| `environmentConfigMaps`                                       | An optional array of ConfigMap object names.  The keys and values in these configmaps will be presented to the LiteLLM proxy pod as environment variables.  See below for an example Secret object.  | `[]`  |
-| `image.repository`                                         | LiteLLM Proxy image repository                                                                                                                                                        | `ghcr.io/berriai/litellm`  |
-| `image.pullPolicy`                                         | LiteLLM Proxy image pull policy                                                                                                                                                       | `IfNotPresent`  |
-| `image.tag`                                                | Overrides the image tag whose default the latest version of LiteLLM at the time this chart was published.                                                                             | `""`  |
-| `imagePullSecrets`                                         | Registry credentials for the LiteLLM and initContainer images.                                                                                                                        | `[]`  |
-| `serviceAccount.create`                                    | Whether or not to create a Kubernetes Service Account for this deployment.  The default is `false` because LiteLLM has no need to access the Kubernetes API.                          | `false`  |
+| `replicaCount`                                             | The number of LLM Proxy pods to be deployed                                                                                                                                       | `1`  |
+| `masterkeySecretName`                                      | The name of the Kubernetes Secret that contains the Master API Key for LLM.  If not specified, use the generated secret name.                                                                                                         | N/A  |
+| `masterkeySecretKey`                                      | The key within the Kubernetes Secret that contains the Master API Key for LLM.  If not specified, use `masterkey` as the key.                                                                                                         | N/A  |
+| `masterkey`                                                | The Master API Key for LLM.  If not specified, a random key is generated.                                                                                                         | N/A  |
+| `environmentSecrets`                                       | An optional array of Secret object names.  The keys and values in these secrets will be presented to the LLM proxy pod as environment variables.  See below for an example Secret object.  | `[]`  |
+| `environmentConfigMaps`                                       | An optional array of ConfigMap object names.  The keys and values in these configmaps will be presented to the LLM proxy pod as environment variables.  See below for an example Secret object.  | `[]`  |
+| `image.repository`                                         | LLM Proxy image repository                                                                                                                                                        | `ghcr.io/berriai/llm`  |
+| `image.pullPolicy`                                         | LLM Proxy image pull policy                                                                                                                                                       | `IfNotPresent`  |
+| `image.tag`                                                | Overrides the image tag whose default the latest version of LLM at the time this chart was published.                                                                             | `""`  |
+| `imagePullSecrets`                                         | Registry credentials for the LLM and initContainer images.                                                                                                                        | `[]`  |
+| `serviceAccount.create`                                    | Whether or not to create a Kubernetes Service Account for this deployment.  The default is `false` because LLM has no need to access the Kubernetes API.                          | `false`  |
 | `service.type`                                             | Kubernetes Service type (e.g. `LoadBalancer`, `ClusterIP`, etc.)                                                                                                                      | `ClusterIP`  |
 | `service.port`                                             | TCP port that the Kubernetes Service will listen on.  Also the TCP port within the Pod that the proxy will listen on.                                                                 | `4000`  |
 | `ingress.*`                                                | See [values.yaml](./values.yaml) for example settings                                                                                                                                 | N/A  |
-| `proxy_config.*`                                           | See [values.yaml](./values.yaml) for default settings.  See [example_config_yaml](../../../litellm/proxy/example_config_yaml/) for configuration examples.                            | N/A  |
-| `extraContainers[]`                                        | An array of additional containers to be deployed as sidecars alongside the LiteLLM Proxy.                                                                                             | `[]`  |
+| `proxy_config.*`                                           | See [values.yaml](./values.yaml) for default settings.  See [example_config_yaml](../../../llm/proxy/example_config_yaml/) for configuration examples.                            | N/A  |
+| `extraContainers[]`                                        | An array of additional containers to be deployed as sidecars alongside the LLM Proxy.                                                                                             | `[]`  |
 
 #### Example `environmentSecrets` Secret 
 
@@ -44,7 +44,7 @@ If `db.useStackgresOperator` is used (not yet implemented):
 apiVersion: v1
 kind: Secret
 metadata:
-  name: litellm-envsecrets
+  name: llm-envsecrets
 data:
   AZURE_OPENAI_API_KEY: TXlTZWN1cmVLM3k=
 type: Opaque
@@ -55,7 +55,7 @@ type: Opaque
 | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- |
 | `db.useExisting`                                           | Use an existing Postgres database.  A Kubernetes Secret object must exist that contains credentials for connecting to the database.  An example secret object definition is provided below.  | `false`  |
 | `db.endpoint`                                              | If `db.useExisting` is `true`, this is the IP, Hostname or Service Name of the Postgres server to connect to.                                                                         | `localhost`  |
-| `db.database`                                              | If `db.useExisting` is `true`, the name of the existing database to connect to.                                                                                                       | `litellm`  |
+| `db.database`                                              | If `db.useExisting` is `true`, the name of the existing database to connect to.                                                                                                       | `llm`  |
 | `db.url`                                              | If `db.useExisting` is `true`, the connection url of the existing database to connect to can be overwritten with this value.                                                                                                       | `postgresql://$(DATABASE_USERNAME):$(DATABASE_PASSWORD)@$(DATABASE_HOST)/$(DATABASE_NAME)`  |
 | `db.secret.name`                                           | If `db.useExisting` is `true`, the name of the Kubernetes Secret that contains credentials.                                                                                           | `postgres`  |
 | `db.secret.usernameKey`                                    | If `db.useExisting` is `true`, the name of the key within the Kubernetes Secret that holds the username for authenticating with the Postgres instance.                                | `username`  |
@@ -74,7 +74,7 @@ metadata:
 data:
   # Password for the "postgres" user
   postgres-password: <some secure password, base64 encoded>
-  username: litellm
+  username: llm
   password: <some secure password, base64 encoded>
 type: Opaque
 ```
@@ -86,7 +86,7 @@ type: Opaque
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: litellm-env-configmap
+  name: llm-env-configmap
 data:
   SOME_KEY: someValue
   ANOTHER_KEY: anotherValue
@@ -100,7 +100,7 @@ data:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: litellm-env-secret
+  name: llm-env-secret
 type: Opaque
 data:
   SOME_PASSWORD: cDZbUGVXeU5e0ZW    # base64 encoded
@@ -112,16 +112,16 @@ Source: [GitHub Gist from troyharvey](https://gist.github.com/troyharvey/4506472
 ## Accessing the Admin UI
 When browsing to the URL published per the settings in `ingress.*`, you will
 be prompted for **Admin Configuration**.  The **Proxy Endpoint** is the internal
-(from the `litellm` pod's perspective) URL published by the `<RELEASE>-litellm`
+(from the `llm` pod's perspective) URL published by the `<RELEASE>-llm`
 Kubernetes Service.  If the deployment uses the default settings for this
-service, the **Proxy Endpoint** should be set to `http://<RELEASE>-litellm:4000`.
+service, the **Proxy Endpoint** should be set to `http://<RELEASE>-llm:4000`.
 
 The **Proxy Key** is the value specified for `masterkey` or, if a `masterkey`
 was not provided to the helm command line, the `masterkey` is a randomly
-generated string stored in the `<RELEASE>-litellm-masterkey` Kubernetes Secret.
+generated string stored in the `<RELEASE>-llm-masterkey` Kubernetes Secret.
 
 ```bash
-kubectl -n litellm get secret <RELEASE>-litellm-masterkey -o jsonpath="{.data.masterkey}"
+kubectl -n llm get secret <RELEASE>-llm-masterkey -o jsonpath="{.data.masterkey}"
 ```
 
 ## Admin UI Limitations

@@ -1,5 +1,5 @@
 #### What this tests ####
-# This tests litellm router with batch completion
+# This tests llm router with batch completion
 
 import asyncio
 import os
@@ -20,10 +20,10 @@ from concurrent.futures import ThreadPoolExecutor
 import httpx
 from dotenv import load_dotenv
 
-import litellm
-from litellm import Router
-from litellm.router import Deployment, LiteLLM_Params
-from litellm.types.router import ModelInfo
+import llm
+from llm import Router
+from llm.router import Deployment, LLM_Params
+from llm.types.router import ModelInfo
 
 load_dotenv()
 
@@ -31,9 +31,9 @@ load_dotenv()
 @pytest.mark.parametrize("mode", ["all_responses", "fastest_response"])
 @pytest.mark.asyncio
 async def test_batch_completion_multiple_models(mode):
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
@@ -54,7 +54,7 @@ async def test_batch_completion_multiple_models(mode):
         response = await router.abatch_completion(
             models=["gpt-3.5-turbo", "groq-llama"],
             messages=[
-                {"role": "user", "content": "is litellm becoming a better product ?"}
+                {"role": "user", "content": "is llm becoming a better product ?"}
             ],
             max_tokens=15,
         )
@@ -77,7 +77,7 @@ async def test_batch_completion_multiple_models(mode):
         response = await router.abatch_completion_fastest_response(
             model="gpt-3.5-turbo, groq-llama",
             messages=[
-                {"role": "user", "content": "is litellm becoming a better product ?"}
+                {"role": "user", "content": "is llm becoming a better product ?"}
             ],
             max_tokens=15,
         )
@@ -92,9 +92,9 @@ async def test_batch_completion_fastest_response_unit_test():
 
     2 models -> 1 is cached, the other is a real llm api call => assert cached response always returned
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-4",
@@ -117,7 +117,7 @@ async def test_batch_completion_fastest_response_unit_test():
     response = await router.abatch_completion_fastest_response(
         model="gpt-4, gpt-3.5-turbo",
         messages=[
-            {"role": "user", "content": "is litellm becoming a better product ?"}
+            {"role": "user", "content": "is llm becoming a better product ?"}
         ],
         max_tokens=500,
     )
@@ -129,9 +129,9 @@ async def test_batch_completion_fastest_response_unit_test():
 
 @pytest.mark.asyncio
 async def test_batch_completion_fastest_response_streaming():
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
@@ -153,7 +153,7 @@ async def test_batch_completion_fastest_response_streaming():
     response = await router.abatch_completion_fastest_response(
         model="gpt-3.5-turbo, groq-llama",
         messages=[
-            {"role": "user", "content": "is litellm becoming a better product ?"}
+            {"role": "user", "content": "is llm becoming a better product ?"}
         ],
         max_tokens=15,
         stream=True,
@@ -165,9 +165,9 @@ async def test_batch_completion_fastest_response_streaming():
 
 @pytest.mark.asyncio
 async def test_batch_completion_multiple_models_multiple_messages():
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
@@ -187,7 +187,7 @@ async def test_batch_completion_multiple_models_multiple_messages():
     response = await router.abatch_completion(
         models=["gpt-3.5-turbo", "groq-llama"],
         messages=[
-            [{"role": "user", "content": "is litellm becoming a better product ?"}],
+            [{"role": "user", "content": "is llm becoming a better product ?"}],
             [{"role": "user", "content": "who is this"}],
         ],
         max_tokens=15,
@@ -196,7 +196,7 @@ async def test_batch_completion_multiple_models_multiple_messages():
     print("response from batches =", response)
     assert len(response) == 2
     assert len(response[0]) == 2
-    assert isinstance(response[0][0], litellm.ModelResponse)
+    assert isinstance(response[0][0], llm.ModelResponse)
 
     # models_in_responses = []
     # for individual_response in response:

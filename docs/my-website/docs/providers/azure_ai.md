@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 # Azure AI Studio
 
-LiteLLM supports all models on Azure AI Studio
+LLM supports all models on Azure AI Studio
 
 
 ## Usage
@@ -21,7 +21,7 @@ os.environ["AZURE_AI_API_BASE"] = ""
 ### Example Call
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 ## set ENV variables
 os.environ["AZURE_AI_API_KEY"] = "azure ai key"
@@ -42,7 +42,7 @@ response = completion(
   ```yaml
   model_list:
     - model_name: command-r-plus
-      litellm_params:
+      llm_params:
         model: azure_ai/command-r-plus
         api_key: os.environ/AZURE_AI_API_KEY
         api_base: os.environ/AZURE_AI_API_BASE
@@ -53,10 +53,10 @@ response = completion(
 2. Start the proxy 
 
   ```bash
-  $ litellm --config /path/to/config.yaml --debug
+  $ llm --config /path/to/config.yaml --debug
   ```
 
-3. Send Request to LiteLLM Proxy Server
+3. Send Request to LLM Proxy Server
 
   <Tabs>
 
@@ -65,8 +65,8 @@ response = completion(
   ```python
   import openai
   client = openai.OpenAI(
-      api_key="sk-1234",             # pass litellm proxy key, if you're using virtual keys
-      base_url="http://0.0.0.0:4000" # litellm-proxy-base url
+      api_key="sk-1234",             # pass llm proxy key, if you're using virtual keys
+      base_url="http://0.0.0.0:4000" # llm-proxy-base url
   )
 
   response = client.chat.completions.create(
@@ -118,11 +118,11 @@ response = completion(
 </Tabs>
 
 ## Passing additional params - max_tokens, temperature 
-See all litellm.completion supported params [here](../completion/input.md#translated-openai-params)
+See all llm.completion supported params [here](../completion/input.md#translated-openai-params)
 
 ```python
-# !pip install litellm
-from litellm import completion
+# !pip install llm
+from llm import completion
 import os
 ## set ENV variables
 os.environ["AZURE_AI_API_KEY"] = "azure ai api key"
@@ -142,7 +142,7 @@ response = completion(
 ```yaml
   model_list:
     - model_name: command-r-plus
-      litellm_params:
+      llm_params:
         model: azure_ai/command-r-plus
         api_key: os.environ/AZURE_AI_API_KEY
         api_base: os.environ/AZURE_AI_API_BASE
@@ -155,10 +155,10 @@ response = completion(
 2. Start the proxy 
 
   ```bash
-  $ litellm --config /path/to/config.yaml
+  $ llm --config /path/to/config.yaml
   ```
 
-3. Send Request to LiteLLM Proxy Server
+3. Send Request to LLM Proxy Server
 
   <Tabs>
 
@@ -167,8 +167,8 @@ response = completion(
   ```python
   import openai
   client = openai.OpenAI(
-      api_key="sk-1234",             # pass litellm proxy key, if you're using virtual keys
-      base_url="http://0.0.0.0:4000" # litellm-proxy-base url
+      api_key="sk-1234",             # pass llm proxy key, if you're using virtual keys
+      base_url="http://0.0.0.0:4000" # llm-proxy-base url
   )
 
   response = client.chat.completions.create(
@@ -211,7 +211,7 @@ response = completion(
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 
 # set env
 os.environ["AZURE_AI_API_KEY"] = "your-api-key"
@@ -303,7 +303,7 @@ curl http://0.0.0.0:4000/v1/chat/completions \
 
 ## Supported Models
 
-LiteLLM supports **ALL** azure ai models. Here's a few examples:
+LLM supports **ALL** azure ai models. Here's a few examples:
 
 | Model Name               | Function Call                                                                                                                                                      |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -321,10 +321,10 @@ LiteLLM supports **ALL** azure ai models. Here's a few examples:
 
 
 <Tabs>
-<TabItem value="sdk" label="LiteLLM SDK Usage">
+<TabItem value="sdk" label="LLM SDK Usage">
 
 ```python
-from litellm import rerank
+from llm import rerank
 import os
 
 os.environ["AZURE_AI_API_KEY"] = "sk-.."
@@ -348,31 +348,31 @@ print(response)
 ```
 </TabItem>
 
-<TabItem value="proxy" label="LiteLLM Proxy Usage">
+<TabItem value="proxy" label="LLM Proxy Usage">
 
-LiteLLM provides an cohere api compatible `/rerank` endpoint for Rerank calls.
+LLM provides an cohere api compatible `/rerank` endpoint for Rerank calls.
 
 **Setup**
 
-Add this to your litellm proxy config.yaml
+Add this to your llm proxy config.yaml
 
 ```yaml
 model_list:
   - model_name: Salesforce/Llama-Rank-V1
-    litellm_params:
+    llm_params:
       model: together_ai/Salesforce/Llama-Rank-V1
       api_key: os.environ/TOGETHERAI_API_KEY
   - model_name: rerank-english-v3.0
-    litellm_params:
+    llm_params:
       model: azure_ai/rerank-english-v3.0
       api_key: os.environ/AZURE_AI_API_KEY
       api_base: os.environ/AZURE_AI_API_BASE
 ```
 
-Start litellm
+Start llm
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```

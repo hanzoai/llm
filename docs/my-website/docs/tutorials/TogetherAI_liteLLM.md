@@ -4,13 +4,13 @@ https://together.ai/
 
 
 ```python
-!pip install litellm
+!pip install llm
 ```
 
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 os.environ["TOGETHERAI_API_KEY"] = "" #@param
 user_message = "Hello, whats the weather in San Francisco??"
 messages = [{ "content": user_message,"role": "user"}]
@@ -32,10 +32,10 @@ print(response)
 ```
 
 
-LiteLLM handles the prompt formatting for Together AI's Llama2 models as well, converting your message to the 
+LLM handles the prompt formatting for Together AI's Llama2 models as well, converting your message to the 
 `[INST] <your instruction> [/INST]` format required. 
 
-[Implementation Code](https://github.com/BerriAI/litellm/blob/64f3d3c56ef02ac5544983efc78293de31c1c201/litellm/llms/prompt_templates/factory.py#L17)
+[Implementation Code](https://github.com/BerriAI/llm/blob/64f3d3c56ef02ac5544983efc78293de31c1c201/llm/llms/prompt_templates/factory.py#L17)
 
 ## With Streaming
 
@@ -67,13 +67,13 @@ The accepted template format is: [Reference](https://huggingface.co/OpenAssistan
 """
 ```
 
-Let's register our custom prompt template: [Implementation Code](https://github.com/BerriAI/litellm/blob/64f3d3c56ef02ac5544983efc78293de31c1c201/litellm/llms/prompt_templates/factory.py#L77)
+Let's register our custom prompt template: [Implementation Code](https://github.com/BerriAI/llm/blob/64f3d3c56ef02ac5544983efc78293de31c1c201/llm/llms/prompt_templates/factory.py#L77)
 ```python
-import litellm 
+import llm 
 
-litellm.register_prompt_template(
+llm.register_prompt_template(
     model="OpenAssistant/llama2-70b-oasst-sft-v10",
-    roles={"system":"<|im_start|>system", "assistant":"<|im_start|>assistant", "user":"<|im_start|>user"}, # tell LiteLLM how you want to map the openai messages to this model
+    roles={"system":"<|im_start|>system", "assistant":"<|im_start|>assistant", "user":"<|im_start|>user"}, # tell LLM how you want to map the openai messages to this model
     pre_message_sep= "\n",
     post_message_sep= "\n"
 )
@@ -82,7 +82,7 @@ litellm.register_prompt_template(
 Let's use it! 
 
 ```python
-from litellm import completion 
+from llm import completion 
 
 # set env variable 
 os.environ["TOGETHERAI_API_KEY"] = ""
@@ -95,15 +95,15 @@ completion(model="together_ai/OpenAssistant/llama2-70b-oasst-sft-v10", messages=
 **Complete Code**
 
 ```python
-import litellm 
-from litellm import completion
+import llm 
+from llm import completion
 
 # set env variable 
 os.environ["TOGETHERAI_API_KEY"] = ""
 
-litellm.register_prompt_template(
+llm.register_prompt_template(
     model="OpenAssistant/llama2-70b-oasst-sft-v10",
-    roles={"system":"<|im_start|>system", "assistant":"<|im_start|>assistant", "user":"<|im_start|>user"}, # tell LiteLLM how you want to map the openai messages to this model
+    roles={"system":"<|im_start|>system", "assistant":"<|im_start|>assistant", "user":"<|im_start|>user"}, # tell LLM how you want to map the openai messages to this model
     pre_message_sep= "\n",
     post_message_sep= "\n"
 )
@@ -136,6 +136,6 @@ print(response)
     "completion_tokens": 16,
     "total_tokens": 23
   },
-  "litellm_call_id": "f21315db-afd6-4c1e-b43a-0b5682de4b06"
+  "llm_call_id": "f21315db-afd6-4c1e-b43a-0b5682de4b06"
 }
 ```

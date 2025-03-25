@@ -11,10 +11,10 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm import Router
-from litellm.router import Deployment, LiteLLM_Params
-from litellm.types.router import ModelInfo
+import llm
+from llm import Router
+from llm.router import Deployment, LLM_Params
+from llm.types.router import ModelInfo
 from concurrent.futures import ThreadPoolExecutor
 from collections import defaultdict
 from dotenv import load_dotenv
@@ -22,7 +22,7 @@ from unittest.mock import patch, MagicMock, AsyncMock
 
 load_dotenv()
 
-from litellm.router_utils.pattern_match_deployments import PatternMatchRouter
+from llm.router_utils.pattern_match_deployments import PatternMatchRouter
 
 
 def test_pattern_match_router_initialization():
@@ -39,7 +39,7 @@ def test_add_pattern():
     router = PatternMatchRouter()
     deployment = Deployment(
         model_name="openai-1",
-        litellm_params=LiteLLM_Params(model="gpt-3.5-turbo"),
+        litellm_params=LLM_Params(model="gpt-3.5-turbo"),
         model_info=ModelInfo(),
     )
     router.add_pattern("openai/*", deployment.to_json(exclude_none=True))
@@ -61,7 +61,7 @@ def test_add_pattern_vertex_ai():
     router = PatternMatchRouter()
     deployment = Deployment(
         model_name="this-can-be-anything",
-        litellm_params=LiteLLM_Params(model="vertex_ai/gemini-1.5-flash-latest"),
+        litellm_params=LLM_Params(model="vertex_ai/gemini-1.5-flash-latest"),
         model_info=ModelInfo(),
     )
     router.add_pattern("vertex_ai/*", deployment.to_json(exclude_none=True))
@@ -83,12 +83,12 @@ def test_add_multiple_deployments():
     router = PatternMatchRouter()
     deployment1 = Deployment(
         model_name="openai-1",
-        litellm_params=LiteLLM_Params(model="gpt-3.5-turbo"),
+        litellm_params=LLM_Params(model="gpt-3.5-turbo"),
         model_info=ModelInfo(),
     )
     deployment2 = Deployment(
         model_name="openai-2",
-        litellm_params=LiteLLM_Params(model="gpt-4"),
+        litellm_params=LLM_Params(model="gpt-4"),
         model_info=ModelInfo(),
     )
     router.add_pattern("openai/*", deployment1.to_json(exclude_none=True))
@@ -123,12 +123,12 @@ def test_route_with_multiple_matching_patterns():
     router = PatternMatchRouter()
     deployment1 = Deployment(
         model_name="openai-1",
-        litellm_params=LiteLLM_Params(model="gpt-3.5-turbo"),
+        litellm_params=LLM_Params(model="gpt-3.5-turbo"),
         model_info=ModelInfo(),
     )
     deployment2 = Deployment(
         model_name="openai-2",
-        litellm_params=LiteLLM_Params(model="gpt-4"),
+        litellm_params=LLM_Params(model="gpt-4"),
         model_info=ModelInfo(),
     )
     router.add_pattern("openai/*", deployment1.to_json(exclude_none=True))
@@ -146,7 +146,7 @@ def test_route_with_exception():
     router = PatternMatchRouter()
     deployment = Deployment(
         model_name="openai-1",
-        litellm_params=LiteLLM_Params(model="gpt-3.5-turbo"),
+        litellm_params=LLM_Params(model="gpt-3.5-turbo"),
         model_info=ModelInfo(),
     )
     router.add_pattern("openai/*", deployment.to_json(exclude_none=True))
@@ -164,7 +164,7 @@ async def test_route_with_no_matching_pattern():
     """
     Tests that the router returns None when there is no matching pattern
     """
-    from litellm.types.router import RouterErrors
+    from llm.types.router import RouterErrors
 
     router = Router(
         model_list=[
@@ -192,7 +192,7 @@ async def test_route_with_no_matching_pattern():
     assert result.choices[0].message.content == "Works"
 
     ## FAILS
-    with pytest.raises(litellm.BadRequestError) as e:
+    with pytest.raises(llm.BadRequestError) as e:
         await router.acompletion(
             model="my-fake-model",
             messages=[{"role": "user", "content": "Hello, world!"}],
@@ -201,7 +201,7 @@ async def test_route_with_no_matching_pattern():
 
     assert RouterErrors.no_deployments_available.value not in str(e.value)
 
-    with pytest.raises(litellm.BadRequestError):
+    with pytest.raises(llm.BadRequestError):
         await router.aembedding(
             model="my-fake-model",
             input="Hello, world!",
@@ -212,7 +212,7 @@ def test_router_pattern_match_e2e():
     """
     Tests the end to end flow of the router
     """
-    from litellm.llms.custom_httpx.http_handler import HTTPHandler
+    from llm.llms.custom_httpx.http_handler import HTTPHandler
 
     client = HTTPHandler()
     router = Router(
@@ -298,7 +298,7 @@ def test_sorted_patterns():
     """
     Tests that the pattern specificity is calculated correctly
     """
-    from litellm.router_utils.pattern_match_deployments import PatternUtils
+    from llm.router_utils.pattern_match_deployments import PatternUtils
 
     sorted_patterns = PatternUtils.sorted_patterns(
         {
@@ -310,7 +310,7 @@ def test_sorted_patterns():
 
 
 def test_calculate_pattern_specificity():
-    from litellm.router_utils.pattern_match_deployments import PatternUtils
+    from llm.router_utils.pattern_match_deployments import PatternUtils
 
     assert PatternUtils.calculate_pattern_specificity("llmengine/*") == (11, 1)
     assert PatternUtils.calculate_pattern_specificity("*") == (1, 1)

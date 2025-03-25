@@ -11,7 +11,7 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the, system path
 import pytest, uuid
-from litellm.utils import function_setup, Rules
+from llm.utils import function_setup, Rules
 from datetime import datetime
 
 

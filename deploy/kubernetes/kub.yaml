@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: litellm-deployment
+  name: llm-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: litellm
+      app: llm
   template:
     metadata:
       labels:
-        app: litellm
+        app: llm
     spec:
       containers:
-        - name: litellm-container
-          image: ghcr.io/berriai/litellm:main-latest
+        - name: llm-container
+          image: ghcr.io/berriai/llm:main-latest
           imagePullPolicy: Always
           env:
             - name: AZURE_API_KEY
@@ -53,4 +53,4 @@ spec:
       volumes:  # Define volume to mount proxy_config.yaml
         - name: config-volume
           configMap:
-            name: litellm-config  
+            name: llm-config  

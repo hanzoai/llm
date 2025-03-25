@@ -23,7 +23,7 @@ Supported by:
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 import os 
 
 os.environ["DEEPSEEK_API_KEY"] = ""
@@ -93,13 +93,13 @@ curl http://0.0.0.0:4000/v1/chat/completions \
 
 ## Check Model Support 
 
-Call `litellm.get_model_info` to check if a model/provider supports `prefix`. 
+Call `llm.get_model_info` to check if a model/provider supports `prefix`. 
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import get_model_info
+from llm import get_model_info
 
 params = get_model_info(model="deepseek/deepseek-chat")
 

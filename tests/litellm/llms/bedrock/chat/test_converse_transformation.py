@@ -10,8 +10,8 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 from unittest.mock import MagicMock, patch
 
-from litellm.llms.bedrock.chat.converse_transformation import AmazonConverseConfig
-from litellm.types.llms.bedrock import ConverseTokenUsageBlock
+from llm.llms.bedrock.chat.converse_transformation import AmazonConverseConfig
+from llm.types.llms.bedrock import ConverseTokenUsageBlock
 
 
 def test_transform_usage():

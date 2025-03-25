@@ -14,27 +14,27 @@ from fastapi import FastAPI
 from fastapi.routing import APIRoute
 import httpx
 import pytest
-import litellm
+import llm
 from typing import AsyncGenerator
-from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
-from litellm.proxy.pass_through_endpoints.types import EndpointType
-from litellm.proxy.pass_through_endpoints.success_handler import (
+from llm.litellm_core_utils.litellm_logging import Logging as LLMLoggingObj
+from llm.proxy.pass_through_endpoints.types import EndpointType
+from llm.proxy.pass_through_endpoints.success_handler import (
     PassThroughEndpointLogging,
 )
-from litellm.proxy.pass_through_endpoints.streaming_handler import (
+from llm.proxy.pass_through_endpoints.streaming_handler import (
     PassThroughStreamingHandler,
 )
 
-from litellm.proxy.pass_through_endpoints.pass_through_endpoints import (
+from llm.proxy.pass_through_endpoints.pass_through_endpoints import (
     pass_through_request,
 )
 from fastapi import Request
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.proxy.pass_through_endpoints.pass_through_endpoints import (
+from llm.proxy._types import UserAPIKeyAuth
+from llm.proxy.pass_through_endpoints.pass_through_endpoints import (
     _init_kwargs_for_pass_through_endpoint,
     _update_metadata_with_tags_in_header,
 )
-from litellm.proxy.pass_through_endpoints.types import PassthroughStandardLoggingPayload
+from llm.proxy.pass_through_endpoints.types import PassthroughStandardLoggingPayload
 
 
 @pytest.fixture
@@ -141,7 +141,7 @@ def test_init_kwargs_with_litellm_metadata(mock_request, mock_user_api_key_dict)
     """
     Expected behavior: litellm_metadata should be merged with default metadata
 
-    see usage example here: https://docs.litellm.ai/docs/pass_through/anthropic_completion#send-litellm_metadata-tags
+    see usage example here: https://docs.llm.ai/docs/pass_through/anthropic_completion#send-litellm_metadata-tags
     """
     request = mock_request()
     parsed_body = {
@@ -226,7 +226,7 @@ async def test_pass_through_request_logging_failure(
 
     # Patch both the logging handler and the httpx client
     with patch(
-        "litellm.proxy.pass_through_endpoints.pass_through_endpoints.PassThroughEndpointLogging.pass_through_async_success_handler",
+        "llm.proxy.pass_through_endpoints.pass_through_endpoints.PassThroughEndpointLogging.pass_through_async_success_handler",
         new=mock_logging_failure,
     ), patch(
         "httpx.AsyncClient.send",
@@ -293,7 +293,7 @@ async def test_pass_through_request_logging_failure_with_stream(
 
     # Patch both the logging handler and the httpx client
     with patch(
-        "litellm.proxy.pass_through_endpoints.streaming_handler.PassThroughStreamingHandler._route_streaming_logging_to_handler",
+        "llm.proxy.pass_through_endpoints.streaming_handler.PassThroughStreamingHandler._route_streaming_logging_to_handler",
         new=mock_logging_failure,
     ), patch(
         "httpx.AsyncClient.send",
@@ -336,7 +336,7 @@ def test_pass_through_routes_support_all_methods():
     Test that all pass-through routes support GET, POST, PUT, DELETE, PATCH methods
     """
     # Import the routers
-    from litellm.proxy.pass_through_endpoints.llm_passthrough_endpoints import (
+    from llm.proxy.pass_through_endpoints.llm_passthrough_endpoints import (
         router as llm_router,
     )
 
@@ -364,7 +364,7 @@ def test_is_bedrock_agent_runtime_route():
     """
     Test that _is_bedrock_agent_runtime_route correctly identifies bedrock agent runtime endpoints
     """
-    from litellm.proxy.pass_through_endpoints.llm_passthrough_endpoints import (
+    from llm.proxy.pass_through_endpoints.llm_passthrough_endpoints import (
         _is_bedrock_agent_runtime_route,
     )
 

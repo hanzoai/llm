@@ -7,14 +7,14 @@ ALL Bedrock models (Anthropic, Meta, Deepseek, Mistral, Amazon, etc.) are Suppor
 | Property | Details |
 |-------|-------|
 | Description | Amazon Bedrock is a fully managed service that offers a choice of high-performing foundation models (FMs). |
-| Provider Route on LiteLLM | `bedrock/`, [`bedrock/converse/`](#set-converse--invoke-route), [`bedrock/invoke/`](#set-invoke-route), [`bedrock/converse_like/`](#calling-via-internal-proxy), [`bedrock/llama/`](#deepseek-not-r1), [`bedrock/deepseek_r1/`](#deepseek-r1) |
+| Provider Route on LLM | `bedrock/`, [`bedrock/converse/`](#set-converse--invoke-route), [`bedrock/invoke/`](#set-invoke-route), [`bedrock/converse_like/`](#calling-via-internal-proxy), [`bedrock/llama/`](#deepseek-not-r1), [`bedrock/deepseek_r1/`](#deepseek-r1) |
 | Provider Doc | [Amazon Bedrock ↗](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html) |
 | Supported OpenAI Endpoints | `/chat/completions`, `/completions`, `/embeddings`, `/images/generations` |
 | Rerank Endpoint | `/rerank` |
 | Pass-through Endpoint | [Supported](../pass_through/bedrock.md) |
 
 
-LiteLLM requires `boto3` to be installed on your system for Bedrock requests
+LLM requires `boto3` to be installed on your system for Bedrock requests
 ```shell
 pip install boto3>=1.28.57
 ```
@@ -27,20 +27,20 @@ For **Amazon Nova Models**: Bump to v1.53.5+
 
 :::info
 
-LiteLLM uses boto3 to handle authentication. All these options are supported - https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html#credentials.
+LLM uses boto3 to handle authentication. All these options are supported - https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html#credentials.
 
 :::
 
 ## Usage
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/litellm/blob/main/cookbook/LiteLLM_Bedrock.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/LLM_Bedrock.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -52,16 +52,16 @@ response = completion(
 )
 ```
 
-## LiteLLM Proxy Usage 
+## LLM Proxy Usage 
 
-Here's how to call Bedrock with the LiteLLM Proxy Server
+Here's how to call Bedrock with the LLM Proxy Server
 
 ### 1. Setup config.yaml
 
 ```yaml
 model_list:
   - model_name: bedrock-claude-v1
-    litellm_params:
+    llm_params:
       model: bedrock/anthropic.claude-instant-v1
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY
@@ -85,7 +85,7 @@ aws_bedrock_runtime_endpoint: Optional[str],
 ### 2. Start the proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 ### 3. Test it
 
@@ -117,7 +117,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="bedrock-claude-v1", messages = [
     {
         "role": "user",
@@ -141,7 +141,7 @@ from langchain.prompts.chat import (
 from langchain.schema import HumanMessage, SystemMessage
 
 chat = ChatOpenAI(
-    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LiteLLM Proxy
+    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LLM Proxy
     model = "bedrock-claude-v1",
     temperature=0.1
 )
@@ -151,7 +151,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -168,7 +168,7 @@ print(response)
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -189,7 +189,7 @@ response = completion(
 ```yaml
 model_list:
   - model_name: bedrock-claude-v1
-    litellm_params:
+    llm_params:
       model: bedrock/anthropic.claude-instant-v1
       temperature: <your-temp>
       top_p: <your-top-p>
@@ -205,7 +205,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="bedrock-claude-v1", messages = [
     {
         "role": "user",
@@ -225,14 +225,14 @@ print(response)
 
 ## Pass provider-specific params 
 
-If you pass a non-openai param to litellm, we'll assume it's provider-specific and send it as a kwarg in the request body. [See more](../completion/input.md#provider-specific-params)
+If you pass a non-openai param to llm, we'll assume it's provider-specific and send it as a kwarg in the request body. [See more](../completion/input.md#provider-specific-params)
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -252,7 +252,7 @@ response = completion(
 ```yaml
 model_list:
   - model_name: bedrock-claude-v1
-    litellm_params:
+    llm_params:
       model: bedrock/anthropic.claude-instant-v1
       top_k: 1 # 👈 PROVIDER-SPECIFIC PARAM
 ```
@@ -267,7 +267,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="bedrock-claude-v1", messages = [
     {
         "role": "user",
@@ -289,13 +289,13 @@ print(response)
 
 ## Usage - Function Calling / Tool calling
 
-LiteLLM supports tool calling via Bedrock's Converse and Invoke API's.
+LLM supports tool calling via Bedrock's Converse and Invoke API's.
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 
 # set env
 os.environ["AWS_ACCESS_KEY_ID"] = ""
@@ -345,14 +345,14 @@ assert isinstance(
 ```yaml
 model_list:
   - model_name: bedrock-claude-3-7
-    litellm_params:
+    llm_params:
       model: bedrock/us.anthropic.claude-3-7-sonnet-20250219-v1:0 # for bedrock invoke, specify `bedrock/invoke/<model>`
 ```
 
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -405,7 +405,7 @@ curl http://0.0.0.0:4000/v1/chat/completions \
 ## Usage - Vision 
 
 ```python
-from litellm import completion
+from llm import completion
 
 # set env
 os.environ["AWS_ACCESS_KEY_ID"] = ""
@@ -423,7 +423,7 @@ def encode_image(image_path):
 image_path = "../proxy/cached_logo.jpg"
 # Getting the base64 string
 base64_image = encode_image(image_path)
-resp = litellm.completion(
+resp = llm.completion(
     model="bedrock/anthropic.claude-3-sonnet-20240229-v1:0",
     messages=[
         {
@@ -465,7 +465,7 @@ The `signature` is required by Anthropic on subsequent calls, if 'thinking' cont
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 
 # set env
 os.environ["AWS_ACCESS_KEY_ID"] = ""
@@ -489,7 +489,7 @@ print(resp)
 ```yaml
 model_list:
   - model_name: bedrock-claude-3-7
-    litellm_params:
+    llm_params:
       model: bedrock/us.anthropic.claude-3-7-sonnet-20250219-v1:0
       thinking: {"type": "enabled", "budget_tokens": 1024} # 👈 EITHER HERE OR ON REQUEST
 ```
@@ -497,7 +497,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -565,7 +565,7 @@ Same as [Anthropic API response](../providers/anthropic#usage---thinking--reason
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 import os 
 from pydantic import BaseModel
 
@@ -600,7 +600,7 @@ print(response.choices[0].message.content)
 ```yaml
 model_list:
   - model_name: bedrock-claude-3-7
-    litellm_params:
+    llm_params:
       model: bedrock/us.anthropic.claude-3-7-sonnet-20250219-v1:0 # specify invoke via `bedrock/invoke/<model_name>` 
       aws_access_key_id: os.environ/CUSTOM_AWS_ACCESS_KEY_ID
       aws_secret_access_key: os.environ/CUSTOM_AWS_SECRET_ACCESS_KEY
@@ -610,7 +610,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it!
@@ -666,13 +666,13 @@ curl http://0.0.0.0:4000/v1/chat/completions \
 
 ## Usage - Bedrock Guardrails
 
-Example of using [Bedrock Guardrails with LiteLLM](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-use-converse-api.html)
+Example of using [Bedrock Guardrails with LLM](https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-use-converse-api.html)
 
 <Tabs>
-<TabItem value="sdk" label="LiteLLM SDK">
+<TabItem value="sdk" label="LLM SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 
 # set env
 os.environ["AWS_ACCESS_KEY_ID"] = ""
@@ -706,7 +706,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="anthropic.claude-v2", messages = [
     {
         "role": "user",
@@ -733,7 +733,7 @@ print(response)
 ```yaml
 model_list:
   - model_name: bedrock-claude-v1
-    litellm_params:
+    llm_params:
       model: bedrock/anthropic.claude-instant-v1
       aws_access_key_id: os.environ/CUSTOM_AWS_ACCESS_KEY_ID
       aws_secret_access_key: os.environ/CUSTOM_AWS_SECRET_ACCESS_KEY
@@ -749,7 +749,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -762,7 +762,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="bedrock-claude-v1", messages = [
     {
         "role": "user",
@@ -786,7 +786,7 @@ If you're using Anthropic's Claude with Bedrock, you can "put words in Claude's 
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -815,7 +815,7 @@ If you're using Anthropic's Claude 2.1 with Bedrock, `system` role messages are 
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -843,7 +843,7 @@ Assistant:
 ## Usage - Streaming
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -882,13 +882,13 @@ for chunk in response:
 
 ## Cross-region inferencing 
 
-LiteLLM supports Bedrock [cross-region inferencing](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) across all [supported bedrock models](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference-support.html).
+LLM supports Bedrock [cross-region inferencing](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) across all [supported bedrock models](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference-support.html).
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion 
+from llm import completion 
 import os 
 
 
@@ -897,7 +897,7 @@ os.environ["AWS_SECRET_ACCESS_KEY"] = ""
 os.environ["AWS_REGION_NAME"] = ""
 
 
-litellm.set_verbose = True #  👈 SEE RAW REQUEST 
+llm.set_verbose = True #  👈 SEE RAW REQUEST 
 
 response = completion(
     model="bedrock/us.anthropic.claude-3-haiku-20240307-v1:0",
@@ -917,7 +917,7 @@ print("Final Response: {}".format(response))
 ```yaml
 model_list:
   - model_name: bedrock-claude-haiku
-    litellm_params:
+    llm_params:
       model: bedrock/us.anthropic.claude-3-haiku-20240307-v1:0
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY
@@ -928,7 +928,7 @@ model_list:
 #### 2. Start the proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 #### 3. Test it
@@ -961,7 +961,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="bedrock-claude-haiku", messages = [
     {
         "role": "user",
@@ -985,7 +985,7 @@ from langchain.prompts.chat import (
 from langchain.schema import HumanMessage, SystemMessage
 
 chat = ChatOpenAI(
-    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LiteLLM Proxy
+    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LLM Proxy
     model = "bedrock-claude-haiku",
     temperature=0.1
 )
@@ -995,7 +995,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -1013,11 +1013,11 @@ print(response)
 
 :::info
 
-Supported from LiteLLM Version `v1.53.5`
+Supported from LLM Version `v1.53.5`
 
 :::
 
-LiteLLM defaults to the `invoke` route. LiteLLM uses the `converse` route for Bedrock models that support it.
+LLM defaults to the `invoke` route. LLM uses the `converse` route for Bedrock models that support it.
 
 To explicitly set the route, do `bedrock/converse/<model>` or `bedrock/invoke/<model>`.
 
@@ -1028,7 +1028,7 @@ E.g.
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 
 completion(model="bedrock/converse/us.amazon.nova-pro-v1:0")
 ```
@@ -1039,7 +1039,7 @@ completion(model="bedrock/converse/us.amazon.nova-pro-v1:0")
 ```yaml
 model_list:
   - model_name: bedrock-model
-    litellm_params:
+    llm_params:
       model: bedrock/converse/us.amazon.nova-pro-v1:0
 ```
 
@@ -1054,22 +1054,22 @@ Use `user_continue_message` to add a default user message, for cases (e.g. Autog
 ```yaml
 model_list:
   - model_name: "bedrock-claude"
-    litellm_params:
+    llm_params:
       model: "bedrock/anthropic.claude-instant-v1"
       user_continue_message: {"role": "user", "content": "Please continue"}
 ```
 
 OR 
 
-just set `litellm.modify_params=True` and LiteLLM will automatically handle this with a default user_continue_message.
+just set `llm.modify_params=True` and LLM will automatically handle this with a default user_continue_message.
 
 ```yaml
 model_list:
   - model_name: "bedrock-claude"
-    litellm_params:
+    llm_params:
       model: "bedrock/anthropic.claude-instant-v1"
 
-litellm_settings:
+llm_settings:
    modify_params: true
 ```
 
@@ -1087,11 +1087,11 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 
 ## Usage - PDF / Document Understanding
 
-LiteLLM supports Document Understanding for Bedrock models - [AWS Bedrock Docs](https://docs.aws.amazon.com/nova/latest/userguide/modalities-document.html).
+LLM supports Document Understanding for Bedrock models - [AWS Bedrock Docs](https://docs.aws.amazon.com/nova/latest/userguide/modalities-document.html).
 
 :::info
 
-LiteLLM supports ALL Bedrock document types - 
+LLM supports ALL Bedrock document types - 
 
 E.g.: "pdf", "csv", "doc", "docx", "xls", "xlsx", "html", "txt", "md"
 
@@ -1105,7 +1105,7 @@ You can also pass these as either `image_url` or `base64`
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm.utils import supports_pdf_input, completion
+from llm.utils import supports_pdf_input, completion
 
 # set aws credentials
 os.environ["AWS_ACCESS_KEY_ID"] = ""
@@ -1145,7 +1145,7 @@ assert response is not None
 ```yaml
 model_list:
   - model_name: bedrock-model
-    litellm_params:
+    llm_params:
       model: bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY
@@ -1155,7 +1155,7 @@ model_list:
 2. Start the proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -1184,7 +1184,7 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm.utils import supports_pdf_input, completion
+from llm.utils import supports_pdf_input, completion
 
 # set aws credentials
 os.environ["AWS_ACCESS_KEY_ID"] = ""
@@ -1229,7 +1229,7 @@ assert response is not None
 ```yaml
 model_list:
   - model_name: bedrock-model
-    litellm_params:
+    llm_params:
       model: bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY
@@ -1239,7 +1239,7 @@ model_list:
 2. Start the proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -1278,7 +1278,7 @@ This is a separate route, as the chat template is different.
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 response = completion(
@@ -1297,7 +1297,7 @@ response = completion(
 ```yaml
 model_list:
     - model_name: DeepSeek-R1-Distill-Llama-70B
-      litellm_params:
+      llm_params:
         model: bedrock/deepseek_r1/arn:aws:bedrock:us-east-1:086734376398:imported-model/r4c4kewx2s0n
 
 ```
@@ -1305,7 +1305,7 @@ model_list:
 **2. Start proxy**
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 # RUNNING at http://0.0.0.0:4000
 ```
@@ -1347,7 +1347,7 @@ Use this route to call Bedrock Imported Models that follow the `llama` Invoke Re
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 response = completion(
@@ -1366,7 +1366,7 @@ response = completion(
 ```yaml
 model_list:
     - model_name: DeepSeek-R1-Distill-Llama-70B
-      litellm_params:
+      llm_params:
         model: bedrock/llama/arn:aws:bedrock:us-east-1:086734376398:imported-model/r4c4kewx2s0n
 
 ```
@@ -1374,7 +1374,7 @@ model_list:
 **2. Start proxy**
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 # RUNNING at http://0.0.0.0:4000
 ```
@@ -1408,8 +1408,8 @@ To use provisioned throughput Bedrock models pass
 
 Completion
 ```python
-import litellm
-response = litellm.completion(
+import llm
+response = llm.completion(
     model="bedrock/anthropic.claude-instant-v1",
     model_id="provisioned-model-arn",
     messages=[{"content": "Hello, how are you?", "role": "user"}]
@@ -1418,8 +1418,8 @@ response = litellm.completion(
 
 Embedding
 ```python
-import litellm
-response = litellm.embedding(
+import llm
+response = llm.embedding(
     model="bedrock/amazon.titan-embed-text-v1",
     model_id="provisioned-model-arn",
     input=["hi"],
@@ -1429,9 +1429,9 @@ response = litellm.embedding(
 
 ## Supported AWS Bedrock Models
 
-LiteLLM supports ALL Bedrock models. 
+LLM supports ALL Bedrock models. 
 
-Here's an example of using a bedrock model with LiteLLM. For a complete list, refer to the [model cost map](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json)
+Here's an example of using a bedrock model with LLM. For a complete list, refer to the [model cost map](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json)
 
 | Model Name                 | Command                                                          |
 |----------------------------|------------------------------------------------------------------|
@@ -1462,7 +1462,7 @@ Here's an example of using a bedrock model with LiteLLM. For a complete list, re
 ## Bedrock Embedding
 
 ### API keys
-This can be set as env variables or passed as **params to litellm.embedding()**
+This can be set as env variables or passed as **params to llm.embedding()**
 ```python
 import os
 os.environ["AWS_ACCESS_KEY_ID"] = ""        # Access key
@@ -1472,10 +1472,10 @@ os.environ["AWS_REGION_NAME"] = ""           # us-east-1, us-east-2, us-west-1, 
 
 ### Usage
 ```python
-from litellm import embedding
+from llm import embedding
 response = embedding(
     model="bedrock/amazon.titan-embed-text-v1",
-    input=["good morning from litellm"],
+    input=["good morning from llm"],
 )
 print(response)
 ```
@@ -1484,15 +1484,15 @@ print(response)
 
 | Model Name           | Usage                               | Supported Additional OpenAI params |
 |----------------------|---------------------------------------------|-----|
-| Titan Embeddings V2 | `embedding(model="bedrock/amazon.titan-embed-text-v2:0", input=input)` | [here](https://github.com/BerriAI/litellm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/litellm/llms/bedrock/embed/amazon_titan_v2_transformation.py#L59) |
-| Titan Embeddings - V1 | `embedding(model="bedrock/amazon.titan-embed-text-v1", input=input)` | [here](https://github.com/BerriAI/litellm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/litellm/llms/bedrock/embed/amazon_titan_g1_transformation.py#L53)
-| Titan Multimodal Embeddings | `embedding(model="bedrock/amazon.titan-embed-image-v1", input=input)` | [here](https://github.com/BerriAI/litellm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/litellm/llms/bedrock/embed/amazon_titan_multimodal_transformation.py#L28) |
-| Cohere Embeddings - English | `embedding(model="bedrock/cohere.embed-english-v3", input=input)` | [here](https://github.com/BerriAI/litellm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/litellm/llms/bedrock/embed/cohere_transformation.py#L18)
-| Cohere Embeddings - Multilingual | `embedding(model="bedrock/cohere.embed-multilingual-v3", input=input)` | [here](https://github.com/BerriAI/litellm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/litellm/llms/bedrock/embed/cohere_transformation.py#L18)
+| Titan Embeddings V2 | `embedding(model="bedrock/amazon.titan-embed-text-v2:0", input=input)` | [here](https://github.com/BerriAI/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/amazon_titan_v2_transformation.py#L59) |
+| Titan Embeddings - V1 | `embedding(model="bedrock/amazon.titan-embed-text-v1", input=input)` | [here](https://github.com/BerriAI/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/amazon_titan_g1_transformation.py#L53)
+| Titan Multimodal Embeddings | `embedding(model="bedrock/amazon.titan-embed-image-v1", input=input)` | [here](https://github.com/BerriAI/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/amazon_titan_multimodal_transformation.py#L28) |
+| Cohere Embeddings - English | `embedding(model="bedrock/cohere.embed-english-v3", input=input)` | [here](https://github.com/BerriAI/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/cohere_transformation.py#L18)
+| Cohere Embeddings - Multilingual | `embedding(model="bedrock/cohere.embed-multilingual-v3", input=input)` | [here](https://github.com/BerriAI/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/cohere_transformation.py#L18)
 
-### Advanced - [Drop Unsupported Params](https://docs.litellm.ai/docs/completion/drop_params#openai-proxy-usage)
+### Advanced - [Drop Unsupported Params](https://docs.llm.ai/docs/completion/drop_params#openai-proxy-usage)
 
-### Advanced - [Pass model/provider-specific Params](https://docs.litellm.ai/docs/completion/provider_specific_params#proxy-usage)
+### Advanced - [Pass model/provider-specific Params](https://docs.llm.ai/docs/completion/provider_specific_params#proxy-usage)
 
 ## Image Generation
 Use this for stable diffusion, and amazon nova canvas on bedrock
@@ -1505,7 +1505,7 @@ Use this for stable diffusion, and amazon nova canvas on bedrock
 
 ```python
 import os
-from litellm import image_generation
+from llm import image_generation
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -1521,7 +1521,7 @@ print(f"response: {response}")
 **Set optional params**
 ```python
 import os
-from litellm import image_generation
+from llm import image_generation
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
 os.environ["AWS_SECRET_ACCESS_KEY"] = ""
@@ -1545,7 +1545,7 @@ print(f"response: {response}")
 ```yaml
 model_list:
   - model_name: amazon.nova-canvas-v1:0
-    litellm_params:
+    llm_params:
       model: bedrock/amazon.nova-canvas-v1:0
       aws_region_name: "us-east-1"
       aws_secret_access_key: my-key # OPTIONAL - all boto3 auth params supported
@@ -1555,7 +1555,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -1596,7 +1596,7 @@ Supported Cohere Rerank Params
 <TabItem label="SDK" value="sdk">
 
 ```python
-from litellm import rerank
+from llm import rerank
 import os 
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
@@ -1621,7 +1621,7 @@ print(response)
 ```yaml
 model_list:
     - model_name: bedrock-rerank
-      litellm_params:
+      llm_params:
         model: bedrock/arn:aws:bedrock:us-west-2::foundation-model/amazon.rerank-v1:0
         aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID
         aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY
@@ -1631,7 +1631,7 @@ model_list:
 2. Start proxy server
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -1673,7 +1673,7 @@ You can either pass it in the model name - `model="bedrock/arn:...` or as a sepa
 <TabItem label="SDK" value="sdk">
 
 ```python
-from litellm import completion
+from llm import completion
 import os 
 
 os.environ["AWS_ACCESS_KEY_ID"] = ""
@@ -1697,7 +1697,7 @@ print(response)
 ```yaml
 model_list:
   - model_name: anthropic-claude-3-5-sonnet
-    litellm_params:
+    llm_params:
       model: bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0
       # You have to set the ARN application inference profile in the model_id parameter
       model_id: arn:aws:bedrock:eu-central-1:000000000000:application-inference-profile/a0a0a0a0a0a0
@@ -1706,7 +1706,7 @@ model_list:
 2. Start proxy
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -1737,10 +1737,10 @@ curl -L -X POST 'http://0.0.0.0:4000/v1/chat/completions' \
 ## Boto3 - Authentication
 
 ### Passing credentials as parameters - Completion()
-Pass AWS credentials as parameters to litellm.completion
+Pass AWS credentials as parameters to llm.completion
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 response = completion(
             model="bedrock/anthropic.claude-instant-v1",
@@ -1760,10 +1760,10 @@ This can be used to override existing headers (e.g. `Authorization`) when callin
 
 ```python
 import os
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 
-litellm.set_verbose = True # 👈 SEE RAW REQUEST
+llm.set_verbose = True # 👈 SEE RAW REQUEST
 
 response = completion(
             model="bedrock/anthropic.claude-instant-v1",
@@ -1783,7 +1783,7 @@ response = completion(
 ```yaml
 model_list:
     - model_name: bedrock-model
-      litellm_params:
+      llm_params:
         model: bedrock/anthropic.claude-instant-v1
         aws_access_key_id: "",
         aws_secret_access_key: "",
@@ -1795,7 +1795,7 @@ model_list:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml --detailed_debug
+llm --config /path/to/config.yaml --detailed_debug
 ```
 
 3. Test it! 
@@ -1827,7 +1827,7 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 - Make bedrock completion call
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 response = completion(
             model="bedrock/anthropic.claude-instant-v1",
@@ -1839,7 +1839,7 @@ or pass `aws_profile_name`:
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 response = completion(
             model="bedrock/anthropic.claude-instant-v1",
@@ -1853,7 +1853,7 @@ response = completion(
 - Set `aws_role_name` and `aws_session_name`
 
 
-| LiteLLM Parameter | Boto3 Parameter | Description | Boto3 Documentation |
+| LLM Parameter | Boto3 Parameter | Description | Boto3 Documentation |
 |------------------|-----------------|-------------|-------------------|
 | `aws_access_key_id` | `aws_access_key_id` | AWS access key associated with an IAM user or role | [Credentials](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html) |
 | `aws_secret_access_key` | `aws_secret_access_key` | AWS secret key associated with the access key | [Credentials](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html) |
@@ -1868,7 +1868,7 @@ Make the bedrock completion call
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 
 response = completion(
             model="bedrock/anthropic.claude-instant-v1",
@@ -1883,7 +1883,7 @@ response = completion(
 If you also need to dynamically set the aws user accessing the role, add the additional args in the completion()/embedding() function
 
 ```python
-from litellm import completion
+from llm import completion
 
 response = completion(
             model="bedrock/anthropic.claude-instant-v1",
@@ -1904,7 +1904,7 @@ response = completion(
 ```yaml
 model_list:
   - model_name: bedrock/*
-    litellm_params:
+    llm_params:
       model: bedrock/*
       aws_role_name: arn:aws:iam::888602223428:role/iam_local_role # AWS RoleArn
       aws_session_name: "bedrock-session" # AWS RoleSessionName
@@ -1922,7 +1922,7 @@ model_list:
 
 :::warning
 
-This is a deprecated flow. Boto3 is not async. And boto3.client does not let us make the http call through httpx. Pass in your aws params through the method above 👆. [See Auth Code](https://github.com/BerriAI/litellm/blob/55a20c7cce99a93d36a82bf3ae90ba3baf9a7f89/litellm/llms/bedrock_httpx.py#L284) [Add new auth flow](https://github.com/BerriAI/litellm/issues)
+This is a deprecated flow. Boto3 is not async. And boto3.client does not let us make the http call through httpx. Pass in your aws params through the method above 👆. [See Auth Code](https://github.com/BerriAI/llm/blob/55a20c7cce99a93d36a82bf3ae90ba3baf9a7f89/llm/llms/bedrock_httpx.py#L284) [Add new auth flow](https://github.com/BerriAI/llm/issues)
 
 
 Experimental - 2024-Jun-23:
@@ -1930,12 +1930,12 @@ Experimental - 2024-Jun-23:
 
 :::
 
-Pass an external BedrockRuntime.Client object as a parameter to litellm.completion. Useful when using an AWS credentials profile, SSO session, assumed role session, or if environment variables are not available for auth.
+Pass an external BedrockRuntime.Client object as a parameter to llm.completion. Useful when using an AWS credentials profile, SSO session, assumed role session, or if environment variables are not available for auth.
 
 Create a client from session credentials:
 ```python
 import boto3
-from litellm import completion
+from llm import completion
 
 bedrock = boto3.client(
             service_name="bedrock-runtime",
@@ -1955,7 +1955,7 @@ response = completion(
 Create a client from AWS profile in `~/.aws/config`:
 ```python
 import boto3
-from litellm import completion
+from llm import completion
 
 dev_session = boto3.Session(profile_name="dev-profile")
 bedrock = dev_session.client(
@@ -1977,7 +1977,7 @@ Use the `bedrock/converse_like/model` endpoint to call bedrock converse model vi
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 
 response = completion(
     model="bedrock/converse_like/some-model",
@@ -1989,14 +1989,14 @@ response = completion(
 ```
 
 </TabItem>
-<TabItem value="proxy" label="LiteLLM Proxy">
+<TabItem value="proxy" label="LLM Proxy">
 
 1. Setup config.yaml
 
 ```yaml
 model_list:
     - model_name: anthropic-claude
-      litellm_params:
+      llm_params:
         model: bedrock/converse_like/some-model
         api_base: https://some-api-url/models
 ```
@@ -2004,7 +2004,7 @@ model_list:
 2. Start proxy server
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```

@@ -4,7 +4,7 @@ import TabItem from '@theme/TabItem';
 
 # Getting Started - E2E Tutorial
 
-End-to-End tutorial for LiteLLM Proxy to:
+End-to-End tutorial for LLM Proxy to:
 - Add an Azure OpenAI model 
 - Make a successful /chat/completion call 
 - Generate a virtual key 
@@ -13,24 +13,24 @@ End-to-End tutorial for LiteLLM Proxy to:
 
 ## Pre-Requisites 
 
-- Install LiteLLM Docker Image ** OR ** LiteLLM CLI (pip package)
+- Install LLM Docker Image ** OR ** LLM CLI (pip package)
 
 <Tabs>
 
 <TabItem value="docker" label="Docker">
 
 ```
-docker pull ghcr.io/berriai/litellm:main-latest
+docker pull ghcr.io/berriai/llm:main-latest
 ```
 
 [**See all docker images**](https://github.com/orgs/BerriAI/packages)
 
 </TabItem>
 
-<TabItem value="pip" label="LiteLLM CLI (pip package)">
+<TabItem value="pip" label="LLM CLI (pip package)">
 
 ```shell
-$ pip install 'litellm[proxy]'
+$ pip install 'llm[proxy]'
 ```
 
 </TabItem>
@@ -39,26 +39,26 @@ $ pip install 'litellm[proxy]'
 
 ## 1. Add a model 
 
-Control LiteLLM Proxy with a config.yaml file.
+Control LLM Proxy with a config.yaml file.
 
 Setup your config.yaml with your azure model.
 
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/my_azure_deployment
       api_base: os.environ/AZURE_API_BASE
       api_key: "os.environ/AZURE_API_KEY"
-      api_version: "2024-07-01-preview" # [OPTIONAL] litellm uses the latest azure api_version by default
+      api_version: "2024-07-01-preview" # [OPTIONAL] llm uses the latest azure api_version by default
 ```
 ---
 
 ### Model List Specification
 
 - **`model_name`** (`str`) - This field should contain the name of the model as received.
-- **`litellm_params`** (`dict`) [See All LiteLLM Params](https://github.com/BerriAI/litellm/blob/559a6ad826b5daef41565f54f06c739c8c068b28/litellm/types/router.py#L222)
-    - **`model`** (`str`) - Specifies the model name to be sent to `litellm.acompletion` / `litellm.aembedding`, etc. This is the identifier used by LiteLLM to route to the correct model + provider logic on the backend. 
+- **`llm_params`** (`dict`) [See All LLM Params](https://github.com/BerriAI/llm/blob/559a6ad826b5daef41565f54f06c739c8c068b28/llm/types/router.py#L222)
+    - **`model`** (`str`) - Specifies the model name to be sent to `llm.acompletion` / `llm.aembedding`, etc. This is the identifier used by LLM to route to the correct model + provider logic on the backend. 
     - **`api_key`** (`str`) - The API key required for authentication. It can be retrieved from an environment variable using `os.environ/`.
     - **`api_base`** (`str`) - The API base for your azure deployment.
     - **`api_version`** (`str`) - The API Version to use when calling Azure's OpenAI API. Get the latest Inference API version [here](https://learn.microsoft.com/en-us/azure/ai-services/openai/api-version-deprecation?source=recommendations#latest-preview-api-releases).
@@ -72,11 +72,11 @@ model_list:
 
 ## 2. Make a successful /chat/completion call 
 
-LiteLLM Proxy is 100% OpenAI-compatible. Test your azure model via the `/chat/completions` route.
+LLM Proxy is 100% OpenAI-compatible. Test your azure model via the `/chat/completions` route.
 
 ### 2.1 Start Proxy 
 
-Save your config.yaml from step 1. as `litellm_config.yaml`.
+Save your config.yaml from step 1. as `llm_config.yaml`.
 
 <Tabs>
 
@@ -85,11 +85,11 @@ Save your config.yaml from step 1. as `litellm_config.yaml`.
 
 ```bash
 docker run \
-    -v $(pwd)/litellm_config.yaml:/app/config.yaml \
+    -v $(pwd)/llm_config.yaml:/app/config.yaml \
     -e AZURE_API_KEY=d6*********** \
     -e AZURE_API_BASE=https://openai-***********/ \
     -p 4000:4000 \
-    ghcr.io/berriai/litellm:main-latest \
+    ghcr.io/berriai/llm:main-latest \
     --config /app/config.yaml --detailed_debug
 
 # RUNNING on http://0.0.0.0:4000
@@ -97,10 +97,10 @@ docker run \
 
 </TabItem>
 
-<TabItem value="pip" label="LiteLLM CLI (pip package)">
+<TabItem value="pip" label="LLM CLI (pip package)">
 
 ```shell
-$ litellm --config /app/config.yaml --detailed_debug
+$ llm --config /app/config.yaml --detailed_debug
 ```
 
 </TabItem>
@@ -174,8 +174,8 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 
 ### Useful Links
 - [All Supported LLM API Providers (OpenAI/Bedrock/Vertex/etc.)](../providers/)
-- [Call LiteLLM Proxy via OpenAI SDK, Langchain, etc.](./user_keys.md#request-format)
-- [All API Endpoints Swagger](https://litellm-api.up.railway.app/#/chat%2Fcompletions)
+- [Call LLM Proxy via OpenAI SDK, Langchain, etc.](./user_keys.md#request-format)
+- [All API Endpoints Swagger](https://llm-api.up.railway.app/#/chat%2Fcompletions)
 - [Other/Non-Chat Completion Endpoints](../embedding/supported_embedding.md)
 - [Pass-through for VertexAI, Bedrock, etc.](../pass_through/vertex_ai.md)
 
@@ -192,24 +192,24 @@ Track Spend, and control model access via virtual keys for the proxy
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/my_azure_deployment
       api_base: os.environ/AZURE_API_BASE
       api_key: "os.environ/AZURE_API_KEY"
-      api_version: "2024-07-01-preview" # [OPTIONAL] litellm uses the latest azure api_version by default
+      api_version: "2024-07-01-preview" # [OPTIONAL] llm uses the latest azure api_version by default
 
 general_settings: 
   master_key: sk-1234 
   database_url: "postgresql://<user>:<password>@<host>:<port>/<dbname>" # 👈 KEY CHANGE
 ```
 
-Save config.yaml as `litellm_config.yaml` (used in 3.2).
+Save config.yaml as `llm_config.yaml` (used in 3.2).
 
 ---
 
 **What is `general_settings`?**
 
-These are settings for the LiteLLM Proxy Server. 
+These are settings for the LLM Proxy Server. 
 
 See All General Settings [here](http://localhost:3000/docs/proxy/configs#all-settings).
 
@@ -223,7 +223,7 @@ See All General Settings [here](http://localhost:3000/docs/proxy/configs#all-set
 
 2. **`database_url`** (str)
    - **Description**: 
-     - Set a `database_url`, this is the connection to your Postgres DB, which is used by litellm for generating keys, users, teams.
+     - Set a `database_url`, this is the connection to your Postgres DB, which is used by llm for generating keys, users, teams.
    - **Usage**: 
      - ** Set on config.yaml** set your master key under `general_settings:database_url`, example - 
         `database_url: "postgresql://..."`
@@ -233,11 +233,11 @@ See All General Settings [here](http://localhost:3000/docs/proxy/configs#all-set
 
 ```bash
 docker run \
-    -v $(pwd)/litellm_config.yaml:/app/config.yaml \
+    -v $(pwd)/llm_config.yaml:/app/config.yaml \
     -e AZURE_API_KEY=d6*********** \
     -e AZURE_API_BASE=https://openai-***********/ \
     -p 4000:4000 \
-    ghcr.io/berriai/litellm:main-latest \
+    ghcr.io/berriai/llm:main-latest \
     --config /app/config.yaml --detailed_debug
 ```
 
@@ -255,7 +255,7 @@ curl -L -X POST 'http://0.0.0.0:4000/key/generate' \
 }'
 ```
 
-[**See full API Spec**](https://litellm-api.up.railway.app/#/key%20management/generate_key_fn_key_generate_post)
+[**See full API Spec**](https://llm-api.up.railway.app/#/key%20management/generate_key_fn_key_generate_post)
 
 **Expected Response**
 
@@ -342,7 +342,7 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 ### Useful Links 
 
 - [Creating Virtual Keys](./virtual_keys.md)
-- [Key Management API Endpoints Swagger](https://litellm-api.up.railway.app/#/key%20management)
+- [Key Management API Endpoints Swagger](https://llm-api.up.railway.app/#/key%20management)
 - [Set Budgets / Rate Limits per key/user/teams](./users.md)
 - [Dynamic TPM/RPM Limits for keys](./team_budgets.md#dynamic-tpmrpm-allocation)
 
@@ -351,7 +351,7 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 
 ### Non-root docker image?
 
-If you need to run the docker image as a non-root user, use [this](https://github.com/BerriAI/litellm/pkgs/container/litellm-non_root).
+If you need to run the docker image as a non-root user, use [this](https://github.com/BerriAI/llm/pkgs/container/llm-non_root).
 
 ### SSL Verification Issue / Connection Error.
 
@@ -372,13 +372,13 @@ You can disable ssl verification with:
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/my_azure_deployment
       api_base: os.environ/AZURE_API_BASE
       api_key: "os.environ/AZURE_API_KEY"
       api_version: "2024-07-01-preview"
 
-litellm_settings:
+llm_settings:
     ssl_verify: false # 👈 KEY CHANGE
 ```
 
@@ -392,7 +392,7 @@ If you see:
 httpx.ConnectError: All connection attempts failed                                                                        
                                                                                                                          
 ERROR:    Application startup failed. Exiting.                                                                            
-3:21:43 - LiteLLM Proxy:ERROR: utils.py:2207 - Error getting LiteLLM_SpendLogs row count: All connection attempts failed 
+3:21:43 - LLM Proxy:ERROR: utils.py:2207 - Error getting LLM_SpendLogs row count: All connection attempts failed 
 ```
 
 This might be a DB permission issue. 
@@ -402,7 +402,7 @@ This might be a DB permission issue.
 Try creating a new database. 
 
 ```bash
-STATEMENT: CREATE DATABASE "litellm"
+STATEMENT: CREATE DATABASE "llm"
 ```
 
 If you get:
@@ -422,25 +422,25 @@ psql -U postgres
 ```
 
 ```
-CREATE DATABASE litellm;
+CREATE DATABASE llm;
 ```
 
 On CloudSQL, this is:
 
 ```
-GRANT ALL PRIVILEGES ON DATABASE litellm TO your_username;
+GRANT ALL PRIVILEGES ON DATABASE llm TO your_username;
 ```
 
 
-**What is `litellm_settings`?**
+**What is `llm_settings`?**
 
-LiteLLM Proxy uses the [LiteLLM Python SDK](https://docs.litellm.ai/docs/routing) for handling LLM API calls. 
+LLM Proxy uses the [LLM Python SDK](https://docs.llm.ai/docs/routing) for handling LLM API calls. 
 
-`litellm_settings` are module-level params for the LiteLLM Python SDK (equivalent to doing `litellm.<some_param>` on the SDK). You can see all params [here](https://github.com/BerriAI/litellm/blob/208fe6cb90937f73e0def5c97ccb2359bf8a467b/litellm/__init__.py#L114)
+`llm_settings` are module-level params for the LLM Python SDK (equivalent to doing `llm.<some_param>` on the SDK). You can see all params [here](https://github.com/BerriAI/llm/blob/208fe6cb90937f73e0def5c97ccb2359bf8a467b/llm/__init__.py#L114)
 
 ## Support & Talk with founders
 
-- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-litellm-hosted-version)
+- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
 
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 

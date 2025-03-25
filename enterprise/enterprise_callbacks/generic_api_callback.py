@@ -13,9 +13,9 @@ import traceback
 #### What this does ####
 #    On success + failure, log events to Supabase
 
-import litellm
+import llm
 import uuid
-from litellm._logging import print_verbose, verbose_logger
+from llm._logging import print_verbose, verbose_logger
 
 
 class GenericAPILogger:
@@ -32,7 +32,7 @@ class GenericAPILogger:
                     raise ValueError(
                         "endpoint not set for GenericAPILogger, GENERIC_LOGGER_ENDPOINT not found in environment variables"
                     )
-            headers = headers or litellm.generic_logger_headers
+            headers = headers or llm.generic_logger_headers
 
             if endpoint is None:
                 raise ValueError("endpoint not set for GenericAPILogger")
@@ -71,7 +71,7 @@ class GenericAPILogger:
             messages = kwargs.get("messages")
             cost = kwargs.get("response_cost", 0.0)
             optional_params = kwargs.get("optional_params", {})
-            call_type = kwargs.get("call_type", "litellm.completion")
+            call_type = kwargs.get("call_type", "llm.completion")
             cache_hit = kwargs.get("cache_hit", False)
             usage = response_obj["usage"]
             id = response_obj.get("id", str(uuid.uuid4()))
@@ -110,7 +110,7 @@ class GenericAPILogger:
             print_verbose(f"\nGeneric Logger - Logging payload = {data}")
 
             # make request to endpoint with payload
-            response = litellm.module_level_client.post(
+            response = llm.module_level_client.post(
                 self.endpoint, json=data, headers=self.headers
             )
 

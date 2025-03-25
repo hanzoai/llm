@@ -7,12 +7,12 @@ sys.path.insert(
     0, os.path.abspath("../../")
 )  # Adds the parent directory to the system path
 
-import litellm
+import llm
 import pytest
 from datetime import timedelta
-from litellm.types.utils import ImageResponse, ImageObject
-from litellm.litellm_core_utils.llm_response_utils.convert_dict_to_response import (
-    LiteLLMResponseObjectHandler,
+from llm.types.utils import ImageResponse, ImageObject
+from llm.litellm_core_utils.llm_response_utils.convert_dict_to_response import (
+    LLMResponseObjectHandler,
 )
 
 
@@ -23,7 +23,7 @@ def test_convert_to_image_response_basic():
         "data": [{"url": "http://example.com/image.jpg"}],
     }
 
-    result = LiteLLMResponseObjectHandler.convert_to_image_response(response_dict)
+    result = LLMResponseObjectHandler.convert_to_image_response(response_dict)
 
     assert isinstance(result, ImageResponse)
     assert result.created == 1234567890
@@ -38,7 +38,7 @@ def test_convert_to_image_response_with_hidden_params():
     }
     hidden_params = {"api_key": "test_key"}
 
-    result = LiteLLMResponseObjectHandler.convert_to_image_response(
+    result = LLMResponseObjectHandler.convert_to_image_response(
         response_dict, hidden_params=hidden_params
     )
 
@@ -55,7 +55,7 @@ def test_convert_to_image_response_multiple_images():
         ],
     }
 
-    result = LiteLLMResponseObjectHandler.convert_to_image_response(response_dict)
+    result = LLMResponseObjectHandler.convert_to_image_response(response_dict)
 
     assert len(result.data) == 2
     assert result.data[0].url == "http://example.com/image1.jpg"
@@ -69,7 +69,7 @@ def test_convert_to_image_response_with_b64_json():
         "data": [{"b64_json": "base64encodedstring"}],
     }
 
-    result = LiteLLMResponseObjectHandler.convert_to_image_response(response_dict)
+    result = LLMResponseObjectHandler.convert_to_image_response(response_dict)
 
     assert result.data[0].b64_json == "base64encodedstring"
 
@@ -89,7 +89,7 @@ def test_convert_to_image_response_with_extra_fields():
         ],
     }
 
-    result = LiteLLMResponseObjectHandler.convert_to_image_response(response_dict)
+    result = LLMResponseObjectHandler.convert_to_image_response(response_dict)
 
     assert result.data[0].url == "http://example.com/image1.jpg"
     assert result.data[1].url == "http://example.com/image2.jpg"
@@ -113,7 +113,7 @@ def test_convert_to_image_response_with_extra_fields_2():
         ],
     }
 
-    result = LiteLLMResponseObjectHandler.convert_to_image_response(response_dict)
+    result = LLMResponseObjectHandler.convert_to_image_response(response_dict)
 
     assert result.data[0].url == "http://example.com/image1.jpg"
     assert result.data[1].url == "http://example.com/image2.jpg"

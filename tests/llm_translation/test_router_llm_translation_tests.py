@@ -1,5 +1,5 @@
 """
-Uses litellm.Router, ensures router.completion and router.acompletion pass BaseLLMChatTest
+Uses llm.Router, ensures router.completion and router.acompletion pass BaseLLMChatTest
 """
 
 import os
@@ -10,8 +10,8 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 
 from base_llm_unit_tests import BaseLLMChatTest
-from litellm.router import Router
-from litellm._logging import verbose_logger, verbose_router_logger
+from llm.router import Router
+from llm._logging import verbose_logger, verbose_router_logger
 import logging
 
 

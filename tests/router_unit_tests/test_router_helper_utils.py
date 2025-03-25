@@ -8,12 +8,12 @@ from datetime import datetime
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-from litellm import Router
+from llm import Router
 import pytest
-import litellm
+import llm
 from unittest.mock import patch, MagicMock, AsyncMock
 from create_mock_standard_logging_payload import create_standard_logging_payload
-from litellm.types.utils import StandardLoggingPayload
+from llm.types.utils import StandardLoggingPayload
 
 
 @pytest.fixture
@@ -67,7 +67,7 @@ def test_validate_fallbacks(model_list):
 
 def test_routing_strategy_init(model_list):
     """Test if all routing strategies are initialized correctly"""
-    from litellm.types.router import RoutingStrategy
+    from llm.types.router import RoutingStrategy
 
     router = Router(model_list=model_list)
     for strategy in RoutingStrategy._member_names_:
@@ -107,7 +107,7 @@ def test_completion(model_list):
 @pytest.mark.asyncio
 async def test_image_generation(model_list, sync_mode):
     """Test if the underlying '_image_generation' function is working correctly"""
-    from litellm.types.utils import ImageResponse
+    from llm.types.utils import ImageResponse
 
     router = Router(model_list=model_list)
     if sync_mode:
@@ -169,7 +169,7 @@ async def test_router_schedule_acompletion(model_list):
 @pytest.mark.asyncio
 async def test_router_schedule_atext_completion(model_list):
     """Test if the 'schedule_atext_completion' function is working correctly"""
-    from litellm.types.utils import TextCompletionResponse
+    from llm.types.utils import TextCompletionResponse
 
     router = Router(model_list=model_list)
     with patch.object(
@@ -188,7 +188,7 @@ async def test_router_schedule_atext_completion(model_list):
 @pytest.mark.asyncio
 async def test_router_schedule_factory(model_list):
     """Test if the 'schedule_atext_completion' function is working correctly"""
-    from litellm.types.utils import TextCompletionResponse
+    from llm.types.utils import TextCompletionResponse
 
     router = Router(model_list=model_list)
     with patch.object(
@@ -212,7 +212,7 @@ async def test_router_schedule_factory(model_list):
 @pytest.mark.asyncio
 async def test_router_arealtime(model_list):
     """Test if the '_arealtime' function is working correctly"""
-    import litellm
+    import llm
 
     router = Router(model_list=model_list)
     with patch.object(litellm, "_arealtime", AsyncMock()) as mock_arealtime:
@@ -348,9 +348,9 @@ def test_get_timeout(model_list):
 @pytest.mark.parametrize(
     "fallback_kwarg, expected_error",
     [
-        ("mock_testing_fallbacks", litellm.InternalServerError),
-        ("mock_testing_context_fallbacks", litellm.ContextWindowExceededError),
-        ("mock_testing_content_policy_fallbacks", litellm.ContentPolicyViolationError),
+        ("mock_testing_fallbacks", llm.InternalServerError),
+        ("mock_testing_context_fallbacks", llm.ContextWindowExceededError),
+        ("mock_testing_content_policy_fallbacks", llm.ContentPolicyViolationError),
     ],
 )
 def test_handle_mock_testing_fallbacks(model_list, fallback_kwarg, expected_error):
@@ -368,7 +368,7 @@ def test_handle_mock_testing_fallbacks(model_list, fallback_kwarg, expected_erro
 def test_handle_mock_testing_rate_limit_error(model_list):
     """Test if the '_handle_mock_testing_rate_limit_error' function is working correctly"""
     router = Router(model_list=model_list)
-    with pytest.raises(litellm.RateLimitError):
+    with pytest.raises(llm.RateLimitError):
         data = {
             "mock_testing_rate_limit_error": True,
         }
@@ -405,7 +405,7 @@ async def test_deployment_callback_on_success(model_list, sync_mode):
         },
         "standard_logging_object": standard_logging_payload,
     }
-    response = litellm.ModelResponse(
+    response = llm.ModelResponse(
         model="gpt-3.5-turbo",
         usage={"total_tokens": 100},
     )
@@ -510,7 +510,7 @@ def test_should_raise_content_policy_error(
     assert (
         router._should_raise_content_policy_error(
             model="gpt-3.5-turbo",
-            response=litellm.ModelResponse(
+            response=llm.ModelResponse(
                 model="gpt-3.5-turbo",
                 choices=[
                     {
@@ -545,11 +545,11 @@ def test_get_healthy_deployments(model_list):
 @pytest.mark.asyncio
 async def test_routing_strategy_pre_call_checks(model_list, sync_mode):
     """Test if the '_routing_strategy_pre_call_checks' function is working correctly"""
-    from litellm.integrations.custom_logger import CustomLogger
-    from litellm.litellm_core_utils.litellm_logging import Logging
+    from llm.integrations.custom_logger import CustomLogger
+    from llm.litellm_core_utils.litellm_logging import Logging
 
     callback = CustomLogger()
-    litellm.callbacks = [callback]
+    llm.callbacks = [callback]
 
     router = Router(model_list=model_list)
 
@@ -579,7 +579,7 @@ async def test_routing_strategy_pre_call_checks(model_list, sync_mode):
             callback,
             "async_pre_call_check",
             AsyncMock(
-                side_effect=litellm.RateLimitError(
+                side_effect=llm.RateLimitError(
                     message="Rate limit error",
                     llm_provider="openai",
                     model="gpt-3.5-turbo",
@@ -592,7 +592,7 @@ async def test_routing_strategy_pre_call_checks(model_list, sync_mode):
                 )
                 pytest.fail("Exception was not raised")
             except Exception as e:
-                assert isinstance(e, litellm.RateLimitError)
+                assert isinstance(e, llm.RateLimitError)
 
         ## WITH EXCEPTION - generic error
         with patch.object(
@@ -800,7 +800,7 @@ def test_filter_cooldown_deployments(model_list):
 
 def test_track_deployment_metrics(model_list):
     """Test if the 'track_deployment_metrics' function is working correctly"""
-    from litellm.types.utils import ModelResponse
+    from llm.types.utils import ModelResponse
 
     router = Router(model_list=model_list)
     router._track_deployment_metrics(
@@ -818,11 +818,11 @@ def test_track_deployment_metrics(model_list):
 @pytest.mark.parametrize(
     "exception_type, exception_name, num_retries",
     [
-        (litellm.exceptions.BadRequestError, "BadRequestError", 3),
-        (litellm.exceptions.AuthenticationError, "AuthenticationError", 4),
-        (litellm.exceptions.RateLimitError, "RateLimitError", 6),
+        (llm.exceptions.BadRequestError, "BadRequestError", 3),
+        (llm.exceptions.AuthenticationError, "AuthenticationError", 4),
+        (llm.exceptions.RateLimitError, "RateLimitError", 6),
         (
-            litellm.exceptions.ContentPolicyViolationError,
+            llm.exceptions.ContentPolicyViolationError,
             "ContentPolicyViolationError",
             7,
         ),
@@ -832,7 +832,7 @@ def test_get_num_retries_from_retry_policy(
     model_list, exception_type, exception_name, num_retries
 ):
     """Test if the 'get_num_retries_from_retry_policy' function is working correctly"""
-    from litellm.router import RetryPolicy
+    from llm.router import RetryPolicy
 
     data = {exception_name + "Retries": num_retries}
     print("data", data)
@@ -852,11 +852,11 @@ def test_get_num_retries_from_retry_policy(
 @pytest.mark.parametrize(
     "exception_type, exception_name, allowed_fails",
     [
-        (litellm.exceptions.BadRequestError, "BadRequestError", 3),
-        (litellm.exceptions.AuthenticationError, "AuthenticationError", 4),
-        (litellm.exceptions.RateLimitError, "RateLimitError", 6),
+        (llm.exceptions.BadRequestError, "BadRequestError", 3),
+        (llm.exceptions.AuthenticationError, "AuthenticationError", 4),
+        (llm.exceptions.RateLimitError, "RateLimitError", 6),
         (
-            litellm.exceptions.ContentPolicyViolationError,
+            llm.exceptions.ContentPolicyViolationError,
             "ContentPolicyViolationError",
             7,
         ),
@@ -866,7 +866,7 @@ def test_get_allowed_fails_from_policy(
     model_list, exception_type, exception_name, allowed_fails
 ):
     """Test if the 'get_allowed_fails_from_policy' function is working correctly"""
-    from litellm.types.router import AllowedFailsPolicy
+    from llm.types.router import AllowedFailsPolicy
 
     data = {exception_name + "AllowedFails": allowed_fails}
     router = Router(
@@ -882,8 +882,8 @@ def test_get_allowed_fails_from_policy(
 
 def test_initialize_alerting(model_list):
     """Test if the 'initialize_alerting' function is working correctly"""
-    from litellm.types.router import AlertingConfig
-    from litellm.integrations.SlackAlerting.slack_alerting import SlackAlerting
+    from llm.types.router import AlertingConfig
+    from llm.integrations.SlackAlerting.slack_alerting import SlackAlerting
 
     router = Router(
         model_list=model_list, alerting_config=AlertingConfig(webhook_url="test")
@@ -891,7 +891,7 @@ def test_initialize_alerting(model_list):
     router._initialize_alerting()
 
     callback_added = False
-    for callback in litellm.callbacks:
+    for callback in llm.callbacks:
         if isinstance(callback, SlackAlerting):
             callback_added = True
     assert callback_added is True
@@ -910,25 +910,25 @@ def test_discard(model_list):
     """
     Test that discard properly removes a Router from the callback lists
     """
-    litellm.callbacks = []
-    litellm.success_callback = []
-    litellm._async_success_callback = []
-    litellm.failure_callback = []
-    litellm._async_failure_callback = []
-    litellm.input_callback = []
-    litellm.service_callback = []
+    llm.callbacks = []
+    llm.success_callback = []
+    llm._async_success_callback = []
+    llm.failure_callback = []
+    llm._async_failure_callback = []
+    llm.input_callback = []
+    llm.service_callback = []
 
     router = Router(model_list=model_list)
     router.discard()
 
     # Verify all callback lists are empty
-    assert len(litellm.callbacks) == 0
-    assert len(litellm.success_callback) == 0
-    assert len(litellm.failure_callback) == 0
-    assert len(litellm._async_success_callback) == 0
-    assert len(litellm._async_failure_callback) == 0
-    assert len(litellm.input_callback) == 0
-    assert len(litellm.service_callback) == 0
+    assert len(llm.callbacks) == 0
+    assert len(llm.success_callback) == 0
+    assert len(llm.failure_callback) == 0
+    assert len(llm._async_success_callback) == 0
+    assert len(llm._async_failure_callback) == 0
+    assert len(llm.input_callback) == 0
+    assert len(llm.service_callback) == 0
 
 
 def test_initialize_assistants_endpoint(model_list):
@@ -949,7 +949,7 @@ def test_pass_through_assistants_endpoint_factory(model_list):
     """Test if the 'pass_through_assistants_endpoint_factory' function is working correctly"""
     router = Router(model_list=model_list)
     router._pass_through_assistants_endpoint_factory(
-        original_function=litellm.acreate_assistants,
+        original_function=llm.acreate_assistants,
         custom_llm_provider="openai",
         client=None,
         **{},
@@ -959,7 +959,7 @@ def test_pass_through_assistants_endpoint_factory(model_list):
 def test_factory_function(model_list):
     """Test if the 'factory_function' function is working correctly"""
     router = Router(model_list=model_list)
-    router.factory_function(litellm.acreate_assistants)
+    router.factory_function(llm.acreate_assistants)
 
 
 def test_get_model_from_alias(model_list):
@@ -998,7 +998,7 @@ def test_replace_model_in_jsonl(model_list):
 
 
 # def test_pattern_match_deployments(model_list):
-#     from litellm.router_utils.pattern_match_deployments import PatternMatchRouter
+#     from llm.router_utils.pattern_match_deployments import PatternMatchRouter
 #     import re
 
 #     patter_router = PatternMatchRouter()
@@ -1056,7 +1056,7 @@ def test_pattern_match_deployment_set_model_name(
     user_request_model, model_name, litellm_model, expected_model
 ):
     from re import Match
-    from litellm.router_utils.pattern_match_deployments import PatternMatchRouter
+    from llm.router_utils.pattern_match_deployments import PatternMatchRouter
 
     pattern_router = PatternMatchRouter()
 
@@ -1095,7 +1095,7 @@ def test_pattern_match_deployment_set_model_name(
 async def test_pass_through_moderation_endpoint_factory(model_list):
     router = Router(model_list=model_list)
     response = await router._pass_through_moderation_endpoint_factory(
-        original_function=litellm.amoderation,
+        original_function=llm.amoderation,
         input="this is valid good text",
         model=None,
     )
@@ -1120,12 +1120,12 @@ def test_add_optional_pre_call_checks(model_list):
     router = Router(model_list=model_list)
 
     router.add_optional_pre_call_checks(["prompt_caching"])
-    assert len(litellm.callbacks) > 0
+    assert len(llm.callbacks) > 0
 
 
 @pytest.mark.asyncio
 async def test_async_callback_filter_deployments(model_list):
-    from litellm.router_strategy.budget_limiter import RouterBudgetLimiting
+    from llm.router_strategy.budget_limiter import RouterBudgetLimiting
 
     router = Router(model_list=model_list)
 

@@ -9,7 +9,7 @@ Add new models + Get model info without restarting proxy.
 ```yaml
 model_list:
   - model_name: text-davinci-003
-    litellm_params: 
+    llm_params: 
       model: "text-completion-openai/text-davinci-003"
     model_info: 
       metadata: "here's additional metadata on the model" # returned via GET /model/info
@@ -17,7 +17,7 @@ model_list:
 
 ## Get Model Information - `/model/info`
 
-Retrieve detailed information about each model listed in the `/model/info` endpoint, including descriptions from the `config.yaml` file, and additional model info (e.g. max tokens, cost per input token, etc.) pulled from the model_info you set and the [litellm model cost map](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json). Sensitive details like API keys are excluded for security purposes.
+Retrieve detailed information about each model listed in the `/model/info` endpoint, including descriptions from the `config.yaml` file, and additional model info (e.g. max tokens, cost per input token, etc.) pulled from the model_info you set and the [llm model cost map](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json). Sensitive details like API keys are excluded for security purposes.
 
 <Tabs
   defaultValue="curl"
@@ -44,7 +44,7 @@ Add a new model to the proxy via the `/model/new` API, to add models without res
 curl -X POST "http://0.0.0.0:4000/model/new" \
     -H "accept: application/json" \
     -H "Content-Type: application/json" \
-    -d '{ "model_name": "azure-gpt-turbo", "litellm_params": {"model": "azure/gpt-3.5-turbo", "api_key": "os.environ/AZURE_API_KEY", "api_base": "my-azure-api-base"} }'
+    -d '{ "model_name": "azure-gpt-turbo", "llm_params": {"model": "azure/gpt-3.5-turbo", "api_key": "os.environ/AZURE_API_KEY", "api_base": "my-azure-api-base"} }'
 ```
 </TabItem>
 <TabItem value="Yaml">
@@ -52,8 +52,8 @@ curl -X POST "http://0.0.0.0:4000/model/new" \
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo ### RECEIVED MODEL NAME ### `openai.chat.completions.create(model="gpt-3.5-turbo",...)`
-    litellm_params: # all params accepted by litellm.completion() - https://github.com/BerriAI/litellm/blob/9b46ec05b02d36d6e4fb5c32321e51e7f56e4a6e/litellm/types/router.py#L297
-      model: azure/gpt-turbo-small-eu ### MODEL NAME sent to `litellm.completion()` ###
+    llm_params: # all params accepted by llm.completion() - https://github.com/BerriAI/llm/blob/9b46ec05b02d36d6e4fb5c32321e51e7f56e4a6e/llm/types/router.py#L297
+      model: azure/gpt-turbo-small-eu ### MODEL NAME sent to `llm.completion()` ###
       api_base: https://my-endpoint-europe-berri-992.openai.azure.com/
       api_key: "os.environ/AZURE_API_KEY_EU" # does os.getenv("AZURE_API_KEY_EU")
       rpm: 6      # [OPTIONAL] Rate limit for this deployment: in requests per minute (rpm)
@@ -70,7 +70,7 @@ model_list:
 When adding a new model, your JSON payload should conform to the following structure:
 
 - `model_name`: The name of the new model (required).
-- `litellm_params`: A dictionary containing parameters specific to the Litellm setup (required).
+- `llm_params`: A dictionary containing parameters specific to the Litellm setup (required).
 - `model_info`: An optional dictionary to provide additional information about the model.
 
 Here's an example of how to structure your `ModelParams`:
@@ -78,7 +78,7 @@ Here's an example of how to structure your `ModelParams`:
 ```json
 {
   "model_name": "my_awesome_model",
-  "litellm_params": {
+  "llm_params": {
     "some_parameter": "some_value",
     "another_parameter": "another_value"
   },
@@ -93,8 +93,8 @@ Here's an example of how to structure your `ModelParams`:
 
 Keep in mind that as both endpoints are in [BETA], you may need to visit the associated GitHub issues linked in the API descriptions to check for updates or provide feedback:
 
-- Get Model Information: [Issue #933](https://github.com/BerriAI/litellm/issues/933)
-- Add a New Model: [Issue #964](https://github.com/BerriAI/litellm/issues/964)
+- Get Model Information: [Issue #933](https://github.com/BerriAI/llm/issues/933)
+- Add a New Model: [Issue #964](https://github.com/BerriAI/llm/issues/964)
 
 Feedback on the beta endpoints is valuable and helps improve the API for all users.
 
@@ -106,7 +106,7 @@ If you want the ability to add a display name, description, and labels for model
 ```yaml
 model_list:
   - model_name: "gpt-4"
-    litellm_params:
+    llm_params:
       model: "gpt-4"
       api_key: "os.environ/OPENAI_API_KEY"
     model_info: # 👈 KEY CHANGE
@@ -120,7 +120,7 @@ model_list:
 ```yaml
 model_list:
   - model_name: "gpt-4"
-    litellm_params:
+    llm_params:
       model: "gpt-4"
       api_key: "os.environ/OPENAI_API_KEY"
     model_info: # 👈 KEY CHANGE
@@ -141,23 +141,23 @@ curl -L -X GET 'http://0.0.0.0:4000/v1/model/info' \
 Returned `model_info = Your custom model_info + (if exists) LITELLM MODEL INFO`
 
 
-[**How LiteLLM Model Info is found**](https://github.com/BerriAI/litellm/blob/9b46ec05b02d36d6e4fb5c32321e51e7f56e4a6e/litellm/proxy/proxy_server.py#L7460) 
+[**How LLM Model Info is found**](https://github.com/BerriAI/llm/blob/9b46ec05b02d36d6e4fb5c32321e51e7f56e4a6e/llm/proxy/proxy_server.py#L7460) 
 
-[Tell us how this can be improved!](https://github.com/BerriAI/litellm/issues)
+[Tell us how this can be improved!](https://github.com/BerriAI/llm/issues)
 
 ```bash
 {
     "data": [
         {
             "model_name": "gpt-4",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-4"
             },
             "model_info": {
                 "id": "e889baacd17f591cce4c63639275ba5e8dc60765d6c553e6ee5a504b19e50ddc",
                 "db_model": false,
                 "my_custom_key": "my_custom_value", # 👈 CUSTOM INFO
-                "key": "gpt-4", # 👈 KEY in LiteLLM MODEL INFO/COST MAP - https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json
+                "key": "gpt-4", # 👈 KEY in LLM MODEL INFO/COST MAP - https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json
                 "max_tokens": 4096,
                 "max_input_tokens": 8192,
                 "max_output_tokens": 4096,
@@ -169,7 +169,7 @@ Returned `model_info = Your custom model_info + (if exists) LITELLM MODEL INFO`
                 "output_cost_per_token_above_128k_tokens": null,
                 "output_cost_per_character_above_128k_tokens": null,
                 "output_vector_size": null,
-                "litellm_provider": "openai",
+                "llm_provider": "openai",
                 "mode": "chat"
             }
         },

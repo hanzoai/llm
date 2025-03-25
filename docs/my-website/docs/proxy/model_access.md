@@ -65,10 +65,10 @@ curl -i http://localhost:4000/v1/chat/completions \
 </Tabs>
 
 
-### [API Reference](https://litellm-api.up.railway.app/#/key%20management/generate_key_fn_key_generate_post)
+### [API Reference](https://llm-api.up.railway.app/#/key%20management/generate_key_fn_key_generate_post)
 
 ## **Restrict models by `team_id`**
-`litellm-dev` can only access `azure-gpt-3.5`
+`llm-dev` can only access `azure-gpt-3.5`
 
 **1. Create a team via `/team/new`**
 ```shell
@@ -76,7 +76,7 @@ curl --location 'http://localhost:4000/team/new' \
 --header 'Authorization: Bearer <your-master-key>' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-  "team_alias": "litellm-dev",
+  "team_alias": "llm-dev",
   "models": ["azure-gpt-3.5"]
 }' 
 
@@ -108,10 +108,10 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 ```
 
 ```shell
-{"error":{"message":"Invalid model for team litellm-dev: BEDROCK_GROUP.  Valid models for team are: ['azure-gpt-3.5']\n\n\nTraceback (most recent call last):\n  File \"/Users/ishaanjaffer/Github/litellm/litellm/proxy/proxy_server.py\", line 2298, in chat_completion\n    _is_valid_team_configs(\n  File \"/Users/ishaanjaffer/Github/litellm/litellm/proxy/utils.py\", line 1296, in _is_valid_team_configs\n    raise Exception(\nException: Invalid model for team litellm-dev: BEDROCK_GROUP.  Valid models for team are: ['azure-gpt-3.5']\n\n","type":"None","param":"None","code":500}}%            
+{"error":{"message":"Invalid model for team llm-dev: BEDROCK_GROUP.  Valid models for team are: ['azure-gpt-3.5']\n\n\nTraceback (most recent call last):\n  File \"/Users/ishaanjaffer/Github/llm/llm/proxy/proxy_server.py\", line 2298, in chat_completion\n    _is_valid_team_configs(\n  File \"/Users/ishaanjaffer/Github/llm/llm/proxy/utils.py\", line 1296, in _is_valid_team_configs\n    raise Exception(\nException: Invalid model for team llm-dev: BEDROCK_GROUP.  Valid models for team are: ['azure-gpt-3.5']\n\n","type":"None","param":"None","code":500}}%            
 ```         
 
-### [API Reference](https://litellm-api.up.railway.app/#/team%20management/new_team_team_new_post)
+### [API Reference](https://llm-api.up.railway.app/#/team%20management/new_team_team_new_post)
 
 
 ## **Model Access Groups**
@@ -123,14 +123,14 @@ Use model access groups to give users access to select models, and add new ones 
 ```yaml
 model_list:
   - model_name: gpt-4
-    litellm_params:
+    llm_params:
       model: openai/fake
       api_key: fake-key
       api_base: https://exampleopenaiendpoint-production.up.railway.app/
     model_info:
       access_groups: ["beta-models"] # 👈 Model Access Group
   - model_name: fireworks-llama-v3-70b-instruct
-    litellm_params:
+    llm_params:
       model: fireworks_ai/accounts/fireworks/models/llama-v3-70b-instruct
       api_key: "os.environ/FIREWORKS"
     model_info:
@@ -275,9 +275,9 @@ Use this to also give users access to all models, except for a few that you don'
 
 Setting model access groups on wildcard models is an Enterprise feature. 
 
-See pricing [here](https://litellm.ai/#pricing)
+See pricing [here](https://llm.ai/#pricing)
 
-Get a trial key [here](https://litellm.ai/#trial)
+Get a trial key [here](https://llm.ai/#trial)
 :::
 
 
@@ -287,13 +287,13 @@ Get a trial key [here](https://litellm.ai/#trial)
 ```yaml
 model_list:
   - model_name: openai/*
-    litellm_params:
+    llm_params:
       model: openai/*
       api_key: os.environ/OPENAI_API_KEY
     model_info:
       access_groups: ["default-models"]
   - model_name: openai/o1-*
-    litellm_params:
+    llm_params:
       model: openai/o1-*
       api_key: os.environ/OPENAI_API_KEY
     model_info:

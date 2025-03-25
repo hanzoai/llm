@@ -20,9 +20,9 @@ Make a GET Request to `/health` on the proxy
 curl --location 'http://0.0.0.0:4000/health' -H "Authorization: Bearer sk-1234"
 ```
 
-You can also run `litellm -health` it makes a `get` request to `http://0.0.0.0:4000/health` for you
+You can also run `llm -health` it makes a `get` request to `http://0.0.0.0:4000/health` for you
 ```
-litellm --health
+llm --health
 ```
 #### Response
 ```shell
@@ -53,7 +53,7 @@ To run embedding health checks, specify the mode as "embedding" in your config f
 ```yaml
 model_list:
   - model_name: azure-embedding-model
-    litellm_params:
+    llm_params:
       model: azure/azure-embedding-model
       api_base: os.environ/AZURE_API_BASE
       api_key: os.environ/AZURE_API_KEY
@@ -69,7 +69,7 @@ To run image generation health checks, specify the mode as "image_generation" in
 ```yaml
 model_list:
   - model_name: dall-e-3
-    litellm_params:
+    llm_params:
       model: azure/dall-e-3
       api_base: os.environ/AZURE_API_BASE
       api_key: os.environ/AZURE_API_KEY
@@ -87,7 +87,7 @@ To run `/completions` health checks, specify the mode as "completion" in your co
 ```yaml
 model_list:
   - model_name: azure-text-completion
-    litellm_params:
+    llm_params:
       model: azure/text-davinci-003
       api_base: os.environ/AZURE_API_BASE
       api_key: os.environ/AZURE_API_KEY
@@ -101,7 +101,7 @@ model_list:
 ```yaml
 model_list:
   - model_name: whisper
-    litellm_params:
+    llm_params:
       model: whisper-1
       api_key: os.environ/OPENAI_API_KEY
     model_info:
@@ -114,7 +114,7 @@ model_list:
 ```yaml
 # OpenAI Text to Speech Models
   - model_name: tts
-    litellm_params:
+    llm_params:
       model: openai/tts-1
       api_key: "os.environ/OPENAI_API_KEY"
     model_info:
@@ -128,7 +128,7 @@ To run rerank health checks, specify the mode as "rerank" in your config for the
 ```yaml
 model_list:
   - model_name: rerank-english-v3.0
-    litellm_params:
+    llm_params:
       model: cohere/rerank-english-v3.0
       api_key: os.environ/COHERE_API_KEY
     model_info:
@@ -142,7 +142,7 @@ For Azure models deployed as 'batch' models, set `mode: batch`.
 ```yaml
 model_list:
   - model_name: "batch-gpt-4o-mini"
-    litellm_params:
+    llm_params:
       model: "azure/batch-gpt-4o-mini"
       api_key: os.environ/AZURE_API_KEY
       api_base: os.environ/AZURE_API_BASE
@@ -175,7 +175,7 @@ To run realtime health checks, specify the mode as "realtime" in your config for
 ```yaml
 model_list:
   - model_name: openai/gpt-4o-realtime-audio
-    litellm_params:
+    llm_params:
       model: openai/gpt-4o-realtime-audio
       api_key: os.environ/OPENAI_API_KEY
     model_info:
@@ -191,13 +191,13 @@ In this example, when running a health check for `openai/*`, the health check wi
 ```yaml
 model_list:
   - model_name: openai/*
-    litellm_params:
+    llm_params:
       model:  openai/*
       api_key: os.environ/OPENAI_API_KEY
     model_info:
       health_check_model: openai/gpt-4o-mini
   - model_name: anthropic/*
-    litellm_params:
+    llm_params:
       model: anthropic/*
       api_key: os.environ/ANTHROPIC_API_KEY
     model_info:
@@ -224,7 +224,7 @@ general_settings:
 
 2. Start server 
 ```
-$ litellm /path/to/config.yaml
+$ llm /path/to/config.yaml
 ```
 
 3. Query health endpoint: 
@@ -235,7 +235,7 @@ curl --location 'http://0.0.0.0:4000/health'
 ### Hide details
 
 The health check response contains details like endpoint URLs, error messages,
-and other LiteLLM params. While this is useful for debugging, it can be
+and other LLM params. While this is useful for debugging, it can be
 problematic when exposing the proxy server to a broad audience.
 
 You can hide these details by setting the `health_check_details` setting to `False`.
@@ -247,14 +247,14 @@ general_settings:
 
 ## Health Check Timeout
 
-The health check timeout is set in `litellm/constants.py` and defaults to 60 seconds.
+The health check timeout is set in `llm/constants.py` and defaults to 60 seconds.
 
 This can be overridden in the config.yaml by setting `health_check_timeout` in the model_info section.
 
 ```yaml
 model_list:
   - model_name: openai/gpt-4o
-    litellm_params:
+    llm_params:
       model: openai/gpt-4o
       api_key: os.environ/OPENAI_API_KEY
     model_info:
@@ -278,7 +278,7 @@ Example Response:
   "status": "connected",
   "db": "connected",
   "cache": null,
-  "litellm_version": "1.40.21",
+  "llm_version": "1.40.21",
   "success_callbacks": [
     "langfuse",
     "_PROXY_track_cost_callback",
@@ -322,7 +322,7 @@ Use this admin-only endpoint to check if a connected service (datadog/slack/lang
 curl -L -X GET 'http://0.0.0.0:4000/health/services?service=datadog'     -H 'Authorization: Bearer sk-1234'
 ```
 
-[**API Reference**](https://litellm-api.up.railway.app/#/health/health_services_endpoint_health_services_get)
+[**API Reference**](https://llm-api.up.railway.app/#/health/health_services_endpoint_health_services_get)
 
 
 ## Advanced - Call specific models 
@@ -341,7 +341,7 @@ curl -X GET 'http://0.0.0.0:4000/v1/model/info' \
 ```bash
 {
     "model_name": "bedrock-anthropic-claude-3",
-    "litellm_params": {
+    "llm_params": {
         "model": "anthropic.claude-3-sonnet-20240229-v1:0"
     },
     "model_info": {

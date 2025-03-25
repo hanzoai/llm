@@ -18,7 +18,7 @@ general_settings:
         enforced_params: ["user"] # this means the "user" param is enforced for all requests made through any service account keys
 ```
 
-### 2. Create Service Account Key on LiteLLM Proxy Admin UI
+### 2. Create Service Account Key on LLM Proxy Admin UI
 
 <Image img={require('../../img/create_service_account.png')} />
 

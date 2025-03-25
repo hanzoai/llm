@@ -7,8 +7,8 @@ import traceback
 
 from dotenv import load_dotenv
 
-import litellm.types
-import litellm.types.utils
+import llm.types
+import llm.types.utils
 
 
 load_dotenv()
@@ -30,7 +30,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 import uuid
 import json
-from litellm.secret_managers.aws_secret_manager_v2 import AWSSecretsManagerV2
+from llm.secret_managers.aws_secret_manager_v2 import AWSSecretsManagerV2
 
 
 def check_aws_credentials():
@@ -55,7 +55,7 @@ async def test_write_and_read_simple_secret():
         write_response = await secret_manager.async_write_secret(
             secret_name=test_secret_name,
             secret_value=test_secret_value,
-            description="LiteLLM Test Secret",
+            description="LLM Test Secret",
         )
 
         print("Write Response:", write_response)
@@ -93,7 +93,7 @@ async def test_write_and_read_json_secret():
         "api_key": "test_key",
         "model": "gpt-4",
         "temperature": 0.7,
-        "metadata": {"team": "ml", "project": "litellm"},
+        "metadata": {"team": "ml", "project": "llm"},
     }
 
     try:
@@ -101,7 +101,7 @@ async def test_write_and_read_json_secret():
         write_response = await secret_manager.async_write_secret(
             secret_name=test_secret_name,
             secret_value=json.dumps(test_secret_value),
-            description="LiteLLM JSON Test Secret",
+            description="LLM JSON Test Secret",
         )
 
         print("Write Response:", write_response)
@@ -160,7 +160,7 @@ async def test_primary_secret_functionality():
         write_response = await secret_manager.async_write_secret(
             secret_name=primary_secret_name,
             secret_value=json.dumps(primary_secret_value),
-            description="LiteLLM Test Primary Secret",
+            description="LLM Test Primary Secret",
         )
 
         print("Primary Secret Write Response:", write_response)

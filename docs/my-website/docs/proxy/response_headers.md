@@ -18,11 +18,11 @@ When you make a request to the proxy, the proxy will return the following header
 
 **If key has rate limits set**
 
-The proxy will return the [remaining rate limits for that key](https://github.com/BerriAI/litellm/blob/bfa95538190575f7f317db2d9598fc9a82275492/litellm/proxy/hooks/parallel_request_limiter.py#L778).
+The proxy will return the [remaining rate limits for that key](https://github.com/BerriAI/llm/blob/bfa95538190575f7f317db2d9598fc9a82275492/llm/proxy/hooks/parallel_request_limiter.py#L778).
 
 **If key does not have rate limits set**
 
-The proxy returns the remaining requests/tokens returned by the backend provider. (LiteLLM will standardize the backend provider's response headers to match the OpenAI format)
+The proxy returns the remaining requests/tokens returned by the backend provider. (LLM will standardize the backend provider's response headers to match the OpenAI format)
 
 If the backend provider does not return these headers, the value will be `None`.
 
@@ -32,34 +32,34 @@ These headers are useful for clients to understand the current rate limit status
 ## Latency Headers
 | Header | Type | Description |
 |--------|------|-------------|
-| `x-litellm-response-duration-ms` | float | Total duration of the API response in milliseconds |
-| `x-litellm-overhead-duration-ms` | float | LiteLLM processing overhead in milliseconds |
+| `x-llm-response-duration-ms` | float | Total duration of the API response in milliseconds |
+| `x-llm-overhead-duration-ms` | float | LLM processing overhead in milliseconds |
 
 ## Retry, Fallback Headers
 | Header | Type | Description |
 |--------|------|-------------|
-| `x-litellm-attempted-retries` | int | Number of retry attempts made |
-| `x-litellm-attempted-fallbacks` | int | Number of fallback attempts made |
-| `x-litellm-max-fallbacks` | int | Maximum number of fallback attempts allowed |
+| `x-llm-attempted-retries` | int | Number of retry attempts made |
+| `x-llm-attempted-fallbacks` | int | Number of fallback attempts made |
+| `x-llm-max-fallbacks` | int | Maximum number of fallback attempts allowed |
 
 ## Cost Tracking Headers
 | Header | Type | Description | Available on Pass-Through Endpoints |
 |--------|------|-------------|-------------|
-| `x-litellm-response-cost` | float | Cost of the API call | |
-| `x-litellm-key-spend` | float | Total spend for the API key | ✅ |
+| `x-llm-response-cost` | float | Cost of the API call | |
+| `x-llm-key-spend` | float | Total spend for the API key | ✅ |
 
-## LiteLLM Specific Headers
+## LLM Specific Headers
 | Header | Type | Description | Available on Pass-Through Endpoints |
 |--------|------|-------------|-------------|
-| `x-litellm-call-id` | string | Unique identifier for the API call | ✅ |
-| `x-litellm-model-id` | string | Unique identifier for the model used | |
-| `x-litellm-model-api-base` | string | Base URL of the API endpoint | ✅ |
-| `x-litellm-version` | string | Version of LiteLLM being used | |
-| `x-litellm-model-group` | string | Model group identifier | |
+| `x-llm-call-id` | string | Unique identifier for the API call | ✅ |
+| `x-llm-model-id` | string | Unique identifier for the model used | |
+| `x-llm-model-api-base` | string | Base URL of the API endpoint | ✅ |
+| `x-llm-version` | string | Version of LLM being used | |
+| `x-llm-model-group` | string | Model group identifier | |
 
 ## Response headers from LLM providers
 
-LiteLLM also returns the original response headers from the LLM provider. These headers are prefixed with `llm_provider-` to distinguish them from LiteLLM's headers.
+LLM also returns the original response headers from the LLM provider. These headers are prefixed with `llm_provider-` to distinguish them from LLM's headers.
 
 Example response headers:
 ```

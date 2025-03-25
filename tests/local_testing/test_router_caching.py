@@ -12,9 +12,9 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm import Router
-from litellm.caching import RedisCache, RedisClusterCache
+import llm
+from llm import Router
+from llm.caching import RedisCache, RedisClusterCache
 
 
 ## Scenarios
@@ -82,7 +82,7 @@ def test_router_sync_caching_with_ssl_url():
 async def test_acompletion_caching_on_router():
     # tests acompletion + caching on router
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
@@ -135,7 +135,7 @@ async def test_acompletion_caching_on_router():
             response1.choices[0].message.content == response2.choices[0].message.content
         )
         router.reset()
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         end_time = time.time()
         print(f"timeout error occurred: {end_time - start_time}")
         pass
@@ -149,7 +149,7 @@ async def test_acompletion_caching_on_router():
 async def test_completion_caching_on_router():
     # tests completion + caching on router
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
@@ -188,7 +188,7 @@ async def test_completion_caching_on_router():
         assert len(response2.choices[0].message.content) > 0
 
         router.reset()
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         pass
     except Exception as e:
         traceback.print_exc()
@@ -199,7 +199,7 @@ async def test_completion_caching_on_router():
 async def test_acompletion_caching_with_ttl_on_router():
     # tests acompletion + caching on router
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
@@ -251,7 +251,7 @@ async def test_acompletion_caching_with_ttl_on_router():
             response1.choices[0].message.content != response2.choices[0].message.content
         )
         router.reset()
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         end_time = time.time()
         print(f"timeout error occurred: {end_time - start_time}")
         pass
@@ -264,7 +264,7 @@ async def test_acompletion_caching_with_ttl_on_router():
 async def test_acompletion_caching_on_router_caching_groups():
     # tests acompletion + caching on router
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         model_list = [
             {
                 "model_name": "openai-gpt-3.5-turbo",
@@ -318,7 +318,7 @@ async def test_acompletion_caching_on_router_caching_groups():
             response1.choices[0].message.content == response2.choices[0].message.content
         )
         router.reset()
-    except litellm.Timeout as e:
+    except llm.Timeout as e:
         end_time = time.time()
         print(f"timeout error occurred: {end_time - start_time}")
         pass

@@ -13,19 +13,19 @@ sys.path.insert(
 import asyncio
 import logging
 
-import litellm
-from litellm import Router
+import llm
+from llm import Router
 
-# this tests debug logs from litellm router and litellm proxy server
-from litellm._logging import verbose_logger, verbose_proxy_logger, verbose_router_logger
+# this tests debug logs from llm router and llm proxy server
+from llm._logging import verbose_logger, verbose_proxy_logger, verbose_router_logger
 
 
-# this tests debug logs from litellm router and litellm proxy server
+# this tests debug logs from llm router and llm proxy server
 def test_async_fallbacks(caplog):
-    # THIS IS A PROD TEST - DO NOT DELETE THIS. Used for testing if litellm proxy verbose logs are human readable
-    litellm.set_verbose = False
-    litellm.success_callback = []
-    litellm.failure_callback = []
+    # THIS IS A PROD TEST - DO NOT DELETE THIS. Used for testing if llm proxy verbose logs are human readable
+    llm.set_verbose = False
+    llm.success_callback = []
+    llm.failure_callback = []
     verbose_router_logger.setLevel(level=logging.INFO)
     verbose_logger.setLevel(logging.CRITICAL + 1)
     verbose_proxy_logger.setLevel(logging.CRITICAL + 1)
@@ -68,7 +68,7 @@ def test_async_fallbacks(caplog):
                 model="gpt-3.5-turbo", messages=messages, max_tokens=1
             )
             router.reset()
-        except litellm.Timeout:
+        except llm.Timeout:
             pass
         except Exception as e:
             pytest.fail(f"An exception occurred: {e}")
@@ -93,7 +93,7 @@ def test_async_fallbacks(caplog):
     # - error request, falling back notice, success notice
     expected_logs = [
         "Falling back to model_group = azure/gpt-3.5-turbo",
-        "litellm.acompletion(model=azure/chatgpt-v-2)\x1b[32m 200 OK\x1b[0m",
+        "llm.acompletion(model=azure/chatgpt-v-2)\x1b[32m 200 OK\x1b[0m",
         "Successful fallback b/w models.",
     ]
 

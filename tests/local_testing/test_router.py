@@ -1,5 +1,5 @@
 #### What this tests ####
-# This tests litellm router
+# This tests llm router
 
 import asyncio
 import os
@@ -10,8 +10,8 @@ import traceback
 import openai
 import pytest
 
-import litellm.types
-import litellm.types.router
+import llm.types
+import llm.types.router
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -25,15 +25,15 @@ import httpx
 from dotenv import load_dotenv
 from pydantic import BaseModel
 
-import litellm
-from litellm import Router
-from litellm.router import Deployment, LiteLLM_Params
-from litellm.types.router import ModelInfo
-from litellm.router_utils.cooldown_handlers import (
+import llm
+from llm import Router
+from llm.router import Deployment, LLM_Params
+from llm.types.router import ModelInfo
+from llm.router_utils.cooldown_handlers import (
     _async_get_cooldown_deployments,
     _get_cooldown_deployments,
 )
-from litellm.types.router import DeploymentTypedDict
+from llm.types.router import DeploymentTypedDict
 
 load_dotenv()
 
@@ -51,7 +51,7 @@ def test_router_multi_org_list():
     Pass list of orgs in 1 model definition,
     expect a unique deployment for each to be created
     """
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "*",
@@ -74,8 +74,8 @@ async def test_router_provider_wildcard_routing():
     Pass list of orgs in 1 model definition,
     expect a unique deployment for each to be created
     """
-    litellm.set_verbose = True
-    router = litellm.Router(
+    llm.set_verbose = True
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "openai/*",
@@ -137,7 +137,7 @@ async def test_router_provider_wildcard_routing_regex():
     Pass list of orgs in 1 model definition,
     expect a unique deployment for each to be created
     """
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "openai/fo::*:static::*",
@@ -237,7 +237,7 @@ def test_router_azure_ad_token_provider():
     }
     for azure_cred in ["DefaultAzureCredential", "AzureCliCredential"]:
         os.environ["AZURE_CREDENTIAL"] = azure_cred
-        litellm.enable_azure_ad_token_refresh = True
+        llm.enable_azure_ad_token_refresh = True
         router = Router(model_list=[_deployment])
 
         _client = router._get_client(
@@ -265,7 +265,7 @@ def test_router_sensitive_keys():
             model_list=[
                 {
                     "model_name": "gpt-3.5-turbo",  # openai model name
-                    "litellm_params": {  # params for litellm completion/embedding call
+                    "litellm_params": {  # params for llm completion/embedding call
                         "model": "azure/chatgpt-v-2",
                         "api_key": "special-key",
                     },
@@ -316,7 +316,7 @@ def test_router_order():
             messages=[{"role": "user", "content": "Hey, how's it going?"}],
         )
 
-        assert isinstance(response, litellm.ModelResponse)
+        assert isinstance(response, llm.ModelResponse)
         assert response._hidden_params["model_id"] == "1"
 
 
@@ -406,7 +406,7 @@ def test_router_azure_ai_studio_init(mistral_api_base):
 def test_exception_raising():
     # this tests if the router raises an exception when invalid params are set
     # in this test both deployments have bad keys - Keep this test. It validates if the router raises the most recent exception
-    litellm.set_verbose = True
+    llm.set_verbose = True
     import openai
 
     try:
@@ -416,7 +416,7 @@ def test_exception_raising():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -468,7 +468,7 @@ def test_reading_key_from_model_list():
     # [PROD TEST CASE]
     # this tests if the router can read key from model list and make completion call, and completion + stream call. This is 90% of the router use case
     # DO NOT REMOVE THIS TEST. It's an IMP ONE. Speak to Ishaan, if you are tring to remove this
-    litellm.set_verbose = False
+    llm.set_verbose = False
     import openai
 
     try:
@@ -478,7 +478,7 @@ def test_reading_key_from_model_list():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": old_api_key,
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -543,7 +543,7 @@ def test_call_one_endpoint():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": old_api_key,
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -563,7 +563,7 @@ def test_call_one_endpoint():
                 "rpm": 10000,
             },
         ]
-        litellm.set_verbose = True
+        llm.set_verbose = True
         router = Router(
             model_list=model_list,
             routing_strategy="simple-shuffle",
@@ -583,7 +583,7 @@ def test_call_one_endpoint():
         async def call_azure_embedding():
             response = await router.aembedding(
                 model="azure/azure-embedding-model",
-                input=["good morning from litellm"],
+                input=["good morning from llm"],
                 specific_deployment=True,
             )
 
@@ -606,7 +606,7 @@ def test_router_azure_acompletion():
     # [PROD TEST CASE]
     # This is 90% of the router use case, makes an acompletion call, acompletion + stream call and verifies it got a response
     # DO NOT REMOVE THIS TEST. It's an IMP ONE. Speak to Ishaan, if you are tring to remove this
-    litellm.set_verbose = False
+    llm.set_verbose = False
     import openai
 
     try:
@@ -619,7 +619,7 @@ def test_router_azure_acompletion():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": old_api_key,
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -629,7 +629,7 @@ def test_router_azure_acompletion():
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/gpt-turbo",
                     "api_key": os.getenv("AZURE_FRANCE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -693,15 +693,15 @@ async def test_async_router_context_window_fallback(sync_mode):
 
     from large_text import text
 
-    litellm.set_verbose = False
-    litellm._turn_on_debug()
+    llm.set_verbose = False
+    llm._turn_on_debug()
 
     print(f"len(text): {len(text)}")
     try:
         model_list = [
             {
                 "model_name": "gpt-4",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "gpt-4",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "api_base": os.getenv("OPENAI_API_BASE"),
@@ -709,7 +709,7 @@ async def test_async_router_context_window_fallback(sync_mode):
             },
             {
                 "model_name": "gpt-4-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "gpt-4-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -751,7 +751,7 @@ def test_router_rpm_pre_call_check():
         model_list = [
             {
                 "model_name": "fake-openai-endpoint",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "openai/my-fake-model",
                     "api_key": "my-fake-key",
                     "api_base": "https://openai-function-calling-workers.tasslexyz.workers.dev/",
@@ -785,14 +785,14 @@ def test_router_context_window_check_pre_call_check_in_group_custom_model_info()
 
     from large_text import text
 
-    litellm.set_verbose = False
+    llm.set_verbose = False
 
     print(f"len(text): {len(text)}")
     try:
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -804,7 +804,7 @@ def test_router_context_window_check_pre_call_check_in_group_custom_model_info()
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo-1106",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "mock_response": "Hello world 2!",
@@ -839,14 +839,14 @@ def test_router_context_window_check_pre_call_check():
 
     from large_text import text
 
-    litellm.set_verbose = False
+    llm.set_verbose = False
 
     print(f"len(text): {len(text)}")
     try:
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -858,7 +858,7 @@ def test_router_context_window_check_pre_call_check():
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo-1106",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "mock_response": "Hello world 2!",
@@ -893,14 +893,14 @@ def test_router_context_window_check_pre_call_check_out_group():
 
     from large_text import text
 
-    litellm.set_verbose = False
+    llm.set_verbose = False
 
     print(f"len(text): {len(text)}")
     try:
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo-small",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -910,7 +910,7 @@ def test_router_context_window_check_pre_call_check_out_group():
             },
             {
                 "model_name": "gpt-3.5-turbo-large",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo-1106",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -943,7 +943,7 @@ def test_filter_invalid_params_pre_call_check():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -979,7 +979,7 @@ def test_router_region_pre_call_check(allowed_model_region):
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for litellm completion/embedding call
+            "litellm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-v-2",
                 "api_key": os.getenv("AZURE_API_KEY"),
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -991,7 +991,7 @@ def test_router_region_pre_call_check(allowed_model_region):
         },
         {
             "model_name": "gpt-3.5-turbo-large",  # openai model name
-            "litellm_params": {  # params for litellm completion/embedding call
+            "litellm_params": {  # params for llm completion/embedding call
                 "model": "gpt-3.5-turbo-1106",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
@@ -1069,7 +1069,7 @@ def test_function_calling():
 
 def test_function_calling_on_router():
     try:
-        litellm.set_verbose = True
+        llm.set_verbose = True
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
@@ -1119,7 +1119,7 @@ def test_function_calling_on_router():
 ### IMAGE GENERATION
 @pytest.mark.asyncio
 async def test_aimg_gen_on_router():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     try:
         model_list = [
             {
@@ -1161,7 +1161,7 @@ async def test_aimg_gen_on_router():
         assert len(response.data) > 0
 
         router.reset()
-    except litellm.InternalServerError as e:
+    except llm.InternalServerError as e:
         pass
     except Exception as e:
         if "Your task failed as a result of our safety system." in str(e):
@@ -1179,7 +1179,7 @@ async def test_aimg_gen_on_router():
 
 
 def test_img_gen_on_router():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     try:
         model_list = [
             {
@@ -1205,7 +1205,7 @@ def test_img_gen_on_router():
         print(response)
         assert len(response.data) > 0
         router.reset()
-    except litellm.RateLimitError as e:
+    except llm.RateLimitError as e:
         pass
     except Exception as e:
         traceback.print_exc()
@@ -1217,7 +1217,7 @@ def test_img_gen_on_router():
 
 
 def test_aembedding_on_router():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     try:
         model_list = [
             {
@@ -1235,14 +1235,14 @@ def test_aembedding_on_router():
             ## Test 1: user facing function
             response = await router.aembedding(
                 model="text-embedding-ada-002",
-                input=["good morning from litellm", "this is another item"],
+                input=["good morning from llm", "this is another item"],
             )
             print(response)
 
             ## Test 2: underlying function
             response = await router._aembedding(
                 model="text-embedding-ada-002",
-                input=["good morning from litellm 2"],
+                input=["good morning from llm 2"],
             )
             print(response)
             router.reset()
@@ -1253,7 +1253,7 @@ def test_aembedding_on_router():
         ## Test 1: user facing function
         response = router.embedding(
             model="text-embedding-ada-002",
-            input=["good morning from litellm 2"],
+            input=["good morning from llm 2"],
         )
         print(response)
         router.reset()
@@ -1261,7 +1261,7 @@ def test_aembedding_on_router():
         ## Test 2: underlying function
         response = router._embedding(
             model="text-embedding-ada-002",
-            input=["good morning from litellm 2"],
+            input=["good morning from llm 2"],
         )
         print(response)
         router.reset()
@@ -1284,7 +1284,7 @@ def test_azure_embedding_on_router():
     """
     [PROD Use Case] - Makes an aembedding call + embedding call
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
     try:
         model_list = [
             {
@@ -1302,7 +1302,7 @@ def test_azure_embedding_on_router():
 
         async def embedding_call():
             response = await router.aembedding(
-                model="text-embedding-ada-002", input=["good morning from litellm"]
+                model="text-embedding-ada-002", input=["good morning from llm"]
             )
             print(response)
 
@@ -1312,7 +1312,7 @@ def test_azure_embedding_on_router():
 
         response = router.embedding(
             model="text-embedding-ada-002",
-            input=["test 2 from litellm. async embedding"],
+            input=["test 2 from llm. async embedding"],
         )
         print(response)
         router.reset()
@@ -1325,7 +1325,7 @@ def test_azure_embedding_on_router():
 
 
 def test_bedrock_on_router():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     print("\n Testing bedrock on router\n")
     try:
         model_list = [
@@ -1346,7 +1346,7 @@ def test_bedrock_on_router():
                 messages=[
                     {
                         "role": "user",
-                        "content": "hello from litellm test",
+                        "content": "hello from llm test",
                     }
                 ],
             )
@@ -1365,7 +1365,7 @@ def test_bedrock_on_router():
 # test openai-compatible endpoint
 @pytest.mark.asyncio
 async def test_mistral_on_router():
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",
@@ -1380,7 +1380,7 @@ async def test_mistral_on_router():
         messages=[
             {
                 "role": "user",
-                "content": "hello from litellm test",
+                "content": "hello from llm test",
             }
         ],
     )
@@ -1393,7 +1393,7 @@ async def test_mistral_on_router():
 def test_openai_completion_on_router():
     # [PROD Use Case] - Makes an acompletion call + async acompletion call, and sync acompletion call, sync completion + stream
     # 4 LLM API calls made here. If it fails, add retries. Do not remove this test.
-    litellm.set_verbose = True
+    llm.set_verbose = True
     print("\n Testing OpenAI on router\n")
     try:
         model_list = [
@@ -1412,7 +1412,7 @@ def test_openai_completion_on_router():
                 messages=[
                     {
                         "role": "user",
-                        "content": "hello from litellm test",
+                        "content": "hello from llm test",
                     }
                 ],
             )
@@ -1425,7 +1425,7 @@ def test_openai_completion_on_router():
                 messages=[
                     {
                         "role": "user",
-                        "content": f"hello from litellm test {time.time()}",
+                        "content": f"hello from llm test {time.time()}",
                     }
                 ],
                 stream=True,
@@ -1446,7 +1446,7 @@ def test_openai_completion_on_router():
             messages=[
                 {
                     "role": "user",
-                    "content": "hello from litellm test2",
+                    "content": "hello from llm test2",
                 }
             ],
         )
@@ -1459,7 +1459,7 @@ def test_openai_completion_on_router():
             messages=[
                 {
                     "role": "user",
-                    "content": "hello from litellm test3",
+                    "content": "hello from llm test3",
                 }
             ],
             stream=True,
@@ -1497,7 +1497,7 @@ def test_model_group_info():
 
 def test_consistent_model_id():
     """
-    - For a given model group + litellm params, assert the model id is always the same
+    - For a given model group + llm params, assert the model id is always the same
 
     Test on `_generate_model_id`
 
@@ -1740,10 +1740,10 @@ def test_router_anthropic_key_dynamic():
 
 
 def test_router_timeout():
-    litellm.set_verbose = True
+    llm.set_verbose = True
     import logging
 
-    from litellm._logging import verbose_logger
+    from llm._logging import verbose_logger
 
     verbose_logger.setLevel(logging.DEBUG)
     model_list = [
@@ -1764,7 +1764,7 @@ def test_router_timeout():
         )
         print(res)
         pytest.fail("this should have timed out")
-    except litellm.exceptions.Timeout as e:
+    except llm.exceptions.Timeout as e:
         print("got timeout exception")
         print(e)
         print(vars(e))
@@ -1810,7 +1810,7 @@ def test_router_add_deployment():
     router.add_deployment(
         deployment=Deployment(
             model_name="gpt-instruct",
-            litellm_params=LiteLLM_Params(model="gpt-3.5-turbo-instruct"),
+            litellm_params=LLM_Params(model="gpt-3.5-turbo-instruct"),
             model_info=ModelInfo(),
         )
     )
@@ -1845,7 +1845,7 @@ async def test_router_text_completion_client():
             tasks.append(
                 router.atext_completion(
                     model="fake-openai-endpoint",
-                    prompt="hello from litellm test",
+                    prompt="hello from llm test",
                 )
             )
 
@@ -1857,8 +1857,8 @@ async def test_router_text_completion_client():
 
 
 @pytest.fixture
-def mock_response() -> litellm.ModelResponse:
-    return litellm.ModelResponse(
+def mock_response() -> llm.ModelResponse:
+    return llm.ModelResponse(
         **{
             "id": "chatcmpl-abc123",
             "object": "chat.completion",
@@ -1900,7 +1900,7 @@ async def test_router_model_usage(mock_response):
     setattr(
         mock_response,
         "usage",
-        litellm.Usage(prompt_tokens=5, completion_tokens=5, total_tokens=10),
+        llm.Usage(prompt_tokens=5, completion_tokens=5, total_tokens=10),
     )
 
     print(f"mock_response: {mock_response}")
@@ -2082,13 +2082,13 @@ def test_router_context_window_pre_call_check(model, base_model, llm_provider):
             num_retries=0,
         )
 
-        litellm.token_counter = MagicMock()
+        llm.token_counter = MagicMock()
 
         def token_counter_side_effect(*args, **kwargs):
             # Process args and kwargs if needed
             return 1000000
 
-        litellm.token_counter.side_effect = token_counter_side_effect
+        llm.token_counter.side_effect = token_counter_side_effect
         try:
             updated_list = router._pre_call_checks(
                 model="gpt-4",
@@ -2109,14 +2109,14 @@ def test_router_context_window_pre_call_check(model, base_model, llm_provider):
 
 
 def test_router_cooldown_api_connection_error():
-    from litellm.router_utils.cooldown_handlers import _is_cooldown_required
+    from llm.router_utils.cooldown_handlers import _is_cooldown_required
 
     try:
-        _ = litellm.completion(
+        _ = llm.completion(
             model="vertex_ai/gemini-1.5-pro",
             messages=[{"role": "admin", "content": "Fail on this!"}],
         )
-    except litellm.APIConnectionError as e:
+    except llm.APIConnectionError as e:
         assert (
             _is_cooldown_required(
                 litellm_router_instance=Router(),
@@ -2141,7 +2141,7 @@ def test_router_cooldown_api_connection_error():
             model="gemini-1.5-pro",
             messages=[{"role": "admin", "content": "Fail on this!"}],
         )
-    except litellm.APIConnectionError:
+    except llm.APIConnectionError:
         pass
 
 
@@ -2159,7 +2159,7 @@ def test_router_correctly_reraise_error():
                 "model_name": "gemini-1.5-pro",
                 "litellm_params": {
                     "model": "vertex_ai/gemini-1.5-pro",
-                    "mock_response": "litellm.RateLimitError",
+                    "mock_response": "llm.RateLimitError",
                 },
             }
         ]
@@ -2170,17 +2170,17 @@ def test_router_correctly_reraise_error():
             model="gemini-1.5-pro",
             messages=[{"role": "admin", "content": "Fail on this!"}],
         )
-    except litellm.RateLimitError:
+    except llm.RateLimitError:
         pass
 
 
 def test_router_dynamic_cooldown_correct_retry_after_time():
     """
-    User feedback: litellm says "No deployments available for selected model, Try again in 60 seconds"
+    User feedback: llm says "No deployments available for selected model, Try again in 60 seconds"
     but Azure says to retry in at most 9s
 
     ```
-    {"message": "litellm.proxy.proxy_server.embeddings(): Exception occured - No deployments available for selected model, Try again in 60 seconds. Passed model=text-embedding-ada-002. pre-call-checks=False, allowed_model_region=n/a, cooldown_list=[('b49cbc9314273db7181fe69b1b19993f04efb88f2c1819947c538bac08097e4c', {'Exception Received': 'litellm.RateLimitError: AzureException RateLimitError - Requests to the Embeddings_Create Operation under Azure OpenAI API version 2023-09-01-preview have exceeded call rate limit of your current OpenAI S0 pricing tier. Please retry after 9 seconds. Please go here: https://aka.ms/oai/quotaincrease if you would like to further increase the default rate limit.', 'Status Code': '429'})]", "level": "ERROR", "timestamp": "2024-08-22T03:25:36.900476"}
+    {"message": "llm.proxy.proxy_server.embeddings(): Exception occured - No deployments available for selected model, Try again in 60 seconds. Passed model=text-embedding-ada-002. pre-call-checks=False, allowed_model_region=n/a, cooldown_list=[('b49cbc9314273db7181fe69b1b19993f04efb88f2c1819947c538bac08097e4c', {'Exception Received': 'llm.RateLimitError: AzureException RateLimitError - Requests to the Embeddings_Create Operation under Azure OpenAI API version 2023-09-01-preview have exceeded call rate limit of your current OpenAI S0 pricing tier. Please retry after 9 seconds. Please go here: https://aka.ms/oai/quotaincrease if you would like to further increase the default rate limit.', 'Status Code': '429'})]", "level": "ERROR", "timestamp": "2024-08-22T03:25:36.900476"}
     ```
     """
     router = Router(
@@ -2237,7 +2237,7 @@ def test_router_dynamic_cooldown_correct_retry_after_time():
     ):
         new_retry_after_mock_client = MagicMock(return_value=-1)
 
-        litellm.utils._get_retry_after_from_exception_header = (
+        llm.utils._get_retry_after_from_exception_header = (
             new_retry_after_mock_client
         )
 
@@ -2247,7 +2247,7 @@ def test_router_dynamic_cooldown_correct_retry_after_time():
                 input="Hello world!",
                 client=openai_client,
             )
-        except litellm.RateLimitError:
+        except llm.RateLimitError:
             pass
 
         new_retry_after_mock_client.assert_called()
@@ -2260,14 +2260,14 @@ def test_router_dynamic_cooldown_correct_retry_after_time():
 @pytest.mark.asyncio
 async def test_aaarouter_dynamic_cooldown_message_retry_time(sync_mode):
     """
-    User feedback: litellm says "No deployments available for selected model, Try again in 60 seconds"
+    User feedback: llm says "No deployments available for selected model, Try again in 60 seconds"
     but Azure says to retry in at most 9s
 
     ```
-    {"message": "litellm.proxy.proxy_server.embeddings(): Exception occured - No deployments available for selected model, Try again in 60 seconds. Passed model=text-embedding-ada-002. pre-call-checks=False, allowed_model_region=n/a, cooldown_list=[('b49cbc9314273db7181fe69b1b19993f04efb88f2c1819947c538bac08097e4c', {'Exception Received': 'litellm.RateLimitError: AzureException RateLimitError - Requests to the Embeddings_Create Operation under Azure OpenAI API version 2023-09-01-preview have exceeded call rate limit of your current OpenAI S0 pricing tier. Please retry after 9 seconds. Please go here: https://aka.ms/oai/quotaincrease if you would like to further increase the default rate limit.', 'Status Code': '429'})]", "level": "ERROR", "timestamp": "2024-08-22T03:25:36.900476"}
+    {"message": "llm.proxy.proxy_server.embeddings(): Exception occured - No deployments available for selected model, Try again in 60 seconds. Passed model=text-embedding-ada-002. pre-call-checks=False, allowed_model_region=n/a, cooldown_list=[('b49cbc9314273db7181fe69b1b19993f04efb88f2c1819947c538bac08097e4c', {'Exception Received': 'llm.RateLimitError: AzureException RateLimitError - Requests to the Embeddings_Create Operation under Azure OpenAI API version 2023-09-01-preview have exceeded call rate limit of your current OpenAI S0 pricing tier. Please retry after 9 seconds. Please go here: https://aka.ms/oai/quotaincrease if you would like to further increase the default rate limit.', 'Status Code': '429'})]", "level": "ERROR", "timestamp": "2024-08-22T03:25:36.900476"}
     ```
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
     cooldown_time = 30.0
     router = Router(
         model_list=[
@@ -2342,7 +2342,7 @@ async def test_aaarouter_dynamic_cooldown_message_retry_time(sync_mode):
                         input="Hello world!",
                         client=openai_client,
                     )
-            except litellm.RateLimitError:
+            except llm.RateLimitError:
                 pass
 
         await asyncio.sleep(2)
@@ -2376,7 +2376,7 @@ async def test_aaarouter_dynamic_cooldown_message_retry_time(sync_mode):
                     input="Hello world!",
                     client=openai_client,
                 )
-        except litellm.types.router.RouterRateLimitError as e:
+        except llm.types.router.RouterRateLimitError as e:
             print(e)
             exception_raised = True
             assert e.cooldown_time == cooldown_time

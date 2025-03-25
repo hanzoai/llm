@@ -135,12 +135,12 @@ On the 2nd response - expect to see the following exception
 
 ### Prometheus metrics for `remaining_budget`
 
-[More info about Prometheus metrics here](https://docs.litellm.ai/docs/proxy/prometheus)
+[More info about Prometheus metrics here](https://docs.llm.ai/docs/proxy/prometheus)
 
 You'll need the following in your proxy config.yaml
 
 ```yaml
-litellm_settings:
+llm_settings:
   success_callback: ["prometheus"]
   failure_callback: ["prometheus"]
 ```
@@ -148,7 +148,7 @@ litellm_settings:
 Expect to see this metric on prometheus to track the Remaining Budget for the team
 
 ```shell
-litellm_remaining_team_budget_metric{team_alias="QA Prod Bot",team_id="de35b29e-6ca8-4f47-b804-2b79d07aa99a"} 9.699999999999992e-06
+llm_remaining_team_budget_metric{team_alias="QA Prod Bot",team_id="de35b29e-6ca8-4f47-b804-2b79d07aa99a"} 9.699999999999992e-06
 ```
 
 
@@ -156,20 +156,20 @@ litellm_remaining_team_budget_metric{team_alias="QA Prod Bot",team_id="de35b29e-
 
 Prevent projects from gobbling too much tpm/rpm.
 
-Dynamically allocate TPM/RPM quota to api keys, based on active keys in that minute. [**See Code**](https://github.com/BerriAI/litellm/blob/9bffa9a48e610cc6886fc2dce5c1815aeae2ad46/litellm/proxy/hooks/dynamic_rate_limiter.py#L125)
+Dynamically allocate TPM/RPM quota to api keys, based on active keys in that minute. [**See Code**](https://github.com/BerriAI/llm/blob/9bffa9a48e610cc6886fc2dce5c1815aeae2ad46/llm/proxy/hooks/dynamic_rate_limiter.py#L125)
 
 1. Setup config.yaml 
 
 ```yaml 
 model_list: 
   - model_name: my-fake-model
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
       api_key: my-fake-key
       mock_response: hello-world
       tpm: 60
 
-litellm_settings: 
+llm_settings: 
   callbacks: ["dynamic_rate_limiter"]
 
 general_settings:
@@ -180,7 +180,7 @@ general_settings:
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -265,12 +265,12 @@ Reserving tpm/rpm on keys based on priority is a premium feature. Please [get an
 ```yaml 
 model_list:
   - model_name: gpt-3.5-turbo             
-    litellm_params:
+    llm_params:
       model: "gpt-3.5-turbo"       
       api_key: os.environ/OPENAI_API_KEY 
       rpm: 100   
 
-litellm_settings:
+llm_settings:
   callbacks: ["dynamic_rate_limiter"]
   priority_reservation: {"dev": 0, "prod": 1}
 
@@ -288,7 +288,7 @@ priority_reservation:
 **Start Proxy**
 
 ```
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 2. Create a key with that priority

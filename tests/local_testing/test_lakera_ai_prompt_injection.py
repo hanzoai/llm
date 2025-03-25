@@ -10,7 +10,7 @@ from fastapi import HTTPException, Request, Response
 from fastapi.routing import APIRoute
 from starlette.datastructures import URL
 
-from litellm.types.guardrails import GuardrailItem
+from llm.types.guardrails import GuardrailItem
 
 load_dotenv()
 import os
@@ -23,13 +23,13 @@ from unittest.mock import patch
 
 import pytest
 
-import litellm
-from litellm._logging import verbose_proxy_logger
-from litellm.caching.caching import DualCache
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.proxy.guardrails.guardrail_hooks.lakera_ai import lakeraAI_Moderation
-from litellm.proxy.proxy_server import embeddings
-from litellm.proxy.utils import ProxyLogging, hash_token
+import llm
+from llm._logging import verbose_proxy_logger
+from llm.caching.caching import DualCache
+from llm.proxy._types import UserAPIKeyAuth
+from llm.proxy.guardrails.guardrail_hooks.lakera_ai import lakeraAI_Moderation
+from llm.proxy.proxy_server import embeddings
+from llm.proxy.utils import ProxyLogging, hash_token
 
 verbose_proxy_logger.setLevel(logging.DEBUG)
 
@@ -43,7 +43,7 @@ def make_config_map(config: dict):
 
 
 @patch(
-    "litellm.guardrail_name_config_map",
+    "llm.guardrail_name_config_map",
     make_config_map(
         {
             "prompt_injection": {
@@ -111,7 +111,7 @@ async def test_lakera_prompt_injection_detection():
 
 
 @patch(
-    "litellm.guardrail_name_config_map",
+    "llm.guardrail_name_config_map",
     make_config_map(
         {
             "prompt_injection": {
@@ -151,7 +151,7 @@ async def test_lakera_safe_prompt():
 @pytest.mark.skip(reason="lakera deprecated their v1 endpoint.")
 async def test_moderations_on_embeddings():
     try:
-        temp_router = litellm.Router(
+        temp_router = llm.Router(
             model_list=[
                 {
                     "model_name": "text-embedding-ada-002",
@@ -164,10 +164,10 @@ async def test_moderations_on_embeddings():
             ]
         )
 
-        setattr(litellm.proxy.proxy_server, "llm_router", temp_router)
+        setattr(llm.proxy.proxy_server, "llm_router", temp_router)
 
         api_route = APIRoute(path="/embeddings", endpoint=embeddings)
-        litellm.callbacks = [lakeraAI_Moderation()]
+        llm.callbacks = [lakeraAI_Moderation()]
         request = Request(
             {
                 "type": "http",
@@ -198,9 +198,9 @@ async def test_moderations_on_embeddings():
 
 
 @pytest.mark.asyncio
-@patch("litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post")
+@patch("llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post")
 @patch(
-    "litellm.guardrail_name_config_map",
+    "llm.guardrail_name_config_map",
     new=make_config_map(
         {
             "prompt_injection": {
@@ -237,9 +237,9 @@ async def test_messages_for_disabled_role(spy_post):
 
 
 @pytest.mark.asyncio
-@patch("litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post")
+@patch("llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post")
 @patch(
-    "litellm.guardrail_name_config_map",
+    "llm.guardrail_name_config_map",
     new=make_config_map(
         {
             "prompt_injection": {
@@ -249,7 +249,7 @@ async def test_messages_for_disabled_role(spy_post):
         }
     ),
 )
-@patch("litellm.add_function_to_prompt", False)
+@patch("llm.add_function_to_prompt", False)
 @pytest.mark.skip(reason="lakera deprecated their v1 endpoint.")
 async def test_system_message_with_function_input(spy_post):
     moderation = lakeraAI_Moderation()
@@ -282,9 +282,9 @@ async def test_system_message_with_function_input(spy_post):
 
 
 @pytest.mark.asyncio
-@patch("litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post")
+@patch("llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post")
 @patch(
-    "litellm.guardrail_name_config_map",
+    "llm.guardrail_name_config_map",
     new=make_config_map(
         {
             "prompt_injection": {
@@ -294,7 +294,7 @@ async def test_system_message_with_function_input(spy_post):
         }
     ),
 )
-@patch("litellm.add_function_to_prompt", False)
+@patch("llm.add_function_to_prompt", False)
 @pytest.mark.skip(reason="lakera deprecated their v1 endpoint.")
 async def test_multi_message_with_function_input(spy_post):
     moderation = lakeraAI_Moderation()
@@ -331,9 +331,9 @@ async def test_multi_message_with_function_input(spy_post):
 
 
 @pytest.mark.asyncio
-@patch("litellm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post")
+@patch("llm.llms.custom_httpx.http_handler.AsyncHTTPHandler.post")
 @patch(
-    "litellm.guardrail_name_config_map",
+    "llm.guardrail_name_config_map",
     new=make_config_map(
         {
             "prompt_injection": {
@@ -374,10 +374,10 @@ async def test_message_ordering(spy_post):
 async def test_callback_specific_param_run_pre_call_check_lakera():
     from typing import Dict, List, Optional, Union
 
-    import litellm
-    from litellm.proxy.guardrails.guardrail_hooks.lakera_ai import lakeraAI_Moderation
-    from litellm.proxy.guardrails.init_guardrails import initialize_guardrails
-    from litellm.types.guardrails import GuardrailItem, GuardrailItemSpec
+    import llm
+    from llm.proxy.guardrails.guardrail_hooks.lakera_ai import lakeraAI_Moderation
+    from llm.proxy.guardrails.init_guardrails import initialize_guardrails
+    from llm.types.guardrails import GuardrailItem, GuardrailItemSpec
 
     guardrails_config: List[Dict[str, GuardrailItemSpec]] = [
         {
@@ -392,7 +392,7 @@ async def test_callback_specific_param_run_pre_call_check_lakera():
     ]
     litellm_settings = {"guardrails": guardrails_config}
 
-    assert len(litellm.guardrail_name_config_map) == 0
+    assert len(llm.guardrail_name_config_map) == 0
     initialize_guardrails(
         guardrails_config=guardrails_config,
         premium_user=True,
@@ -400,11 +400,11 @@ async def test_callback_specific_param_run_pre_call_check_lakera():
         litellm_settings=litellm_settings,
     )
 
-    assert len(litellm.guardrail_name_config_map) == 1
+    assert len(llm.guardrail_name_config_map) == 1
 
     prompt_injection_obj: Optional[lakeraAI_Moderation] = None
-    print("litellm callbacks={}".format(litellm.callbacks))
-    for callback in litellm.callbacks:
+    print("llm callbacks={}".format(llm.callbacks))
+    for callback in llm.callbacks:
         if isinstance(callback, lakeraAI_Moderation):
             prompt_injection_obj = callback
         else:
@@ -421,10 +421,10 @@ async def test_callback_specific_param_run_pre_call_check_lakera():
 async def test_callback_specific_thresholds():
     from typing import Dict, List, Optional, Union
 
-    import litellm
-    from litellm.proxy.guardrails.guardrail_hooks.lakera_ai import lakeraAI_Moderation
-    from litellm.proxy.guardrails.init_guardrails import initialize_guardrails
-    from litellm.types.guardrails import GuardrailItem, GuardrailItemSpec
+    import llm
+    from llm.proxy.guardrails.guardrail_hooks.lakera_ai import lakeraAI_Moderation
+    from llm.proxy.guardrails.init_guardrails import initialize_guardrails
+    from llm.types.guardrails import GuardrailItem, GuardrailItemSpec
 
     guardrails_config: List[Dict[str, GuardrailItemSpec]] = [
         {
@@ -445,7 +445,7 @@ async def test_callback_specific_thresholds():
     ]
     litellm_settings = {"guardrails": guardrails_config}
 
-    assert len(litellm.guardrail_name_config_map) == 0
+    assert len(llm.guardrail_name_config_map) == 0
     initialize_guardrails(
         guardrails_config=guardrails_config,
         premium_user=True,
@@ -453,11 +453,11 @@ async def test_callback_specific_thresholds():
         litellm_settings=litellm_settings,
     )
 
-    assert len(litellm.guardrail_name_config_map) == 1
+    assert len(llm.guardrail_name_config_map) == 1
 
     prompt_injection_obj: Optional[lakeraAI_Moderation] = None
-    print("litellm callbacks={}".format(litellm.callbacks))
-    for callback in litellm.callbacks:
+    print("llm callbacks={}".format(llm.callbacks))
+    for callback in llm.callbacks:
         if isinstance(callback, lakeraAI_Moderation):
             prompt_injection_obj = callback
         else:

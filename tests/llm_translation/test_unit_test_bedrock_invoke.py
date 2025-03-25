@@ -2,9 +2,9 @@ import os
 import sys
 import traceback
 from dotenv import load_dotenv
-import litellm.types
+import llm.types
 import pytest
-from litellm import AmazonInvokeConfig
+from llm import AmazonInvokeConfig
 import json
 
 load_dotenv()

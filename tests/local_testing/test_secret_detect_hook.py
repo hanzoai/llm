@@ -24,17 +24,17 @@ import pytest
 from fastapi import Request, Response
 from starlette.datastructures import URL
 
-import litellm
-from litellm import Router, mock_completion
-from litellm.caching.caching import DualCache
-from litellm.integrations.custom_logger import CustomLogger
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.proxy.enterprise.enterprise_hooks.secret_detection import (
+import llm
+from llm import Router, mock_completion
+from llm.caching.caching import DualCache
+from llm.integrations.custom_logger import CustomLogger
+from llm.proxy._types import UserAPIKeyAuth
+from llm.proxy.enterprise.enterprise_hooks.secret_detection import (
     _ENTERPRISE_SecretDetection,
 )
-from litellm.proxy.proxy_server import chat_completion
-from litellm.proxy.utils import ProxyLogging, hash_token
-from litellm.router import Router
+from llm.proxy.proxy_server import chat_completion
+from llm.proxy.utils import ProxyLogging, hash_token
+from llm.router import Router
 
 ### UNIT TESTS FOR OpenAI Moderation ###
 
@@ -53,7 +53,7 @@ async def test_basic_secret_detection_chat():
     user_api_key_dict = UserAPIKeyAuth(api_key=_api_key)
     local_cache = DualCache()
 
-    from litellm.proxy.proxy_server import llm_router
+    from llm.proxy.proxy_server import llm_router
 
     test_data = {
         "messages": [
@@ -121,7 +121,7 @@ async def test_basic_secret_detection_text_completion():
     user_api_key_dict = UserAPIKeyAuth(api_key=_api_key)
     local_cache = DualCache()
 
-    from litellm.proxy.proxy_server import llm_router
+    from llm.proxy.proxy_server import llm_router
 
     test_data = {
         "prompt": "Hey, how's it going, API_KEY = 'sk_1234567890abcdef', my OPENAI_API_KEY = 'sk_1234567890abcdef' and i want to know what is the weather",
@@ -159,7 +159,7 @@ async def test_basic_secret_detection_embeddings():
     user_api_key_dict = UserAPIKeyAuth(api_key=_api_key)
     local_cache = DualCache()
 
-    from litellm.proxy.proxy_server import llm_router
+    from llm.proxy.proxy_server import llm_router
 
     test_data = {
         "input": "Hey, how's it going, API_KEY = 'sk_1234567890abcdef', my OPENAI_API_KEY = 'sk_1234567890abcdef' and i want to know what is the weather",
@@ -197,7 +197,7 @@ async def test_basic_secret_detection_embeddings_list():
     user_api_key_dict = UserAPIKeyAuth(api_key=_api_key)
     local_cache = DualCache()
 
-    from litellm.proxy.proxy_server import llm_router
+    from llm.proxy.proxy_server import llm_router
 
     test_data = {
         "input": [
@@ -258,16 +258,16 @@ router = Router(
 async def test_chat_completion_request_with_redaction():
     """
     IMPORTANT Enterprise Test - Do not delete it:
-    Makes a /chat/completions request on LiteLLM Proxy
+    Makes a /chat/completions request on LLM Proxy
 
     Ensures that the secret is redacted EVEN on the callback
     """
-    from litellm.proxy import proxy_server
+    from llm.proxy import proxy_server
 
     setattr(proxy_server, "llm_router", router)
     _test_logger = testLogger()
-    litellm.callbacks = [_ENTERPRISE_SecretDetection(), _test_logger]
-    litellm._turn_on_debug()
+    llm.callbacks = [_ENTERPRISE_SecretDetection(), _test_logger]
+    llm._turn_on_debug()
 
     # Prepare the query string
     query_params = "param1=value1&param2=value2"

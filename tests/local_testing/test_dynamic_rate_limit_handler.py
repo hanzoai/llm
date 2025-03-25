@@ -20,10 +20,10 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 import pytest
 
-import litellm
-from litellm import DualCache, Router
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.proxy.hooks.dynamic_rate_limiter import (
+import llm
+from llm import DualCache, Router
+from llm.proxy._types import UserAPIKeyAuth
+from llm.proxy.hooks.dynamic_rate_limiter import (
     _PROXY_DynamicRateLimitHandler as DynamicRateLimitHandler,
 )
 
@@ -42,8 +42,8 @@ def dynamic_rate_limit_handler() -> DynamicRateLimitHandler:
 
 
 @pytest.fixture
-def mock_response() -> litellm.ModelResponse:
-    return litellm.ModelResponse(
+def mock_response() -> llm.ModelResponse:
+    return llm.ModelResponse(
         **{
             "id": "chatcmpl-abc123",
             "object": "chat.completion",
@@ -237,7 +237,7 @@ async def test_base_case(dynamic_rate_limit_handler, mock_response):
     setattr(
         mock_response,
         "usage",
-        litellm.Usage(prompt_tokens=5, completion_tokens=5, total_tokens=10),
+        llm.Usage(prompt_tokens=5, completion_tokens=5, total_tokens=10),
     )
 
     llm_router = Router(
@@ -374,7 +374,7 @@ async def test_multiple_projects(
     setattr(
         mock_response,
         "usage",
-        litellm.Usage(
+        llm.Usage(
             prompt_tokens=5, completion_tokens=5, total_tokens=total_tokens_per_call
         ),
     )
@@ -457,7 +457,7 @@ async def test_priority_reservation(num_projects, dynamic_rate_limit_handler):
         model=model, value=projects
     )
 
-    litellm.priority_reservation = {"dev": 0.1, "prod": 0.9}
+    llm.priority_reservation = {"dev": 0.1, "prod": 0.9}
 
     model_usage = 100
 
@@ -485,7 +485,7 @@ async def test_priority_reservation(num_projects, dynamic_rate_limit_handler):
     availability = resp[1]
 
     expected_availability = int(
-        model_usage * litellm.priority_reservation["prod"] / num_projects
+        model_usage * llm.priority_reservation["prod"] / num_projects
     )
 
     assert availability == expected_availability
@@ -526,7 +526,7 @@ async def test_multiple_projects_e2e(
     setattr(
         mock_response,
         "usage",
-        litellm.Usage(
+        llm.Usage(
             prompt_tokens=5, completion_tokens=5, total_tokens=total_tokens_per_call
         ),
     )

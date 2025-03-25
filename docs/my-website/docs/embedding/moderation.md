@@ -1,10 +1,10 @@
-# litellm.moderation()
-LiteLLM supports the moderation endpoint for OpenAI
+# llm.moderation()
+LLM supports the moderation endpoint for OpenAI
 
 ## Usage
 ```python
 import os
-from litellm import moderation
+from llm import moderation
 os.environ['OPENAI_API_KEY'] = ""
-response = moderation(input="i'm ishaan cto of litellm")   
+response = moderation(input="i'm ishaan cto of llm")   
 ```

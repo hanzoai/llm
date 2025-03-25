@@ -9,13 +9,13 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm.integrations.custom_logger import CustomLogger
-from litellm.litellm_core_utils.logging_callback_manager import LoggingCallbackManager
-from litellm.integrations.langfuse.langfuse_prompt_management import (
+import llm
+from llm.integrations.custom_logger import CustomLogger
+from llm.litellm_core_utils.logging_callback_manager import LoggingCallbackManager
+from llm.integrations.langfuse.langfuse_prompt_management import (
     LangfusePromptManagement,
 )
-from litellm.integrations.opentelemetry import OpenTelemetry
+from llm.integrations.opentelemetry import OpenTelemetry
 
 
 # Test fixtures
@@ -39,18 +39,18 @@ def mock_custom_logger():
 # Test cases
 def test_add_string_callback():
     """
-    Test adding a string callback to litellm.callbacks - only 1 instance of the string callback should be added
+    Test adding a string callback to llm.callbacks - only 1 instance of the string callback should be added
     """
     manager = LoggingCallbackManager()
     test_callback = "test_callback"
 
     # Add string callback
     manager.add_litellm_callback(test_callback)
-    assert test_callback in litellm.callbacks
+    assert test_callback in llm.callbacks
 
     # Test duplicate prevention
     manager.add_litellm_callback(test_callback)
-    assert litellm.callbacks.count(test_callback) == 1
+    assert llm.callbacks.count(test_callback) == 1
 
 
 def test_duplicate_langfuse_logger_test():
@@ -58,8 +58,8 @@ def test_duplicate_langfuse_logger_test():
     for _ in range(10):
         langfuse_logger = LangfusePromptManagement()
         manager.add_litellm_success_callback(langfuse_logger)
-    print("litellm.success_callback: ", litellm.success_callback)
-    assert len(litellm.success_callback) == 1
+    print("llm.success_callback: ", llm.success_callback)
+    assert len(llm.success_callback) == 1
 
 
 def test_duplicate_multiple_loggers_test():
@@ -69,18 +69,18 @@ def test_duplicate_multiple_loggers_test():
         otel_logger = OpenTelemetry()
         manager.add_litellm_success_callback(langfuse_logger)
         manager.add_litellm_success_callback(otel_logger)
-    print("litellm.success_callback: ", litellm.success_callback)
-    assert len(litellm.success_callback) == 2
+    print("llm.success_callback: ", llm.success_callback)
+    assert len(llm.success_callback) == 2
 
     # Check exactly one instance of each logger type
     langfuse_count = sum(
         1
-        for callback in litellm.success_callback
+        for callback in llm.success_callback
         if isinstance(callback, LangfusePromptManagement)
     )
     otel_count = sum(
         1
-        for callback in litellm.success_callback
+        for callback in llm.success_callback
         if isinstance(callback, OpenTelemetry)
     )
 
@@ -98,11 +98,11 @@ def test_add_function_callback():
 
     # Add function callback
     manager.add_litellm_callback(test_func)
-    assert test_func in litellm.callbacks
+    assert test_func in llm.callbacks
 
     # Test duplicate prevention
     manager.add_litellm_callback(test_func)
-    assert litellm.callbacks.count(test_func) == 1
+    assert llm.callbacks.count(test_func) == 1
 
 
 def test_add_custom_logger(mock_custom_logger):
@@ -110,7 +110,7 @@ def test_add_custom_logger(mock_custom_logger):
 
     # Add custom logger
     manager.add_litellm_callback(mock_custom_logger)
-    assert mock_custom_logger in litellm.callbacks
+    assert mock_custom_logger in llm.callbacks
 
 
 def test_add_multiple_callback_types(mock_custom_logger):
@@ -126,10 +126,10 @@ def test_add_multiple_callback_types(mock_custom_logger):
     manager.add_litellm_callback(test_func)
     manager.add_litellm_callback(mock_custom_logger)
 
-    assert string_callback in litellm.callbacks
-    assert test_func in litellm.callbacks
-    assert mock_custom_logger in litellm.callbacks
-    assert len(litellm.callbacks) == 3
+    assert string_callback in llm.callbacks
+    assert test_func in llm.callbacks
+    assert mock_custom_logger in llm.callbacks
+    assert len(llm.callbacks) == 3
 
 
 def test_success_failure_callbacks():
@@ -142,8 +142,8 @@ def test_success_failure_callbacks():
     manager.add_litellm_success_callback(success_callback)
     manager.add_litellm_failure_callback(failure_callback)
 
-    assert success_callback in litellm.success_callback
-    assert failure_callback in litellm.failure_callback
+    assert success_callback in llm.success_callback
+    assert failure_callback in llm.failure_callback
 
 
 def test_async_callbacks():
@@ -156,8 +156,8 @@ def test_async_callbacks():
     manager.add_litellm_async_success_callback(async_success)
     manager.add_litellm_async_failure_callback(async_failure)
 
-    assert async_success in litellm._async_success_callback
-    assert async_failure in litellm._async_failure_callback
+    assert async_success in llm._async_success_callback
+    assert async_failure in llm._async_failure_callback
 
 
 def test_remove_callback_from_list_by_object():
@@ -178,18 +178,18 @@ def test_remove_callback_from_list_by_object():
 
     obj = TestObject()
 
-    manager.remove_callback_from_list_by_object(litellm.callbacks, obj)
-    manager.remove_callback_from_list_by_object(litellm.success_callback, obj)
-    manager.remove_callback_from_list_by_object(litellm.failure_callback, obj)
-    manager.remove_callback_from_list_by_object(litellm._async_success_callback, obj)
-    manager.remove_callback_from_list_by_object(litellm._async_failure_callback, obj)
+    manager.remove_callback_from_list_by_object(llm.callbacks, obj)
+    manager.remove_callback_from_list_by_object(llm.success_callback, obj)
+    manager.remove_callback_from_list_by_object(llm.failure_callback, obj)
+    manager.remove_callback_from_list_by_object(llm._async_success_callback, obj)
+    manager.remove_callback_from_list_by_object(llm._async_failure_callback, obj)
 
     # Verify all callback lists are empty
-    assert len(litellm.callbacks) == 0
-    assert len(litellm.success_callback) == 0
-    assert len(litellm.failure_callback) == 0
-    assert len(litellm._async_success_callback) == 0
-    assert len(litellm._async_failure_callback) == 0
+    assert len(llm.callbacks) == 0
+    assert len(llm.success_callback) == 0
+    assert len(llm.failure_callback) == 0
+    assert len(llm._async_success_callback) == 0
+    assert len(llm._async_failure_callback) == 0
 
 
 
@@ -205,8 +205,8 @@ def test_reset_callbacks(callback_manager):
     callback_manager._reset_all_callbacks()
 
     # Verify all callback lists are empty
-    assert len(litellm.callbacks) == 0
-    assert len(litellm.success_callback) == 0
-    assert len(litellm.failure_callback) == 0
-    assert len(litellm._async_success_callback) == 0
-    assert len(litellm._async_failure_callback) == 0
+    assert len(llm.callbacks) == 0
+    assert len(llm.success_callback) == 0
+    assert len(llm.failure_callback) == 0
+    assert len(llm._async_success_callback) == 0
+    assert len(llm._async_failure_callback) == 0

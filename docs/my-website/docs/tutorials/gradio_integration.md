@@ -1,11 +1,11 @@
-# Gradio Chatbot + LiteLLM Tutorial
-Simple tutorial for integrating LiteLLM completion calls with streaming Gradio chatbot demos
+# Gradio Chatbot + LLM Tutorial
+Simple tutorial for integrating LLM completion calls with streaming Gradio chatbot demos
 
 ### Install & Import Dependencies
 ```python
-!pip install gradio litellm
+!pip install gradio llm
 import gradio
-import litellm
+import llm
 ```
 
 ### Define Inference Function
@@ -15,18 +15,18 @@ def inference(message, history):
     try:
         flattened_history = [item for sublist in history for item in sublist]
         full_message = " ".join(flattened_history + [message])
-        messages_litellm = [{"role": "user", "content": full_message}] # litellm message format
+        messages_llm = [{"role": "user", "content": full_message}] # llm message format
         partial_message = ""
-        for chunk in litellm.completion(model="huggingface/meta-llama/Llama-2-7b-chat-hf",
+        for chunk in llm.completion(model="huggingface/meta-llama/Llama-2-7b-chat-hf",
                                         api_base="x.x.x.x:xxxx",
-                                        messages=messages_litellm,
+                                        messages=messages_llm,
                                         max_new_tokens=512,
                                         temperature=.7,
                                         top_k=100,
                                         top_p=.9,
                                         repetition_penalty=1.18,
                                         stream=True):
-            partial_message += chunk['choices'][0]['delta']['content'] # extract text from streamed litellm chunks
+            partial_message += chunk['choices'][0]['delta']['content'] # extract text from streamed llm chunks
             yield partial_message
     except Exception as e:
         print("Exception encountered:", str(e))

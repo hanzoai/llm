@@ -11,16 +11,16 @@ sys.path.insert(
 from typing import Literal
 
 import pytest
-import litellm
-from litellm.litellm_core_utils.litellm_logging import Logging
-from litellm.proxy.hooks.max_budget_limiter import _PROXY_MaxBudgetLimiter
-from litellm.proxy.hooks.cache_control_check import _PROXY_CacheControlCheck
-from litellm._service_logger import ServiceLogging
+import llm
+from llm.litellm_core_utils.litellm_logging import Logging
+from llm.proxy.hooks.max_budget_limiter import _PROXY_MaxBudgetLimiter
+from llm.proxy.hooks.cache_control_check import _PROXY_CacheControlCheck
+from llm._service_logger import ServiceLogging
 import asyncio
 
 
-from litellm.litellm_core_utils.litellm_logging import Logging
-import litellm
+from llm.litellm_core_utils.litellm_logging import Logging
+import llm
 
 service_logger = ServiceLogging()
 
@@ -63,7 +63,7 @@ def test_get_callback_name():
 
 def test_is_internal_litellm_proxy_callback():
     """
-    Ensure we can determine if a callback is an internal litellm proxy callback
+    Ensure we can determine if a callback is an internal llm proxy callback
 
     eg. `_PROXY_MaxBudgetLimiter`, `_PROXY_CacheControlCheck`
     """
@@ -91,18 +91,18 @@ def test_should_run_sync_callbacks_for_async_calls():
 
     # Test with no callbacks
     logging.dynamic_success_callbacks = None
-    litellm.success_callback = []
+    llm.success_callback = []
     assert logging._should_run_sync_callbacks_for_async_calls() == False
 
     # Test with regular callback
     def regular_callback():
         pass
 
-    litellm.success_callback = [regular_callback]
+    llm.success_callback = [regular_callback]
     assert logging._should_run_sync_callbacks_for_async_calls() == True
 
     # Test with internal callback only
-    litellm.success_callback = [_PROXY_MaxBudgetLimiter]
+    llm.success_callback = [_PROXY_MaxBudgetLimiter]
     assert logging._should_run_sync_callbacks_for_async_calls() == False
 
 

@@ -9,9 +9,9 @@ from typing import List
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-from litellm import Router
-from litellm.scheduler import FlowItem, Scheduler
-from litellm import ModelResponse
+from llm import Router
+from llm.scheduler import FlowItem, Scheduler
+from llm import ModelResponse
 
 
 @pytest.mark.asyncio

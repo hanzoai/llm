@@ -8,18 +8,18 @@ import TabItem from '@theme/TabItem';
 | Description | Use this when most of the output of the LLM is known ahead of time. For instance, if you are asking the model to rewrite some text or code with only minor changes, you can reduce your latency significantly by using Predicted Outputs, passing in the existing content as your prediction. |
 | Supported providers | `openai` |
 | Link to OpenAI doc on Predicted Outputs | [Predicted Outputs ↗](https://platform.openai.com/docs/guides/latency-optimization#use-predicted-outputs) |
-| Supported from LiteLLM Version | `v1.51.4` |
+| Supported from LLM Version | `v1.51.4` |
 
 
 
 ## Using Predicted Outputs
 
 <Tabs>
-<TabItem label="LiteLLM Python SDK" value="Python">
+<TabItem label="LLM Python SDK" value="Python">
 
 In this example we want to refactor a piece of C# code, and convert the Username property to Email instead:
 ```python
-import litellm
+import llm
 os.environ["OPENAI_API_KEY"] = "your-api-key"
 code = """
 /// <summary>
@@ -44,7 +44,7 @@ public class User
 }
 """
 
-completion = litellm.completion(
+completion = llm.completion(
     model="gpt-4o-mini",
     messages=[
         {
@@ -60,14 +60,14 @@ print(completion)
 ```
 
 </TabItem>
-<TabItem label="LiteLLM Proxy Server" value="proxy">
+<TabItem label="LLM Proxy Server" value="proxy">
 
 1. Define models on config.yaml
 
 ```yaml
 model_list:
   - model_name: gpt-4o-mini # OpenAI gpt-4o-mini
-    litellm_params:
+    llm_params:
       model: openai/gpt-4o-mini
       api_key: os.environ/OPENAI_API_KEY 
 
@@ -76,7 +76,7 @@ model_list:
 2. Run proxy server
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 3. Test it using the OpenAI Python SDK

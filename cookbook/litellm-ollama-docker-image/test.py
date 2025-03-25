@@ -7,7 +7,7 @@ openai.api_key = "temp-key"
 print(openai.api_base)
 
 
-print("LiteLLM: response from proxy with streaming")
+print("LLM: response from proxy with streaming")
 response = openai.ChatCompletion.create(
     model="ollama/llama2",
     messages=[
@@ -20,7 +20,7 @@ response = openai.ChatCompletion.create(
 )
 
 for chunk in response:
-    print(f"LiteLLM: streaming response from proxy {chunk}")
+    print(f"LLM: streaming response from proxy {chunk}")
 
 response = openai.ChatCompletion.create(
     model="ollama/llama2",
@@ -32,4 +32,4 @@ response = openai.ChatCompletion.create(
     ],
 )
 
-print(f"LiteLLM: response from proxy {response}")
+print(f"LLM: response from proxy {response}")

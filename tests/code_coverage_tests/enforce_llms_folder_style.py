@@ -4,7 +4,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath("../.."))
 
-import litellm
+import llm
 
 ALLOWED_FILES_IN_LLMS_FOLDER = [
     "__init__",
@@ -44,7 +44,7 @@ def get_unique_names_from_llms_dir(base_dir: str):
 
 
 def run_lint_check(unique_names):
-    _all_litellm_providers = [str(provider.value) for provider in litellm.LlmProviders]
+    _all_litellm_providers = [str(provider.value) for provider in llm.LlmProviders]
     violations = []
     for name in unique_names:
         if (

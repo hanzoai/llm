@@ -8,14 +8,14 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 
 
 @pytest.mark.skip(reason="AWS Suspended Account")
 def test_completion_sagemaker():
-    litellm.set_verbose = True
-    litellm.drop_params = True
+    llm.set_verbose = True
+    llm.drop_params = True
     response = completion(
         model="sagemaker/berri-benchmarking-Llama-2-70b-chat-hf-4",
         messages=[{"content": "Hello, how are you?", "role": "user"}],

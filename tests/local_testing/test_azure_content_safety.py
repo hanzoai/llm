@@ -19,11 +19,11 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 import pytest
 
-import litellm
-from litellm import Router, mock_completion
-from litellm.caching.caching import DualCache
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.proxy.utils import ProxyLogging
+import llm
+from llm import Router, mock_completion
+from llm.caching.caching import DualCache
+from llm.proxy._types import UserAPIKeyAuth
+from llm.proxy.utils import ProxyLogging
 
 
 @pytest.mark.asyncio
@@ -33,7 +33,7 @@ async def test_strict_input_filtering_01():
     - have a response with a filtered input
     - call the pre call hook
     """
-    from litellm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
+    from llm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
 
     azure_content_safety = _PROXY_AzureContentSafety(
         endpoint=os.getenv("AZURE_CONTENT_SAFETY_ENDPOINT"),
@@ -68,7 +68,7 @@ async def test_strict_input_filtering_02():
     - have a response with a filtered input
     - call the pre call hook
     """
-    from litellm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
+    from llm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
 
     azure_content_safety = _PROXY_AzureContentSafety(
         endpoint=os.getenv("AZURE_CONTENT_SAFETY_ENDPOINT"),
@@ -98,7 +98,7 @@ async def test_loose_input_filtering_01():
     - have a response with a filtered input
     - call the pre call hook
     """
-    from litellm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
+    from llm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
 
     azure_content_safety = _PROXY_AzureContentSafety(
         endpoint=os.getenv("AZURE_CONTENT_SAFETY_ENDPOINT"),
@@ -128,7 +128,7 @@ async def test_loose_input_filtering_02():
     - have a response with a filtered input
     - call the pre call hook
     """
-    from litellm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
+    from llm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
 
     azure_content_safety = _PROXY_AzureContentSafety(
         endpoint=os.getenv("AZURE_CONTENT_SAFETY_ENDPOINT"),
@@ -158,7 +158,7 @@ async def test_strict_output_filtering_01():
     - have a response with a filtered output
     - call the post call hook
     """
-    from litellm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
+    from llm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
 
     azure_content_safety = _PROXY_AzureContentSafety(
         endpoint=os.getenv("AZURE_CONTENT_SAFETY_ENDPOINT"),
@@ -204,7 +204,7 @@ async def test_strict_output_filtering_02():
     - have a response with a filtered output
     - call the post call hook
     """
-    from litellm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
+    from llm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
 
     azure_content_safety = _PROXY_AzureContentSafety(
         endpoint=os.getenv("AZURE_CONTENT_SAFETY_ENDPOINT"),
@@ -243,7 +243,7 @@ async def test_loose_output_filtering_01():
     - have a response with a filtered output
     - call the post call hook
     """
-    from litellm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
+    from llm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
 
     azure_content_safety = _PROXY_AzureContentSafety(
         endpoint=os.getenv("AZURE_CONTENT_SAFETY_ENDPOINT"),
@@ -282,7 +282,7 @@ async def test_loose_output_filtering_02():
     - have a response with a filtered output
     - call the post call hook
     """
-    from litellm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
+    from llm.proxy.hooks.azure_content_safety import _PROXY_AzureContentSafety
 
     azure_content_safety = _PROXY_AzureContentSafety(
         endpoint=os.getenv("AZURE_CONTENT_SAFETY_ENDPOINT"),

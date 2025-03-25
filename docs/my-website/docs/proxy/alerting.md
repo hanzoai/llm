@@ -61,7 +61,7 @@ general_settings:
 
 Start proxy 
 ```bash
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 
@@ -85,7 +85,7 @@ general_settings:
   alerting: ["slack"]
   alert_types: ["spend_reports"] 
 
-litellm_settings:
+llm_settings:
   redact_messages_in_exceptions: True
 ```
 
@@ -146,7 +146,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages = [], 
@@ -205,7 +205,7 @@ Set `alert_to_webhook_url` on your config.yaml
 ```yaml
 model_list:
   - model_name: gpt-4
-    litellm_params:
+    llm_params:
       model: openai/fake
       api_key: fake-key
       api_base: https://exampleopenaiendpoint-production.up.railway.app/
@@ -227,7 +227,7 @@ general_settings:
     "outage_alerts": "https://hooks.slack.com/services/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",
   }
 
-litellm_settings:
+llm_settings:
   success_callback: ["langfuse"]
 ```
 </TabItem>
@@ -239,7 +239,7 @@ Provide multiple slack channels for a given alert type
 ```yaml
 model_list:
   - model_name: gpt-4
-    litellm_params:
+    llm_params:
       model: openai/fake
       api_key: fake-key
       api_base: https://exampleopenaiendpoint-production.up.railway.app/
@@ -261,7 +261,7 @@ general_settings:
     "outage_alerts": ["os.environ/SLACK_WEBHOOK_URL_19", "os.environ/SLACK_WEBHOOK_URL_20"],
   }
 
-litellm_settings:
+llm_settings:
   success_callback: ["langfuse"]
 ```
 
@@ -298,12 +298,12 @@ MS Teams provides a slack compatible webhook url that you can use for alerting
 SLACK_WEBHOOK_URL="https://berriai.webhook.office.com/webhookb2/...6901/IncomingWebhook/b55fa0c2a48647be8e6effedcd540266/e04b1092-4a3e-44a2-ab6b-29a0a4854d1d"
 ```
 
-3. Add it to your litellm config 
+3. Add it to your llm config 
 
 ```yaml
 model_list: 
     model_name: "azure-model"
-    litellm_params:
+    llm_params:
         model: "azure/gpt-35-turbo"
         api_key: "my-bad-key" # 👈 bad key
 
@@ -340,12 +340,12 @@ Discord provides a slack compatible webhook url that you can use for alerting
 "https://discord.com/api/webhooks/1240030362193760286/cTLWt5ATn1gKmcy_982rl5xmYHsrM1IWJdmCL1AyOmU9JdQXazrp8L1_PYgUtgxj8x4f/slack"
 ```
 
-3. Add it to your litellm config 
+3. Add it to your llm config 
 
 ```yaml
 model_list: 
     model_name: "azure-model"
-    litellm_params:
+    llm_params:
         model: "azure/gpt-35-turbo"
         api_key: "my-bad-key" # 👈 bad key
 
@@ -381,7 +381,7 @@ general_settings:
 2. Start proxy
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -478,7 +478,7 @@ LLM-related Alerts
 | `llm_too_slow` | Notifications for LLM responses slower than the set threshold | ✅ |
 | `llm_requests_hanging` | Alerts for LLM requests that are not completing | ✅ |
 | `cooldown_deployment` | Alerts when a deployment is put into cooldown | ✅ |
-| `new_model_added` | Notifications when a new model is added to litellm proxy through /model/new| ✅ |
+| `new_model_added` | Notifications when a new model is added to llm proxy through /model/new| ✅ |
 | `outage_alerts` | Alerts when a specific LLM deployment is facing an outage | ✅ |
 | `region_outage_alerts` | Alerts when a specfic LLM region is facing an outage. Example us-east-1 | ✅ |
 

@@ -15,7 +15,7 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 from unittest.mock import AsyncMock
 
-from litellm.caching.in_memory_cache import InMemoryCache
+from llm.caching.in_memory_cache import InMemoryCache
 
 
 def test_in_memory_openai_obj_cache():

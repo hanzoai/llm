@@ -1,5 +1,5 @@
 #### What this tests ####
-#    This tests using caching w/ litellm which requires SSL=True
+#    This tests using caching w/ llm which requires SSL=True
 import sys, os
 import traceback
 from dotenv import load_dotenv
@@ -13,9 +13,9 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest, logging, asyncio
-import litellm
-from litellm import embedding, completion, completion_cost, Timeout
-from litellm import RateLimitError
+import llm
+from llm import embedding, completion, completion_cost, Timeout
+from llm import RateLimitError
 
 # Configure logging
 logging.basicConfig(
@@ -26,7 +26,7 @@ logging.basicConfig(
 # test /chat/completion request to the proxy
 from fastapi.testclient import TestClient
 from fastapi import FastAPI
-from litellm.proxy.proxy_server import (
+from llm.proxy.proxy_server import (
     router,
     save_worker_config,
     initialize,
@@ -40,8 +40,8 @@ headers = {"Authorization": f"Bearer {token}"}
 
 @pytest.fixture(scope="function")
 def client_no_auth():
-    # Assuming litellm.proxy.proxy_server is an object
-    from litellm.proxy.proxy_server import cleanup_router_config_variables
+    # Assuming llm.proxy.proxy_server is an object
+    from llm.proxy.proxy_server import cleanup_router_config_variables
 
     cleanup_router_config_variables()
     filepath = os.path.dirname(os.path.abspath(__file__))
@@ -98,7 +98,7 @@ def test_chat_completion(client_no_auth):
         print(response)
         response2_id = response["id"]
         assert response1_id == response2_id
-        litellm.disable_cache()
+        llm.disable_cache()
 
     except Exception as e:
-        pytest.fail(f"LiteLLM Proxy test failed. Exception - {str(e)}")
+        pytest.fail(f"LLM Proxy test failed. Exception - {str(e)}")

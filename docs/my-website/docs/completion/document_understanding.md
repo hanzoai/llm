@@ -18,7 +18,7 @@ Works for:
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm.utils import supports_pdf_input, completion
+from llm.utils import supports_pdf_input, completion
 
 # set aws credentials
 os.environ["AWS_ACCESS_KEY_ID"] = ""
@@ -58,7 +58,7 @@ assert response is not None
 ```yaml
 model_list:
   - model_name: bedrock-model
-    litellm_params:
+    llm_params:
       model: bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY
@@ -68,7 +68,7 @@ model_list:
 2. Start the proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -97,7 +97,7 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm.utils import supports_pdf_input, completion
+from llm.utils import supports_pdf_input, completion
 
 # set aws credentials
 os.environ["AWS_ACCESS_KEY_ID"] = ""
@@ -142,10 +142,10 @@ assert response is not None
 <Tabs>
 <TabItem label="SDK" value="sdk">
 
-Use `litellm.supports_pdf_input(model="bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0")` -> returns `True` if model can accept pdf input
+Use `llm.supports_pdf_input(model="bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0")` -> returns `True` if model can accept pdf input
 
 ```python
-assert litellm.supports_pdf_input(model="bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0") == True
+assert llm.supports_pdf_input(model="bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0") == True
 ```
 </TabItem>
 
@@ -156,7 +156,7 @@ assert litellm.supports_pdf_input(model="bedrock/anthropic.claude-3-5-sonnet-202
 ```yaml
 model_list:
   - model_name: bedrock-model # model group name
-    litellm_params:
+    llm_params:
       model: bedrock/anthropic.claude-3-5-sonnet-20240620-v1:0
       aws_access_key_id: os.environ/AWS_ACCESS_KEY_ID
       aws_secret_access_key: os.environ/AWS_SECRET_ACCESS_KEY
@@ -168,7 +168,7 @@ model_list:
 2. Run proxy server
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 3. Call `/model_group/info` to check if a model supports `pdf` input
@@ -213,7 +213,7 @@ This will be supported for all providers soon.
 
 ```python
 import base64
-from litellm import completion
+from llm import completion
 
 with open("draconomicon.pdf", "rb") as f:
     data = f.read()
@@ -254,7 +254,7 @@ print(completion.choices[0].message.content)
 ```yaml
 model_list:
   - model_name: openai-model
-    litellm_params:
+    llm_params:
       model: gpt-4o
       api_key: os.environ/OPENAI_API_KEY
 ```
@@ -262,7 +262,7 @@ model_list:
 2. Start the proxy
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 3. Test it!

@@ -3,17 +3,17 @@ import TabItem from '@theme/TabItem';
 
 # Using Web Search
 
-Use web search with litellm
+Use web search with llm
 
 | Feature | Details |
 |---------|---------|
 | Supported Endpoints | - `/chat/completions` <br/> - `/responses` |
 | Supported Providers | `openai` |
-| LiteLLM Cost Tracking | ✅ Supported |
-| LiteLLM Version | `v1.63.15-nightly` or higher |
+| LLM Cost Tracking | ✅ Supported |
+| LLM Version | `v1.63.15-nightly` or higher |
 
 
-## `/chat/completions` (litellm.completion)
+## `/chat/completions` (llm.completion)
 
 ### Quick Start
 
@@ -21,7 +21,7 @@ Use web search with litellm
 <TabItem value="sdk" label="SDK">
 
 ```python showLineNumbers
-from litellm import completion
+from llm import completion
 
 response = completion(
     model="openai/gpt-4o-search-preview",
@@ -41,7 +41,7 @@ response = completion(
 ```yaml
 model_list:
   - model_name: gpt-4o-search-preview
-    litellm_params:
+    llm_params:
       model: openai/gpt-4o-search-preview
       api_key: os.environ/OPENAI_API_KEY
 ```
@@ -49,7 +49,7 @@ model_list:
 2. Start the proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -82,7 +82,7 @@ response = client.chat.completions.create(
 <TabItem value="sdk" label="SDK">
 
 ```python showLineNumbers
-from litellm import completion
+from llm import completion
 
 # Customize search context size
 response = completion(
@@ -127,7 +127,7 @@ response = client.chat.completions.create(
 </TabItem>
 </Tabs>
 
-## `/responses` (litellm.responses)
+## `/responses` (llm.responses)
 
 ### Quick Start
 
@@ -135,7 +135,7 @@ response = client.chat.completions.create(
 <TabItem value="sdk" label="SDK">
 
 ```python showLineNumbers
-from litellm import responses
+from llm import responses
 
 response = responses(
     model="openai/gpt-4o",
@@ -158,7 +158,7 @@ response = responses(
 ```yaml
 model_list:
   - model_name: gpt-4o
-    litellm_params:
+    llm_params:
       model: openai/gpt-4o
       api_key: os.environ/OPENAI_API_KEY
 ```
@@ -166,7 +166,7 @@ model_list:
 2. Start the proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 
@@ -199,7 +199,7 @@ print(response.output_text)
 <TabItem value="sdk" label="SDK">
 
 ```python showLineNumbers
-from litellm import responses
+from llm import responses
 
 # Customize search context size
 response = responses(
@@ -253,10 +253,10 @@ print(response.output_text)
 <Tabs>
 <TabItem label="SDK" value="sdk">
 
-Use `litellm.supports_web_search(model="openai/gpt-4o-search-preview")` -> returns `True` if model can perform web searches
+Use `llm.supports_web_search(model="openai/gpt-4o-search-preview")` -> returns `True` if model can perform web searches
 
 ```python showLineNumbers
-assert litellm.supports_web_search(model="openai/gpt-4o-search-preview") == True
+assert llm.supports_web_search(model="openai/gpt-4o-search-preview") == True
 ```
 </TabItem>
 
@@ -267,7 +267,7 @@ assert litellm.supports_web_search(model="openai/gpt-4o-search-preview") == True
 ```yaml
 model_list:
   - model_name: gpt-4o-search-preview
-    litellm_params:
+    llm_params:
       model: openai/gpt-4o-search-preview
       api_key: os.environ/OPENAI_API_KEY
     model_info:
@@ -277,7 +277,7 @@ model_list:
 2. Run proxy server
 
 ```bash
-litellm --config config.yaml
+llm --config config.yaml
 ```
 
 3. Call `/model_group/info` to check if a model supports web search

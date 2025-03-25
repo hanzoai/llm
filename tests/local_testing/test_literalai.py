@@ -8,13 +8,13 @@ import logging
 
 import pytest
 
-import litellm
-from litellm._logging import verbose_logger
-from litellm.integrations.literal_ai import LiteralAILogger
+import llm
+from llm._logging import verbose_logger
+from llm.integrations.literal_ai import LiteralAILogger
 
 verbose_logger.setLevel(logging.DEBUG)
 
-litellm.set_verbose = True
+llm.set_verbose = True
 
 
 @pytest.mark.asyncio
@@ -23,13 +23,13 @@ async def test_literalai_queue_logging():
         # Initialize LiteralAILogger
         test_literalai_logger = LiteralAILogger()
 
-        litellm.callbacks = [test_literalai_logger]
+        llm.callbacks = [test_literalai_logger]
         test_literalai_logger.batch_size = 6
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         # Make multiple calls to ensure we don't hit the batch size
         for _ in range(5):
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Test message"}],
                 max_tokens=10,
@@ -44,7 +44,7 @@ async def test_literalai_queue_logging():
 
         # Now make calls to exceed the batch size
         for _ in range(3):
-            await litellm.acompletion(
+            await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "Test message"}],
                 max_tokens=10,
@@ -64,7 +64,7 @@ async def test_literalai_queue_logging():
         assert len(test_literalai_logger.log_queue) < 5
 
         # Clean up
-        for cb in litellm.callbacks:
+        for cb in llm.callbacks:
             if isinstance(cb, LiteralAILogger):
                 await cb.async_httpx_client.client.aclose()
 

@@ -11,18 +11,18 @@ import TabItem from '@theme/TabItem';
 
 ```python
 # pip install langfuse 
-import litellm
+import llm
 import os
 
 # set env 
 os.environ["BRAINTRUST_API_KEY"] = "" 
 os.environ['OPENAI_API_KEY']=""
 
-# set braintrust as a callback, litellm will send the data to braintrust
-litellm.callbacks = ["braintrust"] 
+# set braintrust as a callback, llm will send the data to braintrust
+llm.callbacks = ["braintrust"] 
  
 # openai call
-response = litellm.completion(
+response = llm.completion(
   model="gpt-3.5-turbo",
   messages=[
     {"role": "user", "content": "Hi 👋 - i'm openai"}
@@ -43,12 +43,12 @@ BRAINTRUST_API_KEY=""
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
 
-litellm_settings:
+llm_settings:
   callbacks: ["braintrust"]
 ```
 
@@ -73,7 +73,7 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 <TabItem value="sdk" label="SDK">
 
 ```python
-response = litellm.completion(
+response = llm.completion(
   model="gpt-3.5-turbo",
   messages=[
     {"role": "user", "content": "Hi 👋 - i'm openai"}
@@ -117,7 +117,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages = [
@@ -126,7 +126,7 @@ response = client.chat.completions.create(
             "content": "this is a test request, write a short poem"
         }
     ],
-    extra_body={ # pass in any provider-specific param, if not supported by openai, https://docs.litellm.ai/docs/completion/input#provider-specific-params
+    extra_body={ # pass in any provider-specific param, if not supported by openai, https://docs.llm.ai/docs/completion/input#provider-specific-params
         "metadata": { # 👈 use for logging additional params (e.g. to langfuse)
             "project_id": "my-special-project"
         }
@@ -147,4 +147,4 @@ Here's everything you can pass in metadata for a braintrust request
 
 `braintrust_*` - any metadata field starting with `braintrust_` will be passed as metadata to the logging request 
 
-`project_id`  - set the project id for a braintrust call. Default is `litellm`. 
+`project_id`  - set the project id for a braintrust call. Default is `llm`. 

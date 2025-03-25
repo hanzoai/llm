@@ -10,10 +10,10 @@ sys.path.insert(
     0, os.path.abspath("../../..")
 )  # Adds the parent directory to the system path
 
-from litellm.caching.redis_cluster_cache import RedisClusterCache
+from llm.caching.redis_cluster_cache import RedisClusterCache
 
 
-@patch("litellm._redis.init_redis_cluster")
+@patch("llm._redis.init_redis_cluster")
 def test_redis_cluster_batch_get(mock_init_redis_cluster):
     """
     Test that RedisClusterCache uses mget_nonatomic instead of mget for batch operations
@@ -39,7 +39,7 @@ def test_redis_cluster_batch_get(mock_init_redis_cluster):
 
 
 @pytest.mark.asyncio
-@patch("litellm._redis.init_redis_cluster")
+@patch("llm._redis.init_redis_cluster")
 async def test_redis_cluster_async_batch_get(mock_init_redis_cluster):
     """
     Test that RedisClusterCache uses mget_nonatomic instead of mget for async batch operations

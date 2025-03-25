@@ -18,7 +18,7 @@ Go to `Internal Users` -> `+New User`
 </TabItem>
 <TabItem value="api" label="API">
 
-Create a new Internal User on LiteLLM and assign them the role `internal_user`.
+Create a new Internal User on LLM and assign them the role `internal_user`.
 
 ```bash
 curl -X POST '<PROXY_BASE_URL>/user/new' \
@@ -41,7 +41,7 @@ Expected Response
 }
 ```
 
-Here's the available UI roles for a LiteLLM Internal User: 
+Here's the available UI roles for a LLM Internal User: 
 
 Admin Roles:
   - `proxy_admin`: admin over the platform
@@ -116,7 +116,7 @@ Use [Email Notifications](./email.md) to email users onboarding links
 
 :::info 
 
-LiteLLM Enterprise: Enable [SSO login](./ui.md#setup-ssoauth-for-ui)
+LLM Enterprise: Enable [SSO login](./ui.md#setup-ssoauth-for-ui)
 
 :::
 
@@ -151,7 +151,7 @@ Set their role to `Admin Viewer` - this means they can only view usage, caching 
 
 
 ## Available Roles
-Here's the available UI roles for a LiteLLM Internal User: 
+Here's the available UI roles for a LLM Internal User: 
 
 **Admin Roles:**
   - `proxy_admin`: admin over the platform
@@ -178,7 +178,7 @@ export PROXY_LOGOUT_URL="https://www.google.com"
 Automatically apply budget per internal user when they sign up. By default the table will be checked every 10 minutes, for users to reset. To modify this, [see this](./users.md#reset-budgets)
 
 ```yaml
-litellm_settings:
+llm_settings:
   max_internal_user_budget: 10
   internal_user_budget_duration: "1mo" # reset every month
 ```
@@ -203,7 +203,7 @@ This budget does not apply to keys created under non-default teams.
 ```yaml
 general_settings:
   master_key: sk-1234
-  litellm_jwtauth:
+  llm_jwtauth:
     team_ids_jwt_field: "groups" # 👈 CAN BE ANY FIELD
 ```
 
@@ -215,7 +215,7 @@ This is assuming your SSO token looks like this:
 }
 ```
 
-2. Create the teams on LiteLLM 
+2. Create the teams on LLM 
 
 ```bash
 curl -X POST '<PROXY_BASE_URL>/team/new' \
@@ -242,12 +242,12 @@ This will also prevent users from using their session tokens on the test keys ch
 ## **All Settings for Self Serve / SSO Flow**
 
 ```yaml
-litellm_settings:
+llm_settings:
   max_internal_user_budget: 10        # max budget for internal users
   internal_user_budget_duration: "1mo" # reset every month
 
   default_internal_user_params:    # Default Params used when a new user signs in Via SSO
-    user_role: "internal_user"     # one of "internal_user", "internal_user_viewer", "proxy_admin", "proxy_admin_viewer". New SSO users not in litellm will be created as this user
+    user_role: "internal_user"     # one of "internal_user", "internal_user_viewer", "proxy_admin", "proxy_admin_viewer". New SSO users not in llm will be created as this user
     max_budget: 100                # Optional[float], optional): $100 budget for a new SSO sign in user
     budget_duration: 30d           # Optional[str], optional): 30 days budget_duration for a new SSO sign in user
     models: ["gpt-3.5-turbo"]      # Optional[List[str]], optional): models to be used by a new SSO sign in user

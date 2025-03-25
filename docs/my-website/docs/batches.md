@@ -8,7 +8,7 @@ Covers Batches, Files
 | Feature | Supported | Notes | 
 |-------|-------|-------|
 | Supported Providers | OpenAI, Azure, Vertex | - |
-| ✨ Cost Tracking | ✅ | LiteLLM Enterprise only |
+| ✨ Cost Tracking | ✅ | LLM Enterprise only |
 | Logging | ✅ | Works across all logging integrations |
 
 ## Quick Start 
@@ -23,12 +23,12 @@ Covers Batches, Files
 
 
 <Tabs>
-<TabItem value="proxy" label="LiteLLM PROXY Server">
+<TabItem value="proxy" label="LLM PROXY Server">
 
 ```bash
 $ export OPENAI_API_KEY="sk-..."
 
-$ litellm
+$ llm
 
 # RUNNING on http://0.0.0.0:4000
 ```
@@ -78,7 +78,7 @@ curl http://localhost:4000/v1/batches \
 **Create File for Batch Completion**
 
 ```python
-from litellm
+from llm
 import os 
 
 os.environ["OPENAI_API_KEY"] = "sk-.."
@@ -86,7 +86,7 @@ os.environ["OPENAI_API_KEY"] = "sk-.."
 file_name = "openai_batch_completions.jsonl"
 _current_dir = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(_current_dir, file_name)
-file_obj = await litellm.acreate_file(
+file_obj = await llm.acreate_file(
     file=open(file_path, "rb"),
     purpose="batch",
     custom_llm_provider="openai",
@@ -97,10 +97,10 @@ print("Response from creating file=", file_obj)
 **Create Batch Request**
 
 ```python
-from litellm
+from llm
 import os 
 
-create_batch_response = await litellm.acreate_batch(
+create_batch_response = await llm.acreate_batch(
     completion_window="24h",
     endpoint="/v1/chat/completions",
     input_file_id=batch_input_file_id,
@@ -108,14 +108,14 @@ create_batch_response = await litellm.acreate_batch(
     metadata={"key1": "value1", "key2": "value2"},
 )
 
-print("response from litellm.create_batch=", create_batch_response)
+print("response from llm.create_batch=", create_batch_response)
 ```
 
 **Retrieve the Specific Batch and File Content**
 
 ```python
 
-retrieved_batch = await litellm.aretrieve_batch(
+retrieved_batch = await llm.aretrieve_batch(
     batch_id=create_batch_response.id, custom_llm_provider="openai"
 )
 print("retrieved batch=", retrieved_batch)
@@ -125,7 +125,7 @@ assert retrieved_batch.id == create_batch_response.id
 
 # try to get file content for our original file
 
-file_content = await litellm.afile_content(
+file_content = await llm.afile_content(
     file_id=batch_input_file_id, custom_llm_provider="openai"
 )
 
@@ -135,7 +135,7 @@ print("file content = ", file_content)
 **List Batches**
 
 ```python
-list_batches_response = litellm.list_batches(custom_llm_provider="openai", limit=2)
+list_batches_response = llm.list_batches(custom_llm_provider="openai", limit=2)
 print("list_batches_response=", list_batches_response)
 ```
 
@@ -152,7 +152,7 @@ print("list_batches_response=", list_batches_response)
 
 ## How Cost Tracking for Batches API Works
 
-LiteLLM tracks batch processing costs by logging two key events:
+LLM tracks batch processing costs by logging two key events:
 
 | Event Type | Description | When it's Logged |
 |------------|-------------|------------------|
@@ -161,7 +161,7 @@ LiteLLM tracks batch processing costs by logging two key events:
 
 Cost calculation:
 
-- LiteLLM polls the batch status until completion
+- LLM polls the batch status until completion
 - Upon completion, it aggregates usage and costs from all responses in the output file
 - Total `token` and `response_cost` reflect the combined metrics across all batch responses
 
@@ -169,4 +169,4 @@ Cost calculation:
 
 
 
-## [Swagger API Reference](https://litellm-api.up.railway.app/#/batch)
+## [Swagger API Reference](https://llm-api.up.railway.app/#/batch)

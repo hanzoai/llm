@@ -4,27 +4,27 @@ import TabItem from '@theme/TabItem';
 
 # Guardrails - Quick Start
 
-Setup Prompt Injection Detection, PII Masking on LiteLLM Proxy (AI Gateway)
+Setup Prompt Injection Detection, PII Masking on LLM Proxy (AI Gateway)
 
-## 1. Define guardrails on your LiteLLM config.yaml
+## 1. Define guardrails on your LLM config.yaml
 
 Set your guardrails under the `guardrails` section
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: openai/gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
 guardrails:
   - guardrail_name: "aporia-pre-guard"
-    litellm_params:
+    llm_params:
       guardrail: aporia  # supported values: "aporia", "lakera"
       mode: "during_call"
       api_key: os.environ/APORIA_API_KEY_1
       api_base: os.environ/APORIA_API_BASE_1
   - guardrail_name: "aporia-post-guard"
-    litellm_params:
+    llm_params:
       guardrail: aporia  # supported values: "aporia", "lakera"
       mode: "post_call"
       api_key: os.environ/APORIA_API_KEY_2
@@ -47,11 +47,11 @@ guardrails:
 - `during_call` Run **during** LLM call, on **input** Same as `pre_call` but runs in parallel as LLM call.  Response not returned until guardrail check completes
 
 
-## 2. Start LiteLLM Gateway 
+## 2. Start LLM Gateway 
 
 
 ```shell
-litellm --config config.yaml --detailed_debug
+llm --config config.yaml --detailed_debug
 ```
 
 ## 3. Test request 
@@ -130,7 +130,7 @@ Set `default_on: true` in your guardrail config to run the guardrail on every re
 ```yaml
 guardrails:
   - guardrail_name: "aporia-pre-guard"
-    litellm_params:
+    llm_params:
       guardrail: aporia
       mode: "pre_call"
       default_on: true
@@ -155,10 +155,10 @@ curl -i http://localhost:4000/v1/chat/completions \
 
 **Expected response**
 
-Your response headers will incude `x-litellm-applied-guardrails` with the guardrail applied 
+Your response headers will incude `x-llm-applied-guardrails` with the guardrail applied 
 
 ```
-x-litellm-applied-guardrails: aporia-pre-guard
+x-llm-applied-guardrails: aporia-pre-guard
 ```
 
 
@@ -192,7 +192,7 @@ Follow this simple workflow to implement and tune guardrails:
 
 :::info
 
-✨ This is an Enterprise only feature [Get a free trial](https://www.litellm.ai/#trial)
+✨ This is an Enterprise only feature [Get a free trial](https://www.llm.ai/#trial)
 
 :::
 
@@ -235,7 +235,7 @@ This config will return the `/guardrails/list` response above. The `guardrail_in
 >
 ```yaml
 - guardrail_name: "aporia-post-guard"
-    litellm_params:
+    llm_params:
       guardrail: aporia  # supported values: "aporia", "lakera"
       mode: "post_call"
       api_key: os.environ/APORIA_API_KEY_2
@@ -286,7 +286,7 @@ curl -i http://localhost:4000/v1/chat/completions \
 
 :::info
 
-✨ This is an Enterprise only feature [Get a free trial](https://www.litellm.ai/#trial)
+✨ This is an Enterprise only feature [Get a free trial](https://www.llm.ai/#trial)
 
 :::
 
@@ -371,13 +371,13 @@ Monitor which guardrails were executed and whether they passed or failed. e.g. g
 
 :::info
 
-✨ This is an Enterprise only feature [Get a free trial](https://www.litellm.ai/#trial)
+✨ This is an Enterprise only feature [Get a free trial](https://www.llm.ai/#trial)
 
 :::
 
 #### Setup
 
-1. Connect LiteLLM to a [supported logging provider](../logging)
+1. Connect LLM to a [supported logging provider](../logging)
 2. Make a request with a `guardrails` parameter
 3. Check your logging provider for the guardrail trace
 
@@ -396,7 +396,7 @@ Monitor which guardrails were executed and whether they passed or failed. e.g. g
 
 :::info
 
-✨ This is an Enterprise only feature [Get a free trial](https://www.litellm.ai/#trial)
+✨ This is an Enterprise only feature [Get a free trial](https://www.llm.ai/#trial)
 
 :::
 
@@ -458,7 +458,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 
 :::info
 
-✨ This is an Enterprise only feature [Get a free trial](https://www.litellm.ai/#trial)
+✨ This is an Enterprise only feature [Get a free trial](https://www.llm.ai/#trial)
 
 :::
 
@@ -522,7 +522,7 @@ The `pii_masking` guardrail ran on this request because api key=sk-jNm1Zar7XfNdZ
 ```yaml
 guardrails:
   - guardrail_name: string     # Required: Name of the guardrail
-    litellm_params:            # Required: Configuration parameters
+    llm_params:            # Required: Configuration parameters
       guardrail: string        # Required: One of "aporia", "bedrock", "guardrails_ai", "lakera", "presidio", "hide-secrets"
       mode: Union[string, List[string]]             # Required: One or more of "pre_call", "post_call", "during_call", "logging_only"
       api_key: string          # Required: API key for the guardrail service
@@ -534,7 +534,7 @@ guardrails:
 
 ### `guardrails` Request Parameter
 
-The `guardrails` parameter can be passed to any LiteLLM Proxy endpoint (`/chat/completions`, `/completions`, `/embeddings`).
+The `guardrails` parameter can be passed to any LLM Proxy endpoint (`/chat/completions`, `/completions`, `/embeddings`).
 
 #### Format Options
 

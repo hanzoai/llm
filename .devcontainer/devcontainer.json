@@ -39,13 +39,13 @@
 	// More info: https://containers.dev/implementors/json_reference/#port-attributes
 	"portsAttributes": {
 		"4000": {
-			"label": "LiteLLM Server",
+			"label": "LLM Server",
 			"onAutoForward": "notify"
 		}
 	},
 
 	// More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "litellm",
+	// "remoteUser": "llm",
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "pipx install poetry && poetry install -E extra_proxy -E proxy"

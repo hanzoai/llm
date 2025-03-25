@@ -10,12 +10,12 @@ sys.path.insert(
 
 
 from base_rerank_unit_tests import BaseLLMRerankTest
-import litellm
+import llm
 
 
 class TestJinaAI(BaseLLMRerankTest):
-    def get_custom_llm_provider(self) -> litellm.LlmProviders:
-        return litellm.LlmProviders.JINA_AI
+    def get_custom_llm_provider(self) -> llm.LlmProviders:
+        return llm.LlmProviders.JINA_AI
 
     def get_base_rerank_call_args(self) -> dict:
         return {
@@ -24,7 +24,7 @@ class TestJinaAI(BaseLLMRerankTest):
 
 
 def test_jina_ai_embedding():
-    litellm.embedding(
+    llm.embedding(
         model="jina_ai/jina-embeddings-v3",
         input=["a"],
         task="separation",

@@ -2,25 +2,25 @@ import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 💥 LiteLLM Proxy Server
+# 💥 LLM Proxy Server
 
-LiteLLM Server manages:
+LLM Server manages:
 
 * **Unified Interface**: Calling 100+ LLMs [Huggingface/Bedrock/TogetherAI/etc.](#other-supported-models) in the OpenAI `ChatCompletions` & `Completions` format
-* **Load Balancing**: between [Multiple Models](#multiple-models---quick-start) + [Deployments of the same model](#multiple-instances-of-1-model) - LiteLLM proxy can handle 1.5k+ requests/second during load tests.
+* **Load Balancing**: between [Multiple Models](#multiple-models---quick-start) + [Deployments of the same model](#multiple-instances-of-1-model) - LLM proxy can handle 1.5k+ requests/second during load tests.
 * **Cost tracking**: Authentication & Spend Tracking [Virtual Keys](#managing-auth---virtual-keys)
 
-[**See LiteLLM Proxy code**](https://github.com/BerriAI/litellm/tree/main/litellm/proxy)
+[**See LLM Proxy code**](https://github.com/BerriAI/llm/tree/main/llm/proxy)
 
 ## Quick Start 
-View all the supported args for the Proxy CLI [here](https://docs.litellm.ai/docs/simple_proxy#proxy-cli-arguments)
+View all the supported args for the Proxy CLI [here](https://docs.llm.ai/docs/simple_proxy#proxy-cli-arguments)
 
 ```shell
-$ pip install 'litellm[proxy]'
+$ pip install 'llm[proxy]'
 ```
 
 ```shell
-$ litellm --model huggingface/bigcode/starcoder
+$ llm --model huggingface/bigcode/starcoder
 
 #INFO: Proxy running on http://0.0.0.0:4000
 ```
@@ -28,12 +28,12 @@ $ litellm --model huggingface/bigcode/starcoder
 ### Test
 In a new shell, run, this will make an `openai.chat.completions` request. Ensure you're using openai v1.0.0+
 ```shell
-litellm --test
+llm --test
 ```
 
 This will now automatically route any requests for gpt-3.5-turbo to bigcode starcoder, hosted on huggingface inference endpoints. 
 
-### Using LiteLLM Proxy - Curl Request, OpenAI Package
+### Using LLM Proxy - Curl Request, OpenAI Package
 
 <Tabs>
 <TabItem value="Curl" label="Curl Request">
@@ -62,7 +62,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="gpt-3.5-turbo", messages = [
     {
         "role": "user",
@@ -85,7 +85,7 @@ print(response)
 - POST `/key/generate` - generate a key to access the proxy
 
 ### Supported LLMs
-All LiteLLM supported LLMs are supported on the Proxy. Seel all [supported llms](https://docs.litellm.ai/docs/providers)
+All LLM supported LLMs are supported on the Proxy. Seel all [supported llms](https://docs.llm.ai/docs/providers)
 <Tabs>
 <TabItem value="bedrock" label="AWS Bedrock">
 
@@ -96,7 +96,7 @@ $ export AWS_SECRET_ACCESS_KEY=
 ```
 
 ```shell
-$ litellm --model bedrock/anthropic.claude-v2
+$ llm --model bedrock/anthropic.claude-v2
 ```
 </TabItem>
 <TabItem value="azure" label="Azure OpenAI">
@@ -106,7 +106,7 @@ $ export AZURE_API_KEY=my-api-key
 $ export AZURE_API_BASE=my-api-base
 ```
 ```
-$ litellm --model azure/my-deployment-name
+$ llm --model azure/my-deployment-name
 ```
 
 </TabItem>
@@ -117,7 +117,7 @@ $ export OPENAI_API_KEY=my-api-key
 ```
 
 ```shell
-$ litellm --model gpt-3.5-turbo
+$ llm --model gpt-3.5-turbo
 ```
 </TabItem>
 <TabItem value="huggingface" label="Huggingface (TGI) Deployed">
@@ -126,14 +126,14 @@ $ litellm --model gpt-3.5-turbo
 $ export HUGGINGFACE_API_KEY=my-api-key #[OPTIONAL]
 ```
 ```shell
-$ litellm --model huggingface/<your model name> --api_base https://k58ory32yinf1ly0.us-east-1.aws.endpoints.huggingface.cloud
+$ llm --model huggingface/<your model name> --api_base https://k58ory32yinf1ly0.us-east-1.aws.endpoints.huggingface.cloud
 ```
 
 </TabItem>
 <TabItem value="huggingface-local" label="Huggingface (TGI) Local">
 
 ```shell
-$ litellm --model huggingface/<your model name> --api_base http://0.0.0.0:8001
+$ llm --model huggingface/<your model name> --api_base http://0.0.0.0:8001
 ```
 
 </TabItem>
@@ -146,7 +146,7 @@ export AWS_SECRET_ACCESS_KEY=
 ```
 
 ```shell
-$ litellm --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-7b
+$ llm --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-7b
 ```
 
 </TabItem>
@@ -156,7 +156,7 @@ $ litellm --model sagemaker/jumpstart-dft-meta-textgeneration-llama-2-7b
 $ export ANTHROPIC_API_KEY=my-api-key
 ```
 ```shell
-$ litellm --model claude-instant-1
+$ llm --model claude-instant-1
 ```
 
 </TabItem>
@@ -164,7 +164,7 @@ $ litellm --model claude-instant-1
 Assuming you're running vllm locally
 
 ```shell
-$ litellm --model vllm/facebook/opt-125m
+$ llm --model vllm/facebook/opt-125m
 ```
 </TabItem>
 <TabItem value="together_ai" label="TogetherAI">
@@ -173,7 +173,7 @@ $ litellm --model vllm/facebook/opt-125m
 $ export TOGETHERAI_API_KEY=my-api-key
 ```
 ```shell
-$ litellm --model together_ai/lmsys/vicuna-13b-v1.5-16k
+$ llm --model together_ai/lmsys/vicuna-13b-v1.5-16k
 ```
 
 </TabItem>
@@ -184,7 +184,7 @@ $ litellm --model together_ai/lmsys/vicuna-13b-v1.5-16k
 $ export REPLICATE_API_KEY=my-api-key
 ```
 ```shell
-$ litellm \
+$ llm \
   --model replicate/meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3
 ```
 
@@ -193,7 +193,7 @@ $ litellm \
 <TabItem value="petals" label="Petals">
 
 ```shell
-$ litellm --model petals/meta-llama/Llama-2-70b-chat-hf
+$ llm --model petals/meta-llama/Llama-2-70b-chat-hf
 ```
 
 </TabItem>
@@ -204,7 +204,7 @@ $ litellm --model petals/meta-llama/Llama-2-70b-chat-hf
 $ export PALM_API_KEY=my-palm-key
 ```
 ```shell
-$ litellm --model palm/chat-bison
+$ llm --model palm/chat-bison
 ```
 
 </TabItem>
@@ -216,7 +216,7 @@ $ export AI21_API_KEY=my-api-key
 ```
 
 ```shell
-$ litellm --model j2-light
+$ llm --model j2-light
 ```
 
 </TabItem>
@@ -228,7 +228,7 @@ $ export COHERE_API_KEY=my-api-key
 ```
 
 ```shell
-$ litellm --model command-nightly
+$ llm --model command-nightly
 ```
 
 </TabItem>
@@ -237,7 +237,7 @@ $ litellm --model command-nightly
 
 
 ## Using with OpenAI compatible projects
-Set `base_url` to the LiteLLM Proxy server
+Set `base_url` to the LLM Proxy server
 
 <Tabs>
 <TabItem value="openai" label="OpenAI v1.0.0+">
@@ -249,7 +249,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="gpt-3.5-turbo", messages = [
     {
         "role": "user",
@@ -263,9 +263,9 @@ print(response)
 </TabItem>
 <TabItem value="librechat" label="LibreChat">
 
-#### Start the LiteLLM proxy
+#### Start the LLM proxy
 ```shell
-litellm --model gpt-3.5-turbo
+llm --model gpt-3.5-turbo
 
 #INFO: Proxy running on http://0.0.0.0:4000
 ```
@@ -278,7 +278,7 @@ git clone https://github.com/danny-avila/LibreChat.git
 
 
 #### 2. Modify Librechat's `docker-compose.yml`
-LiteLLM Proxy is running on port `4000`, set `4000` as the proxy below
+LLM Proxy is running on port `4000`, set `4000` as the proxy below
 ```yaml
 OPENAI_REVERSE_PROXY=http://host.docker.internal:4000/v1/chat/completions
 ```
@@ -332,7 +332,7 @@ from autogen import AssistantAgent, UserProxyAgent, oai
 config_list=[
     {
         "model": "my-fake-model",
-        "api_base": "http://localhost:4000",  #litellm compatible endpoint
+        "api_base": "http://localhost:4000",  #llm compatible endpoint
         "api_type": "open_ai",
         "api_key": "NULL", # just a placeholder
     }
@@ -362,7 +362,7 @@ https://github.com/guidance-ai/guidance
 **Fix**: Start your proxy using the `--drop_params` flag
 
 ```shell
-litellm --model ollama/codellama --temperature 0.3 --max_tokens 2048 --drop_params
+llm --model ollama/codellama --temperature 0.3 --max_tokens 2048 --drop_params
 ```
 
 ```python
@@ -401,7 +401,7 @@ The Config allows you to set the following params
 | Param Name           | Description                                                   |
 |----------------------|---------------------------------------------------------------|
 | `model_list`         | List of supported models on the server, with model-specific configs |
-| `litellm_settings`   | litellm Module settings, example `litellm.drop_params=True`, `litellm.set_verbose=True`, `litellm.api_base`, `litellm.cache` |
+| `llm_settings`   | llm Module settings, example `llm.drop_params=True`, `llm.set_verbose=True`, `llm.api_base`, `llm.cache` |
 | `general_settings`   | Server settings, example setting `master_key: sk-my_special_key` |
 | `environment_variables`   | Environment Variables example, `REDIS_HOST`, `REDIS_PORT` |
 
@@ -409,25 +409,25 @@ The Config allows you to set the following params
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/gpt-turbo-small-eu
       api_base: https://my-endpoint-europe-berri-992.openai.azure.com/
       api_key: 
       rpm: 6      # Rate limit for this deployment: in requests per minute (rpm)
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/gpt-turbo-small-ca
       api_base: https://my-endpoint-canada-berri992.openai.azure.com/
       api_key: 
       rpm: 6
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/gpt-turbo-large
       api_base: https://openai-france-1234.openai.azure.com/
       api_key: 
       rpm: 1440
 
-litellm_settings:
+llm_settings:
   drop_params: True
   set_verbose: True
 
@@ -451,15 +451,15 @@ Here's how you can use multiple llms with one proxy `config.yaml`.
 ```yaml
 model_list:
   - model_name: zephyr-alpha # the 1st model is the default on the proxy
-    litellm_params: # params for litellm.completion() - https://docs.litellm.ai/docs/completion/input#input---request-body
+    llm_params: # params for llm.completion() - https://docs.llm.ai/docs/completion/input#input---request-body
       model: huggingface/HuggingFaceH4/zephyr-7b-alpha
       api_base: http://0.0.0.0:8001
   - model_name: gpt-4
-    litellm_params:
+    llm_params:
       model: gpt-4
       api_key: sk-1233
   - model_name: claude-2
-    litellm_params:
+    llm_params:
       model: claude-2
       api_key: sk-claude    
 ```
@@ -473,7 +473,7 @@ The proxy uses the first model in the config as the default model - in this conf
 #### Step 2: Start Proxy with config
 
 ```shell
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 #### Step 3: Use proxy
@@ -494,26 +494,26 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 ```
 
 ### Load Balancing - Multiple Instances of 1 model
-Use this config to load balance between multiple instances of the same model. The proxy will handle routing requests (using LiteLLM's Router). **Set `rpm` in the config if you want maximize throughput**
+Use this config to load balance between multiple instances of the same model. The proxy will handle routing requests (using LLM's Router). **Set `rpm` in the config if you want maximize throughput**
 
 #### Example config
 requests with `model=gpt-3.5-turbo` will be routed across multiple instances of `azure/gpt-3.5-turbo`
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/gpt-turbo-small-eu
       api_base: https://my-endpoint-europe-berri-992.openai.azure.com/
       api_key: 
       rpm: 6      # Rate limit for this deployment: in requests per minute (rpm)
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/gpt-turbo-small-ca
       api_base: https://my-endpoint-canada-berri992.openai.azure.com/
       api_key: 
       rpm: 6
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/gpt-turbo-large
       api_base: https://openai-france-1234.openai.azure.com/
       api_key: 
@@ -523,7 +523,7 @@ model_list:
 #### Step 2: Start Proxy with config
 
 ```shell
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 #### Step 3: Use proxy
@@ -549,33 +549,33 @@ If a call fails after num_retries, fall back to another model group.
 
 If the error is a context window exceeded error, fall back to a larger model group (if given).
 
-[**See Code**](https://github.com/BerriAI/litellm/blob/main/litellm/router.py)
+[**See Code**](https://github.com/BerriAI/llm/blob/main/llm/router.py)
 
 **Set via config**
 ```yaml
 model_list:
   - model_name: zephyr-beta
-    litellm_params:
+    llm_params:
         model: huggingface/HuggingFaceH4/zephyr-7b-beta
         api_base: http://0.0.0.0:8001
   - model_name: zephyr-beta
-    litellm_params:
+    llm_params:
         model: huggingface/HuggingFaceH4/zephyr-7b-beta
         api_base: http://0.0.0.0:8002
   - model_name: zephyr-beta
-    litellm_params:
+    llm_params:
         model: huggingface/HuggingFaceH4/zephyr-7b-beta
         api_base: http://0.0.0.0:8003
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
         model: gpt-3.5-turbo
         api_key: <my-openai-key>
   - model_name: gpt-3.5-turbo-16k
-    litellm_params:
+    llm_params:
         model: gpt-3.5-turbo-16k
         api_key: <my-openai-key>
 
-litellm_settings:
+llm_settings:
   num_retries: 3 # retry call 3 times on each model_name (e.g. zephyr-beta)
   request_timeout: 10 # raise Timeout error if call takes longer than 10s
   fallbacks: [{"zephyr-beta": ["gpt-3.5-turbo"]}] # fallback to gpt-3.5-turbo if call fails num_retries 
@@ -607,24 +607,24 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 ### Config for Embedding Models - xorbitsai/inference
 
 Here's how you can use multiple llms with one proxy `config.yaml`. 
-Here is how [LiteLLM calls OpenAI Compatible Embedding models](https://docs.litellm.ai/docs/embedding/supported_embedding#openai-compatible-embedding-models)
+Here is how [LLM calls OpenAI Compatible Embedding models](https://docs.llm.ai/docs/embedding/supported_embedding#openai-compatible-embedding-models)
 
 #### Config
 ```yaml
 model_list:
   - model_name: custom_embedding_model
-    litellm_params:
-      model: openai/custom_embedding  # the `openai/` prefix tells litellm it's openai compatible
+    llm_params:
+      model: openai/custom_embedding  # the `openai/` prefix tells llm it's openai compatible
       api_base: http://0.0.0.0:4000/
   - model_name: custom_embedding_model
-    litellm_params:
-      model: openai/custom_embedding  # the `openai/` prefix tells litellm it's openai compatible
+    llm_params:
+      model: openai/custom_embedding  # the `openai/` prefix tells llm it's openai compatible
       api_base: http://0.0.0.0:8001/
 ```
 
 Run the proxy using this config
 ```shell
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 
@@ -638,17 +638,17 @@ Requirements:
 
 You can then generate temporary keys by hitting the `/key/generate` endpoint.
 
-[**See code**](https://github.com/BerriAI/litellm/blob/7a669a36d2689c7f7890bc9c93e04ff3c2641299/litellm/proxy/proxy_server.py#L672)
+[**See code**](https://github.com/BerriAI/llm/blob/7a669a36d2689c7f7890bc9c93e04ff3c2641299/llm/proxy/proxy_server.py#L672)
 
 **Step 1: Save postgres db url**
 
 ```yaml
 model_list:
   - model_name: gpt-4
-    litellm_params:
+    llm_params:
         model: ollama/llama2
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
         model: ollama/llama2
 
 general_settings: 
@@ -656,10 +656,10 @@ general_settings:
   database_url: "postgresql://<user>:<password>@<host>:<port>/<dbname>"
 ```
 
-**Step 2: Start litellm**
+**Step 2: Start llm**
 
 ```shell
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 **Step 3: Generate temporary keys**
@@ -699,19 +699,19 @@ Here's how you can do that:
 ```yaml
 model_list:
   - model_name: my-free-tier
-    litellm_params:
+    llm_params:
         model: huggingface/HuggingFaceH4/zephyr-7b-beta
         api_base: http://0.0.0.0:8001
   - model_name: my-free-tier
-    litellm_params:
+    llm_params:
         model: huggingface/HuggingFaceH4/zephyr-7b-beta
         api_base: http://0.0.0.0:8002
   - model_name: my-free-tier
-    litellm_params:
+    llm_params:
         model: huggingface/HuggingFaceH4/zephyr-7b-beta
         api_base: http://0.0.0.0:8003
 	- model_name: my-paid-tier
-    litellm_params:
+    llm_params:
         model: gpt-4
         api_key: my-api-key
 ```
@@ -730,7 +730,7 @@ curl -X POST "https://0.0.0.0:4000/key/generate" \
 ```
 
 - **How to upgrade / downgrade request?** Change the alias mapping
-- **How are routing between diff keys/api bases done?** litellm handles this by shuffling between different models in the model list with the same model_name. [**See Code**](https://github.com/BerriAI/litellm/blob/main/litellm/router.py)
+- **How are routing between diff keys/api bases done?** llm handles this by shuffling between different models in the model list with the same model_name. [**See Code**](https://github.com/BerriAI/llm/blob/main/llm/router.py)
 
 ### Managing Auth - Tracking Spend 
 
@@ -742,7 +742,7 @@ curl 'http://0.0.0.0:4000/key/info?key=<user-key>' \
      -H 'Authorization: Bearer <your-master-key>'
 ```
 
-This is automatically updated (in USD) when calls are made to /completions, /chat/completions, /embeddings using litellm's completion_cost() function. [**See Code**](https://github.com/BerriAI/litellm/blob/1a6ea20a0bb66491968907c2bfaabb7fe45fc064/litellm/utils.py#L1654). 
+This is automatically updated (in USD) when calls are made to /completions, /chat/completions, /embeddings using llm's completion_cost() function. [**See Code**](https://github.com/BerriAI/llm/blob/1a6ea20a0bb66491968907c2bfaabb7fe45fc064/llm/utils.py#L1654). 
 
 **Sample response**
 
@@ -773,18 +773,18 @@ You can use the config to save model-specific information like api_base, api_key
 ```yaml
 model_list:
   - model_name: gpt-4-team1
-    litellm_params: # params for litellm.completion() - https://docs.litellm.ai/docs/completion/input#input---request-body
+    llm_params: # params for llm.completion() - https://docs.llm.ai/docs/completion/input#input---request-body
       model: azure/chatgpt-v-2
       api_base: https://openai-gpt-4-test-v-1.openai.azure.com/
       api_version: "2023-05-15"
       azure_ad_token: eyJ0eXAiOiJ
   - model_name: gpt-4-team2
-    litellm_params:
+    llm_params:
       model: azure/gpt-4
       api_key: sk-123
       api_base: https://openai-gpt-4-test-v-2.openai.azure.com/
   - model_name: mistral-7b
-    litellm_params:
+    llm_params:
       model: ollama/mistral
       api_base: your_ollama_api_base
 ```
@@ -792,7 +792,7 @@ model_list:
 **Step 2**: Start server with config
 
 ```shell
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 ### Load API Keys from Vault 
@@ -806,14 +806,14 @@ os.environ["AZURE_NORTH_AMERICA_API_KEY"] = "your-azure-api-key"
 ```yaml 
 model_list:
   - model_name: gpt-4-team1
-    litellm_params: # params for litellm.completion() - https://docs.litellm.ai/docs/completion/input#input---request-body
+    llm_params: # params for llm.completion() - https://docs.llm.ai/docs/completion/input#input---request-body
       model: azure/chatgpt-v-2
       api_base: https://openai-gpt-4-test-v-1.openai.azure.com/
       api_version: "2023-05-15"
       api_key: os.environ/AZURE_NORTH_AMERICA_API_KEY
 ```
 
-[**See Code**](https://github.com/BerriAI/litellm/blob/c12d6c3fe80e1b5e704d9846b246c059defadce7/litellm/utils.py#L2366)
+[**See Code**](https://github.com/BerriAI/llm/blob/c12d6c3fe80e1b5e704d9846b246c059defadce7/llm/utils.py#L2366)
 
 s/o to [@David Manouchehri](https://www.linkedin.com/in/davidmanouchehri/) for helping with this. 
 
@@ -828,13 +828,13 @@ In the config below requests with `model=gpt-4` will route to `ollama/llama2`
 ```yaml
 model_list:
   - model_name: text-davinci-003
-    litellm_params:
+    llm_params:
         model: ollama/zephyr
   - model_name: gpt-4
-    litellm_params:
+    llm_params:
         model: ollama/llama2
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
         model: ollama/llama2
 ```
 ### Caching Responses 
@@ -843,17 +843,17 @@ Caching can be enabled by adding the `cache` key in the `config.yaml`
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
 
-litellm_settings:
+llm_settings:
   set_verbose: True
   cache:          # init cache
-    type: redis   # tell litellm to use redis caching
+    type: redis   # tell llm to use redis caching
 ```
 
 #### Step 2: Add Redis Credentials to .env
-LiteLLM requires the following REDIS credentials in your env to enable caching
+LLM requires the following REDIS credentials in your env to enable caching
 
   ```shell
   REDIS_HOST = ""       # REDIS_HOST='redis-18841.c274.us-east-1-3.ec2.cloud.redislabs.com'
@@ -862,7 +862,7 @@ LiteLLM requires the following REDIS credentials in your env to enable caching
   ```
 #### Step 3: Run proxy with config
 ```shell
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 #### Using Caching 
@@ -872,7 +872,7 @@ curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
      "model": "gpt-3.5-turbo",
-     "messages": [{"role": "user", "content": "write a poem about litellm!"}],
+     "messages": [{"role": "user", "content": "write a poem about llm!"}],
      "temperature": 0.7
    }'
 
@@ -880,7 +880,7 @@ curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
      "model": "gpt-3.5-turbo",
-     "messages": [{"role": "user", "content": "write a poem about litellm!"}],
+     "messages": [{"role": "user", "content": "write a poem about llm!"}],
      "temperature": 0.7
    }'
 ```
@@ -893,7 +893,7 @@ Caching can be switched on/off per `/chat/completions` request
   -H "Content-Type: application/json" \
   -d '{
      "model": "gpt-3.5-turbo",
-     "messages": [{"role": "user", "content": "write a poem about litellm!"}],
+     "messages": [{"role": "user", "content": "write a poem about llm!"}],
      "temperature": 0.7,
      "caching": true
    }'
@@ -904,7 +904,7 @@ Caching can be switched on/off per `/chat/completions` request
   -H "Content-Type: application/json" \
   -d '{
      "model": "gpt-3.5-turbo",
-     "messages": [{"role": "user", "content": "write a poem about litellm!"}],
+     "messages": [{"role": "user", "content": "write a poem about llm!"}],
      "temperature": 0.7,
      "caching": false
    }'
@@ -912,14 +912,14 @@ Caching can be switched on/off per `/chat/completions` request
 
 ### Set Custom Prompt Templates
 
-LiteLLM by default checks if a model has a [prompt template and applies it](./completion/prompt_formatting.md) (e.g. if a huggingface model has a saved chat template in it's tokenizer_config.json). However, you can also set a custom prompt template on your proxy in the `config.yaml`: 
+LLM by default checks if a model has a [prompt template and applies it](./completion/prompt_formatting.md) (e.g. if a huggingface model has a saved chat template in it's tokenizer_config.json). However, you can also set a custom prompt template on your proxy in the `config.yaml`: 
 
 **Step 1**: Save your prompt template in a `config.yaml`
 ```yaml
 # Model-specific parameters
 model_list:
   - model_name: mistral-7b # model alias
-    litellm_params: # actual params for litellm.completion()
+    llm_params: # actual params for llm.completion()
       model: "huggingface/mistralai/Mistral-7B-Instruct-v0.1" 
       api_base: "<your-api-base>"
       api_key: "<your-api-key>" # [OPTIONAL] for hf inference endpoints
@@ -934,25 +934,25 @@ model_list:
 **Step 2**: Start server with config
 
 ```shell
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 ## Debugging Proxy 
 Run the proxy with `--debug` to easily view debug logs 
 ```shell
-litellm --model gpt-3.5-turbo --debug
+llm --model gpt-3.5-turbo --debug
 ```
 
 ### Detailed Debug Logs 
 
 Run the proxy with `--detailed_debug` to view detailed debug logs
 ```shell
-litellm --model gpt-3.5-turbo --detailed_debug
+llm --model gpt-3.5-turbo --detailed_debug
 ```
 
-When making requests you should see the POST request sent by LiteLLM to the LLM on the Terminal output
+When making requests you should see the POST request sent by LLM to the LLM on the Terminal output
 ```shell
-POST Request Sent from LiteLLM:
+POST Request Sent from LLM:
 curl -X POST \
 https://api.openai.com/v1/chat/completions \
 -H 'content-type: application/json' -H 'Authorization: Bearer sk-qnWGUIW9****************************************' \
@@ -966,9 +966,9 @@ Use this to health check all LLMs defined in your config.yaml
 curl --location 'http://0.0.0.0:4000/health'
 ```
 
-You can also run `litellm -health` it makes a `get` request to `http://0.0.0.0:4000/health` for you
+You can also run `llm -health` it makes a `get` request to `http://0.0.0.0:4000/health` for you
 ```
-litellm --health
+llm --health
 ```
 #### Response
 ```shell
@@ -1049,7 +1049,7 @@ docker run -p 4317:4317 \
     --config=/etc/otel-collector-config.yaml
 ```
 
-### Step 2 Configure LiteLLM proxy to log on OpenTelemetry
+### Step 2 Configure LLM proxy to log on OpenTelemetry
 
 #### Pip install opentelemetry
 ```shell
@@ -1062,27 +1062,27 @@ pip install opentelemetry-api opentelemetry-sdk opentelemetry-exporter-otlp -U
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/gpt-turbo-small-eu
       api_base: https://my-endpoint-europe-berri-992.openai.azure.com/
       api_key: 
       rpm: 6      # Rate limit for this deployment: in requests per minute (rpm)
 
 general_settings: 
-  otel: True      # set OpenTelemetry=True, on litellm Proxy
+  otel: True      # set OpenTelemetry=True, on llm Proxy
 
 ```
 
 #### Set OTEL collector endpoint
-LiteLLM will read the `OTEL_ENDPOINT` environment variable to send data to your OTEL collector 
+LLM will read the `OTEL_ENDPOINT` environment variable to send data to your OTEL collector 
 
 ```python
 os.environ['OTEL_ENDPOINT'] # defauls to 127.0.0.1:4317 if not provided
 ```
 
-#### Start LiteLLM Proxy
+#### Start LLM Proxy
 ```shell
-litellm -config config.yaml
+llm -config config.yaml
 ```
 
 #### Run a test request to Proxy
@@ -1094,7 +1094,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
     "messages": [
         {
         "role": "user",
-        "content": "request from LiteLLM testing"
+        "content": "request from LLM testing"
         }
     ]
     }'
@@ -1106,7 +1106,7 @@ On successfull logging you should be able to see this log on your `OpenTelemetry
 ```shell
 Events:
 SpanEvent #0
-     -> Name: LiteLLM: Request Input
+     -> Name: LLM: Request Input
      -> Timestamp: 2023-12-02 05:05:53.71063 +0000 UTC
      -> DroppedAttributesCount: 0
      -> Attributes::
@@ -1130,7 +1130,7 @@ SpanEvent #0
           -> path_params: Str({})
           -> route: Str(APIRoute(path='/chat/completions', name='chat_completion', methods=['POST']))
 SpanEvent #1
-     -> Name: LiteLLM: Request Headers
+     -> Name: LLM: Request Headers
      -> Timestamp: 2023-12-02 05:05:53.710652 +0000 UTC
      -> DroppedAttributesCount: 0
      -> Attributes::
@@ -1149,7 +1149,7 @@ Here's the log view on Elastic Search. You can see the request `input`, `output`
 <Image img={require('../img/elastic_otel.png')} />
 
 ## Logging Proxy Input/Output - Langfuse
-We will use the `--config` to set `litellm.success_callback = ["langfuse"]` this will log all successfull LLM calls to langfuse
+We will use the `--config` to set `llm.success_callback = ["langfuse"]` this will log all successfull LLM calls to langfuse
 
 **Step 1** Install langfuse
 
@@ -1157,13 +1157,13 @@ We will use the `--config` to set `litellm.success_callback = ["langfuse"]` this
 pip install langfuse
 ```
 
-**Step 2**: Create a `config.yaml` file and set `litellm_settings`: `success_callback`
+**Step 2**: Create a `config.yaml` file and set `llm_settings`: `success_callback`
 ```yaml
 model_list:
  - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
-litellm_settings:
+llm_settings:
   success_callback: ["langfuse"]
 ```
 
@@ -1171,32 +1171,32 @@ litellm_settings:
 
 Start proxy
 ```shell
-litellm --config config.yaml --debug
+llm --config config.yaml --debug
 ```
 
 Test Request
 ```
-litellm --test
+llm --test
 ```
 
 Expected output on Langfuse
 
 <Image img={require('../img/langfuse_small.png')} />
 
-## Deploying LiteLLM Proxy
+## Deploying LLM Proxy
 
 ### Deploy on Render https://render.com/
 
 <iframe width="840" height="500" src="https://www.loom.com/embed/805964b3c8384b41be180a61442389a3" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
-## LiteLLM Proxy Performance
+## LLM Proxy Performance
 
 ### Throughput - 30% Increase
-LiteLLM proxy + Load Balancer gives **30% increase** in throughput compared to Raw OpenAI API
+LLM proxy + Load Balancer gives **30% increase** in throughput compared to Raw OpenAI API
 <Image img={require('../img/throughput.png')} />
 
 ### Latency Added - 0.00325 seconds
-LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI API
+LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI API
 <Image img={require('../img/latency.png')} />
 
 
@@ -1209,7 +1209,7 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - The host for the server to listen on.
    - **Usage:** 
      ```shell
-     litellm --host 127.0.0.1
+     llm --host 127.0.0.1
      ```
 
 #### --port
@@ -1217,7 +1217,7 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - The port to bind the server to.
    - **Usage:** 
      ```shell
-     litellm --port 8080
+     llm --port 8080
      ```
 
 #### --num_workers
@@ -1225,15 +1225,15 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - The number of uvicorn workers to spin up.
    - **Usage:** 
      ```shell
-     litellm --num_workers 4
+     llm --num_workers 4
      ```
 
 #### --api_base
    - **Default:** `None`
-   - The API base for the model litellm should call.
+   - The API base for the model llm should call.
    - **Usage:** 
      ```shell
-     litellm --model huggingface/tinyllama --api_base https://k58ory32yinf1ly0.us-east-1.aws.endpoints.huggingface.cloud
+     llm --model huggingface/tinyllama --api_base https://k58ory32yinf1ly0.us-east-1.aws.endpoints.huggingface.cloud
      ```
 
 #### --api_version
@@ -1241,7 +1241,7 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - For Azure services, specify the API version.
    - **Usage:** 
      ```shell
-     litellm --model azure/gpt-deployment --api_version 2023-08-01 --api_base https://<your api base>"
+     llm --model azure/gpt-deployment --api_version 2023-08-01 --api_base https://<your api base>"
      ```
 
 #### --model or -m
@@ -1249,7 +1249,7 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - The model name to pass to Litellm.
    - **Usage:** 
      ```shell
-     litellm --model gpt-3.5-turbo
+     llm --model gpt-3.5-turbo
      ```
 
 #### --test
@@ -1257,7 +1257,7 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - Proxy chat completions URL to make a test request.
    - **Usage:** 
      ```shell
-     litellm --test
+     llm --test
      ```
 
 #### --health
@@ -1265,7 +1265,7 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - Runs a health check on all models in config.yaml
    - **Usage:** 
      ```shell
-     litellm --health
+     llm --health
      ```
 
 #### --alias
@@ -1273,7 +1273,7 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - An alias for the model, for user-friendly reference.
    - **Usage:** 
      ```shell
-     litellm --alias my-gpt-model
+     llm --alias my-gpt-model
      ```
 
 #### --debug
@@ -1282,7 +1282,7 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - Enable debugging mode for the input.
    - **Usage:** 
      ```shell
-     litellm --debug
+     llm --debug
      ```
 #### --detailed_debug
    - **Default:** `False`
@@ -1290,7 +1290,7 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - Enable debugging mode for the input.
    - **Usage:** 
      ```shell
-     litellm --detailed_debug
+     llm --detailed_debug
      ```
 
 #### --temperature
@@ -1299,7 +1299,7 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - Set the temperature for the model.
    - **Usage:** 
      ```shell
-     litellm --temperature 0.7
+     llm --temperature 0.7
      ```
 
 #### --max_tokens
@@ -1308,7 +1308,7 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - Set the maximum number of tokens for the model output.
    - **Usage:** 
      ```shell
-     litellm --max_tokens 50
+     llm --max_tokens 50
      ```
 
 #### --request_timeout
@@ -1317,7 +1317,7 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - Set the timeout in seconds for completion calls.
    - **Usage:** 
      ```shell
-     litellm --request_timeout 300
+     llm --request_timeout 300
      ```
 
 #### --drop_params
@@ -1325,7 +1325,7 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - Drop any unmapped params.
    - **Usage:** 
      ```shell
-     litellm --drop_params
+     llm --drop_params
      ```
 
 #### --add_function_to_prompt
@@ -1333,14 +1333,14 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - If a function passed but unsupported, pass it as a part of the prompt.
    - **Usage:** 
      ```shell
-     litellm --add_function_to_prompt
+     llm --add_function_to_prompt
      ```
 
 #### --config
    - Configure Litellm by providing a configuration file path.
    - **Usage:** 
      ```shell
-     litellm --config path/to/config.yaml
+     llm --config path/to/config.yaml
      ```
 
 #### --telemetry
@@ -1349,5 +1349,5 @@ LiteLLM proxy adds **0.00325 seconds** latency as compared to using the Raw Open
    - Help track usage of this feature.
    - **Usage:** 
      ```shell
-     litellm --telemetry False
+     llm --telemetry False
      ```

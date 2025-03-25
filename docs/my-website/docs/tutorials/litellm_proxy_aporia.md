@@ -2,9 +2,9 @@ import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Aporia Guardrails with LiteLLM Gateway
+# Aporia Guardrails with LLM Gateway
 
-In this tutorial we will use LiteLLM AI Gateway with Aporia to detect PII in requests and profanity in responses
+In this tutorial we will use LLM AI Gateway with Aporia to detect PII in requests and profanity in responses
 
 ## 1. Setup guardrails on Aporia
 
@@ -32,25 +32,25 @@ Add the `Toxicity - Response` to your Post LLM API Call project
 <Image img={require('../../img/aporia_post.png')} />
 
 
-## 2. Define Guardrails on your LiteLLM config.yaml 
+## 2. Define Guardrails on your LLM config.yaml 
 
 - Define your guardrails under the `guardrails` section and set `pre_call_guardrails` and `post_call_guardrails`
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: openai/gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 
 guardrails:
   - guardrail_name: "aporia-pre-guard"
-    litellm_params:
+    llm_params:
       guardrail: aporia  # supported values: "aporia", "lakera"
       mode: "during_call"
       api_key: os.environ/APORIA_API_KEY_1
       api_base: os.environ/APORIA_API_BASE_1
   - guardrail_name: "aporia-post-guard"
-    litellm_params:
+    llm_params:
       guardrail: aporia  # supported values: "aporia", "lakera"
       mode: "post_call"
       api_key: os.environ/APORIA_API_KEY_2
@@ -63,11 +63,11 @@ guardrails:
 - `post_call` Run **after** LLM call, on **input & output**
 - `during_call` Run **during** LLM call, on **input** Same as `pre_call` but runs in parallel as LLM call.  Response not returned until guardrail check completes
 
-## 3. Start LiteLLM Gateway 
+## 3. Start LLM Gateway 
 
 
 ```shell
-litellm --config config.yaml --detailed_debug
+llm --config config.yaml --detailed_debug
 ```
 
 ## 4. Test request 

@@ -11,7 +11,7 @@ sys.path.insert(
 
 import time
 
-from litellm.litellm_core_utils.litellm_logging import Logging as LitellmLogging
+from llm.litellm_core_utils.litellm_logging import Logging as LitellmLogging
 
 
 @pytest.fixture

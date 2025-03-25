@@ -20,11 +20,11 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 
 import logging
-from litellm.proxy.management_endpoints.sso_helper_utils import (
+from llm.proxy.management_endpoints.sso_helper_utils import (
     check_is_admin_only_access,
     has_admin_ui_access,
 )
-from litellm.proxy._types import LitellmUserRoles
+from llm.proxy._types import LitellmUserRoles
 
 
 def test_check_is_admin_only_access():

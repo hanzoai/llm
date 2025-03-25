@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 # IBM watsonx.ai
 
-LiteLLM supports all IBM [watsonx.ai](https://watsonx.ai/) foundational models and embeddings.
+LLM supports all IBM [watsonx.ai](https://watsonx.ai/) foundational models and embeddings.
 
 ## Environment Variables
 ```python
@@ -21,13 +21,13 @@ See [here](https://cloud.ibm.com/apidocs/watsonx-ai#api-authentication) for more
 
 ## Usage
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/litellm/blob/main/cookbook/liteLLM_IBM_Watsonx.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/llm_IBM_Watsonx.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 os.environ["WATSONX_URL"] = ""
 os.environ["WATSONX_APIKEY"] = ""
@@ -50,7 +50,7 @@ response = completion(
 ## Usage - Streaming
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 os.environ["WATSONX_URL"] = ""
 os.environ["WATSONX_APIKEY"] = ""
@@ -94,8 +94,8 @@ Models that have been deployed to a deployment space (e.g.: tuned models) can be
 The ID of your deployment space must also be set in the environment variable `WATSONX_DEPLOYMENT_SPACE_ID` or passed to the function as `space_id=<deployment_space_id>`. 
 
 ```python
-import litellm
-response = litellm.completion(
+import llm
+response = llm.completion(
     model="watsonx/deployment/<deployment_id>",
     messages=[{"content": "Hello, how are you?", "role": "user"}],
     space_id="<deployment_space_id>"
@@ -104,10 +104,10 @@ response = litellm.completion(
 
 ## Usage - Embeddings
 
-LiteLLM also supports making requests to IBM watsonx.ai embedding models. The credential needed for this is the same as for completion.
+LLM also supports making requests to IBM watsonx.ai embedding models. The credential needed for this is the same as for completion.
 
 ```python
-from litellm import embedding
+from llm import embedding
 
 response = embedding(
     model="watsonx/ibm/slate-30m-english-rtrvr",
@@ -120,7 +120,7 @@ print(response)
 
 ## OpenAI Proxy Usage 
 
-Here's how to call IBM watsonx.ai with the LiteLLM Proxy Server
+Here's how to call IBM watsonx.ai with the LLM Proxy Server
 
 ### 1. Save keys in your environment
 
@@ -136,7 +136,7 @@ export WATSONX_PROJECT_ID=""
 <TabItem value="cli" label="CLI">
 
 ```bash
-$ litellm --model watsonx/meta-llama/llama-3-8b-instruct
+$ llm --model watsonx/meta-llama/llama-3-8b-instruct
 
 # Server running on http://0.0.0.0:4000
 ```
@@ -147,8 +147,8 @@ $ litellm --model watsonx/meta-llama/llama-3-8b-instruct
 ```yaml
 model_list:
   - model_name: llama-3-8b
-    litellm_params:
-      # all params accepted by litellm.completion()
+    llm_params:
+      # all params accepted by llm.completion()
       model: watsonx/meta-llama/llama-3-8b-instruct
       api_key: "os.environ/WATSONX_API_KEY" # does os.getenv("WATSONX_API_KEY")
 ```
@@ -185,7 +185,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(model="llama-3-8b", messages=[
     {
         "role": "user",
@@ -209,7 +209,7 @@ from langchain.prompts.chat import (
 from langchain.schema import HumanMessage, SystemMessage
 
 chat = ChatOpenAI(
-    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LiteLLM Proxy
+    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LLM Proxy
     model = "llama-3-8b",
     temperature=0.1
 )
@@ -219,7 +219,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -238,7 +238,7 @@ You can also pass the credentials as parameters to the completion and embedding 
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 
 response = completion(
             model="watsonx/ibm/granite-13b-chat-v2",
@@ -252,7 +252,7 @@ response = completion(
 
 ## Supported IBM watsonx.ai Models
 
-Here are some examples of models available in IBM watsonx.ai that you can use with LiteLLM:
+Here are some examples of models available in IBM watsonx.ai that you can use with LLM:
 
 | Mode Name                          | Command                                                                                  |
 |------------------------------------|------------------------------------------------------------------------------------------|

@@ -10,5 +10,5 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 from unittest.mock import MagicMock, patch
 
-from litellm import rerank
-from litellm.llms.custom_httpx.http_handler import HTTPHandler
+from llm import rerank
+from llm.llms.custom_httpx.http_handler import HTTPHandler

@@ -9,9 +9,9 @@ sys.path.insert(
     0, os.path.abspath("../../../..")
 )  # Adds the parent directory to the system path
 
-from litellm.proxy._types import LiteLLM_UserTableFiltered, UserAPIKeyAuth
-from litellm.proxy.management_endpoints.internal_user_endpoints import ui_view_users
-from litellm.proxy.proxy_server import app
+from llm.proxy._types import LLM_UserTableFiltered, UserAPIKeyAuth
+from llm.proxy.management_endpoints.internal_user_endpoints import ui_view_users
+from llm.proxy.proxy_server import app
 
 client = TestClient(app)
 
@@ -41,7 +41,7 @@ async def test_ui_view_users_with_null_email(mocker, caplog):
     mock_prisma_client.db.litellm_usertable.find_many = mock_find_many
 
     # Patch the prisma client import in the endpoint
-    mocker.patch("litellm.proxy.proxy_server.prisma_client", mock_prisma_client)
+    mocker.patch("llm.proxy.proxy_server.prisma_client", mock_prisma_client)
 
     # Call ui_view_users function directly
     response = await ui_view_users(
@@ -53,5 +53,5 @@ async def test_ui_view_users_with_null_email(mocker, caplog):
     )
 
     assert response == [
-        LiteLLM_UserTableFiltered(user_id="test-user-null-email", user_email=None)
+        LLM_UserTableFiltered(user_id="test-user-null-email", user_email=None)
     ]

@@ -1,14 +1,14 @@
 # OpenRouter
-LiteLLM supports all the text / chat / vision models from [OpenRouter](https://openrouter.ai/docs)
+LLM supports all the text / chat / vision models from [OpenRouter](https://openrouter.ai/docs)
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/litellm/blob/main/cookbook/LiteLLM_OpenRouter.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/LLM_OpenRouter.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
 ## Usage
 ```python
 import os
-from litellm import completion
+from llm import completion
 os.environ["OPENROUTER_API_KEY"] = ""
 os.environ["OPENROUTER_API_BASE"] = "" # [OPTIONAL] defaults to https://openrouter.ai/api/v1
 
@@ -24,7 +24,7 @@ response = completion(
 
 ## OpenRouter Completion Models
 
-🚨 LiteLLM supports ALL OpenRouter models, send `model=openrouter/<your-openrouter-model>` to send it to open router. See all openrouter models [here](https://openrouter.ai/models)
+🚨 LLM supports ALL OpenRouter models, send `model=openrouter/<your-openrouter-model>` to send it to open router. See all openrouter models [here](https://openrouter.ai/models)
 
 | Model Name                | Function Call                                       |
 |---------------------------|-----------------------------------------------------|
@@ -41,11 +41,11 @@ response = completion(
 
 ## Passing OpenRouter Params - transforms, models, route
 
-Pass `transforms`, `models`, `route`as arguments to `litellm.completion()`
+Pass `transforms`, `models`, `route`as arguments to `llm.completion()`
 
 ```python
 import os
-from litellm import completion
+from llm import completion
 os.environ["OPENROUTER_API_KEY"] = ""
 
 response = completion(

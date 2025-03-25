@@ -12,9 +12,9 @@ sys.path.insert(
 from datetime import datetime
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from litellm.proxy._types import UserAPIKeyAuth
-from litellm.proxy.hooks.proxy_track_cost_callback import _ProxyDBLogger
-from litellm.types.utils import StandardLoggingPayload
+from llm.proxy._types import UserAPIKeyAuth
+from llm.proxy.hooks.proxy_track_cost_callback import _ProxyDBLogger
+from llm.types.utils import StandardLoggingPayload
 
 
 @pytest.mark.asyncio
@@ -47,7 +47,7 @@ async def test_async_post_call_failure_hook():
 
     # Mock update_database function
     with patch(
-        "litellm.proxy.proxy_server.update_database", new_callable=AsyncMock
+        "llm.proxy.proxy_server.update_database", new_callable=AsyncMock
     ) as mock_update_database:
         # Call the method
         await logger.async_post_call_failure_hook(

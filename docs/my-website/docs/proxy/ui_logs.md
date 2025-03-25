@@ -5,7 +5,7 @@ import TabItem from '@theme/TabItem';
 
 # UI Logs Page
 
-View Spend, Token Usage, Key, Team Name for Each Request to LiteLLM
+View Spend, Token Usage, Key, Team Name for Each Request to LLM
 
 
 <Image img={require('../../img/ui_request_logs.png')}/>
@@ -21,11 +21,11 @@ View Spend, Token Usage, Key, Team Name for Each Request to LiteLLM
 
 
 
-**By default LiteLLM does not track the request and response content.**
+**By default LLM does not track the request and response content.**
 
 ## Tracking - Request / Response Content in Logs Page 
 
-If you want to view request and response content on LiteLLM Logs, you need to opt in with this setting
+If you want to view request and response content on LLM Logs, you need to opt in with this setting
 
 ```yaml
 general_settings:

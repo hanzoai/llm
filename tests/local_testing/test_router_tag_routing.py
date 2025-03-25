@@ -1,5 +1,5 @@
 #### What this tests ####
-# This tests litellm router
+# This tests llm router
 
 import asyncio
 import os
@@ -22,9 +22,9 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import httpx
 from dotenv import load_dotenv
 
-import litellm
-from litellm import Router
-from litellm._logging import verbose_logger
+import llm
+from llm import Router
+from llm._logging import verbose_logger
 
 
 @pytest.mark.asyncio()
@@ -33,7 +33,7 @@ async def test_router_free_paid_tier():
     Pass list of orgs in 1 model definition,
     expect a unique deployment for each to be created
     """
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-4",
@@ -94,7 +94,7 @@ async def test_router_free_paid_tier_embeddings():
     Pass list of orgs in 1 model definition,
     expect a unique deployment for each to be created
     """
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-4",
@@ -158,7 +158,7 @@ async def test_default_tagged_deployments():
     - if a request has tag "default", use default deployment
     """
 
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-4",
@@ -227,10 +227,10 @@ async def test_error_from_tag_routing():
     """
     import logging
 
-    from litellm._logging import verbose_logger
+    from llm._logging import verbose_logger
 
     verbose_logger.setLevel(logging.DEBUG)
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-4",
@@ -270,7 +270,7 @@ async def test_error_from_tag_routing():
 
         pytest.fail("this should have failed - expected it to fail")
     except Exception as e:
-        from litellm.types.router import RouterErrors
+        from llm.types.router import RouterErrors
 
         assert RouterErrors.no_deployments_with_tag_routing.value in str(e)
         print("got expected exception = ", e)
@@ -281,7 +281,7 @@ def test_tag_routing_with_list_of_tags():
     """
     Test that the router can handle a list of tags
     """
-    from litellm.router_strategy.tag_based_routing import is_valid_deployment_tag
+    from llm.router_strategy.tag_based_routing import is_valid_deployment_tag
 
     assert is_valid_deployment_tag(["teamA", "teamB"], ["teamA"])
     assert is_valid_deployment_tag(["teamA", "teamB"], ["teamA", "teamB"])

@@ -13,14 +13,14 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-import litellm
-from litellm.proxy.hooks.prompt_injection_detection import (
+import llm
+from llm.proxy.hooks.prompt_injection_detection import (
     _OPTIONAL_PromptInjectionDetection,
 )
-from litellm import Router, mock_completion
-from litellm.proxy.utils import ProxyLogging
-from litellm.proxy._types import UserAPIKeyAuth, LiteLLMPromptInjectionParams
-from litellm.caching.caching import DualCache
+from llm import Router, mock_completion
+from llm.proxy.utils import ProxyLogging
+from llm.proxy._types import UserAPIKeyAuth, LLMPromptInjectionParams
+from llm.caching.caching import DualCache
 
 
 @pytest.mark.asyncio
@@ -58,7 +58,7 @@ async def test_prompt_injection_attack_invalid_attack():
     """
     Tests if prompt injection detection passes an invalid attack, which contains just 1 word
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
     prompt_injection_detection = _OPTIONAL_PromptInjectionDetection()
 
     _api_key = "sk-12345"
@@ -88,8 +88,8 @@ async def test_prompt_injection_llm_eval():
     """
     Tests if prompt injection detection fails a prompt attack
     """
-    litellm.set_verbose = True
-    _prompt_injection_params = LiteLLMPromptInjectionParams(
+    llm.set_verbose = True
+    _prompt_injection_params = LLMPromptInjectionParams(
         heuristics_check=False,
         vector_db_check=False,
         llm_api_check=True,
@@ -106,7 +106,7 @@ async def test_prompt_injection_llm_eval():
             model_list=[
                 {
                     "model_name": "gpt-3.5-turbo",  # openai model name
-                    "litellm_params": {  # params for litellm completion/embedding call
+                    "litellm_params": {  # params for llm completion/embedding call
                         "model": "azure/chatgpt-v-2",
                         "api_key": os.getenv("AZURE_API_KEY"),
                         "api_version": os.getenv("AZURE_API_VERSION"),

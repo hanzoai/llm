@@ -39,7 +39,7 @@ For Azure calls add the `azure/` prefix to `model`. If your azure deployment nam
 
 ### Hugging Face Inference API
 
-All [`text2text-generation`](https://huggingface.co/models?library=transformers&pipeline_tag=text2text-generation&sort=downloads) and [`text-generation`](https://huggingface.co/models?library=transformers&pipeline_tag=text-generation&sort=downloads) models are supported by liteLLM. You can use any text model from Hugging Face with the following steps:
+All [`text2text-generation`](https://huggingface.co/models?library=transformers&pipeline_tag=text2text-generation&sort=downloads) and [`text-generation`](https://huggingface.co/models?library=transformers&pipeline_tag=text-generation&sort=downloads) models are supported by llm. You can use any text model from Hugging Face with the following steps:
 
 * Copy the `model repo` URL from Hugging Face and set it as the `model` parameter in the completion call.
 * Set `hugging_face` parameter to `True`.
@@ -57,7 +57,7 @@ Here are some examples of supported models:
 
 ### OpenRouter Completion Models
 
-All the text models from [OpenRouter](https://openrouter.ai/docs) are supported by liteLLM.
+All the text models from [OpenRouter](https://openrouter.ai/docs) are supported by llm.
 
 | Model Name       | Function Call                              | Required OS Variables                |
 |------------------|--------------------------------------------|--------------------------------------|

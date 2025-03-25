@@ -10,21 +10,21 @@ sys.path.insert(
 from datetime import datetime as dt_object
 import time
 import pytest
-import litellm
+import llm
 
 import json
-from litellm.types.utils import BudgetConfig as GenericBudgetInfo
+from llm.types.utils import BudgetConfig as GenericBudgetInfo
 import os
 import sys
 from datetime import datetime
 from unittest.mock import AsyncMock, patch
 import pytest
-from litellm.caching.caching import DualCache
-from litellm.proxy.hooks.model_max_budget_limiter import (
+from llm.caching.caching import DualCache
+from llm.proxy.hooks.model_max_budget_limiter import (
     _PROXY_VirtualKeyModelMaxBudgetLimiter,
 )
-from litellm.proxy._types import UserAPIKeyAuth
-import litellm
+from llm.proxy._types import UserAPIKeyAuth
+import llm
 
 
 # Test class setup
@@ -94,7 +94,7 @@ async def test_is_key_within_model_budget(budget_limiter):
     with patch.object(
         budget_limiter, "_get_virtual_key_spend_for_model", return_value=150.0
     ):
-        with pytest.raises(litellm.BudgetExceededError):
+        with pytest.raises(llm.BudgetExceededError):
             await budget_limiter.is_key_within_model_budget(user_api_key, "gpt-4")
 
     # Test model not in budget config

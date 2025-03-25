@@ -7,7 +7,7 @@ import TabItem from '@theme/TabItem';
 Create keys, track spend, add models without worrying about the config / CRUD endpoints.
 
 
-<Image img={require('../../img/litellm_ui_create_key.png')} />  
+<Image img={require('../../img/llm_ui_create_key.png')} />  
 
 
 
@@ -20,7 +20,7 @@ Follow [setup](./virtual_keys.md#setup)
 
 ### 1. Start the proxy
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 
 #INFO: Proxy running on http://0.0.0.0:4000
 ```
@@ -42,11 +42,11 @@ Set the following in your .env on the Proxy
 
 ```shell
 LITELLM_MASTER_KEY="sk-1234" # this is your master key for using the proxy server
-UI_USERNAME=ishaan-litellm   # username to sign in on UI
+UI_USERNAME=ishaan-llm   # username to sign in on UI
 UI_PASSWORD=langchain        # password to sign in on UI
 ```
 
-On accessing the LiteLLM UI, you will be prompted to enter your username, password
+On accessing the LLM UI, you will be prompted to enter your username, password
 
 ## Invite-other users 
 

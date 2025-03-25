@@ -10,7 +10,7 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
+import llm
 import time
 
 
@@ -18,7 +18,7 @@ def test_mock_request():
     try:
         model = "gpt-3.5-turbo"
         messages = [{"role": "user", "content": "Hey, I'm a mock request"}]
-        response = litellm.mock_completion(model=model, messages=messages, stream=False)
+        response = llm.mock_completion(model=model, messages=messages, stream=False)
         print(response)
         print(type(response))
     except Exception:
@@ -30,7 +30,7 @@ def test_streaming_mock_request():
     try:
         model = "gpt-3.5-turbo"
         messages = [{"role": "user", "content": "Hey, I'm a mock request"}]
-        response = litellm.mock_completion(model=model, messages=messages, stream=True)
+        response = llm.mock_completion(model=model, messages=messages, stream=True)
         complete_response = ""
         for chunk in response:
             complete_response += chunk["choices"][0]["delta"]["content"] or ""
@@ -45,9 +45,9 @@ def test_streaming_mock_request():
 
 @pytest.mark.asyncio()
 async def test_async_mock_streaming_request():
-    generator = await litellm.acompletion(
-        messages=[{"role": "user", "content": "Why is LiteLLM amazing?"}],
-        mock_response="LiteLLM is awesome",
+    generator = await llm.acompletion(
+        messages=[{"role": "user", "content": "Why is LLM amazing?"}],
+        mock_response="LLM is awesome",
         stream=True,
         model="gpt-3.5-turbo",
     )
@@ -57,7 +57,7 @@ async def test_async_mock_streaming_request():
         complete_response += chunk["choices"][0]["delta"]["content"] or ""
 
     assert (
-        complete_response == "LiteLLM is awesome"
+        complete_response == "LLM is awesome"
     ), f"Unexpected response got {complete_response}"
 
 
@@ -65,7 +65,7 @@ def test_mock_request_n_greater_than_1():
     try:
         model = "gpt-3.5-turbo"
         messages = [{"role": "user", "content": "Hey, I'm a mock request"}]
-        response = litellm.mock_completion(model=model, messages=messages, n=5)
+        response = llm.mock_completion(model=model, messages=messages, n=5)
         print("response: ", response)
 
         assert len(response.choices) == 5
@@ -78,9 +78,9 @@ def test_mock_request_n_greater_than_1():
 
 @pytest.mark.asyncio()
 async def test_async_mock_streaming_request_n_greater_than_1():
-    generator = await litellm.acompletion(
-        messages=[{"role": "user", "content": "Why is LiteLLM amazing?"}],
-        mock_response="LiteLLM is awesome",
+    generator = await llm.acompletion(
+        messages=[{"role": "user", "content": "Why is LLM amazing?"}],
+        mock_response="LLM is awesome",
         stream=True,
         model="gpt-3.5-turbo",
         n=5,
@@ -91,7 +91,7 @@ async def test_async_mock_streaming_request_n_greater_than_1():
         # complete_response += chunk["choices"][0]["delta"]["content"] or ""
 
     # assert (
-    #     complete_response == "LiteLLM is awesome"
+    #     complete_response == "LLM is awesome"
     # ), f"Unexpected response got {complete_response}"
 
 
@@ -100,8 +100,8 @@ def test_mock_request_with_mock_timeout():
     Allow user to set 'mock_timeout = True', this allows for testing if fallbacks/retries are working on timeouts.
     """
     start_time = time.time()
-    with pytest.raises(litellm.Timeout):
-        response = litellm.completion(
+    with pytest.raises(llm.Timeout):
+        response = llm.completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hey, I'm a mock request"}],
             timeout=3,
@@ -116,7 +116,7 @@ def test_router_mock_request_with_mock_timeout():
     Allow user to set 'mock_timeout = True', this allows for testing if fallbacks/retries are working on timeouts.
     """
     start_time = time.time()
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
@@ -127,7 +127,7 @@ def test_router_mock_request_with_mock_timeout():
             },
         ],
     )
-    with pytest.raises(litellm.Timeout):
+    with pytest.raises(llm.Timeout):
         response = router.completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hey, I'm a mock request"}],
@@ -143,9 +143,9 @@ def test_router_mock_request_with_mock_timeout_with_fallbacks():
     """
     Allow user to set 'mock_timeout = True', this allows for testing if fallbacks/retries are working on timeouts.
     """
-    litellm.set_verbose = True
+    llm.set_verbose = True
     start_time = time.time()
-    router = litellm.Router(
+    router = llm.Router(
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",

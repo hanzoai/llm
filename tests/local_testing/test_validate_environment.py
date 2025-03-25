@@ -8,6 +8,6 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import time
-import litellm
+import llm
 
-print(litellm.validate_environment("openai/gpt-3.5-turbo"))
+print(llm.validate_environment("openai/gpt-3.5-turbo"))

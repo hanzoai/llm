@@ -17,7 +17,7 @@ from mcp.types import (
 )
 from mcp.types import Tool as MCPTool
 
-from litellm.experimental_mcp_client.tools import (
+from llm.experimental_mcp_client.tools import (
     _get_function_arguments,
     _transform_openai_tool_call_to_mcp_tool_call_request,
     call_mcp_tool,

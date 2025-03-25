@@ -16,16 +16,16 @@ import random
 
 import pytest
 
-import litellm
-from litellm import aembedding, completion, embedding
-from litellm.caching.caching import Cache
+import llm
+from llm import aembedding, completion, embedding
+from llm.caching.caching import Cache
 
 from unittest.mock import AsyncMock, patch, MagicMock
-from litellm.caching.caching_handler import LLMCachingHandler, CachingHandlerResponse
-from litellm.caching.caching import LiteLLMCacheType
-from litellm.types.utils import CallTypes
-from litellm.types.rerank import RerankResponse
-from litellm.types.utils import (
+from llm.caching.caching_handler import LLMCachingHandler, CachingHandlerResponse
+from llm.caching.caching import LLMCacheType
+from llm.types.utils import CallTypes
+from llm.types.rerank import RerankResponse
+from llm.types.utils import (
     ModelResponse,
     EmbeddingResponse,
     TextCompletionResponse,
@@ -33,37 +33,37 @@ from litellm.types.utils import (
     Embedding,
 )
 from datetime import timedelta, datetime
-from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLogging
-from litellm._logging import verbose_logger
+from llm.litellm_core_utils.litellm_logging import Logging as LLMLogging
+from llm._logging import verbose_logger
 import logging
 
 
 def setup_cache():
     # Set up the cache
     cache = Cache(
-        type=LiteLLMCacheType.REDIS,
+        type=LLMCacheType.REDIS,
         host=os.environ["REDIS_HOST"],
         port=os.environ["REDIS_PORT"],
         password=os.environ["REDIS_PASSWORD"],
     )
-    litellm.cache = cache
+    llm.cache = cache
     return cache
 
 
-chat_completion_response = litellm.ModelResponse(
+chat_completion_response = llm.ModelResponse(
     id=str(uuid.uuid4()),
     choices=[
-        litellm.Choices(
-            message=litellm.Message(
+        llm.Choices(
+            message=llm.Message(
                 role="assistant", content="Hello, how can I help you today?"
             )
         )
     ],
 )
 
-text_completion_response = litellm.TextCompletionResponse(
+text_completion_response = llm.TextCompletionResponse(
     id=str(uuid.uuid4()),
-    choices=[litellm.utils.TextChoices(text="Hello, how can I help you today?")],
+    choices=[llm.utils.TextChoices(text="Hello, how can I help you today?")],
 )
 
 
@@ -72,7 +72,7 @@ text_completion_response = litellm.TextCompletionResponse(
     "response", [chat_completion_response, text_completion_response]
 )
 async def test_async_set_get_cache(response):
-    litellm.set_verbose = True
+    llm.set_verbose = True
     setup_cache()
     verbose_logger.setLevel(logging.DEBUG)
     caching_handler = LLMCachingHandler(
@@ -81,7 +81,7 @@ async def test_async_set_get_cache(response):
 
     messages = [{"role": "user", "content": f"Unique message {datetime.now()}"}]
 
-    logging_obj = LiteLLMLogging(
+    logging_obj = LLMLogging(
         litellm_call_id=str(datetime.now()),
         call_type=CallTypes.completion.value,
         model="gpt-3.5-turbo",
@@ -95,11 +95,11 @@ async def test_async_set_get_cache(response):
     print("result", result)
 
     original_function = (
-        litellm.acompletion
-        if isinstance(response, litellm.ModelResponse)
-        else litellm.atext_completion
+        llm.acompletion
+        if isinstance(response, llm.ModelResponse)
+        else llm.atext_completion
     )
-    if isinstance(response, litellm.ModelResponse):
+    if isinstance(response, llm.ModelResponse):
         kwargs = {"messages": messages}
         call_type = CallTypes.acompletion.value
     else:
@@ -214,7 +214,7 @@ def test_convert_cached_result_to_model_response(
     caching_handler = LLMCachingHandler(
         original_function=lambda: None, request_kwargs={}, start_time=datetime.now()
     )
-    logging_obj = LiteLLMLogging(
+    logging_obj = LLMLogging(
         litellm_call_id=str(datetime.now()),
         call_type=call_type,
         model="gpt-3.5-turbo",

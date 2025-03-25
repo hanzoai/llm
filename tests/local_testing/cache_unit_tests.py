@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from litellm.caching import LiteLLMCacheType
+from llm.caching import LLMCacheType
 import os
 import sys
 import time
@@ -20,21 +20,21 @@ import random
 
 import pytest
 
-import litellm
-from litellm.caching import Cache
-from litellm import completion, embedding
+import llm
+from llm.caching import Cache
+from llm import completion, embedding
 
 
 class LLMCachingUnitTests(ABC):
 
     @abstractmethod
-    def get_cache_type(self) -> LiteLLMCacheType:
+    def get_cache_type(self) -> LLMCacheType:
         pass
 
     @pytest.mark.parametrize("sync_mode", [True, False])
     @pytest.mark.asyncio
     async def test_cache_completion(self, sync_mode):
-        litellm._turn_on_debug()
+        llm._turn_on_debug()
 
         random_number = random.randint(
             1, 100000
@@ -47,7 +47,7 @@ class LLMCachingUnitTests(ABC):
         ]
 
         cache_type = self.get_cache_type()
-        litellm.cache = Cache(
+        llm.cache = Cache(
             type=cache_type,
         )
 
@@ -60,7 +60,7 @@ class LLMCachingUnitTests(ABC):
                 mock_response="This number is so great!",
             )
         else:
-            response1 = await litellm.acompletion(
+            response1 = await llm.acompletion(
                 "gpt-3.5-turbo",
                 messages=messages,
                 caching=True,
@@ -80,7 +80,7 @@ class LLMCachingUnitTests(ABC):
                 mock_response="This number is great!",
             )
         else:
-            response2 = await litellm.acompletion(
+            response2 = await llm.acompletion(
                 "gpt-3.5-turbo",
                 messages=messages,
                 caching=True,
@@ -108,7 +108,7 @@ class LLMCachingUnitTests(ABC):
                 mock_response="This number is awful!",
             )
         else:
-            response3 = await litellm.acompletion(
+            response3 = await llm.acompletion(
                 "gpt-3.5-turbo",
                 messages=messages,
                 caching=True,
@@ -120,9 +120,9 @@ class LLMCachingUnitTests(ABC):
         print("\nresponse 2", response2)
         print("\nresponse 3", response3)
         # print("\nresponse 4", response4)
-        litellm.cache = None
-        litellm.success_callback = []
-        litellm._async_success_callback = []
+        llm.cache = None
+        llm.success_callback = []
+        llm._async_success_callback = []
 
         # 1 & 2 should be exactly the same
         # 1 & 3 should be different, since input params are diff
@@ -148,13 +148,13 @@ class LLMCachingUnitTests(ABC):
     @pytest.mark.parametrize("sync_mode", [True, False])
     @pytest.mark.asyncio
     async def test_disk_cache_embedding(self, sync_mode):
-        litellm._turn_on_debug()
+        llm._turn_on_debug()
 
         random_number = random.randint(
             1, 100000
         )  # add a random number to ensure it's always adding / reading from cache
         input = [f"hello {random_number}"]
-        litellm.cache = Cache(
+        llm.cache = Cache(
             type="disk",
         )
 
@@ -165,7 +165,7 @@ class LLMCachingUnitTests(ABC):
                 caching=True,
             )
         else:
-            response1 = await litellm.aembedding(
+            response1 = await llm.aembedding(
                 "openai/text-embedding-ada-002",
                 input=input,
                 caching=True,
@@ -181,7 +181,7 @@ class LLMCachingUnitTests(ABC):
                 caching=True,
             )
         else:
-            response2 = await litellm.aembedding(
+            response2 = await llm.aembedding(
                 "openai/text-embedding-ada-002",
                 input=input,
                 caching=True,
@@ -200,7 +200,7 @@ class LLMCachingUnitTests(ABC):
                 caching=True,
             )
         else:
-            response3 = await litellm.aembedding(
+            response3 = await llm.aembedding(
                 "openai/text-embedding-ada-002",
                 input=input,
                 caching=True,
@@ -211,9 +211,9 @@ class LLMCachingUnitTests(ABC):
         print("\nresponse 2", response2)
         print("\nresponse 3", response3)
         # print("\nresponse 4", response4)
-        litellm.cache = None
-        litellm.success_callback = []
-        litellm._async_success_callback = []
+        llm.cache = None
+        llm.success_callback = []
+        llm._async_success_callback = []
 
         # 1 & 2 should be exactly the same
         # 1 & 3 should be different, since input params are diff

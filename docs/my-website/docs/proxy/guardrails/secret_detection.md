@@ -36,15 +36,15 @@ Example if you want to redact the value of `OPENAI_API_KEY` in the following req
 ```yaml
 guardrails:
   - guardrail_name: "my-custom-name"
-    litellm_params:
+    llm_params:
       guardrail: "hide-secrets"  # supported values: "aporia", "lakera", .. 
       mode: "pre_call"
 ```
 
-**Step 2** Run litellm proxy with `--detailed_debug` to see the server logs
+**Step 2** Run llm proxy with `--detailed_debug` to see the server logs
 
 ```
-litellm --config config.yaml --detailed_debug
+llm --config config.yaml --detailed_debug
 ```
 
 **Step 3** Test it with request
@@ -67,16 +67,16 @@ curl -L -X POST 'http://0.0.0.0:4000/v1/chat/completions' \
 ```
 
 
-Expect to see the following warning on your litellm server logs
+Expect to see the following warning on your llm server logs
 
 ```shell
-LiteLLM Proxy:WARNING: secret_detection.py:88 - Detected and redacted secrets in message: ['Secret Keyword']
+LLM Proxy:WARNING: secret_detection.py:88 - Detected and redacted secrets in message: ['Secret Keyword']
 ```
 
 
-You can also see the raw request sent from litellm to the API Provider with (`--detailed_debug`).
+You can also see the raw request sent from llm to the API Provider with (`--detailed_debug`).
 ```json
-POST Request Sent from LiteLLM:
+POST Request Sent from LLM:
 curl -X POST \
 https://api.groq.com/openai/v1/ \
 -H 'Authorization: Bearer gsk_mySVchjY********************************************' \
@@ -99,7 +99,7 @@ https://api.groq.com/openai/v1/ \
 
 ## Control secret detectors
 
-LiteLLM uses the [`detect-secrets`](https://github.com/Yelp/detect-secrets) library for secret detection. See [all plugins run by default](#default-config-used)
+LLM uses the [`detect-secrets`](https://github.com/Yelp/detect-secrets) library for secret detection. See [all plugins run by default](#default-config-used)
 
 
 ### Usage
@@ -111,7 +111,7 @@ Here's how to control which plugins are run per request. This is useful if devel
 ```yaml
 guardrails:
   - guardrail_name: "hide-secrets"
-    litellm_params:
+    llm_params:
       guardrail: "hide-secrets"  # supported values: "aporia", "lakera"
       mode: "pre_call"
       detect_secrets_config: {
@@ -128,7 +128,7 @@ guardrails:
 Run with `--detailed_debug` for more detailed logs. Use in dev only. 
 
 ```bash
-litellm --config /path/to/config.yaml --detailed_debug
+llm --config /path/to/config.yaml --detailed_debug
 ```
 
 **3. Test it!**

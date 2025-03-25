@@ -26,14 +26,14 @@ Run experiments or change the specific model (e.g. from gpt-4o to gpt4o-mini fin
 
 ```python
 import os 
-import litellm
+import llm
 
 os.environ["LANGFUSE_PUBLIC_KEY"] = "public_key" # [OPTIONAL] set here or in `.completion`
 os.environ["LANGFUSE_SECRET_KEY"] = "secret_key" # [OPTIONAL] set here or in `.completion`
 
-litellm.set_verbose = True # see raw request to provider
+llm.set_verbose = True # see raw request to provider
 
-resp = litellm.completion(
+resp = llm.completion(
     model="langfuse/gpt-3.5-turbo",
     prompt_id="test-chat-prompt",
     prompt_variables={"user_message": "this is used"}, # [OPTIONAL]
@@ -51,12 +51,12 @@ resp = litellm.completion(
 ```yaml
 model_list:
   - model_name: my-langfuse-model
-    litellm_params:
+    llm_params:
       model: langfuse/openai-model
       prompt_id: "<langfuse_prompt_id>"
       api_key: os.environ/OPENAI_API_KEY
   - model_name: openai-model
-    litellm_params:
+    llm_params:
       model: openai/gpt-3.5-turbo
       api_key: os.environ/OPENAI_API_KEY
 ```
@@ -64,7 +64,7 @@ model_list:
 2. Start the proxy
 
 ```bash
-litellm --config config.yaml --detailed_debug
+llm --config config.yaml --detailed_debug
 ```
 
 3. Test it! 
@@ -99,7 +99,7 @@ client = openai.OpenAI(
     base_url="http://0.0.0.0:4000"
 )
 
-# request sent to model set on litellm proxy, `litellm --model`
+# request sent to model set on llm proxy, `llm --model`
 response = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages = [
@@ -128,7 +128,7 @@ print(response)
 **Expected Logs:**
 
 ```
-POST Request Sent from LiteLLM:
+POST Request Sent from LLM:
 curl -X POST \
 https://api.openai.com/v1/ \
 -d '{'model': 'gpt-3.5-turbo', 'messages': <YOUR LANGFUSE PROMPT TEMPLATE>}'
@@ -136,15 +136,15 @@ https://api.openai.com/v1/ \
 
 ## How to set model 
 
-### Set the model on LiteLLM 
+### Set the model on LLM 
 
-You can do `langfuse/<litellm_model_name>`
+You can do `langfuse/<llm_model_name>`
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
-litellm.completion(
+llm.completion(
     model="langfuse/gpt-3.5-turbo", # or `langfuse/anthropic/claude-3-5-sonnet`
     ...
 )
@@ -156,7 +156,7 @@ litellm.completion(
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: langfuse/gpt-3.5-turbo # OR langfuse/anthropic/claude-3-5-sonnet
       prompt_id: <langfuse_prompt_id>
       api_key: os.environ/OPENAI_API_KEY
@@ -174,7 +174,7 @@ If the model is specified in the Langfuse config, it will be used.
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/chatgpt-v-2
       api_key: os.environ/AZURE_API_KEY
       api_base: os.environ/AZURE_API_BASE
@@ -199,7 +199,7 @@ The `messages` field sent in by the client is ignored.
 
 The Langfuse prompt will replace the `messages` field.
 
-To replace parts of the prompt, use the `prompt_variables` field. [See how prompt variables are used](https://github.com/BerriAI/litellm/blob/017f83d038f85f93202a083cf334de3544a3af01/litellm/integrations/langfuse/langfuse_prompt_management.py#L127)
+To replace parts of the prompt, use the `prompt_variables` field. [See how prompt variables are used](https://github.com/BerriAI/llm/blob/017f83d038f85f93202a083cf334de3544a3af01/llm/integrations/langfuse/langfuse_prompt_management.py#L127)
 
 If the Langfuse prompt is a string, it will be sent as a user message (not all providers support system messages).
 
@@ -211,7 +211,7 @@ If the Langfuse prompt is a list, it will be sent as is (Langfuse chat prompts a
 
 ## API Reference
 
-These are the params you can pass to the `litellm.completion` function in SDK and `litellm_params` in config.yaml
+These are the params you can pass to the `llm.completion` function in SDK and `llm_params` in config.yaml
 
 ```
 prompt_id: str # required

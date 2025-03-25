@@ -14,12 +14,12 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-import litellm
-from litellm import completion
-from litellm._logging import verbose_logger
-from litellm.integrations.datadog.datadog import *
+import llm
+from llm import completion
+from llm._logging import verbose_logger
+from llm.integrations.datadog.datadog import *
 from datetime import datetime, timedelta
-from litellm.types.utils import (
+from llm.types.utils import (
     StandardLoggingPayload,
     StandardLoggingModelInformation,
     StandardLoggingMetadata,
@@ -98,7 +98,7 @@ async def test_create_datadog_logging_payload():
     )
 
     # Verify payload structure
-    assert dd_payload["ddsource"] == os.getenv("DD_SOURCE", "litellm")
+    assert dd_payload["ddsource"] == os.getenv("DD_SOURCE", "llm")
     assert dd_payload["service"] == "litellm-server"
     assert dd_payload["status"] == DataDogStatus.INFO
 
@@ -147,15 +147,15 @@ async def test_datadog_logging_http_request():
     - each element in a DatadogPayload.message contains all the valid fields
     """
     try:
-        from litellm.integrations.datadog.datadog import DataDogLogger
+        from llm.integrations.datadog.datadog import DataDogLogger
 
         os.environ["DD_SITE"] = "https://fake.datadoghq.com"
         os.environ["DD_API_KEY"] = "anything"
         dd_logger = DataDogLogger()
 
-        litellm.callbacks = [dd_logger]
+        llm.callbacks = [dd_logger]
 
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         # Create a mock for the async_client's post method
         mock_post = AsyncMock()
@@ -165,7 +165,7 @@ async def test_datadog_logging_http_request():
 
         # Make the completion call
         for _ in range(5):
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "what llm are u"}],
                 max_tokens=10,
@@ -252,10 +252,10 @@ async def test_datadog_log_redis_failures():
     Test that poorly configured Redis is logged as Warning on DataDog
     """
     try:
-        from litellm.caching.caching import Cache
-        from litellm.integrations.datadog.datadog import DataDogLogger
+        from llm.caching.caching import Cache
+        from llm.integrations.datadog.datadog import DataDogLogger
 
-        litellm.cache = Cache(
+        llm.cache = Cache(
             type="redis", host="badhost", port="6379", password="badpassword"
         )
 
@@ -263,10 +263,10 @@ async def test_datadog_log_redis_failures():
         os.environ["DD_API_KEY"] = "anything"
         dd_logger = DataDogLogger()
 
-        litellm.callbacks = [dd_logger]
-        litellm.service_callback = ["datadog"]
+        llm.callbacks = [dd_logger]
+        llm.service_callback = ["datadog"]
 
-        litellm.set_verbose = True
+        llm.set_verbose = True
 
         # Create a mock for the async_client's post method
         mock_post = AsyncMock()
@@ -276,7 +276,7 @@ async def test_datadog_log_redis_failures():
 
         # Make the completion call
         for _ in range(3):
-            response = await litellm.acompletion(
+            response = await llm.acompletion(
                 model="gpt-3.5-turbo",
                 messages=[{"role": "user", "content": "what llm are u"}],
                 max_tokens=10,
@@ -332,9 +332,9 @@ async def test_datadog_log_redis_failures():
 @pytest.mark.skip(reason="local-only test, to test if everything works fine.")
 async def test_datadog_logging():
     try:
-        litellm.success_callback = ["datadog"]
-        litellm.set_verbose = True
-        response = await litellm.acompletion(
+        llm.success_callback = ["datadog"]
+        llm.set_verbose = True
+        response = await llm.acompletion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "what llm are u"}],
             max_tokens=10,
@@ -450,7 +450,7 @@ def test_datadog_static_methods():
     """Test the static helper methods in DataDogLogger class"""
 
     # Test with default environment variables
-    assert DataDogLogger._get_datadog_source() == "litellm"
+    assert DataDogLogger._get_datadog_source() == "llm"
     assert DataDogLogger._get_datadog_service() == "litellm-server"
     assert DataDogLogger._get_datadog_hostname() is not None
     assert DataDogLogger._get_datadog_env() == "unknown"

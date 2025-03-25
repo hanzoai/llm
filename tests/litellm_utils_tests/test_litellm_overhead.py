@@ -9,7 +9,7 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
+import llm
 
 
 @pytest.mark.asyncio
@@ -24,16 +24,16 @@ import litellm
 )
 async def test_litellm_overhead(model):
 
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
     start_time = datetime.now()
     if model == "openai/self_hosted":
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model=model,
             messages=[{"role": "user", "content": "Hello, world!"}],
             api_base="https://exampleopenaiendpoint-production.up.railway.app/",
         )
     else:
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model=model,
             messages=[{"role": "user", "content": "Hello, world!"}],
         )
@@ -47,7 +47,7 @@ async def test_litellm_overhead(model):
     print("##########################\n")
     print("total_time_ms", total_time_ms)
     print("response litellm_overhead_ms", litellm_overhead_ms)
-    print("litellm overhead_percent {}%".format(overhead_percent))
+    print("llm overhead_percent {}%".format(overhead_percent))
     print("##########################\n")
     assert litellm_overhead_ms > 0
     assert litellm_overhead_ms < 1000
@@ -73,17 +73,17 @@ async def test_litellm_overhead(model):
 )
 async def test_litellm_overhead_stream(model):
 
-    litellm._turn_on_debug()
+    llm._turn_on_debug()
     start_time = datetime.now()
     if model == "openai/self_hosted":
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model=model,
             messages=[{"role": "user", "content": "Hello, world!"}],
             api_base="https://exampleopenaiendpoint-production.up.railway.app/",
             stream=True,
         )
     else:
-        response = await litellm.acompletion(
+        response = await llm.acompletion(
             model=model,
             messages=[{"role": "user", "content": "Hello, world!"}],
             stream=True,
@@ -102,7 +102,7 @@ async def test_litellm_overhead_stream(model):
     print("##########################\n")
     print("total_time_ms", total_time_ms)
     print("response litellm_overhead_ms", litellm_overhead_ms)
-    print("litellm overhead_percent {}%".format(overhead_percent))
+    print("llm overhead_percent {}%".format(overhead_percent))
     print("##########################\n")
     assert litellm_overhead_ms > 0
     assert litellm_overhead_ms < 1000

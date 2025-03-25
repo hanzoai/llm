@@ -1,10 +1,10 @@
 import os
 import re
 
-# Define the base directory for the litellm repository and documentation path
+# Define the base directory for the llm repository and documentation path
 repo_base = "./litellm"  # Change this to your actual path
 
-# Regular expressions to capture the keys used in os.getenv() and litellm.get_secret()
+# Regular expressions to capture the keys used in os.getenv() and llm.get_secret()
 getenv_pattern = re.compile(r'os\.getenv\(\s*[\'"]([^\'"]+)[\'"]\s*(?:,\s*[^)]*)?\)')
 get_secret_pattern = re.compile(
     r'litellm\.get_secret\(\s*[\'"]([^\'"]+)[\'"]\s*(?:,\s*[^)]*|,\s*default_value=[^)]*)?\)'
@@ -16,7 +16,7 @@ get_secret_str_pattern = re.compile(
 # Set to store unique keys from the code
 env_keys = set()
 
-# Walk through all files in the litellm repo to find references of os.getenv() and litellm.get_secret()
+# Walk through all files in the llm repo to find references of os.getenv() and llm.get_secret()
 for root, dirs, files in os.walk(repo_base):
     for file in files:
         if file.endswith(".py"):  # Only process Python files
@@ -30,11 +30,11 @@ for root, dirs, files in os.walk(repo_base):
                     match for match in getenv_matches
                 )  # Extract only the key part
 
-                # Find all keys using litellm.get_secret()
+                # Find all keys using llm.get_secret()
                 get_secret_matches = get_secret_pattern.findall(content)
                 env_keys.update(match for match in get_secret_matches)
 
-                # Find all keys using litellm.get_secret_str()
+                # Find all keys using llm.get_secret_str()
                 get_secret_str_matches = get_secret_str_pattern.findall(content)
                 env_keys.update(match for match in get_secret_str_matches)
 

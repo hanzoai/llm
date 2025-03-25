@@ -40,7 +40,7 @@ async def make_rerank_curl_request(
 @pytest.mark.asyncio
 async def test_basic_rerank_on_proxy():
     """
-    Test litellm.rerank() on proxy
+    Test llm.rerank() on proxy
 
     This SHOULD NOT call the pass through endpoints :)
     """

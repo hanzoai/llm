@@ -8,10 +8,10 @@ import pytest
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
-from litellm import Router
-from litellm.router import Deployment, LiteLLM_Params
-from litellm.types.router import ModelInfo
+import llm
+from llm import Router
+from llm.router import Deployment, LLM_Params
+from llm.types.router import ModelInfo
 from concurrent.futures import ThreadPoolExecutor
 from collections import defaultdict
 from dotenv import load_dotenv
@@ -23,7 +23,7 @@ load_dotenv()
 def test_returned_settings():
     # this tests if the router raises an exception when invalid params are set
     # in this test both deployments have bad keys - Keep this test. It validates if the router raises the most recent exception
-    litellm.set_verbose = True
+    llm.set_verbose = True
     import openai
 
     try:
@@ -31,7 +31,7 @@ def test_returned_settings():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for litellm completion/embedding call
+                "litellm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -87,7 +87,7 @@ def test_returned_settings():
         pytest.fail("An error occurred - " + traceback.format_exc())
 
 
-from litellm.types.utils import CallTypes
+from llm.types.utils import CallTypes
 
 
 def test_update_kwargs_before_fallbacks_unit_test():
@@ -179,7 +179,7 @@ async def test_update_kwargs_before_fallbacks(call_type):
 
 def test_router_get_model_info_wildcard_routes():
     os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-    litellm.model_cost = litellm.get_model_cost_map(url="")
+    llm.model_cost = llm.get_model_cost_map(url="")
     router = Router(
         model_list=[
             {
@@ -201,7 +201,7 @@ def test_router_get_model_info_wildcard_routes():
 @pytest.mark.asyncio
 async def test_router_get_model_group_usage_wildcard_routes():
     os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-    litellm.model_cost = litellm.get_model_cost_map(url="")
+    llm.model_cost = llm.get_model_cost_map(url="")
     router = Router(
         model_list=[
             {
@@ -277,11 +277,11 @@ async def test_call_router_callbacks_on_failure():
     with patch.object(
         router.cache, "async_increment_cache", new=AsyncMock()
     ) as mock_callback:
-        with pytest.raises(litellm.RateLimitError):
+        with pytest.raises(llm.RateLimitError):
             await router.acompletion(
                 model="gemini/gemini-1.5-flash",
                 messages=[{"role": "user", "content": "Hello, how are you?"}],
-                mock_response="litellm.RateLimitError",
+                mock_response="llm.RateLimitError",
                 num_retries=0,
             )
         await asyncio.sleep(1)
@@ -298,8 +298,8 @@ async def test_call_router_callbacks_on_failure():
 @pytest.mark.asyncio
 async def test_router_model_group_headers():
     os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-    litellm.model_cost = litellm.get_model_cost_map(url="")
-    from litellm.types.utils import OPENAI_RESPONSE_HEADERS
+    llm.model_cost = llm.get_model_cost_map(url="")
+    from llm.types.utils import OPENAI_RESPONSE_HEADERS
 
     router = Router(
         model_list=[
@@ -331,8 +331,8 @@ async def test_router_model_group_headers():
 @pytest.mark.asyncio
 async def test_get_remaining_model_group_usage():
     os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
-    litellm.model_cost = litellm.get_model_cost_map(url="")
-    from litellm.types.utils import OPENAI_RESPONSE_HEADERS
+    llm.model_cost = llm.get_model_cost_map(url="")
+    from llm.types.utils import OPENAI_RESPONSE_HEADERS
 
     router = Router(
         model_list=[

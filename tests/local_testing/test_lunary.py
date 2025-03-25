@@ -4,12 +4,12 @@ import sys
 
 sys.path.insert(0, os.path.abspath("../.."))
 
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 
-litellm.failure_callback = ["lunary"]
-litellm.success_callback = ["lunary"]
-litellm.set_verbose = True
+llm.failure_callback = ["lunary"]
+llm.success_callback = ["lunary"]
+llm.set_verbose = True
 
 
 def test_lunary_logging():
@@ -59,7 +59,7 @@ def test_lunary_logging_with_metadata():
 
 
 def test_lunary_with_tools():
-    import litellm
+    import llm
 
     messages = [
         {
@@ -88,7 +88,7 @@ def test_lunary_with_tools():
         }
     ]
 
-    response = litellm.completion(
+    response = llm.completion(
         model="gpt-3.5-turbo-1106",
         messages=messages,
         tools=tools,

@@ -14,18 +14,18 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-import litellm
-from litellm import completion
-from litellm._logging import verbose_logger
-from litellm.integrations.datadog.datadog import *
+import llm
+from llm import completion
+from llm._logging import verbose_logger
+from llm.integrations.datadog.datadog import *
 from datetime import datetime, timedelta
-from litellm.types.utils import (
+from llm.types.utils import (
     StandardLoggingPayload,
     StandardLoggingModelInformation,
     StandardLoggingMetadata,
     StandardLoggingHiddenParams,
 )
-from litellm.integrations.azure_storage.azure_storage import AzureBlobStorageLogger
+from llm.integrations.azure_storage.azure_storage import AzureBlobStorageLogger
 
 verbose_logger.setLevel(logging.DEBUG)
 
@@ -33,9 +33,9 @@ verbose_logger.setLevel(logging.DEBUG)
 @pytest.mark.asyncio
 async def test_azure_blob_storage():
     azure_storage_logger = AzureBlobStorageLogger(flush_interval=1)
-    litellm.callbacks = [azure_storage_logger]
+    llm.callbacks = [azure_storage_logger]
 
-    response = await litellm.acompletion(
+    response = await llm.acompletion(
         model="gpt-4o",
         messages=[{"role": "user", "content": "Hello, world!"}],
     )

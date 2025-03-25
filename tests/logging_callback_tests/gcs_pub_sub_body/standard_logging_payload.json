@@ -77,9 +77,9 @@
       "api_base": "https://api.openai.com",
       "response_cost": 0.00022500000000000002,
       "additional_headers": {},
-      "litellm_overhead_time_ms": null,
+      "llm_overhead_time_ms": null,
       "batch_models": null,
-      "litellm_model_name": "gpt-4o"
+      "llm_model_name": "gpt-4o"
     },
     "model_map_information": {
       "model_map_key": "gpt-4o",
@@ -106,7 +106,7 @@
         "output_cost_per_second": null,
         "output_cost_per_image": null,
         "output_vector_size": null,
-        "litellm_provider": "openai",
+        "llm_provider": "openai",
         "mode": "chat",
         "supports_system_messages": true,
         "supports_response_schema": true,

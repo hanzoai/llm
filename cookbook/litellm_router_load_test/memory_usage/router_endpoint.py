@@ -2,8 +2,8 @@ from fastapi import FastAPI
 import uvicorn
 from memory_profiler import profile
 import os
-import litellm
-from litellm import Router
+import llm
+from llm import Router
 from dotenv import load_dotenv
 import uuid
 
@@ -33,8 +33,8 @@ model_list = [
     },
 ]
 
-litellm.set_verbose = True
-litellm.cache = litellm.Cache(
+llm.set_verbose = True
+llm.cache = llm.Cache(
     type="s3", s3_bucket_name="litellm-my-test-bucket-2", s3_region_name="us-east-1"
 )
 router = Router(model_list=model_list, set_verbose=True)

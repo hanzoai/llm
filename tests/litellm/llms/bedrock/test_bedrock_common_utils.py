@@ -10,7 +10,7 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 
 
-from litellm.llms.bedrock.common_utils import BedrockModelInfo
+from llm.llms.bedrock.common_utils import BedrockModelInfo
 
 
 def test_deepseek_cris():

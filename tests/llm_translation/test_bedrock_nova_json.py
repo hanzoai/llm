@@ -6,12 +6,12 @@ import os
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import litellm
+import llm
 
 
 class TestBedrockNovaJson(BaseLLMChatTest):
     def get_base_completion_call_args(self) -> dict:
-        litellm._turn_on_debug()
+        llm._turn_on_debug()
         return {
             "model": "bedrock/converse/us.amazon.nova-micro-v1:0",
         }

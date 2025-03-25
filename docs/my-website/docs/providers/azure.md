@@ -10,12 +10,12 @@ import TabItem from '@theme/TabItem';
 | Property | Details |
 |-------|-------|
 | Description | Azure OpenAI Service provides REST API access to OpenAI's powerful language models including o1, o1-mini, GPT-4o, GPT-4o mini, GPT-4 Turbo with Vision, GPT-4, GPT-3.5-Turbo, and Embeddings model series |
-| Provider Route on LiteLLM | `azure/`, [`azure/o_series/`](#azure-o-series-models) |
+| Provider Route on LLM | `azure/`, [`azure/o_series/`](#azure-o-series-models) |
 | Supported Operations | [`/chat/completions`](#azure-openai-chat-completion-models), [`/completions`](#azure-instruct-models), [`/embeddings`](../embedding/supported_embedding#azure-openai-embedding-models), [`/audio/speech`](#azure-text-to-speech-tts), [`/audio/transcriptions`](../audio_transcription), `/fine_tuning`, [`/batches`](#azure-batches-api), `/files`, [`/images`](../image_generation#azure-openai-image-generation-models) |
 | Link to Provider Doc | [Azure OpenAI ↗](https://learn.microsoft.com/en-us/azure/ai-services/openai/overview)
 
 ## API Keys, Params
-api_key, api_base, api_version etc can be passed directly to `litellm.completion` - see here or set as `litellm.api_key` params see here
+api_key, api_base, api_version etc can be passed directly to `llm.completion` - see here or set as `llm.api_key` params see here
 ```python
 import os
 os.environ["AZURE_API_KEY"] = "" # "my-azure-api-key"
@@ -27,15 +27,15 @@ os.environ["AZURE_AD_TOKEN"] = ""
 os.environ["AZURE_API_TYPE"] = ""
 ```
 
-## **Usage - LiteLLM Python SDK**
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/litellm/blob/main/cookbook/LiteLLM_Azure_OpenAI.ipynb">
+## **Usage - LLM Python SDK**
+<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/LLM_Azure_OpenAI.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
 ### Completion - using .env variables
 
 ```python
-from litellm import completion
+from llm import completion
 
 ## set ENV variables
 os.environ["AZURE_API_KEY"] = ""
@@ -52,10 +52,10 @@ response = completion(
 ### Completion - using api_key, api_base, api_version
 
 ```python
-import litellm
+import llm
 
 # azure call
-response = litellm.completion(
+response = llm.completion(
     model = "azure/<your deployment name>",             # model = azure/<your deployment name> 
     api_base = "",                                      # azure api base
     api_version = "",                                   # azure api version
@@ -67,10 +67,10 @@ response = litellm.completion(
 ### Completion - using azure_ad_token, api_base, api_version
 
 ```python
-import litellm
+import llm
 
 # azure call
-response = litellm.completion(
+response = llm.completion(
     model = "azure/<your deployment name>",             # model = azure/<your deployment name> 
     api_base = "",                                      # azure api base
     api_version = "",                                   # azure api version
@@ -80,9 +80,9 @@ response = litellm.completion(
 ```
 
 
-## **Usage - LiteLLM Proxy Server**
+## **Usage - LLM Proxy Server**
 
-Here's how to call Azure OpenAI models with the LiteLLM Proxy Server
+Here's how to call Azure OpenAI models with the LLM Proxy Server
 
 ### 1. Save key in your environment
 
@@ -95,11 +95,11 @@ export AZURE_API_KEY=""
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/chatgpt-v-2
       api_base: https://openai-gpt-4-test-v-1.openai.azure.com/
       api_version: "2023-05-15"
-      api_key: os.environ/AZURE_API_KEY # The `os.environ/` prefix tells litellm to read this from the env.
+      api_key: os.environ/AZURE_API_KEY # The `os.environ/` prefix tells llm to read this from the env.
 ```
 
 ### 3. Test it
@@ -154,7 +154,7 @@ from langchain.prompts.chat import (
 from langchain.schema import HumanMessage, SystemMessage
 
 chat = ChatOpenAI(
-    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LiteLLM Proxy
+    openai_api_base="http://0.0.0.0:4000", # set openai_api_base to the LLM Proxy
     model = "gpt-3.5-turbo",
     temperature=0.1
 )
@@ -164,7 +164,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -180,7 +180,7 @@ print(response)
 
 :::tip
 
-**We support ALL Azure models, just set `model=azure/<your deployment name>` as a prefix when sending litellm requests**
+**We support ALL Azure models, just set `model=azure/<your deployment name>` as a prefix when sending llm requests**
 
 :::
 
@@ -213,7 +213,7 @@ print(response)
 #### Usage
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 os.environ["AZURE_API_KEY"] = "your-api-key"
 
@@ -254,7 +254,7 @@ base_url=https://gpt-4-vision-resource.openai.azure.com/openai/deployments/gpt-4
 **Usage**
 ```python
 import os 
-from litellm import completion
+from llm import completion
 
 os.environ["AZURE_API_KEY"] = "your-api-key"
 
@@ -293,9 +293,9 @@ response = completion(
 
 ## O-Series Models
 
-Azure OpenAI O-Series models are supported on LiteLLM. 
+Azure OpenAI O-Series models are supported on LLM. 
 
-LiteLLM routes any deployment name with `o1` or `o3` in the model name, to the O-Series [transformation](https://github.com/BerriAI/litellm/blob/91ed05df2962b8eee8492374b048d27cc144d08c/litellm/llms/azure/chat/o1_transformation.py#L4) logic.
+LLM routes any deployment name with `o1` or `o3` in the model name, to the O-Series [transformation](https://github.com/BerriAI/llm/blob/91ed05df2962b8eee8492374b048d27cc144d08c/llm/llms/azure/chat/o1_transformation.py#L4) logic.
 
 To set this explicitly, set `model` to `azure/o_series/<your-deployment-name>`.
 
@@ -305,9 +305,9 @@ To set this explicitly, set `model` to `azure/o_series/<your-deployment-name>`.
 <TabItem value="sdk" label="SDK">
 
 ```python
-import litellm
+import llm
 
-litellm.completion(model="azure/my-o3-deployment", messages=[{"role": "user", "content": "Hello, world!"}]) # 👈 Note: 'o3' in the deployment name
+llm.completion(model="azure/my-o3-deployment", messages=[{"role": "user", "content": "Hello, world!"}]) # 👈 Note: 'o3' in the deployment name
 ```
 </TabItem>
 <TabItem value="proxy" label="PROXY">
@@ -315,7 +315,7 @@ litellm.completion(model="azure/my-o3-deployment", messages=[{"role": "user", "c
 ```yaml
 model_list:
   - model_name: o3-mini
-    litellm_params:
+    llm_params:
       model: azure/o3-model
       api_base: os.environ/AZURE_API_BASE
       api_key: os.environ/AZURE_API_KEY
@@ -330,9 +330,9 @@ model_list:
 <TabItem value="sdk" label="SDK">
 
 ```python
-import litellm
+import llm
 
-litellm.completion(model="azure/o_series/my-random-deployment-name", messages=[{"role": "user", "content": "Hello, world!"}]) # 👈 Note: 'o_series/' in the deployment name
+llm.completion(model="azure/o_series/my-random-deployment-name", messages=[{"role": "user", "content": "Hello, world!"}]) # 👈 Note: 'o_series/' in the deployment name
 ```
 </TabItem>
 <TabItem value="proxy" label="PROXY">
@@ -340,7 +340,7 @@ litellm.completion(model="azure/o_series/my-random-deployment-name", messages=[{
 ```yaml
 model_list:
   - model_name: o3-mini
-    litellm_params:
+    llm_params:
       model: azure/o_series/my-random-deployment-name
       api_base: os.environ/AZURE_API_BASE
       api_key: os.environ/AZURE_API_KEY
@@ -355,7 +355,7 @@ model_list:
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 import os
 
 os.environ["AZURE_API_KEY"] = ""
@@ -384,7 +384,7 @@ print(response)
 ```yaml
 model_list:
   - model_name: azure-openai-4o-audio
-    litellm_params:
+    llm_params:
       model: azure/azure-openai-4o-audio
       api_base: os.environ/AZURE_API_BASE
       api_key: os.environ/AZURE_API_KEY
@@ -394,7 +394,7 @@ model_list:
 2. Start proxy
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it!
@@ -427,14 +427,14 @@ Use `model="azure_text/<your-deployment>"`
 
 
 ```python
-import litellm
+import llm
 
 ## set ENV variables
 os.environ["AZURE_API_KEY"] = ""
 os.environ["AZURE_API_BASE"] = ""
 os.environ["AZURE_API_VERSION"] = ""
 
-response = litellm.completion(
+response = llm.completion(
     model="azure_text/<your-deployment-name",
     messages=[{"role": "user", "content": "What is the weather like in Boston?"}]
 )
@@ -444,21 +444,21 @@ print(response)
 
 ## Azure Text to Speech (tts)
 
-**LiteLLM PROXY**
+**LLM PROXY**
 
 ```yaml
  - model_name: azure/tts-1
-    litellm_params:
+    llm_params:
       model: azure/tts-1
       api_base: "os.environ/AZURE_API_BASE_TTS"
       api_key: "os.environ/AZURE_API_KEY_TTS"
       api_version: "os.environ/AZURE_API_VERSION" 
 ```
 
-**LiteLLM SDK**
+**LLM SDK**
 
 ```python 
-from litellm import completion
+from llm import completion
 
 ## set ENV variables
 os.environ["AZURE_API_KEY"] = ""
@@ -480,7 +480,7 @@ response.stream_to_file(speech_file_path)
 
 ### Entrata ID - use `azure_ad_token`
 
-This is a walkthrough on how to use Azure Active Directory Tokens - Microsoft Entra ID to make `litellm.completion()` calls 
+This is a walkthrough on how to use Azure Active Directory Tokens - Microsoft Entra ID to make `llm.completion()` calls 
 
 Step 1 - Download Azure CLI 
 Installation instructons: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
@@ -509,7 +509,7 @@ In this step you should see an `accessToken` generated
 }
 ```
 
-Step 4 - Make litellm.completion call with Azure AD token
+Step 4 - Make llm.completion call with Azure AD token
 
 Set `azure_ad_token` = `accessToken` from step 3 or set `os.environ['AZURE_AD_TOKEN']`
 
@@ -519,7 +519,7 @@ Set `azure_ad_token` = `accessToken` from step 3 or set `os.environ['AZURE_AD_TO
 
 
 ```python
-response = litellm.completion(
+response = llm.completion(
     model = "azure/<your deployment name>",             # model = azure/<your deployment name> 
     api_base = "",                                      # azure api base
     api_version = "",                                   # azure api version
@@ -535,7 +535,7 @@ response = litellm.completion(
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/chatgpt-v-2
       api_base: https://openai-gpt-4-test-v-1.openai.azure.com/
       api_version: "2023-05-15"
@@ -547,11 +547,11 @@ model_list:
 
 ### Entrata ID - use tenant_id, client_id, client_secret
 
-Here is an example of setting up `tenant_id`, `client_id`, `client_secret` in your litellm proxy `config.yaml`
+Here is an example of setting up `tenant_id`, `client_id`, `client_secret` in your llm proxy `config.yaml`
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/chatgpt-v-2
       api_base: https://openai-gpt-4-test-v-1.openai.azure.com/
       api_version: "2023-05-15"
@@ -577,17 +577,17 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 '
 ```
 
-Example video of using `tenant_id`, `client_id`, `client_secret` with LiteLLM Proxy Server
+Example video of using `tenant_id`, `client_id`, `client_secret` with LLM Proxy Server
 
 <iframe width="840" height="500" src="https://www.loom.com/embed/70d3f219ee7f4e5d84778b7f17bba506?sid=04b8ff29-485f-4cb8-929e-6b392722f36d" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 ### Entrata ID - use client_id, username, password
 
-Here is an example of setting up `client_id`, `azure_username`, `azure_password` in your litellm proxy `config.yaml`
+Here is an example of setting up `client_id`, `azure_username`, `azure_password` in your llm proxy `config.yaml`
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/chatgpt-v-2
       api_base: https://openai-gpt-4-test-v-1.openai.azure.com/
       api_version: "2023-05-15"
@@ -622,7 +622,7 @@ Use this if you want to use Azure `DefaultAzureCredential` for Authentication on
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
 token_provider = get_bearer_token_provider(DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default")
@@ -653,18 +653,18 @@ export AZURE_CLIENT_SECRET=""
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: azure/your-deployment-name
       api_base: https://openai-gpt-4-test-v-1.openai.azure.com/
 
-litellm_settings:
+llm_settings:
     enable_azure_ad_token_refresh: true # 👈 KEY CHANGE
 ```
 
 3. Start proxy
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 </TabItem>
@@ -676,10 +676,10 @@ litellm --config /path/to/config.yaml
 | Property | Details |
 |-------|-------|
 | Description | Azure OpenAI Batches API |
-| `custom_llm_provider` on LiteLLM | `azure/` |
+| `custom_llm_provider` on LLM | `azure/` |
 | Supported Operations | `/v1/batches`, `/v1/files` |
 | Azure OpenAI Batches API | [Azure OpenAI Batches API ↗](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/batch) |
-| Cost Tracking, Logging Support | ✅ LiteLLM will log, track cost for Batch API Requests |
+| Cost Tracking, Logging Support | ✅ LLM will log, track cost for Batch API Requests |
 
 
 ### Quick Start
@@ -692,7 +692,7 @@ export AZURE_API_BASE=""
 ```
 
 <Tabs>
-<TabItem value="proxy" label="LiteLLM PROXY Server">
+<TabItem value="proxy" label="LLM PROXY Server">
 
 **1. Upload a File**
 
@@ -836,12 +836,12 @@ curl http://localhost:4000/v1/batches?limit=2 \
 </TabItem>
 </Tabs>
 </TabItem>
-<TabItem value="sdk" label="LiteLLM SDK">
+<TabItem value="sdk" label="LLM SDK">
 
 **1. Create File for Batch Completion**
 
 ```python
-from litellm
+from llm
 import os 
 
 os.environ["AZURE_API_KEY"] = ""
@@ -850,7 +850,7 @@ os.environ["AZURE_API_BASE"] = ""
 file_name = "azure_batch_completions.jsonl"
 _current_dir = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(_current_dir, file_name)
-file_obj = await litellm.acreate_file(
+file_obj = await llm.acreate_file(
     file=open(file_path, "rb"),
     purpose="batch",
     custom_llm_provider="azure",
@@ -861,7 +861,7 @@ print("Response from creating file=", file_obj)
 **2. Create Batch Request**
 
 ```python
-create_batch_response = await litellm.acreate_batch(
+create_batch_response = await llm.acreate_batch(
     completion_window="24h",
     endpoint="/v1/chat/completions",
     input_file_id=batch_input_file_id,
@@ -869,20 +869,20 @@ create_batch_response = await litellm.acreate_batch(
     metadata={"key1": "value1", "key2": "value2"},
 )
 
-print("response from litellm.create_batch=", create_batch_response)
+print("response from llm.create_batch=", create_batch_response)
 ```
 
 **3. Retrieve Batch and File Content**
 
 ```python
-retrieved_batch = await litellm.aretrieve_batch(
+retrieved_batch = await llm.aretrieve_batch(
     batch_id=create_batch_response.id, 
     custom_llm_provider="azure"
 )
 print("retrieved batch=", retrieved_batch)
 
 # Get file content
-file_content = await litellm.afile_content(
+file_content = await llm.afile_content(
     file_id=batch_input_file_id, 
     custom_llm_provider="azure"
 )
@@ -892,7 +892,7 @@ print("file content = ", file_content)
 **4. List Batches**
 
 ```python
-list_batches_response = litellm.list_batches(
+list_batches_response = llm.list_batches(
     custom_llm_provider="azure", 
     limit=2
 )
@@ -911,14 +911,14 @@ In your config.yaml, set `enable_loadbalancing_on_batch_endpoints: true`
 ```yaml
 model_list:
   - model_name: "batch-gpt-4o-mini"
-    litellm_params:
+    llm_params:
       model: "azure/gpt-4o-mini"
       api_key: os.environ/AZURE_API_KEY
       api_base: os.environ/AZURE_API_BASE
     model_info:
       mode: batch
 
-litellm_settings:
+llm_settings:
   enable_loadbalancing_on_batch_endpoints: true # 👈 KEY CHANGE
 ```
 
@@ -1019,15 +1019,15 @@ In production, [Router connects to a Redis Cache](#redis-queue) to track usage a
 #### Quick Start
 
 ```python
-pip install litellm
+pip install llm
 ```
 
 ```python
-from litellm import Router
+from llm import Router
 
 model_list = [{ # list of model deployments 
 	"model_name": "gpt-3.5-turbo", # openai model name 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "azure/chatgpt-v-2", 
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_version": os.getenv("AZURE_API_VERSION"),
@@ -1037,7 +1037,7 @@ model_list = [{ # list of model deployments
 	"rpm": 1800
 }, {
     "model_name": "gpt-3.5-turbo", # openai model name 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "azure/chatgpt-functioncalling", 
 		"api_key": os.getenv("AZURE_API_KEY"),
 		"api_version": os.getenv("AZURE_API_VERSION"),
@@ -1047,7 +1047,7 @@ model_list = [{ # list of model deployments
 	"rpm": 1800
 }, {
     "model_name": "gpt-3.5-turbo", # openai model name 
-	"litellm_params": { # params for litellm completion/embedding call 
+	"llm_params": { # params for llm completion/embedding call 
 		"model": "gpt-3.5-turbo", 
 		"api_key": os.getenv("OPENAI_API_KEY"),
 	},
@@ -1077,15 +1077,15 @@ print(response)
 
 
 ### Parallel Function calling
-See a detailed walthrough of parallel function calling with litellm [here](https://docs.litellm.ai/docs/completion/function_call)
+See a detailed walthrough of parallel function calling with llm [here](https://docs.llm.ai/docs/completion/function_call)
 ```python
 # set Azure env variables
 import os
-os.environ['AZURE_API_KEY'] = "" # litellm reads AZURE_API_KEY from .env and sends the request
+os.environ['AZURE_API_KEY'] = "" # llm reads AZURE_API_KEY from .env and sends the request
 os.environ['AZURE_API_BASE'] = "https://openai-gpt-4-test-v-1.openai.azure.com/"
 os.environ['AZURE_API_VERSION'] = "2023-07-01-preview"
 
-import litellm
+import llm
 import json
 # Example dummy function hard coded to return the same weather
 # In production, this could be your backend API or an external API
@@ -1123,7 +1123,7 @@ tools = [
     }
 ]
 
-response = litellm.completion(
+response = llm.completion(
     model="azure/chatgpt-functioncalling", # model = azure/<your-azure-deployment-name>
     messages=messages,
     tools=tools,
@@ -1145,7 +1145,7 @@ Set base model for cost tracking azure image-gen call
 ```yaml
 model_list: 
   - model_name: dall-e-3
-    litellm_params:
+    llm_params:
         model: azure/dall-e-3-test
         api_version: 2023-06-01-preview
         api_base: https://openai-gpt-4-test-v-1.openai.azure.com/
@@ -1159,15 +1159,15 @@ model_list:
 
 **Problem**: Azure returns `gpt-4` in the response when `azure/gpt-4-1106-preview` is used. This leads to inaccurate cost tracking
 
-**Solution** ✅ :  Set `base_model` on your config so litellm uses the correct model for calculating azure cost
+**Solution** ✅ :  Set `base_model` on your config so llm uses the correct model for calculating azure cost
 
-Get the base model name from [here](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json)
+Get the base model name from [here](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json)
 
 Example config with `base_model`
 ```yaml
 model_list:
   - model_name: azure-gpt-3.5
-    litellm_params:
+    llm_params:
       model: azure/chatgpt-v-2
       api_base: os.environ/AZURE_API_BASE
       api_key: os.environ/AZURE_API_KEY

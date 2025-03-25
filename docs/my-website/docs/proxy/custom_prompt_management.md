@@ -4,7 +4,7 @@ import TabItem from '@theme/TabItem';
 
 # Custom Prompt Management
 
-Connect LiteLLM to your prompt management system with custom hooks.
+Connect LLM to your prompt management system with custom hooks.
 
 ## Overview
 
@@ -29,9 +29,9 @@ Create a new file called `custom_prompt.py` and add this code. The key method he
 
 ```python
 from typing import List, Tuple, Optional
-from litellm.integrations.custom_prompt_management import CustomPromptManagement
-from litellm.types.llms.openai import AllMessageValues
-from litellm.types.utils import StandardCallbackDynamicParams
+from llm.integrations.custom_prompt_management import CustomPromptManagement
+from llm.types.llms.openai import AllMessageValues
+from llm.types.utils import StandardCallbackDynamicParams
 
 class MyCustomPromptManagement(CustomPromptManagement):
     def get_chat_completion_prompt(
@@ -65,25 +65,25 @@ class MyCustomPromptManagement(CustomPromptManagement):
 prompt_management = MyCustomPromptManagement()
 ```
 
-### 2. Configure Your Prompt Manager in LiteLLM `config.yaml`
+### 2. Configure Your Prompt Manager in LLM `config.yaml`
 
 ```yaml
 model_list:
   - model_name: gpt-4
-    litellm_params:
+    llm_params:
       model: openai/gpt-4
       api_key: os.environ/OPENAI_API_KEY
 
-litellm_settings:
-  callbacks: custom_prompt.prompt_management  # sets litellm.callbacks = [prompt_management]
+llm_settings:
+  callbacks: custom_prompt.prompt_management  # sets llm.callbacks = [prompt_management]
 ```
 
-### 3. Start LiteLLM Gateway
+### 3. Start LLM Gateway
 
 <Tabs>
 <TabItem value="docker" label="Docker Run">
 
-Mount your `custom_logger.py` on the LiteLLM Docker container.
+Mount your `custom_logger.py` on the LLM Docker container.
 
 ```shell
 docker run -d \
@@ -100,10 +100,10 @@ docker run -d \
 
 </TabItem>
 
-<TabItem value="py" label="litellm pip">
+<TabItem value="py" label="llm pip">
 
 ```shell
-litellm --config config.yaml --detailed_debug
+llm --config config.yaml --detailed_debug
 ```
 
 </TabItem>

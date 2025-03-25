@@ -6,18 +6,18 @@ import TabItem from '@theme/TabItem';
 
 
 ## Logging
-See the raw request/response sent by LiteLLM in your logging provider (OTEL/Langfuse/etc.).
+See the raw request/response sent by LLM in your logging provider (OTEL/Langfuse/etc.).
 
 <Tabs>
 <TabItem value="sdk" label="SDK">
 
 ```python
 # pip install langfuse 
-import litellm
+import llm
 import os
 
 # log raw request/response
-litellm.log_raw_request_response = True
+llm.log_raw_request_response = True
 
 # from https://cloud.langfuse.com/
 os.environ["LANGFUSE_PUBLIC_KEY"] = ""
@@ -28,11 +28,11 @@ os.environ["LANGFUSE_HOST"] # optional
 # LLM API Keys
 os.environ['OPENAI_API_KEY']=""
 
-# set langfuse as a callback, litellm will send the data to langfuse
-litellm.success_callback = ["langfuse"] 
+# set langfuse as a callback, llm will send the data to langfuse
+llm.success_callback = ["langfuse"] 
  
 # openai call
-response = litellm.completion(
+response = llm.completion(
   model="gpt-3.5-turbo",
   messages=[
     {"role": "user", "content": "Hi 👋 - i'm openai"}
@@ -46,7 +46,7 @@ response = litellm.completion(
 
 
 ```yaml
-litellm_settings:
+llm_settings:
   log_raw_request_response: True
 ```
 
@@ -69,15 +69,15 @@ Currently only supported for openai.
 <TabItem value="sdk" label="SDK">
 
 ```python
-import litellm
+import llm
 import os
 
-litellm.return_response_headers = True
+llm.return_response_headers = True
 
 ## set ENV variables
 os.environ["OPENAI_API_KEY"] = "your-api-key"
 
-response = litellm.completion(
+response = llm.completion(
   model="gpt-3.5-turbo",
   messages=[{ "content": "Hello, how are you?","role": "user"}]
 )
@@ -93,11 +93,11 @@ print(response._hidden_params)
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo
-    litellm_params:
+    llm_params:
       model: gpt-3.5-turbo
       api_key: os.environ/GROQ_API_KEY
 
-litellm_settings:
+llm_settings:
   return_response_headers: true
 ```
 

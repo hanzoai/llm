@@ -20,10 +20,10 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 import pytest
 
-import litellm
-from litellm import Router
-from litellm.caching.caching import DualCache
-from litellm.router_strategy.lowest_latency import LowestLatencyLoggingHandler
+import llm
+from llm import Router
+from llm.caching.caching import DualCache
+from llm.router_strategy.lowest_latency import LowestLatencyLoggingHandler
 
 ### UNIT TESTS FOR LATENCY ROUTING ###
 
@@ -593,9 +593,9 @@ async def test_lowest_latency_routing_with_timeouts():
     - Run 10 more requests
     - All requests should have been routed to endpoint 2
     """
-    import litellm
+    import llm
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     router = Router(
         model_list=[
@@ -668,9 +668,9 @@ async def test_lowest_latency_routing_first_pick():
     - IT SHOULD NEVER PICK THE Very First deployment everytime all deployment latencies are 0
     - This ensures that after the ttl window resets it randomly picks a deployment
     """
-    import litellm
+    import llm
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     router = Router(
         model_list=[
@@ -886,8 +886,8 @@ async def test_lowest_latency_routing_time_to_first_token(sync_mode):
         "completion_start_time": one_second_later,
     }
 
-    response_obj = litellm.ModelResponse(
-        usage=litellm.Usage(completion_tokens=50, total_tokens=50)
+    response_obj = llm.ModelResponse(
+        usage=llm.Usage(completion_tokens=50, total_tokens=50)
     )
     end_time = four_seconds_later
 
@@ -917,8 +917,8 @@ async def test_lowest_latency_routing_time_to_first_token(sync_mode):
         "stream": True,
         "completion_start_time": three_seconds_later,
     }
-    response_obj = litellm.ModelResponse(
-        usage=litellm.Usage(completion_tokens=50, total_tokens=50)
+    response_obj = llm.ModelResponse(
+        usage=llm.Usage(completion_tokens=50, total_tokens=50)
     )
     end_time = three_seconds_later
     if sync_mode:

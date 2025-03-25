@@ -8,13 +8,13 @@ import Image from '@theme/IdealImage';
 
 ✨ **This is an Enterprise Feature**
 
-[Enterprise Pricing](https://www.litellm.ai/#pricing)
+[Enterprise Pricing](https://www.llm.ai/#pricing)
 
-[Contact us here to get a free trial](https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat)
+[Contact us here to get a free trial](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
 
 :::
 
-LiteLLM supports **reading secrets (eg. `OPENAI_API_KEY`)** and **writing secrets (eg. Virtual Keys)** from Azure Key Vault, Google Secret Manager, Hashicorp Vault, and AWS Secret Manager.
+LLM supports **reading secrets (eg. `OPENAI_API_KEY`)** and **writing secrets (eg. Virtual Keys)** from Azure Key Vault, Google Secret Manager, Hashicorp Vault, and AWS Secret Manager.
 
 ## Supported Secret Managers
 
@@ -51,10 +51,10 @@ os.environ["AWS_REGION_NAME"] = "" # us-east-1, us-east-2, us-west-1, us-west-2
 
 ```yaml
 general_settings:
-  master_key: os.environ/litellm_master_key 
+  master_key: os.environ/llm_master_key 
   key_management_system: "aws_secret_manager" # 👈 KEY CHANGE
   key_management_settings: 
-    hosted_keys: ["litellm_master_key"] # 👈 Specify which env keys you stored on AWS 
+    hosted_keys: ["llm_master_key"] # 👈 Specify which env keys you stored on AWS 
 
 ```
 
@@ -69,7 +69,7 @@ general_settings:
   key_management_system: "aws_secret_manager" # 👈 KEY CHANGE
   key_management_settings: 
     store_virtual_keys: true # OPTIONAL. Defaults to False, when True will store virtual keys in secret manager
-    prefix_for_stored_virtual_keys: "litellm/" # OPTIONAL. If set, this prefix will be used for stored virtual keys in the secret manager
+    prefix_for_stored_virtual_keys: "llm/" # OPTIONAL. If set, this prefix will be used for stored virtual keys in the secret manager
     access_mode: "write_only" # Literal["read_only", "write_only", "read_and_write"]
 ```
 </TabItem>
@@ -77,13 +77,13 @@ general_settings:
 
 ```yaml
 general_settings:
-  master_key: os.environ/litellm_master_key 
+  master_key: os.environ/llm_master_key 
   key_management_system: "aws_secret_manager" # 👈 KEY CHANGE
   key_management_settings: 
     store_virtual_keys: true # OPTIONAL. Defaults to False, when True will store virtual keys in secret manager
-    prefix_for_stored_virtual_keys: "litellm/" # OPTIONAL. If set, this prefix will be used for stored virtual keys in the secret manager
+    prefix_for_stored_virtual_keys: "llm/" # OPTIONAL. If set, this prefix will be used for stored virtual keys in the secret manager
     access_mode: "read_and_write" # Literal["read_only", "write_only", "read_and_write"]
-    hosted_keys: ["litellm_master_key"] # OPTIONAL. Specify which env keys you stored on AWS
+    hosted_keys: ["llm_master_key"] # OPTIONAL. Specify which env keys you stored on AWS
 ```
 
 </TabItem>
@@ -92,7 +92,7 @@ general_settings:
 3. Run proxy
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 
@@ -108,10 +108,10 @@ general_settings:
       "OPENAI_API_KEY_MODEL_1",
       "OPENAI_API_KEY_MODEL_2",
     ]
-    primary_secret_name: "litellm_secrets" # 👈 Read multiple keys from one JSON secret
+    primary_secret_name: "llm_secrets" # 👈 Read multiple keys from one JSON secret
 ```
 
-The `primary_secret_name` allows you to read multiple keys from a single AWS Secret as a JSON object. For example, the "litellm_secrets" would contain:
+The `primary_secret_name` allows you to read multiple keys from a single AWS Secret as a JSON object. For example, the "llm_secrets" would contain:
 
 ```json
 {
@@ -135,7 +135,7 @@ Read secrets from [Hashicorp Vault](https://developer.hashicorp.com/vault/docs/s
 
 **Step 1.** Add Hashicorp Vault details in your environment
 
-LiteLLM supports two methods of authentication:
+LLM supports two methods of authentication:
 
 1. TLS cert authentication - `HCP_VAULT_CLIENT_CERT` and `HCP_VAULT_CLIENT_KEY`
 2. Token authentication - `HCP_VAULT_TOKEN`
@@ -165,14 +165,14 @@ general_settings:
   # [OPTIONAL SETTINGS]
   key_management_settings: 
     store_virtual_keys: true # OPTIONAL. Defaults to False, when True will store virtual keys in secret manager
-    prefix_for_stored_virtual_keys: "litellm/" # OPTIONAL. If set, this prefix will be used for stored virtual keys in the secret manager
+    prefix_for_stored_virtual_keys: "llm/" # OPTIONAL. If set, this prefix will be used for stored virtual keys in the secret manager
     access_mode: "read_and_write" # Literal["read_only", "write_only", "read_and_write"]
 ```
 
 **Step 3.** Start + test proxy
 
 ```
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 [Quick Test Proxy](./proxy/user_keys)
@@ -181,7 +181,7 @@ $ litellm --config /path/to/config.yaml
 #### How it works
 
 **Reading Secrets**
-LiteLLM reads secrets from Hashicorp Vault's KV v2 engine using the following URL format:
+LLM reads secrets from Hashicorp Vault's KV v2 engine using the following URL format:
 ```
 {VAULT_ADDR}/v1/{NAMESPACE}/secret/data/{SECRET_NAME}
 ```
@@ -192,13 +192,13 @@ For example, if you have:
 - Secret name: `AZURE_API_KEY`
 
 
-LiteLLM will look up:
+LLM will look up:
 ```
 https://vault.example.com:8200/v1/admin/secret/data/AZURE_API_KEY
 ```
 
 #### Expected Secret Format
-LiteLLM expects all secrets to be stored as a JSON object with a `key` field containing the secret value.
+LLM expects all secrets to be stored as a JSON object with a `key` field containing the secret value.
 
 For example, for `AZURE_API_KEY`, the secret should be stored as:
 
@@ -212,27 +212,27 @@ For example, for `AZURE_API_KEY`, the secret should be stored as:
 
 **Writing Secrets**
 
-When a Virtual Key is Created / Deleted on LiteLLM, LiteLLM will automatically create / delete the secret in Hashicorp Vault.
+When a Virtual Key is Created / Deleted on LLM, LLM will automatically create / delete the secret in Hashicorp Vault.
 
-- Create Virtual Key on LiteLLM either through the LiteLLM Admin UI or API
+- Create Virtual Key on LLM either through the LLM Admin UI or API
 
 <Image img={require('../img/hcorp_create_virtual_key.png')} />
 
 
 - Check Hashicorp Vault for secret
 
-LiteLLM stores secret under the `prefix_for_stored_virtual_keys` path (default: `litellm/`)
+LLM stores secret under the `prefix_for_stored_virtual_keys` path (default: `llm/`)
 
 <Image img={require('../img/hcorp_virtual_key.png')} />
 
 
 ## Azure Key Vault
 
-#### Usage with LiteLLM Proxy Server
+#### Usage with LLM Proxy Server
 
 1. Install Proxy dependencies 
 ```bash
-pip install 'litellm[proxy]' 'litellm[extra_proxy]'
+pip install 'llm[proxy]' 'llm[extra_proxy]'
 ```
 
 2. Save Azure details in your environment
@@ -247,7 +247,7 @@ export["AZURE_KEY_VAULT_URI"]="your-azure-key-vault-uri"
 ```yaml
 model_list: 
     - model_name: "my-azure-models" # model alias 
-        litellm_params:
+        llm_params:
             model: "azure/<your-deployment-name>"
             api_key: "os.environ/AZURE-API-KEY" # reads from key vault - get_secret("AZURE_API_KEY")
             api_base: "os.environ/AZURE-API-BASE" # reads from key vault - get_secret("AZURE_API_BASE")
@@ -258,10 +258,10 @@ general_settings:
 
 You can now test this by starting your proxy: 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
-[Quick Test Proxy](./proxy/quick_start#using-litellm-proxy---curl-request-openai-package-langchain-langchain-js)
+[Quick Test Proxy](./proxy/quick_start#using-llm-proxy---curl-request-openai-package-langchain-langchain-js)
 
 ## Google Secret Manager
 
@@ -285,7 +285,7 @@ export GOOGLE_SECRET_MANAGER_ALWAYS_READ_SECRET_MANAGER = ""  # (str) set to "tr
 ```yaml
 model_list:
   - model_name: fake-openai-endpoint
-    litellm_params:
+    llm_params:
       model: openai/fake
       api_base: https://exampleopenaiendpoint-production.up.railway.app/
       api_key: os.environ/OPENAI_API_KEY # this will be read from Google Secret Manager
@@ -296,10 +296,10 @@ general_settings:
 
 You can now test this by starting your proxy: 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
-[Quick Test Proxy](./proxy/quick_start#using-litellm-proxy---curl-request-openai-package-langchain-langchain-js)
+[Quick Test Proxy](./proxy/quick_start#using-llm-proxy---curl-request-openai-package-langchain-langchain-js)
 
 
 ## Google Key Management Service 
@@ -325,12 +325,12 @@ general_settings:
 Step 3: Start + test proxy
 
 ```
-$ litellm --config /path/to/config.yaml
+$ llm --config /path/to/config.yaml
 ```
 
 And in another terminal
 ```
-$ litellm --test 
+$ llm --test 
 ```
 
 [Quick Test Proxy](./proxy/user_keys)
@@ -360,7 +360,7 @@ general_settings:
     hosted_keys: ["LITELLM_MASTER_KEY"] # 👈 WHICH KEYS ARE STORED ON KMS
 ```
 
-[**See Decryption Code**](https://github.com/BerriAI/litellm/blob/a2da2a8f168d45648b61279d4795d647d94f90c9/litellm/utils.py#L10182)
+[**See Decryption Code**](https://github.com/BerriAI/llm/blob/a2da2a8f168d45648b61279d4795d647d94f90c9/llm/utils.py#L10182)
 
 ## **All Secret Manager Settings**
 
@@ -373,14 +373,14 @@ general_settings:
 
     # Storing Virtual Keys Settings
     store_virtual_keys: true # OPTIONAL. Defaults to False, when True will store virtual keys in secret manager
-    prefix_for_stored_virtual_keys: "litellm/" # OPTIONAL.I f set, this prefix will be used for stored virtual keys in the secret manager
+    prefix_for_stored_virtual_keys: "llm/" # OPTIONAL.I f set, this prefix will be used for stored virtual keys in the secret manager
     
     # Access Mode Settings
     access_mode: "write_only" # OPTIONAL. Literal["read_only", "write_only", "read_and_write"]. Defaults to "read_only"
     
     # Hosted Keys Settings
-    hosted_keys: ["litellm_master_key"] # OPTIONAL. Specify which env keys you stored on AWS
+    hosted_keys: ["llm_master_key"] # OPTIONAL. Specify which env keys you stored on AWS
 
     # K/V pairs in 1 AWS Secret Settings
-    primary_secret_name: "litellm_secrets" # OPTIONAL. Read multiple keys from one JSON secret on AWS Secret Manager
+    primary_secret_name: "llm_secrets" # OPTIONAL. Read multiple keys from one JSON secret on AWS Secret Manager
 ```

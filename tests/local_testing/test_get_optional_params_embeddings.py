@@ -11,13 +11,13 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest
-import litellm
-from litellm import embedding
-from litellm.utils import get_optional_params_embeddings, get_llm_provider
+import llm
+from llm import embedding
+from llm.utils import get_optional_params_embeddings, get_llm_provider
 
 
 def test_vertex_projects():
-    litellm.drop_params = True
+    llm.drop_params = True
     model, custom_llm_provider, _, _ = get_llm_provider(
         model="vertex_ai/textembedding-gecko"
     )
@@ -56,7 +56,7 @@ def test_bedrock_embed_v2_regular():
 
 
 def test_bedrock_embed_v2_with_drop_params():
-    litellm.drop_params = True
+    llm.drop_params = True
     model, custom_llm_provider, _, _ = get_llm_provider(
         model="bedrock/amazon.titan-embed-text-v2:0"
     )

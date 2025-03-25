@@ -15,32 +15,32 @@ sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
 import pytest, logging, asyncio
-import litellm
-from litellm.proxy.management_endpoints.model_management_endpoints import (
+import llm
+from llm.proxy.management_endpoints.model_management_endpoints import (
     add_new_model,
     update_model,
 )
-from litellm.proxy._types import LitellmUserRoles
-from litellm._logging import verbose_proxy_logger
-from litellm.proxy.utils import PrismaClient, ProxyLogging
-from litellm.proxy.management_endpoints.team_endpoints import new_team
+from llm.proxy._types import LitellmUserRoles
+from llm._logging import verbose_proxy_logger
+from llm.proxy.utils import PrismaClient, ProxyLogging
+from llm.proxy.management_endpoints.team_endpoints import new_team
 
 verbose_proxy_logger.setLevel(level=logging.DEBUG)
-from litellm.caching.caching import DualCache
-from litellm.router import (
+from llm.caching.caching import DualCache
+from llm.router import (
     Deployment,
-    LiteLLM_Params,
+    LLM_Params,
 )
-from litellm.types.router import ModelInfo, updateDeployment, updateLiteLLMParams
+from llm.types.router import ModelInfo, updateDeployment, updateLLMParams
 
-from litellm.proxy._types import UserAPIKeyAuth, NewTeamRequest, LiteLLM_TeamTable
+from llm.proxy._types import UserAPIKeyAuth, NewTeamRequest, LLM_TeamTable
 
 proxy_logging_obj = ProxyLogging(user_api_key_cache=DualCache())
 
 
 @pytest.fixture
 def prisma_client():
-    from litellm.proxy.proxy_cli import append_query_params
+    from llm.proxy.proxy_cli import append_query_params
 
     ### add connection pool + pool timeout args
     params = {"connection_limit": 100, "pool_timeout": 60}
@@ -54,11 +54,11 @@ def prisma_client():
         database_url=os.environ["DATABASE_URL"], proxy_logging_obj=proxy_logging_obj
     )
 
-    # Reset litellm.proxy.proxy_server.prisma_client to None
-    litellm.proxy.proxy_server.litellm_proxy_budget_name = (
+    # Reset llm.proxy.proxy_server.prisma_client to None
+    llm.proxy.proxy_server.litellm_proxy_budget_name = (
         f"litellm-proxy-budget-{time.time()}"
     )
-    litellm.proxy.proxy_server.user_custom_key_generate = None
+    llm.proxy.proxy_server.user_custom_key_generate = None
 
     return prisma_client
 
@@ -66,12 +66,12 @@ def prisma_client():
 @pytest.mark.asyncio
 @pytest.mark.skip(reason="new feature, tests passing locally")
 async def test_add_new_model(prisma_client):
-    setattr(litellm.proxy.proxy_server, "prisma_client", prisma_client)
-    setattr(litellm.proxy.proxy_server, "master_key", "sk-1234")
-    setattr(litellm.proxy.proxy_server, "store_model_in_db", True)
+    setattr(llm.proxy.proxy_server, "prisma_client", prisma_client)
+    setattr(llm.proxy.proxy_server, "master_key", "sk-1234")
+    setattr(llm.proxy.proxy_server, "store_model_in_db", True)
 
-    await litellm.proxy.proxy_server.prisma_client.connect()
-    from litellm.proxy.proxy_server import user_api_key_cache
+    await llm.proxy.proxy_server.prisma_client.connect()
+    from llm.proxy.proxy_server import user_api_key_cache
     import uuid
 
     _new_model_id = f"local-test-{uuid.uuid4().hex}"
@@ -79,7 +79,7 @@ async def test_add_new_model(prisma_client):
     await add_new_model(
         model_params=Deployment(
             model_name="test_model",
-            litellm_params=LiteLLM_Params(
+            litellm_params=LLM_Params(
                 model="azure/gpt-3.5-turbo",
                 api_key="test_api_key",
                 api_base="test_api_base",
@@ -139,7 +139,7 @@ async def test_add_new_model(prisma_client):
     ],
 )
 def test_can_add_model(team_id, key_team_id, user_role, expected_result):
-    from litellm.proxy.proxy_server import check_if_team_id_matches_key
+    from llm.proxy.proxy_server import check_if_team_id_matches_key
 
     args = {
         "team_id": team_id,
@@ -158,12 +158,12 @@ def test_can_add_model(team_id, key_team_id, user_role, expected_result):
 async def test_add_update_model(prisma_client):
     # test that existing litellm_params are not updated
     # only new / updated params get updated
-    setattr(litellm.proxy.proxy_server, "prisma_client", prisma_client)
-    setattr(litellm.proxy.proxy_server, "master_key", "sk-1234")
-    setattr(litellm.proxy.proxy_server, "store_model_in_db", True)
+    setattr(llm.proxy.proxy_server, "prisma_client", prisma_client)
+    setattr(llm.proxy.proxy_server, "master_key", "sk-1234")
+    setattr(llm.proxy.proxy_server, "store_model_in_db", True)
 
-    await litellm.proxy.proxy_server.prisma_client.connect()
-    from litellm.proxy.proxy_server import user_api_key_cache
+    await llm.proxy.proxy_server.prisma_client.connect()
+    from llm.proxy.proxy_server import user_api_key_cache
     import uuid
 
     _new_model_id = f"local-test-{uuid.uuid4().hex}"
@@ -171,7 +171,7 @@ async def test_add_update_model(prisma_client):
     await add_new_model(
         model_params=Deployment(
             model_name="test_model",
-            litellm_params=LiteLLM_Params(
+            litellm_params=LLM_Params(
                 model="azure/gpt-3.5-turbo",
                 api_key="test_api_key",
                 api_base="test_api_base",
@@ -208,7 +208,7 @@ async def test_add_update_model(prisma_client):
     # run update to update "tpm"
     await update_model(
         model_params=updateDeployment(
-            litellm_params=updateLiteLLMParams(tpm=123456),
+            litellm_params=updateLLMParams(tpm=123456),
             model_info=ModelInfo(
                 id=_new_model_id,
             ),
@@ -228,7 +228,7 @@ async def test_add_update_model(prisma_client):
             print("\nFOUND MODEL: ", model)
             _new_model_in_db = model
 
-    # assert all other litellm params are identical to _original_litellm_params
+    # assert all other llm params are identical to _original_litellm_params
     for key, value in _original_litellm_params.items():
         if key == "tpm":
             # assert that tpm actually got updated
@@ -256,7 +256,7 @@ async def _create_new_team(prisma_client):
             scope={"type": "http", "method": "POST", "path": "/new_team"}
         ),
     )
-    return LiteLLM_TeamTable(**_new_team)
+    return LLM_TeamTable(**_new_team)
 
 
 @pytest.mark.asyncio
@@ -264,13 +264,13 @@ async def test_add_team_model_to_db(prisma_client):
     """
     Test adding a team model and verifying the team_public_model_name is stored correctly
     """
-    setattr(litellm.proxy.proxy_server, "prisma_client", prisma_client)
-    setattr(litellm.proxy.proxy_server, "master_key", "sk-1234")
-    setattr(litellm.proxy.proxy_server, "store_model_in_db", True)
+    setattr(llm.proxy.proxy_server, "prisma_client", prisma_client)
+    setattr(llm.proxy.proxy_server, "master_key", "sk-1234")
+    setattr(llm.proxy.proxy_server, "store_model_in_db", True)
 
-    await litellm.proxy.proxy_server.prisma_client.connect()
+    await llm.proxy.proxy_server.prisma_client.connect()
 
-    from litellm.proxy.management_endpoints.model_management_endpoints import (
+    from llm.proxy.management_endpoints.model_management_endpoints import (
         _add_team_model_to_db,
     )
     import uuid
@@ -284,7 +284,7 @@ async def test_add_team_model_to_db(prisma_client):
     # Create test model deployment
     model_params = Deployment(
         model_name=public_model_name,
-        litellm_params=LiteLLM_Params(
+        litellm_params=LLM_Params(
             model="gpt-4",
             api_key="test_api_key",
         ),

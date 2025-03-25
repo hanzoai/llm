@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 <TabItem value="sdk" label="SDK">
 
 ```python
-from litellm import completion
+from llm import completion
 import os 
 
 os.environ["OPENAI_API_KEY"] = ""
@@ -54,10 +54,10 @@ curl http://0.0.0.0:4000/v1/chat/completions \
 
 ### 1. Check if model supports `response_format`
 
-Call `litellm.get_supported_openai_params` to check if a model/provider supports `response_format`. 
+Call `llm.get_supported_openai_params` to check if a model/provider supports `response_format`. 
 
 ```python
-from litellm import get_supported_openai_params
+from llm import get_supported_openai_params
 
 params = get_supported_openai_params(model="anthropic.claude-3", custom_llm_provider="bedrock")
 
@@ -71,12 +71,12 @@ This is used to check if you can pass
 - `response_format=<Pydantic Model>`
 
 ```python
-from litellm import supports_response_schema
+from llm import supports_response_schema
 
 assert supports_response_schema(model="gemini-1.5-pro-preview-0215", custom_llm_provider="bedrock")
 ```
 
-Check out [model_prices_and_context_window.json](https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json) for a full list of models and their support for `response_schema`.
+Check out [model_prices_and_context_window.json](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json) for a full list of models and their support for `response_schema`.
 
 ## Pass in 'json_schema' 
 
@@ -103,7 +103,7 @@ Works for:
 
 ```python
 import os
-from litellm import completion 
+from llm import completion 
 from pydantic import BaseModel
 
 # add to env var 
@@ -135,14 +135,14 @@ print("Received={}".format(resp))
 ```yaml
 model_list:
   - model_name: "gpt-4o"
-    litellm_params:
+    llm_params:
       model: "gpt-4o-2024-08-06"
 ```
 
 2. Start proxy with config.yaml
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Call with OpenAI SDK / Curl!
@@ -234,14 +234,14 @@ curl -X POST 'http://0.0.0.0:4000/v1/chat/completions' \
 ## Validate JSON Schema 
 
 
-Not all vertex models support passing the json_schema to them (e.g. `gemini-1.5-flash`). To solve this, LiteLLM supports client-side validation of the json schema. 
+Not all vertex models support passing the json_schema to them (e.g. `gemini-1.5-flash`). To solve this, LLM supports client-side validation of the json schema. 
 
 ```
-litellm.enable_json_schema_validation=True
+llm.enable_json_schema_validation=True
 ```
-If `litellm.enable_json_schema_validation=True` is set, LiteLLM will validate the json response using `jsonvalidator`. 
+If `llm.enable_json_schema_validation=True` is set, LLM will validate the json response using `jsonvalidator`. 
 
-[**See Code**](https://github.com/BerriAI/litellm/blob/671d8ac496b6229970c7f2a3bdedd6cb84f0746b/litellm/litellm_core_utils/json_validation_rule.py#L4)
+[**See Code**](https://github.com/BerriAI/llm/blob/671d8ac496b6229970c7f2a3bdedd6cb84f0746b/llm/llm_core_utils/json_validation_rule.py#L4)
 
 
 <Tabs>
@@ -249,8 +249,8 @@ If `litellm.enable_json_schema_validation=True` is set, LiteLLM will validate th
 
 ```python
 # !gcloud auth application-default login - run this to add vertex credentials to your env
-import litellm, os
-from litellm import completion 
+import llm, os
+from llm import completion 
 from pydantic import BaseModel 
 
 
@@ -259,8 +259,8 @@ messages=[
         {"role": "user", "content": "Alice and Bob are going to a science fair on Friday."},
     ]
 
-litellm.enable_json_schema_validation = True
-litellm.set_verbose = True # see the raw request made by litellm
+llm.enable_json_schema_validation = True
+llm.set_verbose = True # see the raw request made by llm
 
 class CalendarEvent(BaseModel):
   name: str
@@ -282,18 +282,18 @@ print("Received={}".format(resp))
 ```yaml
 model_list:
   - model_name: "gemini-1.5-flash"
-    litellm_params:
+    llm_params:
       model: "gemini/gemini-1.5-flash"
       api_key: os.environ/GEMINI_API_KEY
 
-litellm_settings:
+llm_settings:
   enable_json_schema_validation: True
 ```
 
 2. Start proxy 
 
 ```bash
-litellm --config /path/to/config.yaml
+llm --config /path/to/config.yaml
 ```
 
 3. Test it! 

@@ -3,25 +3,25 @@ import TabItem from '@theme/TabItem';
 
 # Provider-specific Params
 
-Providers might offer params not supported by OpenAI (e.g. top_k). LiteLLM treats any non-openai param, as a provider-specific param, and passes it to the provider in the request body, as a kwarg. [**See Reserved Params**](https://github.com/BerriAI/litellm/blob/aa2fd29e48245f360e771a8810a69376464b195e/litellm/main.py#L700)
+Providers might offer params not supported by OpenAI (e.g. top_k). LLM treats any non-openai param, as a provider-specific param, and passes it to the provider in the request body, as a kwarg. [**See Reserved Params**](https://github.com/BerriAI/llm/blob/aa2fd29e48245f360e771a8810a69376464b195e/llm/main.py#L700)
 
 You can pass those in 2 ways: 
 - via completion(): We'll pass the non-openai param, straight to the provider as part of the request body.
     - e.g. `completion(model="claude-instant-1", top_k=3)`
-- via provider-specific config variable (e.g. `litellm.OpenAIConfig()`). 
+- via provider-specific config variable (e.g. `llm.OpenAIConfig()`). 
 
 ## SDK Usage
 <Tabs>
 <TabItem value="openai" label="OpenAI">
 
 ```python
-import litellm, os
+import llm, os
 
 # set env variables
 os.environ["OPENAI_API_KEY"] = "your-openai-key"
 
 ## SET MAX TOKENS - via completion() 
-response_1 = litellm.completion(
+response_1 = llm.completion(
             model="gpt-3.5-turbo",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             max_tokens=10
@@ -30,9 +30,9 @@ response_1 = litellm.completion(
 response_1_text = response_1.choices[0].message.content
 
 ## SET MAX TOKENS - via config
-litellm.OpenAIConfig(max_tokens=10)
+llm.OpenAIConfig(max_tokens=10)
 
-response_2 = litellm.completion(
+response_2 = llm.completion(
             model="gpt-3.5-turbo",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
         )
@@ -47,14 +47,14 @@ assert len(response_2_text) > len(response_1_text)
 <TabItem value="openai-text" label="OpenAI Text Completion">
 
 ```python
-import litellm, os
+import llm, os
 
 # set env variables
 os.environ["OPENAI_API_KEY"] = "your-openai-key"
 
 
 ## SET MAX TOKENS - via completion() 
-response_1 = litellm.completion(
+response_1 = llm.completion(
             model="text-davinci-003",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             max_tokens=10
@@ -63,8 +63,8 @@ response_1 = litellm.completion(
 response_1_text = response_1.choices[0].message.content
 
 ## SET MAX TOKENS - via config
-litellm.OpenAITextCompletionConfig(max_tokens=10)
-response_2 = litellm.completion(
+llm.OpenAITextCompletionConfig(max_tokens=10)
+response_2 = llm.completion(
             model="text-davinci-003",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
         )
@@ -79,7 +79,7 @@ assert len(response_2_text) > len(response_1_text)
 <TabItem value="azure-openai" label="Azure OpenAI">
 
 ```python
-import litellm, os
+import llm, os
 
 # set env variables
 os.environ["AZURE_API_BASE"] = "your-azure-api-base"
@@ -87,7 +87,7 @@ os.environ["AZURE_API_TYPE"] = "azure" # [OPTIONAL]
 os.environ["AZURE_API_VERSION"] = "2023-07-01-preview" # [OPTIONAL]
 
 ## SET MAX TOKENS - via completion() 
-response_1 = litellm.completion(
+response_1 = llm.completion(
             model="azure/chatgpt-v-2",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             max_tokens=10
@@ -96,8 +96,8 @@ response_1 = litellm.completion(
 response_1_text = response_1.choices[0].message.content
 
 ## SET MAX TOKENS - via config
-litellm.AzureOpenAIConfig(max_tokens=10)
-response_2 = litellm.completion(
+llm.AzureOpenAIConfig(max_tokens=10)
+response_2 = llm.completion(
             model="azure/chatgpt-v-2",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
         )
@@ -112,13 +112,13 @@ assert len(response_2_text) > len(response_1_text)
 <TabItem value="anthropic" label="Anthropic">
 
 ```python
-import litellm, os 
+import llm, os 
 
 # set env variables
 os.environ["ANTHROPIC_API_KEY"] = "your-anthropic-key"
 
 ## SET MAX TOKENS - via completion()
-response_1 = litellm.completion(
+response_1 = llm.completion(
             model="claude-instant-1",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             max_tokens=10
@@ -127,8 +127,8 @@ response_1 = litellm.completion(
 response_1_text = response_1.choices[0].message.content
 
 ## SET MAX TOKENS - via config
-litellm.AnthropicConfig(max_tokens_to_sample=200)
-response_2 = litellm.completion(
+llm.AnthropicConfig(max_tokens_to_sample=200)
+response_2 = llm.completion(
             model="claude-instant-1",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
         )
@@ -144,13 +144,13 @@ assert len(response_2_text) > len(response_1_text)
 <TabItem value="huggingface" label="Huggingface">
 
 ```python
-import litellm, os 
+import llm, os 
 
 # set env variables
 os.environ["HUGGINGFACE_API_KEY"] = "your-huggingface-key" #[OPTIONAL]
 
 ## SET MAX TOKENS - via completion()
-response_1 = litellm.completion(
+response_1 = llm.completion(
             model="huggingface/mistralai/Mistral-7B-Instruct-v0.1",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             api_base="https://your-huggingface-api-endpoint",
@@ -160,8 +160,8 @@ response_1 = litellm.completion(
 response_1_text = response_1.choices[0].message.content
 
 ## SET MAX TOKENS - via config
-litellm.HuggingfaceConfig(max_new_tokens=200)
-response_2 = litellm.completion(
+llm.HuggingfaceConfig(max_new_tokens=200)
+response_2 = llm.completion(
             model="huggingface/mistralai/Mistral-7B-Instruct-v0.1",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             api_base="https://your-huggingface-api-endpoint"
@@ -179,13 +179,13 @@ assert len(response_2_text) > len(response_1_text)
 
 
 ```python
-import litellm, os 
+import llm, os 
 
 # set env variables
 os.environ["TOGETHERAI_API_KEY"] = "your-togetherai-key" 
 
 ## SET MAX TOKENS - via completion()
-response_1 = litellm.completion(
+response_1 = llm.completion(
             model="together_ai/togethercomputer/llama-2-70b-chat",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             max_tokens=10
@@ -194,8 +194,8 @@ response_1 = litellm.completion(
 response_1_text = response_1.choices[0].message.content
 
 ## SET MAX TOKENS - via config
-litellm.TogetherAIConfig(max_tokens_to_sample=200)
-response_2 = litellm.completion(
+llm.TogetherAIConfig(max_tokens_to_sample=200)
+response_2 = llm.completion(
             model="together_ai/togethercomputer/llama-2-70b-chat",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
         )
@@ -211,10 +211,10 @@ assert len(response_2_text) > len(response_1_text)
 <TabItem value="ollama" label="Ollama">
 
 ```python
-import litellm, os 
+import llm, os 
 
 ## SET MAX TOKENS - via completion()
-response_1 = litellm.completion(
+response_1 = llm.completion(
             model="ollama/llama2",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             max_tokens=10
@@ -223,8 +223,8 @@ response_1 = litellm.completion(
 response_1_text = response_1.choices[0].message.content
 
 ## SET MAX TOKENS - via config
-litellm.OllamConfig(num_predict=200)
-response_2 = litellm.completion(
+llm.OllamConfig(num_predict=200)
+response_2 = llm.completion(
             model="ollama/llama2",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
         )
@@ -240,13 +240,13 @@ assert len(response_2_text) > len(response_1_text)
 <TabItem value="replicate" label="Replicate">
 
 ```python
-import litellm, os 
+import llm, os 
 
 # set env variables
 os.environ["REPLICATE_API_KEY"] = "your-replicate-key" 
 
 ## SET MAX TOKENS - via completion()
-response_1 = litellm.completion(
+response_1 = llm.completion(
             model="replicate/meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             max_tokens=10
@@ -255,8 +255,8 @@ response_1 = litellm.completion(
 response_1_text = response_1.choices[0].message.content
 
 ## SET MAX TOKENS - via config
-litellm.ReplicateConfig(max_new_tokens=200)
-response_2 = litellm.completion(
+llm.ReplicateConfig(max_new_tokens=200)
+response_2 = llm.completion(
             model="replicate/meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
         )
@@ -273,10 +273,10 @@ assert len(response_2_text) > len(response_1_text)
 
 
 ```python
-import litellm
+import llm
 
 ## SET MAX TOKENS - via completion()
-response_1 = litellm.completion(
+response_1 = llm.completion(
             model="petals/petals-team/StableBeluga2",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             api_base="https://chat.petals.dev/api/v1/generate",
@@ -286,8 +286,8 @@ response_1 = litellm.completion(
 response_1_text = response_1.choices[0].message.content
 
 ## SET MAX TOKENS - via config
-litellm.PetalsConfig(max_new_tokens=10)
-response_2 = litellm.completion(
+llm.PetalsConfig(max_new_tokens=10)
+response_2 = llm.completion(
             model="petals/petals-team/StableBeluga2",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             api_base="https://chat.petals.dev/api/v1/generate",
@@ -304,13 +304,13 @@ assert len(response_2_text) > len(response_1_text)
 <TabItem value="palm" label="Palm">
 
 ```python
-import litellm, os 
+import llm, os 
 
 # set env variables
 os.environ["PALM_API_KEY"] = "your-palm-key"  
 
 ## SET MAX TOKENS - via completion()
-response_1 = litellm.completion(
+response_1 = llm.completion(
             model="palm/chat-bison",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             max_tokens=10
@@ -319,8 +319,8 @@ response_1 = litellm.completion(
 response_1_text = response_1.choices[0].message.content
 
 ## SET MAX TOKENS - via config
-litellm.PalmConfig(maxOutputTokens=10)
-response_2 = litellm.completion(
+llm.PalmConfig(maxOutputTokens=10)
+response_2 = llm.completion(
             model="palm/chat-bison",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
         )
@@ -335,13 +335,13 @@ assert len(response_2_text) > len(response_1_text)
 <TabItem value="ai21" label="AI21">
 
 ```python
-import litellm, os 
+import llm, os 
 
 # set env variables
 os.environ["AI21_API_KEY"] = "your-ai21-key"  
 
 ## SET MAX TOKENS - via completion()
-response_1 = litellm.completion(
+response_1 = llm.completion(
             model="j2-mid",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             max_tokens=10
@@ -350,8 +350,8 @@ response_1 = litellm.completion(
 response_1_text = response_1.choices[0].message.content
 
 ## SET MAX TOKENS - via config
-litellm.AI21Config(maxOutputTokens=10)
-response_2 = litellm.completion(
+llm.AI21Config(maxOutputTokens=10)
+response_2 = llm.completion(
             model="j2-mid",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
         )
@@ -367,13 +367,13 @@ assert len(response_2_text) > len(response_1_text)
 <TabItem value="cohere" label="Cohere">
 
 ```python
-import litellm, os 
+import llm, os 
 
 # set env variables
 os.environ["COHERE_API_KEY"] = "your-cohere-key"   
 
 ## SET MAX TOKENS - via completion()
-response_1 = litellm.completion(
+response_1 = llm.completion(
             model="command-nightly",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
             max_tokens=10
@@ -382,8 +382,8 @@ response_1 = litellm.completion(
 response_1_text = response_1.choices[0].message.content
 
 ## SET MAX TOKENS - via config
-litellm.CohereConfig(max_tokens=200)
-response_2 = litellm.completion(
+llm.CohereConfig(max_tokens=200)
+response_2 = llm.completion(
             model="command-nightly",
             messages=[{ "content": "Hello, how are you?","role": "user"}],
         )
@@ -409,7 +409,7 @@ assert len(response_2_text) > len(response_1_text)
 ```yaml
 model_list:
     - model_name: llama-3-8b-instruct
-      litellm_params:
+      llm_params:
         model: predibase/llama-3-8b-instruct
         api_key: os.environ/PREDIBASE_API_KEY
         tenant_id: os.environ/PREDIBASE_TENANT_ID

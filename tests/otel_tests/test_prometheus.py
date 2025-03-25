@@ -173,7 +173,7 @@ def verify_latency_metrics(metrics: str):
 
     Very important to verify that the overhead latency metric is present
     """
-    from litellm.types.integrations.prometheus import LATENCY_BUCKETS
+    from llm.types.integrations.prometheus import LATENCY_BUCKETS
     import re
     import time
 

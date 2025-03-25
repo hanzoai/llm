@@ -14,8 +14,8 @@ sys.path.insert(
 from datetime import datetime as dt_object
 import time
 import pytest
-import litellm
-from litellm.types.utils import (
+import llm
+from llm.types.utils import (
     StandardLoggingPayload,
     Usage,
     StandardLoggingMetadata,
@@ -26,11 +26,11 @@ from create_mock_standard_logging_payload import (
     create_standard_logging_payload,
     create_standard_logging_payload_with_long_content,
 )
-from litellm.litellm_core_utils.litellm_logging import (
+from llm.litellm_core_utils.litellm_logging import (
     StandardLoggingPayloadSetup,
 )
 
-from litellm.integrations.custom_logger import CustomLogger
+from llm.integrations.custom_logger import CustomLogger
 
 
 @pytest.mark.parametrize(
@@ -51,7 +51,7 @@ from litellm.integrations.custom_logger import CustomLogger
             },
             (10, 20, 30),
         ),
-        # Test with litellm.Usage object
+        # Test with llm.Usage object
         (
             {"usage": Usage(prompt_tokens=15, completion_tokens=25, total_tokens=40)},
             (15, 25, 40),
@@ -247,7 +247,7 @@ def test_get_model_cost_information():
         custom_llm_provider="openai",
         init_response_obj={},
     )
-    litellm_info_gpt_3_5_turbo_model_map_value = litellm.get_model_info(
+    litellm_info_gpt_3_5_turbo_model_map_value = llm.get_model_info(
         model="gpt-3.5-turbo", custom_llm_provider="openai"
     )
     print("result", result)
@@ -304,12 +304,12 @@ def test_get_final_response_obj():
     )
     assert result == response_obj
 
-    # Test redaction when litellm.turn_off_message_logging is True
-    litellm.turn_off_message_logging = True
+    # Test redaction when llm.turn_off_message_logging is True
+    llm.turn_off_message_logging = True
     try:
-        model_response = litellm.ModelResponse(
+        model_response = llm.ModelResponse(
             choices=[
-                litellm.Choices(message=litellm.Message(content="sensitive content"))
+                llm.Choices(message=llm.Message(content="sensitive content"))
             ]
         )
         kwargs = {"messages": [{"role": "user", "content": "original message"}]}
@@ -324,8 +324,8 @@ def test_get_final_response_obj():
         # Verify that redaction occurred in kwargs
         assert kwargs["messages"][0]["content"] == "redacted-by-litellm"
     finally:
-        # Reset litellm.turn_off_message_logging to its original value
-        litellm.turn_off_message_logging = False
+        # Reset llm.turn_off_message_logging to its original value
+        llm.turn_off_message_logging = False
 
 
 def test_truncate_standard_logging_payload():
@@ -398,8 +398,8 @@ def test_get_error_information():
     assert result["error_class"] == "Exception"
     assert result["llm_provider"] == ""
 
-    # Test with litellm exception from provider
-    litellm_exception = litellm.exceptions.RateLimitError(
+    # Test with llm exception from provider
+    litellm_exception = llm.exceptions.RateLimitError(
         message="Test error",
         llm_provider="openai",
         model="gpt-3.5-turbo",
@@ -413,7 +413,7 @@ def test_get_error_information():
     assert result["error_code"] == "429"
     assert result["error_class"] == "RateLimitError"
     assert result["llm_provider"] == "openai"
-    assert result["error_message"] == "litellm.RateLimitError: Test error"
+    assert result["error_message"] == "llm.RateLimitError: Test error"
 
 
 def test_get_response_time():

@@ -11,8 +11,8 @@ sys.path.insert(
 
 import httpx
 import pytest
-import litellm
-from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
+import llm
+from llm.litellm_core_utils.litellm_logging import Logging as LLMLoggingObj
 
 
 import json
@@ -27,13 +27,13 @@ sys.path.insert(
 
 import httpx
 import pytest
-import litellm
-from litellm.litellm_core_utils.litellm_logging import Logging as LiteLLMLoggingObj
-from litellm.proxy.pass_through_endpoints.llm_provider_handlers.assembly_passthrough_logging_handler import (
+import llm
+from llm.litellm_core_utils.litellm_logging import Logging as LLMLoggingObj
+from llm.proxy.pass_through_endpoints.llm_provider_handlers.assembly_passthrough_logging_handler import (
     AssemblyAIPassthroughLoggingHandler,
     AssemblyAITranscriptResponse,
 )
-from litellm.proxy.pass_through_endpoints.success_handler import (
+from llm.proxy.pass_through_endpoints.success_handler import (
     PassThroughEndpointLogging,
 )
 
@@ -69,7 +69,7 @@ def test_get_assembly_transcript(assembly_handler, mock_transcript_response):
     """
     # Patch get_credentials to return "test-key"
     with patch(
-        "litellm.proxy.pass_through_endpoints.llm_passthrough_endpoints.passthrough_endpoint_router.get_credentials",
+        "llm.proxy.pass_through_endpoints.llm_passthrough_endpoints.passthrough_endpoint_router.get_credentials",
         return_value="test-key",
     ):
         with patch("httpx.get") as mock_get:
@@ -95,7 +95,7 @@ def test_poll_assembly_for_transcript_response(
     Test that the _poll_assembly_for_transcript_response method returns the correct transcript response
     """
     with patch(
-        "litellm.proxy.pass_through_endpoints.llm_passthrough_endpoints.passthrough_endpoint_router.get_credentials",
+        "llm.proxy.pass_through_endpoints.llm_passthrough_endpoints.passthrough_endpoint_router.get_credentials",
         return_value="test-key",
     ):
         with patch("httpx.get") as mock_get:

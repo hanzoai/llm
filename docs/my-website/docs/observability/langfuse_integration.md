@@ -7,38 +7,38 @@ import Image from '@theme/IdealImage';
 Langfuse ([GitHub](https://github.com/langfuse/langfuse)) is an open-source LLM engineering platform for model [tracing](https://langfuse.com/docs/tracing), [prompt management](https://langfuse.com/docs/prompts/get-started), and application [evaluation](https://langfuse.com/docs/scores/overview). Langfuse helps teams to collaboratively debug, analyze, and iterate on their LLM applications. 
 
 
-Example trace in Langfuse using multiple models via LiteLLM:
+Example trace in Langfuse using multiple models via LLM:
 <Image img={require('../../img/langfuse-example-trace-multiple-models-min.png')} />
 
 
-## Usage with LiteLLM Proxy (LLM Gateway)
+## Usage with LLM Proxy (LLM Gateway)
 
-👉 [**Follow this link to start sending logs to langfuse with LiteLLM Proxy server**](../proxy/logging)
+👉 [**Follow this link to start sending logs to langfuse with LLM Proxy server**](../proxy/logging)
 
 
-## Usage with LiteLLM Python SDK
+## Usage with LLM Python SDK
 
 ### Pre-Requisites
 Ensure you have run `pip install langfuse` for this integration
 ```shell
-pip install langfuse>=2.0.0 litellm
+pip install langfuse>=2.0.0 llm
 ```
 
 ### Quick Start
 Use just 2 lines of code, to instantly log your responses **across all providers** with Langfuse:
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/litellm/blob/main/cookbook/logging_observability/LiteLLM_Langfuse.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/logging_observability/LLM_Langfuse.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
 Get your Langfuse API Keys from https://cloud.langfuse.com/
 ```python
-litellm.success_callback = ["langfuse"]
-litellm.failure_callback = ["langfuse"] # logs errors to langfuse
+llm.success_callback = ["langfuse"]
+llm.failure_callback = ["langfuse"] # logs errors to langfuse
 ```
 ```python
 # pip install langfuse 
-import litellm
+import llm
 import os
 
 # from https://cloud.langfuse.com/
@@ -50,11 +50,11 @@ os.environ["LANGFUSE_HOST"] # optional
 # LLM API Keys
 os.environ['OPENAI_API_KEY']=""
 
-# set langfuse as a callback, litellm will send the data to langfuse
-litellm.success_callback = ["langfuse"] 
+# set langfuse as a callback, llm will send the data to langfuse
+llm.success_callback = ["langfuse"] 
  
 # openai call
-response = litellm.completion(
+response = llm.completion(
   model="gpt-3.5-turbo",
   messages=[
     {"role": "user", "content": "Hi 👋 - i'm openai"}
@@ -68,8 +68,8 @@ response = litellm.completion(
 Pass `generation_name` in `metadata`
 
 ```python
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 import os
 
 # from https://cloud.langfuse.com/
@@ -78,11 +78,11 @@ os.environ["LANGFUSE_SECRET_KEY"] = "sk-..."
 
 
 # OpenAI and Cohere keys 
-# You can use any of the litellm supported providers: https://docs.litellm.ai/docs/providers
+# You can use any of the llm supported providers: https://docs.llm.ai/docs/providers
 os.environ['OPENAI_API_KEY']="sk-..."
 
-# set langfuse as a callback, litellm will send the data to langfuse
-litellm.success_callback = ["langfuse"] 
+# set langfuse as a callback, llm will send the data to langfuse
+llm.success_callback = ["langfuse"] 
  
 # openai call
 response = completion(
@@ -91,9 +91,9 @@ response = completion(
     {"role": "user", "content": "Hi 👋 - i'm openai"}
   ],
   metadata = {
-    "generation_name": "litellm-ishaan-gen", # set langfuse generation name
+    "generation_name": "llm-ishaan-gen", # set langfuse generation name
     # custom metadata fields
-    "project": "litellm-proxy" 
+    "project": "llm-proxy" 
   }
 )
  
@@ -107,8 +107,8 @@ Pass `trace_id`, `trace_user_id`, `trace_metadata`, `trace_version`, `trace_rele
 
 
 ```python
-import litellm
-from litellm import completion
+import llm
+from llm import completion
 import os
 
 # from https://cloud.langfuse.com/
@@ -117,8 +117,8 @@ os.environ["LANGFUSE_SECRET_KEY"] = "sk-..."
 
 os.environ['OPENAI_API_KEY']="sk-..."
 
-# set langfuse as a callback, litellm will send the data to langfuse
-litellm.success_callback = ["langfuse"] 
+# set langfuse as a callback, llm will send the data to langfuse
+llm.success_callback = ["langfuse"] 
 
 # set custom langfuse trace params and generation params
 response = completion(
@@ -145,7 +145,7 @@ response = completion(
       "existing_trace_id": "trace-id22",
       "trace_metadata": {"key": "updated_trace_value"},            # The new value to use for the langfuse Trace Metadata
       "update_trace_keys": ["input", "output", "trace_metadata"],  # Updates the trace input & output to be this generations input & output also updates the Trace Metadata to match the passed in value
-      "debug_langfuse": True,                                      # Will log the exact metadata sent to litellm for the trace/generation as `metadata_passed_to_litellm` 
+      "debug_langfuse": True,                                      # Will log the exact metadata sent to llm for the trace/generation as `metadata_passed_to_llm` 
   },
 )
 
@@ -205,7 +205,7 @@ The following parameters can be updated on a continuation of a trace by passing 
 * `parent_observation_id` - Identifier for the parent observation, defaults to `None`
 * `prompt`                - Langfuse prompt object used for the generation, defaults to `None`
 
-Any other key value pairs passed into the metadata not listed in the above spec for a `litellm` completion will be added as a metadata key value pair for the generation.
+Any other key value pairs passed into the metadata not listed in the above spec for a `llm` completion will be added as a metadata key value pair for the generation.
 
 #### Disable Logging - Specific Calls
 
@@ -214,13 +214,13 @@ To disable logging for specific calls use the `no-log` flag.
 `completion(messages = ..., model = ...,  **{"no-log": True})`
 
 
-### Use LangChain ChatLiteLLM + Langfuse
+### Use LangChain ChatLLM + Langfuse
 Pass `trace_user_id`, `session_id` in model_kwargs
 ```python
 import os
-from langchain.chat_models import ChatLiteLLM
+from langchain.chat_models import ChatLLM
 from langchain.schema import HumanMessage
-import litellm
+import llm
 
 # from https://cloud.langfuse.com/
 os.environ["LANGFUSE_PUBLIC_KEY"] = "pk-..."
@@ -228,10 +228,10 @@ os.environ["LANGFUSE_SECRET_KEY"] = "sk-..."
 
 os.environ['OPENAI_API_KEY']="sk-..."
 
-# set langfuse as a callback, litellm will send the data to langfuse
-litellm.success_callback = ["langfuse"] 
+# set langfuse as a callback, llm will send the data to langfuse
+llm.success_callback = ["langfuse"] 
 
-chat = ChatLiteLLM(
+chat = ChatLLM(
   model="gpt-3.5-turbo"
   model_kwargs={
       "metadata": {
@@ -253,7 +253,7 @@ chat(messages)
 
 #### Redact Messages and Responses from all Langfuse Logging
 
-Set `litellm.turn_off_message_logging=True` This will prevent the messages and responses from being logged to langfuse, but request metadata will still be logged.
+Set `llm.turn_off_message_logging=True` This will prevent the messages and responses from being logged to langfuse, but request metadata will still be logged.
 
 #### Redact Messages and Responses from specific Langfuse Logging
 
@@ -267,12 +267,12 @@ Be aware that if you are continuing an existing trace, and you set `update_trace
 
 ## Troubleshooting & Errors
 ### Data not getting logged to Langfuse ? 
-- Ensure you're on the latest version of langfuse `pip install langfuse -U`. The latest version allows litellm to log JSON input/outputs to langfuse
+- Ensure you're on the latest version of langfuse `pip install langfuse -U`. The latest version allows llm to log JSON input/outputs to langfuse
 - Follow [this checklist](https://langfuse.com/faq/all/missing-traces) if you don't see any traces in langfuse.
 
 ## Support & Talk to Founders
 
-- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-litellm-hosted-version)
+- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 - Our numbers 📞 +1 (770) 8783-106 / ‭+1 (412) 618-6238‬
 - Our emails ✉️ ishaan@berri.ai / krrish@berri.ai

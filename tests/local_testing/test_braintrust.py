@@ -24,27 +24,27 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-import litellm
-from litellm.llms.custom_httpx.http_handler import HTTPHandler
+import llm
+from llm.llms.custom_httpx.http_handler import HTTPHandler
 
 
 def test_braintrust_logging():
-    import litellm
+    import llm
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     http_client = HTTPHandler()
 
     with patch.object(
-        litellm.integrations.braintrust_logging.global_braintrust_sync_http_handler,
+        llm.integrations.braintrust_logging.global_braintrust_sync_http_handler,
         "post",
         new=MagicMock(),
     ) as mock_client:
-        # set braintrust as a callback, litellm will send the data to braintrust
-        litellm.callbacks = ["braintrust"]
+        # set braintrust as a callback, llm will send the data to braintrust
+        llm.callbacks = ["braintrust"]
 
         # openai call
-        response = litellm.completion(
+        response = llm.completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hi 👋 - i'm openai"}],
         )
@@ -53,19 +53,19 @@ def test_braintrust_logging():
         mock_client.assert_called()
 
 def test_braintrust_logging_specific_project_id():
-    import litellm
+    import llm
 
-    litellm.set_verbose = True
+    llm.set_verbose = True
 
     with patch.object(
-        litellm.integrations.braintrust_logging.global_braintrust_sync_http_handler,
+        llm.integrations.braintrust_logging.global_braintrust_sync_http_handler,
         "post",
         new=MagicMock(),
     ) as mock_client:
-        # set braintrust as a callback, litellm will send the data to braintrust
-        litellm.callbacks = ["braintrust"]
+        # set braintrust as a callback, llm will send the data to braintrust
+        llm.callbacks = ["braintrust"]
 
-        response = litellm.completion(model="openai/gpt-4o", messages=[{ "content": "Hello, how are you?","role": "user"}], metadata={"project_id": "123"})
+        response = llm.completion(model="openai/gpt-4o", messages=[{ "content": "Hello, how are you?","role": "user"}], metadata={"project_id": "123"})
 
         time.sleep(2)
         

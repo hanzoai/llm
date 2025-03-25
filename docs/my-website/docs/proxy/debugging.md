@@ -12,7 +12,7 @@ The proxy also supports json logs. [See here](#json-logs)
 **via cli**
 
 ```bash
-$ litellm --debug
+$ llm --debug
 ```
 
 **via env**
@@ -26,7 +26,7 @@ os.environ["LITELLM_LOG"] = "INFO"
 **via cli**
 
 ```bash
-$ litellm --detailed_debug
+$ llm --detailed_debug
 ```
 
 **via env**
@@ -39,12 +39,12 @@ os.environ["LITELLM_LOG"] = "DEBUG"
 
 Run the proxy with `--detailed_debug` to view detailed debug logs
 ```shell
-litellm --config /path/to/config.yaml --detailed_debug
+llm --config /path/to/config.yaml --detailed_debug
 ```
 
-When making requests you should see the POST request sent by LiteLLM to the LLM on the Terminal output
+When making requests you should see the POST request sent by LLM to the LLM on the Terminal output
 ```shell
-POST Request Sent from LiteLLM:
+POST Request Sent from LLM:
 curl -X POST \
 https://api.openai.com/v1/chat/completions \
 -H 'content-type: application/json' -H 'Authorization: Bearer sk-qnWGUIW9****************************************' \
@@ -63,14 +63,14 @@ export JSON_LOGS="True"
 Set `json_logs: true` in your yaml: 
 
 ```yaml
-litellm_settings:
+llm_settings:
     json_logs: true
 ```
 
 Start proxy 
 
 ```bash
-$ litellm
+$ llm
 ```
 
 The proxy will now all logs in json format.
@@ -81,7 +81,7 @@ Turn off fastapi's default 'INFO' logs
 
 1. Turn on 'json logs' 
 ```yaml
-litellm_settings:
+llm_settings:
     json_logs: true
 ```
 
@@ -97,7 +97,7 @@ LITELLM_LOG="ERROR"
 
 
 ```bash
-$ litellm
+$ llm
 ```
 
 Expected Output: 

@@ -14,12 +14,12 @@ sys.path.insert(
 
 def test_using_litellm():
     try:
-        import litellm
+        import llm
 
-        print("litellm imported successfully")
+        print("llm imported successfully")
     except Exception as e:
         pytest.fail(
-            f"Error occurred: {e}. Installing litellm on python3.8 failed please retry"
+            f"Error occurred: {e}. Installing llm on python3.8 failed please retry"
         )
 
 
@@ -29,9 +29,9 @@ def test_litellm_proxy_server():
 
     # Import the proxy_server module
     try:
-        import litellm.proxy.proxy_server
+        import llm.proxy.proxy_server
     except ImportError:
-        pytest.fail("Failed to import litellm.proxy_server")
+        pytest.fail("Failed to import llm.proxy_server")
 
     # Assertion to satisfy the test, you can add other checks as needed
     assert True
@@ -41,10 +41,10 @@ def test_package_dependencies():
     try:
         import tomli
         import pathlib
-        import litellm
+        import llm
 
-        # Get the litellm package root path
-        litellm_path = pathlib.Path(litellm.__file__).parent.parent
+        # Get the llm package root path
+        litellm_path = pathlib.Path(llm.__file__).parent.parent
         pyproject_path = litellm_path / "pyproject.toml"
 
         # Read and parse pyproject.toml
@@ -102,7 +102,7 @@ def test_litellm_proxy_server_config_no_general_settings():
             [
                 "python",
                 "-m",
-                "litellm.proxy.proxy_cli",
+                "llm.proxy.proxy_cli",
                 "--config",
                 config_fp,
             ]
@@ -131,7 +131,7 @@ def test_litellm_proxy_server_config_no_general_settings():
         assert response.status_code == 200
 
     except ImportError:
-        pytest.fail("Failed to import litellm.proxy_server")
+        pytest.fail("Failed to import llm.proxy_server")
     except requests.ConnectionError:
         pytest.fail("Failed to connect to the server")
     finally:
