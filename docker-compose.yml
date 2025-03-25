@@ -6,14 +6,18 @@ services:
       context: .
       args:
         target: runtime
+<<<<<<< HEAD
     image: ghcr.io/hanzo.ai/llm:main-stable
     # Optional: Uncomment these lines if you have a config file for the proxy UI.
     # volumes:
     #   - ./config.yaml:/app/config.yaml
     # command:
     #   - "--config=/app/config.yaml"
+=======
+    image: ghcr.io/berriai/litellm:main-stable
+>>>>>>> 3562ee3f3 (Update compose)
     ports:
-      - 4000
+      - "4000:4000"  # Exposes the app on host port 4000 if needed; Traefik will use the internal port.
     networks:
       - hanzo-network
     environment:
@@ -31,8 +35,12 @@ services:
       start_period: 40s
     labels:
       - "traefik.enable=true"
+      # Route traffic coming to api.hanzo.ai (or adjust as needed)
       - "traefik.http.routers.llm.rule=Host(`api.hanzo.ai`)"
-      - "traefik.http.routers.llm.entrypoints=websecure"
+      # Use the "web" entrypoint (ensure Traefik is configured with it)
+      - "traefik.http.routers.llm.entrypoints=web"
+      # Define the service used by the router and tell Traefik which container port to use
+      - "traefik.http.services.llm-service.loadbalancer.server.port=4000"
 
   db:
     image: postgres:16
@@ -41,7 +49,6 @@ services:
       POSTGRES_DB: llm
       POSTGRES_USER: llmproxy
       POSTGRES_PASSWORD: dbpassword9090
-    # Note: The ports mapping is removed so that the container does not bind to host port 5432.
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -49,6 +56,8 @@ services:
       interval: 1s
       timeout: 5s
       retries: 10
+    networks:
+      - hanzo-network
 
   prometheus:
     image: prom/prometheus
@@ -62,9 +71,19 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--storage.tsdb.retention.time=15d'
     restart: always
+    networks:
+      - hanzo-network
 
 volumes:
   prometheus_data:
     driver: local
   postgres_data:
+<<<<<<< HEAD
     name: llm_postgres_data
+=======
+    name: litellm_postgres_data
+
+networks:
+  hanzo-network:
+    external: true
+>>>>>>> 3562ee3f3 (Update compose)
