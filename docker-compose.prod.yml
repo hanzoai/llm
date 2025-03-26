@@ -13,7 +13,7 @@ services:
       DATABASE_URL: "postgresql://llmproxy:dbpassword9090@db:5432/llm"
       STORE_MODEL_IN_DB: "True"  # Allows adding models via UI
     env_file:
-      - ../config/env.prod
+      - ../config/.env.prod
     volumes:
       - ../config/config.yaml:/app/config.yaml  # Mount config so it's accessible at /app/config.yaml
     command:
