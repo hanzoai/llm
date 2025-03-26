@@ -9,7 +9,7 @@ Detailed production traces and a granular view on quality, cost and latency
 
 :::info
 We want to learn how we can make the callbacks better! Meet the LLM [founders](https://calendly.com/d/4mp-gd3-k5k/hanzoai-1-1-onboarding-llm-hosted-version) or
-join our [discord](https://discord.gg/wuPM9dRgDw)
+join our [discord](https://discord.gg/XthHQQj)
 :::
 
 ## Pre-Requisites
@@ -58,6 +58,6 @@ response = llm.completion(
 ## Support & Talk to Founders
 
 - [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/hanzoai-1-1-onboarding-llm-hosted-version)
-- [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
+- [Community Discord 💭](https://discord.gg/XthHQQj)
 - Our numbers 📞 +1 (770) 8783-106 / ‭+1 (412) 618-6238‬
-- Our emails ✉️ ishaan@hanzo.ai / dev@hanzo.ai
+- Our emails ✉️ z@hanzo.ai / dev@hanzo.ai

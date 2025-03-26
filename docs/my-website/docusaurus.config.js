@@ -143,7 +143,7 @@ const config = {
             position: 'right',
           },
           {
-            href: 'https://discord.com/invite/wuPM9dRgDw',
+            href: 'https://discord.com/invite/XthHQQj',
             label: 'Discord',
             position: 'right',
           }
@@ -166,7 +166,7 @@ const config = {
             items: [
               {
                 label: 'Discord',
-                href: 'https://discord.com/invite/wuPM9dRgDw',
+                href: 'https://discord.com/invite/XthHQQj',
               },
               {
                 label: 'Twitter',

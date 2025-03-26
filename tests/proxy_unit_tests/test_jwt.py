@@ -930,7 +930,7 @@ def mock_user_object(*args, **kwargs):
 
 
 @pytest.mark.parametrize(
-    "user_email, should_work", [("ishaan@hanzo.ai", True), ("dev@tassle.xyz", False)]
+    "user_email, should_work", [("z@hanzo.ai", True), ("dev@tassle.xyz", False)]
 )
 @pytest.mark.asyncio
 async def test_allow_access_by_email(

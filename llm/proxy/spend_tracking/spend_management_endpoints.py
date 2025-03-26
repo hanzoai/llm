@@ -1864,7 +1864,7 @@ async def view_spend_logs(  # noqa: PLR0915
 
     Example Request for specific user_id
     ```
-    curl -X GET "http://0.0.0.0:8000/spend/logs?user_id=ishaan@hanzo.ai" \
+    curl -X GET "http://0.0.0.0:8000/spend/logs?user_id=z@hanzo.ai" \
 -H "Authorization: Bearer sk-1234"
     ```
     """

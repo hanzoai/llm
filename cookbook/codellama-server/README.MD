@@ -142,9 +142,9 @@ All responses from the server are returned in the following format (for all LLM 
 # Support / Talk with founders
 
 - [Our calendar 👋](https://calendly.com/d/4mp-gd3-k5k/hanzoai-1-1-onboarding-llm-hosted-version)
-- [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
+- [Community Discord 💭](https://discord.gg/XthHQQj)
 - Our numbers 📞 +1 (770) 8783-106 / +1 (412) 618-6238
-- Our emails ✉️ ishaan@hanzo.ai / dev@hanzo.ai
+- Our emails ✉️ z@hanzo.ai / dev@hanzo.ai
 
 ## Roadmap
 

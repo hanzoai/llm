@@ -191,7 +191,7 @@ curl -L -X POST 'http://0.0.0.0:4000/v1/chat/completions' \
     --data-raw '{
         "model": "gemini/gemini-1.5-flash",
         "messages": [
-        {"role": "user", "content": "hi my email is ishaan@hanzo.ai"}
+        {"role": "user", "content": "hi my email is z@hanzo.ai"}
         ],
         "mock_timeout": true # 👈 KEY CHANGE
     }'

@@ -25,7 +25,7 @@
     <a href="https://wa.link/huol9n">
         <img src="https://img.shields.io/static/v1?label=Chat%20on&message=WhatsApp&color=success&logo=WhatsApp&style=flat-square" alt="Whatsapp">
     </a>
-    <a href="https://discord.gg/wuPM9dRgDw">
+    <a href="https://discord.gg/XthHQQj">
         <img src="https://img.shields.io/static/v1?label=Chat%20on&message=Discord&color=blue&logo=Discord&style=flat-square" alt="Discord">
     </a>
 </h4>
@@ -285,7 +285,7 @@ Set budgets and rate limits across multiple projects
 curl 'http://0.0.0.0:4000/key/generate' \
 --header 'Authorization: Bearer sk-1234' \
 --header 'Content-Type: application/json' \
---data-raw '{"models": ["gpt-3.5-turbo", "gpt-4", "claude-2"], "duration": "20m","metadata": {"user": "ishaan@hanzo.ai", "team": "core-infra"}}'
+--data-raw '{"models": ["gpt-3.5-turbo", "gpt-4", "claude-2"], "duration": "20m","metadata": {"user": "z@hanzo.ai", "team": "core-infra"}}'
 ```
 
 ### Expected Response
@@ -372,9 +372,9 @@ If you have suggestions on how to improve the code quality feel free to open an 
 # Support / talk with founders
 
 - [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/hanzoai-1-1-onboarding-llm-hosted-version)
-- [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
+- [Community Discord 💭](https://discord.gg/XthHQQj)
 - Our numbers 📞 +1 (770) 8783-106 / ‭+1 (412) 618-6238‬
-- Our emails ✉️ ishaan@hanzo.ai / dev@hanzo.ai
+- Our emails ✉️ z@hanzo.ai / dev@hanzo.ai
 
 # Why did we build this
 

@@ -464,4 +464,4 @@ Yes, we support stop sequences - and you can pass as many as allowed by Hugging 
 
 We map the presence penalty parameter in openai to the repetition penalty parameter on Hugging Face. [See code](https://github.com/hanzoai/llm/blob/b4b2dbf005142e0a483d46a07a88a19814899403/llm/utils.py#L757).
 
-We welcome any suggestions for improving our Hugging Face integration - Create an [issue](https://github.com/hanzoai/llm/issues/new/choose)/[Join the Discord](https://discord.com/invite/wuPM9dRgDw)!
+We welcome any suggestions for improving our Hugging Face integration - Create an [issue](https://github.com/hanzoai/llm/issues/new/choose)/[Join the Discord](https://discord.com/invite/XthHQQj)!

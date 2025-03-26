@@ -158,7 +158,7 @@ def missing_keys_form(missing_key_names: str):
 
             <div class="container">
             <h1>Need Help? Support</h1>
-            <p>Discord: <a href="https://discord.com/invite/wuPM9dRgDw" target="_blank">https://discord.com/invite/wuPM9dRgDw</a></p>
+            <p>Discord: <a href="https://discord.com/invite/XthHQQj" target="_blank">https://discord.com/invite/XthHQQj</a></p>
             <p>Docs: <a href="https://docs.llm.ai/docs/" target="_blank">https://docs.llm.ai/docs/</a></p>
             </div>
         </body>
@@ -227,7 +227,7 @@ def admin_ui_disabled():
 
             <div class="container">
             <h1>Need Help? Support</h1>
-            <p>Discord: <a href="https://discord.com/invite/wuPM9dRgDw" target="_blank">https://discord.com/invite/wuPM9dRgDw</a></p>
+            <p>Discord: <a href="https://discord.com/invite/XthHQQj" target="_blank">https://discord.com/invite/XthHQQj</a></p>
             <p>Docs: <a href="https://docs.llm.ai/docs/" target="_blank">https://docs.llm.ai/docs/</a></p>
             </div>
         </body>

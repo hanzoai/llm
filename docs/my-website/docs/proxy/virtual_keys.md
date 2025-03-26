@@ -63,7 +63,7 @@ llm --config /path/to/config.yaml
 curl 'http://0.0.0.0:4000/key/generate' \
 --header 'Authorization: Bearer <your-master-key>' \
 --header 'Content-Type: application/json' \
---data-raw '{"models": ["gpt-3.5-turbo", "gpt-4"], "metadata": {"user": "ishaan@hanzo.ai"}}'
+--data-raw '{"models": ["gpt-3.5-turbo", "gpt-4"], "metadata": {"user": "z@hanzo.ai"}}'
 ```
 
 ## Spend Tracking 

@@ -90,7 +90,7 @@ curl -i http://localhost:4000/v1/chat/completions \
   -d '{
     "model": "gpt-3.5-turbo",
     "messages": [
-      {"role": "user", "content": "hi my email is ishaan@hanzo.ai"}
+      {"role": "user", "content": "hi my email is z@hanzo.ai"}
     ],
     "mock_response": "This is a mock response",
     "guardrails": ["aporia-pre-guard", "aporia-post-guard"]

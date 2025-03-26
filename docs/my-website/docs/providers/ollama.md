@@ -415,7 +415,7 @@ print(response)
 For Ollama LLM Provides a Docker Image for an OpenAI API compatible server for local LLMs - llama2, mistral, codellama
 
 
-[![Chat on WhatsApp](https://img.shields.io/static/v1?label=Chat%20on&message=WhatsApp&color=success&logo=WhatsApp&style=flat-square)](https://wa.link/huol9n) [![Chat on Discord](https://img.shields.io/static/v1?label=Chat%20on&message=Discord&color=blue&logo=Discord&style=flat-square)](https://discord.gg/wuPM9dRgDw) 
+[![Chat on WhatsApp](https://img.shields.io/static/v1?label=Chat%20on&message=WhatsApp&color=success&logo=WhatsApp&style=flat-square)](https://wa.link/huol9n) [![Chat on Discord](https://img.shields.io/static/v1?label=Chat%20on&message=Discord&color=blue&logo=Discord&style=flat-square)](https://discord.gg/XthHQQj) 
 ### An OpenAI API compatible server for local LLMs - llama2, mistral, codellama
 
 ### Quick Start:

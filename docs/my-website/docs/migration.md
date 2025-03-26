@@ -30,6 +30,6 @@ When we have breaking changes (i.e. going from 1.x.x to 2.x.x), we will document
 
 **How can we communicate changes better?**
 Tell us
-- [Discord](https://discord.com/invite/wuPM9dRgDw)
-- Email (dev@hanzo.ai/ishaan@hanzo.ai)
+- [Discord](https://discord.com/invite/XthHQQj)
+- Email (dev@hanzo.ai/z@hanzo.ai)
 - Text us (+17708783106)
