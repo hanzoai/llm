@@ -3,7 +3,6 @@
 #           Use GuardrailsAI for your LLM calls
 #
 # +-------------------------------------------------------------+
-#  Thank you for using LLM! - Krrish & Ishaan
 
 import json
 from typing import Optional, TypedDict

@@ -98,11 +98,6 @@ def generate_feedback_box():
     print("\033[1;37m" + "#" + " " * box_width + "#\033[0m")  # noqa
     print("\033[1;37m" + "#" + "-" * box_width + "#\033[0m")  # noqa
     print()  # noqa
-    print(" Thank you for using LLM! - Krrish & Ishaan")  # noqa
-    print()  # noqa
-    print()  # noqa
-    print()  # noqa
-    print(  # noqa
         "\033[1;31mGive Feedback / Get Help: https://github.com/hanzoai/llm/issues/new\033[0m"
     )  # noqa
     print()  # noqa
