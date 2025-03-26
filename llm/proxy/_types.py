@@ -1702,7 +1702,7 @@ class LLM_AuditLogs(LLMPydanticObjectBase):
     changed_by: Optional[Any] = None
     changed_by_api_key: Optional[str] = None
     action: AUDIT_ACTIONS
-    table_name: LlmTableNames
+    table_name: LLMTableNames
     object_id: str
     before_value: Optional[Json] = None
     updated_values: Optional[Json] = None
@@ -2249,12 +2249,12 @@ ROLES_WITHIN_ORG = [
 
 class OrganizationMemberUpdateRequest(OrganizationMemberDeleteRequest):
     max_budget_in_organization: Optional[float] = None
-    role: Optional[LlmUserRoles] = None
+    role: Optional[LLMUserRoles] = None
 
     @field_validator("role")
     def validate_role(
-        cls, value: Optional[LlmUserRoles]
-    ) -> Optional[LlmUserRoles]:
+        cls, value: Optional[LLMUserRoles]
+    ) -> Optional[LLMUserRoles]:
         if value is not None and value not in ROLES_WITHIN_ORG:
             raise ValueError(
                 f"Invalid role. Must be one of: {[role.value for role in ROLES_WITHIN_ORG]}"
