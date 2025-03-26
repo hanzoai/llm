@@ -69,41 +69,6 @@ try:
 except ImportError as e:
     raise ImportError(f"Missing dependency {e}. Run `pip install 'llm[proxy]'`")
 
-list_of_messages = [
-    "'The thing I wish you improved is...'",
-    "'A feature I really want is...'",
-    "'The worst thing about this product is...'",
-    "'This product would be better if...'",
-    "'I don't like how this works...'",
-    "'It would help me if you could add...'",
-    "'This feature doesn't meet my needs because...'",
-    "'I get frustrated when the product...'",
-]
-
-
-def generate_feedback_box():
-    box_width = 60
-
-    # Select a random message
-    message = random.choice(list_of_messages)
-
-    print()  # noqa
-    print("\033[1;37m" + "#" + "-" * box_width + "#\033[0m")  # noqa
-    print("\033[1;37m" + "#" + " " * box_width + "#\033[0m")  # noqa
-    print("\033[1;37m" + "# {:^59} #\033[0m".format(message))  # noqa
-    print(  # noqa
-        "\033[1;37m"
-        + "# {:^59} #\033[0m".format("https://github.com/hanzoai/llm/issues/new")
-    )  # noqa
-    print("\033[1;37m" + "#" + " " * box_width + "#\033[0m")  # noqa
-    print("\033[1;37m" + "#" + "-" * box_width + "#\033[0m")  # noqa
-    print()  # noqa
-        "\033[1;31mGive Feedback / Get Help: https://github.com/hanzoai/llm/issues/new\033[0m"
-    )  # noqa
-    print()  # noqa
-    print()  # noqa
-
-
 from collections import defaultdict
 from contextlib import asynccontextmanager
 
@@ -2890,8 +2855,6 @@ async def initialize(  # noqa: PLR0915
     config=None,
 ):
     global user_model, user_api_base, user_debug, user_detailed_debug, user_user_max_tokens, user_request_timeout, user_temperature, user_telemetry, user_headers, experimental, llm_model_list, llm_router, general_settings, master_key, user_custom_auth, prisma_client
-    if os.getenv("LLM_DONT_SHOW_FEEDBACK_BOX", "").lower() != "true":
-        generate_feedback_box()
     user_model = model
     user_debug = debug
     if debug is True:  # this needs to be first, so users can see Router init debugg
