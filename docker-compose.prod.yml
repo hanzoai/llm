@@ -2,7 +2,7 @@ version: "3.11"
 
 services:
   llm:
-    image: ghcr.io/hanzo.ai/llm:main-stable
+    image: ghcr.io/hanzoai/llm:stable
     ports:
       - "4000:4000"  # Map container port 4000 to host
     deploy:
