@@ -33,7 +33,7 @@ html_form = f"""
 <!DOCTYPE html>
 <html>
 <head>
-    <title>LLM Login</title>
+    <title>Admin Login</title>
     <style>
         body {{
             font-family: Arial, sans-serif;
@@ -80,10 +80,7 @@ html_form = f"""
 </head>
 <body>
     <form action="{url_to_redirect_to}" method="post">
-        <h2>LLM Login</h2>
-
-        <p>By default Username is "admin" and Password is your set LLM Proxy `MASTER_KEY`</p>
-        <p>If you need to set UI credentials / SSO docs here: <a href="https://docs.llm.ai/docs/proxy/ui" target="_blank">https://docs.llm.ai/docs/proxy/ui</a></p>
+        <h2>Admin Login</h2>
         <br>
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required>
