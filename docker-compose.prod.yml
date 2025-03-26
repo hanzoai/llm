@@ -1,6 +1,9 @@
 services:
   llm:
-    image: hanzoai/llm:latest
+    #image: hanzoai/llm:latest
+    build:
+      context: "https://github.com/hanzoai/llm.git"
+      dockerfile: Dockerfile
     ports:
       - "4000:4000"  # Map container port 4000 to host
     deploy:
