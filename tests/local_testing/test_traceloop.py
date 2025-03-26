@@ -17,7 +17,7 @@ def exporter():
 
     exporter = InMemorySpanExporter()
     Traceloop.init(
-        app_name="test_litellm",
+        app_name="test_llm",
         disable_batch=True,
         exporter=exporter,
     )

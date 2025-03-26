@@ -900,7 +900,7 @@ class StreamingChoices(OpenAIObject):
         **params,
     ):
         # Fix Perplexity return both delta and message cause OpenWebUI repect text
-        # https://github.com/BerriAI/litellm/issues/8455
+        # https://github.com/BerriAI/llm/issues/8455
         params.pop("message", None)
         super(StreamingChoices, self).__init__(**params)
         if finish_reason:

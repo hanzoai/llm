@@ -353,7 +353,7 @@ Confirm this via
 
 ```bash
 curl --location 'http://0.0.0.0:4000/v1/model/info' \
---header 'Authorization: Bearer ${LITELLM_KEY}' \
+--header 'Authorization: Bearer ${LLM_KEY}' \
 --data ''
 ```
 
@@ -490,7 +490,7 @@ Supported Environments:
 - `staging`
 - `development`
 
-1. Set `LITELLM_ENVIRONMENT="<environment>"` in your environment. Can be one of `production`, `staging` or `development`
+1. Set `LLM_ENVIRONMENT="<environment>"` in your environment. Can be one of `production`, `staging` or `development`
 
 
 2. For each model set the list of supported environments in `model_info.supported_environments`
@@ -631,9 +631,9 @@ LLM Proxy will read your config.yaml from an s3 Bucket or GCS Bucket
 
 Set the following .env vars 
 ```shell
-LITELLM_CONFIG_BUCKET_TYPE = "gcs"                              # set this to "gcs"         
-LITELLM_CONFIG_BUCKET_NAME = "llm-proxy"                    # your bucket name on GCS
-LITELLM_CONFIG_BUCKET_OBJECT_KEY = "proxy_config.yaml"         # object key on GCS
+LLM_CONFIG_BUCKET_TYPE = "gcs"                              # set this to "gcs"         
+LLM_CONFIG_BUCKET_NAME = "llm-proxy"                    # your bucket name on GCS
+LLM_CONFIG_BUCKET_OBJECT_KEY = "proxy_config.yaml"         # object key on GCS
 ```
 
 Start llm proxy with these env vars - llm will read your config from GCS 
@@ -641,9 +641,9 @@ Start llm proxy with these env vars - llm will read your config from GCS
 ```shell
 docker run --name llm-proxy \
    -e DATABASE_URL=<database_url> \
-   -e LITELLM_CONFIG_BUCKET_NAME=<bucket_name> \
-   -e LITELLM_CONFIG_BUCKET_OBJECT_KEY="<object_key>> \
-   -e LITELLM_CONFIG_BUCKET_TYPE="gcs" \
+   -e LLM_CONFIG_BUCKET_NAME=<bucket_name> \
+   -e LLM_CONFIG_BUCKET_OBJECT_KEY="<object_key>> \
+   -e LLM_CONFIG_BUCKET_TYPE="gcs" \
    -p 4000:4000 \
    ghcr.io/berriai/llm-database:main-latest --detailed_debug
 ```
@@ -654,8 +654,8 @@ docker run --name llm-proxy \
 
 Set the following .env vars 
 ```shell
-LITELLM_CONFIG_BUCKET_NAME = "llm-proxy"                    # your bucket name on s3 
-LITELLM_CONFIG_BUCKET_OBJECT_KEY = "llm_proxy_config.yaml"  # object key on s3
+LLM_CONFIG_BUCKET_NAME = "llm-proxy"                    # your bucket name on s3 
+LLM_CONFIG_BUCKET_OBJECT_KEY = "llm_proxy_config.yaml"  # object key on s3
 ```
 
 Start llm proxy with these env vars - llm will read your config from s3 
@@ -663,8 +663,8 @@ Start llm proxy with these env vars - llm will read your config from s3
 ```shell
 docker run --name llm-proxy \
    -e DATABASE_URL=<database_url> \
-   -e LITELLM_CONFIG_BUCKET_NAME=<bucket_name> \
-   -e LITELLM_CONFIG_BUCKET_OBJECT_KEY="<object_key>> \
+   -e LLM_CONFIG_BUCKET_NAME=<bucket_name> \
+   -e LLM_CONFIG_BUCKET_OBJECT_KEY="<object_key>> \
    -p 4000:4000 \
    ghcr.io/berriai/llm-database:main-latest
 ```

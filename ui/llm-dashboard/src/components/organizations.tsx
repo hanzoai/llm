@@ -123,7 +123,7 @@ const OrganizationsTable: React.FC<OrganizationsTableProps> = ({
   if (!premiumUser) {
     return (
       <div>
-        <Text>This is a LiteLLM Enterprise feature, and requires a valid key to use. Get a trial key <a href="https://litellm.ai/pricing" target="_blank" rel="noopener noreferrer">here</a>.</Text>
+        <Text>This is a LLM Enterprise feature, and requires a valid key to use. Get a trial key <a href="https://llm.ai/pricing" target="_blank" rel="noopener noreferrer">here</a>.</Text>
       </div>
     );
   }
@@ -211,7 +211,7 @@ const OrganizationsTable: React.FC<OrganizationsTableProps> = ({
                               </TableCell>
                               <TableCell>{org.spend}</TableCell>
                               <TableCell>
-                                {org.litellm_budget_table?.max_budget !== null && org.litellm_budget_table?.max_budget !== undefined ? org.litellm_budget_table?.max_budget : "No limit"}
+                                {org.llm_budget_table?.max_budget !== null && org.llm_budget_table?.max_budget !== undefined ? org.llm_budget_table?.max_budget : "No limit"}
                               </TableCell>
                               <TableCell>
                                 {Array.isArray(org.models) && (
@@ -240,9 +240,9 @@ const OrganizationsTable: React.FC<OrganizationsTableProps> = ({
                               </TableCell>
                               <TableCell>
                                 <Text>
-                                  TPM: {org.litellm_budget_table?.tpm_limit ? org.litellm_budget_table?.tpm_limit : "Unlimited"}
+                                  TPM: {org.llm_budget_table?.tpm_limit ? org.llm_budget_table?.tpm_limit : "Unlimited"}
                                   <br />
-                                  RPM: {org.litellm_budget_table?.rpm_limit ? org.litellm_budget_table?.rpm_limit : "Unlimited"}
+                                  RPM: {org.llm_budget_table?.rpm_limit ? org.llm_budget_table?.rpm_limit : "Unlimited"}
                                 </Text>
                               </TableCell>
                               <TableCell>

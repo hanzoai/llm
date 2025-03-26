@@ -47,7 +47,7 @@ export const createCredentialFromModel = (provider: string, modelData: any): Cre
 
   // Go through each field defined for this provider
   providerFields.forEach(field => {
-    const value = modelData.litellm_params[field.key];
+    const value = modelData.llm_params[field.key];
     console.log("field", field);
     console.log("value", value);
     if (value !== undefined) {
@@ -163,7 +163,7 @@ const PROVIDER_CREDENTIAL_FIELDS: Record<Providers, ProviderCredentialField[]> =
       key: "api_version",
       label: "API Version",
       placeholder: "2023-07-01-preview",
-      tooltip: "By default litellm will use the latest version. If you want to use a different version, you can specify it here"
+      tooltip: "By default llm will use the latest version. If you want to use a different version, you can specify it here"
     },
     {
       key: "base_model",
@@ -182,7 +182,7 @@ const PROVIDER_CREDENTIAL_FIELDS: Record<Providers, ProviderCredentialField[]> =
       key: "api_base",
       label: "API Base",
       placeholder: "https://<test>.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-10-21",
-      tooltip: "Enter your full Target URI from Azure Foundry here. Example:  https://litellm8397336933.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-10-21",
+      tooltip: "Enter your full Target URI from Azure Foundry here. Example:  https://llm8397336933.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-10-21",
       required: true
     },
     {
@@ -381,7 +381,7 @@ const ProviderSpecificFields: React.FC<ProviderSpecificFieldsProps> = ({
               <Col span={10}></Col>
               <Col span={10}>
                 <Text className="mb-3 mt-1">
-                  Give litellm a gcp service account(.json file), so it
+                  Give llm a gcp service account(.json file), so it
                   can make the relevant calls
                 </Text>
               </Col>
@@ -397,7 +397,7 @@ const ProviderSpecificFields: React.FC<ProviderSpecificFieldsProps> = ({
                   The actual model your azure deployment uses. Used
                   for accurate cost tracking. Select name from{" "}
                   <Link
-                    href="https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json"
+                    href="https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json"
                     target="_blank"
                   >
                     here

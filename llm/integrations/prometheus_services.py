@@ -1,6 +1,6 @@
 # used for monitoring llm services health on `/metrics` endpoint on LLM Proxy
 #### What this does ####
-#    On success + failure, log events to Prometheus for llm / adjacent services (litellm, redis, postgres, llm api providers)
+#    On success + failure, log events to Prometheus for llm / adjacent services (llm, redis, postgres, llm api providers)
 
 
 from typing import List, Optional, Union
@@ -14,7 +14,7 @@ FAILED_REQUESTS_LABELS = ["error_class", "function_name"]
 
 class PrometheusServicesLogger:
     # Class variables or attributes
-    litellm_service_latency = None  # Class-level attribute to store the Histogram
+    llm_service_latency = None  # Class-level attribute to store the Histogram
 
     def __init__(
         self,
@@ -83,7 +83,7 @@ class PrometheusServicesLogger:
         return self.REGISTRY._names_to_collectors.get(metric_name)
 
     def create_histogram(self, service: str, type_of_request: str):
-        metric_name = "litellm_{}_{}".format(service, type_of_request)
+        metric_name = "llm_{}_{}".format(service, type_of_request)
         is_registered = self.is_metric_registered(metric_name)
         if is_registered:
             return self._get_metric(metric_name)
@@ -100,7 +100,7 @@ class PrometheusServicesLogger:
         type_of_request: str,
         additional_labels: Optional[List[str]] = None,
     ):
-        metric_name = "litellm_{}_{}".format(service, type_of_request)
+        metric_name = "llm_{}_{}".format(service, type_of_request)
         is_registered = self.is_metric_registered(metric_name)
         if is_registered:
             return self._get_metric(metric_name)

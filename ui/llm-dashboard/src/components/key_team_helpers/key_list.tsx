@@ -38,7 +38,7 @@ export interface KeyResponse {
     model_max_budget: Record<string, number>;
     soft_budget_cooldown: boolean;
     blocked: boolean;
-    litellm_budget_table: Record<string, unknown>;
+    llm_budget_table: Record<string, unknown>;
     organization_id: string | null;
     created_at: string;
     updated_at: string;

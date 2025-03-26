@@ -97,7 +97,7 @@ async def test_available_tpm(num_projects, dynamic_rate_limit_handler):
         model_list=[
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "my-key",
                     "api_base": "my-base",
@@ -136,7 +136,7 @@ async def test_available_rpm(num_projects, dynamic_rate_limit_handler):
         model_list=[
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "my-key",
                     "api_base": "my-base",
@@ -179,7 +179,7 @@ async def test_rate_limit_raised(dynamic_rate_limit_handler, user_api_key_auth, 
         model_list=[
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "my-key",
                     "api_base": "my-base",
@@ -244,7 +244,7 @@ async def test_base_case(dynamic_rate_limit_handler, mock_response):
         model_list=[
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "my-key",
                     "api_base": "my-base",
@@ -305,7 +305,7 @@ async def test_update_cache(
         model_list=[
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "my-key",
                     "api_base": "my-base",
@@ -383,7 +383,7 @@ async def test_multiple_projects(
         model_list=[
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "my-key",
                     "api_base": "my-base",
@@ -465,7 +465,7 @@ async def test_priority_reservation(num_projects, dynamic_rate_limit_handler):
         model_list=[
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "my-key",
                     "api_base": "my-base",
@@ -535,7 +535,7 @@ async def test_multiple_projects_e2e(
         model_list=[
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "my-key",
                     "api_base": "my-base",

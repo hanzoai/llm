@@ -19,10 +19,10 @@ const ConditionalPublicModelName: React.FC = () => {
     if (customModelName && selectedModels.includes('custom')) {
       const currentMappings = form.getFieldValue('model_mappings') || [];
       const updatedMappings = currentMappings.map((mapping: any) => {
-        if (mapping.public_name === 'custom' || mapping.litellm_model === 'custom') {
+        if (mapping.public_name === 'custom' || mapping.llm_model === 'custom') {
           return {
             public_name: customModelName,
-            litellm_model: customModelName
+            llm_model: customModelName
           };
         }
         return mapping;
@@ -39,12 +39,12 @@ const ConditionalPublicModelName: React.FC = () => {
         if (model === 'custom' && customModelName) {
           return {
             public_name: customModelName,
-            litellm_model: customModelName
+            llm_model: customModelName
           };
         }
         return {
           public_name: model,
-          litellm_model: model
+          llm_model: model
         };
       });
       form.setFieldValue('model_mappings', mappings);
@@ -73,9 +73,9 @@ const ConditionalPublicModelName: React.FC = () => {
       }
     },
     {
-      title: 'LiteLLM Model',
-      dataIndex: 'litellm_model',
-      key: 'litellm_model',
+      title: 'LLM Model',
+      dataIndex: 'llm_model',
+      key: 'llm_model',
     }
   ];
 
@@ -84,7 +84,7 @@ const ConditionalPublicModelName: React.FC = () => {
       <Form.Item
         label="Model Mappings"
         name="model_mappings"
-        tooltip="Map public model names to LiteLLM model names for load balancing"
+        tooltip="Map public model names to LLM model names for load balancing"
         labelCol={{ span: 10 }}
         wrapperCol={{ span: 16 }}
         labelAlign="left"

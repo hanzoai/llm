@@ -36,7 +36,7 @@ verbose_logger.setLevel(logging.DEBUG)
 @pytest.fixture
 def image_url():
     # URL of the image
-    image_url = "https://litellm-listing.s3.amazonaws.com/litellm_logo.png"
+    image_url = "https://llm-listing.s3.amazonaws.com/llm_logo.png"
 
     # Fetch the image from the URL
     response = requests.get(image_url)
@@ -59,7 +59,7 @@ def test_openai_image_variation_openai_sdk(image_url):
 
 @pytest.mark.parametrize("sync_mode", [True, False])
 @pytest.mark.asyncio
-async def test_openai_image_variation_litellm_sdk(image_url, sync_mode):
+async def test_openai_image_variation_llm_sdk(image_url, sync_mode):
     from llm import image_variation, aimage_variation
 
     if sync_mode:

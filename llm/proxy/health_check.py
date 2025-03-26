@@ -1,4 +1,4 @@
-# This file runs a health check for the LLM, used on litellm/proxy
+# This file runs a health check for the LLM, used on llm/proxy
 
 import asyncio
 import logging

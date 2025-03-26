@@ -33,7 +33,7 @@ from llm.types.utils import (
     Embedding,
 )
 from datetime import timedelta, datetime
-from llm.litellm_core_utils.litellm_logging import Logging as LLMLogging
+from llm.llm_core_utils.llm_logging import Logging as LLMLogging
 from llm._logging import verbose_logger
 import logging
 
@@ -82,7 +82,7 @@ async def test_async_set_get_cache(response):
     messages = [{"role": "user", "content": f"Unique message {datetime.now()}"}]
 
     logging_obj = LLMLogging(
-        litellm_call_id=str(datetime.now()),
+        llm_call_id=str(datetime.now()),
         call_type=CallTypes.completion.value,
         model="gpt-3.5-turbo",
         messages=messages,
@@ -215,7 +215,7 @@ def test_convert_cached_result_to_model_response(
         original_function=lambda: None, request_kwargs={}, start_time=datetime.now()
     )
     logging_obj = LLMLogging(
-        litellm_call_id=str(datetime.now()),
+        llm_call_id=str(datetime.now()),
         call_type=call_type,
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": "Hello, how can I help you today?"}],

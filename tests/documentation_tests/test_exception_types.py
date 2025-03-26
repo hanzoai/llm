@@ -16,7 +16,7 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 import llm
 
-public_exceptions = llm.LITELLM_EXCEPTION_TYPES
+public_exceptions = llm.LLM_EXCEPTION_TYPES
 # Regular expression to extract the error name
 error_name_pattern = re.compile(r"\.exceptions\.([A-Za-z]+Error)")
 

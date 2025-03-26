@@ -27,9 +27,9 @@ Expect to start seeing decryption errors in logs, as your old master key is no l
 Exception: Unable to decrypt value=<new-encrypted-value>
 ```
 
-**3. Update LITELLM_MASTER_KEY**
+**3. Update LLM_MASTER_KEY**
 
-In your environment variables update the value of LITELLM_MASTER_KEY to the new_master_key from Step 2.
+In your environment variables update the value of LLM_MASTER_KEY to the new_master_key from Step 2.
 
 This ensures the key used for decryption from db is the new key.
 

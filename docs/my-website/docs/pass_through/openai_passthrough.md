@@ -15,7 +15,7 @@ Pass-through endpoints for `/openai`
 - For 90% of your use cases, you should use the [native LLM OpenAI Integration](https://docs.llm.ai/docs/providers/openai) (`/chat/completions`, `/embeddings`, `/completions`, `/images`, `/batches`, etc.)
 - Use this passthrough to call less popular or newer OpenAI endpoints that LLM doesn't fully support yet, such as `/assistants`, `/threads`, `/vector_stores`
 
-Simply replace `https://api.openai.com` with `LITELLM_PROXY_BASE_URL/openai`
+Simply replace `https://api.openai.com` with `LLM_PROXY_BASE_URL/openai`
 
 ## Usage Examples
 
@@ -24,8 +24,8 @@ Simply replace `https://api.openai.com` with `LITELLM_PROXY_BASE_URL/openai`
 #### Create OpenAI Client
 
 Make sure you do the following:
-- Point `base_url` to your `LITELLM_PROXY_BASE_URL/openai`
-- Use your `LITELLM_API_KEY` as the `api_key`
+- Point `base_url` to your `LLM_PROXY_BASE_URL/openai`
+- Use your `LLM_API_KEY` as the `api_key`
 
 ```python
 import openai

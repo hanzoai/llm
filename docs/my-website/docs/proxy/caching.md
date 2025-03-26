@@ -1,9 +1,9 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Caching 
+# Caching
 
-:::note 
+:::note
 
 For OpenAI/Anthropic Prompt Caching, go [here](../completion/prompt_caching.md)
 
@@ -16,10 +16,10 @@ Cache LLM Responses. LLM's caching system stores and reuses LLM responses to sav
 ### Supported Caches
 
 - In Memory Cache
-- Redis Cache 
+- Redis Cache
 - Qdrant Semantic Cache
 - Redis Semantic Cache
-- s3 Bucket Cache 
+- s3 Bucket Cache
 
 ## Quick Start
 <Tabs>
@@ -43,14 +43,14 @@ llm_settings:
   cache: True          # set cache responses to True, llm defaults to using a redis cache
 ```
 
-#### [OPTIONAL] Step 1.5: Add redis namespaces, default ttl 
+#### [OPTIONAL] Step 1.5: Add redis namespaces, default ttl
 
 #### Namespace
 If you want to create some folder for your keys, you can set a namespace, like this:
 
 ```yaml
 llm_settings:
-  cache: true 
+  cache: true
   cache_params:        # set cache params for redis
     type: redis
     namespace: "llm.caching.caching"
@@ -62,7 +62,7 @@ and keys will be stored like:
 llm.caching.caching:<hash>
 ```
 
-#### Redis Cluster 
+#### Redis Cluster
 
 <Tabs>
 
@@ -79,7 +79,7 @@ llm_settings:
   cache: True
   cache_params:
     type: redis
-    redis_startup_nodes: [{"host": "127.0.0.1", "port": "7001"}] 
+    redis_startup_nodes: [{"host": "127.0.0.1", "port": "7001"}]
 ```
 
 </TabItem>
@@ -120,7 +120,7 @@ print("REDIS_CLUSTER_NODES", os.environ["REDIS_CLUSTER_NODES"])
 
 </Tabs>
 
-#### Redis Sentinel 
+#### Redis Sentinel
 
 
 <Tabs>
@@ -180,18 +180,18 @@ print("REDIS_SENTINEL_NODES", os.environ["REDIS_SENTINEL_NODES"])
 
 ```yaml
 llm_settings:
-  cache: true 
+  cache: true
   cache_params:        # set cache params for redis
     type: redis
     ttl: 600 # will be cached on redis for 600s
-    # default_in_memory_ttl: Optional[float], default is None. time in seconds. 
-    # default_in_redis_ttl: Optional[float], default is None. time in seconds. 
+    # default_in_memory_ttl: Optional[float], default is None. time in seconds.
+    # default_in_redis_ttl: Optional[float], default is None. time in seconds.
 ```
 
 
 #### SSL
 
-just set `REDIS_SSL="True"` in your .env, and LLM will pick this up. 
+just set `REDIS_SSL="True"` in your .env, and LLM will pick this up.
 
 ```env
 REDIS_SSL="True"
@@ -203,23 +203,23 @@ For quick testing, you can also use REDIS_URL, eg.:
 REDIS_URL="rediss://.."
 ```
 
-but we **don't** recommend using REDIS_URL in prod. We've noticed a performance difference between using it vs. redis_host, port, etc. 
+but we **don't** recommend using REDIS_URL in prod. We've noticed a performance difference between using it vs. redis_host, port, etc.
 #### Step 2: Add Redis Credentials to .env
 Set either `REDIS_URL` or the `REDIS_HOST` in your os environment, to enable caching.
 
   ```shell
   REDIS_URL = ""        # REDIS_URL='redis://username:password@hostname:port/database'
-  ## OR ## 
+  ## OR ##
   REDIS_HOST = ""       # REDIS_HOST='redis-18841.c274.us-east-1-3.ec2.cloud.redislabs.com'
   REDIS_PORT = ""       # REDIS_PORT='18841'
-  REDIS_PASSWORD = ""   # REDIS_PASSWORD='liteLlmIsAmazing'
+  REDIS_PASSWORD = ""   # REDIS_PASSWORD='LlmIsAmazing'
   ```
 
-**Additional kwargs**  
-You can pass in any additional redis.Redis arg, by storing the variable + value in your os environment, like this: 
+**Additional kwargs**
+You can pass in any additional redis.Redis arg, by storing the variable + value in your os environment, like this:
 ```shell
 REDIS_<redis-kwarg-name> = ""
-``` 
+```
 
 [**See how it's read from the environment**](https://github.com/BerriAI/llm/blob/4d7ff1b33b9991dcf38d821266290631d9bcd2dd/llm/_redis.py#L40)
 #### Step 3: Run proxy with config
@@ -340,7 +340,7 @@ llm_settings:
   set_verbose: True
   cache: True          # set cache responses to True, llm defaults to using a redis cache
   cache_params:
-    type: "redis-semantic"  
+    type: "redis-semantic"
     similarity_threshold: 0.8   # similarity threshold for semantic cache
     redis_semantic_cache_embedding_model: azure-embedding-model # set this to a model_name set in model_list
 ```
@@ -350,17 +350,17 @@ Set either `REDIS_URL` or the `REDIS_HOST` in your os environment, to enable cac
 
   ```shell
   REDIS_URL = ""        # REDIS_URL='redis://username:password@hostname:port/database'
-  ## OR ## 
+  ## OR ##
   REDIS_HOST = ""       # REDIS_HOST='redis-18841.c274.us-east-1-3.ec2.cloud.redislabs.com'
   REDIS_PORT = ""       # REDIS_PORT='18841'
-  REDIS_PASSWORD = ""   # REDIS_PASSWORD='liteLlmIsAmazing'
+  REDIS_PASSWORD = ""   # REDIS_PASSWORD='LlmIsAmazing'
   ```
 
-**Additional kwargs**  
-You can pass in any additional redis.Redis arg, by storing the variable + value in your os environment, like this: 
+**Additional kwargs**
+You can pass in any additional redis.Redis arg, by storing the variable + value in your os environment, like this:
 ```shell
 REDIS_<redis-kwarg-name> = ""
-``` 
+```
 
 #### Step 3: Run proxy with config
 ```shell
@@ -657,7 +657,7 @@ curl http://localhost:4000/v1/chat/completions \
 
 Use this if you just want to enable features like rate limiting, and loadbalancing across multiple instances.
 
-Set `supported_call_types: []` to disable caching on the actual api call. 
+Set `supported_call_types: []` to disable caching on the actual api call.
 
 
 ```yaml
@@ -665,7 +665,7 @@ llm_settings:
   cache: True
   cache_params:
     type: redis
-    supported_call_types: [] 
+    supported_call_types: []
 ```
 
 
@@ -732,16 +732,16 @@ llm_settings:
     host: "localhost"  # The host address for the Redis cache. Required if type is "redis".
     port: 6379  # The port number for the Redis cache. Required if type is "redis".
     password: "your_password"  # The password for the Redis cache. Required if type is "redis".
-    
+
     # Optional configurations
     supported_call_types: ["acompletion", "atext_completion", "aembedding", "atranscription"]
                       # /chat/completions, /completions, /embeddings, /audio/transcriptions
 ```
 
-### Deleting Cache Keys - `/cache/delete` 
+### Deleting Cache Keys - `/cache/delete`
 In order to delete a cache key, send a request to `/cache/delete` with the `keys` you want to delete
 
-Example 
+Example
 ```shell
 curl -X POST "http://0.0.0.0:4000/cache/delete" \
   -H "Authorization: Bearer sk-1234" \
@@ -770,7 +770,7 @@ curl -i --location 'http://0.0.0.0:4000/chat/completions' \
 }'
 ```
 
-Response from llm proxy 
+Response from llm proxy
 ```json
 date: Thu, 04 Apr 2024 17:37:21 GMT
 content-type: application/json
@@ -790,7 +790,7 @@ x-llm-cache-key: 586bf3f3c1bf5aecb55bd9996494d3bbc69eb58397163add6d49537762a7548
     ],
     "created": 1712252235,
 }
-             
+
 ```
 
 ### **Set Caching Default Off - Opt in only **
@@ -861,7 +861,7 @@ curl http://localhost:4000/v1/chat/completions \
 
 
 
-### Turn on `batch_redis_requests` 
+### Turn on `batch_redis_requests`
 
 **What it does?**
 When a request is made:
@@ -871,7 +871,7 @@ When a request is made:
 - New requests are stored with this `llm:..` as the namespace
 
 **Why?**
-Reduce number of redis GET requests. This improved latency by 46% in prod load tests. 
+Reduce number of redis GET requests. This improved latency by 46% in prod load tests.
 
 **Usage**
 
@@ -890,7 +890,7 @@ llm_settings:
 
 ```yaml
 cache_params:
-  # ttl 
+  # ttl
   ttl: Optional[float]
   default_in_memory_ttl: Optional[float]
   default_in_redis_ttl: Optional[float]
@@ -908,7 +908,7 @@ cache_params:
   port: "6379"  # Redis server port (as a string)
   password: secret_password  # Redis server password
   namespace: Optional[str] = None,
-  
+
 
   # S3 cache parameters
   s3_bucket_name: your_s3_bucket_name  # Name of the S3 bucket
@@ -923,7 +923,7 @@ cache_params:
 
 ```
 
-## Advanced - user api key cache ttl 
+## Advanced - user api key cache ttl
 
 Configure how long the in-memory cache stores the key object (prevents db requests)
 

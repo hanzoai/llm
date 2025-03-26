@@ -11,7 +11,7 @@ from llm._logging import verbose_proxy_logger
 from llm.proxy._types import (
     AUDIT_ACTIONS,
     LLM_AuditLogs,
-    LitellmTableNames,
+    LlmTableNames,
     Optional,
     UserAPIKeyAuth,
 )
@@ -20,10 +20,10 @@ from llm.proxy._types import (
 async def create_object_audit_log(
     object_id: str,
     action: AUDIT_ACTIONS,
-    litellm_changed_by: Optional[str],
+    llm_changed_by: Optional[str],
     user_api_key_dict: UserAPIKeyAuth,
     llm_proxy_admin_name: Optional[str],
-    table_name: LitellmTableNames,
+    table_name: LlmTableNames,
     before_value: Optional[str] = None,
     after_value: Optional[str] = None,
 ):
@@ -34,7 +34,7 @@ async def create_object_audit_log(
     - user_id: str - The id of the user to create the audit log for.
     - action: AUDIT_ACTIONS - The action to create the audit log for.
     - user_row: LLM_UserTable - The user row to create the audit log for.
-    - litellm_changed_by: Optional[str] - The user id of the user who is changing the user.
+    - llm_changed_by: Optional[str] - The user id of the user who is changing the user.
     - user_api_key_dict: UserAPIKeyAuth - The user api key dictionary.
     - llm_proxy_admin_name: Optional[str] - The name of the proxy admin.
     """
@@ -45,7 +45,7 @@ async def create_object_audit_log(
         request_data=LLM_AuditLogs(
             id=str(uuid.uuid4()),
             updated_at=datetime.now(timezone.utc),
-            changed_by=litellm_changed_by
+            changed_by=llm_changed_by
             or user_api_key_dict.user_id
             or llm_proxy_admin_name,
             changed_by_api_key=user_api_key_dict.api_key,
@@ -86,7 +86,7 @@ async def create_audit_log_for_update(request_data: LLM_AuditLogs):
     _request_data = request_data.model_dump(exclude_none=True)
 
     try:
-        await prisma_client.db.litellm_auditlog.create(
+        await prisma_client.db.llm_auditlog.create(
             data={
                 **_request_data,  # type: ignore
             }

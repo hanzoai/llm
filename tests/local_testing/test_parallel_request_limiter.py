@@ -74,7 +74,7 @@ async def test_key_max_parallel_requests():
     """
     Ensure the error str returned contains parallel request information.
 
-    Relevant Issue: https://github.com/BerriAI/litellm/issues/8392
+    Relevant Issue: https://github.com/BerriAI/llm/issues/8392
     """
     _api_key = "sk-12345"
     _api_key = hash_token("sk-12345")
@@ -237,7 +237,7 @@ async def test_pre_call_hook_team_rpm_limits():
     )
 
     kwargs = {
-        "litellm_params": {
+        "llm_params": {
             "metadata": {"user_api_key": _api_key, "user_api_key_team_id": _team_id}
         }
     }
@@ -278,7 +278,7 @@ async def test_pre_call_hook_tpm_limits():
         user_api_key_dict=user_api_key_dict, cache=local_cache, data={}, call_type=""
     )
 
-    kwargs = {"litellm_params": {"metadata": {"user_api_key": _api_key}}}
+    kwargs = {"llm_params": {"metadata": {"user_api_key": _api_key}}}
 
     await parallel_request_handler.async_log_success_event(
         kwargs=kwargs,
@@ -337,7 +337,7 @@ async def test_pre_call_hook_user_tpm_limits():
     )
 
     kwargs = {
-        "litellm_params": {
+        "llm_params": {
             "metadata": {"user_api_key_user_id": user_id, "user_api_key": "gm"}
         }
     }
@@ -396,7 +396,7 @@ async def test_success_call_hook():
         == 1
     )
 
-    kwargs = {"litellm_params": {"metadata": {"user_api_key": _api_key}}}
+    kwargs = {"llm_params": {"metadata": {"user_api_key": _api_key}}}
 
     await parallel_request_handler.async_log_success_event(
         kwargs=kwargs, response_obj="", start_time="", end_time=""
@@ -442,7 +442,7 @@ async def test_failure_call_hook():
     )
 
     kwargs = {
-        "litellm_params": {"metadata": {"user_api_key": _api_key}},
+        "llm_params": {"metadata": {"user_api_key": _api_key}},
         "exception": Exception(),
     }
 
@@ -472,7 +472,7 @@ async def test_normal_router_call():
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -482,7 +482,7 @@ async def test_normal_router_call():
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-35-turbo",
                 "api_key": "os.environ/AZURE_EUROPE_API_KEY",
                 "api_base": "https://my-endpoint-europe-berri-992.openai.azure.com",
@@ -502,7 +502,7 @@ async def test_normal_router_call():
     user_api_key_dict = UserAPIKeyAuth(api_key=_api_key, max_parallel_requests=1)
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
-    pl._init_litellm_callbacks()
+    pl._init_llm_callbacks()
     print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
@@ -552,7 +552,7 @@ async def test_normal_router_tpm_limit():
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -562,7 +562,7 @@ async def test_normal_router_tpm_limit():
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-35-turbo",
                 "api_key": "os.environ/AZURE_EUROPE_API_KEY",
                 "api_base": "https://my-endpoint-europe-berri-992.openai.azure.com",
@@ -584,7 +584,7 @@ async def test_normal_router_tpm_limit():
     )
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
-    pl._init_litellm_callbacks()
+    pl._init_llm_callbacks()
     print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
@@ -635,7 +635,7 @@ async def test_streaming_router_call():
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -645,7 +645,7 @@ async def test_streaming_router_call():
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-35-turbo",
                 "api_key": "os.environ/AZURE_EUROPE_API_KEY",
                 "api_base": "https://my-endpoint-europe-berri-992.openai.azure.com",
@@ -665,7 +665,7 @@ async def test_streaming_router_call():
     user_api_key_dict = UserAPIKeyAuth(api_key=_api_key, max_parallel_requests=1)
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
-    pl._init_litellm_callbacks()
+    pl._init_llm_callbacks()
     print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
@@ -712,7 +712,7 @@ async def test_streaming_router_tpm_limit():
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -722,7 +722,7 @@ async def test_streaming_router_tpm_limit():
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-35-turbo",
                 "api_key": "os.environ/AZURE_EUROPE_API_KEY",
                 "api_base": "https://my-endpoint-europe-berri-992.openai.azure.com",
@@ -744,7 +744,7 @@ async def test_streaming_router_tpm_limit():
     )
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
-    pl._init_litellm_callbacks()
+    pl._init_llm_callbacks()
     print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
@@ -792,7 +792,7 @@ async def test_bad_router_call():
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -802,7 +802,7 @@ async def test_bad_router_call():
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-35-turbo",
                 "api_key": "os.environ/AZURE_EUROPE_API_KEY",
                 "api_base": "https://my-endpoint-europe-berri-992.openai.azure.com",
@@ -822,7 +822,7 @@ async def test_bad_router_call():
     user_api_key_dict = UserAPIKeyAuth(api_key=_api_key, max_parallel_requests=1)
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
-    pl._init_litellm_callbacks()
+    pl._init_llm_callbacks()
     print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
@@ -867,7 +867,7 @@ async def test_bad_router_tpm_limit():
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -877,7 +877,7 @@ async def test_bad_router_tpm_limit():
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-35-turbo",
                 "api_key": "os.environ/AZURE_EUROPE_API_KEY",
                 "api_base": "https://my-endpoint-europe-berri-992.openai.azure.com",
@@ -899,7 +899,7 @@ async def test_bad_router_tpm_limit():
     )
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
-    pl._init_litellm_callbacks()
+    pl._init_llm_callbacks()
     print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
@@ -946,7 +946,7 @@ async def test_bad_router_tpm_limit_per_model():
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -956,7 +956,7 @@ async def test_bad_router_tpm_limit_per_model():
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-35-turbo",
                 "api_key": "os.environ/AZURE_EUROPE_API_KEY",
                 "api_base": "https://my-endpoint-europe-berri-992.openai.azure.com",
@@ -986,7 +986,7 @@ async def test_bad_router_tpm_limit_per_model():
     )
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
-    pl._init_litellm_callbacks()
+    pl._init_llm_callbacks()
     print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
@@ -1072,7 +1072,7 @@ async def test_pre_call_hook_rpm_limits_per_model():
     )
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
-    pl._init_litellm_callbacks()
+    pl._init_llm_callbacks()
     print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
 
@@ -1084,7 +1084,7 @@ async def test_pre_call_hook_rpm_limits_per_model():
 
     kwargs = {
         "model": model,
-        "litellm_params": {
+        "llm_params": {
             "metadata": {
                 "user_api_key": _api_key,
                 "model_group": model,
@@ -1150,7 +1150,7 @@ async def test_pre_call_hook_tpm_limits_per_model():
     )
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
-    pl._init_litellm_callbacks()
+    pl._init_llm_callbacks()
     print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
     model = "azure-model"
@@ -1164,7 +1164,7 @@ async def test_pre_call_hook_tpm_limits_per_model():
 
     kwargs = {
         "model": model,
-        "litellm_params": {
+        "llm_params": {
             "metadata": {
                 "user_api_key": _api_key,
                 "model_group": model,
@@ -1250,7 +1250,7 @@ async def test_post_call_success_hook_rpm_limits_per_model():
     )
     local_cache = DualCache()
     pl = ProxyLogging(user_api_key_cache=local_cache)
-    pl._init_litellm_callbacks()
+    pl._init_llm_callbacks()
     print(f"llm callbacks: {llm.callbacks}")
     parallel_request_handler = pl.max_parallel_request_limiter
     model = "azure-model"
@@ -1264,7 +1264,7 @@ async def test_post_call_success_hook_rpm_limits_per_model():
 
     kwargs = {
         "model": model,
-        "litellm_params": {
+        "llm_params": {
             "metadata": {
                 "user_api_key": _api_key,
                 "model_group": model,

@@ -99,7 +99,7 @@ async def test_create_datadog_logging_payload():
 
     # Verify payload structure
     assert dd_payload["ddsource"] == os.getenv("DD_SOURCE", "llm")
-    assert dd_payload["service"] == "litellm-server"
+    assert dd_payload["service"] == "llm-server"
     assert dd_payload["status"] == DataDogStatus.INFO
 
     # verify the message field == standard_payload
@@ -451,14 +451,14 @@ def test_datadog_static_methods():
 
     # Test with default environment variables
     assert DataDogLogger._get_datadog_source() == "llm"
-    assert DataDogLogger._get_datadog_service() == "litellm-server"
+    assert DataDogLogger._get_datadog_service() == "llm-server"
     assert DataDogLogger._get_datadog_hostname() is not None
     assert DataDogLogger._get_datadog_env() == "unknown"
     assert DataDogLogger._get_datadog_pod_name() == "unknown"
 
     # Test tags format with default values
     assert (
-        "env:unknown,service:litellm,version:unknown,HOSTNAME:"
+        "env:unknown,service:llm,version:unknown,HOSTNAME:"
         in DataDogLogger._get_datadog_tags()
     )
 

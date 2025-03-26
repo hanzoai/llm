@@ -178,7 +178,7 @@ async def test_get_router_response():
             model_list=[
                 {
                     "model_name": "sonnet",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "vertex_ai/claude-3-sonnet@20240229",
                         "vertex_ai_project": vertex_ai_project,
                         "vertex_ai_location": vertex_ai_location,
@@ -875,7 +875,7 @@ async def test_gemini_pro_function_calling_httpx(model, sync_mode):
         messages = [
             {
                 "role": "system",
-                "content": "Your name is Litellm Bot, you are a helpful assistant",
+                "content": "Your name is Llm Bot, you are a helpful assistant",
             },
             # User asks for their name and weather in San Francisco
             {
@@ -957,7 +957,7 @@ async def test_partner_models_httpx(model, sync_mode):
         messages = [
             {
                 "role": "system",
-                "content": "Your name is Litellm Bot, you are a helpful assistant",
+                "content": "Your name is Llm Bot, you are a helpful assistant",
             },
             # User asks for their name and weather in San Francisco
             {
@@ -1020,7 +1020,7 @@ async def test_partner_models_httpx_streaming(model, sync_mode):
         messages = [
             {
                 "role": "system",
-                "content": "Your name is Litellm Bot, you are a helpful assistant",
+                "content": "Your name is Llm Bot, you are a helpful assistant",
             },
             # User asks for their name and weather in San Francisco
             {
@@ -1433,7 +1433,7 @@ async def test_gemini_pro_json_schema_args_sent_httpx(
     enforce_validation,
 ):
     load_vertex_ai_credentials()
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     llm.set_verbose = True
@@ -1554,7 +1554,7 @@ async def test_gemini_pro_json_schema_args_sent_httpx_openai_schema(
     from pydantic import BaseModel
 
     load_vertex_ai_credentials()
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     llm.set_verbose = True
@@ -1692,7 +1692,7 @@ async def test_gemini_pro_function_calling(provider, sync_mode):
         messages = [
             {
                 "role": "system",
-                "content": "Your name is Litellm Bot, you are a helpful assistant",
+                "content": "Your name is Llm Bot, you are a helpful assistant",
             },
             # User asks for their name and weather in San Francisco
             {
@@ -2239,7 +2239,7 @@ def test_tool_name_conversion():
     messages = [
         {
             "role": "system",
-            "content": "Your name is Litellm Bot, you are a helpful assistant",
+            "content": "Your name is Llm Bot, you are a helpful assistant",
         },
         # User asks for their name and weather in San Francisco
         {
@@ -2286,7 +2286,7 @@ def test_prompt_factory():
     messages = [
         {
             "role": "system",
-            "content": "Your name is Litellm Bot, you are a helpful assistant",
+            "content": "Your name is Llm Bot, you are a helpful assistant",
         },
         # User asks for their name and weather in San Francisco
         {
@@ -2671,7 +2671,7 @@ async def test_partner_models_httpx_ai21():
     messages = [
         {
             "role": "system",
-            "content": "Your name is Litellm Bot, you are a helpful assistant",
+            "content": "Your name is Llm Bot, you are a helpful assistant",
         },
         {
             "role": "user",
@@ -2770,7 +2770,7 @@ async def test_partner_models_httpx_ai21():
             "messages": [
                 {
                     "role": "system",
-                    "content": "Your name is Litellm Bot, you are a helpful assistant",
+                    "content": "Your name is Llm Bot, you are a helpful assistant",
                 },
                 {
                     "role": "user",
@@ -3061,7 +3061,7 @@ async def test_vertexai_embedding_finetuned(respx_mock: MockRouter):
     """
     Tests that:
     - Request URL and body are correctly formatted for Vertex AI embeddings
-    - Response is properly parsed into litellm's embedding response format
+    - Response is properly parsed into llm's embedding response format
     """
     load_vertex_ai_credentials()
     llm.set_verbose = True
@@ -3129,7 +3129,7 @@ async def test_vertexai_model_garden_model_completion(
     respx_mock: MockRouter, max_retries
 ):
     """
-    Relevant issue: https://github.com/BerriAI/litellm/issues/6480
+    Relevant issue: https://github.com/BerriAI/llm/issues/6480
 
     Using OpenAI compatible models from Vertex Model Garden
     """
@@ -3140,7 +3140,7 @@ async def test_vertexai_model_garden_model_completion(
     messages = [
         {
             "role": "system",
-            "content": "Your name is Litellm Bot, you are a helpful assistant",
+            "content": "Your name is Llm Bot, you are a helpful assistant",
         },
         {
             "role": "user",
@@ -3162,7 +3162,7 @@ async def test_vertexai_model_garden_model_completion(
                 "index": 0,
                 "message": {
                     "role": "assistant",
-                    "content": "Hello, my name is Litellm Bot. I'm a helpful assistant here to provide information and answer your questions.\n\nTo check the weather for you, I'll need to know your location. Could you please provide me with your city or zip code? That way, I can give you the most accurate and up-to-date weather information.\n\nIf you don't have your location handy, I can also suggest some popular weather websites or apps that you can use to check the weather for your area.\n\nLet me know how I can assist you!",
+                    "content": "Hello, my name is Llm Bot. I'm a helpful assistant here to provide information and answer your questions.\n\nTo check the weather for you, I'll need to know your location. Could you please provide me with your city or zip code? That way, I can give you the most accurate and up-to-date weather information.\n\nIf you don't have your location handy, I can also suggest some popular weather websites or apps that you can use to check the weather for your area.\n\nLet me know how I can assist you!",
                     "tool_calls": [],
                 },
                 "logprobs": None,
@@ -3200,7 +3200,7 @@ async def test_vertexai_model_garden_model_completion(
     assert len(response.choices) == 1
     assert response.choices[0].message.role == "assistant"
     assert response.choices[0].message.content.startswith(
-        "Hello, my name is Litellm Bot"
+        "Hello, my name is Llm Bot"
     )
     assert response.choices[0].finish_reason == "stop"
     assert response.usage.completion_tokens == 109
@@ -3302,7 +3302,7 @@ def test_signed_s3_url_with_format():
                     {
                         "type": "image_url",
                         "image_url": {
-                            "url": "https://litellm-logo-aws-marketplace.s3.us-west-2.amazonaws.com/berriai-logo-github.png?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHlAy6QneghdEo4Dp4rw%2BHhdInKX4MU3T0hZT1qV3AD%2FAiBGY%2FtfxmBJkj%2BK6%2FxAgek6L3tpOcq6su1mBrj87El%2FCirLAwghEAEaDDg4ODYwMjIyMzQyOCIMzds7lsxAFHHCRHmkKqgDgnsJBaEmmwXBWqzyMMe3BUKsCqfvrYupFGxBREP%2BaEz%2ByLSKiTM3xWzaRz6vrP9T4HSJ97B9wQ3dhUBT22XzdOFsaq49wZapwy9hoPNrMyZ77DIa0MlEbg0uudGOaMAw4NbVEqoERQuZmIMMbNHCeoJsZxKCttRZlTDzU%2FeNNy96ltb%2FuIkX5b3OOYdUaKj%2FUjmPz%2FEufY%2Bn%2FFHawunSYXJwL4pYuBF1IKRtPjqamaYscH%2FrzD7fubGUMqk6hvyGEo%2BLqnVyruQEmVFqAnXyWlpHGqeWazEC7xcsC2lhLO%2FKUouyVML%2FxyYtL4CuKp52qtLWWauAFGnyBZnCHtSL58KLaMTSh7inhoFFIKDN2hymrJ4D9%2Bxv%2FMOzefH5X%2B0pcdJUwyxcwgL3myggRmIYq1L6IL4I%2F54BIU%2FMctJcRXQ8NhQNP2PsaCsXYHHVMXRZxps9v8t9Ciorb0PAaLr0DIGVgEqejSjwbzNTctQf59Rj0GhZ0A6A3nFaq3nL4UvO51aPP6aelN6RnLwHh8fF80iPWII7Oj9PWn9bkON%2F7%2B5k42oPFR0KDTD0yaO%2BBjrlAouRvkyHZnCuLuJdEeqc8%2Fwm4W8SbMiYDzIEPPe2wFR2sH4%2FDlnJRqia9Or00d4N%2BOefBkPv%2Bcdt68r%2FwjeWOrulczzLGjJE%2FGw1Lb9dtGtmupGm2XKOW3geJwXkk1qcr7u5zwy6DNamLJbitB026JFKorRnPajhe5axEDv%2BRu6l1f0eailIrCwZ2iytA94Ni8LTha2GbZvX7fFHcmtyNlgJPpMcELdkOEGTCNBldGck5MFHG27xrVrlR%2F7HZIkKYlImNmsOIjuK7acDiangvVdB6GlmVbzNUKtJ7YJhS2ivwvdDIf8XuaFAkhjRNpewDl0GzPvojK%2BDTizZydyJL%2B20pVkSXptyPwrrHEeiOFWwhszW2iTZij4rlRAoZW6NEdfkWsXrGMbxJTZa3E5URejJbg%2B4QgGtjLrgJhRC1pJGP02GX7VMxVWZzomfC2Hn7WaF44wgcuqjE4HGJfpA2ZLBxde52g%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA45ZGR4NCKIUOODV3%2F20250305%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20250305T235823Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=71a900a9467eaf3811553500aaf509a10a9e743a8133cfb6a78dcbcbc6da4a05",
+                            "url": "https://llm-logo-aws-marketplace.s3.us-west-2.amazonaws.com/berriai-logo-github.png?response-content-disposition=inline&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Security-Token=IQoJb3JpZ2luX2VjENj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLXdlc3QtMiJGMEQCIHlAy6QneghdEo4Dp4rw%2BHhdInKX4MU3T0hZT1qV3AD%2FAiBGY%2FtfxmBJkj%2BK6%2FxAgek6L3tpOcq6su1mBrj87El%2FCirLAwghEAEaDDg4ODYwMjIyMzQyOCIMzds7lsxAFHHCRHmkKqgDgnsJBaEmmwXBWqzyMMe3BUKsCqfvrYupFGxBREP%2BaEz%2ByLSKiTM3xWzaRz6vrP9T4HSJ97B9wQ3dhUBT22XzdOFsaq49wZapwy9hoPNrMyZ77DIa0MlEbg0uudGOaMAw4NbVEqoERQuZmIMMbNHCeoJsZxKCttRZlTDzU%2FeNNy96ltb%2FuIkX5b3OOYdUaKj%2FUjmPz%2FEufY%2Bn%2FFHawunSYXJwL4pYuBF1IKRtPjqamaYscH%2FrzD7fubGUMqk6hvyGEo%2BLqnVyruQEmVFqAnXyWlpHGqeWazEC7xcsC2lhLO%2FKUouyVML%2FxyYtL4CuKp52qtLWWauAFGnyBZnCHtSL58KLaMTSh7inhoFFIKDN2hymrJ4D9%2Bxv%2FMOzefH5X%2B0pcdJUwyxcwgL3myggRmIYq1L6IL4I%2F54BIU%2FMctJcRXQ8NhQNP2PsaCsXYHHVMXRZxps9v8t9Ciorb0PAaLr0DIGVgEqejSjwbzNTctQf59Rj0GhZ0A6A3nFaq3nL4UvO51aPP6aelN6RnLwHh8fF80iPWII7Oj9PWn9bkON%2F7%2B5k42oPFR0KDTD0yaO%2BBjrlAouRvkyHZnCuLuJdEeqc8%2Fwm4W8SbMiYDzIEPPe2wFR2sH4%2FDlnJRqia9Or00d4N%2BOefBkPv%2Bcdt68r%2FwjeWOrulczzLGjJE%2FGw1Lb9dtGtmupGm2XKOW3geJwXkk1qcr7u5zwy6DNamLJbitB026JFKorRnPajhe5axEDv%2BRu6l1f0eailIrCwZ2iytA94Ni8LTha2GbZvX7fFHcmtyNlgJPpMcELdkOEGTCNBldGck5MFHG27xrVrlR%2F7HZIkKYlImNmsOIjuK7acDiangvVdB6GlmVbzNUKtJ7YJhS2ivwvdDIf8XuaFAkhjRNpewDl0GzPvojK%2BDTizZydyJL%2B20pVkSXptyPwrrHEeiOFWwhszW2iTZij4rlRAoZW6NEdfkWsXrGMbxJTZa3E5URejJbg%2B4QgGtjLrgJhRC1pJGP02GX7VMxVWZzomfC2Hn7WaF44wgcuqjE4HGJfpA2ZLBxde52g%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=ASIA45ZGR4NCKIUOODV3%2F20250305%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20250305T235823Z&X-Amz-Expires=43200&X-Amz-SignedHeaders=host&X-Amz-Signature=71a900a9467eaf3811553500aaf509a10a9e743a8133cfb6a78dcbcbc6da4a05",
                             "format": "image/jpeg",
                         },
                     },

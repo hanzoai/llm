@@ -119,7 +119,7 @@ async def test_transcription_caching():
 
 @pytest.mark.asyncio
 async def test_whisper_log_pre_call():
-    from llm.litellm_core_utils.litellm_logging import Logging
+    from llm.llm_core_utils.llm_logging import Logging
     from datetime import datetime
     from unittest.mock import patch, MagicMock
     from llm.integrations.custom_logger import CustomLogger

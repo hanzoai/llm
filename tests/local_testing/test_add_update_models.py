@@ -9,7 +9,7 @@ from datetime import datetime
 load_dotenv()
 import os, io, time
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -20,7 +20,7 @@ from llm.proxy.management_endpoints.model_management_endpoints import (
     add_new_model,
     update_model,
 )
-from llm.proxy._types import LitellmUserRoles
+from llm.proxy._types import LlmUserRoles
 from llm._logging import verbose_proxy_logger
 from llm.proxy.utils import PrismaClient, ProxyLogging
 from llm.proxy.management_endpoints.team_endpoints import new_team
@@ -55,8 +55,8 @@ def prisma_client():
     )
 
     # Reset llm.proxy.proxy_server.prisma_client to None
-    llm.proxy.proxy_server.litellm_proxy_budget_name = (
-        f"litellm-proxy-budget-{time.time()}"
+    llm.proxy.proxy_server.llm_proxy_budget_name = (
+        f"llm-proxy-budget-{time.time()}"
     )
     llm.proxy.proxy_server.user_custom_key_generate = None
 
@@ -79,7 +79,7 @@ async def test_add_new_model(prisma_client):
     await add_new_model(
         model_params=Deployment(
             model_name="test_model",
-            litellm_params=LLM_Params(
+            llm_params=LLM_Params(
                 model="azure/gpt-3.5-turbo",
                 api_key="test_api_key",
                 api_base="test_api_base",
@@ -91,13 +91,13 @@ async def test_add_new_model(prisma_client):
             ),
         ),
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LitellmUserRoles.PROXY_ADMIN.value,
+            user_role=LlmUserRoles.PROXY_ADMIN.value,
             api_key="sk-1234",
             user_id="1234",
         ),
     )
 
-    _new_models = await prisma_client.db.litellm_proxymodeltable.find_many()
+    _new_models = await prisma_client.db.llm_proxymodeltable.find_many()
     print("_new_models: ", _new_models)
 
     _new_model_in_db = None
@@ -113,27 +113,27 @@ async def test_add_new_model(prisma_client):
 @pytest.mark.parametrize(
     "team_id, key_team_id, user_role, expected_result",
     [
-        ("1234", "1234", LitellmUserRoles.PROXY_ADMIN.value, True),
+        ("1234", "1234", LlmUserRoles.PROXY_ADMIN.value, True),
         (
             "1234",
             "1235",
-            LitellmUserRoles.PROXY_ADMIN.value,
+            LlmUserRoles.PROXY_ADMIN.value,
             True,
         ),  # proxy admin can add models for any team
-        (None, "1234", LitellmUserRoles.PROXY_ADMIN.value, True),
-        (None, None, LitellmUserRoles.PROXY_ADMIN.value, True),
+        (None, "1234", LlmUserRoles.PROXY_ADMIN.value, True),
+        (None, None, LlmUserRoles.PROXY_ADMIN.value, True),
         (
             "1234",
             "1234",
-            LitellmUserRoles.INTERNAL_USER.value,
+            LlmUserRoles.INTERNAL_USER.value,
             True,
         ),  # internal users can add models for their team
-        ("1234", "1235", LitellmUserRoles.INTERNAL_USER.value, False),
-        (None, "1234", LitellmUserRoles.INTERNAL_USER.value, False),
+        ("1234", "1235", LlmUserRoles.INTERNAL_USER.value, False),
+        (None, "1234", LlmUserRoles.INTERNAL_USER.value, False),
         (
             None,
             None,
-            LitellmUserRoles.INTERNAL_USER.value,
+            LlmUserRoles.INTERNAL_USER.value,
             False,
         ),  # internal users cannot add models by default
     ],
@@ -156,7 +156,7 @@ def test_can_add_model(team_id, key_team_id, user_role, expected_result):
 @pytest.mark.asyncio
 @pytest.mark.skip(reason="new feature, tests passing locally")
 async def test_add_update_model(prisma_client):
-    # test that existing litellm_params are not updated
+    # test that existing llm_params are not updated
     # only new / updated params get updated
     setattr(llm.proxy.proxy_server, "prisma_client", prisma_client)
     setattr(llm.proxy.proxy_server, "master_key", "sk-1234")
@@ -171,7 +171,7 @@ async def test_add_update_model(prisma_client):
     await add_new_model(
         model_params=Deployment(
             model_name="test_model",
-            litellm_params=LLM_Params(
+            llm_params=LLM_Params(
                 model="azure/gpt-3.5-turbo",
                 api_key="test_api_key",
                 api_base="test_api_base",
@@ -183,13 +183,13 @@ async def test_add_update_model(prisma_client):
             ),
         ),
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LitellmUserRoles.PROXY_ADMIN.value,
+            user_role=LlmUserRoles.PROXY_ADMIN.value,
             api_key="sk-1234",
             user_id="1234",
         ),
     )
 
-    _new_models = await prisma_client.db.litellm_proxymodeltable.find_many()
+    _new_models = await prisma_client.db.llm_proxymodeltable.find_many()
     print("_new_models: ", _new_models)
 
     _new_model_in_db = None
@@ -202,25 +202,25 @@ async def test_add_update_model(prisma_client):
     assert _new_model_in_db is not None
 
     _original_model = _new_model_in_db
-    _original_litellm_params = _new_model_in_db.litellm_params
-    print("_original_litellm_params: ", _original_litellm_params)
+    _original_llm_params = _new_model_in_db.llm_params
+    print("_original_llm_params: ", _original_llm_params)
     print("now updating the tpm for model")
     # run update to update "tpm"
     await update_model(
         model_params=updateDeployment(
-            litellm_params=updateLLMParams(tpm=123456),
+            llm_params=updateLLMParams(tpm=123456),
             model_info=ModelInfo(
                 id=_new_model_id,
             ),
         ),
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LitellmUserRoles.PROXY_ADMIN.value,
+            user_role=LlmUserRoles.PROXY_ADMIN.value,
             api_key="sk-1234",
             user_id="1234",
         ),
     )
 
-    _new_models = await prisma_client.db.litellm_proxymodeltable.find_many()
+    _new_models = await prisma_client.db.llm_proxymodeltable.find_many()
 
     _new_model_in_db = None
     for model in _new_models:
@@ -228,13 +228,13 @@ async def test_add_update_model(prisma_client):
             print("\nFOUND MODEL: ", model)
             _new_model_in_db = model
 
-    # assert all other llm params are identical to _original_litellm_params
-    for key, value in _original_litellm_params.items():
+    # assert all other llm params are identical to _original_llm_params
+    for key, value in _original_llm_params.items():
         if key == "tpm":
             # assert that tpm actually got updated
-            assert _new_model_in_db.litellm_params[key] == 123456
+            assert _new_model_in_db.llm_params[key] == 123456
         else:
-            assert _new_model_in_db.litellm_params[key] == value
+            assert _new_model_in_db.llm_params[key] == value
 
     assert _original_model.model_id == _new_model_in_db.model_id
     assert _original_model.model_name == _new_model_in_db.model_name
@@ -248,7 +248,7 @@ async def _create_new_team(prisma_client):
     _new_team = await new_team(
         data=new_team_request,
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LitellmUserRoles.PROXY_ADMIN.value,
+            user_role=LlmUserRoles.PROXY_ADMIN.value,
             api_key="sk-1234",
             user_id="1234",
         ),
@@ -284,7 +284,7 @@ async def test_add_team_model_to_db(prisma_client):
     # Create test model deployment
     model_params = Deployment(
         model_name=public_model_name,
-        litellm_params=LLM_Params(
+        llm_params=LLM_Params(
             model="gpt-4",
             api_key="test_api_key",
         ),
@@ -298,7 +298,7 @@ async def test_add_team_model_to_db(prisma_client):
     model_response = await _add_team_model_to_db(
         model_params=model_params,
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LitellmUserRoles.PROXY_ADMIN.value,
+            user_role=LlmUserRoles.PROXY_ADMIN.value,
             api_key="sk-1234",
             user_id="1234",
             team_id=team_id,
@@ -317,20 +317,20 @@ async def test_add_team_model_to_db(prisma_client):
     await asyncio.sleep(1)
 
     # Verify team model alias was created
-    team = await prisma_client.db.litellm_teamtable.find_first(
+    team = await prisma_client.db.llm_teamtable.find_first(
         where={
             "team_id": team_id,
         },
-        include={"litellm_model_table": True},
+        include={"llm_model_table": True},
     )
     print("team=", team.model_dump_json())
     assert team is not None
 
     team_model = team.model_id
     print("team model id=", team_model)
-    litellm_model_table = team.litellm_model_table
-    print("litellm_model_table=", litellm_model_table.model_dump_json())
-    model_aliases = litellm_model_table.model_aliases
+    llm_model_table = team.llm_model_table
+    print("llm_model_table=", llm_model_table.model_dump_json())
+    model_aliases = llm_model_table.model_aliases
     print("model_aliases=", model_aliases)
 
     assert public_model_name in model_aliases

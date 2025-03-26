@@ -26,7 +26,7 @@ def test_get_llm_provider():
 # test_get_llm_provider()
 
 
-def test_get_llm_provider_fireworks():  # tests finetuned fireworks models - https://github.com/BerriAI/litellm/issues/4923
+def test_get_llm_provider_fireworks():  # tests finetuned fireworks models - https://github.com/BerriAI/llm/issues/4923
     model, custom_llm_provider, _, _ = llm.get_llm_provider(
         model="fireworks_ai/accounts/my-test-1234"
     )
@@ -128,7 +128,7 @@ def test_get_llm_provider_azure_o1():
 
 
 def test_default_api_base():
-    from llm.litellm_core_utils.get_llm_provider_logic import (
+    from llm.llm_core_utils.get_llm_provider_logic import (
         _get_openai_compatible_provider_info,
     )
 
@@ -154,7 +154,7 @@ def test_default_api_base():
 
 
 def test_hosted_vllm_default_api_key():
-    from llm.litellm_core_utils.get_llm_provider_logic import (
+    from llm.llm_core_utils.get_llm_provider_logic import (
         _get_openai_compatible_provider_info,
     )
 
@@ -225,7 +225,7 @@ def test_xai_api_base(model):
         "custom_llm_provider": "xai",
         "api_base": None,
         "api_key": "xai-my-specialkey",
-        "litellm_params": None,
+        "llm_params": None,
     }
     model, custom_llm_provider, dynamic_api_key, api_base = llm.get_llm_provider(
         **args

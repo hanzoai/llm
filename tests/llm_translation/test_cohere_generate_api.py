@@ -122,7 +122,7 @@ def test_cohere_transform_request():
             model="command",
             messages=messages,
             optional_params=optional_params,
-            litellm_params={},
+            llm_params={},
             headers=headers,
         )
 
@@ -159,7 +159,7 @@ def test_cohere_transform_request_with_tools():
             model="command",
             messages=messages,
             optional_params=optional_params,
-            litellm_params={},
+            llm_params={},
             headers={},
         )
 

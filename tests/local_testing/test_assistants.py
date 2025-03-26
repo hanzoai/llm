@@ -121,7 +121,7 @@ async def test_create_delete_assistants(provider, sync_mode):
 @pytest.mark.parametrize("provider", ["openai", "azure"])
 @pytest.mark.parametrize("sync_mode", [True, False])
 @pytest.mark.asyncio
-async def test_create_thread_litellm(sync_mode, provider) -> Thread:
+async def test_create_thread_llm(sync_mode, provider) -> Thread:
     message: MessageData = {"role": "user", "content": "Hey, how's it going?"}  # type: ignore
     data = {
         "custom_llm_provider": provider,
@@ -145,8 +145,8 @@ async def test_create_thread_litellm(sync_mode, provider) -> Thread:
 @pytest.mark.parametrize("provider", ["openai", "azure"])
 @pytest.mark.parametrize("sync_mode", [True, False])
 @pytest.mark.asyncio
-async def test_get_thread_litellm(provider, sync_mode):
-    new_thread = test_create_thread_litellm(sync_mode, provider)
+async def test_get_thread_llm(provider, sync_mode):
+    new_thread = test_create_thread_llm(sync_mode, provider)
 
     if asyncio.iscoroutine(new_thread):
         _new_thread = await new_thread
@@ -174,9 +174,9 @@ async def test_get_thread_litellm(provider, sync_mode):
 @pytest.mark.parametrize("provider", ["openai", "azure"])
 @pytest.mark.parametrize("sync_mode", [True, False])
 @pytest.mark.asyncio
-async def test_add_message_litellm(sync_mode, provider):
+async def test_add_message_llm(sync_mode, provider):
     message: MessageData = {"role": "user", "content": "Hey, how's it going?"}  # type: ignore
-    new_thread = test_create_thread_litellm(sync_mode, provider)
+    new_thread = test_create_thread_llm(sync_mode, provider)
 
     if asyncio.iscoroutine(new_thread):
         _new_thread = await new_thread
@@ -218,7 +218,7 @@ async def test_add_message_litellm(sync_mode, provider):
 )  #
 @pytest.mark.asyncio
 @pytest.mark.flaky(retries=3, delay=1)
-async def test_aarun_thread_litellm(sync_mode, provider, is_streaming):
+async def test_aarun_thread_llm(sync_mode, provider, is_streaming):
     """
     - Get Assistants
     - Create thread
@@ -238,7 +238,7 @@ async def test_aarun_thread_litellm(sync_mode, provider, is_streaming):
         except IndexError:
             pytest.skip("No assistants found")
 
-        new_thread = test_create_thread_litellm(sync_mode=sync_mode, provider=provider)
+        new_thread = test_create_thread_llm(sync_mode=sync_mode, provider=provider)
 
         if asyncio.iscoroutine(new_thread):
             _new_thread = await new_thread

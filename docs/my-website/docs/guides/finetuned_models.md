@@ -64,7 +64,7 @@ response = completion(
 ```bash
 curl --location 'https://0.0.0.0:4000/v1/chat/completions' \
 --header 'Content-Type: application/json' \
---header 'Authorization: <LITELLM_KEY>' \
+--header 'Authorization: <LLM_KEY>' \
 --data '{"model": "finetuned-gemini" ,"messages":[{"role": "user", "content":[{"type": "text", "text": "hi"}]}]}'
 ```
 

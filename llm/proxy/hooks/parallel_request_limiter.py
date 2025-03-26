@@ -103,7 +103,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
         await self.internal_usage_cache.async_batch_set_cache(
             cache_list=values_to_update_in_cache,
             ttl=60,
-            litellm_parent_otel_span=user_api_key_dict.parent_otel_span,
+            llm_parent_otel_span=user_api_key_dict.parent_otel_span,
             local_only=True,
         )
         return new_val
@@ -216,7 +216,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
             current_global_requests = await self.internal_usage_cache.async_get_cache(
                 key=_key,
                 local_only=True,
-                litellm_parent_otel_span=user_api_key_dict.parent_otel_span,
+                llm_parent_otel_span=user_api_key_dict.parent_otel_span,
             )
             # check if below limit
             if current_global_requests is None:
@@ -232,7 +232,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
                     key=_key,
                     value=1,
                     local_only=True,
-                    litellm_parent_otel_span=user_api_key_dict.parent_otel_span,
+                    llm_parent_otel_span=user_api_key_dict.parent_otel_span,
                 )
         _model = data.get("model", None)
 
@@ -436,7 +436,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
             self.internal_usage_cache.async_batch_set_cache(
                 cache_list=values_to_update_in_cache,
                 ttl=60,
-                litellm_parent_otel_span=user_api_key_dict.parent_otel_span,
+                llm_parent_otel_span=user_api_key_dict.parent_otel_span,
             )  # don't block execution for cache updates
         )
 
@@ -449,7 +449,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
             get_model_group_from_llm_kwargs,
         )
 
-        litellm_parent_otel_span: Union[Span, None] = _get_parent_otel_span_from_kwargs(
+        llm_parent_otel_span: Union[Span, None] = _get_parent_otel_span_from_kwargs(
             kwargs=kwargs
         )
         try:
@@ -487,7 +487,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
                     key=_key,
                     value=-1,
                     local_only=True,
-                    litellm_parent_otel_span=litellm_parent_otel_span,
+                    llm_parent_otel_span=llm_parent_otel_span,
                 )
 
             current_date = datetime.now().strftime("%Y-%m-%d")
@@ -513,7 +513,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
 
                 current = await self.internal_usage_cache.async_get_cache(
                     key=request_count_api_key,
-                    litellm_parent_otel_span=litellm_parent_otel_span,
+                    llm_parent_otel_span=llm_parent_otel_span,
                 ) or {
                     "current_requests": 1,
                     "current_tpm": 0,
@@ -550,7 +550,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
 
                 current = await self.internal_usage_cache.async_get_cache(
                     key=request_count_api_key,
-                    litellm_parent_otel_span=litellm_parent_otel_span,
+                    llm_parent_otel_span=llm_parent_otel_span,
                 ) or {
                     "current_requests": 1,
                     "current_tpm": 0,
@@ -583,7 +583,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
 
                 current = await self.internal_usage_cache.async_get_cache(
                     key=request_count_api_key,
-                    litellm_parent_otel_span=litellm_parent_otel_span,
+                    llm_parent_otel_span=llm_parent_otel_span,
                 ) or {
                     "current_requests": 1,
                     "current_tpm": total_tokens,
@@ -616,7 +616,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
 
                 current = await self.internal_usage_cache.async_get_cache(
                     key=request_count_api_key,
-                    litellm_parent_otel_span=litellm_parent_otel_span,
+                    llm_parent_otel_span=llm_parent_otel_span,
                 ) or {
                     "current_requests": 1,
                     "current_tpm": total_tokens,
@@ -649,7 +649,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
 
                 current = await self.internal_usage_cache.async_get_cache(
                     key=request_count_api_key,
-                    litellm_parent_otel_span=litellm_parent_otel_span,
+                    llm_parent_otel_span=llm_parent_otel_span,
                 ) or {
                     "current_requests": 1,
                     "current_tpm": total_tokens,
@@ -670,7 +670,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
             await self.internal_usage_cache.async_batch_set_cache(
                 cache_list=values_to_update_in_cache,
                 ttl=60,
-                litellm_parent_otel_span=litellm_parent_otel_span,
+                llm_parent_otel_span=llm_parent_otel_span,
             )
         except Exception as e:
             self.print_verbose(e)  # noqa
@@ -678,7 +678,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
     async def async_log_failure_event(self, kwargs, response_obj, start_time, end_time):
         try:
             self.print_verbose("Inside Max Parallel Request Failure Hook")
-            litellm_parent_otel_span: Union[Span, None] = (
+            llm_parent_otel_span: Union[Span, None] = (
                 _get_parent_otel_span_from_kwargs(kwargs=kwargs)
             )
             _metadata = kwargs["llm_params"].get("metadata", {}) or {}
@@ -707,7 +707,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
                         await self.internal_usage_cache.async_get_cache(
                             key=_key,
                             local_only=True,
-                            litellm_parent_otel_span=litellm_parent_otel_span,
+                            llm_parent_otel_span=llm_parent_otel_span,
                         )
                     )
                     # decrement
@@ -715,7 +715,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
                         key=_key,
                         value=-1,
                         local_only=True,
-                        litellm_parent_otel_span=litellm_parent_otel_span,
+                        llm_parent_otel_span=llm_parent_otel_span,
                     )
 
                 current_date = datetime.now().strftime("%Y-%m-%d")
@@ -732,7 +732,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
                 # ------------
                 current = await self.internal_usage_cache.async_get_cache(
                     key=request_count_api_key,
-                    litellm_parent_otel_span=litellm_parent_otel_span,
+                    llm_parent_otel_span=llm_parent_otel_span,
                 ) or {
                     "current_requests": 1,
                     "current_tpm": 0,
@@ -750,7 +750,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
                     request_count_api_key,
                     new_val,
                     ttl=60,
-                    litellm_parent_otel_span=litellm_parent_otel_span,
+                    llm_parent_otel_span=llm_parent_otel_span,
                 )  # save in cache for up to 1 min.
         except Exception as e:
             verbose_proxy_logger.exception(
@@ -810,7 +810,7 @@ class _PROXY_MaxParallelRequestsHandler(CustomLogger):
         current: Optional[CurrentItemRateLimit] = (
             await self.internal_usage_cache.async_get_cache(
                 key=request_count_api_key,
-                litellm_parent_otel_span=user_api_key_dict.parent_otel_span,
+                llm_parent_otel_span=user_api_key_dict.parent_otel_span,
             )
         )
 

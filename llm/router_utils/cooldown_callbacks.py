@@ -11,27 +11,27 @@ from llm._logging import verbose_logger
 if TYPE_CHECKING:
     from llm.router import Router as _Router
 
-    LitellmRouter = _Router
+    LlmRouter = _Router
     from llm.integrations.prometheus import PrometheusLogger
 else:
-    LitellmRouter = Any
+    LlmRouter = Any
     PrometheusLogger = Any
 
 
 async def router_cooldown_event_callback(
-    litellm_router_instance: LitellmRouter,
+    llm_router_instance: LlmRouter,
     deployment_id: str,
     exception_status: Union[str, int],
     cooldown_time: float,
 ):
     """
-    Callback triggered when a deployment is put into cooldown by litellm
+    Callback triggered when a deployment is put into cooldown by llm
 
     - Updates deployment state on Prometheus
     - Increments cooldown metric for deployment on Prometheus
     """
     verbose_logger.debug("In router_cooldown_event_callback - updating prometheus")
-    _deployment = litellm_router_instance.get_deployment(model_id=deployment_id)
+    _deployment = llm_router_instance.get_deployment(model_id=deployment_id)
     if _deployment is None:
         verbose_logger.warning(
             f"in router_cooldown_event_callback but _deployment is None for deployment_id={deployment_id}. Doing nothing"

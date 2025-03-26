@@ -19,7 +19,7 @@ from .transformation import CohereEmbeddingConfig
 def validate_environment(api_key, headers: dict):
     headers.update(
         {
-            "Request-Source": "unspecified:litellm",
+            "Request-Source": "unspecified:llm",
             "accept": "application/json",
             "content-type": "application/json",
         }

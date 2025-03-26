@@ -8,7 +8,7 @@ generator client {
 }
 
 // Budget / Rate Limits for an org
-model LiteLLM_BudgetTable {
+model LLM_BudgetTable {
   budget_id String @id @default(uuid())
   max_budget Float?
   soft_budget Float?
@@ -22,15 +22,15 @@ model LiteLLM_BudgetTable {
   created_by String
   updated_at    DateTime               @default(now()) @updatedAt @map("updated_at")
   updated_by String
-  organization LiteLLM_OrganizationTable[] // multiple orgs can have the same budget
-  keys LiteLLM_VerificationToken[] // multiple keys can have the same budget
-  end_users LiteLLM_EndUserTable[] // multiple end-users can have the same budget
-  team_membership LiteLLM_TeamMembership[] // budgets of Users within a Team 
-  organization_membership LiteLLM_OrganizationMembership[] // budgets of Users within a Organization 
+  organization LLM_OrganizationTable[] // multiple orgs can have the same budget
+  keys LLM_VerificationToken[] // multiple keys can have the same budget
+  end_users LLM_EndUserTable[] // multiple end-users can have the same budget
+  team_membership LLM_TeamMembership[] // budgets of Users within a Team 
+  organization_membership LLM_OrganizationMembership[] // budgets of Users within a Organization 
 }
 
 // Models on proxy
-model LiteLLM_CredentialsTable {
+model LLM_CredentialsTable {
   credential_id String @id @default(uuid())
   credential_name String @unique
   credential_values Json
@@ -42,10 +42,10 @@ model LiteLLM_CredentialsTable {
 }
 
 // Models on proxy
-model LiteLLM_ProxyModelTable {
+model LLM_ProxyModelTable {
   model_id String @id @default(uuid())
   model_name String 
-  litellm_params Json
+  llm_params Json
   model_info Json? 
   created_at    DateTime               @default(now()) @map("created_at")
   created_by String
@@ -53,7 +53,7 @@ model LiteLLM_ProxyModelTable {
   updated_by String
 }
 
-model LiteLLM_OrganizationTable {
+model LLM_OrganizationTable {
 		organization_id String @id @default(uuid())
     organization_alias  String
     budget_id String
@@ -65,27 +65,27 @@ model LiteLLM_OrganizationTable {
     created_by String
     updated_at    DateTime               @default(now()) @updatedAt @map("updated_at")
     updated_by String
-    litellm_budget_table LiteLLM_BudgetTable?   @relation(fields: [budget_id], references: [budget_id])
-    teams LiteLLM_TeamTable[] 
-    users LiteLLM_UserTable[]
-    keys LiteLLM_VerificationToken[]
-    members LiteLLM_OrganizationMembership[] @relation("OrganizationToMembership")
+    llm_budget_table LLM_BudgetTable?   @relation(fields: [budget_id], references: [budget_id])
+    teams LLM_TeamTable[] 
+    users LLM_UserTable[]
+    keys LLM_VerificationToken[]
+    members LLM_OrganizationMembership[] @relation("OrganizationToMembership")
 }
 
 // Model info for teams, just has model aliases for now.
-model LiteLLM_ModelTable {
+model LLM_ModelTable {
   id Int @id @default(autoincrement())
   model_aliases Json? @map("aliases")
   created_at    DateTime               @default(now()) @map("created_at")
   created_by String
   updated_at    DateTime               @default(now()) @updatedAt @map("updated_at")
   updated_by String
-  team LiteLLM_TeamTable?
+  team LLM_TeamTable?
 }
 
 
 // Assign prod keys to groups, not individuals 
-model LiteLLM_TeamTable {
+model LLM_TeamTable {
 		team_id    String @id @default(uuid())
     team_alias  String? 
     organization_id String?
@@ -106,13 +106,13 @@ model LiteLLM_TeamTable {
     updated_at    DateTime               @default(now()) @updatedAt @map("updated_at")
     model_spend      Json @default("{}")
     model_max_budget Json @default("{}")
-    model_id Int? @unique // id for LiteLLM_ModelTable -> stores team-level model aliases
-    litellm_organization_table LiteLLM_OrganizationTable?   @relation(fields: [organization_id], references: [organization_id])
-    litellm_model_table LiteLLM_ModelTable? @relation(fields: [model_id], references: [id])
+    model_id Int? @unique // id for LLM_ModelTable -> stores team-level model aliases
+    llm_organization_table LLM_OrganizationTable?   @relation(fields: [organization_id], references: [organization_id])
+    llm_model_table LLM_ModelTable? @relation(fields: [model_id], references: [id])
 }
 
 // Track spend, rate limit, budget Users
-model LiteLLM_UserTable {
+model LLM_UserTable {
 		user_id    String @id
     user_alias String? 
     team_id    String?
@@ -138,15 +138,15 @@ model LiteLLM_UserTable {
     updated_at      DateTime?               @default(now()) @updatedAt @map("updated_at")
 
     // relations
-    litellm_organization_table LiteLLM_OrganizationTable?                   @relation(fields: [organization_id], references: [organization_id])
-    organization_memberships LiteLLM_OrganizationMembership[]
-    invitations_created LiteLLM_InvitationLink[] @relation("CreatedBy")
-    invitations_updated LiteLLM_InvitationLink[] @relation("UpdatedBy")
-    invitations_user    LiteLLM_InvitationLink[] @relation("UserId")
+    llm_organization_table LLM_OrganizationTable?                   @relation(fields: [organization_id], references: [organization_id])
+    organization_memberships LLM_OrganizationMembership[]
+    invitations_created LLM_InvitationLink[] @relation("CreatedBy")
+    invitations_updated LLM_InvitationLink[] @relation("UpdatedBy")
+    invitations_user    LLM_InvitationLink[] @relation("UserId")
 }
 
 // Generate Tokens for Proxy
-model LiteLLM_VerificationToken {
+model LLM_VerificationToken {
     token      String   @id
     key_name   String?
     key_alias   String?
@@ -176,32 +176,32 @@ model LiteLLM_VerificationToken {
     created_by String?
     updated_at      DateTime?               @default(now()) @updatedAt @map("updated_at")
     updated_by String?
-    litellm_budget_table LiteLLM_BudgetTable?   @relation(fields: [budget_id], references: [budget_id])
-    litellm_organization_table LiteLLM_OrganizationTable?   @relation(fields: [organization_id], references: [organization_id])
+    llm_budget_table LLM_BudgetTable?   @relation(fields: [budget_id], references: [budget_id])
+    llm_organization_table LLM_OrganizationTable?   @relation(fields: [organization_id], references: [organization_id])
 }
 
-model LiteLLM_EndUserTable {
+model LLM_EndUserTable {
   user_id String @id
   alias    String? // admin-facing alias
   spend      Float    @default(0.0)
   allowed_model_region String? // require all user requests to use models in this specific region
   default_model String? // use along with 'allowed_model_region'. if no available model in region, default to this model.
   budget_id String?
-  litellm_budget_table LiteLLM_BudgetTable?   @relation(fields: [budget_id], references: [budget_id])
+  llm_budget_table LLM_BudgetTable?   @relation(fields: [budget_id], references: [budget_id])
   blocked Boolean @default(false)
 }
 
 // store proxy config.yaml
-model LiteLLM_Config {
+model LLM_Config {
   param_name String @id
   param_value Json?
 }
 
 // View spend, model, api_key per request
-model LiteLLM_SpendLogs {
+model LLM_SpendLogs {
   request_id          String @id
   call_type           String
-  api_key             String  @default ("") // Hashed API Token. Not the actual Virtual Key. Equivalent to 'token' column in LiteLLM_VerificationToken
+  api_key             String  @default ("") // Hashed API Token. Not the actual Virtual Key. Equivalent to 'token' column in LLM_VerificationToken
   spend               Float    @default(0.0)
   total_tokens        Int     @default(0)
   prompt_tokens       Int     @default(0)
@@ -212,7 +212,7 @@ model LiteLLM_SpendLogs {
   model               String   @default("")
   model_id            String?   @default("") // the model id stored in proxy model db
   model_group         String?   @default("") // public model_name / model_group
-  custom_llm_provider String?   @default("") // litellm used custom_llm_provider
+  custom_llm_provider String?   @default("") // llm used custom_llm_provider
   api_base            String?   @default("")
   user                String?   @default("")
   metadata            Json?     @default("{}")
@@ -229,13 +229,13 @@ model LiteLLM_SpendLogs {
 }
 
 // View spend, model, api_key per request
-model LiteLLM_ErrorLogs {
+model LLM_ErrorLogs {
   request_id          String   @id @default(uuid())
   startTime           DateTime // Assuming start_time is a DateTime field
   endTime             DateTime // Assuming end_time is a DateTime field
   api_base            String   @default("") 
   model_group         String   @default("")      // public model_name / model_group
-  litellm_model_name  String   @default("")      // model passed to litellm
+  llm_model_name  String   @default("")      // model passed to llm
   model_id            String   @default("")      // ID of model in ProxyModelTable
   request_kwargs      Json     @default("{}")
   exception_type      String   @default("")
@@ -244,7 +244,7 @@ model LiteLLM_ErrorLogs {
 }
 
 // Beta - allow team members to request access to a model
-model LiteLLM_UserNotifications {
+model LLM_UserNotifications {
   request_id          String @id
   user_id             String 
   models              String[]
@@ -252,17 +252,17 @@ model LiteLLM_UserNotifications {
   status              String // approved, disapproved, pending
 }
 
-model LiteLLM_TeamMembership {
+model LLM_TeamMembership {
   // Use this table to track the Internal User's Spend within a Team + Set Budgets, rpm limits for the user within the team
   user_id    String
   team_id    String
   spend      Float    @default(0.0)
   budget_id String?
-  litellm_budget_table LiteLLM_BudgetTable?   @relation(fields: [budget_id], references: [budget_id])
+  llm_budget_table LLM_BudgetTable?   @relation(fields: [budget_id], references: [budget_id])
   @@id([user_id, team_id])
 }
 
-model LiteLLM_OrganizationMembership {
+model LLM_OrganizationMembership {
   // Use this table to track Internal User and Organization membership. Helps tracking a users role within an Organization
   user_id         String
   organization_id String
@@ -273,9 +273,9 @@ model LiteLLM_OrganizationMembership {
   updated_at      DateTime?               @default(now()) @updatedAt @map("updated_at")
 
   // relations
-  user LiteLLM_UserTable @relation(fields: [user_id], references: [user_id])
-  organization LiteLLM_OrganizationTable @relation("OrganizationToMembership", fields: [organization_id], references: [organization_id])
-  litellm_budget_table LiteLLM_BudgetTable?   @relation(fields: [budget_id], references: [budget_id])
+  user LLM_UserTable @relation(fields: [user_id], references: [user_id])
+  organization LLM_OrganizationTable @relation("OrganizationToMembership", fields: [organization_id], references: [organization_id])
+  llm_budget_table LLM_BudgetTable?   @relation(fields: [budget_id], references: [budget_id])
   
   
 
@@ -283,7 +283,7 @@ model LiteLLM_OrganizationMembership {
   @@unique([user_id, organization_id])
 }
 
-model LiteLLM_InvitationLink {
+model LLM_InvitationLink {
   // use this table to track invite links sent by admin for people to join the proxy
   id String   @id @default(uuid())
   user_id String
@@ -296,19 +296,19 @@ model LiteLLM_InvitationLink {
   updated_by String // who updated the status (admin/user who accepted invite)
 
   // Relations
-  liteLLM_user_table_user    LiteLLM_UserTable  @relation("UserId", fields: [user_id], references: [user_id])
-  liteLLM_user_table_created LiteLLM_UserTable  @relation("CreatedBy", fields: [created_by], references: [user_id])
-  liteLLM_user_table_updated LiteLLM_UserTable  @relation("UpdatedBy", fields: [updated_by], references: [user_id])
+  LLM_user_table_user    LLM_UserTable  @relation("UserId", fields: [user_id], references: [user_id])
+  LLM_user_table_created LLM_UserTable  @relation("CreatedBy", fields: [created_by], references: [user_id])
+  LLM_user_table_updated LLM_UserTable  @relation("UpdatedBy", fields: [updated_by], references: [user_id])
 }
 
 
-model LiteLLM_AuditLog {
+model LLM_AuditLog {
   id                 String   @id @default(uuid())
   updated_at         DateTime @default(now())
   changed_by         String   @default("")   // user or system that performed the action
   changed_by_api_key String   @default("")   // api key hash that performed the action
   action             String      // create, update, delete
-  table_name         String      // on of  LitellmTableNames.TEAM_TABLE_NAME, LitellmTableNames.USER_TABLE_NAME, LitellmTableNames.PROXY_MODEL_TABLE_NAME,
+  table_name         String      // on of  LlmTableNames.TEAM_TABLE_NAME, LlmTableNames.USER_TABLE_NAME, LlmTableNames.PROXY_MODEL_TABLE_NAME,
   object_id          String      // id of the object being audited. This can be the key id, team id, user id, model id
   before_value       Json?       // value of the row 
   updated_values     Json?       // value of the row after change

@@ -28,7 +28,7 @@
 # model_list = [
 #     {
 #         "model_name": "gpt-3.5-turbo",  # openai model name
-#         "litellm_params": {  # params for llm completion/embedding call
+#         "llm_params": {  # params for llm completion/embedding call
 #             "model": "azure/chatgpt-v-2",
 #             "api_key": os.getenv("AZURE_API_KEY"),
 #             "api_version": os.getenv("AZURE_API_VERSION"),
@@ -39,7 +39,7 @@
 #     },
 #     {
 #         "model_name": "bad-model",  # openai model name
-#         "litellm_params": {  # params for llm completion/embedding call
+#         "llm_params": {  # params for llm completion/embedding call
 #             "model": "azure/chatgpt-v-2",
 #             "api_key": "bad-key",
 #             "api_version": os.getenv("AZURE_API_VERSION"),
@@ -50,7 +50,7 @@
 #     },
 #     {
 #         "model_name": "text-embedding-ada-002",
-#         "litellm_params": {
+#         "llm_params": {
 #             "model": "azure/azure-embedding-model",
 #             "api_key": os.environ["AZURE_API_KEY"],
 #             "api_base": os.environ["AZURE_API_BASE"],
@@ -61,7 +61,7 @@
 # ]
 # llm.set_verbose = True
 # llm.cache = llm.Cache(
-#     type="s3", s3_bucket_name="litellm-my-test-bucket-2", s3_region_name="us-east-1"
+#     type="s3", s3_bucket_name="llm-my-test-bucket-2", s3_region_name="us-east-1"
 # )
 # router = Router(
 #     model_list=model_list,

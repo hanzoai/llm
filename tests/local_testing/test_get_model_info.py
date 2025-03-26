@@ -61,7 +61,7 @@ def test_get_model_info_shows_correct_supports_vision():
 
 
 def test_get_model_info_shows_assistant_prefill():
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
     info = llm.get_model_info("deepseek/deepseek-chat")
     print("info", info)
@@ -69,7 +69,7 @@ def test_get_model_info_shows_assistant_prefill():
 
 
 def test_get_model_info_shows_supports_prompt_caching():
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
     info = llm.get_model_info("deepseek/deepseek-chat")
     print("info", info)
@@ -119,7 +119,7 @@ def test_get_model_info_gemini():
     """
     Tests if ALL gemini models have 'tpm' and 'rpm' in the model info
     """
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     model_map = llm.model_cost
@@ -134,7 +134,7 @@ def test_get_model_info_gemini():
 
 
 def test_get_model_info_bedrock_region():
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
     args = {
         "model": "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
@@ -144,7 +144,7 @@ def test_get_model_info_bedrock_region():
     info = llm.get_model_info(**args)
     print("info", info)
     assert info["key"] == "anthropic.claude-3-5-sonnet-20241022-v2:0"
-    assert info["litellm_provider"] == "bedrock"
+    assert info["llm_provider"] == "bedrock"
 
 
 @pytest.mark.parametrize(
@@ -184,7 +184,7 @@ def test_get_whitelisted_models():
     """
     whitelisted_models = []
     for model, info in llm.model_cost.items():
-        if info["litellm_provider"] == "bedrock" and info["mode"] == "chat":
+        if info["llm_provider"] == "bedrock" and info["mode"] == "chat":
             whitelisted_models.append(model)
 
         # Write to a local file
@@ -204,12 +204,12 @@ def _enforce_bedrock_converse_models(
     # Check for unwhitelisted models
     for model, info in llm.model_cost.items():
         if (
-            info["litellm_provider"] == "bedrock"
+            info["llm_provider"] == "bedrock"
             and info["mode"] == "chat"
             and model not in whitelist_models
         ):
             raise AssertionError(
-                f"New bedrock chat model detected: {model}. Please set `litellm_provider='bedrock_converse'` for this model."
+                f"New bedrock chat model detected: {model}. Please set `llm_provider='bedrock_converse'` for this model."
             )
 
 
@@ -219,7 +219,7 @@ def test_model_info_bedrock_converse(monkeypatch):
 
     This ensures they are automatically routed to the converse endpoint.
     """
-    monkeypatch.setenv("LITELLM_LOCAL_MODEL_COST_MAP", "True")
+    monkeypatch.setenv("LLM_LOCAL_MODEL_COST_MAP", "True")
     llm.model_cost = llm.get_model_cost_map(url="")
     try:
         # Load whitelist models from file
@@ -238,12 +238,12 @@ def test_model_info_bedrock_converse_enforcement(monkeypatch):
     """
     Test the enforcement of the whitelist by adding a fake model and ensuring the test fails.
     """
-    monkeypatch.setenv("LITELLM_LOCAL_MODEL_COST_MAP", "True")
+    monkeypatch.setenv("LLM_LOCAL_MODEL_COST_MAP", "True")
     llm.model_cost = llm.get_model_cost_map(url="")
 
     # Add a fake unwhitelisted model
     llm.model_cost["fake.bedrock-chat-model"] = {
-        "litellm_provider": "bedrock",
+        "llm_provider": "bedrock",
         "mode": "chat",
     }
 
@@ -309,7 +309,7 @@ def test_get_model_info_custom_model_router():
         model_list=[
             {
                 "model_name": "ma-summary",
-                "litellm_params": {
+                "llm_params": {
                     "api_base": "http://ma-mix-llm-serving.cicero.svc.cluster.local/v1",
                     "input_cost_per_token": 1,
                     "output_cost_per_token": 1,
@@ -330,11 +330,11 @@ def test_get_model_info_bedrock_models():
     """
     from llm.llms.bedrock.common_utils import BedrockModelInfo
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     for k, v in llm.model_cost.items():
-        if v["litellm_provider"] == "bedrock":
+        if v["llm_provider"] == "bedrock":
             k = k.replace("*/", "")
             potential_commitments = [
                 "1-month-commitment",
@@ -368,7 +368,7 @@ def test_get_model_info_huggingface_models(monkeypatch):
         model_list=[
             {
                 "model_name": "meta-llama/Meta-Llama-3-8B-Instruct",
-                "litellm_params": {
+                "llm_params": {
                     "model": "huggingface/meta-llama/Meta-Llama-3-8B-Instruct",
                     "api_base": "https://api-inference.huggingface.co/models/meta-llama/Llama-3.3-70B-Instruct",
                     "api_key": os.environ["HUGGINGFACE_API_KEY"],
@@ -400,12 +400,12 @@ def test_get_model_info_huggingface_models(monkeypatch):
 def test_get_model_info_cost_calculator_bedrock_region_cris_stripped(model, provider):
     """
     ensure cross region inferencing model is used correctly
-    Relevant Issue: https://github.com/BerriAI/litellm/issues/8115
+    Relevant Issue: https://github.com/BerriAI/llm/issues/8115
     """
     info = get_model_info(model=model, custom_llm_provider=provider)
     print("info", info)
     assert info["key"] == "us.anthropic.claude-3-haiku-20240307-v1:0"
-    assert info["litellm_provider"] == "bedrock"
+    assert info["llm_provider"] == "bedrock"
 
 
 def test_aaamodel_prices_and_context_window_json_is_valid():
@@ -443,7 +443,7 @@ def test_aaamodel_prices_and_context_window_json_is_valid():
                 "input_cost_per_video_per_second": {"type": "number"},
                 "input_cost_per_video_per_second_above_128k_tokens": {"type": "number"},
                 "input_dbu_cost_per_token": {"type": "number"},
-                "litellm_provider": {"type": "string"},
+                "llm_provider": {"type": "string"},
                 "max_audio_length_hours": {"type": "number"},
                 "max_audio_per_prompt": {"type": "number"},
                 "max_document_chunks_per_query": {"type": "number"},

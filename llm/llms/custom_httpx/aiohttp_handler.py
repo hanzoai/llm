@@ -5,7 +5,7 @@ import httpx  # type: ignore
 from aiohttp import ClientSession, FormData
 
 import llm
-import llm.litellm_core_utils
+import llm.llm_core_utils
 import llm.types
 import llm.types.utils
 from llm.llms.base_llm.chat.transformation import BaseConfig

@@ -25,12 +25,12 @@ def setup_and_teardown():
     import llm
     from llm import Router
 
-    importlib.reload(litellm)
+    importlib.reload(llm)
     import asyncio
 
     loop = asyncio.get_event_loop_policy().new_event_loop()
     asyncio.set_event_loop(loop)
-    print(litellm)
+    print(llm)
     # from llm import Router, completion, aembedding, acompletion, embedding
     yield
 

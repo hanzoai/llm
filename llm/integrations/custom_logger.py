@@ -146,7 +146,7 @@ class CustomLogger:  # https://docs.llm.ai/docs/observability/custom_callback#ca
     ):
         pass
 
-    #### ADAPTERS #### Allow calling 100+ LLMs in custom format - https://github.com/BerriAI/litellm/pulls
+    #### ADAPTERS #### Allow calling 100+ LLMs in custom format - https://github.com/BerriAI/llm/pulls
 
     def translate_completion_input_params(
         self, kwargs
@@ -208,7 +208,7 @@ class CustomLogger:  # https://docs.llm.ai/docs/observability/custom_callback#ca
         ],
     ) -> Optional[
         Union[Exception, str, dict]
-    ]:  # raise exception if invalid, return a str for the user to receive - if rejected, or return a modified dictionary for passing into litellm
+    ]:  # raise exception if invalid, return a str for the user to receive - if rejected, or return a modified dictionary for passing into llm
         pass
 
     async def async_post_call_failure_hook(
@@ -382,7 +382,7 @@ class CustomLogger:  # https://docs.llm.ai/docs/observability/custom_callback#ca
         """Truncate text if it exceeds max_length"""
         return (
             text[:max_length]
-            + "...truncated by litellm, this logger does not support large content"
+            + "...truncated by llm, this logger does not support large content"
             if len(text) > max_length
             else text
         )

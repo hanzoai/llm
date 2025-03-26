@@ -10,7 +10,7 @@ sys.path.insert(
 import llm
 import pytest
 
-from llm.litellm_core_utils.llm_response_utils.get_headers import (
+from llm.llm_core_utils.llm_response_utils.get_headers import (
     get_response_headers,
     _get_llm_provider_headers,
 )

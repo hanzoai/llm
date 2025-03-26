@@ -83,15 +83,15 @@ export default function Onboarding() {
       userID,
       formValues.password
     ).then((data) => {
-      let litellm_dashboard_ui = "/ui/";
+      let llm_dashboard_ui = "/ui/";
       const user_id = data.data?.user_id || data.user_id;
-      litellm_dashboard_ui += "?userID=" + user_id;
+      llm_dashboard_ui += "?userID=" + user_id;
 
       // set cookie "token" to jwtToken
       document.cookie = "token=" + jwtToken;
-      console.log("redirecting to:", litellm_dashboard_ui);
+      console.log("redirecting to:", llm_dashboard_ui);
 
-      window.location.href = litellm_dashboard_ui;
+      window.location.href = llm_dashboard_ui;
     });
 
     // redirect to login page
@@ -99,7 +99,7 @@ export default function Onboarding() {
   return (
     <div className="mx-auto w-full max-w-md mt-10">
       <Card>
-        <Title className="text-sm mb-5 text-center">🚅 LiteLLM</Title>
+        <Title className="text-sm mb-5 text-center">🚅 LLM</Title>
         <Title className="text-xl">Sign up</Title>
         <Text>Claim your user account to login to Admin UI.</Text>
 

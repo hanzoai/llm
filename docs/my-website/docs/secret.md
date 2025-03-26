@@ -336,7 +336,7 @@ $ llm --test
 [Quick Test Proxy](./proxy/user_keys)
 <!-- 
 ## .env Files
-If no secret manager client is specified, Litellm automatically uses the `.env` file to manage sensitive data. -->
+If no secret manager client is specified, Llm automatically uses the `.env` file to manage sensitive data. -->
 
 ## AWS Key Management V1
 
@@ -349,7 +349,7 @@ If no secret manager client is specified, Litellm automatically uses the `.env` 
 Use AWS KMS to storing a hashed copy of your Proxy Master Key in the environment. 
 
 ```bash
-export LITELLM_MASTER_KEY="djZ9xjVaZ..." # 👈 ENCRYPTED KEY
+export LLM_MASTER_KEY="djZ9xjVaZ..." # 👈 ENCRYPTED KEY
 export AWS_REGION_NAME="us-west-2"
 ```
 
@@ -357,7 +357,7 @@ export AWS_REGION_NAME="us-west-2"
 general_settings:
   key_management_system: "aws_kms"
   key_management_settings:
-    hosted_keys: ["LITELLM_MASTER_KEY"] # 👈 WHICH KEYS ARE STORED ON KMS
+    hosted_keys: ["LLM_MASTER_KEY"] # 👈 WHICH KEYS ARE STORED ON KMS
 ```
 
 [**See Decryption Code**](https://github.com/BerriAI/llm/blob/a2da2a8f168d45648b61279d4795d647d94f90c9/llm/utils.py#L10182)

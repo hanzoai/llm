@@ -80,14 +80,14 @@ ignored_function_names = [
 
 def main():
     router_file = [
-        "./litellm/router.py",
-        "./litellm/router_utils/batch_utils.py",
-        "./litellm/router_utils/pattern_match_deployments.py",
+        "./llm/router.py",
+        "./llm/router_utils/batch_utils.py",
+        "./llm/router_utils/pattern_match_deployments.py",
     ]
     # router_file = [
-    #     "../../litellm/router.py",
-    #     "../../litellm/router_utils/pattern_match_deployments.py",
-    #     "../../litellm/router_utils/batch_utils.py",
+    #     "../../llm/router.py",
+    #     "../../llm/router_utils/pattern_match_deployments.py",
+    #     "../../llm/router_utils/batch_utils.py",
     # ]  ## LOCAL TESTING
     tests_dir = (
         "./tests/"  # Update this path if your tests directory is located elsewhere

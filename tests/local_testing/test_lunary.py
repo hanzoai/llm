@@ -48,8 +48,8 @@ def test_lunary_logging_with_metadata():
             max_tokens=10,
             temperature=0.2,
             metadata={
-                "run_name": "litellmRUN",
-                "project_name": "litellm-completion",
+                "run_name": "llmRUN",
+                "project_name": "llm-completion",
                 "tags": ["tag1", "tag2"],
             },
         )
@@ -107,8 +107,8 @@ def test_lunary_logging_with_streaming_and_metadata():
             max_tokens=10,
             temperature=0.2,
             metadata={
-                "run_name": "litellmRUN",
-                "project_name": "litellm-completion",
+                "run_name": "llmRUN",
+                "project_name": "llm-completion",
             },
             stream=True,
         )

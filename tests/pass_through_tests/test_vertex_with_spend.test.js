@@ -21,7 +21,7 @@ global.fetch = async function patchedFetch(url, options) {
     const response = await originalFetch(url, options);
     
     // Store the call ID if it exists
-    lastCallId = response.headers.get('x-litellm-call-id');
+    lastCallId = response.headers.get('x-llm-call-id');
         
     return response;
 };
@@ -75,7 +75,7 @@ describe('Vertex AI Tests', () => {
         });
 
         const customHeaders = new Headers({
-            "x-litellm-api-key": "sk-1234",
+            "x-llm-api-key": "sk-1234",
             "tags": "vertex-js-sdk,pass-through-endpoint"
         });
 
@@ -132,7 +132,7 @@ describe('Vertex AI Tests', () => {
         });
 
         const customHeaders = new Headers({
-            "x-litellm-api-key": "sk-1234",
+            "x-llm-api-key": "sk-1234",
             "tags": "vertex-js-sdk,pass-through-endpoint"
         });
 

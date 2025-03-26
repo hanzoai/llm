@@ -214,7 +214,7 @@ async def test_langfuse_logging_without_request_response(stream, langfuse_client
     try:
         import uuid
 
-        _unique_trace_name = f"litellm-test-{str(uuid.uuid4())}"
+        _unique_trace_name = f"llm-test-{str(uuid.uuid4())}"
         llm.set_verbose = True
         llm.turn_off_message_logging = True
         llm.success_callback = ["langfuse"]
@@ -245,11 +245,11 @@ async def test_langfuse_logging_without_request_response(stream, langfuse_client
 
         print(f"_trace_data: {_trace_data}")
         assert _trace_data[0].input == {
-            "messages": [{"content": "redacted-by-litellm", "role": "user"}]
+            "messages": [{"content": "redacted-by-llm", "role": "user"}]
         }
         assert _trace_data[0].output == {
             "role": "assistant",
-            "content": "redacted-by-litellm",
+            "content": "redacted-by-llm",
             "function_call": None,
             "tool_calls": None,
         }
@@ -278,7 +278,7 @@ async def test_langfuse_logging_audio_transcriptions(langfuse_client):
     """
     import uuid
 
-    _unique_trace_name = f"litellm-test-{str(uuid.uuid4())}"
+    _unique_trace_name = f"llm-test-{str(uuid.uuid4())}"
     llm.set_verbose = True
     llm.success_callback = ["langfuse"]
     await llm.atranscription(
@@ -302,7 +302,7 @@ async def test_langfuse_logging_audio_transcriptions(langfuse_client):
     print("generations for given trace=", generations)
 
     assert len(generations) == 1
-    assert generations[0].name == "litellm-atranscription"
+    assert generations[0].name == "llm-atranscription"
     assert generations[0].output is not None
 
 
@@ -317,7 +317,7 @@ async def test_langfuse_masked_input_output(langfuse_client):
     import uuid
 
     for mask_value in [True, False]:
-        _unique_trace_name = f"litellm-test-{str(uuid.uuid4())}"
+        _unique_trace_name = f"llm-test-{str(uuid.uuid4())}"
         llm.set_verbose = True
         llm.success_callback = ["langfuse"]
         response = await create_async_task(
@@ -331,9 +331,9 @@ async def test_langfuse_masked_input_output(langfuse_client):
             mock_response="This is a test response",
         )
         print(response)
-        expected_input = "redacted-by-litellm" if mask_value else "This is a test"
+        expected_input = "redacted-by-llm" if mask_value else "This is a test"
         expected_output = (
-            "redacted-by-litellm" if mask_value else "This is a test response"
+            "redacted-by-llm" if mask_value else "This is a test response"
         )
         langfuse_client.flush()
         await asyncio.sleep(30)
@@ -385,22 +385,22 @@ async def test_aaalangfuse_logging_metadata(langfuse_client):
         "trace_actual_metadata_key": "trace_actual_metadata_value"
     }  # Allows for setting the metadata on the trace
     run_id = str(uuid.uuid4())
-    session_id = f"litellm-test-session-{run_id}"
+    session_id = f"llm-test-session-{run_id}"
     trace_common_metadata = {
         "session_id": session_id,
-        "tags": ["litellm-test-tag1", "litellm-test-tag2"],
+        "tags": ["llm-test-tag1", "llm-test-tag2"],
         "update_trace_keys": [
             "output",
             "trace_metadata",
         ],  # Overwrite the following fields in the trace with the last generation's output and the trace_user_id
         "trace_metadata": trace_metadata,
         "gen_metadata_key": "gen_metadata_value",  # Metadata key that should not be filtered in the generation
-        "trace_release": "litellm-test-release",
-        "version": "litellm-test-version",
+        "trace_release": "llm-test-release",
+        "version": "llm-test-version",
     }
     for trace_num in range(1, 3):  # Two traces
         metadata = copy.deepcopy(trace_common_metadata)
-        trace_id = f"litellm-test-trace{trace_num}-{run_id}"
+        trace_id = f"llm-test-trace{trace_num}-{run_id}"
         metadata["trace_id"] = trace_id
         metadata["trace_name"] = trace_id
         trace_identifiers[trace_id] = []
@@ -408,9 +408,9 @@ async def test_aaalangfuse_logging_metadata(langfuse_client):
         for generation_num in range(
             1, trace_num + 1
         ):  # Each trace has a number of generations equal to its trace number
-            metadata["trace_user_id"] = f"litellm-test-user{generation_num}-{run_id}"
+            metadata["trace_user_id"] = f"llm-test-user{generation_num}-{run_id}"
             generation_id = (
-                f"litellm-test-trace{trace_num}-generation-{generation_num}-{run_id}"
+                f"llm-test-trace{trace_num}-generation-{generation_num}-{run_id}"
             )
             metadata["generation_id"] = generation_id
             metadata["generation_name"] = generation_id
@@ -648,7 +648,7 @@ def test_aaalangfuse_existing_trace_id():
         "response_obj": response_obj,
         "kwargs": {
             "model": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "acompletion": False,
                 "api_key": None,
                 "force_timeout": 600,
@@ -656,7 +656,7 @@ def test_aaalangfuse_existing_trace_id():
                 "verbose": False,
                 "custom_llm_provider": "openai",
                 "api_base": "https://api.openai.com/v1/",
-                "litellm_call_id": None,
+                "llm_call_id": None,
                 "model_alias_map": {},
                 "completion_call_id": None,
                 "metadata": None,
@@ -672,7 +672,7 @@ def test_aaalangfuse_existing_trace_id():
             "stream": False,
             "user": None,
             "call_type": "completion",
-            "litellm_call_id": None,
+            "llm_call_id": None,
             "completion_start_time": "2024-05-01 07:31:29.903685",
             "temperature": 0.1,
             "extra_body": {},
@@ -748,7 +748,7 @@ def test_aaalangfuse_existing_trace_id():
         "response_obj": new_response_obj,
         "kwargs": {
             "model": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "acompletion": False,
                 "api_key": None,
                 "force_timeout": 600,
@@ -756,7 +756,7 @@ def test_aaalangfuse_existing_trace_id():
                 "verbose": False,
                 "custom_llm_provider": "openai",
                 "api_base": "https://api.openai.com/v1/",
-                "litellm_call_id": "508113a1-c6f1-48ce-a3e1-01c6cce9330e",
+                "llm_call_id": "508113a1-c6f1-48ce-a3e1-01c6cce9330e",
                 "model_alias_map": {},
                 "completion_call_id": None,
                 "metadata": new_metadata,
@@ -772,7 +772,7 @@ def test_aaalangfuse_existing_trace_id():
             "stream": False,
             "user": None,
             "call_type": "completion",
-            "litellm_call_id": "508113a1-c6f1-48ce-a3e1-01c6cce9330e",
+            "llm_call_id": "508113a1-c6f1-48ce-a3e1-01c6cce9330e",
             "completion_start_time": "2024-05-01 07:31:29.903685",
             "temperature": 0.1,
             "extra_body": {},
@@ -967,7 +967,7 @@ def test_aaalangfuse_dynamic_logging():
 import datetime
 
 generation_params = {
-    "name": "litellm-acompletion",
+    "name": "llm-acompletion",
     "id": "time-10-35-32-316778_chatcmpl-ABQDEzVJS8fziPdvkeTA3tnQaxeMX",
     "start_time": datetime.datetime(2024, 9, 25, 10, 35, 32, 316778),
     "end_time": datetime.datetime(2024, 9, 25, 10, 35, 32, 897141),
@@ -1020,7 +1020,7 @@ generation_params = {
             },
         },
         "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
-        "litellm_api_version": "0.0.0",
+        "llm_api_version": "0.0.0",
         "user_api_key_user_id": "default_user_id",
         "user_api_key_spend": 0.0,
         "user_api_key_metadata": {},
@@ -1083,7 +1083,7 @@ generation_params = {
                 "llm_provider-content-encoding": "gzip",
                 "llm_provider-alt-svc": 'h3=":443"; ma=86400',
             },
-            "litellm_call_id": "1fa31658-20af-40b5-9ac9-60fd7b5ad98c",
+            "llm_call_id": "1fa31658-20af-40b5-9ac9-60fd7b5ad98c",
             "model_id": "5583ac0c3e38cfd381b6cc09bcca6e0db60af48d3f16da325f82eb9df1b6a1e4",
             "api_base": "https://api.openai.com",
             "optional_params": {
@@ -1093,7 +1093,7 @@ generation_params = {
             },
             "response_cost": 0.00038,
         },
-        "litellm_response_cost": 0.00038,
+        "llm_response_cost": 0.00038,
         "api_base": "https://api.openai.com/v1/",
         "cache_hit": False,
     },
@@ -1143,7 +1143,7 @@ def test_langfuse_prompt_type(prompt):
             },
         },
         "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
-        "litellm_api_version": "0.0.0",
+        "llm_api_version": "0.0.0",
         "user_api_key_user_id": "default_user_id",
         "user_api_key_spend": 0.0,
         "user_api_key_metadata": {},
@@ -1206,13 +1206,13 @@ def test_langfuse_prompt_type(prompt):
                 "llm_provider-content-encoding": "gzip",
                 "llm_provider-alt-svc": 'h3=":443"; ma=86400',
             },
-            "litellm_call_id": "1fa31658-20af-40b5-9ac9-60fd7b5ad98c",
+            "llm_call_id": "1fa31658-20af-40b5-9ac9-60fd7b5ad98c",
             "model_id": "5583ac0c3e38cfd381b6cc09bcca6e0db60af48d3f16da325f82eb9df1b6a1e4",
             "api_base": "https://api.openai.com",
             "optional_params": {"stream": False, "max_retries": 0, "extra_body": {}},
             "response_cost": 0.00038,
         },
-        "litellm_response_cost": 0.00038,
+        "llm_response_cost": 0.00038,
         "api_base": "https://api.openai.com/v1/",
         "cache_hit": False,
     }

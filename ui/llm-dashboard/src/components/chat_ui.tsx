@@ -56,7 +56,7 @@ async function generateModelResponse(
   const client = new openai.OpenAI({
     apiKey: accessToken, // Replace with your OpenAI API key
     baseURL: proxyBaseUrl, // Replace with your OpenAI API base URL
-    dangerouslyAllowBrowser: true, // using a temporary litellm proxy key
+    dangerouslyAllowBrowser: true, // using a temporary llm proxy key
   });
 
   try {

@@ -32,7 +32,7 @@ async def test_router_async_caching_with_ssl_url():
             model_list=[
                 {
                     "model_name": "gpt-3.5-turbo",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "gpt-3.5-turbo",
                         "api_key": os.getenv("OPENAI_API_KEY"),
                     },
@@ -59,7 +59,7 @@ def test_router_sync_caching_with_ssl_url():
             model_list=[
                 {
                     "model_name": "gpt-3.5-turbo",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "gpt-3.5-turbo",
                         "api_key": os.getenv("OPENAI_API_KEY"),
                     },
@@ -86,7 +86,7 @@ async def test_acompletion_caching_on_router():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -95,7 +95,7 @@ async def test_acompletion_caching_on_router():
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": os.getenv("AZURE_API_BASE"),
@@ -153,7 +153,7 @@ async def test_completion_caching_on_router():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -203,7 +203,7 @@ async def test_acompletion_caching_with_ttl_on_router():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -212,7 +212,7 @@ async def test_acompletion_caching_with_ttl_on_router():
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": os.getenv("AZURE_API_BASE"),
@@ -268,7 +268,7 @@ async def test_acompletion_caching_on_router_caching_groups():
         model_list = [
             {
                 "model_name": "openai-gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "mock_response": "Hello world",
@@ -278,7 +278,7 @@ async def test_acompletion_caching_on_router_caching_groups():
             },
             {
                 "model_name": "azure-gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": os.getenv("AZURE_API_BASE"),

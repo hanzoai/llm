@@ -175,7 +175,7 @@ async def health_services_endpoint(  # noqa: PLR0915
 
         if service == "slack" or service == "slack_budget_alerts":
             if "slack" in general_settings.get("alerting", []):
-                # test_message = f"""\n🚨 `ProjectedLimitExceededError` 💸\n\n`Key Alias:` litellm-ui-test-alert \n`Expected Day of Error`: 28th March \n`Current Spend`: $100.00 \n`Projected Spend at end of month`: $1000.00 \n`Soft Limit`: $700"""
+                # test_message = f"""\n🚨 `ProjectedLimitExceededError` 💸\n\n`Key Alias:` llm-ui-test-alert \n`Expected Day of Error`: 28th March \n`Current Spend`: $100.00 \n`Projected Spend at end of month`: $1000.00 \n`Soft Limit`: $700"""
                 # check if user has opted into unique_alert_webhooks
                 if (
                     proxy_logging_obj.slack_alerting_instance.alert_to_webhook_url
@@ -416,15 +416,15 @@ async def active_callbacks():
     ```
     {
         "alerting": _alerting,
-        "llm.callbacks": litellm_callbacks,
+        "llm.callbacks": llm_callbacks,
         "llm.input_callback": llm_input_callbacks,
-        "llm.failure_callback": litellm_failure_callbacks,
-        "llm.success_callback": litellm_success_callbacks,
-        "llm._async_success_callback": litellm_async_success_callbacks,
-        "llm._async_failure_callback": litellm_async_failure_callbacks,
-        "llm._async_input_callback": litellm_async_input_callbacks,
-        "all_litellm_callbacks": all_litellm_callbacks,
-        "num_callbacks": len(all_litellm_callbacks),
+        "llm.failure_callback": llm_failure_callbacks,
+        "llm.success_callback": llm_success_callbacks,
+        "llm._async_success_callback": llm_async_success_callbacks,
+        "llm._async_failure_callback": llm_async_failure_callbacks,
+        "llm._async_input_callback": llm_async_input_callbacks,
+        "all_llm_callbacks": all_llm_callbacks,
+        "num_callbacks": len(all_llm_callbacks),
         "num_alerting": _num_alerting,
         "llm.request_timeout": llm.request_timeout,
     }
@@ -436,22 +436,22 @@ async def active_callbacks():
     _alerting = str(general_settings.get("alerting"))
     # get success callbacks
 
-    litellm_callbacks = [str(x) for x in llm.callbacks]
+    llm_callbacks = [str(x) for x in llm.callbacks]
     llm_input_callbacks = [str(x) for x in llm.input_callback]
-    litellm_failure_callbacks = [str(x) for x in llm.failure_callback]
-    litellm_success_callbacks = [str(x) for x in llm.success_callback]
-    litellm_async_success_callbacks = [str(x) for x in llm._async_success_callback]
-    litellm_async_failure_callbacks = [str(x) for x in llm._async_failure_callback]
-    litellm_async_input_callbacks = [str(x) for x in llm._async_input_callback]
+    llm_failure_callbacks = [str(x) for x in llm.failure_callback]
+    llm_success_callbacks = [str(x) for x in llm.success_callback]
+    llm_async_success_callbacks = [str(x) for x in llm._async_success_callback]
+    llm_async_failure_callbacks = [str(x) for x in llm._async_failure_callback]
+    llm_async_input_callbacks = [str(x) for x in llm._async_input_callback]
 
-    all_litellm_callbacks = (
-        litellm_callbacks
+    all_llm_callbacks = (
+        llm_callbacks
         + llm_input_callbacks
-        + litellm_failure_callbacks
-        + litellm_success_callbacks
-        + litellm_async_success_callbacks
-        + litellm_async_failure_callbacks
-        + litellm_async_input_callbacks
+        + llm_failure_callbacks
+        + llm_success_callbacks
+        + llm_async_success_callbacks
+        + llm_async_failure_callbacks
+        + llm_async_input_callbacks
     )
 
     alerting = proxy_logging_obj.alerting
@@ -461,15 +461,15 @@ async def active_callbacks():
 
     return {
         "alerting": _alerting,
-        "llm.callbacks": litellm_callbacks,
+        "llm.callbacks": llm_callbacks,
         "llm.input_callback": llm_input_callbacks,
-        "llm.failure_callback": litellm_failure_callbacks,
-        "llm.success_callback": litellm_success_callbacks,
-        "llm._async_success_callback": litellm_async_success_callbacks,
-        "llm._async_failure_callback": litellm_async_failure_callbacks,
-        "llm._async_input_callback": litellm_async_input_callbacks,
-        "all_litellm_callbacks": all_litellm_callbacks,
-        "num_callbacks": len(all_litellm_callbacks),
+        "llm.failure_callback": llm_failure_callbacks,
+        "llm.success_callback": llm_success_callbacks,
+        "llm._async_success_callback": llm_async_success_callbacks,
+        "llm._async_failure_callback": llm_async_failure_callbacks,
+        "llm._async_input_callback": llm_async_input_callbacks,
+        "all_llm_callbacks": all_llm_callbacks,
+        "num_callbacks": len(all_llm_callbacks),
         "num_alerting": _num_alerting,
         "llm.request_timeout": llm.request_timeout,
     }
@@ -536,7 +536,7 @@ async def health_readiness():
                 "status": "healthy",
                 "db": "connected",
                 "cache": cache_type,
-                "litellm_version": version,
+                "llm_version": version,
                 "success_callbacks": success_callback_names,
                 **db_health_status,
             }
@@ -545,7 +545,7 @@ async def health_readiness():
                 "status": "healthy",
                 "db": "Not connected",
                 "cache": cache_type,
-                "litellm_version": version,
+                "llm_version": version,
                 "success_callbacks": success_callback_names,
             }
     except Exception as e:
@@ -651,7 +651,7 @@ async def test_model_connection(
             "custom_llm_provider": "azure_ai",
             "llm_credential_name": null,
             "api_key": "6xxxxxxx",
-            "api_base": "https://litellm8397336933.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-10-21",
+            "api_base": "https://llm8397336933.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-10-21",
         },
         "mode": "chat"
       }'

@@ -58,7 +58,7 @@ async def block_user(data: BlockUsers):
         records = []
         if prisma_client is not None:
             for id in data.user_ids:
-                record = await prisma_client.db.litellm_endusertable.upsert(
+                record = await prisma_client.db.llm_endusertable.upsert(
                     where={"user_id": id},  # type: ignore
                     data={
                         "create": {"user_id": id, "blocked": True},  # type: ignore
@@ -254,7 +254,7 @@ async def new_end_user(
         _new_budget = new_budget_request(data)
         if _new_budget is not None:
             try:
-                budget_record = await prisma_client.db.litellm_budgettable.create(
+                budget_record = await prisma_client.db.llm_budgettable.create(
                     data={
                         **_new_budget.model_dump(exclude_unset=True),
                         "created_by": user_api_key_dict.user_id or llm_proxy_admin_name,  # type: ignore
@@ -276,7 +276,7 @@ async def new_end_user(
                 new_end_user_obj[k] = v
 
         ## WRITE TO DB ##
-        end_user_record = await prisma_client.db.litellm_endusertable.create(
+        end_user_record = await prisma_client.db.llm_endusertable.create(
             data=new_end_user_obj,  # type: ignore
             include={"llm_budget_table": True},
         )
@@ -338,7 +338,7 @@ async def end_user_info(
 
     Example curl:
     ```
-    curl -X GET 'http://localhost:4000/customer/info?end_user_id=test-litellm-user-4' \
+    curl -X GET 'http://localhost:4000/customer/info?end_user_id=test-llm-user-4' \
         -H 'Authorization: Bearer sk-1234'
     ```
     """
@@ -350,7 +350,7 @@ async def end_user_info(
             detail={"error": CommonProxyErrors.db_not_connected_error.value},
         )
 
-    user_info = await prisma_client.db.litellm_endusertable.find_first(
+    user_info = await prisma_client.db.llm_endusertable.find_first(
         where={"user_id": end_user_id}, include={"llm_budget_table": True}
     )
 
@@ -399,7 +399,7 @@ async def update_end_user(
     --header 'Authorization: Bearer sk-1234' \
     --header 'Content-Type: application/json' \
     --data '{
-        "user_id": "test-litellm-user-4",
+        "user_id": "test-llm-user-4",
         "budget_id": "paid_tier"
     }'
 
@@ -430,7 +430,7 @@ async def update_end_user(
         if data.user_id is not None and len(data.user_id) > 0:
             non_default_values["user_id"] = data.user_id  # type: ignore
             verbose_proxy_logger.debug("In update customer, user_id condition block.")
-            response = await prisma_client.db.litellm_endusertable.update(
+            response = await prisma_client.db.llm_endusertable.update(
                 where={"user_id": data.user_id}, data=non_default_values  # type: ignore
             )
             if response is None:
@@ -515,7 +515,7 @@ async def delete_end_user(
             and isinstance(data.user_ids, list)
             and len(data.user_ids) > 0
         ):
-            response = await prisma_client.db.litellm_endusertable.delete_many(
+            response = await prisma_client.db.llm_endusertable.delete_many(
                 where={"user_id": {"in": data.user_ids}}
             )
             if response is None:
@@ -610,7 +610,7 @@ async def list_end_user(
             detail={"error": CommonProxyErrors.db_not_connected_error.value},
         )
 
-    response = await prisma_client.db.litellm_endusertable.find_many(
+    response = await prisma_client.db.llm_endusertable.find_many(
         include={"llm_budget_table": True}
     )
 

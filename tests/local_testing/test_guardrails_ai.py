@@ -17,7 +17,7 @@ def test_guardrails_ai():
         all_guardrails=[
             {
                 "guardrail_name": "gibberish-guard",
-                "litellm_params": {
+                "llm_params": {
                     "guardrail": "guardrails_ai",
                     "guard_name": "gibberish_guard",
                     "mode": "post_call",

@@ -1,7 +1,7 @@
 # +-----------------------------------------------+
 # |                                               |
 # |           Give Feedback / Get Help            |
-# | https://github.com/BerriAI/litellm/issues/new |
+# | https://github.com/BerriAI/llm/issues/new |
 # |                                               |
 # +-----------------------------------------------+
 #
@@ -40,8 +40,8 @@ from pydantic import BaseModel
 from typing_extensions import overload
 
 import llm
-import llm.litellm_core_utils
-import llm.litellm_core_utils.exception_mapping_utils
+import llm.llm_core_utils
+import llm.llm_core_utils.exception_mapping_utils
 from llm import get_secret_str
 from llm._logging import verbose_router_logger
 from llm.caching.caching import (
@@ -317,7 +317,7 @@ class Router:
         self.debug_level = debug_level
         self.enable_pre_call_checks = enable_pre_call_checks
         self.enable_tag_filtering = enable_tag_filtering
-        llm.suppress_debug_info = True  # prevents 'Give Feedback/Get help' message from being emitted on Router - Relevant Issue: https://github.com/BerriAI/litellm/issues/5942
+        llm.suppress_debug_info = True  # prevents 'Give Feedback/Get help' message from being emitted on Router - Relevant Issue: https://github.com/BerriAI/llm/issues/5942
         if self.set_verbose is True:
             if debug_level == "INFO":
                 verbose_router_logger.setLevel(logging.INFO)
@@ -497,21 +497,21 @@ class Router:
         self.access_groups = None
         ## USAGE TRACKING ##
         if isinstance(llm._async_success_callback, list):
-            llm.logging_callback_manager.add_litellm_async_success_callback(
+            llm.logging_callback_manager.add_llm_async_success_callback(
                 self.deployment_callback_on_success
             )
         else:
-            llm.logging_callback_manager.add_litellm_async_success_callback(
+            llm.logging_callback_manager.add_llm_async_success_callback(
                 self.deployment_callback_on_success
             )
         if isinstance(llm.success_callback, list):
-            llm.logging_callback_manager.add_litellm_success_callback(
+            llm.logging_callback_manager.add_llm_success_callback(
                 self.sync_deployment_callback_on_success
             )
         else:
             llm.success_callback = [self.sync_deployment_callback_on_success]
         if isinstance(llm._async_failure_callback, list):
-            llm.logging_callback_manager.add_litellm_async_failure_callback(
+            llm.logging_callback_manager.add_llm_async_failure_callback(
                 self.async_deployment_callback_on_failure
             )
         else:
@@ -520,7 +520,7 @@ class Router:
             ]
         ## COOLDOWNS ##
         if isinstance(llm.failure_callback, list):
-            llm.logging_callback_manager.add_litellm_failure_callback(
+            llm.logging_callback_manager.add_llm_failure_callback(
                 self.deployment_callback_on_failure
             )
         else:
@@ -929,7 +929,7 @@ class Router:
         except Exception as e:
             asyncio.create_task(
                 send_llm_exception_alert(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     request_kwargs=kwargs,
                     error_traceback_str=traceback.format_exc(),
                     original_exception=e,
@@ -1623,14 +1623,14 @@ class Router:
         if len(model_list) != 1:
             return False
 
-        litellm_model = model_list[0]["llm_params"].get("model", None)
+        llm_model = model_list[0]["llm_params"].get("model", None)
 
-        if litellm_model is None:
+        if llm_model is None:
             return False
 
-        if "/" in litellm_model:
-            split_litellm_model = litellm_model.split("/")[0]
-            if split_litellm_model in llm._known_custom_logger_compatible_callbacks:
+        if "/" in llm_model:
+            split_llm_model = llm_model.split("/")[0]
+            if split_llm_model in llm._known_custom_logger_compatible_callbacks:
                 return True
         return False
 
@@ -1657,7 +1657,7 @@ class Router:
             specific_deployment=kwargs.pop("specific_deployment", None),
         )
 
-        litellm_model = prompt_management_deployment["llm_params"].get(
+        llm_model = prompt_management_deployment["llm_params"].get(
             "model", None
         )
         prompt_id = kwargs.get("prompt_id") or prompt_management_deployment[
@@ -1680,7 +1680,7 @@ class Router:
 
         model, messages, optional_params = (
             llm_logging_object.get_chat_completion_prompt(
-                model=litellm_model,
+                model=llm_model,
                 messages=messages,
                 non_default_params=get_non_default_completion_params(kwargs=kwargs),
                 prompt_id=prompt_id,
@@ -1774,7 +1774,7 @@ class Router:
         except Exception as e:
             asyncio.create_task(
                 send_llm_exception_alert(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     request_kwargs=kwargs,
                     error_traceback_str=traceback.format_exc(),
                     original_exception=e,
@@ -1888,7 +1888,7 @@ class Router:
         except Exception as e:
             asyncio.create_task(
                 send_llm_exception_alert(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     request_kwargs=kwargs,
                     error_traceback_str=traceback.format_exc(),
                     original_exception=e,
@@ -2044,7 +2044,7 @@ class Router:
         except Exception as e:
             asyncio.create_task(
                 send_llm_exception_alert(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     request_kwargs=kwargs,
                     error_traceback_str=traceback.format_exc(),
                     original_exception=e,
@@ -2065,7 +2065,7 @@ class Router:
         except Exception as e:
             asyncio.create_task(
                 send_llm_exception_alert(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     request_kwargs=kwargs,
                     error_traceback_str=traceback.format_exc(),
                     original_exception=e,
@@ -2215,7 +2215,7 @@ class Router:
         except Exception as e:
             asyncio.create_task(
                 send_llm_exception_alert(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     request_kwargs=kwargs,
                     error_traceback_str=traceback.format_exc(),
                     original_exception=e,
@@ -2314,7 +2314,7 @@ class Router:
         except Exception as e:
             asyncio.create_task(
                 send_llm_exception_alert(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     request_kwargs=kwargs,
                     error_traceback_str=traceback.format_exc(),
                     original_exception=e,
@@ -2617,7 +2617,7 @@ class Router:
         except Exception as e:
             asyncio.create_task(
                 send_llm_exception_alert(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     request_kwargs=kwargs,
                     error_traceback_str=traceback.format_exc(),
                     original_exception=e,
@@ -2712,7 +2712,7 @@ class Router:
         except Exception as e:
             asyncio.create_task(
                 send_llm_exception_alert(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     request_kwargs=kwargs,
                     error_traceback_str=traceback.format_exc(),
                     original_exception=e,
@@ -2818,7 +2818,7 @@ class Router:
         except Exception as e:
             asyncio.create_task(
                 send_llm_exception_alert(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     request_kwargs=kwargs,
                     error_traceback_str=traceback.format_exc(),
                     original_exception=e,
@@ -2971,7 +2971,7 @@ class Router:
         except Exception as e:
             asyncio.create_task(
                 send_llm_exception_alert(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     request_kwargs=kwargs,
                     error_traceback_str=traceback.format_exc(),
                     original_exception=e,
@@ -3176,7 +3176,7 @@ class Router:
                 raise e
 
             input_kwargs = {
-                "litellm_router": self,
+                "llm_router": self,
                 "original_exception": original_exception,
                 **kwargs,
             }
@@ -3324,7 +3324,7 @@ class Router:
                         str(new_exception),
                         traceback.format_exc(),
                         await _async_get_cooldown_deployments_with_debug_info(
-                            litellm_router_instance=self,
+                            llm_router_instance=self,
                             parent_otel_span=parent_otel_span,
                         ),
                     )
@@ -3714,8 +3714,8 @@ class Router:
         response_headers: Optional[httpx.Headers] = None
         if hasattr(e, "response") and hasattr(e.response, "headers"):  # type: ignore
             response_headers = e.response.headers  # type: ignore
-        if hasattr(e, "litellm_response_headers"):
-            response_headers = e.litellm_response_headers  # type: ignore
+        if hasattr(e, "llm_response_headers"):
+            response_headers = e.llm_response_headers  # type: ignore
 
         if response_headers is not None:
             timeout = llm._calculate_retry_after(
@@ -3804,7 +3804,7 @@ class Router:
                 )
 
                 increment_deployment_successes_for_current_minute(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     deployment_id=id,
                 )
 
@@ -3846,7 +3846,7 @@ class Router:
 
         if id is not None:
             key = increment_deployment_successes_for_current_minute(
-                litellm_router_instance=self,
+                llm_router_instance=self,
                 deployment_id=id,
             )
             return key
@@ -3875,7 +3875,7 @@ class Router:
             exception_status = getattr(exception, "status_code", "")
             _model_info = kwargs.get("llm_params", {}).get("model_info", {})
 
-            exception_headers = llm.litellm_core_utils.exception_mapping_utils._get_response_headers(
+            exception_headers = llm.llm_core_utils.exception_mapping_utils._get_response_headers(
                 original_exception=exception
             )
 
@@ -3898,11 +3898,11 @@ class Router:
             if isinstance(_model_info, dict):
                 deployment_id = _model_info.get("id", None)
                 increment_deployment_failures_for_current_minute(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     deployment_id=deployment_id,
                 )
                 result = _set_cooldown_deployments(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     exception_status=exception_status,
                     original_exception=exception,
                     deployment=deployment_id,
@@ -4073,7 +4073,7 @@ class Router:
             pass
 
         unhealthy_deployments = _get_cooldown_deployments(
-            litellm_router_instance=self, parent_otel_span=parent_otel_span
+            llm_router_instance=self, parent_otel_span=parent_otel_span
         )
         healthy_deployments: list = []
         for deployment in _all_deployments:
@@ -4104,7 +4104,7 @@ class Router:
             pass
 
         unhealthy_deployments = await _async_get_cooldown_deployments(
-            litellm_router_instance=self, parent_otel_span=parent_otel_span
+            llm_router_instance=self, parent_otel_span=parent_otel_span
         )
         healthy_deployments: list = []
         for deployment in _all_deployments:
@@ -4167,7 +4167,7 @@ class Router:
                             args=(e, traceback.format_exc()),
                         ).start()  # log response
                     _set_cooldown_deployments(
-                        litellm_router_instance=self,
+                        llm_router_instance=self,
                         exception_status=e.status_code,
                         original_exception=e,
                         deployment=deployment["model_info"]["id"],
@@ -4293,7 +4293,7 @@ class Router:
             model_info=_model_info,
         )
 
-        ## REGISTER MODEL INFO IN LITELLM MODEL COST MAP
+        ## REGISTER MODEL INFO IN LLM MODEL COST MAP
         _model_name = deployment.llm_params.model
         if deployment.llm_params.custom_llm_provider is not None:
             _model_name = (
@@ -4324,13 +4324,13 @@ class Router:
         """
         Function to check if a llm deployment is active for a given environment. Allows using the same config.yaml across multople environments
 
-        Requires `LITELLM_ENVIRONMENT` to be set in .env. Valid values for environment:
+        Requires `LLM_ENVIRONMENT` to be set in .env. Valid values for environment:
             - development
             - staging
             - production
 
         Raises:
-        - ValueError: If LITELLM_ENVIRONMENT is not set in .env or not one of the valid values
+        - ValueError: If LLM_ENVIRONMENT is not set in .env or not one of the valid values
         - ValueError: If supported_environments is not set in model_info or not one of the valid values
         """
         if (
@@ -4339,15 +4339,15 @@ class Router:
             or deployment.model_info["supported_environments"] is None
         ):
             return True
-        litellm_environment = get_secret_str(secret_name="LITELLM_ENVIRONMENT")
-        if litellm_environment is None:
+        llm_environment = get_secret_str(secret_name="LLM_ENVIRONMENT")
+        if llm_environment is None:
             raise ValueError(
-                "Set 'supported_environments' for model but not 'LITELLM_ENVIRONMENT' set in .env"
+                "Set 'supported_environments' for model but not 'LLM_ENVIRONMENT' set in .env"
             )
 
-        if litellm_environment not in VALID_LLM_ENVIRONMENTS:
+        if llm_environment not in VALID_LLM_ENVIRONMENTS:
             raise ValueError(
-                f"LITELLM_ENVIRONMENT must be one of {VALID_LLM_ENVIRONMENTS}. but set as: {litellm_environment}"
+                f"LLM_ENVIRONMENT must be one of {VALID_LLM_ENVIRONMENTS}. but set as: {llm_environment}"
             )
 
         for _env in deployment.model_info["supported_environments"]:
@@ -4356,7 +4356,7 @@ class Router:
                     f"supported_environments must be one of {VALID_LLM_ENVIRONMENTS}. but set as: {_env} for deployment: {deployment}"
                 )
 
-        if litellm_environment in deployment.model_info["supported_environments"]:
+        if llm_environment in deployment.model_info["supported_environments"]:
             return True
         return False
 
@@ -4383,7 +4383,7 @@ class Router:
 
             if _llm_params.get("organization", None) is not None and isinstance(
                 _llm_params["organization"], list
-            ):  # Addresses https://github.com/BerriAI/litellm/issues/3949
+            ):  # Addresses https://github.com/BerriAI/llm/issues/3949
                 for org in _llm_params["organization"]:
                     _llm_params["organization"] = org
                     self._create_deployment(
@@ -4410,9 +4410,9 @@ class Router:
 
         #### DEPLOYMENT NAMES INIT ########
         self.deployment_names.append(deployment.llm_params.model)
-        ############ Users can either pass tpm/rpm as a litellm_param or a router param ###########
-        # for get_available_deployment, we use the litellm_param["rpm"]
-        # in this snippet we also set rpm to be a litellm_param
+        ############ Users can either pass tpm/rpm as a llm_param or a router param ###########
+        # for get_available_deployment, we use the llm_param["rpm"]
+        # in this snippet we also set rpm to be a llm_param
         if (
             deployment.llm_params.rpm is None
             and getattr(deployment, "rpm", None) is not None
@@ -4475,7 +4475,7 @@ class Router:
 
         # # init OpenAI, Azure clients
         # InitalizeOpenAISDKClient.set_client(
-        #     litellm_router_instance=self, model=deployment.to_json(exclude_none=True)
+        #     llm_router_instance=self, model=deployment.to_json(exclude_none=True)
         # )
 
         self._initialize_deployment_for_pass_through(
@@ -4725,7 +4725,7 @@ class Router:
                     except Exception:
                         pass
 
-        ## GET LITELLM MODEL INFO - raises exception, if model is not mapped
+        ## GET LLM MODEL INFO - raises exception, if model is not mapped
         if not model.startswith("{}/".format(custom_llm_provider)):
             model_info_name = "{}/{}".format(custom_llm_provider, model)
         else:
@@ -4828,9 +4828,9 @@ class Router:
             except Exception:
                 model_info = None
             # get llm provider
-            litellm_model, llm_provider = "", ""
+            llm_model, llm_provider = "", ""
             try:
-                litellm_model, llm_provider, _, _ = llm.get_llm_provider(
+                llm_model, llm_provider, _, _ = llm.get_llm_provider(
                     model=llm_params.model,
                     custom_llm_provider=llm_params.custom_llm_provider,
                 )
@@ -4841,7 +4841,7 @@ class Router:
 
             if model_info is None:
                 supported_openai_params = llm.get_supported_openai_params(
-                    model=litellm_model, custom_llm_provider=llm_provider
+                    model=llm_model, custom_llm_provider=llm_provider
                 )
                 if supported_openai_params is None:
                     supported_openai_params = []
@@ -5022,22 +5022,22 @@ class Router:
 
         for model in model_list:
             id: Optional[str] = model.get("model_info", {}).get("id")  # type: ignore
-            litellm_model: Optional[str] = model["llm_params"].get(
+            llm_model: Optional[str] = model["llm_params"].get(
                 "model"
             )  # USE THE MODEL SENT TO llm.completion() - consistent with how global_router cache is written.
-            if id is None or litellm_model is None:
+            if id is None or llm_model is None:
                 continue
             tpm_keys.append(
                 RouterCacheEnum.TPM.value.format(
                     id=id,
-                    model=litellm_model,
+                    model=llm_model,
                     current_minute=current_minute,
                 )
             )
             rpm_keys.append(
                 RouterCacheEnum.RPM.value.format(
                     id=id,
-                    model=litellm_model,
+                    model=llm_model,
                     current_minute=current_minute,
                 )
             )
@@ -5460,7 +5460,7 @@ class Router:
             )
             if client is None:
                 InitalizeCachedClient.set_max_parallel_requests_client(
-                    litellm_router_instance=self, model=deployment
+                    llm_router_instance=self, model=deployment
                 )
                 client = self.cache.get_cache(
                     key=cache_key, local_only=True, parent_otel_span=parent_otel_span
@@ -5703,7 +5703,7 @@ class Router:
 
         return model
 
-    def _get_deployment_by_litellm_model(self, model: str) -> List:
+    def _get_deployment_by_llm_model(self, model: str) -> List:
         """
         Get the deployment by llm model.
         """
@@ -5728,7 +5728,7 @@ class Router:
         """
         # check if aliases set on llm model alias map
         if specific_deployment is True:
-            return model, self._get_deployment_by_litellm_model(model=model)
+            return model, self._get_deployment_by_llm_model(model=model)
         elif model in self.get_model_ids():
             deployment = self.get_deployment(model_id=model)
             if deployment is not None:
@@ -5765,7 +5765,7 @@ class Router:
 
         if len(healthy_deployments) == 0:
             # check if the user sent in a deployment name instead
-            healthy_deployments = self._get_deployment_by_litellm_model(model=model)
+            healthy_deployments = self._get_deployment_by_llm_model(model=model)
 
         verbose_router_logger.debug(
             f"initial list of deployments: {healthy_deployments}"
@@ -5826,7 +5826,7 @@ class Router:
                 return healthy_deployments
 
             cooldown_deployments = await _async_get_cooldown_deployments(
-                litellm_router_instance=self, parent_otel_span=parent_otel_span
+                llm_router_instance=self, parent_otel_span=parent_otel_span
             )
             verbose_router_logger.debug(
                 f"async cooldown deployments: {cooldown_deployments}"
@@ -5866,7 +5866,7 @@ class Router:
 
             if len(healthy_deployments) == 0:
                 exception = await async_raise_no_deployment_exception(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     model=model,
                     parent_otel_span=parent_otel_span,
                 )
@@ -5929,7 +5929,7 @@ class Router:
                 deployment = None
             if deployment is None:
                 exception = await async_raise_no_deployment_exception(
-                    litellm_router_instance=self,
+                    llm_router_instance=self,
                     model=model,
                     parent_otel_span=parent_otel_span,
                 )
@@ -5998,7 +5998,7 @@ class Router:
             request_kwargs
         )
         cooldown_deployments = _get_cooldown_deployments(
-            litellm_router_instance=self, parent_otel_span=parent_otel_span
+            llm_router_instance=self, parent_otel_span=parent_otel_span
         )
         healthy_deployments = self._filter_cooldown_deployments(
             healthy_deployments=healthy_deployments,
@@ -6020,7 +6020,7 @@ class Router:
                 model_ids=model_ids, parent_otel_span=parent_otel_span
             )
             _cooldown_list = _get_cooldown_deployments(
-                litellm_router_instance=self, parent_otel_span=parent_otel_span
+                llm_router_instance=self, parent_otel_span=parent_otel_span
             )
             raise RouterRateLimitError(
                 model=model,
@@ -6082,7 +6082,7 @@ class Router:
                 model_ids=model_ids, parent_otel_span=parent_otel_span
             )
             _cooldown_list = _get_cooldown_deployments(
-                litellm_router_instance=self, parent_otel_span=parent_otel_span
+                llm_router_instance=self, parent_otel_span=parent_otel_span
             )
             raise RouterRateLimitError(
                 model=model,
@@ -6207,7 +6207,7 @@ class Router:
         self.slack_alerting_logger = _slack_alerting_logger
 
         llm.logging_callback_manager.add_llm_callback(_slack_alerting_logger)  # type: ignore
-        llm.logging_callback_manager.add_litellm_success_callback(
+        llm.logging_callback_manager.add_llm_success_callback(
             _slack_alerting_logger.response_taking_too_long_callback
         )
         verbose_router_logger.info(

@@ -637,7 +637,7 @@ async def test_embedding_caching_redis_ttl():
     """
     Test default_in_redis_ttl is used for embedding caching
 
-    issue: https://github.com/BerriAI/litellm/issues/6010
+    issue: https://github.com/BerriAI/llm/issues/6010
     """
     llm.set_verbose = True
 
@@ -1158,7 +1158,7 @@ async def test_s3_cache_stream_azure(sync_mode):
         ]
         llm.cache = Cache(
             type="s3",
-            s3_bucket_name="litellm-proxy",
+            s3_bucket_name="llm-proxy",
             s3_region_name="us-west-2",
         )
         print("s3 Cache: test for caching, streaming + completion")
@@ -1273,7 +1273,7 @@ async def test_s3_cache_acompletion_azure():
         ]
         llm.cache = Cache(
             type="s3",
-            s3_bucket_name="litellm-my-test-bucket-2",
+            s3_bucket_name="llm-my-test-bucket-2",
             s3_region_name="us-east-1",
         )
         print("s3 Cache: test for caching, streaming + completion")
@@ -1543,8 +1543,8 @@ def test_get_cache_key():
                 "max_tokens": 40,
                 "temperature": 0.2,
                 "stream": True,
-                "litellm_call_id": "ffe75e7e-8a07-431f-9a74-71a5b9f35f0b",
-                "litellm_logging_obj": {},
+                "llm_call_id": "ffe75e7e-8a07-431f-9a74-71a5b9f35f0b",
+                "llm_logging_obj": {},
             }
         )
         cache_key_2 = cache_instance.get_cache_key(
@@ -1556,8 +1556,8 @@ def test_get_cache_key():
                 "max_tokens": 40,
                 "temperature": 0.2,
                 "stream": True,
-                "litellm_call_id": "ffe75e7e-8a07-431f-9a74-71a5b9f35f0b",
-                "litellm_logging_obj": {},
+                "llm_call_id": "ffe75e7e-8a07-431f-9a74-71a5b9f35f0b",
+                "llm_logging_obj": {},
             }
         )
         cache_key_str = "model: gpt-3.5-turbomessages: [{'role': 'user', 'content': 'write a one sentence poem about: 7510'}]max_tokens: 40temperature: 0.2stream: True"
@@ -1640,8 +1640,8 @@ def test_get_cache_key():
                     "base_model": "text-embedding-ada-002",
                     "id": "20b2b515-f151-4dd5-a74f-2231e2f54e29",
                 },
-                "litellm_call_id": "2642e009-b3cd-443d-b5dd-bb7d56123b0e",
-                "litellm_logging_obj": "<llm.utils.Logging object at 0x12f1bddb0>",
+                "llm_call_id": "2642e009-b3cd-443d-b5dd-bb7d56123b0e",
+                "llm_logging_obj": "<llm.utils.Logging object at 0x12f1bddb0>",
             }
         )
 
@@ -1780,7 +1780,7 @@ async def test_redis_semantic_cache_acompletion():
 
 def test_caching_redis_simple(caplog, capsys):
     """
-    Relevant issue - https://github.com/BerriAI/litellm/issues/4511
+    Relevant issue - https://github.com/BerriAI/llm/issues/4511
     """
     llm.set_verbose = True  ## REQUIRED FOR TEST.
     llm.cache = Cache(
@@ -2253,7 +2253,7 @@ async def test_caching_kwargs_input(sync_mode):
         "kwargs": {
             "messages": [{"role": "user", "content": "42HHey, how's it going?"}],
             "caching": True,
-            "litellm_call_id": "fae2aa4f-9f75-4f11-8c9c-63ab8d9fae26",
+            "llm_call_id": "fae2aa4f-9f75-4f11-8c9c-63ab8d9fae26",
             "preset_cache_key": "2f69f5640d5e0f25315d0e132f1278bb643554d14565d2c61d61564b10ade90f",
         },
         "args": ("gpt-3.5-turbo",),
@@ -2549,7 +2549,7 @@ def test_redis_caching_multiple_namespaces():
     """
     import uuid
 
-    messages = [{"role": "user", "content": f"what is litellm? {uuid.uuid4()}"}]
+    messages = [{"role": "user", "content": f"what is llm? {uuid.uuid4()}"}]
     llm.cache = Cache(type="redis")
     namespace_1 = "org-id1"
     namespace_2 = "org-id2"
@@ -2590,7 +2590,7 @@ def test_caching_with_reasoning_content():
 
     import uuid
 
-    messages = [{"role": "user", "content": f"what is litellm? {uuid.uuid4()}"}]
+    messages = [{"role": "user", "content": f"what is llm? {uuid.uuid4()}"}]
     llm.cache = Cache()
 
     response_1 = completion(

@@ -14,7 +14,7 @@ from llm.types.utils import (
     ImageObject,
     BudgetConfig,
     all_llm_params,
-    all_llm_params as _litellm_completion_params,
+    all_llm_params as _llm_completion_params,
     CredentialItem,
 )  # maintain backwards compatibility for root param
 from llm._logging import (
@@ -33,7 +33,7 @@ from llm.constants import (
     DEFAULT_MAX_RETRIES,
     DEFAULT_REPLICATE_POLLING_RETRIES,
     DEFAULT_REPLICATE_POLLING_DELAY_SECONDS,
-    LITELLM_CHAT_PROVIDERS,
+    LLM_CHAT_PROVIDERS,
     HUMANLOOP_PROMPT_CACHE_TTL_SECONDS,
     OPENAI_CHAT_COMPLETION_PARAMS,
     OPENAI_CHAT_COMPLETION_PARAMS as _openai_completion_params,  # backwards compatibility
@@ -70,8 +70,8 @@ import httpx
 import dotenv
 from enum import Enum
 
-litellm_mode = os.getenv("LITELLM_MODE", "DEV")  # "PRODUCTION", "DEV"
-if litellm_mode == "DEV":
+llm_mode = os.getenv("LLM_MODE", "DEV")  # "PRODUCTION", "DEV"
+if llm_mode == "DEV":
     dotenv.load_dotenv()
 ################################################
 if set_verbose == True:
@@ -149,14 +149,14 @@ store_audit_logs = False  # Enterprise feature, allow users to see audit logs
 ### end of callbacks #############
 
 email: Optional[str] = (
-    None  # Not used anymore, will be removed in next MAJOR release - https://github.com/BerriAI/litellm/discussions/648
+    None  # Not used anymore, will be removed in next MAJOR release - https://github.com/BerriAI/llm/discussions/648
 )
 token: Optional[str] = (
-    None  # Not used anymore, will be removed in next MAJOR release - https://github.com/BerriAI/litellm/discussions/648
+    None  # Not used anymore, will be removed in next MAJOR release - https://github.com/BerriAI/llm/discussions/648
 )
 telemetry = True
 max_tokens = 256  # OpenAI Defaults
-drop_params = bool(os.getenv("LITELLM_DROP_PARAMS", False))
+drop_params = bool(os.getenv("LLM_DROP_PARAMS", False))
 modify_params = False
 retry = True
 ### AUTH ###
@@ -230,10 +230,10 @@ enable_caching_on_provider_specific_optional_params: bool = (
     False  # feature-flag for caching on optional params - e.g. 'top_k'
 )
 caching: bool = (
-    False  # Not used anymore, will be removed in next MAJOR release - https://github.com/BerriAI/litellm/discussions/648
+    False  # Not used anymore, will be removed in next MAJOR release - https://github.com/BerriAI/llm/discussions/648
 )
 caching_with_models: bool = (
-    False  # # Not used anymore, will be removed in next MAJOR release - https://github.com/BerriAI/litellm/discussions/648
+    False  # # Not used anymore, will be removed in next MAJOR release - https://github.com/BerriAI/llm/discussions/648
 )
 cache: Optional[Cache] = (
     None  # cache object <- use this - https://docs.llm.ai/docs/caching
@@ -262,7 +262,7 @@ client_session: Optional[httpx.Client] = None
 aclient_session: Optional[httpx.AsyncClient] = None
 model_fallbacks: Optional[List] = None  # Deprecated for 'llm.fallbacks'
 model_cost_map_url: str = (
-    "https://raw.githubusercontent.com/BerriAI/litellm/main/model_prices_and_context_window.json"
+    "https://raw.githubusercontent.com/BerriAI/llm/main/model_prices_and_context_window.json"
 )
 suppress_debug_info = False
 dynamodb_table_name: Optional[str] = None
@@ -791,7 +791,7 @@ from .utils import (
     ModelResponseListIterator,
 )
 
-ALL_LITELLM_RESPONSE_TYPES = [
+ALL_LLM_RESPONSE_TYPES = [
     ModelResponse,
     EmbeddingResponse,
     ImageResponse,

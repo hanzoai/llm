@@ -7,9 +7,9 @@ import llm
 if TYPE_CHECKING:
     from llm.router import Router as _Router
 
-    LitellmRouter = _Router
+    LlmRouter = _Router
 else:
-    LitellmRouter = Any
+    LlmRouter = Any
 
 
 ROUTE_ENDPOINT_MAPPING = {
@@ -35,7 +35,7 @@ class ProxyModelNotFoundError(HTTPException):
 
 async def route_request(
     data: dict,
-    llm_router: Optional[LitellmRouter],
+    llm_router: Optional[LlmRouter],
     user_model: Optional[str],
     route_type: Literal[
         "acompletion",
@@ -95,7 +95,7 @@ async def route_request(
 
         elif data["model"] not in router_model_names:
             if llm_router.router_general_settings.pass_through_all_models:
-                return getattr(litellm, f"{route_type}")(**data)
+                return getattr(llm, f"{route_type}")(**data)
             elif (
                 llm_router.default_deployment is not None
                 or len(llm_router.pattern_router.patterns) > 0
@@ -106,7 +106,7 @@ async def route_request(
                 return getattr(llm_router, f"{route_type}")(**data)
 
     elif user_model is not None:
-        return getattr(litellm, f"{route_type}")(**data)
+        return getattr(llm, f"{route_type}")(**data)
 
     # if no route found then it's a bad request
     route_name = ROUTE_ENDPOINT_MAPPING.get(route_type, route_type)

@@ -9,7 +9,7 @@ LLM allows you to specify the following:
 * Location
 * Token
 
-Useful Helper functions: 
+Useful Helper functions:
 * [`check_valid_key()`](#check_valid_key)
 * [`get_valid_models()`](#get_valid_models)
 
@@ -25,7 +25,7 @@ You can set the API configs using:
 Set the llm API key or specific provider key:
 
 ```python
-import os 
+import os
 
 # Set OpenAI API key
 os.environ["OPENAI_API_KEY"] = "Your API Key"
@@ -53,9 +53,9 @@ For cloud providers:
 - Azure
 - Bedrock
 - GCP
-- Watson AI 
+- Watson AI
 
-you might need to set additional parameters. LLM provides a common set of params, that we map across all providers. 
+you might need to set additional parameters. LLM provides a common set of params, that we map across all providers.
 
 |      | LLM param | Watson       | Vertex AI    | Azure        | Bedrock      |
 |------|--------------|--------------|--------------|--------------|--------------|
@@ -63,7 +63,7 @@ you might need to set additional parameters. LLM provides a common set of params
 | Region | region_name | watsonx_region_name | vertex_location | n/a | aws_region_name |
 | Token | token | watsonx_token or token | n/a | azure_ad_token | n/a |
 
-If you want, you can call them by their provider-specific params as well. 
+If you want, you can call them by their provider-specific params as well.
 
 ## llm variables
 
@@ -111,7 +111,7 @@ response = llm.completion(messages=messages, model="gpt-3.5-turbo")
 ### llm.organization
 ```python
 import llm
-llm.organization = "LiteLlmOrg"
+llm.organization = "my-org"
 response = llm.completion(messages=messages, model="gpt-3.5-turbo")
 ```
 
@@ -152,7 +152,7 @@ response = completion("command-nightly", messages, api_version="2023-02-15")
 
 ### `check_valid_key()`
 
-Check if a user submitted a valid key for the model they're trying to call. 
+Check if a user submitted a valid key for the model they're trying to call.
 
 ```python
 key = "bad-key"
@@ -187,7 +187,7 @@ This helper will check the provider's endpoint for valid models.
 Currently implemented for:
 - OpenAI (if OPENAI_API_KEY is set)
 - Fireworks AI (if FIREWORKS_AI_API_KEY is set)
-- LLM Proxy (if LITELLM_PROXY_API_KEY is set)
+- LLM Proxy (if LLM_PROXY_API_KEY is set)
 
 ```python
 from llm import get_valid_models
@@ -198,7 +198,7 @@ print(valid_models)
 
 ### `validate_environment(model: str)`
 
-This helper tells you if you have all the required environment variables for a model, and if not - what's missing. 
+This helper tells you if you have all the required environment variables for a model, and if not - what's missing.
 
 ```python
 from llm import validate_environment

@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any, Coroutine, Dict, Optional, Tuple, Union
 import httpx  # type: ignore
 
 import llm
-import llm.litellm_core_utils
+import llm.llm_core_utils
 import llm.types
 import llm.types.utils
 from llm.llms.base_llm.chat.transformation import BaseConfig

@@ -23,7 +23,7 @@ class TestTogetherAI(BaseLLMChatTest):
         return {"model": "together_ai/mistralai/Mixtral-8x7B-Instruct-v0.1"}
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
         pass
 
     def test_multilingual_requests(self):
@@ -42,7 +42,7 @@ class TestTogetherAI(BaseLLMChatTest):
     def test_get_supported_response_format_together_ai(
         self, model: str, expected_bool: bool
     ) -> None:
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
         optional_params = llm.get_supported_openai_params(
             model, custom_llm_provider="together_ai"

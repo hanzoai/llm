@@ -32,7 +32,7 @@ def test_async_fallbacks(caplog):
     model_list = [
         {
             "model_name": "azure/gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/chatgpt-v-2",
                 "api_key": os.getenv("AZURE_API_KEY"),
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -44,7 +44,7 @@ def test_async_fallbacks(caplog):
         },
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "api_key": "bad-key",
             },

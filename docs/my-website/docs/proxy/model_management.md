@@ -70,7 +70,7 @@ model_list:
 When adding a new model, your JSON payload should conform to the following structure:
 
 - `model_name`: The name of the new model (required).
-- `llm_params`: A dictionary containing parameters specific to the Litellm setup (required).
+- `llm_params`: A dictionary containing parameters specific to the Llm setup (required).
 - `model_info`: An optional dictionary to provide additional information about the model.
 
 Here's an example of how to structure your `ModelParams`:
@@ -133,12 +133,12 @@ Use a key with access to the model `gpt-4`.
 
 ```bash
 curl -L -X GET 'http://0.0.0.0:4000/v1/model/info' \
--H 'Authorization: Bearer LITELLM_KEY' \
+-H 'Authorization: Bearer LLM_KEY' \
 ```
 
 3. **Expected Response**
 
-Returned `model_info = Your custom model_info + (if exists) LITELLM MODEL INFO`
+Returned `model_info = Your custom model_info + (if exists) LLM MODEL INFO`
 
 
 [**How LLM Model Info is found**](https://github.com/BerriAI/llm/blob/9b46ec05b02d36d6e4fb5c32321e51e7f56e4a6e/llm/proxy/proxy_server.py#L7460) 

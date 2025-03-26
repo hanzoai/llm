@@ -34,14 +34,14 @@ else:
     ManagementEndpointLoggingPayload = Any
 
 
-LITELLM_TRACER_NAME = os.getenv("OTEL_TRACER_NAME", "llm")
-LITELLM_RESOURCE: Dict[Any, Any] = {
+LLM_TRACER_NAME = os.getenv("OTEL_TRACER_NAME", "llm")
+LLM_RESOURCE: Dict[Any, Any] = {
     "service.name": os.getenv("OTEL_SERVICE_NAME", "llm"),
     "deployment.environment": os.getenv("OTEL_ENVIRONMENT_NAME", "production"),
     "model_id": os.getenv("OTEL_SERVICE_NAME", "llm"),
 }
 RAW_REQUEST_SPAN_NAME = "raw_gen_ai_request"
-LITELLM_REQUEST_SPAN_NAME = "llm_request"
+LLM_REQUEST_SPAN_NAME = "llm_request"
 
 
 @dataclass
@@ -94,12 +94,12 @@ class OpenTelemetry(CustomLogger):
         self.OTEL_EXPORTER = self.config.exporter
         self.OTEL_ENDPOINT = self.config.endpoint
         self.OTEL_HEADERS = self.config.headers
-        provider = TracerProvider(resource=Resource(attributes=LITELLM_RESOURCE))
+        provider = TracerProvider(resource=Resource(attributes=LLM_RESOURCE))
         provider.add_span_processor(self._get_span_processor())
         self.callback_name = callback_name
 
         trace.set_tracer_provider(provider)
-        self.tracer = trace.get_tracer(LITELLM_TRACER_NAME)
+        self.tracer = trace.get_tracer(LLM_TRACER_NAME)
 
         self.span_kind = SpanKind
 
@@ -773,7 +773,7 @@ class OpenTelemetry(CustomLogger):
         return int(dt.timestamp() * 1e9)
 
     def _get_span_name(self, kwargs):
-        return LITELLM_REQUEST_SPAN_NAME
+        return LLM_REQUEST_SPAN_NAME
 
     def get_traceparent_from_header(self, headers):
         if headers is None:
@@ -803,7 +803,7 @@ class OpenTelemetry(CustomLogger):
         headers = proxy_server_request.get("headers", {}) or {}
         traceparent = headers.get("traceparent", None)
         _metadata = llm_params.get("metadata", {}) or {}
-        parent_otel_span = _metadata.get("litellm_parent_otel_span", None)
+        parent_otel_span = _metadata.get("llm_parent_otel_span", None)
 
         """
         Two way to use parents in opentelemetry

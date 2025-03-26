@@ -34,7 +34,7 @@ from llm.proxy._types import (
     LLM_TeamTableCachedObj,
     LLM_UserTable,
     LLMRoutes,
-    LitellmUserRoles,
+    LlmUserRoles,
     ProxyErrorTypes,
     ProxyException,
     RoleBasedPermissions,
@@ -201,7 +201,7 @@ async def common_checks(
 
     token_team = getattr(valid_token, "team_id", None)
     token_type: Literal["ui", "api"] = (
-        "ui" if token_team is not None and token_team == "litellm-dashboard" else "api"
+        "ui" if token_team is not None and token_team == "llm-dashboard" else "api"
     )
     _is_route_allowed = _is_allowed_route(
         route=route,
@@ -242,7 +242,7 @@ def _is_ui_route(
 
 def _get_user_role(
     user_obj: Optional[LLM_UserTable],
-) -> Optional[LitellmUserRoles]:
+) -> Optional[LlmUserRoles]:
     if user_obj is None:
         return None
 
@@ -250,7 +250,7 @@ def _get_user_role(
 
     _user_role = _user.user_role
     try:
-        role = LitellmUserRoles(_user_role)
+        role = LlmUserRoles(_user_role)
     except ValueError:
         return LLMUserRoles.INTERNAL_USER
 
@@ -458,7 +458,7 @@ async def get_end_user_object(
             return return_obj
     # else, check db
     try:
-        response = await prisma_client.db.litellm_endusertable.find_unique(
+        response = await prisma_client.db.llm_endusertable.find_unique(
             where={"user_id": end_user_id},
             include={"llm_budget_table": True},
         )
@@ -610,20 +610,20 @@ async def _get_fuzzy_user_object(
     """
     response = None
     if sso_user_id is not None:
-        response = await prisma_client.db.litellm_usertable.find_unique(
+        response = await prisma_client.db.llm_usertable.find_unique(
             where={"sso_user_id": sso_user_id},
             include={"organization_memberships": True},
         )
 
     if response is None and user_email is not None:
-        response = await prisma_client.db.litellm_usertable.find_first(
+        response = await prisma_client.db.llm_usertable.find_first(
             where={"user_email": user_email},
             include={"organization_memberships": True},
         )
 
         if response is not None and sso_user_id is not None:  # update sso_user_id
             asyncio.create_task(  # background task to update user with sso id
-                prisma_client.db.litellm_usertable.update(
+                prisma_client.db.llm_usertable.update(
                     where={"user_id": response.user_id},
                     data={"sso_user_id": sso_user_id},
                 )
@@ -671,7 +671,7 @@ async def get_user_object(
         )
 
         if should_check_db:
-            response = await prisma_client.db.litellm_usertable.find_unique(
+            response = await prisma_client.db.llm_usertable.find_unique(
                 where={"user_id": user_id}, include={"organization_memberships": True}
             )
 
@@ -687,7 +687,7 @@ async def get_user_object(
 
         if response is None:
             if user_id_upsert:
-                response = await prisma_client.db.litellm_usertable.create(
+                response = await prisma_client.db.llm_usertable.create(
                     data={"user_id": user_id},
                     include={"organization_memberships": True},
                 )
@@ -1085,7 +1085,7 @@ async def get_org_object(
             return cached_org_obj
     # else, check db
     try:
-        response = await prisma_client.db.litellm_organizationtable.find_unique(
+        response = await prisma_client.db.llm_organizationtable.find_unique(
             where={"organization_id": org_id}
         )
 

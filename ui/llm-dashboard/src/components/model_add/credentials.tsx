@@ -135,7 +135,7 @@ const CredentialsPanel: React.FC<CredentialsPanelProps> = ({ accessToken, upload
         <Text>
           Configured credentials for different AI providers. Add and manage your API credentials.{" "}
           <a 
-            href="https://docs.litellm.ai/docs/credentials" 
+            href="https://docs.llm.ai/docs/credentials" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="text-blue-500 hover:text-blue-700 underline"

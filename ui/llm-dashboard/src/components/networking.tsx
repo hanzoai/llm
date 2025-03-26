@@ -13,7 +13,7 @@ export const DEFAULT_ORGANIZATION = "default_organization";
 
 export interface Model {
   model_name: string;
-  litellm_params: Object;
+  llm_params: Object;
   model_info: Object | null;
 }
 
@@ -30,7 +30,7 @@ export interface Organization {
   created_by: string;
   updated_at: string;
   updated_by: string;
-  litellm_budget_table: any;  // Simplified to any since we don't need the detailed structure
+  llm_budget_table: any;  // Simplified to any since we don't need the detailed structure
   teams: any[] | null;
   users: any[] | null;
   members: any[] | null;
@@ -76,12 +76,12 @@ const handleError = async (errorData: string) => {
 
 
 // Global variable for the header name
-let globalLitellmHeaderName: string  = "Authorization";
+let globalLlmHeaderName: string  = "Authorization";
 
 // Function to set the global header name
-export function setGlobalLitellmHeaderName(headerName: string = "Authorization") {
-  console.log(`setGlobalLitellmHeaderName: ${headerName}`);
-  globalLitellmHeaderName = headerName;
+export function setGlobalLlmHeaderName(headerName: string = "Authorization") {
+  console.log(`setGlobalLlmHeaderName: ${headerName}`);
+  globalLlmHeaderName = headerName;
 }
 
 export const getOpenAPISchema = async () => {
@@ -95,18 +95,18 @@ export const modelCostMap = async (
   accessToken: string,
 ) => {
   try {
-    const url = proxyBaseUrl ? `${proxyBaseUrl}/get/litellm_model_cost_map` : `/get/litellm_model_cost_map`;
+    const url = proxyBaseUrl ? `${proxyBaseUrl}/get/llm_model_cost_map` : `/get/llm_model_cost_map`;
     const response = await fetch(
       url, {
         method: "GET",
         headers: {
-          [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+          [globalLlmHeaderName]: `Bearer ${accessToken}`,
           "Content-Type": "application/json",
         },
       }
     );
     const jsonData = await response.json();
-    console.log(`received litellm model cost data: ${jsonData}`);
+    console.log(`received llm model cost data: ${jsonData}`);
     return jsonData;
   } catch (error) {
     console.error("Failed to get model cost map:", error);
@@ -122,7 +122,7 @@ export const modelCreateCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -168,7 +168,7 @@ export const modelSettingsCall = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -199,7 +199,7 @@ export const modelDeleteCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -240,7 +240,7 @@ export const budgetDeleteCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -275,7 +275,7 @@ export const budgetCreateCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -312,7 +312,7 @@ export const budgetUpdateCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -348,7 +348,7 @@ export const invitationCreateCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -387,7 +387,7 @@ export const invitationClaimCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -425,7 +425,7 @@ export const alertingSettingsCall = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -482,7 +482,7 @@ export const keyCreateCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -544,7 +544,7 @@ export const userCreateCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -578,7 +578,7 @@ export const keyDeleteCall = async (accessToken: String, user_key: String) => {
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -611,7 +611,7 @@ export const userDeleteCall = async (accessToken: string, userIds: string[]) => 
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -643,7 +643,7 @@ export const teamDeleteCall = async (accessToken: String, teamID: String) => {
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -703,7 +703,7 @@ export const userListCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -758,7 +758,7 @@ export const userInfoCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -791,7 +791,7 @@ export const teamInfoCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -841,7 +841,7 @@ export const teamListCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -875,7 +875,7 @@ export const availableTeamListCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -903,7 +903,7 @@ export const organizationListCall = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -935,7 +935,7 @@ export const organizationInfoCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -978,7 +978,7 @@ export const organizationCreateCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -1014,7 +1014,7 @@ export const organizationUpdateCall = async (
     const response = await fetch(url, {
       method: "PATCH",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -1048,7 +1048,7 @@ export const organizationDeleteCall = async (
     const response = await fetch(url, {
       method: "DELETE",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -1081,7 +1081,7 @@ export const getTotalSpendCall = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1146,7 +1146,7 @@ export const claimOnboardingToken = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -1180,7 +1180,7 @@ export const regenerateKeyCall = async (accessToken: string, keyToRegenerate: st
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
@@ -1219,7 +1219,7 @@ export const modelInfoCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1260,12 +1260,12 @@ export const modelInfoV1Call = async (accessToken: String, modelId: String) => {
    */
   try {
     let url = proxyBaseUrl ? `${proxyBaseUrl}/v1/model/info` : `/v1/model/info`;
-    url += `?litellm_model_id=${modelId}`;
+    url += `?llm_model_id=${modelId}`;
 
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1298,7 +1298,7 @@ export const modelHubCall = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1329,7 +1329,7 @@ export const getAllowedIPs = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1358,7 +1358,7 @@ export const addAllowedIP = async (accessToken: String, ip: String) => {
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ ip: ip }),
@@ -1388,7 +1388,7 @@ export const deleteAllowedIP = async (accessToken: String, ip: String) => {
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ ip: ip }),
@@ -1430,7 +1430,7 @@ export const modelMetricsCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1469,7 +1469,7 @@ export const streamingModelMetricsCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1514,7 +1514,7 @@ export const modelMetricsSlowResponsesCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1558,7 +1558,7 @@ export const modelExceptionsCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1588,7 +1588,7 @@ export const modelAvailableCall = async (
   /**
    * Get all the models user has access to
    */
-  console.log("in /models calls, globalLitellmHeaderName", globalLitellmHeaderName)
+  console.log("in /models calls, globalLlmHeaderName", globalLlmHeaderName)
   try {
     let url = proxyBaseUrl ? `${proxyBaseUrl}/models` : `/models`;
     const params = new URLSearchParams();
@@ -1606,7 +1606,7 @@ export const modelAvailableCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1636,7 +1636,7 @@ export const keySpendLogsCall = async (accessToken: String, token: String) => {
     const response = await fetch(`${url}?api_key=${token}`, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1664,7 +1664,7 @@ export const teamSpendLogsCall = async (accessToken: String) => {
     const response = await fetch(`${url}`, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1707,7 +1707,7 @@ export const tagsSpendLogsCall = async (
     const response = await fetch(`${url}`, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1735,7 +1735,7 @@ export const allTagNamesCall = async (accessToken: String) => {
     const response = await fetch(`${url}`, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1763,7 +1763,7 @@ export const allEndUsersCall = async (accessToken: String) => {
     const response = await fetch(`${url}`, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1795,7 +1795,7 @@ export const userFilterUICall = async (accessToken: String, params: URLSearchPar
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1831,7 +1831,7 @@ export const userSpendLogsCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1886,7 +1886,7 @@ export const uiSpendLogsCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1917,7 +1917,7 @@ export const adminSpendLogsCall = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1947,7 +1947,7 @@ export const adminTopKeysCall = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -1995,7 +1995,7 @@ export const adminTopEndUsersCall = async (
     const requestOptions = {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: body,
@@ -2041,7 +2041,7 @@ export const adminspendByProvider = async (
     const requestOptions = {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
       },
     };
 
@@ -2079,7 +2079,7 @@ export const adminGlobalActivity = async (
     const requestOptions = {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
       },
     };
 
@@ -2115,7 +2115,7 @@ export const adminGlobalCacheActivity = async (
     const requestOptions = {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
       },
     };
 
@@ -2151,7 +2151,7 @@ export const adminGlobalActivityPerModel = async (
     const requestOptions = {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
       },
     };
 
@@ -2192,7 +2192,7 @@ export const adminGlobalActivityExceptions = async (
     const requestOptions = {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
       },
     };
 
@@ -2233,7 +2233,7 @@ export const adminGlobalActivityExceptionsPerDeployment = async (
     const requestOptions = {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
       },
     };
 
@@ -2262,7 +2262,7 @@ export const adminTopModelsCall = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -2289,7 +2289,7 @@ export const keyInfoCall = async (accessToken: String, keys: String[]) => {
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -2315,11 +2315,11 @@ export const keyInfoCall = async (accessToken: String, keys: String[]) => {
 
 export const testConnectionRequest = async (
   accessToken: string,
-  litellm_params: Record<string, any>,
+  llm_params: Record<string, any>,
   mode: string,
 ) => {
   try {
-    console.log("Sending model connection test request:", JSON.stringify(litellm_params));
+    console.log("Sending model connection test request:", JSON.stringify(llm_params));
     
     // Construct the URL based on environment
     const url = proxyBaseUrl ? `${proxyBaseUrl}/health/test_connection` : `/health/test_connection`;
@@ -2328,11 +2328,11 @@ export const testConnectionRequest = async (
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`
+        [globalLlmHeaderName]: `Bearer ${accessToken}`
       },
       body: JSON.stringify(
         {
-          litellm_params: litellm_params,
+          llm_params: llm_params,
           mode: mode,
         }
       )
@@ -2378,7 +2378,7 @@ export const keyInfoV1Call = async (accessToken: string, key: string) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       // Remove body since this is a GET request
@@ -2442,7 +2442,7 @@ export const keyListCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -2470,7 +2470,7 @@ export const spendUsersCall = async (accessToken: String, userID: String) => {
     const response = await fetch(`${url}?user_id=${userID}`, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -2502,7 +2502,7 @@ export const userRequestModelCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -2537,7 +2537,7 @@ export const userGetRequesedtModelsCall = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -2577,7 +2577,7 @@ export const userGetAllUsersCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -2606,7 +2606,7 @@ export const getPossibleUserRoles = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -2644,7 +2644,7 @@ export const teamCreateCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -2689,7 +2689,7 @@ export const credentialCreateCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -2727,7 +2727,7 @@ export const credentialListCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -2763,7 +2763,7 @@ export const credentialGetCall = async (accessToken: String, credentialName: Str
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -2791,7 +2791,7 @@ export const credentialDeleteCall = async (accessToken: String, credentialName: 
     const response = await fetch(url, {
       method: "DELETE",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -2832,7 +2832,7 @@ export const credentialUpdateCall = async (
     const response = await fetch(url, {
       method: "PATCH",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -2887,7 +2887,7 @@ export const keyUpdateCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -2922,7 +2922,7 @@ export const teamUpdateCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -2957,7 +2957,7 @@ export const modelUpdateCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -3001,7 +3001,7 @@ export const teamMemberAddCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -3041,7 +3041,7 @@ export const teamMemberUpdateCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -3082,7 +3082,7 @@ export const teamMemberDeleteCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -3123,7 +3123,7 @@ export const organizationMemberAddCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -3164,7 +3164,7 @@ export const organizationMemberDeleteCall = async (
     const response = await fetch(url, {
       method: "DELETE",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -3203,7 +3203,7 @@ export const organizationMemberUpdateCall = async (
     const response = await fetch(url, {
       method: "PATCH",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -3245,7 +3245,7 @@ export const userUpdateUserCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: response_body,
@@ -3283,7 +3283,7 @@ export const PredictedSpendLogsCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -3319,7 +3319,7 @@ export const slackBudgetAlertsHealthCheck = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -3358,7 +3358,7 @@ export const serviceHealthCheck = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -3393,7 +3393,7 @@ export const getBudgetList = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -3426,7 +3426,7 @@ export const getBudgetSettings = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -3464,7 +3464,7 @@ export const getCallbacksCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -3495,7 +3495,7 @@ export const getGeneralSettingsCall = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -3527,7 +3527,7 @@ export const getPassThroughEndpointsCall = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -3561,7 +3561,7 @@ export const getConfigFieldSetting = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -3598,7 +3598,7 @@ export const updatePassThroughFieldSetting = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
@@ -3635,7 +3635,7 @@ export const createPassThroughEndpoint = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -3678,7 +3678,7 @@ export const updateConfigFieldSetting = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
@@ -3718,7 +3718,7 @@ export const deleteConfigFieldSetting = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(formData),
@@ -3750,7 +3750,7 @@ export const deletePassThroughEndpointsCall = async (accessToken: String, endpoi
     const response = await fetch(url, {
       method: "DELETE",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -3785,7 +3785,7 @@ export const setCallbacksCall = async (
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -3820,7 +3820,7 @@ export const healthCheckCall = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -3852,7 +3852,7 @@ export const cachingHealthCheckCall = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -3888,7 +3888,7 @@ export const getProxyUISettings = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -3917,7 +3917,7 @@ export const getGuardrailsList = async (accessToken: String) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -3954,7 +3954,7 @@ export const uiSpendLogDetailsCall = async (
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -3986,7 +3986,7 @@ export const getInternalUserSettings = async (accessToken: string) => {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -4019,7 +4019,7 @@ export const updateInternalUserSettings = async (accessToken: string, settings: 
     const response = await fetch(url, {
       method: "PATCH",
       headers: {
-        [globalLitellmHeaderName]: `Bearer ${accessToken}`,
+        [globalLlmHeaderName]: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(settings),

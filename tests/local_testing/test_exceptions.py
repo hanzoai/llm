@@ -59,9 +59,9 @@ async def test_content_policy_exception_azure():
         print("caught a content policy violation error! Passed")
         print("exception", e)
         assert e.response is not None
-        assert e.litellm_debug_info is not None
-        assert isinstance(e.litellm_debug_info, str)
-        assert len(e.litellm_debug_info) > 0
+        assert e.llm_debug_info is not None
+        assert isinstance(e.llm_debug_info, str)
+        assert len(e.llm_debug_info) > 0
         pass
     except Exception as e:
         print()
@@ -681,7 +681,7 @@ def test_router_completion_vertex_exception():
             model_list=[
                 {
                     "model_name": "vertex-gemini-pro",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "vertex_ai/gemini-pro",
                         "api_key": "good-morning",
                     },
@@ -698,7 +698,7 @@ def test_router_completion_vertex_exception():
         print("exception: ", e)
 
 
-def test_litellm_completion_vertex_exception():
+def test_llm_completion_vertex_exception():
     try:
         import llm
 
@@ -714,7 +714,7 @@ def test_litellm_completion_vertex_exception():
         print("exception: ", e)
 
 
-def test_litellm_predibase_exception():
+def test_llm_predibase_exception():
     """
     Test - Assert that the Predibase API Key is not returned on Authentication Errors
     """
@@ -824,7 +824,7 @@ def test_exception_mapping(provider):
 
 def test_anthropic_tool_calling_exception():
     """
-    Related - https://github.com/BerriAI/litellm/issues/4348
+    Related - https://github.com/BerriAI/llm/issues/4348
     """
     tools = [
         {
@@ -1039,8 +1039,8 @@ async def test_exception_with_headers(sync_mode, provider, model, call_type, str
 
         except llm.RateLimitError as e:
             exception_raised = True
-            assert e.litellm_response_headers is not None
-            assert int(e.litellm_response_headers["retry-after"]) == cooldown_time
+            assert e.llm_response_headers is not None
+            assert int(e.llm_response_headers["retry-after"]) == cooldown_time
 
         if exception_raised is False:
             print(resp)
@@ -1147,10 +1147,10 @@ async def test_exception_with_headers_httpx(
         except llm.RateLimitError as e:
             exception_raised = True
             assert (
-                e.litellm_response_headers is not None
-            ), "litellm_response_headers is None"
-            print("e.litellm_response_headers", e.litellm_response_headers)
-            assert int(e.litellm_response_headers["retry-after"]) == cooldown_time
+                e.llm_response_headers is not None
+            ), "llm_response_headers is None"
+            print("e.llm_response_headers", e.llm_response_headers)
+            assert int(e.llm_response_headers["retry-after"]) == cooldown_time
 
         if exception_raised is False:
             print(resp)
@@ -1163,7 +1163,7 @@ async def test_bad_request_error_contains_httpx_response(model):
     """
     Test that the BadRequestError contains the httpx response
 
-    Relevant issue: https://github.com/BerriAI/litellm/issues/6732
+    Relevant issue: https://github.com/BerriAI/llm/issues/6732
     """
     try:
         await llm.acompletion(
@@ -1191,20 +1191,20 @@ def test_exceptions_base_class():
         assert e.type == "throttling_error"
 
 
-def test_context_window_exceeded_error_from_litellm_proxy():
+def test_context_window_exceeded_error_from_llm_proxy():
     from httpx import Response
-    from llm.litellm_core_utils.exception_mapping_utils import (
-        extract_and_raise_litellm_exception,
+    from llm.llm_core_utils.exception_mapping_utils import (
+        extract_and_raise_llm_exception,
     )
 
     args = {
         "response": Response(status_code=400, text="Bad Request"),
         "error_str": "Error code: 400 - {'error': {'message': \"llm.ContextWindowExceededError: llm.BadRequestError: this is a mock context window exceeded error\\nmodel=gpt-3.5-turbo. context_window_fallbacks=None. fallbacks=None.\\n\\nSet 'context_window_fallback' - https://docs.llm.ai/docs/routing#fallbacks\\nReceived Model Group=gpt-3.5-turbo\\nAvailable Model Group Fallbacks=None\", 'type': None, 'param': None, 'code': '400'}}",
         "model": "gpt-3.5-turbo",
-        "custom_llm_provider": "litellm_proxy",
+        "custom_llm_provider": "llm_proxy",
     }
     with pytest.raises(llm.ContextWindowExceededError):
-        extract_and_raise_litellm_exception(**args)
+        extract_and_raise_llm_exception(**args)
 
 
 @pytest.mark.parametrize("sync_mode", [True, False])

@@ -6,8 +6,8 @@ This requires websockets, and is currently only supported on LLM Proxy.
 
 from typing import Any, Optional
 
-from ....litellm_core_utils.litellm_logging import Logging as LLMLogging
-from ....litellm_core_utils.realtime_streaming import RealTimeStreaming
+from ....llm_core_utils.llm_logging import Logging as LLMLogging
+from ....llm_core_utils.realtime_streaming import RealTimeStreaming
 from ..openai import OpenAIChatCompletion
 
 

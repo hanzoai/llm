@@ -20,7 +20,7 @@ Make sure the response type follows the `SSOUserDefinedValues` pydantic object. 
 from fastapi import Request
 from fastapi_sso.sso.base import OpenID
 
-from llm.proxy._types import LitellmUserRoles, SSOUserDefinedValues
+from llm.proxy._types import LlmUserRoles, SSOUserDefinedValues
 from llm.proxy.management_endpoints.internal_user_endpoints import (
     new_user,
     user_info,
@@ -50,7 +50,7 @@ async def custom_sso_handler(userIDPInfo: OpenID) -> SSOUserDefinedValues:
             models=[],                                      # models user has access to
             user_id=userIDPInfo.id,                         # user id to use in the LLM DB
             user_email=userIDPInfo.email,                   # user email to use in the LLM DB
-            user_role=LitellmUserRoles.INTERNAL_USER.value, # role to use for the user 
+            user_role=LlmUserRoles.INTERNAL_USER.value, # role to use for the user 
             max_budget=0.01,                                # Max budget for this UI login Session
             budget_duration="1d",                           # Duration of the budget for this UI login Session, 1d, 2d, 30d ...
         )

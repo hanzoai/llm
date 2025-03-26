@@ -36,7 +36,7 @@ class TestAzureOpenAIO1(BaseOSeriesModelsTest, BaseLLMChatTest):
         )
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
         pass
 
     def test_basic_tool_calling(self):
@@ -52,7 +52,7 @@ class TestAzureOpenAIO1(BaseOSeriesModelsTest, BaseLLMChatTest):
             model_list=[
                 {
                     "model_name": "azure/o1-preview",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "azure/o1-preview",
                         "api_key": "my-fake-o1-key",
                         "api_base": "https://openai-gpt-4-test-v-1.openai.azure.com",

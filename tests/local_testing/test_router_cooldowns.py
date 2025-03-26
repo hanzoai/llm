@@ -40,7 +40,7 @@ async def test_cooldown_badrequest_error():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -82,7 +82,7 @@ async def test_cooldown_badrequest_error():
 @pytest.mark.asyncio
 async def test_dynamic_cooldowns():
     """
-    Assert kwargs for completion/embedding have 'cooldown_time' as a litellm_param
+    Assert kwargs for completion/embedding have 'cooldown_time' as a llm_param
     """
     # llm.set_verbose = True
     tmp_mock = MagicMock()
@@ -93,7 +93,7 @@ async def test_dynamic_cooldowns():
         model_list=[
             {
                 "model_name": "my-fake-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-1",
                     "api_key": "my-key",
                     "mock_response": Exception("this is an error"),
@@ -117,8 +117,8 @@ async def test_dynamic_cooldowns():
 
     print(tmp_mock.call_count)
 
-    assert "cooldown_time" in tmp_mock.call_args[0][0]["litellm_params"]
-    assert tmp_mock.call_args[0][0]["litellm_params"]["cooldown_time"] == 0
+    assert "cooldown_time" in tmp_mock.call_args[0][0]["llm_params"]
+    assert tmp_mock.call_args[0][0]["llm_params"]["cooldown_time"] == 0
 
 
 @pytest.mark.parametrize("num_deployments", [1, 2])
@@ -132,7 +132,7 @@ def test_single_deployment_no_cooldowns(num_deployments):
     for i in range(num_deployments):
         model = DeploymentTypedDict(
             model_name="gpt-3.5-turbo",
-            litellm_params=LLMParamsTypedDict(
+            llm_params=LLMParamsTypedDict(
                 model="gpt-3.5-turbo",
             ),
         )
@@ -168,19 +168,19 @@ async def test_single_deployment_no_cooldowns_test_prod():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                 },
             },
             {
                 "model_name": "gpt-5",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-5",
                 },
             },
             {
                 "model_name": "gpt-12",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-12",
                 },
             },
@@ -214,19 +214,19 @@ async def test_single_deployment_cooldown_with_allowed_fails():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                 },
             },
             {
                 "model_name": "gpt-5",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-5",
                 },
             },
             {
                 "model_name": "gpt-12",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-12",
                 },
             },
@@ -262,19 +262,19 @@ async def test_single_deployment_cooldown_with_allowed_fail_policy():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                 },
             },
             {
                 "model_name": "gpt-5",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-5",
                 },
             },
             {
                 "model_name": "gpt-12",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-12",
                 },
             },
@@ -313,19 +313,19 @@ async def test_single_deployment_no_cooldowns_test_prod_mock_completion_calls():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                 },
             },
             {
                 "model_name": "gpt-5",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-5",
                 },
             },
             {
                 "model_name": "gpt-12",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-12",
                 },
             },
@@ -343,7 +343,7 @@ async def test_single_deployment_no_cooldowns_test_prod_mock_completion_calls():
             pass
 
     cooldown_list = await _async_get_cooldown_deployments(
-        litellm_router_instance=router, parent_otel_span=None
+        llm_router_instance=router, parent_otel_span=None
     )
     assert len(cooldown_list) == 0
 
@@ -374,21 +374,21 @@ async def test_high_traffic_cooldowns_all_healthy_deployments():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_base": "https://api.openai.com",
                 },
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_base": "https://api.openai.com-2",
                 },
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_base": "https://api.openai.com-3",
                 },
@@ -452,7 +452,7 @@ async def test_high_traffic_cooldowns_all_healthy_deployments():
     print("model_stats: ", model_stats)
 
     cooldown_list = await _async_get_cooldown_deployments(
-        litellm_router_instance=router, parent_otel_span=None
+        llm_router_instance=router, parent_otel_span=None
     )
     assert len(cooldown_list) == 0
 
@@ -467,21 +467,21 @@ async def test_high_traffic_cooldowns_one_bad_deployment():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_base": "https://api.openai.com",
                 },
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_base": "https://api.openai.com-2",
                 },
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_base": "https://api.openai.com-3",
                 },
@@ -550,7 +550,7 @@ async def test_high_traffic_cooldowns_one_bad_deployment():
     print("model_stats: ", model_stats)
 
     cooldown_list = await _async_get_cooldown_deployments(
-        litellm_router_instance=router, parent_otel_span=None
+        llm_router_instance=router, parent_otel_span=None
     )
     assert len(cooldown_list) == 1
 
@@ -565,21 +565,21 @@ async def test_high_traffic_cooldowns_one_rate_limited_deployment():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_base": "https://api.openai.com",
                 },
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_base": "https://api.openai.com-2",
                 },
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_base": "https://api.openai.com-3",
                 },
@@ -651,7 +651,7 @@ async def test_high_traffic_cooldowns_one_rate_limited_deployment():
     print("model_stats: ", model_stats)
 
     cooldown_list = await _async_get_cooldown_deployments(
-        litellm_router_instance=router, parent_otel_span=None
+        llm_router_instance=router, parent_otel_span=None
     )
     assert len(cooldown_list) == 1
 
@@ -668,7 +668,7 @@ def test_router_fallbacks_with_cooldowns_and_model_id():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {"model": "gpt-3.5-turbo", "rpm": 1},
+                "llm_params": {"model": "gpt-3.5-turbo", "rpm": 1},
                 "model_info": {
                     "id": "123",
                 },
@@ -706,7 +706,7 @@ async def test_router_fallbacks_with_cooldowns_and_dynamic_credentials():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {"model": "gpt-3.5-turbo", "rpm": 1},
+                "llm_params": {"model": "gpt-3.5-turbo", "rpm": 1},
                 "model_info": {
                     "id": "123",
                 },
@@ -729,7 +729,7 @@ async def test_router_fallbacks_with_cooldowns_and_dynamic_credentials():
     await asyncio.sleep(1)
 
     cooldown_list = await _async_get_cooldown_deployments(
-        litellm_router_instance=router, parent_otel_span=None
+        llm_router_instance=router, parent_otel_span=None
     )
     print("cooldown_list: ", cooldown_list)
     assert len(cooldown_list) == 1

@@ -36,14 +36,14 @@ def create_test_router():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
             },
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -87,7 +87,7 @@ async def test_run_async_fallback(original_function):
         request_kwargs["messages"] = [{"role": "user", "content": "Hello, world!"}]
 
     result = await run_async_fallback(
-        litellm_router=router,
+        llm_router=router,
         original_function=original_function,
         num_retries=1,
         fallback_model_group=fallback_model_group,
@@ -227,7 +227,7 @@ async def test_failed_fallbacks_raise_most_recent_exception(original_function):
 
     with pytest.raises(llm.exceptions.RateLimitError):
         await run_async_fallback(
-            litellm_router=router,
+            llm_router=router,
             original_function=original_function,
             num_retries=1,
             fallback_model_group=fallback_model_group,
@@ -244,21 +244,21 @@ router_2 = Router(
     model_list=[
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
         },
         {
             "model_name": "gpt-4",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-4",
                 "api_key": "very-fake-key",
             },
         },
         {
             "model_name": "fake-openai-endpoint-2",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/fake-openai-endpoint-2",
                 "api_key": "working-key-since-this-is-fake-endpoint",
                 "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
@@ -297,7 +297,7 @@ async def test_multiple_fallbacks(original_function):
         request_kwargs["messages"] = [{"role": "user", "content": "Hello, world!"}]
 
     result = await run_async_fallback(
-        litellm_router=router_2,
+        llm_router=router_2,
         original_function=original_function,
         num_retries=1,
         fallback_model_group=fallback_model_group,

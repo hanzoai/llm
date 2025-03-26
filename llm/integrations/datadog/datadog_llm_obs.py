@@ -154,7 +154,7 @@ class DataDogLLMObsLogger(DataDogLogger, CustomBatchLogger):
             parent_id=metadata.get("parent_id", "undefined"),
             trace_id=metadata.get("trace_id", str(uuid.uuid4())),
             span_id=metadata.get("span_id", str(uuid.uuid4())),
-            name=metadata.get("name", "litellm_llm_call"),
+            name=metadata.get("name", "llm_llm_call"),
             meta=meta,
             start_ns=int(start_time.timestamp() * 1e9),
             duration=int((end_time - start_time).total_seconds() * 1e9),

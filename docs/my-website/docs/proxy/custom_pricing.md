@@ -63,7 +63,7 @@ model_list:
 
 If you're custom pricing is not being used or you're seeing errors, please check the following:
 
-1. Run the proxy with `LITELLM_LOG="DEBUG"` or the `--detailed_debug` cli flag
+1. Run the proxy with `LLM_LOG="DEBUG"` or the `--detailed_debug` cli flag
 
 ```bash
 llm --config /path/to/config.yaml --detailed_debug

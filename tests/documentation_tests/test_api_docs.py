@@ -178,8 +178,8 @@ def main():
         "delete_budget",
         "list_budget",
     ]
-    # directory = "../../litellm/proxy/management_endpoints"  # LOCAL
-    directory = "./litellm/proxy/management_endpoints"
+    # directory = "../../llm/proxy/management_endpoints"  # LOCAL
+    directory = "./llm/proxy/management_endpoints"
 
     # Convert function names to set for faster lookup
     target_functions = set(function_names)

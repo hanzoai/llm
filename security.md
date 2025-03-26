@@ -14,7 +14,7 @@
 
 ### LLM Cloud
 
-- We encrypt all data stored using your `LITELLM_MASTER_KEY` and in transit using TLS.
+- We encrypt all data stored using your `LLM_MASTER_KEY` and in transit using TLS.
 - Our database and application run on GCP, AWS infrastructure, partly managed by NeonDB.
     - US data region: Northern California (AWS/GCP `us-west-1`) & Virginia (AWS `us-east-1`)
     - EU data region Germany/Frankfurt (AWS/GCP `eu-central-1`)

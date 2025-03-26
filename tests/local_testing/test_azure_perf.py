@@ -5,7 +5,7 @@
 # import pytest
 
 # sys.path.insert(0, os.path.abspath("../.."))
-# import openai, litellm, uuid
+# import openai, llm, uuid
 # from openai import AsyncAzureOpenAI
 
 # client = AsyncAzureOpenAI(
@@ -17,7 +17,7 @@
 # model_list = [
 #     {
 #         "model_name": "azure-test",
-#         "litellm_params": {
+#         "llm_params": {
 #             "model": "azure/chatgpt-v-2",
 #             "api_key": os.getenv("AZURE_API_KEY"),
 #             "api_base": os.getenv("AZURE_API_BASE"),

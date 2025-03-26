@@ -8,7 +8,7 @@ You can find the Dockerfile to build llm proxy [here](https://github.com/BerriAI
 
 ## Quick Start
 
-To start using Litellm, run the following commands in a shell:
+To start using Llm, run the following commands in a shell:
 
 ```bash
 # Get the code
@@ -18,13 +18,13 @@ git clone https://github.com/BerriAI/llm
 cd llm
 
 # Add the master key - you can change this after setup
-echo 'LITELLM_MASTER_KEY="sk-1234"' > .env
+echo 'LLM_MASTER_KEY="sk-1234"' > .env
 
 # Add the llm salt key - you cannot change this after adding a model
 # It is used to encrypt / decrypt your LLM API Key credentials
 # We recommned - https://1password.com/password-generator/ 
 # password generator to get a random hash for llm salt key
-echo 'LITELLM_SALT_KEY="sk-1234"' >> .env
+echo 'LLM_SALT_KEY="sk-1234"' >> .env
 
 source .env
 
@@ -313,7 +313,7 @@ LLM is compatible with several SDKs - including OpenAI SDK, Anthropic SDK, Mistr
 | Docs                                                                                              | When to Use                                                                                                                                           |
 | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Quick Start](#quick-start)                                                                       | call 100+ LLMs + Load Balancing                                                                                                                       |
-| [Deploy with Database](#deploy-with-database)                                                     | + use Virtual Keys + Track Spend (Note: When deploying with a database providing a `DATABASE_URL` and `LITELLM_MASTER_KEY` are required in your env ) |
+| [Deploy with Database](#deploy-with-database)                                                     | + use Virtual Keys + Track Spend (Note: When deploying with a database providing a `DATABASE_URL` and `LLM_MASTER_KEY` are required in your env ) |
 | [LLM container + Redis](#llm-container--redis)                                            | + load balance across multiple llm containers                                                                                                     |
 | [LLM Database container + PostgresDB + Redis](#llm-database-container--postgresdb--redis) | + use Virtual Keys + Track Spend + load balance across multiple llm containers                                                                    |
 
@@ -322,7 +322,7 @@ LLM is compatible with several SDKs - including OpenAI SDK, Anthropic SDK, Mistr
 
 Requirements:
 - Need a postgres database (e.g. [Supabase](https://supabase.com/), [Neon](https://neon.tech/), etc) Set `DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<dbname>` in your env 
-- Set a `LITELLM_MASTER_KEY`, this is your Proxy Admin key - you can use this to create other keys (🚨 must start with `sk-`)
+- Set a `LLM_MASTER_KEY`, this is your Proxy Admin key - you can use this to create other keys (🚨 must start with `sk-`)
 
 <Tabs>
 
@@ -337,7 +337,7 @@ docker pull ghcr.io/berriai/llm-database:main-latest
 ```shell
 docker run \
     -v $(pwd)/llm_config.yaml:/app/config.yaml \
-    -e LITELLM_MASTER_KEY=sk-1234 \
+    -e LLM_MASTER_KEY=sk-1234 \
     -e DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<dbname> \
     -e AZURE_API_KEY=d6*********** \
     -e AZURE_API_BASE=https://openai-***********/ \
@@ -377,7 +377,7 @@ spec:
               value: "d6******"
             - name: AZURE_API_BASE
               value: "https://ope******"
-            - name: LITELLM_MASTER_KEY
+            - name: LLM_MASTER_KEY
               value: "sk-1234"
             - name: DATABASE_URL
               value: "po**********"
@@ -699,10 +699,10 @@ docker build -f Dockerfile -t llm-prod-build . --progress=plain
 docker run \
     -v $(pwd)/proxy_config.yaml:/app/config.yaml \
     -p 4000:4000 \
-    -e LITELLM_LOG="DEBUG"\
+    -e LLM_LOG="DEBUG"\
     -e SERVER_ROOT_PATH="/api/v1"\
     -e DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<dbname> \
-    -e LITELLM_MASTER_KEY="sk-1234"\
+    -e LLM_MASTER_KEY="sk-1234"\
     llm-prod-build \
     --config /app/config.yaml
 ```
@@ -767,10 +767,10 @@ Step 2. Pass the `--run_hypercorn` flag when starting the proxy
 docker run \
     -v $(pwd)/proxy_config.yaml:/app/config.yaml \
     -p 4000:4000 \
-    -e LITELLM_LOG="DEBUG"\
+    -e LLM_LOG="DEBUG"\
     -e SERVER_ROOT_PATH="/api/v1"\
     -e DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<dbname> \
-    -e LITELLM_MASTER_KEY="sk-1234"\
+    -e LLM_MASTER_KEY="sk-1234"\
     your_custom_docker_image \
     --config /app/config.yaml
     --run_hypercorn
@@ -787,9 +787,9 @@ LLM Proxy will read your config.yaml from an s3 Bucket or GCS Bucket
 
 Set the following .env vars 
 ```shell
-LITELLM_CONFIG_BUCKET_TYPE = "gcs"                              # set this to "gcs"         
-LITELLM_CONFIG_BUCKET_NAME = "llm-proxy"                    # your bucket name on GCS
-LITELLM_CONFIG_BUCKET_OBJECT_KEY = "proxy_config.yaml"         # object key on GCS
+LLM_CONFIG_BUCKET_TYPE = "gcs"                              # set this to "gcs"         
+LLM_CONFIG_BUCKET_NAME = "llm-proxy"                    # your bucket name on GCS
+LLM_CONFIG_BUCKET_OBJECT_KEY = "proxy_config.yaml"         # object key on GCS
 ```
 
 Start llm proxy with these env vars - llm will read your config from GCS 
@@ -797,9 +797,9 @@ Start llm proxy with these env vars - llm will read your config from GCS
 ```shell
 docker run --name llm-proxy \
    -e DATABASE_URL=<database_url> \
-   -e LITELLM_CONFIG_BUCKET_NAME=<bucket_name> \
-   -e LITELLM_CONFIG_BUCKET_OBJECT_KEY="<object_key>> \
-   -e LITELLM_CONFIG_BUCKET_TYPE="gcs" \
+   -e LLM_CONFIG_BUCKET_NAME=<bucket_name> \
+   -e LLM_CONFIG_BUCKET_OBJECT_KEY="<object_key>> \
+   -e LLM_CONFIG_BUCKET_TYPE="gcs" \
    -p 4000:4000 \
    ghcr.io/berriai/llm-database:main-latest --detailed_debug
 ```
@@ -810,8 +810,8 @@ docker run --name llm-proxy \
 
 Set the following .env vars 
 ```shell
-LITELLM_CONFIG_BUCKET_NAME = "llm-proxy"                    # your bucket name on s3 
-LITELLM_CONFIG_BUCKET_OBJECT_KEY = "llm_proxy_config.yaml"  # object key on s3
+LLM_CONFIG_BUCKET_NAME = "llm-proxy"                    # your bucket name on s3 
+LLM_CONFIG_BUCKET_OBJECT_KEY = "llm_proxy_config.yaml"  # object key on s3
 ```
 
 Start llm proxy with these env vars - llm will read your config from s3 
@@ -819,8 +819,8 @@ Start llm proxy with these env vars - llm will read your config from s3
 ```shell
 docker run --name llm-proxy \
    -e DATABASE_URL=<database_url> \
-   -e LITELLM_CONFIG_BUCKET_NAME=<bucket_name> \
-   -e LITELLM_CONFIG_BUCKET_OBJECT_KEY="<object_key>> \
+   -e LLM_CONFIG_BUCKET_NAME=<bucket_name> \
+   -e LLM_CONFIG_BUCKET_OBJECT_KEY="<object_key>> \
    -p 4000:4000 \
    ghcr.io/berriai/llm-database:main-latest
 ```

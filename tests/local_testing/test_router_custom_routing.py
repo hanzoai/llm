@@ -26,7 +26,7 @@ router = Router(
     model_list=[
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/very-special-endpoint",
                 "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",  # If you are Krrish, this is OpenAI Endpoint3 on our Railway endpoint :)
                 "api_key": "fake-key",
@@ -35,7 +35,7 @@ router = Router(
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/fast-endpoint",
                 "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                 "api_key": "fake-key",
@@ -78,7 +78,7 @@ class CustomRoutingStrategy(CustomRoutingStrategyBase):
         print("router model list=", model_list)
         for model in model_list:
             if isinstance(model, dict):
-                if model["litellm_params"]["model"] == "openai/very-special-endpoint":
+                if model["llm_params"]["model"] == "openai/very-special-endpoint":
                     return model
         pass
 

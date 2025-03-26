@@ -26,7 +26,7 @@ except Exception:
     version = "0.0.0"
 
 headers = {
-    "User-Agent": f"litellm/{version}",
+    "User-Agent": f"llm/{version}",
 }
 
 # https://www.python-httpx.org/advanced/timeouts
@@ -241,7 +241,7 @@ class AsyncHTTPHandler:
             raise llm.Timeout(
                 message=f"Connection timed out. Timeout passed={timeout}, time taken={time_delta} seconds",
                 model="default-model-name",
-                llm_provider="litellm-httpx-handler",
+                llm_provider="llm-httpx-handler",
                 headers=headers,
             )
         except httpx.HTTPStatusError as e:
@@ -305,7 +305,7 @@ class AsyncHTTPHandler:
             raise llm.Timeout(
                 message=f"Connection timed out after {timeout} seconds.",
                 model="default-model-name",
-                llm_provider="litellm-httpx-handler",
+                llm_provider="llm-httpx-handler",
                 headers=headers,
             )
         except httpx.HTTPStatusError as e:
@@ -365,7 +365,7 @@ class AsyncHTTPHandler:
             raise llm.Timeout(
                 message=f"Connection timed out after {timeout} seconds.",
                 model="default-model-name",
-                llm_provider="litellm-httpx-handler",
+                llm_provider="llm-httpx-handler",
                 headers=headers,
             )
         except httpx.HTTPStatusError as e:
@@ -562,7 +562,7 @@ class HTTPHandler:
             raise llm.Timeout(
                 message=f"Connection timed out after {timeout} seconds.",
                 model="default-model-name",
-                llm_provider="litellm-httpx-handler",
+                llm_provider="llm-httpx-handler",
             )
         except httpx.HTTPStatusError as e:
             if stream is True:
@@ -606,7 +606,7 @@ class HTTPHandler:
             raise llm.Timeout(
                 message=f"Connection timed out after {timeout} seconds.",
                 model="default-model-name",
-                llm_provider="litellm-httpx-handler",
+                llm_provider="llm-httpx-handler",
             )
         except httpx.HTTPStatusError as e:
 
@@ -650,7 +650,7 @@ class HTTPHandler:
             raise llm.Timeout(
                 message=f"Connection timed out after {timeout} seconds.",
                 model="default-model-name",
-                llm_provider="litellm-httpx-handler",
+                llm_provider="llm-httpx-handler",
             )
         except Exception as e:
             raise e

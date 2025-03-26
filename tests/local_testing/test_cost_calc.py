@@ -35,7 +35,7 @@ router = Router(
     model_list=[
         {
             "model_name": m["model_name"],
-            "litellm_params": {
+            "llm_params": {
                 "model": m.get("model", m["model_name"]),
             },
         }
@@ -61,7 +61,7 @@ router = Router(
 )
 def test_run(model: str):
     """
-    Relevant issue - https://github.com/BerriAI/litellm/issues/4965
+    Relevant issue - https://github.com/BerriAI/llm/issues/4965
     """
     llm.set_verbose = True
     prompt = "Hi"

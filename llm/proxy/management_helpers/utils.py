@@ -74,7 +74,7 @@ async def add_new_member(
     ## ADD TEAM ID, to USER TABLE IF NEW ##
     if new_member.user_id is not None:
         new_user_defaults = get_new_internal_user_defaults(user_id=new_member.user_id)
-        _returned_user = await prisma_client.db.litellm_usertable.upsert(
+        _returned_user = await prisma_client.db.llm_usertable.upsert(
             where={"user_id": new_member.user_id},
             data={
                 "update": {"teams": {"push": [team_id]}},
@@ -104,7 +104,7 @@ async def add_new_member(
                 returned_user = LLM_UserTable(**_returned_user.model_dump())
         elif len(existing_user_row) == 1:
             user_info = existing_user_row[0]
-            _returned_user = await prisma_client.db.litellm_usertable.update(
+            _returned_user = await prisma_client.db.llm_usertable.update(
                 where={"user_id": user_info.user_id},  # type: ignore
                 data={"teams": {"push": [team_id]}},
             )
@@ -125,7 +125,7 @@ async def add_new_member(
         and returned_user.user_id is not None
     ):
         # create a new budget item for this member
-        response = await prisma_client.db.litellm_budgettable.create(
+        response = await prisma_client.db.llm_budgettable.create(
             data={
                 "max_budget": max_budget_in_team,
                 "created_by": user_api_key_dict.user_id or llm_proxy_admin_name,

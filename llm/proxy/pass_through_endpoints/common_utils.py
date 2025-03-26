@@ -1,7 +1,7 @@
 from fastapi import Request
 
 
-def get_litellm_virtual_key(request: Request) -> str:
+def get_llm_virtual_key(request: Request) -> str:
     """
     Extract and format API key from request headers.
     Prioritizes x-llm-api-key over Authorization header.

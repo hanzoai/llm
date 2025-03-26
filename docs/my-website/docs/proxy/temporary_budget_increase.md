@@ -26,7 +26,7 @@ Set temporary budget increase for a LLM Virtual Key. Use this if you get asked t
 ```bash
 curl -L -X POST 'http://localhost:4000/key/generate' \
 -H 'Content-Type: application/json' \
--H 'Authorization: Bearer LITELLM_MASTER_KEY' \
+-H 'Authorization: Bearer LLM_MASTER_KEY' \
 -d '{
     "max_budget": 0.0000001
 }'
@@ -44,7 +44,7 @@ Expected response:
 
 ```bash
 curl -L -X POST 'http://localhost:4000/key/update' \
--H 'Authorization: Bearer LITELLM_MASTER_KEY' \
+-H 'Authorization: Bearer LLM_MASTER_KEY' \
 -H 'Content-Type: application/json' \
 -d '{
     "key": "sk-your-new-key",

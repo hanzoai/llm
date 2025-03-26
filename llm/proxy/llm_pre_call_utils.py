@@ -12,7 +12,7 @@ from llm._service_logger import ServiceLogging
 from llm.proxy._types import (
     AddTeamCallback,
     CommonProxyErrors,
-    LitellmDataForBackendLLMCall,
+    LlmDataForBackendLLMCall,
     SpecialHeaders,
     TeamCallbackMetadata,
     UserAPIKeyAuth,
@@ -63,7 +63,7 @@ def _get_metadata_variable_name(request: Request) -> str:
     if RouteChecks._is_assistants_api_request(request):
         return "llm_metadata"
 
-    LITELLM_METADATA_ROUTES = [
+    LLM_METADATA_ROUTES = [
         "batches",
         "/v1/messages",
         "responses",
@@ -71,7 +71,7 @@ def _get_metadata_variable_name(request: Request) -> str:
     if any(
         [
             llm_metadata_route in request.url.path
-            for llm_metadata_route in LITELLM_METADATA_ROUTES
+            for llm_metadata_route in LLM_METADATA_ROUTES
         ]
     ):
         return "llm_metadata"
@@ -181,15 +181,15 @@ def _get_dynamic_logging_metadata(
 
 
 def clean_headers(
-    headers: Headers, litellm_key_header_name: Optional[str] = None
+    headers: Headers, llm_key_header_name: Optional[str] = None
 ) -> dict:
     """
     Removes llm api key from headers
     """
     special_headers = [v.value.lower() for v in SpecialHeaders._member_map_.values()]
     special_headers = special_headers
-    if litellm_key_header_name is not None:
-        special_headers.append(litellm_key_header_name.lower())
+    if llm_key_header_name is not None:
+        special_headers.append(llm_key_header_name.lower())
     clean_headers = {}
     for header, value in headers.items():
         if header.lower() not in special_headers:
@@ -273,29 +273,29 @@ class LLMProxyRequestSetup:
         returned_headers = LLMProxyRequestSetup._get_forwardable_headers(headers)
 
         if llm.add_user_information_to_llm_headers is True:
-            litellm_logging_metadata_headers = (
+            llm_logging_metadata_headers = (
                 LLMProxyRequestSetup.get_sanitized_user_information_from_key(
                     user_api_key_dict=user_api_key_dict
                 )
             )
-            for k, v in litellm_logging_metadata_headers.items():
+            for k, v in llm_logging_metadata_headers.items():
                 if v is not None:
                     returned_headers["x-llm-{}".format(k)] = v
 
         return returned_headers
 
     @staticmethod
-    def add_litellm_data_for_backend_llm_call(
+    def add_llm_data_for_backend_llm_call(
         *,
         headers: dict,
         user_api_key_dict: UserAPIKeyAuth,
         general_settings: Optional[Dict[str, Any]] = None,
-    ) -> LitellmDataForBackendLLMCall:
+    ) -> LlmDataForBackendLLMCall:
         """
         - Adds forwardable headers
         - Adds org id
         """
-        data = LitellmDataForBackendLLMCall()
+        data = LlmDataForBackendLLMCall()
         if (
             general_settings
             and general_settings.get("forward_client_headers_to_llm_api") is True
@@ -476,15 +476,15 @@ async def add_llm_data_to_request(  # noqa: PLR0915
 
     _headers = clean_headers(
         request.headers,
-        litellm_key_header_name=(
-            general_settings.get("litellm_key_header_name")
+        llm_key_header_name=(
+            general_settings.get("llm_key_header_name")
             if general_settings is not None
             else None
         ),
     )
 
     data.update(
-        LLMProxyRequestSetup.add_litellm_data_for_backend_llm_call(
+        LLMProxyRequestSetup.add_llm_data_for_backend_llm_call(
             headers=_headers,
             user_api_key_dict=user_api_key_dict,
             general_settings=general_settings,
@@ -553,7 +553,7 @@ async def add_llm_data_to_request(  # noqa: PLR0915
         user_api_key_dict, "end_user_max_budget", None
     )
 
-    data[_metadata_variable_name]["litellm_api_version"] = version
+    data[_metadata_variable_name]["llm_api_version"] = version
 
     if general_settings is not None:
         data[_metadata_variable_name]["global_max_parallel_requests"] = (
@@ -618,7 +618,7 @@ async def add_llm_data_to_request(  # noqa: PLR0915
     # OTEL Controls / Tracing
     # Add the OTEL Parent Trace before sending it LLM
     data[_metadata_variable_name][
-        "litellm_parent_otel_span"
+        "llm_parent_otel_span"
     ] = user_api_key_dict.parent_otel_span
     _add_otel_traceparent_to_data(data, request=request)
 
@@ -885,14 +885,14 @@ def _add_otel_traceparent_to_data(data: dict, request: Request):
         return
     if open_telemetry_logger is None:
         # if user is not use OTEL don't send extra_headers
-        # relevant issue: https://github.com/BerriAI/litellm/issues/4448
+        # relevant issue: https://github.com/BerriAI/llm/issues/4448
         return
 
     if llm.forward_traceparent_to_llm_provider is True:
         if request.headers:
             if "traceparent" in request.headers:
                 # we want to forward this to the LLM Provider
-                # Relevant issue: https://github.com/BerriAI/litellm/issues/4419
+                # Relevant issue: https://github.com/BerriAI/llm/issues/4419
                 # pass this in extra_headers
                 if "extra_headers" not in data:
                     data["extra_headers"] = {}

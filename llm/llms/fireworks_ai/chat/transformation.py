@@ -98,7 +98,7 @@ class FireworksAIConfig(OpenAIGPTConfig):
         for param, value in non_default_params.items():
             if param == "tool_choice":
                 if value == "required":
-                    # relevant issue: https://github.com/BerriAI/litellm/issues/4416
+                    # relevant issue: https://github.com/BerriAI/llm/issues/4416
                     optional_params["tool_choice"] = "any"
                 else:
                     # pass through the value of tool choice

@@ -28,7 +28,7 @@ from llm.types.llms.openai import (
     ChatCompletionToolCallFunctionChunk,
     ChatCompletionToolParam,
 )
-from llm.types.utils import Message as LitellmMessage
+from llm.types.utils import Message as LlmMessage
 from llm.types.utils import PromptTokensDetailsWrapper
 from llm.utils import ModelResponse, Usage, add_dummy_tool, has_tool_call_blocks
 
@@ -107,7 +107,7 @@ class AnthropicConfig(BaseConfig):
 
         return type_to_response_format_param(
             response_format, ref_template="/$defs/{model}"
-        )  # Relevant issue: https://github.com/BerriAI/litellm/issues/7755
+        )  # Relevant issue: https://github.com/BerriAI/llm/issues/7755
 
     def get_cache_control_headers(self) -> dict:
         return {
@@ -568,8 +568,8 @@ class AnthropicConfig(BaseConfig):
         self,
         json_mode: Optional[bool],
         tool_calls: List[ChatCompletionToolCallChunk],
-    ) -> Optional[LitellmMessage]:
-        _message: Optional[LitellmMessage] = None
+    ) -> Optional[LlmMessage]:
+        _message: Optional[LlmMessage] = None
         if json_mode is True and len(tool_calls) == 1:
             # check if tool name is the default tool name
             json_mode_content_str: Optional[str] = None
@@ -750,7 +750,7 @@ class AnthropicConfig(BaseConfig):
     @staticmethod
     def _convert_tool_response_to_message(
         tool_calls: List[ChatCompletionToolCallChunk],
-    ) -> Optional[LitellmMessage]:
+    ) -> Optional[LlmMessage]:
         """
         In JSON mode, Anthropic API returns JSON schema as a tool call, we need to convert it to a message to follow the OpenAI format
 
@@ -770,7 +770,7 @@ class AnthropicConfig(BaseConfig):
                     return _message
                 else:
                     # a lot of the times the `values` key is not present in the tool response
-                    # relevant issue: https://github.com/BerriAI/litellm/issues/6741
+                    # relevant issue: https://github.com/BerriAI/llm/issues/6741
                     _message = llm.Message(content=json.dumps(args))
                     return _message
         except json.JSONDecodeError:

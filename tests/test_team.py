@@ -480,8 +480,8 @@ async def test_team_update_sc_2():
                 or k == "model_spend"
                 or k == "model_max_budget"
                 or k == "model_id"
-                or k == "litellm_organization_table"
-                or k == "litellm_model_table"
+                or k == "llm_organization_table"
+                or k == "llm_model_table"
             ):
                 pass
             else:
@@ -728,7 +728,7 @@ async def test_users_in_team_budget():
         user_info = await get_user_info(session, get_user, call_user="sk-1234")
 
         assert (
-            user_info["teams"][0]["team_memberships"][0]["litellm_budget_table"][
+            user_info["teams"][0]["team_memberships"][0]["llm_budget_table"][
                 "max_budget"
             ]
             == 0.0000001

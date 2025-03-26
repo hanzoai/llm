@@ -575,7 +575,7 @@ const BulkCreateUsersButton: React.FC<BulkCreateUsersProps> = ({
                         <Text className="font-medium text-blue-800">User creation complete</Text>
                         <Text className="block text-sm text-blue-700 mt-1">
                           <span className="font-medium">Next step:</span> Download the credentials file containing API keys and invitation links.
-                          Users will need these API keys to make LLM requests through LiteLLM.
+                          Users will need these API keys to make LLM requests through LLM.
                         </Text>
                       </div>
                     </div>

@@ -79,9 +79,9 @@ class testCustomCallbackProxy(CustomLogger):
         messages = kwargs.get("messages", None)
         user = kwargs.get("user", None)
 
-        # Access litellm_params passed to llm.completion(), example access `metadata`
-        litellm_params = kwargs.get("litellm_params", {})
-        metadata = litellm_params.get(
+        # Access llm_params passed to llm.completion(), example access `metadata`
+        llm_params = kwargs.get("llm_params", {})
+        metadata = llm_params.get(
             "metadata", {}
         )  # headers passed to LLM proxy, can be found here
 

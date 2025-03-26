@@ -53,7 +53,7 @@ async def new_budget(
 
     budget_obj_json = budget_obj.model_dump(exclude_none=True)
     budget_obj_jsonified = jsonify_object(budget_obj_json)  # json dump any dictionaries
-    response = await prisma_client.db.litellm_budgettable.create(
+    response = await prisma_client.db.llm_budgettable.create(
         data={
             **budget_obj_jsonified,  # type: ignore
             "created_by": user_api_key_dict.user_id or llm_proxy_admin_name,
@@ -96,7 +96,7 @@ async def update_budget(
     if budget_obj.budget_id is None:
         raise HTTPException(status_code=400, detail={"error": "budget_id is required"})
 
-    response = await prisma_client.db.litellm_budgettable.update(
+    response = await prisma_client.db.llm_budgettable.update(
         where={"budget_id": budget_obj.budget_id},
         data={
             **budget_obj.model_dump(exclude_none=True),  # type: ignore
@@ -131,7 +131,7 @@ async def info_budget(data: BudgetRequest):
                 "error": f"Specify list of budget id's to query. Passed in={data.budgets}"
             },
         )
-    response = await prisma_client.db.litellm_budgettable.find_many(
+    response = await prisma_client.db.llm_budgettable.find_many(
         where={"budget_id": {"in": data.budgets}},
     )
 
@@ -175,7 +175,7 @@ async def budget_settings(
         )
 
     ## get budget item from db
-    db_budget_row = await prisma_client.db.litellm_budgettable.find_first(
+    db_budget_row = await prisma_client.db.llm_budgettable.find_first(
         where={"budget_id": budget_id}
     )
 
@@ -241,7 +241,7 @@ async def list_budget(
             },
         )
 
-    response = await prisma_client.db.litellm_budgettable.find_many()
+    response = await prisma_client.db.llm_budgettable.find_many()
 
     return response
 
@@ -280,7 +280,7 @@ async def delete_budget(
             },
         )
 
-    response = await prisma_client.db.litellm_budgettable.delete(
+    response = await prisma_client.db.llm_budgettable.delete(
         where={"budget_id": data.id}
     )
 

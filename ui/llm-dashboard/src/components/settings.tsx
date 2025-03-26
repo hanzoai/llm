@@ -56,9 +56,9 @@ interface SettingsPageProps {
 
 interface genericCallbackParams {
   
-  litellm_callback_name: string  // what to send in request
+  llm_callback_name: string  // what to send in request
   ui_callback_name: string // what to show on UI
-  litellm_callback_params: string[] | null // known required params for this callback
+  llm_callback_params: string[] | null // known required params for this callback
 }
 
 
@@ -290,7 +290,7 @@ const Settings: React.FC<SettingsPageProps> = ({
 
     let payload = {
       environment_variables: env_vars,
-      litellm_settings: {
+      llm_settings: {
         success_callback: [new_callback],
       },
     }
@@ -312,11 +312,11 @@ const Settings: React.FC<SettingsPageProps> = ({
   const handleSelectedCallbackChange = (callbackObject: genericCallbackParams) => {
 
     console.log("inside handleSelectedCallbackChange", callbackObject);
-    setSelectedCallback(callbackObject.litellm_callback_name);
+    setSelectedCallback(callbackObject.llm_callback_name);
 
     console.log("all callbacks", allCallbacks);
-    if (callbackObject && callbackObject.litellm_callback_params) {
-      setSelectedCallbackParams(callbackObject.litellm_callback_params);
+    if (callbackObject && callbackObject.llm_callback_params) {
+      setSelectedCallbackParams(callbackObject.llm_callback_params);
       console.log("selectedCallbackParams", selectedCallbackParams);
     } else {
       setSelectedCallbackParams([]);
@@ -377,7 +377,7 @@ const Settings: React.FC<SettingsPageProps> = ({
 
     const payload = {
       environment_variables: updatedVariables,
-      litellm_settings: {
+      llm_settings: {
         success_callback: [callback.name],
       },
     };
@@ -406,7 +406,7 @@ const Settings: React.FC<SettingsPageProps> = ({
             LANGFUSE_PUBLIC_KEY: values.langfusePublicKey,
             LANGFUSE_SECRET_KEY: values.langfusePrivateKey,
           },
-          litellm_settings: {
+          llm_settings: {
             success_callback: [values.callback],
           },
         };
@@ -456,7 +456,7 @@ const Settings: React.FC<SettingsPageProps> = ({
           environment_variables: {
             OPENMETER_API_KEY: values.openMeterApiKey,
           },
-          litellm_settings: {
+          llm_settings: {
             success_callback: [values.callback],
           },
         };
@@ -656,7 +656,7 @@ const Settings: React.FC<SettingsPageProps> = ({
               <Card>
       <Title level={4}>Email Settings</Title>
       <Text>
-      <a href="https://docs.litellm.ai/docs/proxy/email" target="_blank" style={{ color: "blue" }}> LiteLLM Docs: email alerts</a> <br/>        
+      <a href="https://docs.llm.ai/docs/proxy/email" target="_blank" style={{ color: "blue" }}> LLM Docs: email alerts</a> <br/>        
       </Text>
 <div className="flex w-full">
   {alerts
@@ -801,7 +801,7 @@ const Settings: React.FC<SettingsPageProps> = ({
       footer={null}
       >
         
-      <a href="https://docs.litellm.ai/docs/proxy/logging" className="mb-8 mt-4" target="_blank" style={{ color: "blue" }}> LiteLLM Docs: Logging</a>
+      <a href="https://docs.llm.ai/docs/proxy/logging" className="mb-8 mt-4" target="_blank" style={{ color: "blue" }}> LLM Docs: Logging</a>
 
 
       <Form 
@@ -830,8 +830,8 @@ const Settings: React.FC<SettingsPageProps> = ({
         {allCallbacks &&
           Object.values(allCallbacks).map((callback) => (
             <SelectItem 
-            key={callback.litellm_callback_name} 
-            value={callback.litellm_callback_name}
+            key={callback.llm_callback_name} 
+            value={callback.llm_callback_name}
             >
               {callback.ui_callback_name}
             </SelectItem>

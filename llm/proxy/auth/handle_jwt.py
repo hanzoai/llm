@@ -29,7 +29,7 @@ from llm.proxy._types import (
     LLM_OrganizationTable,
     LLM_TeamTable,
     LLM_UserTable,
-    LitellmUserRoles,
+    LlmUserRoles,
     ScopeMapping,
     Span,
 )
@@ -70,12 +70,12 @@ class JWTHandler:
         self,
         prisma_client: Optional[PrismaClient],
         user_api_key_cache: DualCache,
-        litellm_jwtauth: LLM_JWTAuth,
+        llm_jwtauth: LLM_JWTAuth,
         leeway: int = 0,
     ) -> None:
         self.prisma_client = prisma_client
         self.user_api_key_cache = user_api_key_cache
-        self.litellm_jwtauth = litellm_jwtauth
+        self.llm_jwtauth = llm_jwtauth
         self.leeway = leeway
 
     def is_jwt(self, token: str):
@@ -97,7 +97,7 @@ class JWTHandler:
             The function handles both single string roles and lists of roles from the JWT.
             If multiple mappings match the JWT roles, the first matching mapping is returned.
         """
-        if self.litellm_jwtauth.role_mappings is None:
+        if self.llm_jwtauth.role_mappings is None:
             return None
 
         jwt_role = self.get_jwt_role(token=token, default_value=None)
@@ -106,7 +106,7 @@ class JWTHandler:
 
         jwt_role_set = set(jwt_role)
 
-        for role_mapping in self.litellm_jwtauth.role_mappings:
+        for role_mapping in self.llm_jwtauth.role_mappings:
             # Check if the mapping role matches any of the JWT roles
             if role_mapping.role in jwt_role_set:
                 return role_mapping.internal_role
@@ -122,7 +122,7 @@ class JWTHandler:
         - TEAM: can make requests to routes associated with a team
         - INTERNAL_USER: can make requests to routes associated with a user
 
-        Resolves: https://github.com/BerriAI/litellm/issues/6793
+        Resolves: https://github.com/BerriAI/llm/issues/6793
 
         Returns:
         - PROXY_ADMIN: if token is admin
@@ -150,16 +150,16 @@ class JWTHandler:
         return None
 
     def is_admin(self, scopes: list) -> bool:
-        if self.litellm_jwtauth.admin_jwt_scope in scopes:
+        if self.llm_jwtauth.admin_jwt_scope in scopes:
             return True
         return False
 
     def get_team_ids_from_jwt(self, token: dict) -> List[str]:
         if (
-            self.litellm_jwtauth.team_ids_jwt_field is not None
-            and token.get(self.litellm_jwtauth.team_ids_jwt_field) is not None
+            self.llm_jwtauth.team_ids_jwt_field is not None
+            and token.get(self.llm_jwtauth.team_ids_jwt_field) is not None
         ):
-            return token[self.litellm_jwtauth.team_ids_jwt_field]
+            return token[self.llm_jwtauth.team_ids_jwt_field]
         return []
 
     def get_end_user_id(
@@ -167,8 +167,8 @@ class JWTHandler:
     ) -> Optional[str]:
         try:
 
-            if self.litellm_jwtauth.end_user_id_jwt_field is not None:
-                user_id = token[self.litellm_jwtauth.end_user_id_jwt_field]
+            if self.llm_jwtauth.end_user_id_jwt_field is not None:
+                user_id = token[self.llm_jwtauth.end_user_id_jwt_field]
             else:
                 user_id = None
         except KeyError:
@@ -182,7 +182,7 @@ class JWTHandler:
         - True: if 'team_id_jwt_field' is set
         - False: if not
         """
-        if self.litellm_jwtauth.team_id_jwt_field is None:
+        if self.llm_jwtauth.team_id_jwt_field is None:
             return False
         return True
 
@@ -193,18 +193,18 @@ class JWTHandler:
         - False: if 'user_allowed_email_domain' is None
         """
 
-        if self.litellm_jwtauth.user_allowed_email_domain is not None and isinstance(
-            self.litellm_jwtauth.user_allowed_email_domain, str
+        if self.llm_jwtauth.user_allowed_email_domain is not None and isinstance(
+            self.llm_jwtauth.user_allowed_email_domain, str
         ):
             return True
         return False
 
     def get_team_id(self, token: dict, default_value: Optional[str]) -> Optional[str]:
         try:
-            if self.litellm_jwtauth.team_id_jwt_field is not None:
-                team_id = token[self.litellm_jwtauth.team_id_jwt_field]
-            elif self.litellm_jwtauth.team_id_default is not None:
-                team_id = self.litellm_jwtauth.team_id_default
+            if self.llm_jwtauth.team_id_jwt_field is not None:
+                team_id = token[self.llm_jwtauth.team_id_jwt_field]
+            elif self.llm_jwtauth.team_id_default is not None:
+                team_id = self.llm_jwtauth.team_id_default
             else:
                 team_id = None
         except KeyError:
@@ -219,12 +219,12 @@ class JWTHandler:
         """
         if valid_user_email is False:
             return False
-        return self.litellm_jwtauth.user_id_upsert
+        return self.llm_jwtauth.user_id_upsert
 
     def get_user_id(self, token: dict, default_value: Optional[str]) -> Optional[str]:
         try:
-            if self.litellm_jwtauth.user_id_jwt_field is not None:
-                user_id = token[self.litellm_jwtauth.user_id_jwt_field]
+            if self.llm_jwtauth.user_id_jwt_field is not None:
+                user_id = token[self.llm_jwtauth.user_id_jwt_field]
             else:
                 user_id = default_value
         except KeyError:
@@ -240,10 +240,10 @@ class JWTHandler:
         Set via 'user_roles_jwt_field' in the config.
         """
         try:
-            if self.litellm_jwtauth.user_roles_jwt_field is not None:
+            if self.llm_jwtauth.user_roles_jwt_field is not None:
                 user_roles = get_nested_value(
                     data=token,
-                    key_path=self.litellm_jwtauth.user_roles_jwt_field,
+                    key_path=self.llm_jwtauth.user_roles_jwt_field,
                     default=default_value,
                 )
             else:
@@ -263,10 +263,10 @@ class JWTHandler:
         Set via 'roles_jwt_field' in the config.
         """
         try:
-            if self.litellm_jwtauth.roles_jwt_field is not None:
+            if self.llm_jwtauth.roles_jwt_field is not None:
                 user_roles = get_nested_value(
                     data=token,
-                    key_path=self.litellm_jwtauth.roles_jwt_field,
+                    key_path=self.llm_jwtauth.roles_jwt_field,
                     default=default_value,
                 )
             else:
@@ -283,9 +283,9 @@ class JWTHandler:
         """
         if (
             user_roles is not None
-            and self.litellm_jwtauth.user_allowed_roles is not None
+            and self.llm_jwtauth.user_allowed_roles is not None
             and any(
-                role in self.litellm_jwtauth.user_allowed_roles for role in user_roles
+                role in self.llm_jwtauth.user_allowed_roles for role in user_roles
             )
         ):
             return True
@@ -295,8 +295,8 @@ class JWTHandler:
         self, token: dict, default_value: Optional[str]
     ) -> Optional[str]:
         try:
-            if self.litellm_jwtauth.user_email_jwt_field is not None:
-                user_email = token[self.litellm_jwtauth.user_email_jwt_field]
+            if self.llm_jwtauth.user_email_jwt_field is not None:
+                user_email = token[self.llm_jwtauth.user_email_jwt_field]
             else:
                 user_email = None
         except KeyError:
@@ -305,8 +305,8 @@ class JWTHandler:
 
     def get_object_id(self, token: dict, default_value: Optional[str]) -> Optional[str]:
         try:
-            if self.litellm_jwtauth.object_id_jwt_field is not None:
-                object_id = token[self.litellm_jwtauth.object_id_jwt_field]
+            if self.llm_jwtauth.object_id_jwt_field is not None:
+                object_id = token[self.llm_jwtauth.object_id_jwt_field]
             else:
                 object_id = default_value
         except KeyError:
@@ -315,8 +315,8 @@ class JWTHandler:
 
     def get_org_id(self, token: dict, default_value: Optional[str]) -> Optional[str]:
         try:
-            if self.litellm_jwtauth.org_id_jwt_field is not None:
-                org_id = token[self.litellm_jwtauth.org_id_jwt_field]
+            if self.llm_jwtauth.org_id_jwt_field is not None:
+                org_id = token[self.llm_jwtauth.org_id_jwt_field]
             else:
                 org_id = None
         except KeyError:
@@ -349,7 +349,7 @@ class JWTHandler:
 
         for key_url in keys_url_list:
 
-            cache_key = f"litellm_jwt_auth_keys_{key_url}"
+            cache_key = f"llm_jwt_auth_keys_{key_url}"
 
             cached_keys = await self.user_api_key_cache.async_get_cache(cache_key)
 
@@ -365,7 +365,7 @@ class JWTHandler:
                 await self.user_api_key_cache.async_set_cache(
                     key=cache_key,
                     value=keys,
-                    ttl=self.litellm_jwtauth.public_key_ttl,  # cache for 10 mins
+                    ttl=self.llm_jwtauth.public_key_ttl,  # cache for 10 mins
                 )
             else:
                 keys = cached_keys
@@ -404,11 +404,11 @@ class JWTHandler:
         return public_key
 
     def is_allowed_domain(self, user_email: str) -> bool:
-        if self.litellm_jwtauth.user_allowed_email_domain is None:
+        if self.llm_jwtauth.user_allowed_email_domain is None:
             return True
 
         email_domain = user_email.split("@")[-1]  # Extract domain from email
-        if email_domain == self.litellm_jwtauth.user_allowed_email_domain:
+        if email_domain == self.llm_jwtauth.user_allowed_email_domain:
             return True
         else:
             return False
@@ -598,7 +598,7 @@ class JWTAuthManager:
         rbac_role: Optional[RBAC_ROLES],
     ) -> None:
         """Validate RBAC role and model access permissions"""
-        if jwt_handler.litellm_jwtauth.enforce_rbac is True:
+        if jwt_handler.llm_jwtauth.enforce_rbac is True:
             if rbac_role is None:
                 raise HTTPException(
                     status_code=403,
@@ -631,10 +631,10 @@ class JWTAuthManager:
         is_allowed = allowed_routes_check(
             user_role=LLMUserRoles.PROXY_ADMIN,
             user_route=route,
-            llm_proxy_roles=jwt_handler.litellm_jwtauth,
+            llm_proxy_roles=jwt_handler.llm_jwtauth,
         )
         if not is_allowed:
-            allowed_routes: List[Any] = jwt_handler.litellm_jwtauth.admin_allowed_routes
+            allowed_routes: List[Any] = jwt_handler.llm_jwtauth.admin_allowed_routes
             actual_routes = get_actual_routes(allowed_routes=allowed_routes)
             raise Exception(
                 f"Admin not allowed to access this route. Route={route}, Allowed Routes={actual_routes}"
@@ -669,7 +669,7 @@ class JWTAuthManager:
 
         if not individual_team_id and jwt_handler.is_required_team_id() is True:
             raise Exception(
-                f"No team id found in token. Checked team_id field '{jwt_handler.litellm_jwtauth.team_id_jwt_field}'"
+                f"No team id found in token. Checked team_id field '{jwt_handler.llm_jwtauth.team_id_jwt_field}'"
             )
 
         ## VALIDATE TEAM OBJECT ###
@@ -681,7 +681,7 @@ class JWTAuthManager:
                 user_api_key_cache=user_api_key_cache,
                 parent_otel_span=parent_otel_span,
                 proxy_logging_obj=proxy_logging_obj,
-                team_id_upsert=jwt_handler.litellm_jwtauth.team_id_upsert,
+                team_id_upsert=jwt_handler.llm_jwtauth.team_id_upsert,
             )
 
         return individual_team_id, team_object
@@ -709,7 +709,7 @@ class JWTAuthManager:
         """Find first team with access to the requested model"""
 
         if not team_ids:
-            if jwt_handler.litellm_jwtauth.enforce_team_based_model_access:
+            if jwt_handler.llm_jwtauth.enforce_team_based_model_access:
                 raise HTTPException(
                     status_code=403,
                     detail="No teams found in token. `enforce_team_based_model_access` is set to True. Token must belong to a team.",
@@ -740,7 +740,7 @@ class JWTAuthManager:
                         is_allowed = allowed_routes_check(
                             user_role=LLMUserRoles.TEAM,
                             user_route=route,
-                            llm_proxy_roles=jwt_handler.litellm_jwtauth,
+                            llm_proxy_roles=jwt_handler.llm_jwtauth,
                         )
                         if is_allowed:
                             return team_id, team_object
@@ -874,8 +874,8 @@ class JWTAuthManager:
         jwt_valid_token: dict = await jwt_handler.auth_jwt(token=api_key)
 
         # Check custom validate
-        if jwt_handler.litellm_jwtauth.custom_validate:
-            if not jwt_handler.litellm_jwtauth.custom_validate(jwt_valid_token):
+        if jwt_handler.llm_jwtauth.custom_validate:
+            if not jwt_handler.llm_jwtauth.custom_validate(jwt_valid_token):
                 raise HTTPException(
                     status_code=403,
                     detail="Invalid JWT token",
@@ -895,11 +895,11 @@ class JWTAuthManager:
         # Check Scope Based Access
         scopes = jwt_handler.get_scopes(token=jwt_valid_token)
         if (
-            jwt_handler.litellm_jwtauth.enforce_scope_based_access
-            and jwt_handler.litellm_jwtauth.scope_mappings
+            jwt_handler.llm_jwtauth.enforce_scope_based_access
+            and jwt_handler.llm_jwtauth.scope_mappings
         ):
             JWTAuthManager.check_scope_based_access(
-                scope_mappings=jwt_handler.litellm_jwtauth.scope_mappings,
+                scope_mappings=jwt_handler.llm_jwtauth.scope_mappings,
                 scopes=scopes,
                 request_data=request_data,
                 general_settings=general_settings,

@@ -3,23 +3,23 @@ import os
 
 ALLOWED_FILES = [
     # local files
-    "../../litellm/__init__.py",
-    "../../litellm/llms/custom_httpx/http_handler.py",
-    "../../litellm/router_utils/client_initalization_utils.py",
-    "../../litellm/llms/custom_httpx/http_handler.py",
-    "../../litellm/llms/huggingface_restapi.py",
-    "../../litellm/llms/base.py",
-    "../../litellm/llms/custom_httpx/httpx_handler.py",
-    "../../litellm/llms/openai/common_utils.py",
+    "../../llm/__init__.py",
+    "../../llm/llms/custom_httpx/http_handler.py",
+    "../../llm/router_utils/client_initalization_utils.py",
+    "../../llm/llms/custom_httpx/http_handler.py",
+    "../../llm/llms/huggingface_restapi.py",
+    "../../llm/llms/base.py",
+    "../../llm/llms/custom_httpx/httpx_handler.py",
+    "../../llm/llms/openai/common_utils.py",
     # when running on ci/cd
-    "./litellm/__init__.py",
-    "./litellm/llms/custom_httpx/http_handler.py",
-    "./litellm/router_utils/client_initalization_utils.py",
-    "./litellm/llms/custom_httpx/http_handler.py",
-    "./litellm/llms/huggingface_restapi.py",
-    "./litellm/llms/base.py",
-    "./litellm/llms/custom_httpx/httpx_handler.py",
-    "./litellm/llms/openai/common_utils.py",
+    "./llm/__init__.py",
+    "./llm/llms/custom_httpx/http_handler.py",
+    "./llm/router_utils/client_initalization_utils.py",
+    "./llm/llms/custom_httpx/http_handler.py",
+    "./llm/llms/huggingface_restapi.py",
+    "./llm/llms/base.py",
+    "./llm/llms/custom_httpx/httpx_handler.py",
+    "./llm/llms/openai/common_utils.py",
 ]
 
 warning_msg = "this is a serious violation that can impact latency. Creating Async clients per request can add +500ms per request"
@@ -93,9 +93,9 @@ def test_no_async_http_handler_usage():
     """
     Test to ensure AsyncHttpHandler is not used anywhere in the codebase.
     """
-    base_dir = "./litellm"  # Adjust this path as needed
+    base_dir = "./llm"  # Adjust this path as needed
 
-    # base_dir = "../../litellm"  # LOCAL TESTING
+    # base_dir = "../../llm"  # LOCAL TESTING
     violations = scan_directory_for_async_handler(base_dir)
 
     if violations:

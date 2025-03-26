@@ -86,7 +86,7 @@ async def test_aaabasic_gcs_logger():
             "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
             "user_api_key_alias": None,
             "user_api_end_user_max_budget": None,
-            "litellm_api_version": "0.0.0",
+            "llm_api_version": "0.0.0",
             "global_max_parallel_requests": None,
             "user_api_key_user_id": "116544810872468347480",
             "user_api_key_org_id": None,
@@ -195,7 +195,7 @@ async def test_basic_gcs_logger_failure():
                 "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
                 "user_api_key_alias": None,
                 "user_api_end_user_max_budget": None,
-                "litellm_api_version": "0.0.0",
+                "llm_api_version": "0.0.0",
                 "global_max_parallel_requests": None,
                 "user_api_key_user_id": "116544810872468347480",
                 "user_api_key_org_id": None,
@@ -277,7 +277,7 @@ async def test_basic_gcs_logging_per_request_with_callback_set():
     Test GCS Bucket logging per request
 
     Request 1 - pass gcs_bucket_name in kwargs
-    Request 2 - don't pass gcs_bucket_name in kwargs - ensure 'litellm-testing-bucket'
+    Request 2 - don't pass gcs_bucket_name in kwargs - ensure 'llm-testing-bucket'
     """
     import logging
     from llm._logging import verbose_logger
@@ -288,7 +288,7 @@ async def test_basic_gcs_logging_per_request_with_callback_set():
     print("GCSBucketLogger", gcs_logger)
     llm.callbacks = [gcs_logger]
 
-    GCS_BUCKET_NAME = "example-bucket-1-litellm"
+    GCS_BUCKET_NAME = "example-bucket-1-llm"
     standard_callback_dynamic_params: StandardCallbackDynamicParams = (
         StandardCallbackDynamicParams(gcs_bucket_name=GCS_BUCKET_NAME)
     )
@@ -343,7 +343,7 @@ async def test_basic_gcs_logging_per_request_with_callback_set():
         standard_callback_dynamic_params=standard_callback_dynamic_params,
     )
 
-    # Request 2 - don't pass gcs_bucket_name in kwargs - ensure 'litellm-testing-bucket'
+    # Request 2 - don't pass gcs_bucket_name in kwargs - ensure 'llm-testing-bucket'
     try:
         response = await llm.acompletion(
             model="gpt-4o-mini",
@@ -362,7 +362,7 @@ async def test_basic_gcs_logging_per_request_with_callback_set():
     # Get the current date
     current_date = datetime.now().strftime("%Y-%m-%d")
     standard_callback_dynamic_params = StandardCallbackDynamicParams(
-        gcs_bucket_name="litellm-testing-bucket"
+        gcs_bucket_name="llm-testing-bucket"
     )
 
     # Modify the object_name to include the date-based folder
@@ -400,14 +400,14 @@ async def test_basic_gcs_logging_per_request_with_callback_set():
 
 @pytest.mark.skip(reason="This test is flaky")
 @pytest.mark.asyncio
-async def test_basic_gcs_logging_per_request_with_no_litellm_callback_set():
+async def test_basic_gcs_logging_per_request_with_no_llm_callback_set():
     """
     Test GCS Bucket logging per request
 
     key difference: no llm.callbacks set
 
     Request 1 - pass gcs_bucket_name in kwargs
-    Request 2 - don't pass gcs_bucket_name in kwargs - ensure 'litellm-testing-bucket'
+    Request 2 - don't pass gcs_bucket_name in kwargs - ensure 'llm-testing-bucket'
     """
     import logging
     from llm._logging import verbose_logger
@@ -416,7 +416,7 @@ async def test_basic_gcs_logging_per_request_with_no_litellm_callback_set():
     load_vertex_ai_credentials()
     gcs_logger = GCSBucketLogger()
 
-    GCS_BUCKET_NAME = "example-bucket-1-litellm"
+    GCS_BUCKET_NAME = "example-bucket-1-llm"
     standard_callback_dynamic_params: StandardCallbackDynamicParams = (
         StandardCallbackDynamicParams(gcs_bucket_name=GCS_BUCKET_NAME)
     )
@@ -585,7 +585,7 @@ async def test_basic_gcs_logger_with_folder_in_bucket_name():
     load_vertex_ai_credentials()
     gcs_logger = GCSBucketLogger()
 
-    bucket_name = "litellm-testing-bucket/test-folder-logs"
+    bucket_name = "llm-testing-bucket/test-folder-logs"
 
     old_bucket_name = os.environ.get("GCS_BUCKET_NAME")
     os.environ["GCS_BUCKET_NAME"] = bucket_name
@@ -604,7 +604,7 @@ async def test_basic_gcs_logger_with_folder_in_bucket_name():
             "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
             "user_api_key_alias": None,
             "user_api_end_user_max_budget": None,
-            "litellm_api_version": "0.0.0",
+            "llm_api_version": "0.0.0",
             "global_max_parallel_requests": None,
             "user_api_key_user_id": "116544810872468347480",
             "user_api_key_org_id": None,

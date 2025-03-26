@@ -859,7 +859,7 @@ llm --config /path/to/config.yaml
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <YOUR-LITELLM-KEY>" \
+  -H "Authorization: Bearer <YOUR-LLM-KEY>" \
   -d '{
     "model": "claude-3-7-sonnet-20250219",
     "messages": [{"role": "user", "content": "What is the capital of France?"}],
@@ -1069,7 +1069,7 @@ llm --config /path/to/config.yaml
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <YOUR-LITELLM-KEY>" \
+  -H "Authorization: Bearer <YOUR-LLM-KEY>" \
   -d '{
     "model": "claude-3-5-haiku-20241022",
     "messages": [
@@ -1233,7 +1233,7 @@ llm --config /path/to/config.yaml
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <YOUR-LITELLM-KEY>" \
+  -H "Authorization: Bearer <YOUR-LLM-KEY>" \
   -d '{
     "model": "claude-3-5-sonnet-20240620",
     "messages": [{"role": "user", "content": "What is Anthropic?"}],

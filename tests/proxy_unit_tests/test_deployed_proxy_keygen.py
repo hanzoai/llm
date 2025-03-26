@@ -5,7 +5,7 @@
 # load_dotenv()
 # import os, io
 
-# # this file is to test litellm/proxy
+# # this file is to test llm/proxy
 
 # sys.path.insert(
 #     0, os.path.abspath("../..")
@@ -34,8 +34,8 @@
 #             token = os.getenv("PROXY_MASTER_KEY")
 #             headers = {"Authorization": f"Bearer {token}"}
 
-#             staging_endpoint = "https://litellm-litellm-pr-1376.up.railway.app"
-#             main_endpoint = "https://litellm-staging.up.railway.app"
+#             staging_endpoint = "https://llm-llm-pr-1376.up.railway.app"
+#             main_endpoint = "https://llm-staging.up.railway.app"
 
 #             # Make a request to the staging endpoint
 #             response = requests.post(

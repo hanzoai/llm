@@ -1,7 +1,7 @@
 """
 Translation logic for anthropic's `/v1/complete` endpoint
 
-Litellm provider slug: `anthropic_text/<model_name>`
+Llm provider slug: `anthropic_text/<model_name>`
 """
 
 import json

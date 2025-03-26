@@ -39,7 +39,7 @@ def test_add_pattern():
     router = PatternMatchRouter()
     deployment = Deployment(
         model_name="openai-1",
-        litellm_params=LLM_Params(model="gpt-3.5-turbo"),
+        llm_params=LLM_Params(model="gpt-3.5-turbo"),
         model_info=ModelInfo(),
     )
     router.add_pattern("openai/*", deployment.to_json(exclude_none=True))
@@ -61,7 +61,7 @@ def test_add_pattern_vertex_ai():
     router = PatternMatchRouter()
     deployment = Deployment(
         model_name="this-can-be-anything",
-        litellm_params=LLM_Params(model="vertex_ai/gemini-1.5-flash-latest"),
+        llm_params=LLM_Params(model="vertex_ai/gemini-1.5-flash-latest"),
         model_info=ModelInfo(),
     )
     router.add_pattern("vertex_ai/*", deployment.to_json(exclude_none=True))
@@ -83,12 +83,12 @@ def test_add_multiple_deployments():
     router = PatternMatchRouter()
     deployment1 = Deployment(
         model_name="openai-1",
-        litellm_params=LLM_Params(model="gpt-3.5-turbo"),
+        llm_params=LLM_Params(model="gpt-3.5-turbo"),
         model_info=ModelInfo(),
     )
     deployment2 = Deployment(
         model_name="openai-2",
-        litellm_params=LLM_Params(model="gpt-4"),
+        llm_params=LLM_Params(model="gpt-4"),
         model_info=ModelInfo(),
     )
     router.add_pattern("openai/*", deployment1.to_json(exclude_none=True))
@@ -123,12 +123,12 @@ def test_route_with_multiple_matching_patterns():
     router = PatternMatchRouter()
     deployment1 = Deployment(
         model_name="openai-1",
-        litellm_params=LLM_Params(model="gpt-3.5-turbo"),
+        llm_params=LLM_Params(model="gpt-3.5-turbo"),
         model_info=ModelInfo(),
     )
     deployment2 = Deployment(
         model_name="openai-2",
-        litellm_params=LLM_Params(model="gpt-4"),
+        llm_params=LLM_Params(model="gpt-4"),
         model_info=ModelInfo(),
     )
     router.add_pattern("openai/*", deployment1.to_json(exclude_none=True))
@@ -146,7 +146,7 @@ def test_route_with_exception():
     router = PatternMatchRouter()
     deployment = Deployment(
         model_name="openai-1",
-        litellm_params=LLM_Params(model="gpt-3.5-turbo"),
+        llm_params=LLM_Params(model="gpt-3.5-turbo"),
         model_info=ModelInfo(),
     )
     router.add_pattern("openai/*", deployment.to_json(exclude_none=True))
@@ -170,7 +170,7 @@ async def test_route_with_no_matching_pattern():
         model_list=[
             {
                 "model_name": "*meta.llama3*",
-                "litellm_params": {"model": "bedrock/meta.llama3*"},
+                "llm_params": {"model": "bedrock/meta.llama3*"},
             }
         ]
     )
@@ -219,7 +219,7 @@ def test_router_pattern_match_e2e():
         model_list=[
             {
                 "model_name": "llmengine/*",
-                "litellm_params": {"model": "anthropic/*", "api_key": "test"},
+                "llm_params": {"model": "anthropic/*", "api_key": "test"},
             }
         ]
     )
@@ -250,12 +250,12 @@ def test_pattern_matching_router_with_default_wildcard():
         model_list=[
             {
                 "model_name": "*",
-                "litellm_params": {"model": "*"},
+                "llm_params": {"model": "*"},
                 "model_info": {"access_groups": ["default"]},
             },
             {
                 "model_name": "anthropic-claude",
-                "litellm_params": {"model": "anthropic/claude-3-5-sonnet"},
+                "llm_params": {"model": "anthropic/claude-3-5-sonnet"},
             },
         ]
     )
@@ -276,12 +276,12 @@ def test_pattern_matching_router_with_default_wildcard_and_model_wildcard():
         model_list=[
             {
                 "model_name": "*",
-                "litellm_params": {"model": "*"},
+                "llm_params": {"model": "*"},
                 "model_info": {"access_groups": ["default"]},
             },
             {
                 "model_name": "llmengine/*",
-                "litellm_params": {"model": "openai/*"},
+                "llm_params": {"model": "openai/*"},
             },
         ]
     )

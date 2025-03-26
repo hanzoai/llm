@@ -12,7 +12,7 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 import llm
 from llm import transcription
-from llm.litellm_core_utils.get_supported_openai_params import (
+from llm.llm_core_utils.get_supported_openai_params import (
     get_supported_openai_params,
 )
 from llm.llms.base_llm.audio_transcription.transformation import (

@@ -191,14 +191,14 @@ class OpikLogger(CustomBatchLogger):
         llm_params_metadata = _llm_params.get("metadata", {}) or {}
 
         # Extract opik metadata
-        litellm_opik_metadata = llm_params_metadata.get("opik", {})
+        llm_opik_metadata = llm_params_metadata.get("opik", {})
         verbose_logger.debug(
-            f"litellm_opik_metadata - {json.dumps(litellm_opik_metadata, default=str)}"
+            f"llm_opik_metadata - {json.dumps(llm_opik_metadata, default=str)}"
         )
-        project_name = litellm_opik_metadata.get("project_name", self.opik_project_name)
+        project_name = llm_opik_metadata.get("project_name", self.opik_project_name)
 
         # Extract trace_id and parent_span_id
-        current_span_data = litellm_opik_metadata.get("current_span_data", None)
+        current_span_data = llm_opik_metadata.get("current_span_data", None)
         if isinstance(current_span_data, dict):
             trace_id = current_span_data.get("trace_id", None)
             parent_span_id = current_span_data.get("id", None)
@@ -209,7 +209,7 @@ class OpikLogger(CustomBatchLogger):
             trace_id = None
             parent_span_id = None
         # Create Opik tags
-        opik_tags = litellm_opik_metadata.get("tags", [])
+        opik_tags = llm_opik_metadata.get("tags", [])
         if kwargs.get("custom_llm_provider"):
             opik_tags.append(kwargs["custom_llm_provider"])
 
@@ -238,7 +238,7 @@ class OpikLogger(CustomBatchLogger):
 
         # Create metadata object, we add the opik metadata first and then
         # update it with the standard_logging_object metadata
-        metadata = litellm_opik_metadata
+        metadata = llm_opik_metadata
         if "current_span_data" in metadata:
             del metadata["current_span_data"]
         metadata["created_from"] = "llm"

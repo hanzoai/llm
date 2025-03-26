@@ -5,7 +5,7 @@ FROM node:20.18.1-alpine3.20
 WORKDIR /app
 
 # Copy package.json and package-lock.json to the working directory
-COPY ./litellm-js/spend-logs/package*.json ./
+COPY ./llm-js/spend-logs/package*.json ./
 
 # Install dependencies
 RUN npm install
@@ -14,7 +14,7 @@ RUN npm install
 RUN npm install -g prisma
 
 # Copy the rest of the application code
-COPY ./litellm-js/spend-logs .
+COPY ./llm-js/spend-logs .
 
 # Generate Prisma client
 RUN npx prisma generate

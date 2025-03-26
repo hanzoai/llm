@@ -56,6 +56,6 @@ async def test_langfuse_double_logging():
         messages=messages,
         temperature=0.0,
         fallbacks=models[1:],
-        # metadata={"generation_name": "test-gen", "project": "litellm-test"},
+        # metadata={"generation_name": "test-gen", "project": "llm-test"},
     )
     return resp

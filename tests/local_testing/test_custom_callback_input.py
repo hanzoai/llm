@@ -73,12 +73,12 @@ class CompletionCustomHandler(
             assert isinstance(kwargs["model"], str)
             assert isinstance(kwargs["messages"], list)
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
+            assert isinstance(kwargs["llm_params"], dict)
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
             assert isinstance(kwargs["user"], (str, type(None)))
             ### METADATA
-            metadata_value = kwargs["litellm_params"].get("metadata")
+            metadata_value = kwargs["llm_params"].get("metadata")
             assert metadata_value is None or isinstance(metadata_value, dict)
             if metadata_value is not None:
                 if llm.turn_off_message_logging is True:
@@ -107,7 +107,7 @@ class CompletionCustomHandler(
             assert isinstance(kwargs["model"], str)
             assert isinstance(kwargs["messages"], list)
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
+            assert isinstance(kwargs["llm_params"], dict)
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
             assert isinstance(kwargs["user"], (str, type(None)))
@@ -142,7 +142,7 @@ class CompletionCustomHandler(
                 kwargs["messages"][0], dict
             )
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
+            assert isinstance(kwargs["llm_params"], dict)
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
             assert isinstance(kwargs["user"], (str, type(None)))
@@ -191,8 +191,8 @@ class CompletionCustomHandler(
                 kwargs["messages"][0], dict
             )
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
-            assert isinstance(kwargs["litellm_params"]["api_base"], str)
+            assert isinstance(kwargs["llm_params"], dict)
+            assert isinstance(kwargs["llm_params"]["api_base"], str)
             assert kwargs["cache_hit"] is None or isinstance(kwargs["cache_hit"], bool)
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
@@ -235,8 +235,8 @@ class CompletionCustomHandler(
             )
 
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
-            assert isinstance(kwargs["litellm_params"]["metadata"], Optional[dict])
+            assert isinstance(kwargs["llm_params"], dict)
+            assert isinstance(kwargs["llm_params"]["metadata"], Optional[dict])
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
             assert isinstance(kwargs["user"], (str, type(None)))
@@ -270,7 +270,7 @@ class CompletionCustomHandler(
                 kwargs["messages"][0], dict
             )
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
+            assert isinstance(kwargs["llm_params"], dict)
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
             assert isinstance(kwargs["user"], (str, type(None)))
@@ -301,8 +301,8 @@ class CompletionCustomHandler(
             assert isinstance(kwargs["model"], str)
             assert isinstance(kwargs["messages"], list)
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
-            assert isinstance(kwargs["litellm_params"]["api_base"], str)
+            assert isinstance(kwargs["llm_params"], dict)
+            assert isinstance(kwargs["llm_params"]["api_base"], str)
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
             assert isinstance(kwargs["completion_start_time"], datetime)
@@ -338,7 +338,7 @@ class CompletionCustomHandler(
             assert isinstance(kwargs["model"], str)
             assert isinstance(kwargs["messages"], list)
             assert isinstance(kwargs["optional_params"], dict)
-            assert isinstance(kwargs["litellm_params"], dict)
+            assert isinstance(kwargs["llm_params"], dict)
             assert isinstance(kwargs["start_time"], (datetime, type(None)))
             assert isinstance(kwargs["stream"], bool)
             assert isinstance(kwargs["user"], (str, type(None)))
@@ -1288,9 +1288,9 @@ def test_standard_logging_payload(model, turn_off_message_logging):
             "standard_logging_object"
         ]
         if turn_off_message_logging:
-            print("checks redacted-by-litellm")
-            assert "redacted-by-litellm" == slobject["messages"][0]["content"]
-            assert {"text": "redacted-by-litellm"} == slobject["response"]
+            print("checks redacted-by-llm")
+            assert "redacted-by-llm" == slobject["messages"][0]["content"]
+            assert {"text": "redacted-by-llm"} == slobject["response"]
 
 
 @pytest.mark.parametrize(
@@ -1388,9 +1388,9 @@ def test_standard_logging_payload_audio(turn_off_message_logging, stream):
             "standard_logging_object"
         ]
         if turn_off_message_logging:
-            print("checks redacted-by-litellm")
-            assert "redacted-by-litellm" == slobject["messages"][0]["content"]
-            assert {"text": "redacted-by-litellm"} == slobject["response"]
+            print("checks redacted-by-llm")
+            assert "redacted-by-llm" == slobject["messages"][0]["content"]
+            assert {"text": "redacted-by-llm"} == slobject["response"]
 
 
 @pytest.mark.skip(reason="Works locally. Flaky on ci/cd")
@@ -1494,12 +1494,12 @@ def test_logging_async_cache_hit_sync_call(turn_off_message_logging):
         assert standard_logging_object["saved_cache_cost"] > 0
 
         if turn_off_message_logging:
-            print("checks redacted-by-litellm")
+            print("checks redacted-by-llm")
             assert (
-                "redacted-by-litellm"
+                "redacted-by-llm"
                 == standard_logging_object["messages"][0]["content"]
             )
-            assert {"text": "redacted-by-litellm"} == standard_logging_object[
+            assert {"text": "redacted-by-llm"} == standard_logging_object[
                 "response"
             ]
 
@@ -1590,9 +1590,9 @@ def test_logging_key_masking_gemini():
         print(f"mock_client.call_args.kwargs: {mock_client.call_args.kwargs}")
         assert (
             "LEAVE_ONLY_LAST_4_CHAR_UNMASKED_THIS_PART"
-            not in mock_client.call_args.kwargs["kwargs"]["litellm_params"]["api_base"]
+            not in mock_client.call_args.kwargs["kwargs"]["llm_params"]["api_base"]
         )
-        key = mock_client.call_args.kwargs["kwargs"]["litellm_params"]["api_base"]
+        key = mock_client.call_args.kwargs["kwargs"]["llm_params"]["api_base"]
         trimmed_key = key.split("key=")[1]
         trimmed_key = trimmed_key.replace("*", "")
         assert "PART" == trimmed_key
@@ -1674,7 +1674,7 @@ def test_standard_logging_retries():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-3.5-turbo",
                     "api_key": "test-api-key",
                 },
@@ -1713,25 +1713,25 @@ def test_standard_logging_retries():
 
 
 @pytest.mark.parametrize("disable_no_log_param", [True, False])
-def test_litellm_logging_no_log_param(monkeypatch, disable_no_log_param):
-    monkeypatch.setattr(litellm, "global_disable_no_log_param", disable_no_log_param)
-    from llm.litellm_core_utils.litellm_logging import Logging
+def test_llm_logging_no_log_param(monkeypatch, disable_no_log_param):
+    monkeypatch.setattr(llm, "global_disable_no_log_param", disable_no_log_param)
+    from llm.llm_core_utils.llm_logging import Logging
 
     llm.success_callback = ["langfuse"]
-    litellm_call_id = "my-unique-call-id"
-    litellm_logging_obj = Logging(
+    llm_call_id = "my-unique-call-id"
+    llm_logging_obj = Logging(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": "hi"}],
         stream=False,
         call_type="acompletion",
-        litellm_call_id=litellm_call_id,
+        llm_call_id=llm_call_id,
         start_time=datetime.now(),
         function_id="1234",
     )
 
-    should_run = litellm_logging_obj.should_run_callback(
+    should_run = llm_logging_obj.should_run_callback(
         callback="langfuse",
-        litellm_params={"no-log": True},
+        llm_params={"no-log": True},
         event_hook="success_handler",
     )
 

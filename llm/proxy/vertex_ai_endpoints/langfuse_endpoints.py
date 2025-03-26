@@ -5,7 +5,7 @@ Logging Pass-Through Endpoints
 """
 
 """
-1. Create pass-through endpoints for any LITELLM_BASE_URL/langfuse/<endpoint> map to LANGFUSE_BASE_URL/<endpoint>
+1. Create pass-through endpoints for any LLM_BASE_URL/langfuse/<endpoint> map to LANGFUSE_BASE_URL/<endpoint>
 """
 
 import base64
@@ -55,7 +55,7 @@ async def langfuse_proxy_route(
     """
     from llm.proxy.proxy_server import proxy_config
 
-    ## CHECK FOR LITELLM API KEY IN THE QUERY PARAMS - ?..key=LITELLM_API_KEY
+    ## CHECK FOR LLM API KEY IN THE QUERY PARAMS - ?..key=LLM_API_KEY
     api_key = request.headers.get("Authorization") or ""
 
     ## decrypt base64 hash

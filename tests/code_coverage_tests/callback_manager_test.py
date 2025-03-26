@@ -3,11 +3,11 @@ import os
 
 ALLOWED_FILES = [
     # local files
-    "../../litellm/litellm_core_utils/llm.logging_callback_manager.py",
-    "../../litellm/proxy/common_utils/callback_utils.py",
+    "../../llm/llm_core_utils/llm.logging_callback_manager.py",
+    "../../llm/proxy/common_utils/callback_utils.py",
     # when running on ci/cd
-    "./litellm/litellm_core_utils/llm.logging_callback_manager.py",
-    "./litellm/proxy/common_utils/callback_utils.py",
+    "./llm/llm_core_utils/llm.logging_callback_manager.py",
+    "./llm/proxy/common_utils/callback_utils.py",
 ]
 
 warning_msg = "this is a serious violation. Callbacks must only be modified through LoggingCallbackManager"
@@ -96,8 +96,8 @@ def test_no_unauthorized_callback_modifications():
     """
     Test to ensure callback lists are not modified directly anywhere in the codebase.
     """
-    base_dir = "./litellm"  # Adjust this path as needed
-    # base_dir = "../../litellm"  # LOCAL TESTING
+    base_dir = "./llm"  # Adjust this path as needed
+    # base_dir = "../../llm"  # LOCAL TESTING
 
     violations = scan_directory_for_callback_modifications(base_dir)
     if violations:

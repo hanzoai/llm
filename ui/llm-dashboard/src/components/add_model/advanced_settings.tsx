@@ -59,7 +59,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
   };
 
   const handlePassThroughChange = (checked: boolean) => {
-    const currentParams = form.getFieldValue('litellm_extra_params');
+    const currentParams = form.getFieldValue('llm_extra_params');
     try {
       let paramsObj = currentParams ? JSON.parse(currentParams) : {};
       if (checked) {
@@ -69,16 +69,16 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
       }
       // Only set the field value if there are remaining parameters
       if (Object.keys(paramsObj).length > 0) {
-        form.setFieldValue('litellm_extra_params', JSON.stringify(paramsObj, null, 2));
+        form.setFieldValue('llm_extra_params', JSON.stringify(paramsObj, null, 2));
       } else {
-        form.setFieldValue('litellm_extra_params', '');
+        form.setFieldValue('llm_extra_params', '');
       }
     } catch (error) {
       // If JSON parsing fails, only create new object if checked is true
       if (checked) {
-        form.setFieldValue('litellm_extra_params', JSON.stringify({ use_in_pass_through: true }, null, 2));
+        form.setFieldValue('llm_extra_params', JSON.stringify({ use_in_pass_through: true }, null, 2));
       } else {
-        form.setFieldValue('litellm_extra_params', '');
+        form.setFieldValue('llm_extra_params', '');
       }
     }
   };
@@ -165,7 +165,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
               tooltip={
                 <span>
                   Allow using these credentials in pass through routes.{" "}
-                  <Link href="https://docs.litellm.ai/docs/pass_through/vertex_ai" target="_blank">
+                  <Link href="https://docs.llm.ai/docs/pass_through/vertex_ai" target="_blank">
                     Learn more
                   </Link>
                 </span>
@@ -177,9 +177,9 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
               />
             </Form.Item>
             <Form.Item
-              label="LiteLLM Params"
-              name="litellm_extra_params"
-              tooltip="Optional litellm params used for making a litellm.completion() call."
+              label="LLM Params"
+              name="llm_extra_params"
+              tooltip="Optional llm params used for making a llm.completion() call."
               className="mb-4 mt-4"
                 rules={[{ validator: validateJSON }]}
             >
@@ -196,12 +196,12 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
               <Col span={10}></Col>
               <Col span={10}>
                 <Text className="text-gray-600 text-sm">
-                  Pass JSON of litellm supported params{" "}
+                  Pass JSON of llm supported params{" "}
                   <Link
-                    href="https://docs.litellm.ai/docs/completion/input"
+                    href="https://docs.llm.ai/docs/completion/input"
                     target="_blank"
                   >
-                    litellm.completion() call
+                    llm.completion() call
                   </Link>
                 </Text>
               </Col>

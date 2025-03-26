@@ -17,7 +17,7 @@ config = {
     "model_list": [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "api_key": os.environ["OPENAI_API_KEY"],
             },
@@ -31,7 +31,7 @@ response = requests.post(
         "config": config,
         "duration": "30d",  # default to 30d, set it to 30m if you want a temp key
     },
-    headers={"Authorization": "Bearer sk-hosted-litellm"},
+    headers={"Authorization": "Bearer sk-hosted-llm"},
 )
 
 print("\nresponse from generating key", response.text)

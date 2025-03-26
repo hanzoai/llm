@@ -86,7 +86,7 @@ async function testFallbackModelResponse(
   const client = new openai.OpenAI({
     apiKey: accessToken, // Replace with your OpenAI API key
     baseURL: proxyBaseUrl, // Replace with your OpenAI API base URL
-    dangerouslyAllowBrowser: true, // using a temporary litellm proxy key
+    dangerouslyAllowBrowser: true, // using a temporary llm proxy key
   });
 
   try {
@@ -110,7 +110,7 @@ async function testFallbackModelResponse(
           href="#"
           onClick={() =>
             window.open(
-              "https://docs.litellm.ai/docs/proxy/reliability",
+              "https://docs.llm.ai/docs/proxy/reliability",
               "_blank"
             )
           }

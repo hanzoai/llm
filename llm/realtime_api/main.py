@@ -7,7 +7,7 @@ from llm import get_llm_provider
 from llm.secret_managers.main import get_secret_str
 from llm.types.router import GenericLLMParams
 
-from ..llm_core_utils.litellm_logging import Logging as LLMLogging
+from ..llm_core_utils.llm_logging import Logging as LLMLogging
 from ..llms.azure.realtime.handler import AzureOpenAIRealtime
 from ..llms.openai.realtime.handler import OpenAIRealtime
 from ..utils import client as wrapper_client

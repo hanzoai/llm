@@ -33,8 +33,8 @@ from llm.types.utils import (
     Embedding,
 )
 from datetime import timedelta, datetime
-from llm.litellm_core_utils.litellm_logging import Logging as LLMLogging
-from llm.litellm_core_utils.model_param_helper import ModelParamHelper
+from llm.llm_core_utils.llm_logging import Logging as LLMLogging
+from llm.llm_core_utils.model_param_helper import ModelParamHelper
 from llm._logging import verbose_logger
 import logging
 
@@ -209,14 +209,14 @@ def test_get_model_param_value():
 
 def test_preset_cache_key():
     """
-    Test that the preset cache key is used if it is set in kwargs["litellm_params"]
+    Test that the preset cache key is used if it is set in kwargs["llm_params"]
     """
     cache = Cache()
     kwargs = {
         "model": "gpt-3.5-turbo",
         "messages": [{"role": "user", "content": "Hello, world!"}],
         "temperature": 0.7,
-        "litellm_params": {"preset_cache_key": "preset-cache-key"},
+        "llm_params": {"preset_cache_key": "preset-cache-key"},
     }
 
     assert cache.get_cache_key(**kwargs) == "preset-cache-key"

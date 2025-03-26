@@ -11,7 +11,7 @@ from llm.proxy._types import SpendCalculateRequest
 from llm.proxy.spend_tracking.spend_management_endpoints import calculate_spend
 from llm.router import Router
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -42,7 +42,7 @@ async def test_spend_calc_model_on_router_messages():
         model_list=[
             {
                 "model_name": "special-llama-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "groq/llama3-8b-8192",
                 },
             }
@@ -111,7 +111,7 @@ async def test_spend_calc_model_alias_on_router_messages():
         model_list=[
             {
                 "model_name": "gpt-4o",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                 },
             }

@@ -12,7 +12,7 @@ LLM Server manages:
 
 [**See LLM Proxy code**](https://github.com/BerriAI/llm/tree/main/llm/proxy)
 
-## Quick Start 
+## Quick Start
 View all the supported args for the Proxy CLI [here](https://docs.llm.ai/docs/simple_proxy#proxy-cli-arguments)
 
 ```shell
@@ -31,7 +31,7 @@ In a new shell, run, this will make an `openai.chat.completions` request. Ensure
 llm --test
 ```
 
-This will now automatically route any requests for gpt-3.5-turbo to bigcode starcoder, hosted on huggingface inference endpoints. 
+This will now automatically route any requests for gpt-3.5-turbo to bigcode starcoder, hosted on huggingface inference endpoints.
 
 ### Using LLM Proxy - Curl Request, OpenAI Package
 
@@ -283,14 +283,14 @@ LLM Proxy is running on port `4000`, set `4000` as the proxy below
 OPENAI_REVERSE_PROXY=http://host.docker.internal:4000/v1/chat/completions
 ```
 
-#### 3. Save fake OpenAI key in Librechat's `.env` 
+#### 3. Save fake OpenAI key in Librechat's `.env`
 
 Copy Librechat's `.env.example` to `.env` and overwrite the default OPENAI_API_KEY (by default it requires the user to pass a key).
 ```env
 OPENAI_API_KEY=sk-1234
 ```
 
-#### 4. Run LibreChat: 
+#### 4. Run LibreChat:
 ```shell
 docker compose up
 ```
@@ -310,13 +310,13 @@ In the [config.py](https://continue.dev/docs/reference/Models/openai) set this a
   ),
 ```
 
-Credits [@vividfog](https://github.com/ollama/ollama/issues/305#issuecomment-1751848077) for this tutorial. 
+Credits [@vividfog](https://github.com/ollama/ollama/issues/305#issuecomment-1751848077) for this tutorial.
 </TabItem>
 
 <TabItem value="aider" label="Aider">
 
 ```shell
-$ pip install aider 
+$ pip install aider
 
 $ aider --openai-api-base http://0.0.0.0:4000 --openai-api-key fake-key
 ```
@@ -357,7 +357,7 @@ Credits [@victordibia](https://github.com/microsoft/autogen/issues/45#issuecomme
 A guidance language for controlling large language models.
 https://github.com/guidance-ai/guidance
 
-**NOTE:** Guidance sends additional params like `stop_sequences` which can cause some models to fail if they don't support it. 
+**NOTE:** Guidance sends additional params like `stop_sequences` which can cause some models to fail if they don't support it.
 
 **Fix**: Start your proxy using the `--drop_params` flag
 
@@ -412,26 +412,26 @@ model_list:
     llm_params:
       model: azure/gpt-turbo-small-eu
       api_base: https://my-endpoint-europe-berri-992.openai.azure.com/
-      api_key: 
+      api_key:
       rpm: 6      # Rate limit for this deployment: in requests per minute (rpm)
   - model_name: gpt-3.5-turbo
     llm_params:
       model: azure/gpt-turbo-small-ca
       api_base: https://my-endpoint-canada-berri992.openai.azure.com/
-      api_key: 
+      api_key:
       rpm: 6
   - model_name: gpt-3.5-turbo
     llm_params:
       model: azure/gpt-turbo-large
       api_base: https://openai-france-1234.openai.azure.com/
-      api_key: 
+      api_key:
       rpm: 1440
 
 llm_settings:
   drop_params: True
   set_verbose: True
 
-general_settings: 
+general_settings:
   master_key: sk-1234 # [OPTIONAL] Only use this if you to require all calls to contain this key (Authorization: Bearer sk-1234)
 
 
@@ -440,12 +440,12 @@ environment_variables:
   REPLICATE_API_KEY: sk-cohere-is-okay
   REDIS_HOST: redis-16337.c322.us-east-1-2.ec2.cloud.redislabs.com
   REDIS_PORT: "16337"
-  REDIS_PASSWORD: 
+  REDIS_PASSWORD:
 ```
 
 ### Config for Multiple Models - GPT-4, Claude-2
 
-Here's how you can use multiple llms with one proxy `config.yaml`. 
+Here's how you can use multiple llms with one proxy `config.yaml`.
 
 #### Step 1: Setup Config
 ```yaml
@@ -461,7 +461,7 @@ model_list:
   - model_name: claude-2
     llm_params:
       model: claude-2
-      api_key: sk-claude    
+      api_key: sk-claude
 ```
 
 :::info
@@ -504,19 +504,19 @@ model_list:
     llm_params:
       model: azure/gpt-turbo-small-eu
       api_base: https://my-endpoint-europe-berri-992.openai.azure.com/
-      api_key: 
+      api_key:
       rpm: 6      # Rate limit for this deployment: in requests per minute (rpm)
   - model_name: gpt-3.5-turbo
     llm_params:
       model: azure/gpt-turbo-small-ca
       api_base: https://my-endpoint-canada-berri992.openai.azure.com/
-      api_key: 
+      api_key:
       rpm: 6
   - model_name: gpt-3.5-turbo
     llm_params:
       model: azure/gpt-turbo-large
       api_base: https://openai-france-1234.openai.azure.com/
-      api_key: 
+      api_key:
       rpm: 1440
 ```
 
@@ -543,7 +543,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 '
 ```
 
-### Fallbacks + Cooldowns + Retries + Timeouts 
+### Fallbacks + Cooldowns + Retries + Timeouts
 
 If a call fails after num_retries, fall back to another model group.
 
@@ -578,9 +578,9 @@ model_list:
 llm_settings:
   num_retries: 3 # retry call 3 times on each model_name (e.g. zephyr-beta)
   request_timeout: 10 # raise Timeout error if call takes longer than 10s
-  fallbacks: [{"zephyr-beta": ["gpt-3.5-turbo"]}] # fallback to gpt-3.5-turbo if call fails num_retries 
+  fallbacks: [{"zephyr-beta": ["gpt-3.5-turbo"]}] # fallback to gpt-3.5-turbo if call fails num_retries
   context_window_fallbacks: [{"zephyr-beta": ["gpt-3.5-turbo-16k"]}, {"gpt-3.5-turbo": ["gpt-3.5-turbo-16k"]}] # fallback to gpt-3.5-turbo-16k if context window error
-  allowed_fails: 3 # cooldown model if it fails > 1 call in a minute. 
+  allowed_fails: 3 # cooldown model if it fails > 1 call in a minute.
 ```
 
 **Set dynamically**
@@ -606,7 +606,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 
 ### Config for Embedding Models - xorbitsai/inference
 
-Here's how you can use multiple llms with one proxy `config.yaml`. 
+Here's how you can use multiple llms with one proxy `config.yaml`.
 Here is how [LLM calls OpenAI Compatible Embedding models](https://docs.llm.ai/docs/embedding/supported_embedding#openai-compatible-embedding-models)
 
 #### Config
@@ -632,7 +632,7 @@ $ llm --config /path/to/config.yaml
 
 Grant other's temporary access to your proxy, with keys that expire after a set duration.
 
-Requirements: 
+Requirements:
 
 - Need to a postgres database (e.g. [Supabase](https://supabase.com/), [Neon](https://neon.tech/), etc)
 
@@ -651,7 +651,7 @@ model_list:
     llm_params:
         model: ollama/llama2
 
-general_settings: 
+general_settings:
   master_key: sk-1234 # [OPTIONAL] if set all calls to proxy will require either this key or a valid generated token
   database_url: "postgresql://<user>:<password>@<host>:<port>/<dbname>"
 ```
@@ -664,17 +664,17 @@ llm --config /path/to/config.yaml
 
 **Step 3: Generate temporary keys**
 
-```shell 
+```shell
 curl 'http://0.0.0.0:4000/key/generate' \
 --h 'Authorization: Bearer sk-1234' \
 --d '{"models": ["gpt-3.5-turbo", "gpt-4", "claude-2"], "duration": "20m"}'
 ```
 
-- `models`: *list or null (optional)* - Specify the models a token has access too. If null, then token has access to all models on server. 
+- `models`: *list or null (optional)* - Specify the models a token has access too. If null, then token has access to all models on server.
 
 - `duration`: *str or null (optional)* Specify the length of time the token is valid for. If null, default is set to 1 hour. You can set duration as seconds ("30s"), minutes ("30m"), hours ("30h"), days ("30d").
 
-Expected response: 
+Expected response:
 
 ```python
 {
@@ -683,7 +683,7 @@ Expected response:
 }
 ```
 
-### Managing Auth - Upgrade/Downgrade Models 
+### Managing Auth - Upgrade/Downgrade Models
 
 If a user is expected to use a given model (i.e. gpt3-5), and you want to:
 
@@ -692,7 +692,7 @@ If a user is expected to use a given model (i.e. gpt3-5), and you want to:
 - OR rotate the API KEY (i.e. open AI)
 - OR access the same model through different end points (i.e. openAI vs openrouter vs Azure)
 
-Here's how you can do that: 
+Here's how you can do that:
 
 **Step 1: Create a model group in config.yaml (save model name, api keys, etc.)**
 
@@ -723,8 +723,8 @@ curl -X POST "https://0.0.0.0:4000/key/generate" \
 -H "Authorization: Bearer sk-1234" \
 -H "Content-Type: application/json" \
 -d '{
-	"models": ["my-free-tier"], 
-	"aliases": {"gpt-3.5-turbo": "my-free-tier"}, 
+	"models": ["my-free-tier"],
+	"aliases": {"gpt-3.5-turbo": "my-free-tier"},
 	"duration": "30min"
 }'
 ```
@@ -732,9 +732,9 @@ curl -X POST "https://0.0.0.0:4000/key/generate" \
 - **How to upgrade / downgrade request?** Change the alias mapping
 - **How are routing between diff keys/api bases done?** llm handles this by shuffling between different models in the model list with the same model_name. [**See Code**](https://github.com/BerriAI/llm/blob/main/llm/router.py)
 
-### Managing Auth - Tracking Spend 
+### Managing Auth - Tracking Spend
 
-You can get spend for a key by using the `/key/info` endpoint. 
+You can get spend for a key by using the `/key/info` endpoint.
 
 ```bash
 curl 'http://0.0.0.0:4000/key/info?key=<user-key>' \
@@ -742,7 +742,7 @@ curl 'http://0.0.0.0:4000/key/info?key=<user-key>' \
      -H 'Authorization: Bearer <your-master-key>'
 ```
 
-This is automatically updated (in USD) when calls are made to /completions, /chat/completions, /embeddings using llm's completion_cost() function. [**See Code**](https://github.com/BerriAI/llm/blob/1a6ea20a0bb66491968907c2bfaabb7fe45fc064/llm/utils.py#L1654). 
+This is automatically updated (in USD) when calls are made to /completions, /chat/completions, /embeddings using llm's completion_cost() function. [**See Code**](https://github.com/BerriAI/llm/blob/1a6ea20a0bb66491968907c2bfaabb7fe45fc064/llm/utils.py#L1654).
 
 **Sample response**
 
@@ -767,7 +767,7 @@ This is automatically updated (in USD) when calls are made to /completions, /cha
 ```
 
 ### Save Model-specific params (API Base, API Keys, Temperature, Headers etc.)
-You can use the config to save model-specific information like api_base, api_key, temperature, max_tokens, etc. 
+You can use the config to save model-specific information like api_base, api_key, temperature, max_tokens, etc.
 
 **Step 1**: Create a `config.yaml` file
 ```yaml
@@ -795,15 +795,15 @@ model_list:
 $ llm --config /path/to/config.yaml
 ```
 
-### Load API Keys from Vault 
+### Load API Keys from Vault
 
-If you have secrets saved in Azure Vault, etc. and don't want to expose them in the config.yaml, here's how to load model-specific keys from the environment. 
+If you have secrets saved in Azure Vault, etc. and don't want to expose them in the config.yaml, here's how to load model-specific keys from the environment.
 
 ```python
 os.environ["AZURE_NORTH_AMERICA_API_KEY"] = "your-azure-api-key"
 ```
 
-```yaml 
+```yaml
 model_list:
   - model_name: gpt-4-team1
     llm_params: # params for llm.completion() - https://docs.llm.ai/docs/completion/input#input---request-body
@@ -815,13 +815,13 @@ model_list:
 
 [**See Code**](https://github.com/BerriAI/llm/blob/c12d6c3fe80e1b5e704d9846b246c059defadce7/llm/utils.py#L2366)
 
-s/o to [@David Manouchehri](https://www.linkedin.com/in/davidmanouchehri/) for helping with this. 
+s/o to [@David Manouchehri](https://www.linkedin.com/in/davidmanouchehri/) for helping with this.
 
 ### Config for setting Model Aliases
 
-Set a model alias for your deployments. 
+Set a model alias for your deployments.
 
-In the `config.yaml` the model_name parameter is the user-facing name to use for your deployment. 
+In the `config.yaml` the model_name parameter is the user-facing name to use for your deployment.
 
 In the config below requests with `model=gpt-4` will route to `ollama/llama2`
 
@@ -837,7 +837,7 @@ model_list:
     llm_params:
         model: ollama/llama2
 ```
-### Caching Responses 
+### Caching Responses
 Caching can be enabled by adding the `cache` key in the `config.yaml`
 #### Step 1: Add `cache` to the config.yaml
 ```yaml
@@ -858,14 +858,14 @@ LLM requires the following REDIS credentials in your env to enable caching
   ```shell
   REDIS_HOST = ""       # REDIS_HOST='redis-18841.c274.us-east-1-3.ec2.cloud.redislabs.com'
   REDIS_PORT = ""       # REDIS_PORT='18841'
-  REDIS_PASSWORD = ""   # REDIS_PASSWORD='liteLlmIsAmazing'
+  REDIS_PASSWORD = ""   # REDIS_PASSWORD='LlmIsAmazing'
   ```
 #### Step 3: Run proxy with config
 ```shell
 $ llm --config /path/to/config.yaml
 ```
 
-#### Using Caching 
+#### Using Caching
 Send the same request twice:
 ```shell
 curl http://0.0.0.0:4000/v1/chat/completions \
@@ -912,7 +912,7 @@ Caching can be switched on/off per `/chat/completions` request
 
 ### Set Custom Prompt Templates
 
-LLM by default checks if a model has a [prompt template and applies it](./completion/prompt_formatting.md) (e.g. if a huggingface model has a saved chat template in it's tokenizer_config.json). However, you can also set a custom prompt template on your proxy in the `config.yaml`: 
+LLM by default checks if a model has a [prompt template and applies it](./completion/prompt_formatting.md) (e.g. if a huggingface model has a saved chat template in it's tokenizer_config.json). However, you can also set a custom prompt template on your proxy in the `config.yaml`:
 
 **Step 1**: Save your prompt template in a `config.yaml`
 ```yaml
@@ -920,7 +920,7 @@ LLM by default checks if a model has a [prompt template and applies it](./comple
 model_list:
   - model_name: mistral-7b # model alias
     llm_params: # actual params for llm.completion()
-      model: "huggingface/mistralai/Mistral-7B-Instruct-v0.1" 
+      model: "huggingface/mistralai/Mistral-7B-Instruct-v0.1"
       api_base: "<your-api-base>"
       api_key: "<your-api-key>" # [OPTIONAL] for hf inference endpoints
       initial_prompt_value: "\n"
@@ -937,13 +937,13 @@ model_list:
 $ llm --config /path/to/config.yaml
 ```
 
-## Debugging Proxy 
-Run the proxy with `--debug` to easily view debug logs 
+## Debugging Proxy
+Run the proxy with `--debug` to easily view debug logs
 ```shell
 llm --model gpt-3.5-turbo --debug
 ```
 
-### Detailed Debug Logs 
+### Detailed Debug Logs
 
 Run the proxy with `--detailed_debug` to view detailed debug logs
 ```shell
@@ -995,7 +995,7 @@ llm --health
 ## Logging Proxy Input/Output - OpenTelemetry
 
 ### Step 1 Start OpenTelemetry Collecter Docker Container
-This container sends logs to your selected destination 
+This container sends logs to your selected destination
 
 #### Install OpenTelemetry Collecter Docker Image
 ```shell
@@ -1012,7 +1012,7 @@ receivers:
     protocols:
       grpc:
         endpoint: 0.0.0.0:4317
-  
+
 processors:
   batch:
     timeout: 1s
@@ -1023,7 +1023,7 @@ exporters:
     loglevel: debug
   otlphttp/elastic:
     endpoint: "<your elastic endpoint>"
-    headers: 
+    headers:
       Authorization: "Bearer <elastic api key>"
 
 service:
@@ -1034,7 +1034,7 @@ service:
     traces:
       receivers: [otlp]
       exporters: [logging, otlphttp/elastic]
-    logs: 
+    logs:
       receivers: [otlp]
       exporters: [logging,otlphttp/elastic]
 ```
@@ -1065,16 +1065,16 @@ model_list:
     llm_params:
       model: azure/gpt-turbo-small-eu
       api_base: https://my-endpoint-europe-berri-992.openai.azure.com/
-      api_key: 
+      api_key:
       rpm: 6      # Rate limit for this deployment: in requests per minute (rpm)
 
-general_settings: 
+general_settings:
   otel: True      # set OpenTelemetry=True, on llm Proxy
 
 ```
 
 #### Set OTEL collector endpoint
-LLM will read the `OTEL_ENDPOINT` environment variable to send data to your OTEL collector 
+LLM will read the `OTEL_ENDPOINT` environment variable to send data to your OTEL collector
 
 ```python
 os.environ['OTEL_ENDPOINT'] # defauls to 127.0.0.1:4317 if not provided
@@ -1207,7 +1207,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
 #### --host
    - **Default:** `'0.0.0.0'`
    - The host for the server to listen on.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --host 127.0.0.1
      ```
@@ -1215,7 +1215,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
 #### --port
    - **Default:** `4000`
    - The port to bind the server to.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --port 8080
      ```
@@ -1223,7 +1223,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
 #### --num_workers
    - **Default:** `1`
    - The number of uvicorn workers to spin up.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --num_workers 4
      ```
@@ -1231,7 +1231,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
 #### --api_base
    - **Default:** `None`
    - The API base for the model llm should call.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --model huggingface/tinyllama --api_base https://k58ory32yinf1ly0.us-east-1.aws.endpoints.huggingface.cloud
      ```
@@ -1239,15 +1239,15 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
 #### --api_version
    - **Default:** `None`
    - For Azure services, specify the API version.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --model azure/gpt-deployment --api_version 2023-08-01 --api_base https://<your api base>"
      ```
 
 #### --model or -m
    - **Default:** `None`
-   - The model name to pass to Litellm.
-   - **Usage:** 
+   - The model name to pass to Llm.
+   - **Usage:**
      ```shell
      llm --model gpt-3.5-turbo
      ```
@@ -1255,7 +1255,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
 #### --test
    - **Type:** `bool` (Flag)
    - Proxy chat completions URL to make a test request.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --test
      ```
@@ -1263,7 +1263,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
 #### --health
    - **Type:** `bool` (Flag)
    - Runs a health check on all models in config.yaml
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --health
      ```
@@ -1271,7 +1271,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
 #### --alias
    - **Default:** `None`
    - An alias for the model, for user-friendly reference.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --alias my-gpt-model
      ```
@@ -1280,7 +1280,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
    - **Default:** `False`
    - **Type:** `bool` (Flag)
    - Enable debugging mode for the input.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --debug
      ```
@@ -1288,7 +1288,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
    - **Default:** `False`
    - **Type:** `bool` (Flag)
    - Enable debugging mode for the input.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --detailed_debug
      ```
@@ -1297,7 +1297,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
    - **Default:** `None`
    - **Type:** `float`
    - Set the temperature for the model.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --temperature 0.7
      ```
@@ -1306,7 +1306,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
    - **Default:** `None`
    - **Type:** `int`
    - Set the maximum number of tokens for the model output.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --max_tokens 50
      ```
@@ -1315,7 +1315,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
    - **Default:** `6000`
    - **Type:** `int`
    - Set the timeout in seconds for completion calls.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --request_timeout 300
      ```
@@ -1323,7 +1323,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
 #### --drop_params
    - **Type:** `bool` (Flag)
    - Drop any unmapped params.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --drop_params
      ```
@@ -1331,14 +1331,14 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
 #### --add_function_to_prompt
    - **Type:** `bool` (Flag)
    - If a function passed but unsupported, pass it as a part of the prompt.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --add_function_to_prompt
      ```
 
 #### --config
-   - Configure Litellm by providing a configuration file path.
-   - **Usage:** 
+   - Configure Llm by providing a configuration file path.
+   - **Usage:**
      ```shell
      llm --config path/to/config.yaml
      ```
@@ -1347,7 +1347,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
    - **Default:** `True`
    - **Type:** `bool`
    - Help track usage of this feature.
-   - **Usage:** 
+   - **Usage:**
      ```shell
      llm --telemetry False
      ```

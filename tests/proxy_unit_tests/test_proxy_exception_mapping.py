@@ -80,10 +80,10 @@ def test_chat_completion_exception(client):
         )
 
         code_in_error = json_response["error"]["code"]
-        # OpenAI SDK required code to be STR, https://github.com/BerriAI/litellm/issues/4970
+        # OpenAI SDK required code to be STR, https://github.com/BerriAI/llm/issues/4970
         # If we look on official python OpenAI lib, the code should be a string:
         # https://github.com/openai/openai-python/blob/195c05a64d39c87b2dfdf1eca2d339597f1fce03/src/openai/types/shared/error_object.py#L11
-        # Related LLM issue: https://github.com/BerriAI/litellm/discussions/4834
+        # Related LLM issue: https://github.com/BerriAI/llm/discussions/4834
         assert type(code_in_error) == str
 
         # make an openai client to call _make_status_error_from_response
@@ -117,8 +117,8 @@ def test_chat_completion_exception_azure(mock_acompletion, client):
 
         mock_acompletion.assert_called_once_with(
             **test_data,
-            litellm_call_id=mock.ANY,
-            litellm_logging_obj=mock.ANY,
+            llm_call_id=mock.ANY,
+            llm_logging_obj=mock.ANY,
             request_timeout=mock.ANY,
             metadata=mock.ANY,
             proxy_server_request=mock.ANY,
@@ -290,8 +290,8 @@ def test_chat_completion_exception_azure_context_window(mock_acompletion, client
 
         mock_acompletion.assert_called_once_with(
             **test_data,
-            litellm_call_id=mock.ANY,
-            litellm_logging_obj=mock.ANY,
+            llm_call_id=mock.ANY,
+            llm_logging_obj=mock.ANY,
             request_timeout=mock.ANY,
             metadata=mock.ANY,
             proxy_server_request=mock.ANY,

@@ -30,7 +30,7 @@ class RedisSemanticCache(BaseCache):
     but carry similar meaning.
     """
     
-    DEFAULT_REDIS_INDEX_NAME: str = "litellm_semantic_cache_index"
+    DEFAULT_REDIS_INDEX_NAME: str = "llm_semantic_cache_index"
 
     def __init__(
         self,

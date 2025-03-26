@@ -18,7 +18,7 @@ from llm.llms.vertex_ai.vertex_llm_base import VertexBase
 from llm.proxy._types import *
 from llm.proxy.auth.route_checks import RouteChecks
 from llm.proxy.auth.user_api_key_auth import user_api_key_auth
-from llm.proxy.pass_through_endpoints.common_utils import get_litellm_virtual_key
+from llm.proxy.pass_through_endpoints.common_utils import get_llm_virtual_key
 from llm.proxy.pass_through_endpoints.pass_through_endpoints import (
     create_pass_through_route,
 )
@@ -56,7 +56,7 @@ async def gemini_proxy_route(
     """
     [Docs](https://docs.llm.ai/docs/pass_through/google_ai_studio)
     """
-    ## CHECK FOR LITELLM API KEY IN THE QUERY PARAMS - ?..key=LITELLM_API_KEY
+    ## CHECK FOR LLM API KEY IN THE QUERY PARAMS - ?..key=LLM_API_KEY
     google_ai_studio_api_key = request.query_params.get("key") or request.headers.get(
         "x-goog-api-key"
     )
@@ -451,7 +451,7 @@ async def vertex_proxy_route(
     encoded_endpoint = httpx.URL(endpoint).path
     verbose_proxy_logger.debug("requested endpoint %s", endpoint)
     headers: dict = {}
-    api_key_to_use = get_litellm_virtual_key(request=request)
+    api_key_to_use = get_llm_virtual_key(request=request)
     user_api_key_dict = await user_api_key_auth(
         request=request,
         api_key=api_key_to_use,

@@ -31,7 +31,7 @@ class DBModel(BaseModel):
     model_id: str
     model_name: str
     model_info: dict
-    litellm_params: dict
+    llm_params: dict
 
     model_config = ConfigDict(protected_namespaces=())
 
@@ -45,28 +45,28 @@ async def test_delete_deployment():
     """
     import base64
 
-    litellm_params = LLM_Params(
+    llm_params = LLM_Params(
         model="azure/chatgpt-v-2",
         api_key=os.getenv("AZURE_API_KEY"),
         api_base=os.getenv("AZURE_API_BASE"),
         api_version=os.getenv("AZURE_API_VERSION"),
     )
-    encrypted_litellm_params = litellm_params.dict(exclude_none=True)
+    encrypted_llm_params = llm_params.dict(exclude_none=True)
 
     master_key = "sk-1234"
 
     setattr(llm.proxy.proxy_server, "master_key", master_key)
 
-    for k, v in encrypted_litellm_params.items():
+    for k, v in encrypted_llm_params.items():
         if isinstance(v, str):
             encrypted_value = encrypt_value(v, master_key)
-            encrypted_litellm_params[k] = base64.b64encode(encrypted_value).decode(
+            encrypted_llm_params[k] = base64.b64encode(encrypted_value).decode(
                 "utf-8"
             )
 
-    deployment = Deployment(model_name="gpt-3.5-turbo", litellm_params=litellm_params)
+    deployment = Deployment(model_name="gpt-3.5-turbo", llm_params=llm_params)
     deployment_2 = Deployment(
-        model_name="gpt-3.5-turbo-2", litellm_params=litellm_params
+        model_name="gpt-3.5-turbo-2", llm_params=llm_params
     )
 
     llm_router = llm.Router(
@@ -83,7 +83,7 @@ async def test_delete_deployment():
     db_model = DBModel(
         model_id=deployment.model_info.id,
         model_name="gpt-3.5-turbo",
-        litellm_params=encrypted_litellm_params,
+        llm_params=encrypted_llm_params,
         model_info={"id": deployment.model_info.id},
     )
 
@@ -110,7 +110,7 @@ async def test_delete_deployment():
     db_model = DBModel(
         model_id=deployment.model_info.id,
         model_name="gpt-3.5-turbo",
-        litellm_params=encrypted_litellm_params,
+        llm_params=encrypted_llm_params,
         model_info={"id": deployment.model_info.id},
     )
 
@@ -129,15 +129,15 @@ async def test_add_existing_deployment():
     """
     import base64
 
-    litellm_params = LLM_Params(
+    llm_params = LLM_Params(
         model="gpt-3.5-turbo",
         api_key=os.getenv("AZURE_API_KEY"),
         api_base=os.getenv("AZURE_API_BASE"),
         api_version=os.getenv("AZURE_API_VERSION"),
     )
-    deployment = Deployment(model_name="gpt-3.5-turbo", litellm_params=litellm_params)
+    deployment = Deployment(model_name="gpt-3.5-turbo", llm_params=llm_params)
     deployment_2 = Deployment(
-        model_name="gpt-3.5-turbo-2", litellm_params=litellm_params
+        model_name="gpt-3.5-turbo-2", llm_params=llm_params
     )
 
     llm_router = llm.Router(
@@ -154,18 +154,18 @@ async def test_add_existing_deployment():
     setattr(llm.proxy.proxy_server, "master_key", master_key)
     pc = ProxyConfig()
 
-    encrypted_litellm_params = litellm_params.dict(exclude_none=True)
+    encrypted_llm_params = llm_params.dict(exclude_none=True)
 
-    for k, v in encrypted_litellm_params.items():
+    for k, v in encrypted_llm_params.items():
         if isinstance(v, str):
             encrypted_value = encrypt_value(v, master_key)
-            encrypted_litellm_params[k] = base64.b64encode(encrypted_value).decode(
+            encrypted_llm_params[k] = base64.b64encode(encrypted_value).decode(
                 "utf-8"
             )
     db_model = DBModel(
         model_id=deployment.model_info.id,
         model_name="gpt-3.5-turbo",
-        litellm_params=encrypted_litellm_params,
+        llm_params=encrypted_llm_params,
         model_info={"id": deployment.model_info.id},
     )
 
@@ -180,19 +180,19 @@ async def test_db_error_new_model_check():
     """
     - if error in db, don't delete existing models
 
-    Relevant issue: https://github.com/BerriAI/litellm/blob/ddfe687b13e9f31db2fb2322887804e3d01dd467/litellm/proxy/proxy_server.py#L2461
+    Relevant issue: https://github.com/BerriAI/llm/blob/ddfe687b13e9f31db2fb2322887804e3d01dd467/llm/proxy/proxy_server.py#L2461
     """
     import base64
 
-    litellm_params = LLM_Params(
+    llm_params = LLM_Params(
         model="gpt-3.5-turbo",
         api_key=os.getenv("AZURE_API_KEY"),
         api_base=os.getenv("AZURE_API_BASE"),
         api_version=os.getenv("AZURE_API_VERSION"),
     )
-    deployment = Deployment(model_name="gpt-3.5-turbo", litellm_params=litellm_params)
+    deployment = Deployment(model_name="gpt-3.5-turbo", llm_params=llm_params)
     deployment_2 = Deployment(
-        model_name="gpt-3.5-turbo-2", litellm_params=litellm_params
+        model_name="gpt-3.5-turbo-2", llm_params=llm_params
     )
 
     llm_router = llm.Router(
@@ -209,18 +209,18 @@ async def test_db_error_new_model_check():
     setattr(llm.proxy.proxy_server, "master_key", master_key)
     pc = ProxyConfig()
 
-    encrypted_litellm_params = litellm_params.dict(exclude_none=True)
+    encrypted_llm_params = llm_params.dict(exclude_none=True)
 
-    for k, v in encrypted_litellm_params.items():
+    for k, v in encrypted_llm_params.items():
         if isinstance(v, str):
             encrypted_value = encrypt_value(v, master_key)
-            encrypted_litellm_params[k] = base64.b64encode(encrypted_value).decode(
+            encrypted_llm_params[k] = base64.b64encode(encrypted_value).decode(
                 "utf-8"
             )
     db_model = DBModel(
         model_id=deployment.model_info.id,
         model_name="gpt-3.5-turbo",
-        litellm_params=encrypted_litellm_params,
+        llm_params=encrypted_llm_params,
         model_info={"id": deployment.model_info.id},
     )
 
@@ -231,15 +231,15 @@ async def test_db_error_new_model_check():
     assert init_len_list == len(llm_router.model_list)
 
 
-litellm_params = LLM_Params(
+llm_params = LLM_Params(
     model="azure/chatgpt-v-2",
     api_key=os.getenv("AZURE_API_KEY"),
     api_base=os.getenv("AZURE_API_BASE"),
     api_version=os.getenv("AZURE_API_VERSION"),
 )
 
-deployment = Deployment(model_name="gpt-3.5-turbo", litellm_params=litellm_params)
-deployment_2 = Deployment(model_name="gpt-3.5-turbo-2", litellm_params=litellm_params)
+deployment = Deployment(model_name="gpt-3.5-turbo", llm_params=llm_params)
+deployment_2 = Deployment(model_name="gpt-3.5-turbo-2", llm_params=llm_params)
 
 
 def _create_model_list(flag_value: Literal[0, 1], master_key: str):
@@ -249,25 +249,25 @@ def _create_model_list(flag_value: Literal[0, 1], master_key: str):
     """
     import base64
 
-    new_litellm_params = LLM_Params(
+    new_llm_params = LLM_Params(
         model="azure/chatgpt-v-2-3",
         api_key=os.getenv("AZURE_API_KEY"),
         api_base=os.getenv("AZURE_API_BASE"),
         api_version=os.getenv("AZURE_API_VERSION"),
     )
 
-    encrypted_litellm_params = new_litellm_params.dict(exclude_none=True)
+    encrypted_llm_params = new_llm_params.dict(exclude_none=True)
 
-    for k, v in encrypted_litellm_params.items():
+    for k, v in encrypted_llm_params.items():
         if isinstance(v, str):
             encrypted_value = encrypt_value(v, master_key)
-            encrypted_litellm_params[k] = base64.b64encode(encrypted_value).decode(
+            encrypted_llm_params[k] = base64.b64encode(encrypted_value).decode(
                 "utf-8"
             )
     db_model = DBModel(
         model_id="12345",
         model_name="gpt-3.5-turbo",
-        litellm_params=encrypted_litellm_params,
+        llm_params=encrypted_llm_params,
         model_info={"id": "12345"},
     )
 
@@ -346,7 +346,7 @@ async def test_add_and_delete_deployments(llm_router, model_list_flag_value):
             assert len(llm_router.model_list) == len(model_list) + prev_llm_router_val
 
 
-from llm import LITELLM_CHAT_PROVIDERS, LlmProviders
+from llm import LLM_CHAT_PROVIDERS, LlmProviders
 from llm.utils import ProviderConfigManager
 from llm.llms.base_llm.chat.transformation import BaseConfig
 
@@ -383,7 +383,7 @@ def test_provider_config_manager_bedrock_converse_like():
 # def test_provider_config_manager():
 #     from llm.llms.openai.chat.gpt_transformation import OpenAIGPTConfig
 
-#     for provider in LITELLM_CHAT_PROVIDERS:
+#     for provider in LLM_CHAT_PROVIDERS:
 #         if (
 #             provider == LlmProviders.VERTEX_AI
 #             or provider == LlmProviders.VERTEX_AI_BETA

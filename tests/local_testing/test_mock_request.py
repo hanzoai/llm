@@ -1,5 +1,5 @@
 #### What this tests ####
-#    This tests mock request calls to litellm
+#    This tests mock request calls to llm
 
 import os
 import sys
@@ -120,7 +120,7 @@ def test_router_mock_request_with_mock_timeout():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -149,14 +149,14 @@ def test_router_mock_request_with_mock_timeout_with_fallbacks():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
             },
             {
                 "model_name": "azure-gpt",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": os.getenv("AZURE_API_BASE"),

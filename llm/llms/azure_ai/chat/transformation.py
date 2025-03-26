@@ -75,16 +75,16 @@ class AzureAIStudioConfig(OpenAIConfig):
 
         Args:
         - api_base: Base URL, e.g.,
-            "https://litellm8397336933.services.ai.azure.com"
+            "https://llm8397336933.services.ai.azure.com"
             OR
-            "https://litellm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview"
+            "https://llm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview"
         - model: Model name.
         - optional_params: Additional query parameters, including "api_version".
         - stream: If streaming is required (optional).
 
         Returns:
         - A complete URL string, e.g.,
-        "https://litellm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview"
+        "https://llm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview"
         """
         if api_base is None:
             raise ValueError(

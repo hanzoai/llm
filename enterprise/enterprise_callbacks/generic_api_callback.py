@@ -64,10 +64,10 @@ class GenericAPILogger:
 
             # construct payload to send custom logger
             # follows the same params as langfuse.py
-            litellm_params = kwargs.get("litellm_params", {})
+            llm_params = kwargs.get("llm_params", {})
             metadata = (
-                litellm_params.get("metadata", {}) or {}
-            )  # if litellm_params['metadata'] == None
+                llm_params.get("metadata", {}) or {}
+            )  # if llm_params['metadata'] == None
             messages = kwargs.get("messages")
             cost = kwargs.get("response_cost", 0.0)
             optional_params = kwargs.get("optional_params", {})

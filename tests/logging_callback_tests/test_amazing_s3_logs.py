@@ -104,13 +104,13 @@ def test_s3_logging():
         # redirect stdout to log_file
         llm.cache = llm.Cache(
             type="s3",
-            s3_bucket_name="litellm-my-test-bucket-2",
+            s3_bucket_name="llm-my-test-bucket-2",
             s3_region_name="us-east-1",
         )
 
         llm.success_callback = ["s3"]
         llm.s3_callback_params = {
-            "s3_bucket_name": "litellm-logs-2",
+            "s3_bucket_name": "llm-logs-2",
             "s3_aws_secret_access_key": "os.environ/AWS_SECRET_ACCESS_KEY",
             "s3_aws_access_key_id": "os.environ/AWS_ACCESS_KEY_ID",
         }
@@ -154,7 +154,7 @@ def test_s3_logging():
         import boto3
 
         s3 = boto3.client("s3")
-        bucket_name = "litellm-logs-2"
+        bucket_name = "llm-logs-2"
         # List objects in the bucket
         response = s3.list_objects(Bucket=bucket_name)
 
@@ -219,7 +219,7 @@ def test_s3_logging_async():
         # Make 5 calls with success_callback set to "langfuse"
         llm.success_callback = ["s3"]
         llm.s3_callback_params = {
-            "s3_bucket_name": "litellm-logs-2",
+            "s3_bucket_name": "llm-logs-2",
             "s3_aws_secret_access_key": "os.environ/AWS_SECRET_ACCESS_KEY",
             "s3_aws_access_key_id": "os.environ/AWS_ACCESS_KEY_ID",
         }
@@ -279,7 +279,7 @@ def test_s3_logging_r2():
     try:
         # redirect stdout to log_file
         # llm.cache = llm.Cache(
-        #     type="s3", s3_bucket_name="litellm-r2-bucket", s3_region_name="us-west-2"
+        #     type="s3", s3_bucket_name="llm-r2-bucket", s3_region_name="us-west-2"
         # )
         llm.set_verbose = True
         from llm._logging import verbose_logger
@@ -289,7 +289,7 @@ def test_s3_logging_r2():
 
         llm.success_callback = ["s3"]
         llm.s3_callback_params = {
-            "s3_bucket_name": "litellm-r2-bucket",
+            "s3_bucket_name": "llm-r2-bucket",
             "s3_aws_secret_access_key": "os.environ/R2_S3_ACCESS_KEY",
             "s3_aws_access_key_id": "os.environ/R2_S3_ACCESS_ID",
             "s3_endpoint_url": "os.environ/R2_S3_URL",
@@ -326,7 +326,7 @@ def test_s3_logging_r2():
             aws_secret_access_key=os.getenv("R2_S3_ACCESS_KEY"),
         )
 
-        bucket_name = "litellm-r2-bucket"
+        bucket_name = "llm-r2-bucket"
         # List objects in the bucket
         response = s3.list_objects(Bucket=bucket_name)
 

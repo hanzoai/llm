@@ -13,7 +13,7 @@ import io
 import os
 import time
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -29,7 +29,7 @@ import llm
 from llm._logging import verbose_proxy_logger
 
 from llm.proxy.proxy_server import (
-    LitellmUserRoles,
+    LlmUserRoles,
     audio_transcriptions,
     chat_completion,
     completion,
@@ -47,7 +47,7 @@ verbose_proxy_logger.setLevel(level=logging.DEBUG)
 from starlette.datastructures import URL
 
 from llm.proxy.management_helpers.audit_logs import create_audit_log_for_update
-from llm.proxy._types import LLM_AuditLogs, LitellmTableNames
+from llm.proxy._types import LLM_AuditLogs, LlmTableNames
 from llm.caching.caching import DualCache
 from unittest.mock import patch, AsyncMock
 
@@ -66,14 +66,14 @@ async def test_create_audit_log_for_update_premium_user():
         "llm.store_audit_logs", True
     ), patch("llm.proxy.proxy_server.prisma_client") as mock_prisma:
 
-        mock_prisma.db.litellm_auditlog.create = AsyncMock()
+        mock_prisma.db.llm_auditlog.create = AsyncMock()
 
         request_data = LLM_AuditLogs(
             id="test_id",
             updated_at=datetime.now(),
             changed_by="test_changed_by",
             action="updated",
-            table_name=LitellmTableNames.TEAM_TABLE_NAME,
+            table_name=LlmTableNames.TEAM_TABLE_NAME,
             object_id="test_object_id",
             updated_values=json.dumps({"key": "value"}),
             before_value=json.dumps({"old_key": "old_value"}),
@@ -81,7 +81,7 @@ async def test_create_audit_log_for_update_premium_user():
 
         await create_audit_log_for_update(request_data)
 
-        mock_prisma.db.litellm_auditlog.create.assert_called_once_with(
+        mock_prisma.db.llm_auditlog.create.assert_called_once_with(
             data={
                 "id": "test_id",
                 "updated_at": request_data.updated_at,
@@ -120,7 +120,7 @@ async def test_create_audit_log_in_db(prisma_client):
     setattr(llm.proxy.proxy_server, "prisma_client", prisma_client)
     setattr(llm.proxy.proxy_server, "master_key", "sk-1234")
     setattr(llm.proxy.proxy_server, "premium_user", True)
-    setattr(litellm, "store_audit_logs", True)
+    setattr(llm, "store_audit_logs", True)
 
     await llm.proxy.proxy_server.prisma_client.connect()
     audit_log_id = f"audit_log_id_{uuid.uuid4()}"
@@ -131,7 +131,7 @@ async def test_create_audit_log_in_db(prisma_client):
         updated_at=datetime.now(),
         changed_by="test_changed_by",
         action="updated",
-        table_name=LitellmTableNames.TEAM_TABLE_NAME,
+        table_name=LlmTableNames.TEAM_TABLE_NAME,
         object_id="test_object_id",
         updated_values=json.dumps({"key": "value"}),
         before_value=json.dumps({"old_key": "old_value"}),
@@ -142,10 +142,10 @@ async def test_create_audit_log_in_db(prisma_client):
     await asyncio.sleep(1)
 
     # now read the last log from the db
-    last_log = await prisma_client.db.litellm_auditlog.find_first(
+    last_log = await prisma_client.db.llm_auditlog.find_first(
         where={"id": audit_log_id}
     )
 
     assert last_log.id == audit_log_id
 
-    setattr(litellm, "store_audit_logs", False)
+    setattr(llm, "store_audit_logs", False)

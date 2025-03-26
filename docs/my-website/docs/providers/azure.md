@@ -402,7 +402,7 @@ llm --config /path/to/config.yaml
 
 ```bash
 curl http://localhost:4000/v1/chat/completions \
-  -H "Authorization: Bearer $LITELLM_API_KEY" \
+  -H "Authorization: Bearer $LLM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "azure-openai-4o-audio",
@@ -756,7 +756,7 @@ batch = client.batches.create( # re use client from above
 
 ```bash
 curl http://localhost:4000/v1/batches \
-  -H "Authorization: Bearer $LITELLM_API_KEY" \
+  -H "Authorization: Bearer $LLM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "input_file_id": "file-abc123",
@@ -784,7 +784,7 @@ retrieved_batch = client.batches.retrieve(
 
 ```bash
 curl http://localhost:4000/v1/batches/batch_abc123 \
-  -H "Authorization: Bearer $LITELLM_API_KEY" \
+  -H "Authorization: Bearer $LLM_API_KEY" \
   -H "Content-Type: application/json" \
 ```
 
@@ -808,7 +808,7 @@ cancelled_batch = client.batches.cancel(
 
 ```bash
 curl http://localhost:4000/v1/batches/batch_abc123/cancel \
-  -H "Authorization: Bearer $LITELLM_API_KEY" \
+  -H "Authorization: Bearer $LLM_API_KEY" \
   -H "Content-Type: application/json" \
   -X POST
 ```
@@ -830,7 +830,7 @@ client.batches.list(extra_body={"custom_llm_provider": "azure"})
 
 ```bash
 curl http://localhost:4000/v1/batches?limit=2 \
-  -H "Authorization: Bearer $LITELLM_API_KEY" \
+  -H "Authorization: Bearer $LLM_API_KEY" \
   -H "Content-Type: application/json"
 ```
 </TabItem>
@@ -956,7 +956,7 @@ Expected Response (OpenAI-compatible)
 
 ```bash
 curl http://0.0.0.0:4000/v1/batches \
-  -H "Authorization: Bearer $LITELLM_API_KEY" \
+  -H "Authorization: Bearer $LLM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "input_file_id": "file-f0be81f654454113a922da60acb0eea6",
@@ -976,7 +976,7 @@ Expected Response:
 
 ```bash
 curl http://0.0.0.0:4000/v1/batches/batch_94e43f0a-d805-477d-adf9-bbb9c50910ed \
-  -H "Authorization: Bearer $LITELLM_API_KEY" \
+  -H "Authorization: Bearer $LLM_API_KEY" \
   -H "Content-Type: application/json" \
 ```
 
@@ -991,7 +991,7 @@ Expected Response:
 
 ```bash
 curl http://0.0.0.0:4000/v1/batches?limit=2 \
-  -H "Authorization: Bearer $LITELLM_API_KEY" \
+  -H "Authorization: Bearer $LLM_API_KEY" \
   -H "Content-Type: application/json"
 ```
 

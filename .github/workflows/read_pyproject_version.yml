@@ -25,7 +25,7 @@ jobs:
         id: read-version
         run: |
           version=$(python -c 'import toml; print(toml.load("pyproject.toml")["tool"]["commitizen"]["version"])')
-          printf "LITELLM_VERSION=%s" "$version" >> $GITHUB_ENV
+          printf "LLM_VERSION=%s" "$version" >> $GITHUB_ENV
 
       - name: Display version
-        run: echo "Current version is $LITELLM_VERSION"
+        run: echo "Current version is $LLM_VERSION"

@@ -565,7 +565,7 @@ The format to follow is
 data:<mime_type>;base64,<encoded_data>
 ```
 
-** LITELLM CALL **
+** LLM CALL **
 
 ```python
 import llm

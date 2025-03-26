@@ -59,7 +59,7 @@ print(response.choices[0].message.content)
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $LITELLM_KEY" \
+  -H "Authorization: Bearer $LLM_KEY" \
   -d '{
     "model": "anthropic/claude-3-7-sonnet-20250219",
     "messages": [
@@ -235,7 +235,7 @@ llm --config config.yaml
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $LITELLM_KEY" \
+  -H "Authorization: Bearer $LLM_KEY" \
   -d '{
     "model": "claude-3-7-sonnet-thinking",
     "messages": [
@@ -273,7 +273,7 @@ curl http://0.0.0.0:4000/v1/chat/completions \
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $LITELLM_KEY" \
+  -H "Authorization: Bearer $LLM_KEY" \
   -d '{
     "model": "claude-3-7-sonnet-thinking",
     "messages": [

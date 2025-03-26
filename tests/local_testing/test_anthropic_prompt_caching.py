@@ -23,7 +23,7 @@ import pytest
 import llm
 from llm import RateLimitError, Timeout, completion, completion_cost, embedding
 from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
-from llm.litellm_core_utils.prompt_templates.factory import anthropic_messages_pt
+from llm.llm_core_utils.prompt_templates.factory import anthropic_messages_pt
 from test_amazing_vertex_completion import load_vertex_ai_credentials
 
 # llm.num_retries =3
@@ -47,7 +47,7 @@ def reset_callbacks():
 
 
 @pytest.mark.asyncio
-async def test_litellm_anthropic_prompt_caching_tools():
+async def test_llm_anthropic_prompt_caching_tools():
     # Arrange: Set up the MagicMock for the httpx.AsyncClient
     mock_response = AsyncMock()
 
@@ -522,7 +522,7 @@ async def test_anthropic_api_prompt_caching_streaming():
 
 
 @pytest.mark.asyncio
-async def test_litellm_anthropic_prompt_caching_system():
+async def test_llm_anthropic_prompt_caching_system():
     # https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching#prompt-caching-examples
     # LArge Context Caching Example
     mock_response = AsyncMock()
@@ -652,7 +652,7 @@ async def test_router_prompt_caching_model_stored(
         model_list=[
             {
                 "model_name": "claude-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "anthropic/claude-3-5-sonnet-20240620",
                     "api_key": os.environ.get("ANTHROPIC_API_KEY"),
                 },
@@ -701,7 +701,7 @@ async def test_router_with_prompt_caching(anthropic_messages):
         model_list=[
             {
                 "model_name": "claude-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "anthropic/claude-3-5-sonnet-20240620",
                     "api_key": os.environ.get("ANTHROPIC_API_KEY"),
                     "mock_response": "The sky is blue.",
@@ -709,7 +709,7 @@ async def test_router_with_prompt_caching(anthropic_messages):
             },
             {
                 "model_name": "claude-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "anthropic.claude-3-5-sonnet-20241022-v2:0",
                     "mock_response": "The sky is green.",
                 },

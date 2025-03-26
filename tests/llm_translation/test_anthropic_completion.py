@@ -468,8 +468,8 @@ class TestAnthropicCompletion(BaseLLMChatTest, BaseAnthropicChatTest):
         return {"model": "anthropic/claude-3-5-sonnet-20240620"}
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
-        from llm.litellm_core_utils.prompt_templates.factory import (
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
+        from llm.llm_core_utils.prompt_templates.factory import (
             convert_to_anthropic_tool_invoke,
         )
 
@@ -492,7 +492,7 @@ class TestAnthropicCompletion(BaseLLMChatTest, BaseAnthropicChatTest):
         from pydantic import BaseModel
         from llm.utils import supports_response_schema
 
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
 
         class RFormat(BaseModel):
@@ -572,7 +572,7 @@ def test_convert_tool_response_to_message_without_values():
 
     Anthropic API returns the JSON schema in the tool call, OpenAI Spec expects it in the message. This test ensures that the tool call is converted to a message correctly.
 
-    Relevant issue: https://github.com/BerriAI/litellm/issues/6741
+    Relevant issue: https://github.com/BerriAI/llm/issues/6741
     """
     tool_calls = [
         ChatCompletionToolCallChunk(
@@ -627,7 +627,7 @@ def test_convert_tool_response_to_message_no_arguments():
 
 
 def test_anthropic_tool_with_image():
-    from llm.litellm_core_utils.prompt_templates.factory import prompt_factory
+    from llm.llm_core_utils.prompt_templates.factory import prompt_factory
     import json
 
     b64_data = "iVBORw0KGgoAAAANSUhEu6U3//C9t/fKv5wDgpP1r5796XwC4zyH1D565bHGDqbY85AMb0nIQe+u3J390Xbtb9XgXxcK0/aqRXpdYcwgARbCN03FJk"
@@ -857,7 +857,7 @@ async def test_anthropic_structured_output():
     """
     Test the _transform_response_for_structured_output
 
-    Relevant Issue: https://github.com/BerriAI/litellm/issues/8291
+    Relevant Issue: https://github.com/BerriAI/llm/issues/8291
     """
     from llm import acompletion
 

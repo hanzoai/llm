@@ -12,7 +12,7 @@ Pass-through endpoints for Anthropic - call provider-specific endpoint, in nativ
 | End-user Tracking | ✅ | disable prometheus tracking via `llm.disable_end_user_cost_tracking_prometheus_only`|
 | Streaming | ✅ | |
 
-Just replace `https://api.anthropic.com` with `LITELLM_PROXY_BASE_URL/anthropic`
+Just replace `https://api.anthropic.com` with `LLM_PROXY_BASE_URL/anthropic`
 
 #### **Example Usage**
 
@@ -90,7 +90,7 @@ Let's call the Anthropic /messages endpoint
 
 ```bash
 curl http://0.0.0.0:4000/anthropic/v1/messages \
-     --header "x-api-key: $LITELLM_API_KEY" \
+     --header "x-api-key: $LLM_API_KEY" \
      --header "anthropic-version: 2023-06-01" \
      --header "content-type: application/json" \
      --data \
@@ -112,8 +112,8 @@ Key Changes:
 
 | **Original Endpoint**                                | **Replace With**                  |
 |------------------------------------------------------|-----------------------------------|
-| `https://api.anthropic.com`          | `http://0.0.0.0:4000/anthropic` (LITELLM_PROXY_BASE_URL="http://0.0.0.0:4000")      |
-| `bearer $ANTHROPIC_API_KEY`                                 | `bearer anything` (use `bearer LITELLM_VIRTUAL_KEY` if Virtual Keys are setup on proxy)                    |
+| `https://api.anthropic.com`          | `http://0.0.0.0:4000/anthropic` (LLM_PROXY_BASE_URL="http://0.0.0.0:4000")      |
+| `bearer $ANTHROPIC_API_KEY`                                 | `bearer anything` (use `bearer LLM_VIRTUAL_KEY` if Virtual Keys are setup on proxy)                    |
     
 
 ### **Example 1: Messages endpoint**
@@ -123,7 +123,7 @@ Key Changes:
 ```bash
 curl --request POST \
   --url http://0.0.0.0:4000/anthropic/v1/messages \
-  --header "x-api-key: $LITELLM_API_KEY" \
+  --header "x-api-key: $LLM_API_KEY" \
     --header "anthropic-version: 2023-06-01" \
     --header "content-type: application/json" \
   --data '{
@@ -159,7 +159,7 @@ curl https://api.anthropic.com/v1/messages \
 ```bash
 curl --request POST \
     --url http://0.0.0.0:4000/anthropic/v1/messages/count_tokens \
-    --header "x-api-key: $LITELLM_API_KEY" \
+    --header "x-api-key: $LLM_API_KEY" \
     --header "anthropic-version: 2023-06-01" \
     --header "anthropic-beta: token-counting-2024-11-01" \
     --header "content-type: application/json" \
@@ -197,7 +197,7 @@ curl https://api.anthropic.com/v1/messages/count_tokens \
 ```bash
 curl --request POST \
     --url http://0.0.0.0:4000/anthropic/v1/messages/batches \
-    --header "x-api-key: $LITELLM_API_KEY" \
+    --header "x-api-key: $LLM_API_KEY" \
     --header "anthropic-version: 2023-06-01" \
     --header "anthropic-beta: message-batches-2024-09-24" \
     --header "content-type: application/json" \
@@ -277,7 +277,7 @@ Use this, to avoid giving developers the raw Anthropic API key, but still lettin
 
 ```bash
 export DATABASE_URL=""
-export LITELLM_MASTER_KEY=""
+export LLM_MASTER_KEY=""
 export COHERE_API_KEY=""
 ```
 

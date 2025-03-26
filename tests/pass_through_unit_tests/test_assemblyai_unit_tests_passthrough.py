@@ -12,7 +12,7 @@ sys.path.insert(
 import httpx
 import pytest
 import llm
-from llm.litellm_core_utils.litellm_logging import Logging as LLMLoggingObj
+from llm.llm_core_utils.llm_logging import Logging as LLMLoggingObj
 
 
 import json
@@ -28,7 +28,7 @@ sys.path.insert(
 import httpx
 import pytest
 import llm
-from llm.litellm_core_utils.litellm_logging import Logging as LLMLoggingObj
+from llm.llm_core_utils.llm_logging import Logging as LLMLoggingObj
 from llm.proxy.pass_through_endpoints.llm_provider_handlers.assembly_passthrough_logging_handler import (
     AssemblyAIPassthroughLoggingHandler,
     AssemblyAITranscriptResponse,

@@ -42,7 +42,7 @@ class AnthropicPassthroughLoggingHandler:
         Transforms Anthropic response to OpenAI response, generates a standard logging object so downstream logging can be handled
         """
         model = response_body.get("model", "")
-        litellm_model_response: ModelResponse = AnthropicConfig().transform_response(
+        llm_model_response: ModelResponse = AnthropicConfig().transform_response(
             raw_response=httpx_response,
             model_response=llm.ModelResponse(),
             model=model,
@@ -57,7 +57,7 @@ class AnthropicPassthroughLoggingHandler:
         )
 
         kwargs = AnthropicPassthroughLoggingHandler._create_anthropic_response_logging_payload(
-            litellm_model_response=litellm_model_response,
+            llm_model_response=llm_model_response,
             model=model,
             kwargs=kwargs,
             start_time=start_time,
@@ -66,7 +66,7 @@ class AnthropicPassthroughLoggingHandler:
         )
 
         return {
-            "result": litellm_model_response,
+            "result": llm_model_response,
             "kwargs": kwargs,
         }
 
@@ -81,7 +81,7 @@ class AnthropicPassthroughLoggingHandler:
 
     @staticmethod
     def _create_anthropic_response_logging_payload(
-        litellm_model_response: Union[ModelResponse, TextCompletionResponse],
+        llm_model_response: Union[ModelResponse, TextCompletionResponse],
         model: str,
         kwargs: dict,
         start_time: datetime,
@@ -95,7 +95,7 @@ class AnthropicPassthroughLoggingHandler:
         """
         try:
             response_cost = llm.completion_cost(
-                completion_response=litellm_model_response,
+                completion_response=llm_model_response,
                 model=model,
             )
             kwargs["response_cost"] = response_cost
@@ -120,8 +120,8 @@ class AnthropicPassthroughLoggingHandler:
             )
 
             # set llm_call_id to logging response object
-            litellm_model_response.id = logging_obj.llm_call_id
-            litellm_model_response.model = model
+            llm_model_response.id = logging_obj.llm_call_id
+            llm_model_response.model = model
             logging_obj.model_call_details["model"] = model
             logging_obj.model_call_details["custom_llm_provider"] = (
                 llm.LlmProviders.ANTHROPIC.value
@@ -169,7 +169,7 @@ class AnthropicPassthroughLoggingHandler:
                 "kwargs": {},
             }
         kwargs = AnthropicPassthroughLoggingHandler._create_anthropic_response_logging_payload(
-            litellm_model_response=complete_streaming_response,
+            llm_model_response=complete_streaming_response,
             model=model,
             kwargs={},
             start_time=start_time,

@@ -97,16 +97,16 @@ def _get_parent_otel_span_from_kwargs(
             return None
         llm_params = kwargs.get("llm_params")
         _metadata = kwargs.get("metadata") or {}
-        if "litellm_parent_otel_span" in _metadata:
-            return _metadata["litellm_parent_otel_span"]
+        if "llm_parent_otel_span" in _metadata:
+            return _metadata["llm_parent_otel_span"]
         elif (
             llm_params is not None
             and llm_params.get("metadata") is not None
-            and "litellm_parent_otel_span" in llm_params.get("metadata", {})
+            and "llm_parent_otel_span" in llm_params.get("metadata", {})
         ):
-            return llm_params["metadata"]["litellm_parent_otel_span"]
-        elif "litellm_parent_otel_span" in kwargs:
-            return kwargs["litellm_parent_otel_span"]
+            return llm_params["metadata"]["llm_parent_otel_span"]
+        elif "llm_parent_otel_span" in kwargs:
+            return kwargs["llm_parent_otel_span"]
         return None
     except Exception as e:
         verbose_logger.exception(

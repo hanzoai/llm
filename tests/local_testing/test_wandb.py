@@ -25,7 +25,7 @@ def test_wandb_logging_async():
             model_list = [
                 {  # list of model deployments
                     "model_name": "gpt-3.5-turbo",
-                    "litellm_params": {  # params for llm completion/embedding call
+                    "llm_params": {  # params for llm completion/embedding call
                         "model": "gpt-3.5-turbo",
                         "api_key": os.getenv("OPENAI_API_KEY"),
                     },

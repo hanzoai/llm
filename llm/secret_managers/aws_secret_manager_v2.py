@@ -6,7 +6,7 @@ Handles Async Operations for:
 - Write Secret
 - Delete Secret
 
-Relevant issue: https://github.com/BerriAI/litellm/issues/1883
+Relevant issue: https://github.com/BerriAI/llm/issues/1883
 
 Requires:
 * `os.environ["AWS_REGION_NAME"], 

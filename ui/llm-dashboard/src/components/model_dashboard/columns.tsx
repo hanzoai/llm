@@ -80,15 +80,15 @@ export const columns = (
     },
   },
   {
-    header: "LiteLLM Model Name",
-    accessorKey: "litellm_model_name",
+    header: "LLM Model Name",
+    accessorKey: "llm_model_name",
     cell: ({ row }) => {
       const model = row.original;
       return (
-        <Tooltip title={model.litellm_model_name}>
+        <Tooltip title={model.llm_model_name}>
           <pre className="text-xs">
-            {model.litellm_model_name
-              ? model.litellm_model_name.slice(0, 20) + (model.litellm_model_name.length > 20 ? "..." : "")
+            {model.llm_model_name
+              ? model.llm_model_name.slice(0, 20) + (model.llm_model_name.length > 20 ? "..." : "")
               : "-"}
           </pre>
         </Tooltip>
@@ -190,13 +190,13 @@ export const columns = (
   },
   {
     header: "Credentials",
-    accessorKey: "litellm_credential_name",
+    accessorKey: "llm_credential_name",
     cell: ({ row }) => {
       const model = row.original;
-      return model.litellm_params && model.litellm_params.litellm_credential_name ? (
+      return model.llm_params && model.llm_params.llm_credential_name ? (
         <div className="overflow-hidden">
-          <Tooltip title={model.litellm_params.litellm_credential_name}>
-            {model.litellm_params.litellm_credential_name.slice(0, 7)}...
+          <Tooltip title={model.llm_params.llm_credential_name}>
+            {model.llm_params.llm_credential_name.slice(0, 7)}...
           </Tooltip>
         </div>
       ) : (

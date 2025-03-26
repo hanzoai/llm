@@ -103,7 +103,7 @@ def test_hanging_request_azure():
             model_list=[
                 {
                     "model_name": "azure-gpt",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "azure/chatgpt-v-2",
                         "api_base": os.environ["AZURE_API_BASE"],
                         "api_key": os.environ["AZURE_API_KEY"],
@@ -111,7 +111,7 @@ def test_hanging_request_azure():
                 },
                 {
                     "model_name": "openai-gpt",
-                    "litellm_params": {"model": "gpt-3.5-turbo"},
+                    "llm_params": {"model": "gpt-3.5-turbo"},
                 },
             ],
             num_retries=0,
@@ -157,7 +157,7 @@ def test_hanging_request_openai():
             model_list=[
                 {
                     "model_name": "azure-gpt",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "azure/chatgpt-v-2",
                         "api_base": os.environ["AZURE_API_BASE"],
                         "api_key": os.environ["AZURE_API_KEY"],
@@ -165,7 +165,7 @@ def test_hanging_request_openai():
                 },
                 {
                     "model_name": "openai-gpt",
-                    "litellm_params": {"model": "gpt-3.5-turbo"},
+                    "llm_params": {"model": "gpt-3.5-turbo"},
                 },
             ],
             num_retries=0,

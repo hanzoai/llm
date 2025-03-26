@@ -29,11 +29,11 @@ class MyCustomHandler(CustomLogger):
     def log_pre_api_call(self, model, messages, kwargs):
         print(f"Pre-API Call")
         print(
-            f"previous_models: {kwargs['litellm_params']['metadata'].get('previous_models', None)}"
+            f"previous_models: {kwargs['llm_params']['metadata'].get('previous_models', None)}"
         )
         self.previous_models = len(
-            kwargs["litellm_params"]["metadata"].get("previous_models", [])
-        )  # {"previous_models": [{"model": litellm_model_name, "exception_type": AuthenticationError, "exception_string": <complete_traceback>}]}
+            kwargs["llm_params"]["metadata"].get("previous_models", [])
+        )  # {"previous_models": [{"model": llm_model_name, "exception_type": AuthenticationError, "exception_string": <complete_traceback>}]}
         print(f"self.previous_models: {self.previous_models}")
 
     def log_post_api_call(self, kwargs, response_obj, start_time, end_time):
@@ -80,7 +80,7 @@ async def test_router_retries_errors(sync_mode, error_type):
     model_list = [
         {
             "model_name": "azure/gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-functioncalling",
                 "api_key": _api_key,
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -91,7 +91,7 @@ async def test_router_retries_errors(sync_mode, error_type):
         },
         {
             "model_name": "azure/gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-functioncalling",
                 "api_key": _api_key,
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -165,7 +165,7 @@ async def test_router_retry_policy(error_type):
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -174,7 +174,7 @@ async def test_router_retry_policy(error_type):
             },
             {
                 "model_name": "bad-model",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -229,7 +229,7 @@ async def test_router_retry_policy_on_429_errprs():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {
+                "llm_params": {
                     "model": "vertex_ai/gemini-1.5-pro-001",
                 },
             },
@@ -274,7 +274,7 @@ async def test_dynamic_router_retry_policy(model_group):
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -286,7 +286,7 @@ async def test_dynamic_router_retry_policy(model_group):
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -298,7 +298,7 @@ async def test_dynamic_router_retry_policy(model_group):
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -310,7 +310,7 @@ async def test_dynamic_router_retry_policy(model_group):
             },
             {
                 "model_name": "bad-model",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -392,7 +392,7 @@ def test_retry_rate_limit_error_with_healthy_deployments():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -425,7 +425,7 @@ def test_do_retry_rate_limit_error_with_no_fallbacks_and_no_healthy_deployments(
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -465,7 +465,7 @@ def test_raise_context_window_exceeded_error():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -507,7 +507,7 @@ def test_raise_context_window_exceeded_error_no_retry():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -555,13 +555,13 @@ def test_timeout_for_rate_limit_error_with_healthy_deployments(
             status_code=429,
             content="",
             headers={"retry-after": str(cooldown_time)},  # type: ignore
-            request=httpx.Request(method="tpm_rpm_limits", url="https://github.com/BerriAI/litellm"),  # type: ignore
+            request=httpx.Request(method="tpm_rpm_limits", url="https://github.com/BerriAI/llm"),  # type: ignore
         ),
     )
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/chatgpt-v-2",
                 "api_key": os.getenv("AZURE_API_KEY"),
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -573,7 +573,7 @@ def test_timeout_for_rate_limit_error_with_healthy_deployments(
         model_list.append(
             {
                 "model_name": "gpt-4",
-                "litellm_params": {"model": "gpt-3.5-turbo"},
+                "llm_params": {"model": "gpt-3.5-turbo"},
             }
         )
 
@@ -586,7 +586,7 @@ def test_timeout_for_rate_limit_error_with_healthy_deployments(
         healthy_deployments=[
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "api_key": "my-key",
                     "api_base": "https://openai-gpt-4-test-v-1.openai.azure.com",
                     "model": "azure/chatgpt-v-2",
@@ -614,7 +614,7 @@ def test_timeout_for_rate_limit_error_with_no_healthy_deployments():
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/chatgpt-v-2",
                 "api_key": os.getenv("AZURE_API_KEY"),
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -649,7 +649,7 @@ def test_no_retry_for_not_found_error_404():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -708,7 +708,7 @@ def test_no_retry_when_no_healthy_deployments():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -744,7 +744,7 @@ async def test_router_retries_model_specific_and_global():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "num_retries": 1,
@@ -779,7 +779,7 @@ async def test_router_timeout_model_specific_and_global():
         model_list=[
             {
                 "model_name": "anthropic-claude",
-                "litellm_params": {
+                "llm_params": {
                     "model": "anthropic/claude-3-5-sonnet-20240620",
                     "timeout": 1,
                 },

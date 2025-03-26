@@ -12,15 +12,15 @@ if TYPE_CHECKING:
 
     from llm.router import Router as _Router
 
-    LitellmRouter = _Router
+    LlmRouter = _Router
     Span = _Span
 else:
-    LitellmRouter = Any
+    LlmRouter = Any
     Span = Any
 
 
 async def send_llm_exception_alert(
-    litellm_router_instance: LitellmRouter,
+    llm_router_instance: LlmRouter,
     request_kwargs: dict,
     error_traceback_str: str,
     original_exception,
@@ -30,19 +30,19 @@ async def send_llm_exception_alert(
     Sends a Slack / MS Teams alert for the LLM API call failure. Only if router.slack_alerting_logger is set.
 
     Parameters:
-        litellm_router_instance (_Router): The LitellmRouter instance.
+        llm_router_instance (_Router): The LlmRouter instance.
         original_exception (Any): The original exception that occurred.
 
     Returns:
         None
     """
-    if litellm_router_instance is None:
+    if llm_router_instance is None:
         return
 
-    if not hasattr(litellm_router_instance, "slack_alerting_logger"):
+    if not hasattr(llm_router_instance, "slack_alerting_logger"):
         return
 
-    if litellm_router_instance.slack_alerting_logger is None:
+    if llm_router_instance.slack_alerting_logger is None:
         return
 
     if "proxy_server_request" in request_kwargs:
@@ -56,7 +56,7 @@ async def send_llm_exception_alert(
         exception_str += llm_debug_info
     exception_str += f"\n\n{error_traceback_str[:2000]}"
 
-    await litellm_router_instance.slack_alerting_logger.send_alert(
+    await llm_router_instance.slack_alerting_logger.send_alert(
         message=f"LLM API call failed: `{exception_str}`",
         level="High",
         alert_type=AlertType.llm_exceptions,
@@ -65,7 +65,7 @@ async def send_llm_exception_alert(
 
 
 async def async_raise_no_deployment_exception(
-    litellm_router_instance: LitellmRouter, model: str, parent_otel_span: Optional[Span]
+    llm_router_instance: LlmRouter, model: str, parent_otel_span: Optional[Span]
 ):
     """
     Raises a RouterRateLimitError if no deployment is found for the given model.
@@ -73,17 +73,17 @@ async def async_raise_no_deployment_exception(
     verbose_router_logger.info(
         f"get_available_deployment for model: {model}, No deployment available"
     )
-    model_ids = litellm_router_instance.get_model_ids(model_name=model)
-    _cooldown_time = litellm_router_instance.cooldown_cache.get_min_cooldown(
+    model_ids = llm_router_instance.get_model_ids(model_name=model)
+    _cooldown_time = llm_router_instance.cooldown_cache.get_min_cooldown(
         model_ids=model_ids, parent_otel_span=parent_otel_span
     )
     _cooldown_list = await _async_get_cooldown_deployments_with_debug_info(
-        litellm_router_instance=litellm_router_instance,
+        llm_router_instance=llm_router_instance,
         parent_otel_span=parent_otel_span,
     )
     return RouterRateLimitError(
         model=model,
         cooldown_time=_cooldown_time,
-        enable_pre_call_checks=litellm_router_instance.enable_pre_call_checks,
+        enable_pre_call_checks=llm_router_instance.enable_pre_call_checks,
         cooldown_list=_cooldown_list,
     )

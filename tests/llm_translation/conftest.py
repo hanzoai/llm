@@ -28,12 +28,12 @@ def setup_and_teardown(event_loop):  # Add event_loop as a dependency
     import llm
     from llm import Router
 
-    importlib.reload(litellm)
+    importlib.reload(llm)
 
     # Set the event loop from the fixture
     asyncio.set_event_loop(event_loop)
 
-    print(litellm)
+    print(llm)
     yield
 
     # Clean up any pending tasks

@@ -92,7 +92,7 @@ interface CacheHealthResponse {
   cache_type?: string;
   ping_response?: boolean;
   set_cache_response?: string;
-  litellm_cache_params?: string;
+  llm_cache_params?: string;
   error?: {
     message: string;
     type: string;

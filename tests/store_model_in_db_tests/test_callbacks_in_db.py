@@ -29,7 +29,7 @@ async def config_update(session, routing_strategy=None):
     headers = {"Authorization": "Bearer sk-1234", "Content-Type": "application/json"}
     print("routing_strategy: ", routing_strategy)
     data = {
-        "litellm_settings": {"success_callback": ["langfuse"]},
+        "llm_settings": {"success_callback": ["langfuse"]},
         "environment_variables": {
             "LANGFUSE_PUBLIC_KEY": "any-public-key",
             "LANGFUSE_SECRET_KEY": "any-secret-key",

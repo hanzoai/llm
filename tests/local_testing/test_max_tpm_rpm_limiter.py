@@ -45,7 +45,7 @@
 #         user_api_key_dict=user_api_key_dict, cache=local_cache, data={}, call_type=""
 #     )
 
-#     kwargs = {"litellm_params": {"metadata": {"user_api_key": _api_key}}}
+#     kwargs = {"llm_params": {"metadata": {"user_api_key": _api_key}}}
 
 #     await tpm_rpm_limiter.async_log_success_event(
 #         kwargs=kwargs,
@@ -98,7 +98,7 @@
 #     )
 
 #     kwargs = {
-#         "litellm_params": {
+#         "llm_params": {
 #             "metadata": {"user_api_key": _api_key, "user_api_key_team_id": _team_id}
 #         }
 #     }
@@ -136,7 +136,7 @@
 #     from llm.proxy.proxy_server import ProxyConfig
 
 #     redis_usage_cache: Optional[RedisCache] = None
-#     cache_params = {"type": "redis", "namespace": "litellm_default"}
+#     cache_params = {"type": "redis", "namespace": "llm_default"}
 
 #     ## INIT CACHE ##
 #     proxy_config = ProxyConfig()
@@ -149,7 +149,7 @@
 #     )
 
 #     ## CHECK IF NAMESPACE SET ##
-#     assert redis_cache.namespace == "litellm_default"
+#     assert redis_cache.namespace == "llm_default"
 
 #     ## CHECK IF TPM/RPM RATE LIMITING WORKS ##
 #     await test_pre_call_hook_team_rpm_limits(_redis_usage_cache=redis_cache)
@@ -158,6 +158,6 @@
 #     current_minute = datetime.now().strftime("%M")
 #     precise_minute = f"{current_date}-{current_hour}-{current_minute}"
 
-#     cache_key = "litellm_default:usage:{}".format(precise_minute)
+#     cache_key = "llm_default:usage:{}".format(precise_minute)
 #     value = await redis_cache.async_get_cache(key=cache_key)
 #     assert value is not None

@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 import httpx
 
 import llm
-from llm.llm_core_utils.llm_logging import Logging as LitellmLogging
+from llm.llm_core_utils.llm_logging import Logging as LlmLogging
 from llm.llms.custom_httpx.http_handler import (
     AsyncHTTPHandler,
     HTTPHandler,
@@ -50,7 +50,7 @@ class BedrockRerankHandler(BaseAWSLLM):
         query: str,
         documents: List[Union[str, Dict[str, Any]]],
         optional_params: dict,
-        logging_obj: LitellmLogging,
+        logging_obj: LlmLogging,
         top_n: Optional[int] = None,
         rank_fields: Optional[List[str]] = None,
         return_documents: Optional[bool] = True,

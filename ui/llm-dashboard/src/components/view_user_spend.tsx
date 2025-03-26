@@ -61,7 +61,7 @@ const ViewUserSpend: React.FC<ViewUserSpendProps> = ({ userID, userRole, accessT
                *      "user_id": "2c315de3-e7ce-4269-b73e-b039a06187b1",
                *      "team_id": "test-team_515e6f42-ded2-4f0d-8919-0a1f43c5a45f",
                *      "budget_id": "0880769f-716a-4149-ab19-7f7651ad4db5",
-               *      "litellm_budget_table": {
+               *      "llm_budget_table": {
                   "soft_budget": null,
                   "max_budget": 20.0,
                   "max_parallel_requests": null,
@@ -72,8 +72,8 @@ const ViewUserSpend: React.FC<ViewUserSpendProps> = ({ userID, userRole, accessT
               }
                */
               for (const member of selectedTeam.team_memberships) {
-                if (member.user_id === userID && "max_budget" in member.litellm_budget_table && member.litellm_budget_table.max_budget !== null) {
-                  setMaxBudget(member.litellm_budget_table.max_budget);
+                if (member.user_id === userID && "max_budget" in member.llm_budget_table && member.llm_budget_table.max_budget !== null) {
+                  setMaxBudget(member.llm_budget_table.max_budget);
                   setMaxBudgetFlag = true;
                 }
               }

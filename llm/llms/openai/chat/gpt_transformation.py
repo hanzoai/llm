@@ -195,12 +195,12 @@ class OpenAIGPTConfig(BaseLLMModelInfo, BaseConfig):
                                 "url": content_item["image_url"],
                             }
                         elif isinstance(content_item["image_url"], dict):
-                            litellm_specific_params = {"format"}
+                            llm_specific_params = {"format"}
                             new_image_url_obj = ChatCompletionImageUrlObject(
                                 **{  # type: ignore
                                     k: v
                                     for k, v in content_item["image_url"].items()
-                                    if k not in litellm_specific_params
+                                    if k not in llm_specific_params
                                 }
                             )
                             content_item["image_url"] = new_image_url_obj

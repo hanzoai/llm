@@ -13,7 +13,7 @@ import os
 import time
 import json
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")

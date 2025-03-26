@@ -11,7 +11,7 @@ from datetime import datetime
 load_dotenv()
 import os, io, time
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -43,7 +43,7 @@ async def test_vLLM_token_counting():
         model_list=[
             {
                 "model_name": "special-alias",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/wolfram/miquliz-120b-v2.0",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                 },
@@ -79,7 +79,7 @@ async def test_token_counting_model_not_in_model_list():
         model_list=[
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4",
                 },
             }
@@ -114,7 +114,7 @@ async def test_gpt_token_counting():
         model_list=[
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4",
                 },
             }

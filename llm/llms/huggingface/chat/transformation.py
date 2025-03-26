@@ -41,7 +41,7 @@ class HuggingfaceChatConfig(BaseConfig):
     """
 
     hf_task: Optional[hf_tasks] = (
-        None  # litellm-specific param, used to know the api spec to use when calling huggingface api
+        None  # llm-specific param, used to know the api spec to use when calling huggingface api
     )
     best_of: Optional[int] = None
     decoder_input_details: Optional[bool] = None

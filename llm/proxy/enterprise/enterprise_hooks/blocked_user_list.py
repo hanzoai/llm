@@ -82,14 +82,14 @@ class _ENTERPRISE_BlockedUserList(CustomLogger):
                         },
                     )
 
-                cache_key = f"litellm:end_user_id:{user}"
+                cache_key = f"llm:end_user_id:{user}"
                 end_user_cache_obj: Optional[LLM_EndUserTable] = cache.get_cache(  # type: ignore
                     key=cache_key
                 )
                 if end_user_cache_obj is None and self.prisma_client is not None:
                     # check db
                     end_user_obj = (
-                        await self.prisma_client.db.litellm_endusertable.find_unique(
+                        await self.prisma_client.db.llm_endusertable.find_unique(
                             where={"user_id": user}
                         )
                     )

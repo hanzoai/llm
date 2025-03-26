@@ -14,7 +14,7 @@ class ServiceTypes(str, enum.Enum):
     DB = "postgres"
     BATCH_WRITE_TO_DB = "batch_write_to_db"
     RESET_BUDGET_JOB = "reset_budget_job"
-    LITELLM = "self"
+    LLM = "self"
     ROUTER = "router"
     AUTH = "auth"
     PROXY_PRE_CALL = "proxy_pre_call"

@@ -64,7 +64,7 @@ async def test_completion_with_retry_policy(sync_mode):
 
     target_function = "completion_with_retries"
 
-    with patch.object(litellm, target_function) as mock_completion_with_retries:
+    with patch.object(llm, target_function) as mock_completion_with_retries:
         data = {
             "model": "azure/gpt-3.5-turbo",
             "messages": [{"gm": "vibe", "role": "user"}],
@@ -128,7 +128,7 @@ async def test_completion_with_retries(sync_mode):
     else:
         target_function = "acompletion"
 
-    with patch.object(litellm, target_function) as mock_completion:
+    with patch.object(llm, target_function) as mock_completion:
         if sync_mode:
             completion_with_retries(
                 model="gpt-3.5-turbo",

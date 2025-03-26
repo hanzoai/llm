@@ -84,7 +84,7 @@ class BaseLLMEmbeddingTest(ABC):
         llm.set_verbose = True
         from llm.utils import supports_embedding_image_input
 
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
 
         base_embedding_call_args = self.get_base_embedding_call_args()

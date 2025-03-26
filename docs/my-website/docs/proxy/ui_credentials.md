@@ -50,6 +50,6 @@ Go to Add Model -> Existing Credentials -> Select your credential in the dropdow
 
 
 How are credentials stored?
-Credentials in the DB are encrypted/decrypted using `LITELLM_SALT_KEY`, if set. If not, then they are encrypted using `LITELLM_MASTER_KEY`. These keys should be kept secret and not shared with others.
+Credentials in the DB are encrypted/decrypted using `LLM_SALT_KEY`, if set. If not, then they are encrypted using `LLM_MASTER_KEY`. These keys should be kept secret and not shared with others.
 
 

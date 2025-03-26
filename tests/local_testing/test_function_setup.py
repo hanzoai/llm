@@ -29,5 +29,5 @@ def test_empty_content():
         rules_obj=rules_obj,
         start_time=datetime.now(),
         messages=[],
-        litellm_call_id=str(uuid.uuid4()),
+        llm_call_id=str(uuid.uuid4()),
     )

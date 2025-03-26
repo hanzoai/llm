@@ -14,20 +14,20 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from llm.router import Router as _Router
 
-    LitellmRouter = _Router
+    LlmRouter = _Router
 else:
-    LitellmRouter = Any
+    LlmRouter = Any
 
 
 def increment_deployment_successes_for_current_minute(
-    litellm_router_instance: LitellmRouter,
+    llm_router_instance: LlmRouter,
     deployment_id: str,
 ) -> str:
     """
     In-Memory: Increments the number of successes for the current minute for a deployment_id
     """
     key = f"{deployment_id}:successes"
-    litellm_router_instance.cache.increment_cache(
+    llm_router_instance.cache.increment_cache(
         local_only=True,
         key=key,
         value=1,
@@ -37,14 +37,14 @@ def increment_deployment_successes_for_current_minute(
 
 
 def increment_deployment_failures_for_current_minute(
-    litellm_router_instance: LitellmRouter,
+    llm_router_instance: LlmRouter,
     deployment_id: str,
 ):
     """
     In-Memory: Increments the number of failures for the current minute for a deployment_id
     """
     key = f"{deployment_id}:fails"
-    litellm_router_instance.cache.increment_cache(
+    llm_router_instance.cache.increment_cache(
         local_only=True,
         key=key,
         value=1,
@@ -53,7 +53,7 @@ def increment_deployment_failures_for_current_minute(
 
 
 def get_deployment_successes_for_current_minute(
-    litellm_router_instance: LitellmRouter,
+    llm_router_instance: LlmRouter,
     deployment_id: str,
 ) -> int:
     """
@@ -63,7 +63,7 @@ def get_deployment_successes_for_current_minute(
     """
     key = f"{deployment_id}:successes"
     return (
-        litellm_router_instance.cache.get_cache(
+        llm_router_instance.cache.get_cache(
             local_only=True,
             key=key,
         )
@@ -72,7 +72,7 @@ def get_deployment_successes_for_current_minute(
 
 
 def get_deployment_failures_for_current_minute(
-    litellm_router_instance: LitellmRouter,
+    llm_router_instance: LlmRouter,
     deployment_id: str,
 ) -> int:
     """
@@ -82,7 +82,7 @@ def get_deployment_failures_for_current_minute(
     """
     key = f"{deployment_id}:fails"
     return (
-        litellm_router_instance.cache.get_cache(
+        llm_router_instance.cache.get_cache(
             local_only=True,
             key=key,
         )

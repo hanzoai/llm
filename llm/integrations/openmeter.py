@@ -1,5 +1,5 @@
 # What is this?
-## On Success events log cost to OpenMeter - https://github.com/BerriAI/litellm/issues/1268
+## On Success events log cost to OpenMeter - https://github.com/BerriAI/llm/issues/1268
 
 import json
 import os
@@ -71,7 +71,7 @@ class OpenMeterLogger(CustomLogger):
 
         return {
             "specversion": "1.0",
-            "type": os.getenv("OPENMETER_EVENT_TYPE", "litellm_tokens"),
+            "type": os.getenv("OPENMETER_EVENT_TYPE", "llm_tokens"),
             "id": call_id,
             "time": dt,
             "subject": subject,

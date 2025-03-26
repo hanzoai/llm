@@ -22,7 +22,7 @@ REPEATED_STREAMING_CHUNK_LIMIT = 100  # catch if model starts looping the same c
 request_timeout: float = 6000  # time in seconds
 STREAM_SSE_DONE_STRING: str = "[DONE]"
 
-LITELLM_CHAT_PROVIDERS = [
+LLM_CHAT_PROVIDERS = [
     "openai",
     "openai_like",
     "xai",
@@ -439,5 +439,5 @@ BATCH_STATUS_POLL_MAX_ATTEMPTS = 24  # for 24 hours
 
 HEALTH_CHECK_TIMEOUT_SECONDS = 60  # 60 seconds
 
-UI_SESSION_TOKEN_TEAM_ID = "litellm-dashboard"
+UI_SESSION_TOKEN_TEAM_ID = "llm-dashboard"
 LLM_PROXY_ADMIN_NAME = "default_user_id"

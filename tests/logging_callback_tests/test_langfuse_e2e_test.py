@@ -135,7 +135,7 @@ class TestLangfuseLogging:
         llm.set_verbose = True
         llm.success_callback = ["langfuse"]
 
-        return {"trace_id": f"litellm-test-{str(uuid.uuid4())}", "mock_post": mock_post}
+        return {"trace_id": f"llm-test-{str(uuid.uuid4())}", "mock_post": mock_post}
 
     async def _verify_langfuse_call(
         self,

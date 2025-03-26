@@ -18,7 +18,7 @@ $ llm --debug
 **via env**
 
 ```python
-os.environ["LITELLM_LOG"] = "INFO"
+os.environ["LLM_LOG"] = "INFO"
 ```
 
 ## `detailed debug`
@@ -32,7 +32,7 @@ $ llm --detailed_debug
 **via env**
 
 ```python
-os.environ["LITELLM_LOG"] = "DEBUG"
+os.environ["LLM_LOG"] = "DEBUG"
 ```
 
 ### Debug Logs 
@@ -85,12 +85,12 @@ llm_settings:
     json_logs: true
 ```
 
-2. Set `LITELLM_LOG` to 'ERROR' 
+2. Set `LLM_LOG` to 'ERROR' 
 
 Only get logs if an error occurs. 
 
 ```bash
-LITELLM_LOG="ERROR"
+LLM_LOG="ERROR"
 ```
 
 3. Start proxy 

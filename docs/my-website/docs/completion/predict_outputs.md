@@ -86,8 +86,8 @@ llm --config config.yaml
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="LITELLM_PROXY_KEY", # sk-1234
-    base_url="LITELLM_PROXY_BASE" # http://0.0.0.0:4000
+    api_key="LLM_PROXY_KEY", # sk-1234
+    base_url="LLM_PROXY_BASE" # http://0.0.0.0:4000
 )
 
 completion = client.chat.completions.create(

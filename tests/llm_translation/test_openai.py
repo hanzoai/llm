@@ -282,7 +282,7 @@ class TestOpenAIChatCompletion(BaseLLMChatTest):
         return {"model": "gpt-4o-mini"}
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
         pass
 
     def test_prompt_caching(self):

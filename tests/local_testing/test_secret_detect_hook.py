@@ -244,7 +244,7 @@ router = Router(
     model_list=[
         {
             "model_name": "fake-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/fake",
                 "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                 "api_key": "sk-12345",

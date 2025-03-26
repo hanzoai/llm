@@ -4,4 +4,3 @@ model_list:
 llm_settings:
   drop_params: True
   success_callback: ["langfuse"] # https://docs.llm.ai/docs/observability/langfuse_integration
-

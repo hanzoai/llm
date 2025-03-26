@@ -11,8 +11,8 @@ from typing import TYPE_CHECKING, Any, Dict, List, Literal, Optional, Union
 from openai import APIError
 
 import llm
-import llm.litellm_core_utils
-import llm.litellm_core_utils.litellm_logging
+import llm.llm_core_utils
+import llm.llm_core_utils.llm_logging
 import llm.types
 from llm._logging import verbose_logger, verbose_proxy_logger
 from llm.caching.caching import DualCache
@@ -578,7 +578,7 @@ class SlackAlerting(CustomBatchLogger):
         ],
         user_info: CallInfo,
     ):
-        ## PREVENTITIVE ALERTING ## - https://github.com/BerriAI/litellm/issues/2727
+        ## PREVENTITIVE ALERTING ## - https://github.com/BerriAI/llm/issues/2727
         # - Alert once within 24hr period
         # - Cache this information
         # - Don't re-alert, if alert already sent
@@ -1188,7 +1188,7 @@ Model Info:
                 and recipient_user_id is not None
                 and prisma_client is not None
             ):
-                user_row = await prisma_client.db.litellm_usertable.find_unique(
+                user_row = await prisma_client.db.llm_usertable.find_unique(
                     where={"user_id": recipient_user_id}
                 )
 
@@ -1338,7 +1338,7 @@ Model Info:
         **kwargs,
     ):
         """
-        Alerting based on thresholds: - https://github.com/BerriAI/litellm/issues/1298
+        Alerting based on thresholds: - https://github.com/BerriAI/llm/issues/1298
 
         - Responses taking too long
         - Requests are hanging
@@ -1809,8 +1809,8 @@ Model Info:
             return False
 
         if (
-            request_data.get("litellm_status", "") != "success"
-            and request_data.get("litellm_status", "") != "fail"
+            request_data.get("llm_status", "") != "success"
+            and request_data.get("llm_status", "") != "fail"
         ):
             ## CHECK IF CACHE IS UPDATED
             llm_call_id = request_data.get("llm_call_id", "")

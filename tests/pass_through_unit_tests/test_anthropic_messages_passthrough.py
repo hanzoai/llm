@@ -43,12 +43,12 @@ def setup_and_teardown(event_loop):  # Add event_loop as a dependency
     import llm
     from llm import Router
 
-    importlib.reload(litellm)
+    importlib.reload(llm)
 
     # Set the event loop from the fixture
     asyncio.set_event_loop(event_loop)
 
-    print(litellm)
+    print(llm)
     yield
 
     # Clean up any pending tasks
@@ -160,7 +160,7 @@ async def test_anthropic_messages_router_streaming_with_bad_request():
             model_list=[
                 {
                     "model_name": "claude-special-alias",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "claude-3-haiku-20240307",
                         "api_key": os.getenv("ANTHROPIC_API_KEY"),
                     },
@@ -184,7 +184,7 @@ async def test_anthropic_messages_router_streaming_with_bad_request():
 
 
 @pytest.mark.asyncio
-async def test_anthropic_messages_litellm_router_non_streaming():
+async def test_anthropic_messages_llm_router_non_streaming():
     """
     Test the anthropic_messages with non-streaming request
     """
@@ -193,7 +193,7 @@ async def test_anthropic_messages_litellm_router_non_streaming():
         model_list=[
             {
                 "model_name": "claude-special-alias",
-                "litellm_params": {
+                "llm_params": {
                     "model": "claude-3-haiku-20240307",
                     "api_key": os.getenv("ANTHROPIC_API_KEY"),
                 },
@@ -234,7 +234,7 @@ class TestCustomLogger(CustomLogger):
 
 
 @pytest.mark.asyncio
-async def test_anthropic_messages_litellm_router_non_streaming_with_logging():
+async def test_anthropic_messages_llm_router_non_streaming_with_logging():
     """
     Test the anthropic_messages with non-streaming request
 
@@ -247,7 +247,7 @@ async def test_anthropic_messages_litellm_router_non_streaming_with_logging():
         model_list=[
             {
                 "model_name": "claude-special-alias",
-                "litellm_params": {
+                "llm_params": {
                     "model": "claude-3-haiku-20240307",
                     "api_key": os.getenv("ANTHROPIC_API_KEY"),
                 },
@@ -291,7 +291,7 @@ async def test_anthropic_messages_litellm_router_non_streaming_with_logging():
 
 
 @pytest.mark.asyncio
-async def test_anthropic_messages_litellm_router_streaming_with_logging():
+async def test_anthropic_messages_llm_router_streaming_with_logging():
     """
     Test the anthropic_messages with streaming request
 
@@ -304,7 +304,7 @@ async def test_anthropic_messages_litellm_router_streaming_with_logging():
         model_list=[
             {
                 "model_name": "claude-special-alias",
-                "litellm_params": {
+                "llm_params": {
                     "model": "claude-3-haiku-20240307",
                     "api_key": os.getenv("ANTHROPIC_API_KEY"),
                 },

@@ -2,17 +2,13 @@ version: "3.11"
 
 services:
   llm:
-    image: ghcr.io/hanzo.ai/llm:main-stable
-    ports:
-      - "4000:4000"  # Map container port 4000 to host
     build:
       context: .
+      dockerfile: Dockerfile
       args:
         target: runtime
-    deploy:
-     replicas: 1  # You can increase this number to scale the service
-     restart_policy:
-       condition: on-failure
+    ports:
+      - "4000:4000"  # Map container port 4000 to host
     networks:
       - llm-network
     environment:
@@ -22,8 +18,8 @@ services:
       - .env
     volumes:
       - ./config.yaml:/app/config.yaml  # Mount config so it's accessible at /app/config.yaml
-    # Use the default ENTRYPOINT from the Dockerfile (docker/prod_entrypoint.sh)
-    # Pass the config file and port as arguments.
+    # Override the entrypoint to use Python directly
+    entrypoint: ["python", "-m", "llm.proxy.proxy_server"]
     command:
       - "--config=/app/config.yaml"
       - "--port"

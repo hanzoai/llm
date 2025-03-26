@@ -24,7 +24,7 @@ class VertexAIBatchTransformation:
         """
         Transforms OpenAI Batch requests to Vertex AI Batch requests
         """
-        request_display_name = f"litellm-vertex-batch-{uuid.uuid4()}"
+        request_display_name = f"llm-vertex-batch-{uuid.uuid4()}"
         input_file_id = request.get("input_file_id")
         if input_file_id is None:
             raise ValueError("input_file_id is required, but not provided")
@@ -159,11 +159,11 @@ class VertexAIBatchTransformation:
         Gets the gcs uri prefix from the input file id
 
         Example:
-        input_file_id: "gs://litellm-testing-bucket/vtx_batch.jsonl"
-        returns: "gs://litellm-testing-bucket"
+        input_file_id: "gs://llm-testing-bucket/vtx_batch.jsonl"
+        returns: "gs://llm-testing-bucket"
 
-        input_file_id: "gs://litellm-testing-bucket/batches/vtx_batch.jsonl"
-        returns: "gs://litellm-testing-bucket/batches"
+        input_file_id: "gs://llm-testing-bucket/batches/vtx_batch.jsonl"
+        returns: "gs://llm-testing-bucket/batches"
         """
         # Split the path and remove the filename
         path_parts = input_file_id.rsplit("/", 1)
@@ -180,7 +180,7 @@ class VertexAIBatchTransformation:
         - Because Vertex Requires the `model` param in create batch jobs request, but OpenAI does not require this
 
 
-        gcs_file_uri format: gs://litellm-testing-bucket/litellm-vertex-files/publishers/google/models/gemini-1.5-flash-001/e9412502-2c91-42a6-8e61-f5c294cc0fc8
+        gcs_file_uri format: gs://llm-testing-bucket/llm-vertex-files/publishers/google/models/gemini-1.5-flash-001/e9412502-2c91-42a6-8e61-f5c294cc0fc8
         returns: "publishers/google/models/gemini-1.5-flash-001"
         """
         from urllib.parse import unquote

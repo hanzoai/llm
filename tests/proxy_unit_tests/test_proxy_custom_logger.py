@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import os, io, asyncio
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -83,14 +83,14 @@ def test_embedding(client):
             my_custom_logger.async_embedding_kwargs["model"] == "azure-embedding-model"
         )  # checks if kwargs passed to async_log_success_event are correct
         kwargs = my_custom_logger.async_embedding_kwargs
-        litellm_params = kwargs.get("litellm_params")
-        metadata = litellm_params.get("metadata", None)
-        print("\n\n Metadata in custom logger kwargs", litellm_params.get("metadata"))
+        llm_params = kwargs.get("llm_params")
+        metadata = llm_params.get("metadata", None)
+        print("\n\n Metadata in custom logger kwargs", llm_params.get("metadata"))
         assert metadata is not None
         assert "user_api_key" in metadata
         assert "headers" in metadata
-        proxy_server_request = litellm_params.get("proxy_server_request")
-        model_info = litellm_params.get("model_info")
+        proxy_server_request = llm_params.get("proxy_server_request")
+        model_info = llm_params.get("model_info")
         assert proxy_server_request == {
             "url": "http://testserver/embeddings",
             "method": "POST",
@@ -170,15 +170,15 @@ def test_chat_completion(client):
             "\n\n Custom Logger Async Completion args",
             my_custom_logger.async_completion_kwargs,
         )
-        litellm_params = my_custom_logger.async_completion_kwargs.get("litellm_params")
-        metadata = litellm_params.get("metadata", None)
-        print("\n\n Metadata in custom logger kwargs", litellm_params.get("metadata"))
+        llm_params = my_custom_logger.async_completion_kwargs.get("llm_params")
+        metadata = llm_params.get("metadata", None)
+        print("\n\n Metadata in custom logger kwargs", llm_params.get("metadata"))
         assert metadata is not None
         assert "user_api_key" in metadata
         assert "user_api_key_metadata" in metadata
         assert "headers" in metadata
-        config_model_info = litellm_params.get("model_info")
-        proxy_server_request_object = litellm_params.get("proxy_server_request")
+        config_model_info = llm_params.get("model_info")
+        proxy_server_request_object = llm_params.get("proxy_server_request")
 
         assert config_model_info == {
             "id": "gm",

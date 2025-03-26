@@ -258,13 +258,13 @@ git clone https://github.com/BerriAI/llm
 cd llm
 
 # Add the master key - you can change this after setup
-echo 'LITELLM_MASTER_KEY="sk-1234"' > .env
+echo 'LLM_MASTER_KEY="sk-1234"' > .env
 
 # Add the llm salt key - you cannot change this after adding a model
 # It is used to encrypt / decrypt your LLM API Key credentials
 # We recommend - https://1password.com/password-generator/ 
 # password generator to get a random hash for llm salt key
-echo 'LITELLM_SALT_KEY="sk-1234"' > .env
+echo 'LLM_SALT_KEY="sk-1234"' > .env
 
 source .env
 

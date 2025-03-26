@@ -237,19 +237,19 @@ async def test_init_custom_logger_compatible_class_as_callback():
 
 
 def test_dynamic_logging_global_callback():
-    from llm.litellm_core_utils.litellm_logging import Logging as LLMLoggingObj
+    from llm.llm_core_utils.llm_logging import Logging as LLMLoggingObj
     from llm.integrations.custom_logger import CustomLogger
     from llm.types.utils import ModelResponse, Choices, Message, Usage
 
     cl = CustomLogger()
 
-    litellm_logging = LLMLoggingObj(
+    llm_logging = LLMLoggingObj(
         model="claude-3-opus-20240229",
         messages=[{"role": "user", "content": "hi"}],
         stream=False,
         call_type="completion",
         start_time=datetime.now(),
-        litellm_call_id="123",
+        llm_call_id="123",
         function_id="456",
         kwargs={
             "langfuse_public_key": "my-mock-public-key",
@@ -263,7 +263,7 @@ def test_dynamic_logging_global_callback():
         llm.success_callback = [cl]
 
         try:
-            litellm_logging.success_handler(
+            llm_logging.success_handler(
                 result=ModelResponse(
                     id="chatcmpl-5418737b-ab14-420b-b9c5-b278b6681b70",
                     created=1732306261,
@@ -301,7 +301,7 @@ def test_dynamic_logging_global_callback():
 
 
 def test_get_combined_callback_list():
-    from llm.litellm_core_utils.litellm_logging import Logging as LLMLoggingObj
+    from llm.llm_core_utils.llm_logging import Logging as LLMLoggingObj
 
     _logging = LLMLoggingObj(
         model="claude-3-opus-20240229",
@@ -309,7 +309,7 @@ def test_get_combined_callback_list():
         stream=False,
         call_type="completion",
         start_time=datetime.now(),
-        litellm_call_id="123",
+        llm_call_id="123",
         function_id="456",
     )
 

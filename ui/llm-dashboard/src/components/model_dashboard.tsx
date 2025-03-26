@@ -19,7 +19,7 @@ import {
 import { CredentialItem, credentialListCall, CredentialsResponse } from "./networking";
 
 import ConditionalPublicModelName from "./add_model/conditional_public_model_name";
-import LiteLLMModelNameField from "./add_model/litellm_model_name";
+import LLMModelNameField from "./add_model/llm_model_name";
 import AdvancedSettings from "./add_model/advanced_settings";
 import ProviderSpecificFields from "./add_model/provider_specific_fields";
 import { handleAddModelSubmit } from "./add_model/handle_add_model_submit";
@@ -653,8 +653,8 @@ const ModelDashboard: React.FC<ModelDashboardProps> = ({
   // loop through model data and edit each row
   for (let i = 0; i < modelData.data.length; i++) {
     let curr_model = modelData.data[i];
-    let litellm_model_name = curr_model?.litellm_params?.model;
-    let custom_llm_provider = curr_model?.litellm_params?.custom_llm_provider;
+    let llm_model_name = curr_model?.llm_params?.model;
+    let custom_llm_provider = curr_model?.llm_params?.custom_llm_provider;
     let model_info = curr_model?.model_info;
 
     let defaultProvider = "openai";
@@ -663,27 +663,27 @@ const ModelDashboard: React.FC<ModelDashboardProps> = ({
     let output_cost = "Undefined";
     let max_tokens = "Undefined";
     let max_input_tokens = "Undefined";
-    let cleanedLitellmParams = {};
+    let cleanedLlmParams = {};
 
     const getProviderFromModel = (model: string) => {
       /**
        * Use model map
        * - check if model in model map
-       * - return it's litellm_provider, if so
+       * - return it's llm_provider, if so
        */
       console.log(`GET PROVIDER CALLED! - ${modelMap}`);
       if (modelMap !== null && modelMap !== undefined) {
         if (typeof modelMap == "object" && model in modelMap) {
-          return modelMap[model]["litellm_provider"];
+          return modelMap[model]["llm_provider"];
         }
       }
       return "openai";
     };
 
-    // Check if litellm_model_name is null or undefined
-    if (litellm_model_name) {
-      // Split litellm_model_name based on "/"
-      let splitModel = litellm_model_name.split("/");
+    // Check if llm_model_name is null or undefined
+    if (llm_model_name) {
+      // Split llm_model_name based on "/"
+      let splitModel = llm_model_name.split("/");
 
       // Get the first element in the split
       let firstElement = splitModel[0];
@@ -693,13 +693,13 @@ const ModelDashboard: React.FC<ModelDashboardProps> = ({
       if (!provider) {
         provider =
         splitModel.length === 1
-          ? getProviderFromModel(litellm_model_name)
+          ? getProviderFromModel(llm_model_name)
           : firstElement;
         
       }
       
     } else {
-      // litellm_model_name is null or undefined, default provider to openai
+      // llm_model_name is null or undefined, default provider to openai
       provider = "-";
     }
 
@@ -710,9 +710,9 @@ const ModelDashboard: React.FC<ModelDashboardProps> = ({
       max_input_tokens = model_info?.max_input_tokens;
     }
 
-    if (curr_model?.litellm_params) {
-      cleanedLitellmParams = Object.fromEntries(
-        Object.entries(curr_model?.litellm_params).filter(
+    if (curr_model?.llm_params) {
+      cleanedLlmParams = Object.fromEntries(
+        Object.entries(curr_model?.llm_params).filter(
           ([key]) => key !== "model" && key !== "api_base"
         )
       );
@@ -721,7 +721,7 @@ const ModelDashboard: React.FC<ModelDashboardProps> = ({
     modelData.data[i].provider = provider;
     modelData.data[i].input_cost = input_cost;
     modelData.data[i].output_cost = output_cost;
-    modelData.data[i].litellm_model_name = litellm_model_name;
+    modelData.data[i].llm_model_name = llm_model_name;
     all_providers.push(provider);
 
     // Convert Cost in terms of Cost per 1M tokens
@@ -739,8 +739,8 @@ const ModelDashboard: React.FC<ModelDashboardProps> = ({
 
     modelData.data[i].max_tokens = max_tokens;
     modelData.data[i].max_input_tokens = max_input_tokens;
-    modelData.data[i].api_base = curr_model?.litellm_params?.api_base;
-    modelData.data[i].cleanedLitellmParams = cleanedLitellmParams;
+    modelData.data[i].api_base = curr_model?.llm_params?.api_base;
+    modelData.data[i].cleanedLlmParams = cleanedLlmParams;
 
     all_models_on_proxy.push(curr_model.model_name);
 
@@ -1162,7 +1162,7 @@ const ModelDashboard: React.FC<ModelDashboardProps> = ({
               <Card>
                 <Text>
                   `/health` will run a very small request through your models
-                  configured on litellm
+                  configured on llm
                 </Text>
 
                 <Button onClick={runHealthCheck}>Run `/health`</Button>

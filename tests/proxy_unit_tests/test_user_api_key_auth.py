@@ -25,7 +25,7 @@ from llm.proxy.auth.user_api_key_auth import (
 )
 from fastapi import WebSocket, HTTPException, status
 
-from llm.proxy._types import LLM_UserTable, LitellmUserRoles
+from llm.proxy._types import LLM_UserTable, LlmUserRoles
 
 
 class Request:
@@ -149,7 +149,7 @@ async def test_check_blocked_team():
 )
 @pytest.mark.asyncio
 async def test_returned_user_api_key_auth(user_role, expected_role):
-    from llm.proxy._types import LLM_UserTable, LitellmUserRoles
+    from llm.proxy._types import LLM_UserTable, LlmUserRoles
     from llm.proxy.auth.user_api_key_auth import _return_user_api_key_auth_obj
     from datetime import datetime
 
@@ -457,29 +457,29 @@ def test_get_api_key_from_custom_header(headers, custom_header_name, expected_ap
     # Call the function and verify it doesn't raise an exception
 
     api_key = get_api_key_from_custom_header(
-        request=request, custom_litellm_key_header_name=custom_header_name
+        request=request, custom_llm_key_header_name=custom_header_name
     )
     assert api_key == expected_api_key
 
 
-from llm.proxy._types import LitellmUserRoles
+from llm.proxy._types import LlmUserRoles
 
 
 @pytest.mark.parametrize(
     "user_role, auth_user_id, requested_user_id, expected_result",
     [
-        (LitellmUserRoles.PROXY_ADMIN, "1234", None, True),
-        (LitellmUserRoles.PROXY_ADMIN_VIEW_ONLY, None, "1234", True),
-        (LitellmUserRoles.TEAM, "1234", None, False),
-        (LitellmUserRoles.TEAM, None, None, False),
-        (LitellmUserRoles.TEAM, "1234", "1234", True),
+        (LlmUserRoles.PROXY_ADMIN, "1234", None, True),
+        (LlmUserRoles.PROXY_ADMIN_VIEW_ONLY, None, "1234", True),
+        (LlmUserRoles.TEAM, "1234", None, False),
+        (LlmUserRoles.TEAM, None, None, False),
+        (LlmUserRoles.TEAM, "1234", "1234", True),
     ],
 )
 def test_allowed_route_inside_route(
     user_role, auth_user_id, requested_user_id, expected_result
 ):
     from llm.proxy.auth.auth_checks import allowed_route_check_inside_route
-    from llm.proxy._types import UserAPIKeyAuth, LitellmUserRoles
+    from llm.proxy._types import UserAPIKeyAuth, LlmUserRoles
 
     assert (
         allowed_route_check_inside_route(
@@ -673,7 +673,7 @@ def test_is_allowed_route():
             model_max_budget={},
             soft_budget_cooldown=False,
             blocked=None,
-            litellm_budget_table=None,
+            llm_budget_table=None,
             org_id=None,
             created_at=MagicMock(),
             updated_at=MagicMock(),
@@ -715,7 +715,7 @@ def test_is_allowed_route():
         (None, False),  # Case 1: user_obj is None
         (
             LLM_UserTable(
-                user_role=LitellmUserRoles.PROXY_ADMIN.value,
+                user_role=LlmUserRoles.PROXY_ADMIN.value,
                 user_id="1234",
                 user_email="test@test.com",
                 max_budget=None,
@@ -747,14 +747,14 @@ def test_is_user_proxy_admin(user_obj, expected_result):
         (None, None),  # Case 1: user_obj is None (should return None)
         (
             LLM_UserTable(
-                user_role=LitellmUserRoles.PROXY_ADMIN.value,
+                user_role=LlmUserRoles.PROXY_ADMIN.value,
                 user_id="1234",
                 user_email="test@test.com",
                 max_budget=None,
                 spend=0.0,
             ),
-            LitellmUserRoles.PROXY_ADMIN,
-        ),  # Case 2: user_role is PROXY_ADMIN (should return LitellmUserRoles.PROXY_ADMIN)
+            LlmUserRoles.PROXY_ADMIN,
+        ),  # Case 2: user_role is PROXY_ADMIN (should return LlmUserRoles.PROXY_ADMIN)
         (
             LLM_UserTable(
                 user_role="OTHER_ROLE",
@@ -763,8 +763,8 @@ def test_is_user_proxy_admin(user_obj, expected_result):
                 max_budget=None,
                 spend=0.0,
             ),
-            LitellmUserRoles.INTERNAL_USER,
-        ),  # Case 3: invalid user_role (should return LitellmUserRoles.INTERNAL_USER)
+            LlmUserRoles.INTERNAL_USER,
+        ),  # Case 3: invalid user_role (should return LlmUserRoles.INTERNAL_USER)
     ],
 )
 def test_get_user_role(user_obj, expected_role):
@@ -828,13 +828,13 @@ async def test_jwt_user_api_key_auth_builder_enforce_rbac(enforce_rbac, monkeypa
     ]
 
     local_cache.set_cache(
-        key="litellm_jwt_auth_keys_my-fake-url",
+        key="llm_jwt_auth_keys_my-fake-url",
         value=keys,
     )
 
-    litellm_jwtauth = LLM_JWTAuth(
+    llm_jwtauth = LLM_JWTAuth(
         **{
-            "admin_jwt_scope": "litellm_proxy_endpoints_access",
+            "admin_jwt_scope": "llm_proxy_endpoints_access",
             "admin_allowed_routes": ["openai_routes", "info_routes"],
             "public_key_ttl": 600,
             "enforce_rbac": enforce_rbac,
@@ -845,7 +845,7 @@ async def test_jwt_user_api_key_auth_builder_enforce_rbac(enforce_rbac, monkeypa
     jwt_handler.update_environment(
         prisma_client=None,
         user_api_key_cache=local_cache,
-        litellm_jwtauth=litellm_jwtauth,
+        llm_jwtauth=llm_jwtauth,
         leeway=10000000000000,
     )
     args = {
@@ -873,7 +873,7 @@ def test_user_api_key_auth_end_user_str():
     user_api_key_args = {
         "api_key": "sk-1234",
         "parent_otel_span": None,
-        "user_role": LitellmUserRoles.PROXY_ADMIN,
+        "user_role": LlmUserRoles.PROXY_ADMIN,
         "end_user_id": "1",
         "user_id": "default_user_id",
     }
@@ -888,31 +888,31 @@ def test_can_rbac_role_call_model():
 
     roles_based_permissions = [
         RoleBasedPermissions(
-            role=LitellmUserRoles.INTERNAL_USER,
+            role=LlmUserRoles.INTERNAL_USER,
             models=["gpt-4"],
         ),
         RoleBasedPermissions(
-            role=LitellmUserRoles.PROXY_ADMIN,
+            role=LlmUserRoles.PROXY_ADMIN,
             models=["anthropic-claude"],
         ),
     ]
 
     assert JWTAuthManager.can_rbac_role_call_model(
-        rbac_role=LitellmUserRoles.INTERNAL_USER,
+        rbac_role=LlmUserRoles.INTERNAL_USER,
         general_settings={"role_permissions": roles_based_permissions},
         model="gpt-4",
     )
 
     with pytest.raises(HTTPException):
         JWTAuthManager.can_rbac_role_call_model(
-            rbac_role=LitellmUserRoles.INTERNAL_USER,
+            rbac_role=LlmUserRoles.INTERNAL_USER,
             general_settings={"role_permissions": roles_based_permissions},
             model="gpt-4o",
         )
 
     with pytest.raises(HTTPException):
         JWTAuthManager.can_rbac_role_call_model(
-            rbac_role=LitellmUserRoles.PROXY_ADMIN,
+            rbac_role=LlmUserRoles.PROXY_ADMIN,
             general_settings={"role_permissions": roles_based_permissions},
             model="gpt-4o",
         )
@@ -922,13 +922,13 @@ def test_can_rbac_role_call_model_no_role_permissions():
     from llm.proxy.auth.handle_jwt import JWTAuthManager
 
     assert JWTAuthManager.can_rbac_role_call_model(
-        rbac_role=LitellmUserRoles.INTERNAL_USER,
+        rbac_role=LlmUserRoles.INTERNAL_USER,
         general_settings={},
         model="gpt-4",
     )
 
     assert JWTAuthManager.can_rbac_role_call_model(
-        rbac_role=LitellmUserRoles.PROXY_ADMIN,
+        rbac_role=LlmUserRoles.PROXY_ADMIN,
         general_settings={"role_permissions": []},
         model="anthropic-claude",
     )

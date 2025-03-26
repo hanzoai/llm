@@ -108,10 +108,10 @@ def scan_directory(base_dir):
 def main():
     # Start from the project root directory
 
-    base_dir = "./litellm"
+    base_dir = "./llm"
 
     # Local testing
-    # base_dir = "../../litellm"
+    # base_dir = "../../llm"
 
     print(f"Scanning for .replace('data:', ...) usage in {base_dir}")
     issues = scan_directory(base_dir)

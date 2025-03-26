@@ -590,7 +590,7 @@ const UsagePage: React.FC<UsagePageProps> = ({
             Please follow our guide to view usage when SpendLogs has more than 1M rows.
           </Text>
           <Button className="mt-4">
-            <a href="https://docs.litellm.ai/docs/proxy/spending_monitoring" target="_blank">
+            <a href="https://docs.llm.ai/docs/proxy/spending_monitoring" target="_blank">
               View Usage Guide
             </a>
           </Button>
@@ -836,7 +836,7 @@ const UsagePage: React.FC<UsagePageProps> = ({
             </Grid>
             </TabPanel>
             <TabPanel>
-            <p className="mb-2 text-gray-500 italic text-[12px]">Customers of your LLM API calls. Tracked when a `user` param is passed in your LLM calls <a className="text-blue-500" href="https://docs.litellm.ai/docs/proxy/users" target="_blank">docs here</a></p>
+            <p className="mb-2 text-gray-500 italic text-[12px]">Customers of your LLM API calls. Tracked when a `user` param is passed in your LLM calls <a className="text-blue-500" href="https://docs.llm.ai/docs/proxy/users" target="_blank">docs here</a></p>
               <Grid numItems={2}>
                 <Col>
                 <Text>Select Time Range</Text>
@@ -1012,7 +1012,7 @@ const UsagePage: React.FC<UsagePageProps> = ({
 
               <Card>
               <Title>Spend Per Tag</Title>
-              <Text>Get Started Tracking cost per tag <a className="text-blue-500" href="https://docs.litellm.ai/docs/proxy/cost_tracking" target="_blank">here</a></Text>
+              <Text>Get Started Tracking cost per tag <a className="text-blue-500" href="https://docs.llm.ai/docs/proxy/cost_tracking" target="_blank">here</a></Text>
              <BarChart
               className="h-72"
               data={topTagsData}

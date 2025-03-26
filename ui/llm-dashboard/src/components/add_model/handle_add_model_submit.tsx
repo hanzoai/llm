@@ -23,24 +23,24 @@ export const prepareModelAddRequest = async (
       // Handle wildcard case
       if (formValues["model"] && formValues["model"].includes("all-wildcard")) {
         const customProvider: Providers = formValues["custom_llm_provider"];
-        const litellm_custom_provider = provider_map[customProvider as keyof typeof Providers];
-        const wildcardModel = litellm_custom_provider + "/*";
+        const llm_custom_provider = provider_map[customProvider as keyof typeof Providers];
+        const wildcardModel = llm_custom_provider + "/*";
         formValues["model_name"] = wildcardModel;
         modelMappings.push({
           public_name: wildcardModel,
-          litellm_model: wildcardModel,
+          llm_model: wildcardModel,
         });
         formValues["model"] = wildcardModel; 
       }
 
       // Create a deployment for each mapping
       for (const mapping of modelMappings) {
-        const litellmParamsObj: Record<string, any> = {};
+        const llmParamsObj: Record<string, any> = {};
         const modelInfoObj: Record<string, any> = {};
         
-        // Set the model name and litellm model from the mapping
+        // Set the model name and llm model from the mapping
         const modelName = mapping.public_name;
-        litellmParamsObj["model"] = mapping.litellm_model;
+        llmParamsObj["model"] = mapping.llm_model;
 
         // Handle pricing conversion before processing other fields
         if (formValues.input_cost_per_token) {
@@ -52,7 +52,7 @@ export const prepareModelAddRequest = async (
         // Keep input_cost_per_second as is, no conversion needed
         
         // Iterate through the key-value pairs in formValues
-        litellmParamsObj["model"] = mapping.litellm_model;
+        llmParamsObj["model"] = mapping.llm_model;
         console.log("formValues add deployment:", formValues);
         for (const [key, value] of Object.entries(formValues)) {
           if (value === "") {
@@ -63,11 +63,11 @@ export const prepareModelAddRequest = async (
             continue;
           }
           if (key == "model_name") {
-            litellmParamsObj["model"] = value;
+            llmParamsObj["model"] = value;
           } else if (key == "custom_llm_provider") {
             console.log("custom_llm_provider:", value);
             const mappingResult = provider_map[value]; // Get the corresponding value from the mapping
-            litellmParamsObj["custom_llm_provider"] = mappingResult;
+            llmParamsObj["custom_llm_provider"] = mappingResult;
             console.log("custom_llm_provider mappingResult:", mappingResult);
           } else if (key == "model") {
             continue;
@@ -84,26 +84,26 @@ export const prepareModelAddRequest = async (
             console.log("placing mode in modelInfo")
             modelInfoObj["mode"] = value;
 
-            // remove "mode" from litellmParams
-            delete litellmParamsObj["mode"];
+            // remove "mode" from llmParams
+            delete llmParamsObj["mode"];
           }
           else if (key === "custom_model_name") {
-            litellmParamsObj["model"] = value;
-          } else if (key == "litellm_extra_params") {
-            console.log("litellm_extra_params:", value);
-            let litellmExtraParams = {};
+            llmParamsObj["model"] = value;
+          } else if (key == "llm_extra_params") {
+            console.log("llm_extra_params:", value);
+            let llmExtraParams = {};
             if (value && value != undefined) {
               try {
-                litellmExtraParams = JSON.parse(value);
+                llmExtraParams = JSON.parse(value);
               } catch (error) {
                 message.error(
-                  "Failed to parse LiteLLM Extra Params: " + error,
+                  "Failed to parse LLM Extra Params: " + error,
                   10
                 );
-                throw new Error("Failed to parse litellm_extra_params: " + error);
+                throw new Error("Failed to parse llm_extra_params: " + error);
               }
-              for (const [key, value] of Object.entries(litellmExtraParams)) {
-                litellmParamsObj[key] = value;
+              for (const [key, value] of Object.entries(llmExtraParams)) {
+                llmParamsObj[key] = value;
               }
             }
           } else if (key == "model_info_params") {
@@ -114,10 +114,10 @@ export const prepareModelAddRequest = async (
                 modelInfoParams = JSON.parse(value);
               } catch (error) {
                 message.error(
-                  "Failed to parse LiteLLM Extra Params: " + error,
+                  "Failed to parse LLM Extra Params: " + error,
                   10
                 );
-                throw new Error("Failed to parse litellm_extra_params: " + error);
+                throw new Error("Failed to parse llm_extra_params: " + error);
               }
               for (const [key, value] of Object.entries(modelInfoParams)) {
                 modelInfoObj[key] = value;
@@ -130,19 +130,19 @@ export const prepareModelAddRequest = async (
                   key === "output_cost_per_token" || 
                   key === "input_cost_per_second") {
             if (value) {
-              litellmParamsObj[key] = Number(value);
+              llmParamsObj[key] = Number(value);
             }
             continue;
           }
   
           // Check if key is any of the specified API related keys
           else {
-            // Add key-value pair to litellm_params dictionary
-            litellmParamsObj[key] = value;
+            // Add key-value pair to llm_params dictionary
+            llmParamsObj[key] = value;
           }
         }
 
-        return { litellmParamsObj, modelInfoObj, modelName };
+        return { llmParamsObj, modelInfoObj, modelName };
       }
     } catch (error) {
       message.error("Failed to create model: " + error, 10);
@@ -162,11 +162,11 @@ export const handleAddModelSubmit = async (
         return; // Exit if preparation failed
       }
       
-      const { litellmParamsObj, modelInfoObj, modelName } = result;
+      const { llmParamsObj, modelInfoObj, modelName } = result;
       
       const new_model: Model = {
         model_name: modelName,
-        litellm_params: litellmParamsObj,
+        llm_params: llmParamsObj,
         model_info: modelInfoObj,
       };
       

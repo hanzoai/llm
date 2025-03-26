@@ -32,7 +32,7 @@ async def test_router_init():
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
@@ -42,7 +42,7 @@ async def test_router_init():
         },
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/chatgpt-v-2",
                 "api_key": os.getenv("AZURE_API_KEY"),
                 "api_base": os.getenv("AZURE_API_BASE"),
@@ -108,7 +108,7 @@ def test_router_init_with_neither_api_key_nor_azure_service_principal_with_secre
         {
             # test case for Azure Service Principal with Secret authentication
             "model_name": "gpt-4o",
-            "litellm_params": {
+            "llm_params": {
                 # checkout there is no api_key here -
                 # AZURE_CLIENT_ID, AZURE_CLIENT_SECRET and AZURE_TENANT_ID environment variables should be used instead
                 "model": "gpt-4o",
@@ -168,7 +168,7 @@ def test_router_init_azure_service_principal_with_secret_with_environment_variab
         {
             # test case for Azure Service Principal with Secret authentication
             "model_name": "gpt-4o",
-            "litellm_params": {
+            "llm_params": {
                 # checkout there is no api_key here -
                 # AZURE_CLIENT_ID, AZURE_CLIENT_SECRET and AZURE_TENANT_ID environment variables should be used instead
                 "model": "gpt-4o",
@@ -234,7 +234,7 @@ async def test_audio_speech_router():
     model_list = [
         {
             "model_name": "tts",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/azure-tts",
                 "api_base": os.getenv("AZURE_SWEDEN_API_BASE"),
                 "api_key": os.getenv("AZURE_SWEDEN_API_KEY"),

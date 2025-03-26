@@ -75,7 +75,7 @@ async def test_azure_ai_with_image_url():
                             {
                                 "type": "image_url",
                                 "image_url": {
-                                    "url": "https://litellm-listing.s3.amazonaws.com/litellm_logo.png"
+                                    "url": "https://llm-listing.s3.amazonaws.com/llm_logo.png"
                                 },
                             },
                         ],
@@ -103,7 +103,7 @@ async def test_azure_ai_with_image_url():
                     {
                         "type": "image_url",
                         "image_url": {
-                            "url": "https://litellm-listing.s3.amazonaws.com/litellm_logo.png"
+                            "url": "https://llm-listing.s3.amazonaws.com/llm_logo.png"
                         },
                     },
                 ],
@@ -115,20 +115,20 @@ async def test_azure_ai_with_image_url():
     "api_base, expected_url",
     [
         (
-            "https://litellm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview",
-            "https://litellm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview",
+            "https://llm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview",
+            "https://llm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview",
         ),
         (
-            "https://litellm8397336933.services.ai.azure.com/models/chat/completions",
-            "https://litellm8397336933.services.ai.azure.com/models/chat/completions",
+            "https://llm8397336933.services.ai.azure.com/models/chat/completions",
+            "https://llm8397336933.services.ai.azure.com/models/chat/completions",
         ),
         (
-            "https://litellm8397336933.services.ai.azure.com/models",
-            "https://litellm8397336933.services.ai.azure.com/models/chat/completions",
+            "https://llm8397336933.services.ai.azure.com/models",
+            "https://llm8397336933.services.ai.azure.com/models/chat/completions",
         ),
         (
-            "https://litellm8397336933.services.ai.azure.com",
-            "https://litellm8397336933.services.ai.azure.com/models/chat/completions",
+            "https://llm8397336933.services.ai.azure.com",
+            "https://llm8397336933.services.ai.azure.com/models/chat/completions",
         ),
     ],
 )
@@ -171,7 +171,7 @@ def test_azure_ai_services_with_api_version():
                 messages=[{"role": "user", "content": "Hello, how are you?"}],
                 api_key="my-fake-api-key",
                 api_version="2024-05-01-preview",
-                api_base="https://litellm8397336933.services.ai.azure.com/models",
+                api_base="https://llm8397336933.services.ai.azure.com/models",
                 client=client,
             )
         except Exception as e:
@@ -181,7 +181,7 @@ def test_azure_ai_services_with_api_version():
         assert mock_client.call_args.kwargs["headers"]["api-key"] == "my-fake-api-key"
         assert (
             mock_client.call_args.kwargs["url"]
-            == "https://litellm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview"
+            == "https://llm8397336933.services.ai.azure.com/models/chat/completions?api-version=2024-05-01-preview"
         )
 
 
@@ -245,7 +245,7 @@ def test_azure_deepseek_reasoning_content():
         response = llm.completion(
             model="azure_ai/deepseek-r1",
             messages=[{"role": "user", "content": "Hello, world!"}],
-            api_base="https://litellm8397336933.services.ai.azure.com/models/chat/completions",
+            api_base="https://llm8397336933.services.ai.azure.com/models/chat/completions",
             api_key="my-fake-api-key",
             client=client,
         )

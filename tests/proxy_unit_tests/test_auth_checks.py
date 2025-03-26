@@ -11,7 +11,7 @@ import os
 sys.path.insert(
     0, os.path.abspath("../..")
 )  # Adds the parent directory to the system path
-import pytest, litellm
+import pytest, llm
 import httpx
 from llm.proxy.auth.auth_checks import (
     _handle_failed_db_connection_for_get_key_object,
@@ -46,7 +46,7 @@ async def test_get_end_user_object(customer_spend, customer_budget):
     end_user_obj = LLM_EndUserTable(
         user_id=end_user_id,
         spend=customer_spend,
-        litellm_budget_table=_budget,
+        llm_budget_table=_budget,
         blocked=False,
     )
     _cache = DualCache()
@@ -85,7 +85,7 @@ async def test_handle_failed_db_connection():
     1. When allow_requests_on_db_unavailable=True -> return UserAPIKeyAuth
     2. When allow_requests_on_db_unavailable=False -> raise original error
     """
-    from llm.proxy.proxy_server import general_settings, litellm_proxy_admin_name
+    from llm.proxy.proxy_server import general_settings, llm_proxy_admin_name
 
     # Test case 1: allow_requests_on_db_unavailable=True
     general_settings["allow_requests_on_db_unavailable"] = True
@@ -96,7 +96,7 @@ async def test_handle_failed_db_connection():
     assert isinstance(result, UserAPIKeyAuth)
     assert result.key_name == "failed-to-connect-to-db"
     assert result.token == "failed-to-connect-to-db"
-    assert result.user_id == litellm_proxy_admin_name
+    assert result.user_id == llm_proxy_admin_name
 
     # Test case 2: allow_requests_on_db_unavailable=False
     general_settings["allow_requests_on_db_unavailable"] = False
@@ -126,7 +126,7 @@ async def test_can_key_call_model(model, expect_to_work):
     llm_model_list = [
         {
             "model_name": "openai/*",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/*",
                 "api_key": "test-api-key",
             },
@@ -138,7 +138,7 @@ async def test_can_key_call_model(model, expect_to_work):
         },
         {
             "model_name": "openai/gpt-4o",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/gpt-4o",
                 "api_key": "test-api-key",
             },
@@ -179,7 +179,7 @@ async def test_can_team_call_model(model, expect_to_work):
     llm_model_list = [
         {
             "model_name": "openai/*",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/*",
                 "api_key": "test-api-key",
             },
@@ -191,7 +191,7 @@ async def test_can_team_call_model(model, expect_to_work):
         },
         {
             "model_name": "openai/gpt-4o",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/gpt-4o",
                 "api_key": "test-api-key",
             },
@@ -234,7 +234,7 @@ async def test_can_key_call_model_wildcard_access(key_models, model, expect_to_w
     llm_model_list = [
         {
             "model_name": "openai/*",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/*",
                 "api_key": "test-api-key",
             },
@@ -245,7 +245,7 @@ async def test_can_key_call_model_wildcard_access(key_models, model, expect_to_w
         },
         {
             "model_name": "bedrock/*",
-            "litellm_params": {
+            "llm_params": {
                 "model": "bedrock/*",
                 "api_key": "test-api-key",
             },
@@ -256,7 +256,7 @@ async def test_can_key_call_model_wildcard_access(key_models, model, expect_to_w
         },
         {
             "model_name": "openai/gpt-4o",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/gpt-4o",
                 "api_key": "test-api-key",
             },
@@ -300,7 +300,7 @@ async def test_is_valid_fallback_model():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {"model": "openai/gpt-3.5-turbo"},
+                "llm_params": {"model": "openai/gpt-3.5-turbo"},
             }
         ]
     )
@@ -520,11 +520,11 @@ async def test_can_user_call_model():
         model_list=[
             {
                 "model_name": "anthropic-claude",
-                "litellm_params": {"model": "anthropic/anthropic-claude"},
+                "llm_params": {"model": "anthropic/anthropic-claude"},
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {"model": "gpt-3.5-turbo", "api_key": "test-api-key"},
+                "llm_params": {"model": "gpt-3.5-turbo", "api_key": "test-api-key"},
             },
         ]
     )
@@ -583,7 +583,7 @@ async def test_get_fuzzy_user_object():
     # Setup mock Prisma client
     mock_prisma = MagicMock()
     mock_prisma.db = MagicMock()
-    mock_prisma.db.litellm_usertable = MagicMock()
+    mock_prisma.db.llm_usertable = MagicMock()
 
     # Mock user data
     test_user = LLM_UserTable(
@@ -595,19 +595,19 @@ async def test_get_fuzzy_user_object():
     )
 
     # Test 1: Find user by SSO ID
-    mock_prisma.db.litellm_usertable.find_unique = AsyncMock(return_value=test_user)
+    mock_prisma.db.llm_usertable.find_unique = AsyncMock(return_value=test_user)
     result = await _get_fuzzy_user_object(
         prisma_client=mock_prisma, sso_user_id="sso_123", user_email="test@example.com"
     )
     assert result == test_user
-    mock_prisma.db.litellm_usertable.find_unique.assert_called_with(
+    mock_prisma.db.llm_usertable.find_unique.assert_called_with(
         where={"sso_user_id": "sso_123"}, include={"organization_memberships": True}
     )
 
     # Test 2: SSO ID not found, find by email
-    mock_prisma.db.litellm_usertable.find_unique = AsyncMock(return_value=None)
-    mock_prisma.db.litellm_usertable.find_first = AsyncMock(return_value=test_user)
-    mock_prisma.db.litellm_usertable.update = AsyncMock()
+    mock_prisma.db.llm_usertable.find_unique = AsyncMock(return_value=None)
+    mock_prisma.db.llm_usertable.find_first = AsyncMock(return_value=test_user)
+    mock_prisma.db.llm_usertable.update = AsyncMock()
 
     result = await _get_fuzzy_user_object(
         prisma_client=mock_prisma,
@@ -615,20 +615,20 @@ async def test_get_fuzzy_user_object():
         user_email="test@example.com",
     )
     assert result == test_user
-    mock_prisma.db.litellm_usertable.find_first.assert_called_with(
+    mock_prisma.db.llm_usertable.find_first.assert_called_with(
         where={"user_email": "test@example.com"},
         include={"organization_memberships": True},
     )
 
     # Test 3: Verify background SSO update task when user found by email
     await asyncio.sleep(0.1)  # Allow time for background task
-    mock_prisma.db.litellm_usertable.update.assert_called_with(
+    mock_prisma.db.llm_usertable.update.assert_called_with(
         where={"user_id": "test_123"}, data={"sso_user_id": "new_sso_456"}
     )
 
     # Test 4: User not found by either method
-    mock_prisma.db.litellm_usertable.find_unique = AsyncMock(return_value=None)
-    mock_prisma.db.litellm_usertable.find_first = AsyncMock(return_value=None)
+    mock_prisma.db.llm_usertable.find_unique = AsyncMock(return_value=None)
+    mock_prisma.db.llm_usertable.find_first = AsyncMock(return_value=None)
 
     result = await _get_fuzzy_user_object(
         prisma_client=mock_prisma,
@@ -638,23 +638,23 @@ async def test_get_fuzzy_user_object():
     assert result is None
 
     # Test 5: Only email provided (no SSO ID)
-    mock_prisma.db.litellm_usertable.find_first = AsyncMock(return_value=test_user)
+    mock_prisma.db.llm_usertable.find_first = AsyncMock(return_value=test_user)
     result = await _get_fuzzy_user_object(
         prisma_client=mock_prisma, user_email="test@example.com"
     )
     assert result == test_user
-    mock_prisma.db.litellm_usertable.find_first.assert_called_with(
+    mock_prisma.db.llm_usertable.find_first.assert_called_with(
         where={"user_email": "test@example.com"},
         include={"organization_memberships": True},
     )
 
     # Test 6: Only SSO ID provided (no email)
-    mock_prisma.db.litellm_usertable.find_unique = AsyncMock(return_value=test_user)
+    mock_prisma.db.llm_usertable.find_unique = AsyncMock(return_value=test_user)
     result = await _get_fuzzy_user_object(
         prisma_client=mock_prisma, sso_user_id="sso_123"
     )
     assert result == test_user
-    mock_prisma.db.litellm_usertable.find_unique.assert_called_with(
+    mock_prisma.db.llm_usertable.find_unique.assert_called_with(
         where={"sso_user_id": "sso_123"}, include={"organization_memberships": True}
     )
 
@@ -676,7 +676,7 @@ async def test_can_key_call_model_with_aliases(model, alias_map, expect_to_work)
     llm_model_list = [
         {
             "model_name": "gpt-4-team1",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-4",
                 "api_key": "test-api-key",
             },

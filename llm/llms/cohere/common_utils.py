@@ -28,7 +28,7 @@ def validate_environment(
     Cohere API Ref: https://docs.cohere.com/reference/chat
     Expected headers:
     {
-        "Request-Source": "unspecified:litellm",
+        "Request-Source": "unspecified:llm",
         "accept": "application/json",
         "content-type": "application/json",
         "Authorization": "bearer $CO_API_KEY"
@@ -36,7 +36,7 @@ def validate_environment(
     """
     headers.update(
         {
-            "Request-Source": "unspecified:litellm",
+            "Request-Source": "unspecified:llm",
             "accept": "application/json",
             "content-type": "application/json",
         }

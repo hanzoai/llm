@@ -82,7 +82,7 @@ def test_setting_mpr_limits_per_model(
 ):
     deployment = {
         "model_name": "gpt-3.5-turbo",
-        "litellm_params": {
+        "llm_params": {
             "model": "gpt-3.5-turbo",
             "max_parallel_requests": max_parallel_requests,
             "tpm": tpm,
@@ -167,7 +167,7 @@ async def test_max_parallel_requests_rpm_rate_limiting():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "temperature": 0.0,
                     "rpm": 1,
@@ -193,7 +193,7 @@ async def test_max_parallel_requests_tpm_rate_limiting_base_case():
         model_list=[
             {
                 "model_name": "gpt-4o-2024-08-06",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o-2024-08-06",
                     "temperature": 0.0,
                     "tpm": 1,

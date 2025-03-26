@@ -12,9 +12,9 @@ from llm.types.router import LLMParamsTypedDict
 if TYPE_CHECKING:
     from llm.router import Router as _Router
 
-    LitellmRouter = _Router
+    LlmRouter = _Router
 else:
-    LitellmRouter = Any
+    LlmRouter = Any
 
 
 def _check_stripped_model_group(model_group: str, fallback_key: str) -> bool:
@@ -84,7 +84,7 @@ def get_fallback_model_group(
 
 async def run_async_fallback(
     *args: Tuple[Any],
-    litellm_router: LitellmRouter,
+    llm_router: LlmRouter,
     fallback_model_group: List[str],
     original_model_group: str,
     original_exception: Exception,
@@ -100,7 +100,7 @@ async def run_async_fallback(
     If all fallback model groups fail, it raises the most recent exception.
 
     Args:
-        litellm_router: The llm router instance.
+        llm_router: The llm router instance.
         *args: Positional arguments.
         fallback_model_group: List[str] of fallback model groups. example: ["gpt-4", "gpt-3.5-turbo"]
         original_model_group: The original model group. example: "gpt-3.5-turbo"
@@ -124,7 +124,7 @@ async def run_async_fallback(
             continue
         try:
             # LOGGING
-            kwargs = litellm_router.log_retry(kwargs=kwargs, e=original_exception)
+            kwargs = llm_router.log_retry(kwargs=kwargs, e=original_exception)
             verbose_router_logger.info(f"Falling back to model_group = {mg}")
             if isinstance(mg, str):
                 kwargs["model"] = mg
@@ -136,7 +136,7 @@ async def run_async_fallback(
             fallback_depth = fallback_depth + 1
             kwargs["fallback_depth"] = fallback_depth
             kwargs["max_fallbacks"] = max_fallbacks
-            response = await litellm_router.async_function_with_fallbacks(
+            response = await llm_router.async_function_with_fallbacks(
                 *args, **kwargs
             )
             verbose_router_logger.info("Successful fallback b/w models.")

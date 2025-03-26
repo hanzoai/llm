@@ -111,9 +111,9 @@ class _PROXY_DynamicRateLimitHandler(CustomLogger):
                     )
                 )
             elif priority is not None and llm.priority_reservation is not None:
-                if os.getenv("LITELLM_LICENSE", None) is None:
+                if os.getenv("LLM_LICENSE", None) is None:
                     verbose_proxy_logger.error(
-                        "PREMIUM FEATURE: Reserving tpm/rpm by priority is a premium feature. Please add a 'LITELLM_LICENSE' to your .env to enable this.\nGet a license: https://docs.llm.ai/docs/proxy/enterprise."
+                        "PREMIUM FEATURE: Reserving tpm/rpm by priority is a premium feature. Please add a 'LLM_LICENSE' to your .env to enable this.\nGet a license: https://docs.llm.ai/docs/proxy/enterprise."
                     )
                 else:
                     weight = llm.priority_reservation[priority]
@@ -200,7 +200,7 @@ class _PROXY_DynamicRateLimitHandler(CustomLogger):
         ],
     ) -> Optional[
         Union[Exception, str, dict]
-    ]:  # raise exception if invalid, return a str for the user to receive - if rejected, or return a modified dictionary for passing into litellm
+    ]:  # raise exception if invalid, return a str for the user to receive - if rejected, or return a modified dictionary for passing into llm
         """
         - For a model group
         - Check if tpm/rpm available
@@ -275,8 +275,8 @@ class _PROXY_DynamicRateLimitHandler(CustomLogger):
                 response._hidden_params["additional_headers"] = (
                     {  # Add additional response headers - easier debugging
                         "x-llm-model_group": model_info["model_name"],
-                        "x-ratelimit-remaining-litellm-project-tokens": available_tpm,
-                        "x-ratelimit-remaining-litellm-project-requests": available_rpm,
+                        "x-ratelimit-remaining-llm-project-tokens": available_tpm,
+                        "x-ratelimit-remaining-llm-project-requests": available_rpm,
                         "x-ratelimit-remaining-model-tokens": model_tpm,
                         "x-ratelimit-remaining-model-requests": model_rpm,
                         "x-ratelimit-current-active-projects": active_projects,

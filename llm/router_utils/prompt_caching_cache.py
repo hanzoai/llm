@@ -15,11 +15,11 @@ if TYPE_CHECKING:
 
     from llm.router import Router
 
-    litellm_router = Router
+    llm_router = Router
     Span = _Span
 else:
     Span = Any
-    litellm_router = Any
+    llm_router = Any
 
 
 class PromptCachingCacheValue(TypedDict):

@@ -34,7 +34,7 @@ from llm import (
 )
 from llm.llms.bedrock.chat import BedrockLLM
 from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
-from llm.litellm_core_utils.prompt_templates.factory import _bedrock_tools_pt
+from llm.llm_core_utils.prompt_templates.factory import _bedrock_tools_pt
 from base_llm_unit_tests import BaseLLMChatTest
 from base_rerank_unit_tests import BaseLLMRerankTest
 from base_embedding_unit_tests import BaseLLMEmbeddingTest
@@ -325,7 +325,7 @@ def bedrock_session_token_creds():
         # aws_role_name = os.environ["AWS_TEMP_ROLE_NAME"]
         # TODO: This is using ai.moda's IAM role, we should use LLM's IAM role eventually
         aws_role_name = (
-            "arn:aws:iam::335785316107:role/litellm-github-unit-tests-circleci"
+            "arn:aws:iam::335785316107:role/llm-github-unit-tests-circleci"
         )
         aws_web_identity_token = "oidc/circleci_v2/"
 
@@ -546,7 +546,7 @@ def test_completion_bedrock_claude_sts_oidc_auth():
     aws_region_name = os.environ["AWS_REGION_NAME"]
     # aws_role_name = os.environ["AWS_TEMP_ROLE_NAME"]
     # TODO: This is using ai.moda's IAM role, we should use LLM's IAM role eventually
-    aws_role_name = "arn:aws:iam::335785316107:role/litellm-github-unit-tests-circleci"
+    aws_role_name = "arn:aws:iam::335785316107:role/llm-github-unit-tests-circleci"
 
     try:
         llm.set_verbose = True
@@ -613,7 +613,7 @@ def test_completion_bedrock_httpx_command_r_sts_oidc_auth():
     aws_region_name = "us-west-2"
     # aws_role_name = os.environ["AWS_TEMP_ROLE_NAME"]
     # TODO: This is using ai.moda's IAM role, we should use LLM's IAM role eventually
-    aws_role_name = "arn:aws:iam::335785316107:role/litellm-github-unit-tests-circleci"
+    aws_role_name = "arn:aws:iam::335785316107:role/llm-github-unit-tests-circleci"
 
     try:
         llm.set_verbose = True
@@ -926,7 +926,7 @@ def test_bedrock_ptu():
     """
     Check if a url with 'modelId' passed in, is created correctly
 
-    Reference: https://github.com/BerriAI/litellm/issues/3805
+    Reference: https://github.com/BerriAI/llm/issues/3805
     """
     client = HTTPHandler()
 
@@ -960,7 +960,7 @@ async def test_bedrock_custom_api_base():
     """
     Check if a url with 'modelId' passed in, is created correctly
 
-    Reference: https://github.com/BerriAI/litellm/issues/3805, https://github.com/BerriAI/litellm/issues/5389#issuecomment-2313677977
+    Reference: https://github.com/BerriAI/llm/issues/3805, https://github.com/BerriAI/llm/issues/5389#issuecomment-2313677977
 
     """
     client = AsyncHTTPHandler()
@@ -1004,7 +1004,7 @@ async def test_bedrock_custom_api_base():
 @pytest.mark.asyncio
 async def test_bedrock_extra_headers(model):
     """
-    Relevant Issue: https://github.com/BerriAI/litellm/issues/9106
+    Relevant Issue: https://github.com/BerriAI/llm/issues/9106
     """
     client = AsyncHTTPHandler()
 
@@ -1037,7 +1037,7 @@ async def test_bedrock_custom_prompt_template():
     """
     Check if custom prompt template used for bedrock models
 
-    Reference: https://github.com/BerriAI/litellm/issues/4415
+    Reference: https://github.com/BerriAI/llm/issues/4415
     """
     client = AsyncHTTPHandler()
 
@@ -1132,7 +1132,7 @@ def test_completion_bedrock_external_client_region():
 
 def test_bedrock_tool_calling():
     """
-    # related issue: https://github.com/BerriAI/litellm/issues/5007
+    # related issue: https://github.com/BerriAI/llm/issues/5007
     # Bedrock tool names must satisfy regular expression pattern: [a-zA-Z][a-zA-Z0-9_]* ensure this is true
     """
     llm.set_verbose = True
@@ -1149,7 +1149,7 @@ def test_bedrock_tool_calling():
             {
                 "type": "function",
                 "function": {
-                    "name": "-DoSomethingVeryCool-forLitellm_Testin999229291-0293993",
+                    "name": "-DoSomethingVeryCool-forLlm_Testin999229291-0293993",
                     "description": "use this to get the current weather",
                     "parameters": {"type": "object", "properties": {}},
                 },
@@ -1169,13 +1169,13 @@ def test_bedrock_tool_calling():
             if _tool_Call_name is not None and "DoSomethingVeryCool" in _tool_Call_name:
                 assert (
                     _tool_Call_name
-                    == "-DoSomethingVeryCool-forLitellm_Testin999229291-0293993"
+                    == "-DoSomethingVeryCool-forLlm_Testin999229291-0293993"
                 )
 
 
 def test_bedrock_tools_pt_valid_names():
     """
-    # related issue: https://github.com/BerriAI/litellm/issues/5007
+    # related issue: https://github.com/BerriAI/llm/issues/5007
     # Bedrock tool names must satisfy regular expression pattern: [a-zA-Z][a-zA-Z0-9_]* ensure this is true
 
     """
@@ -1219,7 +1219,7 @@ def test_bedrock_tools_pt_valid_names():
 
 def test_bedrock_tools_pt_invalid_names():
     """
-    # related issue: https://github.com/BerriAI/litellm/issues/5007
+    # related issue: https://github.com/BerriAI/llm/issues/5007
     # Bedrock tool names must satisfy regular expression pattern: [a-zA-Z][a-zA-Z0-9_]* ensure this is true
 
     """
@@ -1309,7 +1309,7 @@ def test_bedrock_get_base_model(model, expected_base_model):
     assert BedrockModelInfo.get_base_model(model) == expected_base_model
 
 
-from llm.litellm_core_utils.prompt_templates.factory import (
+from llm.llm_core_utils.prompt_templates.factory import (
     _bedrock_converse_messages_pt,
 )
 
@@ -1634,7 +1634,7 @@ def test_bedrock_completion_test_2():
         model=data["model"],
         messages=data["messages"],
         optional_params={"tools": data["tools"]},
-        litellm_params={},
+        llm_params={},
     )
 
     """
@@ -1652,7 +1652,7 @@ def test_bedrock_completion_test_3():
     Check if content in tool result is formatted correctly
     """
     from llm.types.utils import ChatCompletionMessageToolCall, Function, Message
-    from llm.litellm_core_utils.prompt_templates.factory import (
+    from llm.llm_core_utils.prompt_templates.factory import (
         _bedrock_converse_messages_pt,
     )
 
@@ -2013,7 +2013,7 @@ def test_bedrock_converse_route():
 
 def test_bedrock_mapped_converse_models():
     llm.set_verbose = True
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
     llm.add_known_models()
     llm.completion(
@@ -2114,7 +2114,7 @@ def test_bedrock_prompt_caching_message(messages, expected_cache_control):
         model="bedrock/anthropic.claude-3-5-haiku-20241022-v1:0",
         messages=messages,
         optional_params={},
-        litellm_params={},
+        llm_params={},
     )
     if expected_cache_control:
         assert "cachePoint" in json.dumps(transformed_messages)
@@ -2146,7 +2146,7 @@ def test_bedrock_supports_tool_call(model, expected_supports_tool_call):
 
 class TestBedrockConverseChatCrossRegion(BaseLLMChatTest):
     def get_base_completion_call_args(self) -> dict:
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
         llm.add_known_models()
         return {
@@ -2154,7 +2154,7 @@ class TestBedrockConverseChatCrossRegion(BaseLLMChatTest):
         }
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
         pass
 
     def test_multilingual_requests(self):
@@ -2175,7 +2175,7 @@ class TestBedrockConverseChatCrossRegion(BaseLLMChatTest):
         """
         Test if region models info is correctly used for cost calculation. Using the base model info for cost calculation.
         """
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
         bedrock_model = "us.anthropic.claude-3-5-sonnet-20241022-v2:0"
         llm.model_cost.pop(bedrock_model, None)
@@ -2193,7 +2193,7 @@ class TestBedrockConverseChatCrossRegion(BaseLLMChatTest):
 
 class TestBedrockConverseChatNormal(BaseLLMChatTest):
     def get_base_completion_call_args(self) -> dict:
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
         llm.add_known_models()
         return {
@@ -2202,7 +2202,7 @@ class TestBedrockConverseChatNormal(BaseLLMChatTest):
         }
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
         pass
 
     def test_multilingual_requests(self):
@@ -2363,7 +2363,7 @@ def test_bedrock_nova_topk(top_k_param):
 def test_bedrock_cross_region_inference(monkeypatch):
     from llm.llms.custom_httpx.http_handler import HTTPHandler
 
-    monkeypatch.setenv("LITELLM_LOCAL_MODEL_COST_MAP", "True")
+    monkeypatch.setenv("LLM_LOCAL_MODEL_COST_MAP", "True")
     llm.model_cost = llm.get_model_cost_map(url="")
     llm.add_known_models()
 
@@ -2405,7 +2405,7 @@ def test_bedrock_empty_content_real_call():
 
 
 def test_bedrock_process_empty_text_blocks():
-    from llm.litellm_core_utils.prompt_templates.factory import (
+    from llm.llm_core_utils.prompt_templates.factory import (
         process_empty_text_blocks,
     )
 

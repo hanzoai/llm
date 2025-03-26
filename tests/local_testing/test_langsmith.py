@@ -59,7 +59,7 @@ async def test_async_langsmith_logging_with_streaming_and_metadata(sync_mode):
         llm.success_callback = ["langsmith"]
         llm.set_verbose = True
         run_id = "497f6eca-6276-4993-bfeb-53cbbbba6f08"
-        run_name = "litellmRUN"
+        run_name = "llmRUN"
         test_metadata = {
             "run_name": run_name,  # langsmith run name
             "run_id": run_id,  # langsmith run id

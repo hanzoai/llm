@@ -43,7 +43,7 @@ class VertexPassthroughLoggingHandler:
             model = VertexPassthroughLoggingHandler.extract_model_from_url(url_route)
 
             instance_of_vertex_llm = llm.VertexGeminiConfig()
-            litellm_model_response: ModelResponse = (
+            llm_model_response: ModelResponse = (
                 instance_of_vertex_llm.transform_response(
                     model=model,
                     messages=[
@@ -60,7 +60,7 @@ class VertexPassthroughLoggingHandler:
                 )
             )
             kwargs = VertexPassthroughLoggingHandler._create_vertex_response_logging_payload_for_generate_content(
-                litellm_model_response=litellm_model_response,
+                llm_model_response=llm_model_response,
                 model=model,
                 kwargs=kwargs,
                 start_time=start_time,
@@ -72,7 +72,7 @@ class VertexPassthroughLoggingHandler:
             )
 
             return {
-                "result": litellm_model_response,
+                "result": llm_model_response,
                 "kwargs": kwargs,
             }
 
@@ -87,13 +87,13 @@ class VertexPassthroughLoggingHandler:
             model = VertexPassthroughLoggingHandler.extract_model_from_url(url_route)
             _json_response = httpx_response.json()
 
-            litellm_prediction_response: Union[
+            llm_prediction_response: Union[
                 ModelResponse, EmbeddingResponse, ImageResponse
             ] = ModelResponse()
             if vertex_image_generation_class.is_image_generation_response(
                 _json_response
             ):
-                litellm_prediction_response = (
+                llm_prediction_response = (
                     vertex_image_generation_class.process_image_generation_response(
                         _json_response,
                         model_response=llm.ImageResponse(),
@@ -105,19 +105,19 @@ class VertexPassthroughLoggingHandler:
                     PassthroughCallTypes.passthrough_image_generation.value
                 )
             else:
-                litellm_prediction_response = llm.vertexAITextEmbeddingConfig.transform_vertex_response_to_openai(
+                llm_prediction_response = llm.vertexAITextEmbeddingConfig.transform_vertex_response_to_openai(
                     response=_json_response,
                     model=model,
                     model_response=llm.EmbeddingResponse(),
                 )
-            if isinstance(litellm_prediction_response, llm.EmbeddingResponse):
-                litellm_prediction_response.model = model
+            if isinstance(llm_prediction_response, llm.EmbeddingResponse):
+                llm_prediction_response.model = model
 
             logging_obj.model = model
             logging_obj.model_call_details["model"] = logging_obj.model
 
             return {
-                "result": litellm_prediction_response,
+                "result": llm_prediction_response,
                 "kwargs": kwargs,
             }
         else:
@@ -164,7 +164,7 @@ class VertexPassthroughLoggingHandler:
             }
 
         kwargs = VertexPassthroughLoggingHandler._create_vertex_response_logging_payload_for_generate_content(
-            litellm_model_response=complete_streaming_response,
+            llm_model_response=complete_streaming_response,
             model=model,
             kwargs=kwargs,
             start_time=start_time,
@@ -190,7 +190,7 @@ class VertexPassthroughLoggingHandler:
             streaming_response=None,
             sync_stream=False,
         )
-        litellm_custom_stream_wrapper = llm.CustomStreamWrapper(
+        llm_custom_stream_wrapper = llm.CustomStreamWrapper(
             completion_stream=vertex_iterator,
             model=model,
             logging_obj=llm_logging_obj,
@@ -199,11 +199,11 @@ class VertexPassthroughLoggingHandler:
         all_openai_chunks = []
         for chunk in all_chunks:
             generic_chunk = vertex_iterator._common_chunk_parsing_logic(chunk)
-            litellm_chunk = litellm_custom_stream_wrapper.chunk_creator(
+            llm_chunk = llm_custom_stream_wrapper.chunk_creator(
                 chunk=generic_chunk
             )
-            if litellm_chunk is not None:
-                all_openai_chunks.append(litellm_chunk)
+            if llm_chunk is not None:
+                all_openai_chunks.append(llm_chunk)
 
         complete_streaming_response = llm.stream_chunk_builder(
             chunks=all_openai_chunks
@@ -228,7 +228,7 @@ class VertexPassthroughLoggingHandler:
 
     @staticmethod
     def _create_vertex_response_logging_payload_for_generate_content(
-        litellm_model_response: Union[ModelResponse, TextCompletionResponse],
+        llm_model_response: Union[ModelResponse, TextCompletionResponse],
         model: str,
         kwargs: dict,
         start_time: datetime,
@@ -241,7 +241,7 @@ class VertexPassthroughLoggingHandler:
 
         """
         response_cost = llm.completion_cost(
-            completion_response=litellm_model_response,
+            completion_response=llm_model_response,
             model=model,
         )
         kwargs["response_cost"] = response_cost
@@ -251,8 +251,8 @@ class VertexPassthroughLoggingHandler:
         verbose_proxy_logger.debug("kwargs= %s", json.dumps(kwargs, indent=4))
 
         # set llm_call_id to logging response object
-        litellm_model_response.id = logging_obj.llm_call_id
-        logging_obj.model = litellm_model_response.model or model
+        llm_model_response.id = logging_obj.llm_call_id
+        logging_obj.model = llm_model_response.model or model
         logging_obj.model_call_details["model"] = logging_obj.model
         logging_obj.model_call_details["custom_llm_provider"] = custom_llm_provider
         return kwargs

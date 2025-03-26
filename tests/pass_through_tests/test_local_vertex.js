@@ -10,7 +10,7 @@ const vertexAI = new VertexAI({
 
 // Create customHeaders using Headers
 const customHeaders = new Headers({
-    "X-Litellm-Api-Key": "sk-1234",
+    "X-Llm-Api-Key": "sk-1234",
     tags: "vertexjs,test-2"
 });
 

@@ -276,7 +276,7 @@ class ServiceLogging(CustomLogger):
         user_api_key_dict: UserAPIKeyAuth,
     ):
         """
-        Hook to track failed litellm-service calls
+        Hook to track failed llm-service calls
         """
         return await super().async_post_call_failure_hook(
             request_data,
@@ -301,7 +301,7 @@ class ServiceLogging(CustomLogger):
                     )
                 )  # invalid _duration value
             await self.async_service_success_hook(
-                service=ServiceTypes.LITELLM,
+                service=ServiceTypes.LLM,
                 duration=_duration,
                 call_type=kwargs["call_type"],
             )

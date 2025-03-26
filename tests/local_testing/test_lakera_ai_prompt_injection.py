@@ -155,7 +155,7 @@ async def test_moderations_on_embeddings():
             model_list=[
                 {
                     "model_name": "text-embedding-ada-002",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "text-embedding-ada-002",
                         "api_key": "any",
                         "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
@@ -390,14 +390,14 @@ async def test_callback_specific_param_run_pre_call_check_lakera():
             }
         }
     ]
-    litellm_settings = {"guardrails": guardrails_config}
+    llm_settings = {"guardrails": guardrails_config}
 
     assert len(llm.guardrail_name_config_map) == 0
     initialize_guardrails(
         guardrails_config=guardrails_config,
         premium_user=True,
         config_file_path="",
-        litellm_settings=litellm_settings,
+        llm_settings=llm_settings,
     )
 
     assert len(llm.guardrail_name_config_map) == 1
@@ -443,14 +443,14 @@ async def test_callback_specific_thresholds():
             }
         }
     ]
-    litellm_settings = {"guardrails": guardrails_config}
+    llm_settings = {"guardrails": guardrails_config}
 
     assert len(llm.guardrail_name_config_map) == 0
     initialize_guardrails(
         guardrails_config=guardrails_config,
         premium_user=True,
         config_file_path="",
-        litellm_settings=litellm_settings,
+        llm_settings=llm_settings,
     )
 
     assert len(llm.guardrail_name_config_map) == 1

@@ -1,10 +1,10 @@
 """
-Pulls the cost + context window + provider route for known models from https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json
+Pulls the cost + context window + provider route for known models from https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json
 
-This can be disabled by setting the LITELLM_LOCAL_MODEL_COST_MAP environment variable to True.
+This can be disabled by setting the LLM_LOCAL_MODEL_COST_MAP environment variable to True.
 
 ```
-export LITELLM_LOCAL_MODEL_COST_MAP=True
+export LLM_LOCAL_MODEL_COST_MAP=True
 ```
 """
 
@@ -15,8 +15,8 @@ import httpx
 
 def get_model_cost_map(url: str):
     if (
-        os.getenv("LITELLM_LOCAL_MODEL_COST_MAP", False)
-        or os.getenv("LITELLM_LOCAL_MODEL_COST_MAP", False) == "True"
+        os.getenv("LLM_LOCAL_MODEL_COST_MAP", False)
+        or os.getenv("LLM_LOCAL_MODEL_COST_MAP", False) == "True"
     ):
         import importlib.resources
         import json

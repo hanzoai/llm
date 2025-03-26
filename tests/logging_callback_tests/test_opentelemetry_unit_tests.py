@@ -50,7 +50,7 @@ class TestOpentelemetryUnitTests(BaseLoggingCallbackTest):
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hello, world!"}],
             mock_response="Hey!",
-            metadata={"litellm_parent_otel_span": parent_otel_span},
+            metadata={"llm_parent_otel_span": parent_otel_span},
         )
 
         await asyncio.sleep(1)

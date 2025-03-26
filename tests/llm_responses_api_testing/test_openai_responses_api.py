@@ -220,41 +220,41 @@ async def test_basic_openai_responses_api_streaming_with_logging():
     )
 
 
-def validate_responses_match(slp_response, litellm_response):
+def validate_responses_match(slp_response, llm_response):
     """Validate that the standard logging payload OpenAI response matches the llm response"""
     # Validate core fields
-    assert slp_response["id"] == litellm_response["id"], "ID mismatch"
-    assert slp_response["model"] == litellm_response["model"], "Model mismatch"
+    assert slp_response["id"] == llm_response["id"], "ID mismatch"
+    assert slp_response["model"] == llm_response["model"], "Model mismatch"
     assert (
-        slp_response["created_at"] == litellm_response["created_at"]
+        slp_response["created_at"] == llm_response["created_at"]
     ), "Created at mismatch"
 
     # Validate usage
     assert (
         slp_response["usage"]["input_tokens"]
-        == litellm_response["usage"]["input_tokens"]
+        == llm_response["usage"]["input_tokens"]
     ), "Input tokens mismatch"
     assert (
         slp_response["usage"]["output_tokens"]
-        == litellm_response["usage"]["output_tokens"]
+        == llm_response["usage"]["output_tokens"]
     ), "Output tokens mismatch"
     assert (
         slp_response["usage"]["total_tokens"]
-        == litellm_response["usage"]["total_tokens"]
+        == llm_response["usage"]["total_tokens"]
     ), "Total tokens mismatch"
 
     # Validate output/messages
     assert len(slp_response["output"]) == len(
-        litellm_response["output"]
+        llm_response["output"]
     ), "Output length mismatch"
-    for slp_msg, litellm_msg in zip(slp_response["output"], litellm_response["output"]):
-        assert slp_msg["role"] == litellm_msg.role, "Message role mismatch"
+    for slp_msg, llm_msg in zip(slp_response["output"], llm_response["output"]):
+        assert slp_msg["role"] == llm_msg.role, "Message role mismatch"
         # Access the content's text field for the llm response
-        litellm_content = litellm_msg.content[0].text if litellm_msg.content else ""
+        llm_content = llm_msg.content[0].text if llm_msg.content else ""
         assert (
-            slp_msg["content"][0]["text"] == litellm_content
-        ), f"Message content mismatch. Expected {litellm_content}, Got {slp_msg['content']}"
-        assert slp_msg["status"] == litellm_msg.status, "Message status mismatch"
+            slp_msg["content"][0]["text"] == llm_content
+        ), f"Message content mismatch. Expected {llm_content}, Got {slp_msg['content']}"
+        assert slp_msg["status"] == llm_msg.status, "Message status mismatch"
 
 
 @pytest.mark.asyncio
@@ -509,7 +509,7 @@ async def test_openai_responses_api_streaming_validation(sync_mode):
 
 @pytest.mark.parametrize("sync_mode", [True, False])
 @pytest.mark.asyncio
-async def test_openai_responses_litellm_router(sync_mode):
+async def test_openai_responses_llm_router(sync_mode):
     """
     Test the OpenAI responses API with LLM Router in both sync and async modes
     """
@@ -518,7 +518,7 @@ async def test_openai_responses_litellm_router(sync_mode):
         model_list=[
             {
                 "model_name": "gpt4o-special-alias",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -554,7 +554,7 @@ async def test_openai_responses_litellm_router(sync_mode):
 
 @pytest.mark.parametrize("sync_mode", [True, False])
 @pytest.mark.asyncio
-async def test_openai_responses_litellm_router_streaming(sync_mode):
+async def test_openai_responses_llm_router_streaming(sync_mode):
     """
     Test the OpenAI responses API with streaming through LLM Router
     """
@@ -563,7 +563,7 @@ async def test_openai_responses_litellm_router_streaming(sync_mode):
         model_list=[
             {
                 "model_name": "gpt4o-special-alias",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -604,7 +604,7 @@ async def test_openai_responses_litellm_router_streaming(sync_mode):
 
 
 @pytest.mark.asyncio
-async def test_openai_responses_litellm_router_no_metadata():
+async def test_openai_responses_llm_router_no_metadata():
     """
     Test that metadata is not passed through when using the Router for responses API
     """
@@ -670,7 +670,7 @@ async def test_openai_responses_litellm_router_no_metadata():
             model_list=[
                 {
                     "model_name": "gpt4o-special-alias",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "gpt-4o",
                         "api_key": "fake-key",
                     },
@@ -699,7 +699,7 @@ async def test_openai_responses_litellm_router_no_metadata():
 
 
 @pytest.mark.asyncio
-async def test_openai_responses_litellm_router_with_metadata():
+async def test_openai_responses_llm_router_with_metadata():
     """
     Test that metadata is correctly passed through when explicitly provided to the Router for responses API
     """
@@ -770,7 +770,7 @@ async def test_openai_responses_litellm_router_with_metadata():
             model_list=[
                 {
                     "model_name": "gpt4o-special-alias",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "gpt-4o",
                         "api_key": "fake-key",
                     },

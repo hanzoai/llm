@@ -149,7 +149,7 @@ async def test_async_gcs_pub_sub():
     print("sent to url", actual_url)
     assert (
         actual_url
-        == "https://pubsub.googleapis.com/v1/projects/reliableKeys/topics/litellmDB:publish"
+        == "https://pubsub.googleapis.com/v1/projects/reliableKeys/topics/llmDB:publish"
     )
     actual_request = mock_post.call_args[1]["json"]
 
@@ -204,7 +204,7 @@ async def test_async_gcs_pub_sub_v1():
     print("sent to url", actual_url)
     assert (
         actual_url
-        == "https://pubsub.googleapis.com/v1/projects/reliableKeys/topics/litellmDB:publish"
+        == "https://pubsub.googleapis.com/v1/projects/reliableKeys/topics/llmDB:publish"
     )
     actual_request = mock_post.call_args[1]["json"]
 

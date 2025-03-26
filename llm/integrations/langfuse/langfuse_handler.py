@@ -77,7 +77,7 @@ class LangFuseHandler:
         in_memory_dynamic_logger_cache: DynamicLoggingCache,
     ) -> LangFuseLogger:
         """
-        Returns the Global LangfuseLogger set on litellm
+        Returns the Global LangfuseLogger set on llm
 
         (this is the default langfuse logger - used when no dynamic credentials are passed)
 

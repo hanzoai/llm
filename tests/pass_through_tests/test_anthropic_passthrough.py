@@ -23,7 +23,7 @@ async def test_anthropic_basic_completion_with_headers():
         "model": "claude-3-5-sonnet-20241022",
         "max_tokens": 10,
         "messages": [{"role": "user", "content": "Say 'hello test' and nothing else"}],
-        "litellm_metadata": {
+        "llm_metadata": {
             "tags": ["test-tag-1", "test-tag-2"],
         },
     }
@@ -44,16 +44,16 @@ async def test_anthropic_basic_completion_with_headers():
             reported_usage = response_json.get("usage", None)
             anthropic_api_input_tokens = reported_usage.get("input_tokens", None)
             anthropic_api_output_tokens = reported_usage.get("output_tokens", None)
-            litellm_call_id = response_headers.get("x-litellm-call-id")
+            llm_call_id = response_headers.get("x-llm-call-id")
 
-            print(f"LLM Call ID: {litellm_call_id}")
+            print(f"LLM Call ID: {llm_call_id}")
 
             # Wait for spend to be logged
             await asyncio.sleep(15)
 
             # Check spend logs for this specific request
             async with session.get(
-                f"http://0.0.0.0:4000/spend/logs?request_id={litellm_call_id}",
+                f"http://0.0.0.0:4000/spend/logs?request_id={llm_call_id}",
                 headers={"Authorization": "Bearer sk-1234"},
             ) as spend_response:
                 print("text spend response")
@@ -72,7 +72,7 @@ async def test_anthropic_basic_completion_with_headers():
 
                 # Request metadata assertions
                 assert (
-                    log_entry["request_id"] == litellm_call_id
+                    log_entry["request_id"] == llm_call_id
                 ), "Request ID should match"
                 assert (
                     log_entry["call_type"] == "pass_through_endpoint"
@@ -140,7 +140,7 @@ async def test_anthropic_streaming_with_headers():
             {"role": "user", "content": "Say 'hello stream test' and nothing else"}
         ],
         "stream": True,
-        "litellm_metadata": {
+        "llm_metadata": {
             "tags": ["test-tag-stream-1", "test-tag-stream-2"],
             "user": "test-user-1",
         },
@@ -155,8 +155,8 @@ async def test_anthropic_streaming_with_headers():
             assert response.status == 200, "Response should be successful"
             response_headers = response.headers
             print(f"Response headers: {response_headers}")
-            litellm_call_id = response_headers.get("x-litellm-call-id")
-            print(f"LLM Call ID: {litellm_call_id}")
+            llm_call_id = response_headers.get("x-llm-call-id")
+            print(f"LLM Call ID: {llm_call_id}")
 
             collected_output = []
             async for line in response.content:
@@ -193,7 +193,7 @@ async def test_anthropic_streaming_with_headers():
 
             # Check spend logs for this specific request
             async with session.get(
-                f"http://0.0.0.0:4000/spend/logs?request_id={litellm_call_id}",
+                f"http://0.0.0.0:4000/spend/logs?request_id={llm_call_id}",
                 headers={"Authorization": "Bearer sk-1234"},
             ) as spend_response:
                 spend_data = await spend_response.json()
@@ -210,7 +210,7 @@ async def test_anthropic_streaming_with_headers():
 
                 # Request metadata assertions
                 assert (
-                    log_entry["request_id"] == litellm_call_id
+                    log_entry["request_id"] == llm_call_id
                 ), "Request ID should match"
                 assert (
                     log_entry["call_type"] == "pass_through_endpoint"

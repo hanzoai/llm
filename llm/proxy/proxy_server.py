@@ -67,7 +67,7 @@ try:
     import yaml  # type: ignore
     from apscheduler.schedulers.asyncio import AsyncIOScheduler
 except ImportError as e:
-    raise ImportError(f"Missing dependency {e}. Run `pip install 'litellm[proxy]'`")
+    raise ImportError(f"Missing dependency {e}. Run `pip install 'llm[proxy]'`")
 
 list_of_messages = [
     "'The thing I wish you improved is...'",
@@ -93,7 +93,7 @@ def generate_feedback_box():
     print("\033[1;37m" + "# {:^59} #\033[0m".format(message))  # noqa
     print(  # noqa
         "\033[1;37m"
-        + "# {:^59} #\033[0m".format("https://github.com/BerriAI/litellm/issues/new")
+        + "# {:^59} #\033[0m".format("https://github.com/BerriAI/llm/issues/new")
     )  # noqa
     print("\033[1;37m" + "#" + " " * box_width + "#\033[0m")  # noqa
     print("\033[1;37m" + "#" + "-" * box_width + "#\033[0m")  # noqa
@@ -103,7 +103,7 @@ def generate_feedback_box():
     print()  # noqa
     print()  # noqa
     print(  # noqa
-        "\033[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new\033[0m"
+        "\033[1;31mGive Feedback / Get Help: https://github.com/BerriAI/llm/issues/new\033[0m"
     )  # noqa
     print()  # noqa
     print()  # noqa
@@ -138,7 +138,7 @@ from llm.proxy.anthropic_endpoints.endpoints import router as anthropic_router
 from llm.proxy.auth.auth_checks import get_team_object, log_db_metrics
 from llm.proxy.auth.auth_utils import check_response_size_is_safe
 from llm.proxy.auth.handle_jwt import JWTHandler
-from llm.proxy.auth.litellm_license import LicenseCheck
+from llm.proxy.auth.llm_license import LicenseCheck
 from llm.proxy.auth.model_checks import (
     get_complete_model_list,
     get_key_models,
@@ -362,7 +362,7 @@ server_root_path = os.getenv("SERVER_ROOT_PATH", "")
 _license_check = LicenseCheck()
 premium_user: bool = _license_check.is_premium()
 global_max_parallel_request_retries_env: Optional[str] = os.getenv(
-    "LITELLM_GLOBAL_MAX_PARALLEL_REQUEST_RETRIES"
+    "LLM_GLOBAL_MAX_PARALLEL_REQUEST_RETRIES"
 )
 proxy_state = ProxyState()
 if global_max_parallel_request_retries_env is None:
@@ -371,7 +371,7 @@ else:
     global_max_parallel_request_retries = int(global_max_parallel_request_retries_env)
 
 global_max_parallel_request_retry_timeout_env: Optional[str] = os.getenv(
-    "LITELLM_GLOBAL_MAX_PARALLEL_REQUEST_RETRY_TIMEOUT"
+    "LLM_GLOBAL_MAX_PARALLEL_REQUEST_RETRY_TIMEOUT"
 )
 if global_max_parallel_request_retry_timeout_env is None:
     global_max_parallel_request_retry_timeout: float = 60.0
@@ -503,7 +503,7 @@ async def proxy_startup_event(app: FastAPI):
             ) = await proxy_config.load_config(
                 router=llm_router, config_file_path=worker_config
             )
-        elif os.environ.get("LITELLM_CONFIG_BUCKET_NAME") is not None and isinstance(
+        elif os.environ.get("LLM_CONFIG_BUCKET_NAME") is not None and isinstance(
             worker_config, str
         ):
             (
@@ -780,7 +780,7 @@ ui_access_mode: Literal["admin", "all"] = "all"
 proxy_budget_rescheduler_min_time = 597
 proxy_budget_rescheduler_max_time = 605
 proxy_batch_write_at = 10  # in seconds
-litellm_master_key_hash = None
+llm_master_key_hash = None
 disable_spend_logs = False
 jwt_handler = JWTHandler()
 prompt_injection_detection_obj: Optional[_OPTIONAL_PromptInjectionDetection] = None
@@ -1344,7 +1344,7 @@ async def update_cache(  # noqa: PLR0915
         user_api_key_cache.async_set_cache_pipeline(
             cache_list=values_to_update_in_cache,
             ttl=60,
-            litellm_parent_otel_span=parent_otel_span,
+            llm_parent_otel_span=parent_otel_span,
         )
     )
 
@@ -1580,7 +1580,7 @@ class ProxyConfig:
         # load existing config
         config = self.get_config_state()
 
-        ## LITELLM MODULE SETTINGS (e.g. llm.drop_params=True,..)
+        ## LLM MODULE SETTINGS (e.g. llm.drop_params=True,..)
         llm_settings = config.get("llm_settings", {})
         all_teams_config = llm_settings.get("default_team_settings", None)
         if all_teams_config is None:
@@ -1627,10 +1627,10 @@ class ProxyConfig:
         global prisma_client, store_model_in_db
         # Load existing config
 
-        if os.environ.get("LITELLM_CONFIG_BUCKET_NAME") is not None:
-            bucket_name = os.environ.get("LITELLM_CONFIG_BUCKET_NAME")
-            object_key = os.environ.get("LITELLM_CONFIG_BUCKET_OBJECT_KEY")
-            bucket_type = os.environ.get("LITELLM_CONFIG_BUCKET_TYPE")
+        if os.environ.get("LLM_CONFIG_BUCKET_NAME") is not None:
+            bucket_name = os.environ.get("LLM_CONFIG_BUCKET_NAME")
+            object_key = os.environ.get("LLM_CONFIG_BUCKET_OBJECT_KEY")
+            bucket_type = os.environ.get("LLM_CONFIG_BUCKET_TYPE")
             verbose_proxy_logger.debug(
                 "bucket_name: %s, object_key: %s", bucket_name, object_key
             )
@@ -1700,7 +1700,7 @@ class ProxyConfig:
         """
         Load config values into proxy global state
         """
-        global master_key, user_config_file_path, otel_logging, user_custom_auth, user_custom_auth_path, user_custom_key_generate, user_custom_sso, use_background_health_checks, health_check_interval, use_queue, proxy_budget_rescheduler_max_time, proxy_budget_rescheduler_min_time, ui_access_mode, litellm_master_key_hash, proxy_batch_write_at, disable_spend_logs, prompt_injection_detection_obj, redis_usage_cache, store_model_in_db, premium_user, open_telemetry_logger, health_check_details, callback_settings
+        global master_key, user_config_file_path, otel_logging, user_custom_auth, user_custom_auth_path, user_custom_key_generate, user_custom_sso, use_background_health_checks, health_check_interval, use_queue, proxy_budget_rescheduler_max_time, proxy_budget_rescheduler_min_time, ui_access_mode, llm_master_key_hash, proxy_batch_write_at, disable_spend_logs, prompt_injection_detection_obj, redis_usage_cache, store_model_in_db, premium_user, open_telemetry_logger, health_check_details, callback_settings
 
         config: dict = await self.get_config(config_file_path=config_file_path)
 
@@ -1710,15 +1710,15 @@ class ProxyConfig:
             for key, value in environment_variables.items():
                 os.environ[key] = str(get_secret(secret_name=key, default_value=value))
 
-            # check if litellm_license in general_settings
-            if "LITELLM_LICENSE" in environment_variables:
-                _license_check.license_str = os.getenv("LITELLM_LICENSE", None)
+            # check if llm_license in general_settings
+            if "LLM_LICENSE" in environment_variables:
+                _license_check.license_str = os.getenv("LLM_LICENSE", None)
                 premium_user = _license_check.is_premium()
 
         ## Callback settings
         callback_settings = config.get("callback_settings", None)
 
-        ## LITELLM MODULE SETTINGS (e.g. llm.drop_params=True,..)
+        ## LLM MODULE SETTINGS (e.g. llm.drop_params=True,..)
         llm_settings = config.get("llm_settings", None)
         if llm_settings is None:
             llm_settings = {}
@@ -1857,12 +1857,12 @@ class ProxyConfig:
                     for callback in value:
                         # user passed custom_callbacks.async_on_succes_logger. They need us to import a function
                         if "." in callback:
-                            llm.logging_callback_manager.add_litellm_success_callback(
+                            llm.logging_callback_manager.add_llm_success_callback(
                                 get_instance_fn(value=callback)
                             )
                         # these are llm callbacks - "langfuse", "sentry", "wandb"
                         else:
-                            llm.logging_callback_manager.add_litellm_success_callback(
+                            llm.logging_callback_manager.add_llm_success_callback(
                                 callback
                             )
                             if "prometheus" in callback:
@@ -1884,12 +1884,12 @@ class ProxyConfig:
                     for callback in value:
                         # user passed custom_callbacks.async_on_succes_logger. They need us to import a function
                         if "." in callback:
-                            llm.logging_callback_manager.add_litellm_failure_callback(
+                            llm.logging_callback_manager.add_llm_failure_callback(
                                 get_instance_fn(value=callback)
                             )
                         # these are llm callbacks - "langfuse", "sentry", "wandb"
                         else:
-                            llm.logging_callback_manager.add_litellm_failure_callback(
+                            llm.logging_callback_manager.add_llm_failure_callback(
                                 callback
                             )
                     print(  # noqa
@@ -1916,7 +1916,7 @@ class ProxyConfig:
                     verbose_proxy_logger.debug(
                         f"{blue_color_code} setting llm.{key}={value}{reset_color_code}"
                     )
-                    setattr(litellm, key, value)
+                    setattr(llm, key, value)
                 elif key == "upperbound_key_generate_params":
                     if value is not None and isinstance(value, dict):
                         for _k, _v in value.items():
@@ -1933,9 +1933,9 @@ class ProxyConfig:
                     verbose_proxy_logger.debug(
                         f"{blue_color_code} setting llm.{key}={value}{reset_color_code}"
                     )
-                    setattr(litellm, key, value)
+                    setattr(llm, key, value)
 
-        ## GENERAL SERVER SETTINGS (e.g. master key,..) # do this after initializing litellm, to ensure sentry logging works for proxylogging
+        ## GENERAL SERVER SETTINGS (e.g. master key,..) # do this after initializing llm, to ensure sentry logging works for proxylogging
         general_settings = config.get("general_settings", {})
         if general_settings is None:
             general_settings = {}
@@ -1961,7 +1961,7 @@ class ProxyConfig:
             ### CONNECT TO DATABASE ###
             database_url = general_settings.get("database_url", None)
             if database_url and database_url.startswith("os.environ/"):
-                verbose_proxy_logger.debug("GOING INTO LITELLM.GET_SECRET!")
+                verbose_proxy_logger.debug("GOING INTO LLM.GET_SECRET!")
                 database_url = get_secret(database_url)
                 verbose_proxy_logger.debug("RETRIEVED DB URL: %s", database_url)
             ### MASTER KEY ###
@@ -1979,7 +1979,7 @@ class ProxyConfig:
                     )
 
             if master_key is not None and isinstance(master_key, str):
-                litellm_master_key_hash = hash_token(master_key)
+                llm_master_key_hash = hash_token(master_key)
             ### USER API KEY CACHE IN-MEMORY TTL ###
             user_api_key_cache_ttl = general_settings.get(
                 "user_api_key_cache_ttl", None
@@ -2026,7 +2026,7 @@ class ProxyConfig:
             allowed_ips = general_settings.get("allowed_ips", None)
             if allowed_ips is not None and premium_user is False:
                 raise ValueError(
-                    "allowed_ips is an Enterprise Feature. Please add a valid LITELLM_LICENSE to your envionment."
+                    "allowed_ips is an Enterprise Feature. Please add a valid LLM_LICENSE to your envionment."
                 )
             ## BUDGET RESCHEDULER ##
             proxy_budget_rescheduler_min_time = general_settings.get(
@@ -2069,9 +2069,9 @@ class ProxyConfig:
                     + CommonProxyErrors.not_premium_user.value
                 )
 
-            # check if litellm_license in general_settings
-            if "litellm_license" in general_settings:
-                _license_check.license_str = general_settings["litellm_license"]
+            # check if llm_license in general_settings
+            if "llm_license" in general_settings:
+                _license_check.license_str = general_settings["llm_license"]
                 premium_user = _license_check.is_premium()
 
         router_params: dict = {
@@ -2092,8 +2092,8 @@ class ProxyConfig:
                         model["llm_params"][k] = get_secret(v)
                 print(f"\033[32m    {model.get('model_name', '')}\033[0m")  # noqa
                 llm_model_name = model["llm_params"]["model"]
-                litellm_model_api_base = model["llm_params"].get("api_base", None)
-                if "ollama" in llm_model_name and litellm_model_api_base is None:
+                llm_model_api_base = model["llm_params"].get("api_base", None)
+                if "ollama" in llm_model_name and llm_model_api_base is None:
                     run_ollama_serve()
 
         ## ASSISTANT SETTINGS
@@ -2477,7 +2477,7 @@ class ProxyConfig:
 
     def _add_callbacks_from_db_config(self, config_data: dict) -> None:
         """
-        Adds callbacks from DB config to litellm
+        Adds callbacks from DB config to llm
         """
         llm_settings = config_data.get("llm_settings", {}) or {}
         success_callbacks = llm_settings.get("success_callback", None)
@@ -2493,11 +2493,11 @@ class ProxyConfig:
                         success_callback, "success"
                     )
                 elif success_callback not in llm.success_callback:
-                    llm.logging_callback_manager.add_litellm_success_callback(
+                    llm.logging_callback_manager.add_llm_success_callback(
                         success_callback
                     )
 
-        # Add failure callbacks from DB to litellm
+        # Add failure callbacks from DB to llm
         if failure_callbacks is not None and isinstance(failure_callbacks, list):
             for failure_callback in failure_callbacks:
                 if (
@@ -2508,13 +2508,13 @@ class ProxyConfig:
                         failure_callback, "failure"
                     )
                 elif failure_callback not in llm.failure_callback:
-                    llm.logging_callback_manager.add_litellm_failure_callback(
+                    llm.logging_callback_manager.add_llm_failure_callback(
                         failure_callback
                     )
 
     def _add_environment_variables_from_db_config(self, config_data: dict) -> None:
         """
-        Adds environment variables from DB config to litellm
+        Adds environment variables from DB config to llm
         """
         environment_variables = config_data.get("environment_variables", {})
         self._decrypt_and_set_db_env_variables(environment_variables)
@@ -2564,7 +2564,7 @@ class ProxyConfig:
         Adds router settings from DB config to llm proxy
         """
         if llm_router is not None and prisma_client is not None:
-            db_router_settings = await prisma_client.db.litellm_config.find_first(
+            db_router_settings = await prisma_client.db.llm_config.find_first(
                 where={"param_name": "router_settings"}
             )
             if (
@@ -2794,7 +2794,7 @@ class ProxyConfig:
                 new_models=new_models, proxy_logging_obj=proxy_logging_obj
             )
 
-            db_general_settings = await prisma_client.db.litellm_config.find_first(
+            db_general_settings = await prisma_client.db.llm_config.find_first(
                 where={"param_name": "general_settings"}
             )
 
@@ -2895,7 +2895,7 @@ async def initialize(  # noqa: PLR0915
     config=None,
 ):
     global user_model, user_api_base, user_debug, user_detailed_debug, user_user_max_tokens, user_request_timeout, user_temperature, user_telemetry, user_headers, experimental, llm_model_list, llm_router, general_settings, master_key, user_custom_auth, prisma_client
-    if os.getenv("LITELLM_DONT_SHOW_FEEDBACK_BOX", "").lower() != "true":
+    if os.getenv("LLM_DONT_SHOW_FEEDBACK_BOX", "").lower() != "true":
         generate_feedback_box()
     user_model = model
     user_debug = debug
@@ -2979,13 +2979,13 @@ async def initialize(  # noqa: PLR0915
         dynamic_config[user_model]["request_timeout"] = request_timeout
     if alias:  # model-specific param
         dynamic_config[user_model]["alias"] = alias
-    if drop_params is True:  # litellm-specific param
+    if drop_params is True:  # llm-specific param
         llm.drop_params = True
         dynamic_config["general"]["drop_params"] = True
-    if add_function_to_prompt is True:  # litellm-specific param
+    if add_function_to_prompt is True:  # llm-specific param
         llm.add_function_to_prompt = True
         dynamic_config["general"]["add_function_to_prompt"] = True
-    if max_budget:  # litellm-specific param
+    if max_budget:  # llm-specific param
         llm.max_budget = max_budget
         dynamic_config["general"]["max_budget"] = max_budget
     if experimental:
@@ -3130,14 +3130,14 @@ def select_data_generator(
     )
 
 
-def get_litellm_model_info(model: dict = {}):
+def get_llm_model_info(model: dict = {}):
     model_info = model.get("model_info", {})
     model_to_lookup = model.get("llm_params", {}).get("model", None)
     try:
         if "azure" in model_to_lookup:
             model_to_lookup = model_info.get("base_model", None)
-        litellm_model_info = llm.get_model_info(model_to_lookup)
-        return litellm_model_info
+        llm_model_info = llm.get_model_info(model_to_lookup)
+        return llm_model_info
     except Exception:
         # this should not block returning on /model/info
         # if llm does not have info on the model it should return {}
@@ -3192,17 +3192,17 @@ class ProxyStartupEvent:
         user_api_key_cache: DualCache,
     ):
         """Initialize JWT auth on startup"""
-        if general_settings.get("litellm_jwtauth", None) is not None:
-            for k, v in general_settings["litellm_jwtauth"].items():
+        if general_settings.get("llm_jwtauth", None) is not None:
+            for k, v in general_settings["llm_jwtauth"].items():
                 if isinstance(v, str) and v.startswith("os.environ/"):
-                    general_settings["litellm_jwtauth"][k] = get_secret(v)
-            litellm_jwtauth = LLM_JWTAuth(**general_settings["litellm_jwtauth"])
+                    general_settings["llm_jwtauth"][k] = get_secret(v)
+            llm_jwtauth = LLM_JWTAuth(**general_settings["llm_jwtauth"])
         else:
-            litellm_jwtauth = LLM_JWTAuth()
+            llm_jwtauth = LLM_JWTAuth()
         jwt_handler.update_environment(
             prisma_client=prisma_client,
             user_api_key_cache=user_api_key_cache,
-            litellm_jwtauth=litellm_jwtauth,
+            llm_jwtauth=llm_jwtauth,
         )
 
     @classmethod
@@ -5518,7 +5518,7 @@ async def model_info_v2(
     all_models = copy.deepcopy(llm_router.model_list)
 
     if user_model is not None:
-        # if user does not use a config.yaml, https://github.com/BerriAI/litellm/issues/2061
+        # if user does not use a config.yaml, https://github.com/BerriAI/llm/issues/2061
         all_models += [user_model]
 
     # check all models user has access to in user_api_key_dict
@@ -5548,32 +5548,32 @@ async def model_info_v2(
 
         # read llm model_prices_and_context_window.json to get the following:
         # input_cost_per_token, output_cost_per_token, max_tokens
-        litellm_model_info = get_litellm_model_info(model=_model)
+        llm_model_info = get_llm_model_info(model=_model)
 
         # 2nd pass on the model, try seeing if we can find model in llm model_cost map
-        if litellm_model_info == {}:
-            # use litellm_param model_name to get model_info
+        if llm_model_info == {}:
+            # use llm_param model_name to get model_info
             llm_params = _model.get("llm_params", {})
-            litellm_model = llm_params.get("model", None)
+            llm_model = llm_params.get("model", None)
             try:
-                litellm_model_info = llm.get_model_info(model=litellm_model)
+                llm_model_info = llm.get_model_info(model=llm_model)
             except Exception:
-                litellm_model_info = {}
+                llm_model_info = {}
         # 3rd pass on the model, try seeing if we can find model but without the "/" in model cost map
-        if litellm_model_info == {}:
-            # use litellm_param model_name to get model_info
+        if llm_model_info == {}:
+            # use llm_param model_name to get model_info
             llm_params = _model.get("llm_params", {})
-            litellm_model = llm_params.get("model", None)
-            split_model = litellm_model.split("/")
+            llm_model = llm_params.get("model", None)
+            split_model = llm_model.split("/")
             if len(split_model) > 0:
-                litellm_model = split_model[-1]
+                llm_model = split_model[-1]
             try:
-                litellm_model_info = llm.get_model_info(
-                    model=litellm_model, custom_llm_provider=split_model[0]
+                llm_model_info = llm.get_model_info(
+                    model=llm_model, custom_llm_provider=split_model[0]
                 )
             except Exception:
-                litellm_model_info = {}
-        for k, v in litellm_model_info.items():
+                llm_model_info = {}
+        for k, v in llm_model_info.items():
             if k not in model_info:
                 model_info[k] = v
         _model["model_info"] = model_info
@@ -6018,32 +6018,32 @@ def _get_proxy_model_info(model: dict) -> dict:
 
     # read llm model_prices_and_context_window.json to get the following:
     # input_cost_per_token, output_cost_per_token, max_tokens
-    litellm_model_info = get_litellm_model_info(model=model)
+    llm_model_info = get_llm_model_info(model=model)
 
     # 2nd pass on the model, try seeing if we can find model in llm model_cost map
-    if litellm_model_info == {}:
-        # use litellm_param model_name to get model_info
+    if llm_model_info == {}:
+        # use llm_param model_name to get model_info
         llm_params = model.get("llm_params", {})
-        litellm_model = llm_params.get("model", None)
+        llm_model = llm_params.get("model", None)
         try:
-            litellm_model_info = llm.get_model_info(model=litellm_model)
+            llm_model_info = llm.get_model_info(model=llm_model)
         except Exception:
-            litellm_model_info = {}
+            llm_model_info = {}
     # 3rd pass on the model, try seeing if we can find model but without the "/" in model cost map
-    if litellm_model_info == {}:
-        # use litellm_param model_name to get model_info
+    if llm_model_info == {}:
+        # use llm_param model_name to get model_info
         llm_params = model.get("llm_params", {})
-        litellm_model = llm_params.get("model", None)
-        split_model = litellm_model.split("/")
+        llm_model = llm_params.get("model", None)
+        split_model = llm_model.split("/")
         if len(split_model) > 0:
-            litellm_model = split_model[-1]
+            llm_model = split_model[-1]
         try:
-            litellm_model_info = llm.get_model_info(
-                model=litellm_model, custom_llm_provider=split_model[0]
+            llm_model_info = llm.get_model_info(
+                model=llm_model, custom_llm_provider=split_model[0]
             )
         except Exception:
-            litellm_model_info = {}
-    for k, v in litellm_model_info.items():
+            llm_model_info = {}
+    for k, v in llm_model_info.items():
         if k not in model_info:
             model_info[k] = v
     model["model_info"] = model_info
@@ -6065,16 +6065,16 @@ def _get_proxy_model_info(model: dict) -> dict:
 )
 async def model_info_v1(  # noqa: PLR0915
     user_api_key_dict: UserAPIKeyAuth = Depends(user_api_key_auth),
-    litellm_model_id: Optional[str] = None,
+    llm_model_id: Optional[str] = None,
 ):
     """
     Provides more info about each model in /models, including config.yaml descriptions (except api key and api base)
 
     Parameters:
-        litellm_model_id: Optional[str] = None (this is the value of `x-llm-model-id` returned in response headers)
+        llm_model_id: Optional[str] = None (this is the value of `x-llm-model-id` returned in response headers)
 
-        - When litellm_model_id is passed, it will return the info for that specific model
-        - When litellm_model_id is not passed, it will return the info for all models
+        - When llm_model_id is passed, it will return the info for that specific model
+        - When llm_model_id is not passed, it will return the info for all models
 
     Returns:
         Returns a dictionary containing information about each model.
@@ -6136,14 +6136,14 @@ async def model_info_v1(  # noqa: PLR0915
             },
         )
 
-    if litellm_model_id is not None:
+    if llm_model_id is not None:
         # user is trying to get specific model from llm router
-        deployment_info = llm_router.get_deployment(model_id=litellm_model_id)
+        deployment_info = llm_router.get_deployment(model_id=llm_model_id)
         if deployment_info is None:
             raise HTTPException(
                 status_code=400,
                 detail={
-                    "error": f"Model id = {litellm_model_id} not found on llm proxy"
+                    "error": f"Model id = {llm_model_id} not found on llm proxy"
                 },
             )
         _deployment_info_dict = _get_proxy_model_info(
@@ -6482,7 +6482,7 @@ async def alerting_settings(
         )
 
     ## get general settings from db
-    db_general_settings = await prisma_client.db.litellm_config.find_first(
+    db_general_settings = await prisma_client.db.llm_config.find_first(
         where={"param_name": "general_settings"}
     )
 
@@ -6675,7 +6675,7 @@ async def async_queue_request(
 async def fallback_login(request: Request):
     """
     Create Proxy API Keys using Google Workspace SSO. Requires setting PROXY_BASE_URL in .env
-    PROXY_BASE_URL should be the your deployed proxy endpoint, e.g. PROXY_BASE_URL="https://litellm-production-7002.up.railway.app/"
+    PROXY_BASE_URL should be the your deployed proxy endpoint, e.g. PROXY_BASE_URL="https://llm-production-7002.up.railway.app/"
     Example:
     """
     # get url from request
@@ -6741,7 +6741,7 @@ async def login(request: Request):  # noqa: PLR0915
         ]
     ] = None
     if prisma_client is not None:
-        _user_row = await prisma_client.db.litellm_usertable.find_first(
+        _user_row = await prisma_client.db.llm_usertable.find_first(
             where={"user_email": {"equals": username}}
         )
     disabled_non_admin_personal_key_creation = (
@@ -6789,7 +6789,7 @@ async def login(request: Request):  # noqa: PLR0915
                     "config": {},
                     "spend": 0,
                     "user_id": key_user_id,
-                    "team_id": "litellm-dashboard",
+                    "team_id": "llm-dashboard",
                 },  # type: ignore
             )
         else:
@@ -6800,11 +6800,11 @@ async def login(request: Request):  # noqa: PLR0915
                 code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
         key = response["token"]  # type: ignore
-        litellm_dashboard_ui = os.getenv("PROXY_BASE_URL", "")
-        if litellm_dashboard_ui.endswith("/"):
-            litellm_dashboard_ui += "ui/"
+        llm_dashboard_ui = os.getenv("PROXY_BASE_URL", "")
+        if llm_dashboard_ui.endswith("/"):
+            llm_dashboard_ui += "ui/"
         else:
-            litellm_dashboard_ui += "/ui/"
+            llm_dashboard_ui += "/ui/"
         import jwt
 
         jwt_token = jwt.encode(  # type: ignore
@@ -6816,15 +6816,15 @@ async def login(request: Request):  # noqa: PLR0915
                 "login_method": "username_password",
                 "premium_user": premium_user,
                 "auth_header_name": general_settings.get(
-                    "litellm_key_header_name", "Authorization"
+                    "llm_key_header_name", "Authorization"
                 ),
                 "disabled_non_admin_personal_key_creation": disabled_non_admin_personal_key_creation,
             },
             master_key,
             algorithm="HS256",
         )
-        litellm_dashboard_ui += "?userID=" + user_id
-        redirect_response = RedirectResponse(url=litellm_dashboard_ui, status_code=303)
+        llm_dashboard_ui += "?userID=" + user_id
+        redirect_response = RedirectResponse(url=llm_dashboard_ui, status_code=303)
         redirect_response.set_cookie(key="token", value=jwt_token)
         return redirect_response
     elif _user_row is not None:
@@ -6857,7 +6857,7 @@ async def login(request: Request):  # noqa: PLR0915
                         "config": {},
                         "spend": 0,
                         "user_id": user_id,
-                        "team_id": "litellm-dashboard",
+                        "team_id": "llm-dashboard",
                     },
                 )
             else:
@@ -6868,11 +6868,11 @@ async def login(request: Request):  # noqa: PLR0915
                     code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 )
             key = response["token"]  # type: ignore
-            litellm_dashboard_ui = os.getenv("PROXY_BASE_URL", "")
-            if litellm_dashboard_ui.endswith("/"):
-                litellm_dashboard_ui += "ui/"
+            llm_dashboard_ui = os.getenv("PROXY_BASE_URL", "")
+            if llm_dashboard_ui.endswith("/"):
+                llm_dashboard_ui += "ui/"
             else:
-                litellm_dashboard_ui += "/ui/"
+                llm_dashboard_ui += "/ui/"
             import jwt
 
             jwt_token = jwt.encode(  # type: ignore
@@ -6884,16 +6884,16 @@ async def login(request: Request):  # noqa: PLR0915
                     "login_method": "username_password",
                     "premium_user": premium_user,
                     "auth_header_name": general_settings.get(
-                        "litellm_key_header_name", "Authorization"
+                        "llm_key_header_name", "Authorization"
                     ),
                     "disabled_non_admin_personal_key_creation": disabled_non_admin_personal_key_creation,
                 },
                 master_key,
                 algorithm="HS256",
             )
-            litellm_dashboard_ui += "?userID=" + user_id
+            llm_dashboard_ui += "?userID=" + user_id
             redirect_response = RedirectResponse(
-                url=litellm_dashboard_ui, status_code=303
+                url=llm_dashboard_ui, status_code=303
             )
             redirect_response.set_cookie(key="token", value=jwt_token)
             return redirect_response
@@ -6937,7 +6937,7 @@ async def onboarding(invite_link: str):
             detail={"error": CommonProxyErrors.db_not_connected_error.value},
         )
 
-    invite_obj = await prisma_client.db.litellm_invitationlink.find_unique(
+    invite_obj = await prisma_client.db.llm_invitationlink.find_unique(
         where={"id": invite_link}
     )
     if invite_obj is None:
@@ -6956,7 +6956,7 @@ async def onboarding(invite_link: str):
     #### INVALIDATE LINK
     current_time = llm.utils.get_utc_datetime()
 
-    _ = await prisma_client.db.litellm_invitationlink.update(
+    _ = await prisma_client.db.llm_invitationlink.update(
         where={"id": invite_link},
         data={
             "accepted_at": current_time,
@@ -6967,7 +6967,7 @@ async def onboarding(invite_link: str):
     )
 
     ### GET USER OBJECT ###
-    user_obj = await prisma_client.db.litellm_usertable.find_unique(
+    user_obj = await prisma_client.db.llm_usertable.find_unique(
         where={"user_id": invite_obj.user_id}
     )
 
@@ -6989,16 +6989,16 @@ async def onboarding(invite_link: str):
             "config": {},
             "spend": 0,
             "user_id": user_obj.user_id,
-            "team_id": "litellm-dashboard",
+            "team_id": "llm-dashboard",
         },  # type: ignore
     )
     key = response["token"]  # type: ignore
 
-    litellm_dashboard_ui = os.getenv("PROXY_BASE_URL", "")
-    if litellm_dashboard_ui.endswith("/"):
-        litellm_dashboard_ui += "ui/onboarding"
+    llm_dashboard_ui = os.getenv("PROXY_BASE_URL", "")
+    if llm_dashboard_ui.endswith("/"):
+        llm_dashboard_ui += "ui/onboarding"
     else:
-        litellm_dashboard_ui += "/ui/onboarding"
+        llm_dashboard_ui += "/ui/onboarding"
     import jwt
 
     disabled_non_admin_personal_key_creation = (
@@ -7014,7 +7014,7 @@ async def onboarding(invite_link: str):
             "login_method": "username_password",
             "premium_user": premium_user,
             "auth_header_name": general_settings.get(
-                "litellm_key_header_name", "Authorization"
+                "llm_key_header_name", "Authorization"
             ),
             "disabled_non_admin_personal_key_creation": disabled_non_admin_personal_key_creation,
         },
@@ -7022,9 +7022,9 @@ async def onboarding(invite_link: str):
         algorithm="HS256",
     )
 
-    litellm_dashboard_ui += "?token={}&user_email={}".format(jwt_token, user_email)
+    llm_dashboard_ui += "?token={}&user_email={}".format(jwt_token, user_email)
     return {
-        "login_url": litellm_dashboard_ui,
+        "login_url": llm_dashboard_ui,
         "token": jwt_token,
         "user_email": user_email,
     }
@@ -7051,7 +7051,7 @@ async def claim_onboarding_link(data: InvitationClaim):
             detail={"error": CommonProxyErrors.db_not_connected_error.value},
         )
 
-    invite_obj = await prisma_client.db.litellm_invitationlink.find_unique(
+    invite_obj = await prisma_client.db.llm_invitationlink.find_unique(
         where={"id": data.invitation_link}
     )
     if invite_obj is None:
@@ -7078,7 +7078,7 @@ async def claim_onboarding_link(data: InvitationClaim):
         raise HTTPException(
             status_code=401,
             detail={
-                "error": "The invitation link was never validated. Please file an issue, if this is not intended - https://github.com/BerriAI/litellm/issues."
+                "error": "The invitation link was never validated. Please file an issue, if this is not intended - https://github.com/BerriAI/llm/issues."
             },
         )
 
@@ -7094,7 +7094,7 @@ async def claim_onboarding_link(data: InvitationClaim):
         )
     ### UPDATE USER OBJECT ###
     hash_password = hash_token(token=data.password)
-    user_obj = await prisma_client.db.litellm_usertable.update(
+    user_obj = await prisma_client.db.llm_usertable.update(
         where={"user_id": invite_obj.user_id}, data={"password": hash_password}
     )
 
@@ -7185,7 +7185,7 @@ async def new_invitation(
     expires_at = current_time + timedelta(days=7)
 
     try:
-        response = await prisma_client.db.litellm_invitationlink.create(
+        response = await prisma_client.db.llm_invitationlink.create(
             data={
                 "user_id": data.user_id,
                 "created_at": current_time,
@@ -7247,7 +7247,7 @@ async def invitation_info(
             },
         )
 
-    response = await prisma_client.db.litellm_invitationlink.find_unique(
+    response = await prisma_client.db.llm_invitationlink.find_unique(
         where={"id": invitation_id}
     )
 
@@ -7301,7 +7301,7 @@ async def invitation_update(
         )
 
     current_time = llm.utils.get_utc_datetime()
-    response = await prisma_client.db.litellm_invitationlink.update(
+    response = await prisma_client.db.llm_invitationlink.update(
         where={"id": data.invitation_id},
         data={
             "id": data.invitation_id,
@@ -7361,7 +7361,7 @@ async def invitation_delete(
             },
         )
 
-    response = await prisma_client.db.litellm_invitationlink.delete(
+    response = await prisma_client.db.llm_invitationlink.delete(
         where={"id": data.invitation_id}
     )
 
@@ -7409,7 +7409,7 @@ async def update_config(config_info: ConfigYAML):  # noqa: PLR0915
         updated_settings = prisma_client.jsonify_object(updated_settings)
         for k, v in updated_settings.items():
             if k == "router_settings":
-                await prisma_client.db.litellm_config.upsert(
+                await prisma_client.db.llm_config.upsert(
                     where={"param_name": k},
                     data={
                         "create": {"param_name": k, "param_value": v},
@@ -7580,7 +7580,7 @@ async def update_config_general_settings(
         )
 
     ## get general settings from db
-    db_general_settings = await prisma_client.db.litellm_config.find_first(
+    db_general_settings = await prisma_client.db.llm_config.find_first(
         where={"param_name": "general_settings"}
     )
     ### update value
@@ -7594,7 +7594,7 @@ async def update_config_general_settings(
 
     general_settings[data.field_name] = data.field_value
 
-    response = await prisma_client.db.litellm_config.upsert(
+    response = await prisma_client.db.llm_config.upsert(
         where={"param_name": "general_settings"},
         data={
             "create": {"param_name": "general_settings", "param_value": json.dumps(general_settings)},  # type: ignore
@@ -7643,7 +7643,7 @@ async def get_config_general_settings(
         )
 
     ## get general settings from db
-    db_general_settings = await prisma_client.db.litellm_config.find_first(
+    db_general_settings = await prisma_client.db.llm_config.find_first(
         where={"param_name": "general_settings"}
     )
     ### pop the value
@@ -7706,7 +7706,7 @@ async def get_config_list(
         )
 
     ## get general settings from db
-    db_general_settings = await prisma_client.db.litellm_config.find_first(
+    db_general_settings = await prisma_client.db.llm_config.find_first(
         where={"param_name": "general_settings"}
     )
 
@@ -7849,7 +7849,7 @@ async def delete_config_general_settings(
         )
 
     ## get general settings from db
-    db_general_settings = await prisma_client.db.litellm_config.find_first(
+    db_general_settings = await prisma_client.db.llm_config.find_first(
         where={"param_name": "general_settings"}
     )
     ### pop the value
@@ -7866,7 +7866,7 @@ async def delete_config_general_settings(
 
     general_settings.pop(data.field_name, None)
 
-    response = await prisma_client.db.litellm_config.upsert(
+    response = await prisma_client.db.llm_config.upsert(
         where={"param_name": "general_settings"},
         data={
             "create": {"param_name": "general_settings", "param_value": json.dumps(general_settings)},  # type: ignore
@@ -8081,7 +8081,7 @@ async def config_yaml_endpoint(config_info: ConfigYAML):
     Parameters:
 
     The config.yaml object has the following attributes:
-    - **model_list**: *Optional[List[ModelParams]]* - A list of supported models on the server, along with model-specific configurations. ModelParams includes "model_name" (name of the model), "llm_params" (litellm-specific parameters for the model), and "model_info" (additional info about the model such as id, mode, cost per token, etc).
+    - **model_list**: *Optional[List[ModelParams]]* - A list of supported models on the server, along with model-specific configurations. ModelParams includes "model_name" (name of the model), "llm_params" (llm-specific parameters for the model), and "model_info" (additional info about the model such as id, mode, cost per token, etc).
 
     - **llm_settings**: *Optional[dict]*: Settings for the llm module. You can specify multiple properties like "drop_params", "set_verbose", "api_base", "cache".
 
@@ -8095,11 +8095,11 @@ async def config_yaml_endpoint(config_info: ConfigYAML):
 
 
 @router.get(
-    "/get/litellm_model_cost_map",
+    "/get/llm_model_cost_map",
     include_in_schema=False,
     dependencies=[Depends(user_api_key_auth)],
 )
-async def get_litellm_model_cost_map():
+async def get_llm_model_cost_map():
     try:
         _model_cost_map = llm.model_cost
         return _model_cost_map

@@ -19,7 +19,7 @@ export const handleEditModelSubmit = async (formValues: Record<string, any>, acc
     return;
   }
 
-  let newLiteLLMParams: Record<string, any> = {};
+  let newLLMParams: Record<string, any> = {};
   let model_info_model_id = null;
 
   if (formValues.input_cost_per_token) {
@@ -35,17 +35,17 @@ export const handleEditModelSubmit = async (formValues: Record<string, any>, acc
   for (const [key, value] of Object.entries(formValues)) {
     if (key !== "model_id") {
       // Empty string means user wants to null the value
-      newLiteLLMParams[key] = value === "" ? null : value;
+      newLLMParams[key] = value === "" ? null : value;
     } else {
       model_info_model_id = value === "" ? null : value;
     }
   }
   
   let payload: {
-    litellm_params: Record<string, any> | undefined;
+    llm_params: Record<string, any> | undefined;
     model_info: { id: any } | undefined;
   } = {
-    litellm_params: Object.keys(newLiteLLMParams).length > 0 ? newLiteLLMParams : undefined,
+    llm_params: Object.keys(newLLMParams).length > 0 ? newLLMParams : undefined,
     model_info: model_info_model_id !== undefined ? {
       id: model_info_model_id,
     } : undefined,
@@ -73,21 +73,21 @@ const EditModelModal: React.FC<EditModelModalProps> = ({
   onSubmit,
 }) => {
   const [form] = Form.useForm();
-  let litellm_params_to_edit: Record<string, any> = {};
+  let llm_params_to_edit: Record<string, any> = {};
   let model_name = "";
   let model_id = "";
   if (model) {
-    litellm_params_to_edit = {
-      ...model.litellm_params,
-      input_cost_per_token: model.litellm_params?.input_cost_per_token ? (model.litellm_params.input_cost_per_token * 1_000_000) : undefined,
-      output_cost_per_token: model.litellm_params?.output_cost_per_token ? (model.litellm_params.output_cost_per_token * 1_000_000) : undefined,
+    llm_params_to_edit = {
+      ...model.llm_params,
+      input_cost_per_token: model.llm_params?.input_cost_per_token ? (model.llm_params.input_cost_per_token * 1_000_000) : undefined,
+      output_cost_per_token: model.llm_params?.output_cost_per_token ? (model.llm_params.output_cost_per_token * 1_000_000) : undefined,
     };
     model_name = model.model_name;
     let model_info = model.model_info;
     if (model_info) {
       model_id = model_info.id;
       console.log(`model_id: ${model_id}`);
-      litellm_params_to_edit.model_id = model_id;
+      llm_params_to_edit.model_id = model_id;
     }
   }
 
@@ -110,7 +110,7 @@ const EditModelModal: React.FC<EditModelModalProps> = ({
 
   return (
     <Modal
-      title={"Edit '" + model_name + "' LiteLLM Params"}
+      title={"Edit '" + model_name + "' LLM Params"}
       visible={visible}
       width={800}
       footer={null}
@@ -120,7 +120,7 @@ const EditModelModal: React.FC<EditModelModalProps> = ({
       <Form
         form={form}
         onFinish={onSubmit}
-        initialValues={litellm_params_to_edit}
+        initialValues={llm_params_to_edit}
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         labelAlign="left"

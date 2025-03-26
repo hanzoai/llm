@@ -12,8 +12,8 @@ from datetime import datetime
 import pytest
 from pydantic import BaseModel
 
-import llm.litellm_core_utils
-import llm.litellm_core_utils.litellm_logging
+import llm.llm_core_utils
+import llm.llm_core_utils.llm_logging
 
 sys.path.insert(0, os.path.abspath("../.."))
 from typing import Any, List, Literal, Optional, Tuple, Union
@@ -93,21 +93,21 @@ def test_guardrail_list_of_event_hooks():
 
 
 def test_guardrail_info_response():
-    from llm.types.guardrails import GuardrailInfoResponse, LitellmParams
+    from llm.types.guardrails import GuardrailInfoResponse, LlmParams
 
     guardrail_info = GuardrailInfoResponse(
         guardrail_name="aporia-pre-guard",
-        litellm_params=LitellmParams(
+        llm_params=LlmParams(
             guardrail="aporia",
             mode="pre_call",
         ),
         guardrail_info={
             "guardrail_name": "aporia-pre-guard",
-            "litellm_params": {
+            "llm_params": {
                 "guardrail": "aporia",
                 "mode": "always_on",
             },
         },
     )
 
-    assert guardrail_info.litellm_params.default_on == False
+    assert guardrail_info.llm_params.default_on == False

@@ -10,7 +10,7 @@ def _ensure_extra_body_is_safe(extra_body: Optional[Dict]) -> Optional[Dict]:
     "Object of type TextPromptClient is not JSON serializable
 
 
-    Relevant Issue: https://github.com/BerriAI/litellm/issues/4140
+    Relevant Issue: https://github.com/BerriAI/llm/issues/4140
     """
     if extra_body is None:
         return None

@@ -31,7 +31,7 @@ from typing import Any, Dict, List, Optional, Union
 
 import llm
 
-from .litellm_logging import Logging as LLMLogging
+from .llm_logging import Logging as LLMLogging
 
 # Create a thread pool with a maximum of 10 threads
 executor = concurrent.futures.ThreadPoolExecutor(max_workers=10)

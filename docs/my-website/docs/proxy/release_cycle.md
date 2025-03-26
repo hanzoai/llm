@@ -1,6 +1,6 @@
 # Release Cycle
 
-Litellm Proxy has the following release cycle:
+Llm Proxy has the following release cycle:
 
 - `v1.x.x-nightly`: These are releases which pass ci/cd. 
 - `v1.x.x.rc`: These are releases which pass ci/cd + [manual review](https://github.com/BerriAI/llm/discussions/8495#discussioncomment-12180711).

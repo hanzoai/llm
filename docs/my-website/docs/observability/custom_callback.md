@@ -75,7 +75,7 @@ def custom_callback(
     start_time, end_time    # start/end time
 ):
     # Your custom code here
-    print("LITELLM: in custom callback function")
+    print("LLM: in custom callback function")
     print("kwargs", kwargs)
     print("completion_response", completion_response)
     print("start_time", start_time)
@@ -189,7 +189,7 @@ def custom_callback(
     start_time, end_time    # start/end time
 ):
     # Your custom code here
-    print("LITELLM: in custom callback function")
+    print("LLM: in custom callback function")
     print("kwargs", kwargs)
     print("completion_response", completion_response)
     print("start_time", start_time)

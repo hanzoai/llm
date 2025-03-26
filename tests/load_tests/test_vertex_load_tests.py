@@ -131,7 +131,7 @@ def create_async_task(message_type):
                     {
                         "type": "image_url",
                         "image_url": {
-                            "url": "https://litellm-listing.s3.amazonaws.com/litellm_logo.png"
+                            "url": "https://llm-listing.s3.amazonaws.com/llm_logo.png"
                         },
                     },
                 ],

@@ -252,7 +252,7 @@ class BaseLLMChatTest(ABC):
         print(f"response={response}")
 
         # OpenAI guarantees that the JSON schema is returned in the content
-        # relevant issue: https://github.com/BerriAI/litellm/issues/6741
+        # relevant issue: https://github.com/BerriAI/llm/issues/6741
         assert response.choices[0].message.content is not None
 
     @pytest.mark.parametrize(
@@ -343,7 +343,7 @@ class BaseLLMChatTest(ABC):
         from pydantic import BaseModel
         from llm.utils import supports_response_schema
 
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
 
         class TestModel(BaseModel):
@@ -383,7 +383,7 @@ class BaseLLMChatTest(ABC):
         from pydantic import BaseModel
         from llm.utils import supports_response_schema
 
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
 
     @pytest.mark.flaky(retries=6, delay=1)
@@ -391,7 +391,7 @@ class BaseLLMChatTest(ABC):
         from pydantic import BaseModel
         from llm.utils import supports_response_schema
 
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
 
         class CalendarEvent(BaseModel):
@@ -439,7 +439,7 @@ class BaseLLMChatTest(ABC):
         from llm.utils import supports_response_schema
         from llm.llms.base_llm.base_utils import type_to_response_format_param
 
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
 
         class CalendarEvent(BaseModel):
@@ -524,7 +524,7 @@ class BaseLLMChatTest(ABC):
         print(f"content={content}<END>")
 
         # OpenAI guarantees that the JSON schema is returned in the content
-        # relevant issue: https://github.com/BerriAI/litellm/issues/6741
+        # relevant issue: https://github.com/BerriAI/llm/issues/6741
         # we need to assert that the JSON schema was returned in the content, (for Anthropic we were returning it as part of the tool call)
         assert content is not None
         assert len(content) > 0
@@ -545,7 +545,7 @@ class BaseLLMChatTest(ABC):
 
     @abstractmethod
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
         pass
 
     @pytest.mark.parametrize("detail", [None, "low", "high"])
@@ -561,7 +561,7 @@ class BaseLLMChatTest(ABC):
         llm.set_verbose = True
         from llm.utils import supports_vision
 
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
 
         base_completion_call_args = self.get_base_completion_call_args()
@@ -616,7 +616,7 @@ class BaseLLMChatTest(ABC):
         llm.set_verbose = True
         from llm.utils import supports_vision
 
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
 
         image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"
@@ -657,7 +657,7 @@ class BaseLLMChatTest(ABC):
         llm.set_verbose = True
         from llm.utils import supports_prompt_caching
 
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
 
         base_completion_call_args = self.get_base_completion_call_args()
@@ -774,7 +774,7 @@ class BaseLLMChatTest(ABC):
             llm._turn_on_debug()
             from llm.utils import supports_function_calling
 
-            os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+            os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
             llm.model_cost = llm.get_model_cost_map(url="")
 
             base_completion_call_args = self.get_base_completion_call_args()
@@ -876,7 +876,7 @@ class BaseLLMChatTest(ABC):
 
         llm._turn_on_debug()
 
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
 
         llm.set_verbose = True

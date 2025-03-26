@@ -22,7 +22,7 @@ model_list:
 
 In these tests the median latency of directly calling the fake-openai-endpoint is 60ms.
 
-| Metric | Litellm Proxy (1 Instance) |
+| Metric | Llm Proxy (1 Instance) |
 |--------|------------------------|
 | RPS | 475 |
 | Median Latency (ms) | 100 |
@@ -43,7 +43,7 @@ In these tests the median latency of directly calling the fake-openai-endpoint i
 
 **Adding 1 instance, will double the RPS and maintain the `100ms-110ms` median latency.**
 
-| Metric | Litellm Proxy (2 Instances) |
+| Metric | Llm Proxy (2 Instances) |
 |--------|------------------------|
 | Median Latency (ms) | 100 |
 | RPS | 950 |
@@ -62,9 +62,9 @@ Each machine deploying LLM had the following specs:
 
 ### [GCS Bucket Logging](https://docs.llm.ai/docs/proxy/bucket)
 
-Using GCS Bucket has **no impact on latency, RPS compared to Basic Litellm Proxy**
+Using GCS Bucket has **no impact on latency, RPS compared to Basic Llm Proxy**
 
-| Metric | Basic Litellm Proxy | LLM Proxy with GCS Bucket Logging |
+| Metric | Basic Llm Proxy | LLM Proxy with GCS Bucket Logging |
 |--------|------------------------|---------------------|
 | RPS | 1133.2 | 1137.3 |
 | Median Latency (ms) | 140 | 138 |
@@ -72,9 +72,9 @@ Using GCS Bucket has **no impact on latency, RPS compared to Basic Litellm Proxy
 
 ### [LangSmith logging](https://docs.llm.ai/docs/proxy/logging)
 
-Using LangSmith has **no impact on latency, RPS compared to Basic Litellm Proxy**
+Using LangSmith has **no impact on latency, RPS compared to Basic Llm Proxy**
 
-| Metric | Basic Litellm Proxy | LLM Proxy with LangSmith |
+| Metric | Basic Llm Proxy | LLM Proxy with LangSmith |
 |--------|------------------------|---------------------|
 | RPS | 1133.2 | 1135 |
 | Median Latency (ms) | 140 | 132 |

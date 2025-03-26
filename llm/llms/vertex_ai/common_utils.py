@@ -30,7 +30,7 @@ def get_supports_system_message(
         )
     except Exception as e:
         verbose_logger.warning(
-            "Unable to identify if system message supported. Defaulting to 'False'. Received error message - {}\nAdd it here - https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json".format(
+            "Unable to identify if system message supported. Defaulting to 'False'. Received error message - {}\nAdd it here - https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json".format(
                 str(e)
             )
         )
@@ -136,7 +136,7 @@ def _check_text_in_content(parts: List[PartType]) -> bool:
     check that user_content has 'text' parameter.
         - Known Vertex Error: Unable to submit request because it must have a text parameter.
         - 'text' param needs to be len > 0
-        - Relevant Issue: https://github.com/BerriAI/litellm/issues/5515
+        - Relevant Issue: https://github.com/BerriAI/llm/issues/5515
     """
     has_text_param = False
     for part in parts:
@@ -329,7 +329,7 @@ def construct_target_url(
 
     If missing, use defaults
 
-    Handle cachedContent scenario - https://github.com/BerriAI/litellm/issues/5460
+    Handle cachedContent scenario - https://github.com/BerriAI/llm/issues/5460
 
     Constructed Url:
     POST https://LOCATION-aiplatform.googleapis.com/{version}/projects/PROJECT_ID/locations/LOCATION/cachedContents

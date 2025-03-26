@@ -37,7 +37,7 @@ async def test_router_free_paid_tier():
         model_list=[
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                     "tags": ["free"],
@@ -46,7 +46,7 @@ async def test_router_free_paid_tier():
             },
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o-mini",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                     "tags": ["paid"],
@@ -98,7 +98,7 @@ async def test_router_free_paid_tier_embeddings():
         model_list=[
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                     "tags": ["free"],
@@ -108,7 +108,7 @@ async def test_router_free_paid_tier_embeddings():
             },
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o-mini",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                     "tags": ["paid"],
@@ -162,7 +162,7 @@ async def test_default_tagged_deployments():
         model_list=[
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                     "tags": ["default"],
@@ -171,7 +171,7 @@ async def test_default_tagged_deployments():
             },
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                 },
@@ -179,7 +179,7 @@ async def test_default_tagged_deployments():
             },
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o-mini",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                     "tags": ["teamA"],
@@ -234,7 +234,7 @@ async def test_error_from_tag_routing():
         model_list=[
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                 },
@@ -242,7 +242,7 @@ async def test_error_from_tag_routing():
             },
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                 },
@@ -250,7 +250,7 @@ async def test_error_from_tag_routing():
             },
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o-mini",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                     "tags": ["teamA"],

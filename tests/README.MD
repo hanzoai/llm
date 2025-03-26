@@ -1,9 +1,9 @@
-**In total litellm runs 1000+ tests** 
+**In total llm runs 1000+ tests** 
 
 [02/20/2025] Update:
 
 To make it easier to contribute and map what behavior is tested,
 
-we've started mapping the litellm directory in `tests/litellm` 
+we've started mapping the llm directory in `tests/llm` 
 
 This folder can only run mock tests.

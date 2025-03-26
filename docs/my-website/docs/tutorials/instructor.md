@@ -11,7 +11,7 @@ import instructor
 from llm import completion
 from pydantic import BaseModel
 
-os.environ["LITELLM_LOG"] = "DEBUG"  # 👈 print DEBUG LOGS
+os.environ["LLM_LOG"] = "DEBUG"  # 👈 print DEBUG LOGS
 
 client = instructor.from_llm(completion)
 

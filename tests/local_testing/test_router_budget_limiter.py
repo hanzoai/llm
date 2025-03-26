@@ -73,7 +73,7 @@ async def test_provider_budgets_e2e_test():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -83,7 +83,7 @@ async def test_provider_budgets_e2e_test():
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-4o-mini",
                 },
                 "model_info": {"id": "openai-model-id"},
@@ -139,7 +139,7 @@ async def test_provider_budgets_e2e_test_expect_to_fail():
         model_list=[
             {
                 "model_name": "anthropic/*",  # openai model name
-                "litellm_params": {
+                "llm_params": {
                     "model": "anthropic/*",
                 },
             },
@@ -185,14 +185,14 @@ async def test_get_llm_provider_for_deployment():
     )
 
     # Test OpenAI deployment
-    openai_deployment = {"litellm_params": {"model": "openai/gpt-4"}}
+    openai_deployment = {"llm_params": {"model": "openai/gpt-4"}}
     assert (
         provider_budget._get_llm_provider_for_deployment(openai_deployment) == "openai"
     )
 
     # Test Azure deployment
     azure_deployment = {
-        "litellm_params": {
+        "llm_params": {
             "model": "azure/gpt-4",
             "api_key": "test",
             "api_base": "test",
@@ -267,7 +267,7 @@ async def test_prometheus_metric_tracking():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -277,7 +277,7 @@ async def test_prometheus_metric_tracking():
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-4o-mini",
                 },
                 "model_info": {"id": "openai-model-id"},
@@ -585,7 +585,7 @@ async def test_deployment_budget_limits_e2e_test():
         model_list=[
             {
                 "model_name": "gpt-4o",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "openai/gpt-4o",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "max_budget": 0.000000000001,
@@ -595,7 +595,7 @@ async def test_deployment_budget_limits_e2e_test():
             },
             {
                 "model_name": "gpt-4o",  # openai model name
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-4o-mini",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "max_budget": 10,
@@ -639,7 +639,7 @@ async def test_deployment_budgets_e2e_test_expect_to_fail():
         model_list=[
             {
                 "model_name": "openai/gpt-4o-mini",  # openai model name
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-4o-mini",
                     "max_budget": 0.000000000001,
                     "budget_duration": "1d",
@@ -693,7 +693,7 @@ async def test_tag_budgets_e2e_test_expect_to_fail():
         model_list=[
             {
                 "model_name": "openai/gpt-4o-mini",  # openai model name
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-4o-mini",
                 },
             },

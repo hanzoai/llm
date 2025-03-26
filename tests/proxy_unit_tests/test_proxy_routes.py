@@ -7,7 +7,7 @@ load_dotenv()
 import io
 import os
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -32,7 +32,7 @@ logging.basicConfig(
 )
 
 
-def test_routes_on_litellm_proxy():
+def test_routes_on_llm_proxy():
     """
     Goal of this test: Test that we have all the critical OpenAI Routes on the Proxy server Fast API router
 

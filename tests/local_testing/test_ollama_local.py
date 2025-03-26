@@ -195,7 +195,7 @@
 
 
 # def test_completion_ollama_custom_prompt_template():
-#     user_message = "what is litellm?"
+#     user_message = "what is llm?"
 #     llm.register_prompt_template(
 #         model="ollama/llama2",
 #         roles={
@@ -260,7 +260,7 @@
 
 # async def ask_question():
 #     params = {
-#         "messages": prepare_messages_for_chat("What is litellm? tell me 10 things about it who is sihaan.write an essay"),
+#         "messages": prepare_messages_for_chat("What is llm? tell me 10 things about it who is sihaan.write an essay"),
 #         "api_base": "http://localhost:11434",
 #         "model": "ollama/llama2",
 #         "stream": True,
@@ -276,7 +276,7 @@
 #     print("test async completion without streaming")
 #     response = await llm.acompletion(
 #         model="ollama/llama2",
-#         messages=prepare_messages_for_chat("What is litellm? respond in 2 words"),
+#         messages=prepare_messages_for_chat("What is llm? respond in 2 words"),
 #     )
 #     print("response", response)
 
@@ -285,7 +285,7 @@
 #     # this tests if we can exception map correctly for ollama
 #     print("making ollama request")
 #     # llm.set_verbose=True
-#     user_message = "what is litellm?"
+#     user_message = "what is llm?"
 #     messages = [{ "content": user_message,"role": "user"}]
 #     try:
 #         response = completion(

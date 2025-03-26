@@ -3,7 +3,7 @@ from typing import Optional, Union
 import llm
 from llm import verbose_logger
 
-from ...litellm_core_utils.get_llm_provider_logic import get_llm_provider
+from ...llm_core_utils.get_llm_provider_logic import get_llm_provider
 from ...types.router import LLM_Params
 
 
@@ -15,7 +15,7 @@ def get_api_base(
 
     Parameters:
     - model: str - the model passed to llm.completion()
-    - optional_params - the 'llm_params' in router.completion *OR* additional params passed to llm.completion - eg. api_base, api_key, etc. See `LLM_Params` - https://github.com/BerriAI/litellm/blob/f09e6ba98d65e035a79f73bc069145002ceafd36/litellm/router.py#L67
+    - optional_params - the 'llm_params' in router.completion *OR* additional params passed to llm.completion - eg. api_base, api_key, etc. See `LLM_Params` - https://github.com/BerriAI/llm/blob/f09e6ba98d65e035a79f73bc069145002ceafd36/llm/router.py#L67
 
     Returns:
     - string (api_base) or None

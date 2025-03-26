@@ -8,13 +8,13 @@ from large_text import text
 from dotenv import load_dotenv
 from statistics import mean, median
 
-litellm_client = AsyncOpenAI(base_url="http://0.0.0.0:4000/", api_key="sk-1234")
+llm_client = AsyncOpenAI(base_url="http://0.0.0.0:4000/", api_key="sk-1234")
 
 
-async def litellm_completion():
+async def llm_completion():
     try:
         start_time = time.time()
-        response = await litellm_client.chat.completions.create(
+        response = await llm_client.chat.completions.create(
             model="fake-openai-endpoint",
             messages=[
                 {
@@ -40,7 +40,7 @@ async def main():
     for i in range(5):
         start = time.time()
         n = 100  # Number of concurrent tasks
-        tasks = [litellm_completion() for _ in range(n)]
+        tasks = [llm_completion() for _ in range(n)]
 
         chat_completions = await asyncio.gather(*tasks)
 

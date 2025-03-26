@@ -28,13 +28,13 @@ def test_openai_embedding():
             input=["good morning from llm", "this is another item"],
             metadata={"anything": "good day"},
         )
-        litellm_response = dict(response)
-        litellm_response_keys = set(litellm_response.keys())
-        litellm_response_keys.discard("_response_ms")
+        llm_response = dict(response)
+        llm_response_keys = set(llm_response.keys())
+        llm_response_keys.discard("_response_ms")
 
-        print(litellm_response_keys)
+        print(llm_response_keys)
         print("LLM Response\n")
-        # print(litellm_response)
+        # print(llm_response)
 
         # same request with OpenAI 1.0+
         import openai
@@ -49,10 +49,10 @@ def test_openai_embedding():
         openai_response_keys = set(response.keys())
         print(openai_response_keys)
         assert (
-            litellm_response_keys == openai_response_keys
+            llm_response_keys == openai_response_keys
         )  # ENSURE the Keys in llm response is exactly what the openai package returns
         assert (
-            len(litellm_response["data"]) == 2
+            len(llm_response["data"]) == 2
         )  # expect two embedding responses from llm_response since input had two
         print(openai_response_keys)
     except Exception as e:
@@ -72,13 +72,13 @@ def test_openai_embedding_3():
             dimensions=5,
         )
         print(f"response:", response)
-        litellm_response = dict(response)
-        litellm_response_keys = set(litellm_response.keys())
-        litellm_response_keys.discard("_response_ms")
+        llm_response = dict(response)
+        llm_response_keys = set(llm_response.keys())
+        llm_response_keys.discard("_response_ms")
 
-        print(litellm_response_keys)
+        print(llm_response_keys)
         print("LLM Response\n")
-        # print(litellm_response)
+        # print(llm_response)
 
         # same request with OpenAI 1.0+
         import openai
@@ -94,10 +94,10 @@ def test_openai_embedding_3():
         openai_response_keys = set(response.keys())
         print(openai_response_keys)
         assert (
-            litellm_response_keys == openai_response_keys
+            llm_response_keys == openai_response_keys
         )  # ENSURE the Keys in llm response is exactly what the openai package returns
         assert (
-            len(litellm_response["data"]) == 2
+            len(llm_response["data"]) == 2
         )  # expect two embedding responses from llm_response since input had two
         print(openai_response_keys)
     except Exception as e:
@@ -115,7 +115,7 @@ def test_openai_embedding_3():
 @pytest.mark.asyncio
 async def test_openai_azure_embedding_simple(model, api_base, api_key, sync_mode):
     try:
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
         # llm.set_verbose = True
         if sync_mode:
@@ -198,7 +198,7 @@ def _azure_ai_image_mock_response(*args, **kwargs):
 @pytest.mark.asyncio
 async def test_azure_ai_embedding_image(model, api_base, api_key, sync_mode):
     try:
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
         input = base64_image
         if sync_mode:

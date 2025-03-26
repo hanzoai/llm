@@ -21,7 +21,7 @@ COMPLETION_TOKENS = 5
 base_model_list = [
     {
         "model_name": "gpt-3.5-turbo",
-        "litellm_params": {
+        "llm_params": {
             "model": "gpt-3.5-turbo",
             "api_key": os.getenv("OPENAI_API_KEY"),
             "max_tokens": COMPLETION_TOKENS,

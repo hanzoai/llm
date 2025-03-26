@@ -125,8 +125,8 @@ from openai import OpenAI
 import os
 
 client = OpenAI(
-    api_key="LITELLM_PROXY_KEY", # sk-1234
-    base_url="LITELLM_PROXY_BASE" # http://0.0.0.0:4000
+    api_key="LLM_PROXY_KEY", # sk-1234
+    base_url="LLM_PROXY_BASE" # http://0.0.0.0:4000
 )
 
 for _ in range(2):
@@ -254,8 +254,8 @@ from openai import OpenAI
 import os
 
 client = OpenAI(
-    api_key="LITELLM_PROXY_KEY", # sk-1234
-    base_url="LITELLM_PROXY_BASE" # http://0.0.0.0:4000
+    api_key="LLM_PROXY_KEY", # sk-1234
+    base_url="LLM_PROXY_BASE" # http://0.0.0.0:4000
 )
 
 response = client.chat.completions.create(
@@ -420,8 +420,8 @@ LLM returns the calculated cost in the response headers - `x-llm-response-cost`
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="LITELLM_PROXY_KEY", # sk-1234..
-    base_url="LITELLM_PROXY_BASE" # http://0.0.0.0:4000
+    api_key="LLM_PROXY_KEY", # sk-1234..
+    base_url="LLM_PROXY_BASE" # http://0.0.0.0:4000
 )
 response = client.chat.completions.with_raw_response.create(
     messages=[{

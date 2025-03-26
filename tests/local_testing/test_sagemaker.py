@@ -23,7 +23,7 @@ import pytest
 import llm
 from llm import RateLimitError, Timeout, completion, completion_cost, embedding
 from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
-from llm.litellm_core_utils.prompt_templates.factory import anthropic_messages_pt
+from llm.llm_core_utils.prompt_templates.factory import anthropic_messages_pt
 
 # llm.num_retries =3
 llm.cache = None

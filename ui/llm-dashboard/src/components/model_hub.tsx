@@ -269,7 +269,7 @@ const ModelHub: React.FC<ModelHubProps> = ({
 import openai
 client = openai.OpenAI(
     api_key="your_api_key",
-    base_url="http://0.0.0.0:4000" # LiteLLM Proxy is OpenAI compatible, Read More: https://docs.litellm.ai/docs/proxy/user_keys
+    base_url="http://0.0.0.0:4000" # LLM Proxy is OpenAI compatible, Read More: https://docs.llm.ai/docs/proxy/user_keys
 )
 
 response = client.chat.completions.create(
@@ -301,10 +301,10 @@ from llama_index.embeddings import AzureOpenAIEmbedding
 from llama_index import VectorStoreIndex, SimpleDirectoryReader, ServiceContext
 
 llm = AzureOpenAI(
-    engine="${selectedModel.model_group}",               # model_name on litellm proxy
+    engine="${selectedModel.model_group}",               # model_name on llm proxy
     temperature=0.0,
-    azure_endpoint="http://0.0.0.0:4000", # litellm proxy endpoint
-    api_key="sk-1234",                    # litellm proxy API Key
+    azure_endpoint="http://0.0.0.0:4000", # llm proxy endpoint
+    api_key="sk-1234",                    # llm proxy API Key
     api_version="2023-07-01-preview",
 )
 
@@ -349,7 +349,7 @@ messages = [
         content="You are a helpful assistant that im using to make a test request to."
     ),
     HumanMessage(
-        content="test from litellm. tell me why it's amazing in 1 sentence"
+        content="test from llm. tell me why it's amazing in 1 sentence"
     ),
 ]
 response = chat(messages)
@@ -362,7 +362,7 @@ print(response)
               </TabPanels>
             </TabGroup>
 
-            {/* <p><strong>Additional Params:</strong> {JSON.stringify(selectedModel.litellm_params)}</p> */}
+            {/* <p><strong>Additional Params:</strong> {JSON.stringify(selectedModel.llm_params)}</p> */}
 
             {/* Add other model details here */}
           </div>

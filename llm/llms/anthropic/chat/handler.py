@@ -9,7 +9,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 import httpx  # type: ignore
 
 import llm
-import llm.litellm_core_utils
+import llm.llm_core_utils
 import llm.types
 import llm.types.utils
 from llm import LlmProviders

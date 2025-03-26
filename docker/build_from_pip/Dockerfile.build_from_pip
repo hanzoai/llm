@@ -3,7 +3,7 @@ FROM cgr.dev/chainguard/python:latest-dev
 USER root
 WORKDIR /app
 
-ENV HOME=/home/litellm
+ENV HOME=/home/llm
 ENV PATH="${HOME}/venv/bin:$PATH"
 
 # Install runtime dependencies
@@ -19,5 +19,5 @@ RUN --mount=type=cache,target=${HOME}/.cache/pip \
 
 EXPOSE 4000/tcp
 
-ENTRYPOINT ["litellm"]
+ENTRYPOINT ["llm"]
 CMD ["--port", "4000"]

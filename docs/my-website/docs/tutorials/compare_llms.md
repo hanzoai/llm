@@ -221,7 +221,7 @@ for question, group_data in grouped_by_question:
       <th>0</th>
       <td>togethercomputer/llama-2-70b-chat</td>
       <td>what is llm?</td>
-      <td>Litellm is a lightweight Python package that simplifies calling various AI API endpoints, including OpenAI, Azure, Cohere, Anthropic, and Hugging Face. It provides a convenient interface for making requests to these APIs, allowing developers to easily integrate them into their applications. With Litellm, developers can quickly and easily interact with multiple AI models and services, without having to handle the details of authentication, API calls, and response parsing. This makes it easier to build and deploy AI-powered applications, and can help developers save time and effort.</td>
+      <td>Llm is a lightweight Python package that simplifies calling various AI API endpoints, including OpenAI, Azure, Cohere, Anthropic, and Hugging Face. It provides a convenient interface for making requests to these APIs, allowing developers to easily integrate them into their applications. With Llm, developers can quickly and easily interact with multiple AI models and services, without having to handle the details of authentication, API calls, and response parsing. This makes it easier to build and deploy AI-powered applications, and can help developers save time and effort.</td>
       <td>13.479644</td>
       <td>0.000870</td>
     </tr>

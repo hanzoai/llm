@@ -80,5 +80,5 @@ def test_router_metadata_variable_name():
     """Test that the variable name is correct"""
     assert _get_router_metadata_variable_name(function_name="completion") == "metadata"
     assert (
-        _get_router_metadata_variable_name(function_name="batch") == "litellm_metadata"
+        _get_router_metadata_variable_name(function_name="batch") == "llm_metadata"
     )

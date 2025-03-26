@@ -13,7 +13,7 @@ Pass-through endpoints for Vertex AI - call provider-specific endpoint, in nativ
 | End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
 | Streaming | ✅ | |
 
-Just replace `https://REGION-aiplatform.googleapis.com` with `LITELLM_PROXY_BASE_URL/vertex_ai`
+Just replace `https://REGION-aiplatform.googleapis.com` with `LLM_PROXY_BASE_URL/vertex_ai`
 
 LLM supports 3 flows for calling Vertex AI endpoints via pass-through:
 
@@ -78,7 +78,7 @@ curl \
   -X POST \
   -H "Authorization: Bearer $(gcloud auth application-default print-access-token)" \
   -H "Content-Type: application/json" \
-  "${LITELLM_PROXY_BASE_URL}/vertex_ai/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/${MODEL_ID}:streamGenerateContent" -d \
+  "${LLM_PROXY_BASE_URL}/vertex_ai/v1/projects/${PROJECT_ID}/locations/us-central1/publishers/google/models/${MODEL_ID}:streamGenerateContent" -d \
   $'{
     "contents": {
       "role": "user",
@@ -292,7 +292,7 @@ Use this, to avoid giving developers the raw Anthropic API key, but still lettin
 
 ```bash
 export DATABASE_URL=""
-export LITELLM_MASTER_KEY=""
+export LLM_MASTER_KEY=""
 
 # vertex ai credentials
 export DEFAULT_VERTEXAI_PROJECT="" # "adroit-crow-413218"

@@ -21,7 +21,7 @@ interface GuardrailsResponse {
 
 interface GuardrailItem {
     guardrail_name: string | null;
-    litellm_params: {
+    llm_params: {
         guardrail: string;
         mode: string;
         default_on: boolean;
@@ -56,7 +56,7 @@ const GuardrailsPanel: React.FC<GuardrailsPanelProps> = ({ accessToken }) => {
         <Text className="mb-4">
         Configured guardrails and their current status. Setup guardrails in config.yaml.{" "}
         <a 
-            href="https://docs.litellm.ai/docs/proxy/guardrails/quick_start" 
+            href="https://docs.llm.ai/docs/proxy/guardrails/quick_start" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="text-blue-500 hover:text-blue-700 underline"
@@ -83,14 +83,14 @@ const GuardrailsPanel: React.FC<GuardrailsPanelProps> = ({ accessToken }) => {
               guardrailsList?.map((guardrail: GuardrailItem, index: number) => (
                 <TableRow key={index}>
                 <TableCell>{guardrail.guardrail_name}</TableCell>
-                <TableCell>{guardrail.litellm_params.mode}</TableCell>
+                <TableCell>{guardrail.llm_params.mode}</TableCell>
                 <TableCell>
                 <div className={`inline-flex rounded-full px-2 py-1 text-xs font-medium
-                    ${guardrail.litellm_params.default_on 
+                    ${guardrail.llm_params.default_on 
                     ? 'bg-green-100 text-green-800'  // Always On styling
                     : 'bg-gray-100 text-gray-800'    // Per Request styling
                     }`}>
-                    {guardrail.litellm_params.default_on ? 'Always On' : 'Per Request'}
+                    {guardrail.llm_params.default_on ? 'Always On' : 'Per Request'}
                 </div>
                 </TableCell>
                 </TableRow>

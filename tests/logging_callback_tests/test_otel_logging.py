@@ -19,7 +19,7 @@ from llm.proxy._types import SpanAttributes
 
 verbose_logger.setLevel(logging.DEBUG)
 
-EXPECTED_SPAN_NAMES = ["litellm_request", "raw_gen_ai_request"]
+EXPECTED_SPAN_NAMES = ["llm_request", "raw_gen_ai_request"]
 exporter = InMemorySpanExporter()
 
 
@@ -56,8 +56,8 @@ async def test_async_otel_callback(streaming):
         print("span name", span.name)
         print("span attributes", span.attributes)
 
-        if span.name == "litellm_request":
-            validate_litellm_request(span)
+        if span.name == "llm_request":
+            validate_llm_request(span)
             # Additional specific checks
             assert span._attributes["gen_ai.request.model"] == "gpt-3.5-turbo"
             assert span._attributes["gen_ai.system"] == "openai"
@@ -74,7 +74,7 @@ async def test_async_otel_callback(streaming):
     exporter.clear()
 
 
-def validate_litellm_request(span):
+def validate_llm_request(span):
     expected_attributes = [
         "gen_ai.request.model",
         "gen_ai.system",

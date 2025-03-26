@@ -21,7 +21,7 @@ def model_list():
     return [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
@@ -31,28 +31,28 @@ def model_list():
         },
         {
             "model_name": "gpt-4o",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-4o",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
         },
         {
             "model_name": "dall-e-3",
-            "litellm_params": {
+            "llm_params": {
                 "model": "dall-e-3",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
         },
         {
             "model_name": "*",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/*",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
         },
         {
             "model_name": "claude-*",
-            "litellm_params": {
+            "llm_params": {
                 "model": "anthropic/*",
                 "api_key": os.getenv("ANTHROPIC_API_KEY"),
             },
@@ -82,13 +82,13 @@ def test_print_deployment(model_list):
     router = Router(model_list=model_list)
     deployment = {
         "model_name": "gpt-3.5-turbo",
-        "litellm_params": {
+        "llm_params": {
             "model": "gpt-3.5-turbo",
             "api_key": os.getenv("OPENAI_API_KEY"),
         },
     }
     printed_deployment = router.print_deployment(deployment)
-    assert 10 * "*" in printed_deployment["litellm_params"]["api_key"]
+    assert 10 * "*" in printed_deployment["llm_params"]["api_key"]
 
 
 def test_completion(model_list):
@@ -215,7 +215,7 @@ async def test_router_arealtime(model_list):
     import llm
 
     router = Router(model_list=model_list)
-    with patch.object(litellm, "_arealtime", AsyncMock()) as mock_arealtime:
+    with patch.object(llm, "_arealtime", AsyncMock()) as mock_arealtime:
         mock_arealtime.return_value = "I'm fine, thank you!"
         await router._arealtime(
             model="gpt-3.5-turbo",
@@ -325,14 +325,14 @@ def test_update_kwargs_with_deployment(model_list):
     assert all(field in kwargs["metadata"] for field in set_fields)
 
 
-def test_update_kwargs_with_default_litellm_params(model_list):
-    """Test if the '_update_kwargs_with_default_litellm_params' function is working correctly"""
+def test_update_kwargs_with_default_llm_params(model_list):
+    """Test if the '_update_kwargs_with_default_llm_params' function is working correctly"""
     router = Router(
         model_list=model_list,
-        default_litellm_params={"api_key": "test", "metadata": {"key": "value"}},
+        default_llm_params={"api_key": "test", "metadata": {"key": "value"}},
     )
     kwargs: dict = {"metadata": {"key2": "value2"}}
-    router._update_kwargs_with_default_litellm_params(kwargs=kwargs)
+    router._update_kwargs_with_default_llm_params(kwargs=kwargs)
     assert kwargs["api_key"] == "test"
     assert kwargs["metadata"]["key"] == "value"
     assert kwargs["metadata"]["key2"] == "value2"
@@ -397,7 +397,7 @@ async def test_deployment_callback_on_success(model_list, sync_mode):
     standard_logging_payload = create_standard_logging_payload()
     standard_logging_payload["total_tokens"] = 100
     kwargs = {
-        "litellm_params": {
+        "llm_params": {
             "metadata": {
                 "model_group": "gpt-3.5-turbo",
             },
@@ -433,7 +433,7 @@ async def test_deployment_callback_on_failure(model_list):
 
     router = Router(model_list=model_list)
     kwargs = {
-        "litellm_params": {
+        "llm_params": {
             "metadata": {
                 "model_group": "gpt-3.5-turbo",
             },
@@ -546,7 +546,7 @@ def test_get_healthy_deployments(model_list):
 async def test_routing_strategy_pre_call_checks(model_list, sync_mode):
     """Test if the '_routing_strategy_pre_call_checks' function is working correctly"""
     from llm.integrations.custom_logger import CustomLogger
-    from llm.litellm_core_utils.litellm_logging import Logging
+    from llm.llm_core_utils.llm_logging import Logging
 
     callback = CustomLogger()
     llm.callbacks = [callback]
@@ -557,12 +557,12 @@ async def test_routing_strategy_pre_call_checks(model_list, sync_mode):
         model_group_name="gpt-3.5-turbo"
     )
 
-    litellm_logging_obj = Logging(
+    llm_logging_obj = Logging(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": "hi"}],
         stream=False,
         call_type="acompletion",
-        litellm_call_id="1234",
+        llm_call_id="1234",
         start_time=datetime.now(),
         function_id="1234",
     )
@@ -571,7 +571,7 @@ async def test_routing_strategy_pre_call_checks(model_list, sync_mode):
     else:
         ## NO EXCEPTION
         await router.async_routing_strategy_pre_call_checks(
-            deployment, litellm_logging_obj
+            deployment, llm_logging_obj
         )
 
         ## WITH EXCEPTION - rate limit error
@@ -588,7 +588,7 @@ async def test_routing_strategy_pre_call_checks(model_list, sync_mode):
         ):
             try:
                 await router.async_routing_strategy_pre_call_checks(
-                    deployment, litellm_logging_obj
+                    deployment, llm_logging_obj
                 )
                 pytest.fail("Exception was not raised")
             except Exception as e:
@@ -600,7 +600,7 @@ async def test_routing_strategy_pre_call_checks(model_list, sync_mode):
         ):
             try:
                 await router.async_routing_strategy_pre_call_checks(
-                    deployment, litellm_logging_obj
+                    deployment, llm_logging_obj
                 )
                 pytest.fail("Exception was not raised")
             except Exception as e:
@@ -618,11 +618,11 @@ def test_create_deployment(
     router = Router(model_list=model_list)
 
     if set_supported_environments:
-        os.environ["LITELLM_ENVIRONMENT"] = "staging"
+        os.environ["LLM_ENVIRONMENT"] = "staging"
     deployment = router._create_deployment(
         deployment_info={},
         _model_name="gpt-3.5-turbo",
-        _litellm_params={
+        _llm_params={
             "model": "gpt-3.5-turbo",
             "api_key": "test",
             "custom_llm_provider": "openai",
@@ -651,7 +651,7 @@ def test_deployment_is_active_for_environment(
         model_group_name="gpt-3.5-turbo"
     )
     if set_supported_environments:
-        os.environ["LITELLM_ENVIRONMENT"] = "staging"
+        os.environ["LLM_ENVIRONMENT"] = "staging"
     deployment["model_info"]["supported_environments"] = supported_environments
     if is_supported:
         assert (
@@ -692,7 +692,7 @@ def test_upsert_deployment(model_list):
     deployment = router.get_deployment_by_model_group_name(
         model_group_name="gpt-3.5-turbo"
     )
-    deployment.litellm_params.model = "gpt-4o"
+    deployment.llm_params.model = "gpt-4o"
     router.upsert_deployment(deployment=deployment)
     assert len(router.model_list) == len(model_list)
 
@@ -972,10 +972,10 @@ def test_get_model_from_alias(model_list):
     assert model == "gpt-3.5-turbo"
 
 
-def test_get_deployment_by_litellm_model(model_list):
-    """Test if the 'get_deployment_by_litellm_model' function is working correctly"""
+def test_get_deployment_by_llm_model(model_list):
+    """Test if the 'get_deployment_by_llm_model' function is working correctly"""
     router = Router(model_list=model_list)
-    deployment = router._get_deployment_by_litellm_model(model="gpt-3.5-turbo")
+    deployment = router._get_deployment_by_llm_model(model="gpt-3.5-turbo")
     assert deployment is not None
 
 
@@ -1016,13 +1016,13 @@ def test_replace_model_in_jsonl(model_list):
 #     if match is None:
 #         raise ValueError("Match not found")
 #     updated_model = patter_router.set_deployment_model_name(
-#         matched_pattern=match, litellm_deployment_litellm_model="openai/*"
+#         matched_pattern=match, llm_deployment_llm_model="openai/*"
 #     )
 #     assert updated_model == "openai/fo::hi:static::hello"
 
 
 @pytest.mark.parametrize(
-    "user_request_model, model_name, litellm_model, expected_model",
+    "user_request_model, model_name, llm_model, expected_model",
     [
         ("llmengine/foo", "llmengine/*", "openai/foo", "openai/foo"),
         ("llmengine/foo", "llmengine/*", "openai/*", "openai/foo"),
@@ -1053,7 +1053,7 @@ def test_replace_model_in_jsonl(model_list):
     ],
 )
 def test_pattern_match_deployment_set_model_name(
-    user_request_model, model_name, litellm_model, expected_model
+    user_request_model, model_name, llm_model, expected_model
 ):
     from re import Match
     from llm.router_utils.pattern_match_deployments import PatternMatchRouter
@@ -1072,7 +1072,7 @@ def test_pattern_match_deployment_set_model_name(
         raise ValueError("Match not found")
 
     # Call the set_deployment_model_name function
-    updated_model = pattern_router.set_deployment_model_name(match, litellm_model)
+    updated_model = pattern_router.set_deployment_model_name(match, llm_model)
 
     print(updated_model)  # Expected output: "openai/fo::hi:static::hello"
     assert updated_model == expected_model
@@ -1082,13 +1082,13 @@ def test_pattern_match_deployment_set_model_name(
         deployments=[
             {
                 "model_name": model_name,
-                "litellm_params": {"model": litellm_model},
+                "llm_params": {"model": llm_model},
             }
         ],
     )
 
     for model in updated_models:
-        assert model["litellm_params"]["model"] == expected_model
+        assert model["llm_params"]["model"] == expected_model
 
 
 @pytest.mark.asyncio

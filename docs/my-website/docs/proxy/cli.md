@@ -58,7 +58,7 @@ Cli arguments,  --host, --port, --num_workers
 
 ## --model or -m
    - **Default:** `None`
-   - The model name to pass to Litellm.
+   - The model name to pass to Llm.
    - **Usage:** 
      ```shell
      llm --model gpt-3.5-turbo
@@ -160,7 +160,7 @@ Cli arguments,  --host, --port, --num_workers
      ```
 
 ## --config
-   - Configure Litellm by providing a configuration file path.
+   - Configure Llm by providing a configuration file path.
    - **Usage:** 
      ```shell
      llm --config path/to/config.yaml

@@ -35,12 +35,12 @@ from llm.router import Router
         ),  # should return False
         (
             {"api_base": "^https://llm.*direct\.fireworks\.ai/v1$"},
-            {"api_base": "https://litellm-dev.direct.fireworks.ai/v1"},
+            {"api_base": "https://llm-dev.direct.fireworks.ai/v1"},
             True,
         ),
         (
             {"api_base": "^https://llm.*novice\.fireworks\.ai/v1$"},
-            {"api_base": "https://litellm-dev.direct.fireworks.ai/v1"},
+            {"api_base": "https://llm-dev.direct.fireworks.ai/v1"},
             False,
         ),
     ],
@@ -52,7 +52,7 @@ def test_configurable_clientside_parameters(
         model_list=[
             {
                 "model_name": "dummy-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "dummy-key",
                     "configurable_clientside_auth_params": [allowed_param],

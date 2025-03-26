@@ -125,7 +125,7 @@ async def test_create_llm_obs_payload():
 
     print("dd created payload", payload)
 
-    assert payload["name"] == "litellm_llm_call"
+    assert payload["name"] == "llm_llm_call"
     assert payload["meta"]["kind"] == "llm"
     assert payload["meta"]["input"]["messages"] == [
         {"role": "user", "content": "Hello, world!"}

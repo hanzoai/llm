@@ -13,7 +13,7 @@ import llm
 from llm.proxy.proxy_server import app
 from llm.proxy.utils import PrismaClient, ProxyLogging
 from llm.proxy.management_endpoints.ui_sso import auth_callback
-from llm.proxy._types import LitellmUserRoles
+from llm.proxy._types import LlmUserRoles
 import os
 import jwt
 import time
@@ -27,7 +27,7 @@ def mock_env_vars(monkeypatch):
     monkeypatch.setenv("GOOGLE_CLIENT_ID", "mock_google_client_id")
     monkeypatch.setenv("GOOGLE_CLIENT_SECRET", "mock_google_client_secret")
     monkeypatch.setenv("PROXY_BASE_URL", "http://testserver")
-    monkeypatch.setenv("LITELLM_MASTER_KEY", "mock_master_key")
+    monkeypatch.setenv("LLM_MASTER_KEY", "mock_master_key")
 
 
 @pytest.fixture
@@ -46,8 +46,8 @@ def prisma_client():
     )
 
     # Reset llm.proxy.proxy_server.prisma_client to None
-    llm.proxy.proxy_server.litellm_proxy_budget_name = (
-        f"litellm-proxy-budget-{time.time()}"
+    llm.proxy.proxy_server.llm_proxy_budget_name = (
+        f"llm-proxy-budget-{time.time()}"
     )
     llm.proxy.proxy_server.user_custom_key_generate = None
 
@@ -107,18 +107,18 @@ async def test_auth_callback_new_user(mock_google_sso, mock_env_vars, prisma_cli
         assert response.headers["location"].startswith(f"/ui/?userID={unique_user_id}")
 
         # Verify that the user was added to the database
-        user = await prisma_client.db.litellm_usertable.find_first(
+        user = await prisma_client.db.llm_usertable.find_first(
             where={"user_id": unique_user_id}
         )
         print("inserted user from SSO", user)
         assert user is not None
         assert user.user_email == unique_user_email
-        assert user.user_role == LitellmUserRoles.INTERNAL_USER_VIEW_ONLY
+        assert user.user_role == LlmUserRoles.INTERNAL_USER_VIEW_ONLY
         assert user.metadata == {"auth_provider": "google"}
 
     finally:
         # Clean up: Delete the user from the database
-        await prisma_client.db.litellm_usertable.delete(
+        await prisma_client.db.llm_usertable.delete(
             where={"user_id": unique_user_id}
         )
 
@@ -129,7 +129,7 @@ async def test_auth_callback_new_user_with_sso_default(
     mock_google_sso, mock_env_vars, prisma_client
 ):
     """
-    When litellm_settings.default_internal_user_params.user_role = 'INTERNAL_USER'
+    When llm_settings.default_internal_user_params.user_role = 'INTERNAL_USER'
 
     Tests that a new SSO Sign In user is by default given an 'INTERNAL_USER' role
     """
@@ -143,7 +143,7 @@ async def test_auth_callback_new_user_with_sso_default(
         # Set up the prisma client
         setattr(llm.proxy.proxy_server, "prisma_client", prisma_client)
         llm.default_internal_user_params = {
-            "user_role": LitellmUserRoles.INTERNAL_USER.value
+            "user_role": LlmUserRoles.INTERNAL_USER.value
         }
         await llm.proxy.proxy_server.prisma_client.connect()
 
@@ -180,17 +180,17 @@ async def test_auth_callback_new_user_with_sso_default(
         assert response.headers["location"].startswith(f"/ui/?userID={unique_user_id}")
 
         # Verify that the user was added to the database
-        user = await prisma_client.db.litellm_usertable.find_first(
+        user = await prisma_client.db.llm_usertable.find_first(
             where={"user_id": unique_user_id}
         )
         print("inserted user from SSO", user)
         assert user is not None
         assert user.user_email == unique_user_email
-        assert user.user_role == LitellmUserRoles.INTERNAL_USER
+        assert user.user_role == LlmUserRoles.INTERNAL_USER
 
     finally:
         # Clean up: Delete the user from the database
-        await prisma_client.db.litellm_usertable.delete(
+        await prisma_client.db.llm_usertable.delete(
             where={"user_id": unique_user_id}
         )
         llm.default_internal_user_params = None

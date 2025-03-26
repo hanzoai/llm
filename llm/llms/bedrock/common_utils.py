@@ -336,7 +336,7 @@ class BedrockModelInfo(BaseLLMModelInfo):
         return model
 
     @staticmethod
-    def get_non_litellm_routing_model_name(model: str) -> str:
+    def get_non_llm_routing_model_name(model: str) -> str:
         if model.startswith("bedrock/"):
             model = model.split("/", 1)[1]
 
@@ -357,7 +357,7 @@ class BedrockModelInfo(BaseLLMModelInfo):
         AND "meta.llama3-2-11b-instruct-v1:0" -> "meta.llama3-2-11b-instruct-v1"
         """
 
-        model = BedrockModelInfo.get_non_litellm_routing_model_name(model=model)
+        model = BedrockModelInfo.get_non_llm_routing_model_name(model=model)
         model = BedrockModelInfo.extract_model_name_from_arn(model)
 
         potential_region = model.split(".", 1)[0]
@@ -392,7 +392,7 @@ class BedrockModelInfo(BaseLLMModelInfo):
         Get the bedrock route for the given model.
         """
         base_model = BedrockModelInfo.get_base_model(model)
-        alt_model = BedrockModelInfo.get_non_litellm_routing_model_name(model=model)
+        alt_model = BedrockModelInfo.get_non_llm_routing_model_name(model=model)
         if "invoke/" in model:
             return "invoke"
         elif "converse_like" in model:

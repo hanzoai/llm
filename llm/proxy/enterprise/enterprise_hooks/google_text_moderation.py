@@ -56,11 +56,11 @@ class _ENTERPRISE_GoogleTextModeration(CustomLogger):
         )  # by default require a high confidence (80%) to fail
 
         for category in self.confidence_categories:
-            if hasattr(litellm, f"{category}_confidence_threshold"):
+            if hasattr(llm, f"{category}_confidence_threshold"):
                 setattr(
                     self,
                     f"{category}_confidence_threshold",
-                    getattr(litellm, f"{category}_confidence_threshold"),
+                    getattr(llm, f"{category}_confidence_threshold"),
                 )
             else:
                 setattr(

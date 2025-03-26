@@ -1,7 +1,7 @@
 # +-----------------------------------------------+
 # |                                               |
 # |           Give Feedback / Get Help            |
-# | https://github.com/BerriAI/litellm/issues/new |
+# | https://github.com/BerriAI/llm/issues/new |
 # |                                               |
 # +-----------------------------------------------+
 #
@@ -42,7 +42,7 @@ def perform_redaction(model_call_details: dict, result):
     """
     # Redact model_call_details
     model_call_details["messages"] = [
-        {"role": "user", "content": "redacted-by-litellm"}
+        {"role": "user", "content": "redacted-by-llm"}
     ]
     model_call_details["prompt"] = ""
     model_call_details["input"] = ""
@@ -55,9 +55,9 @@ def perform_redaction(model_call_details: dict, result):
         _streaming_response = model_call_details["complete_streaming_response"]
         for choice in _streaming_response.choices:
             if isinstance(choice, llm.Choices):
-                choice.message.content = "redacted-by-litellm"
+                choice.message.content = "redacted-by-llm"
             elif isinstance(choice, llm.utils.StreamingChoices):
-                choice.delta.content = "redacted-by-litellm"
+                choice.delta.content = "redacted-by-llm"
 
     # Redact result
     if result is not None and isinstance(result, llm.ModelResponse):
@@ -65,12 +65,12 @@ def perform_redaction(model_call_details: dict, result):
         if hasattr(_result, "choices") and _result.choices is not None:
             for choice in _result.choices:
                 if isinstance(choice, llm.Choices):
-                    choice.message.content = "redacted-by-litellm"
+                    choice.message.content = "redacted-by-llm"
                 elif isinstance(choice, llm.utils.StreamingChoices):
-                    choice.delta.content = "redacted-by-litellm"
+                    choice.delta.content = "redacted-by-llm"
         return _result
     else:
-        return {"text": "redacted-by-litellm"}
+        return {"text": "redacted-by-llm"}
 
 
 def should_redact_message_logging(model_call_details: dict) -> bool:
@@ -84,7 +84,7 @@ def should_redact_message_logging(model_call_details: dict) -> bool:
     request_headers = _request_headers.get("headers", {})
 
     possible_request_headers = [
-        "litellm-enable-message-redaction",  # old header. maintain backwards compatibility
+        "llm-enable-message-redaction",  # old header. maintain backwards compatibility
         "x-llm-enable-message-redaction",  # new header
     ]
 
@@ -104,7 +104,7 @@ def should_redact_message_logging(model_call_details: dict) -> bool:
         return False
 
     if request_headers and bool(
-        request_headers.get("litellm-disable-message-redaction", False)
+        request_headers.get("llm-disable-message-redaction", False)
     ):
         return False
 

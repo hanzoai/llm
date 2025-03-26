@@ -86,8 +86,8 @@ def prisma_client():
     )
 
     # Reset llm.proxy.proxy_server.prisma_client to None
-    llm.proxy.proxy_server.litellm_proxy_budget_name = (
-        f"litellm-proxy-budget-{time.time()}"
+    llm.proxy.proxy_server.llm_proxy_budget_name = (
+        f"llm-proxy-budget-{time.time()}"
     )
     llm.proxy.proxy_server.user_custom_key_generate = None
 

@@ -4,7 +4,7 @@ const QuickStartCodeBlock = ({ token }) => {
     return (
       <pre>
         {`
-        from litellm import completion
+        from llm import completion
         import os
   
         ## set ENV variables
@@ -29,7 +29,7 @@ const QuickStartCodeBlock = ({ token }) => {
     useEffect(() => {
       const generateToken = async () => {
         try {
-          const response = await fetch('https://proxy.litellm.ai/key/new', {
+          const response = await fetch('https://proxy.llm.ai/key/new', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

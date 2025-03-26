@@ -8,7 +8,7 @@ _db = Any
 async def create_missing_views(db: _db):  # noqa: PLR0915
     """
     --------------------------------------------------
-    NOTE: Copy of `litellm/db_scripts/create_views.py`.
+    NOTE: Copy of `llm/db_scripts/create_views.py`.
     --------------------------------------------------
     Checks if the LLM_VerificationTokenView and MonthlyGlobalSpend exists in the user's db.
 

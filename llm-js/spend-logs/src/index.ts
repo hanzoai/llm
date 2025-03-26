@@ -1,15 +1,15 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { PrismaClient } from '@prisma/client'
-import {LiteLLM_SpendLogs, LiteLLM_IncrementSpend, LiteLLM_IncrementObject} from './_types'
+import {LLM_SpendLogs, LLM_IncrementSpend, LLM_IncrementObject} from './_types'
 
 const app = new Hono()
 const prisma = new PrismaClient()
 // In-memory storage for logs
-let spend_logs: LiteLLM_SpendLogs[] = [];
-const key_logs: LiteLLM_IncrementObject[] = [];
-const user_logs: LiteLLM_IncrementObject[] = [];
-const transaction_logs: LiteLLM_IncrementObject[] = [];
+let spend_logs: LLM_SpendLogs[] = [];
+const key_logs: LLM_IncrementObject[] = [];
+const user_logs: LLM_IncrementObject[] = [];
+const transaction_logs: LLM_IncrementObject[] = [];
 
 
 app.get('/', (c) => {
@@ -38,7 +38,7 @@ const flushLogsToDb = async () => {
         // Repeat for any other DateTime fields you may have
       }));
 
-      await prisma.liteLLM_SpendLogs.createMany({
+      await prisma.LLM_SpendLogs.createMany({
         data: batchWithDates,
       });
 
@@ -64,7 +64,7 @@ setInterval(flushLogsToDb, FLUSH_INTERVAL);
 
 // Route to receive log messages
 app.post('/spend/update', async (c) => {
-  const incomingLogs = await c.req.json<LiteLLM_SpendLogs[]>();
+  const incomingLogs = await c.req.json<LLM_SpendLogs[]>();
   
   spend_logs.push(...incomingLogs);
 

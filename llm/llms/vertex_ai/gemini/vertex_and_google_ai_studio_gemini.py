@@ -21,8 +21,8 @@ from typing import (
 import httpx  # type: ignore
 
 import llm
-import llm.litellm_core_utils
-import llm.litellm_core_utils.litellm_logging
+import llm.llm_core_utils
+import llm.llm_core_utils.llm_logging
 from llm import verbose_logger
 from llm.llm_core_utils.core_helpers import map_finish_reason
 from llm.llms.base_llm.chat.transformation import BaseConfig, BaseLLMException
@@ -370,7 +370,7 @@ class VertexGeminiConfig(VertexAIBaseConfig, BaseConfig):
                 optional_params["logprobs"] = value
             if (param == "tools" or param == "functions") and isinstance(value, list):
                 optional_params["tools"] = self._map_function(value=value)
-                optional_params["litellm_param_is_function_call"] = (
+                optional_params["llm_param_is_function_call"] = (
                     True if param == "functions" else False
                 )
             if param == "tool_choice" and (
@@ -651,7 +651,7 @@ class VertexGeminiConfig(VertexAIBaseConfig, BaseConfig):
             completion_response = GenerateContentResponseBody(**raw_response.json())  # type: ignore
         except Exception as e:
             raise VertexAIError(
-                message="Received={}, Error converting to valid response block={}. File an issue if llm error - https://github.com/BerriAI/litellm/issues".format(
+                message="Received={}, Error converting to valid response block={}. File an issue if llm error - https://github.com/BerriAI/llm/issues".format(
                     raw_response.text, str(e)
                 ),
                 status_code=422,
@@ -723,7 +723,7 @@ class VertexGeminiConfig(VertexAIBaseConfig, BaseConfig):
                             parts=candidate["content"]["parts"],
                             index=candidate.get("index", idx),
                             is_function_call=llm_params.get(
-                                "litellm_param_is_function_call"
+                                "llm_param_is_function_call"
                             ),
                         )
 
@@ -772,7 +772,7 @@ class VertexGeminiConfig(VertexAIBaseConfig, BaseConfig):
 
         except Exception as e:
             raise VertexAIError(
-                message="Received={}, Error converting to valid response block={}. File an issue if llm error - https://github.com/BerriAI/litellm/issues".format(
+                message="Received={}, Error converting to valid response block={}. File an issue if llm error - https://github.com/BerriAI/llm/issues".format(
                     completion_response, str(e)
                 ),
                 status_code=422,

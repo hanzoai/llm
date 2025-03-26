@@ -1,7 +1,7 @@
 # +-----------------------------------------------+
 # |                                               |
 # |           Give Feedback / Get Help            |
-# | https://github.com/BerriAI/litellm/issues/new |
+# | https://github.com/BerriAI/llm/issues/new |
 # |                                               |
 # +-----------------------------------------------+
 #
@@ -102,12 +102,12 @@ from llm.utils import (
 
 from ._logging import verbose_logger
 from .caching.caching import disable_cache, enable_cache, update_cache
-from .litellm_core_utils.fallback_utils import (
+from .llm_core_utils.fallback_utils import (
     async_completion_with_fallbacks,
     completion_with_fallbacks,
 )
-from .litellm_core_utils.prompt_templates.common_utils import get_completion_messages
-from .litellm_core_utils.prompt_templates.factory import (
+from .llm_core_utils.prompt_templates.common_utils import get_completion_messages
+from .llm_core_utils.prompt_templates.factory import (
     custom_prompt,
     function_call_prompt,
     map_system_message_pt,
@@ -115,7 +115,7 @@ from .litellm_core_utils.prompt_templates.factory import (
     prompt_factory,
     stringify_json_tool_call_content,
 )
-from .litellm_core_utils.streaming_chunk_builder_utils import ChunkProcessor
+from .llm_core_utils.streaming_chunk_builder_utils import ChunkProcessor
 from .llms import baseten, maritalk, ollama_chat
 from .llms.anthropic.chat import AnthropicChatCompletion
 from .llms.azure.audio_transcriptions import AzureAudioTranscription
@@ -178,7 +178,7 @@ from .types.llms.openai import (
     HttpxBinaryResponseContent,
 )
 from .types.utils import (
-    LITELLM_IMAGE_VARIATION_PROVIDERS,
+    LLM_IMAGE_VARIATION_PROVIDERS,
     AdapterCompletionStreamWrapper,
     ChatCompletionMessageToolCall,
     CompletionTokensDetails,
@@ -379,7 +379,7 @@ async def acompletion(
         model_list (list, optional): List of api base, version, keys
         timeout (float, optional): The maximum execution time in seconds for the completion request.
 
-        LITELLM Specific Params
+        LLM Specific Params
         mock_response (str, optional): If provided, return a mock completion response for testing or debugging purposes (default is None).
         custom_llm_provider (str, optional): Used for Non-OpenAI LLMs, Example usage for bedrock, set model="amazon.titan-tg1-large" and custom_llm_provider="bedrock"
     Returns:
@@ -841,7 +841,7 @@ def completion(  # type: ignore # noqa: PLR0915
         model_list (list, optional): List of api base, version, keys
         extra_headers (dict, optional): Additional headers to include in the request.
 
-        LITELLM Specific Params
+        LLM Specific Params
         mock_response (str, optional): If provided, return a mock completion response for testing or debugging purposes (default is None).
         custom_llm_provider (str, optional): Used for Non-OpenAI LLMs, Example usage for bedrock, set model="amazon.titan-tg1-large" and custom_llm_provider="bedrock"
         max_retries (int, optional): The number of retries to attempt (default is 0).
@@ -933,7 +933,7 @@ def completion(  # type: ignore # noqa: PLR0915
     ### PROMPT MANAGEMENT ###
     prompt_id = cast(Optional[str], kwargs.get("prompt_id", None))
     prompt_variables = cast(Optional[dict], kwargs.get("prompt_variables", None))
-    ### COPY MESSAGES ### - related issue https://github.com/BerriAI/litellm/discussions/4489
+    ### COPY MESSAGES ### - related issue https://github.com/BerriAI/llm/discussions/4489
     messages = get_completion_messages(
         messages=messages,
         ensure_alternating_roles=ensure_alternating_roles or False,
@@ -1126,7 +1126,7 @@ def completion(  # type: ignore # noqa: PLR0915
                 messages=messages, functions=functions_unsupported_model
             )
 
-        # For logging - save the values of the litellm-specific params passed in
+        # For logging - save the values of the llm-specific params passed in
         llm_params = get_llm_params(
             acompletion=acompletion,
             api_key=api_key,
@@ -4228,7 +4228,7 @@ def text_completion(  # noqa: PLR0915
         messages = [{"role": "user", "content": prompt}]  # type: ignore
     else:
         raise Exception(
-            f"Unmapped prompt format. Your prompt is neither a list of strings nor a string. prompt={prompt}. File an issue - https://github.com/BerriAI/litellm/issues"
+            f"Unmapped prompt format. Your prompt is neither a list of strings nor a string. prompt={prompt}. File an issue - https://github.com/BerriAI/llm/issues"
         )
 
     kwargs.pop("prompt", None)
@@ -4852,10 +4852,10 @@ def image_variation(
     # route to the correct provider w/ the params
     try:
         llm_provider = LlmProviders(custom_llm_provider)
-        image_variation_provider = LITELLM_IMAGE_VARIATION_PROVIDERS(llm_provider)
+        image_variation_provider = LLM_IMAGE_VARIATION_PROVIDERS(llm_provider)
     except ValueError:
         raise ValueError(
-            f"Invalid image variation provider: {custom_llm_provider}. Supported providers are: {LITELLM_IMAGE_VARIATION_PROVIDERS}"
+            f"Invalid image variation provider: {custom_llm_provider}. Supported providers are: {LLM_IMAGE_VARIATION_PROVIDERS}"
         )
     model_response = ImageResponse()
 
@@ -4868,13 +4868,13 @@ def image_variation(
 
     if provider_config is None:
         raise ValueError(
-            f"image variation provider has no known model info config - required for getting api keys, etc.: {custom_llm_provider}. Supported providers are: {LITELLM_IMAGE_VARIATION_PROVIDERS}"
+            f"image variation provider has no known model info config - required for getting api keys, etc.: {custom_llm_provider}. Supported providers are: {LLM_IMAGE_VARIATION_PROVIDERS}"
         )
 
     api_key = provider_config.get_api_key(llm_params.get("api_key", None))
     api_base = provider_config.get_api_base(llm_params.get("api_base", None))
 
-    if image_variation_provider == LITELLM_IMAGE_VARIATION_PROVIDERS.OPENAI:
+    if image_variation_provider == LLM_IMAGE_VARIATION_PROVIDERS.OPENAI:
         if api_key is None:
             raise ValueError("API key is required for OpenAI image variations")
         if api_base is None:
@@ -4892,7 +4892,7 @@ def image_variation(
             optional_params={},
             llm_params=llm_params,
         )
-    elif image_variation_provider == LITELLM_IMAGE_VARIATION_PROVIDERS.TOPAZ:
+    elif image_variation_provider == LLM_IMAGE_VARIATION_PROVIDERS.TOPAZ:
         if api_key is None:
             raise ValueError("API key is required for Topaz image variations")
         if api_base is None:
@@ -4915,7 +4915,7 @@ def image_variation(
     # return the response
     if response is None:
         raise ValueError(
-            f"Invalid image variation provider: {custom_llm_provider}. Supported providers are: {LITELLM_IMAGE_VARIATION_PROVIDERS}"
+            f"Invalid image variation provider: {custom_llm_provider}. Supported providers are: {LLM_IMAGE_VARIATION_PROVIDERS}"
         )
     return response
 
@@ -4986,7 +4986,7 @@ def transcription(
     ] = None,
     timestamp_granularities: Optional[List[Literal["word", "segment"]]] = None,
     temperature: Optional[int] = None,  # openai defaults this to 0
-    ## LITELLM PARAMS ##
+    ## LLM PARAMS ##
     user: Optional[str] = None,
     timeout=600,  # default to 10 minutes
     api_key: Optional[str] = None,
@@ -5428,7 +5428,7 @@ async def ahealth_check_wildcard_models(
     )
     if len(cheapest_models) == 0:
         raise Exception(
-            f"Unable to health check wildcard model for provider {custom_llm_provider}. Add a model on your config.yaml or contribute here - https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json"
+            f"Unable to health check wildcard model for provider {custom_llm_provider}. Add a model on your config.yaml or contribute here - https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json"
         )
     if len(cheapest_models) > 1:
         fallback_models = cheapest_models[

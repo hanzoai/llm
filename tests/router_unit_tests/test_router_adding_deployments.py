@@ -17,7 +17,7 @@ def test_initialize_deployment_for_pass_through_success():
     router = Router(model_list=[])
     deployment = Deployment(
         model_name="vertex-test",
-        litellm_params=LLM_Params(
+        llm_params=LLM_Params(
             model="vertex_ai/test-model",
             vertex_project="test-project",
             vertex_location="us-central1",
@@ -57,7 +57,7 @@ def test_initialize_deployment_for_pass_through_missing_params():
     router = Router(model_list=[])
     deployment = Deployment(
         model_name="vertex-test",
-        litellm_params=LLM_Params(
+        llm_params=LLM_Params(
             model="vertex_ai/test-model",
             # Missing required parameters
             use_in_pass_through=True,
@@ -83,7 +83,7 @@ def test_initialize_deployment_when_pass_through_disabled():
     router = Router(model_list=[])
     deployment = Deployment(
         model_name="vertex-test",
-        litellm_params=LLM_Params(
+        llm_params=LLM_Params(
             model="vertex_ai/test-model",
         ),
     )
@@ -108,7 +108,7 @@ def test_add_vertex_pass_through_deployment():
     # Create a deployment with Vertex AI pass-through settings
     deployment = Deployment(
         model_name="vertex-test",
-        litellm_params=LLM_Params(
+        llm_params=LLM_Params(
             model="vertex_ai/test-model",
             vertex_project="test-project",
             vertex_location="us-central1",

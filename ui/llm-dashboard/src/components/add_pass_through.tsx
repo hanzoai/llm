@@ -112,7 +112,7 @@ const AddPassThroughEndpoint: React.FC<AddFallbacksProps> = ({
               <Form.Item 
                 label="Path" 
                 name="path"
-                rules={[{ required: true, message: 'The route to be added to the LiteLLM Proxy Server.' }]}
+                rules={[{ required: true, message: 'The route to be added to the LLM Proxy Server.' }]}
                 help="required"
               >
                 <TextInput/>

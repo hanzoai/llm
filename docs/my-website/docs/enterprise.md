@@ -51,7 +51,7 @@ Self-Managed Enterprise deployments require our team to understand your exact ne
 You just deploy [our docker image](https://docs.llm.ai/docs/proxy/deploy) and get an enterprise license key to add to your environment to unlock additional functionality (SSO, Prometheus metrics, etc.). 
 
 ```env
-LITELLM_LICENSE="eyJ..."
+LLM_LICENSE="eyJ..."
 ```
 
 No data leaves your environment. 

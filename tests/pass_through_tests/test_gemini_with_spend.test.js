@@ -12,14 +12,14 @@ global.fetch = async function patchedFetch(url, options) {
     const response = await originalFetch(url, options);
     
     // Store the call ID if it exists
-    lastCallId = response.headers.get('x-litellm-call-id');
+    lastCallId = response.headers.get('x-llm-call-id');
         
     return response;
 };
 
 describe('Gemini AI Tests', () => {
     test('should successfully generate non-streaming content with tags', async () => {
-        const genAI = new GoogleGenerativeAI("sk-1234"); // litellm proxy API key
+        const genAI = new GoogleGenerativeAI("sk-1234"); // llm proxy API key
 
         const requestOptions = {
             baseUrl: 'http://127.0.0.1:4000/gemini',
@@ -67,7 +67,7 @@ describe('Gemini AI Tests', () => {
     }, 25000);
 
     test('should successfully generate streaming content with tags', async () => {
-        const genAI = new GoogleGenerativeAI("sk-1234"); // litellm proxy API key
+        const genAI = new GoogleGenerativeAI("sk-1234"); // llm proxy API key
 
         const requestOptions = {
             baseUrl: 'http://127.0.0.1:4000/gemini',

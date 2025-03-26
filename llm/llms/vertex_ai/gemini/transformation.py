@@ -190,12 +190,12 @@ def _gemini_convert_messages_with_history(  # noqa: PLR0915
                 """
                 check that user_content has 'text' parameter.
                     - Known Vertex Error: Unable to submit request because it must have a text parameter.
-                    - Relevant Issue: https://github.com/BerriAI/litellm/issues/5515
+                    - Relevant Issue: https://github.com/BerriAI/llm/issues/5515
                 """
                 has_text_in_content = _check_text_in_content(user_content)
                 if has_text_in_content is False:
                     verbose_logger.warning(
-                        "No text in user content. Adding a blank text to user content, to ensure Gemini doesn't fail the request. Relevant Issue - https://github.com/BerriAI/litellm/issues/5515"
+                        "No text in user content. Adding a blank text to user content, to ensure Gemini doesn't fail the request. Relevant Issue - https://github.com/BerriAI/llm/issues/5515"
                     )
                     user_content.append(
                         PartType(text=" ")
@@ -261,7 +261,7 @@ def _gemini_convert_messages_with_history(  # noqa: PLR0915
 
             if msg_i == init_msg_i:  # prevent infinite loops
                 raise Exception(
-                    "Invalid Message passed in - {}. File an issue https://github.com/BerriAI/litellm/issues".format(
+                    "Invalid Message passed in - {}. File an issue https://github.com/BerriAI/llm/issues".format(
                         messages[msg_i]
                     )
                 )
@@ -302,11 +302,11 @@ def _transform_request_body(
             messages.append({"role": "user", "content": user_response_schema_message})
             optional_params.pop("response_schema")
 
-    # Check for any 'litellm_param_*' set during optional param mapping
+    # Check for any 'llm_param_*' set during optional param mapping
 
     remove_keys = []
     for k, v in optional_params.items():
-        if k.startswith("litellm_param_"):
+        if k.startswith("llm_param_"):
             llm_params.update({k: v})
             remove_keys.append(k)
 
@@ -405,7 +405,7 @@ async def async_transform_request_body(
     timeout: Optional[Union[float, httpx.Timeout]],
     extra_headers: Optional[dict],
     optional_params: dict,
-    logging_obj: llm.litellm_core_utils.litellm_logging.Logging,  # type: ignore
+    logging_obj: llm.llm_core_utils.llm_logging.Logging,  # type: ignore
     custom_llm_provider: Literal["vertex_ai", "vertex_ai_beta", "gemini"],
     llm_params: dict,
 ) -> RequestBody:

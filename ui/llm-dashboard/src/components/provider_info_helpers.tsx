@@ -144,9 +144,9 @@ export const getPlaceholder = (selectedProvider: string): string => {
         if (
           value !== null &&
           typeof value === "object" &&
-          "litellm_provider" in (value as object) &&
-          ((value as any)["litellm_provider"] === custom_llm_provider ||
-            (value as any)["litellm_provider"].includes(custom_llm_provider))
+          "llm_provider" in (value as object) &&
+          ((value as any)["llm_provider"] === custom_llm_provider ||
+            (value as any)["llm_provider"].includes(custom_llm_provider))
         ) {
           providerModels.push(key);
         }
@@ -160,8 +160,8 @@ export const getPlaceholder = (selectedProvider: string): string => {
           if (
             value !== null &&
             typeof value === "object" &&
-            "litellm_provider" in (value as object) &&
-            ((value as any)["litellm_provider"] === "cohere")
+            "llm_provider" in (value as object) &&
+            ((value as any)["llm_provider"] === "cohere")
           ) {
             providerModels.push(key);
           }

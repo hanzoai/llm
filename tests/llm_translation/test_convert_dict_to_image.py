@@ -11,7 +11,7 @@ import llm
 import pytest
 from datetime import timedelta
 from llm.types.utils import ImageResponse, ImageObject
-from llm.litellm_core_utils.llm_response_utils.convert_dict_to_response import (
+from llm.llm_core_utils.llm_response_utils.convert_dict_to_response import (
     LLMResponseObjectHandler,
 )
 

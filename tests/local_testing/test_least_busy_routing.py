@@ -30,7 +30,7 @@ def test_model_added():
     test_cache = DualCache()
     least_busy_logger = LeastBusyLoggingHandler(router_cache=test_cache, model_list=[])
     kwargs = {
-        "litellm_params": {
+        "llm_params": {
             "metadata": {
                 "model_group": "gpt-3.5-turbo",
                 "deployment": "azure/chatgpt-v-2",
@@ -49,7 +49,7 @@ def test_get_available_deployments():
     model_group = "gpt-3.5-turbo"
     deployment = "azure/chatgpt-v-2"
     kwargs = {
-        "litellm_params": {
+        "llm_params": {
             "metadata": {
                 "model_group": model_group,
                 "deployment": deployment,
@@ -74,7 +74,7 @@ async def test_router_get_available_deployments(async_test):
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -84,7 +84,7 @@ async def test_router_get_available_deployments(async_test):
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-35-turbo",
                 "api_key": "os.environ/AZURE_EUROPE_API_KEY",
                 "api_base": "https://my-endpoint-europe-berri-992.openai.azure.com",
@@ -94,7 +94,7 @@ async def test_router_get_available_deployments(async_test):
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-35-turbo",
                 "api_key": "os.environ/AZURE_CANADA_API_KEY",
                 "api_base": "https://my-endpoint-canada-berri992.openai.azure.com",
@@ -155,7 +155,7 @@ async def test_router_atext_completion_streaming():
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -165,7 +165,7 @@ async def test_router_atext_completion_streaming():
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -175,7 +175,7 @@ async def test_router_atext_completion_streaming():
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -225,7 +225,7 @@ async def test_router_completion_streaming():
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -235,7 +235,7 @@ async def test_router_completion_streaming():
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -245,7 +245,7 @@ async def test_router_completion_streaming():
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",

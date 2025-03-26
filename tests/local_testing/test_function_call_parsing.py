@@ -1,5 +1,5 @@
 # What is this?
-## Test to make sure function call response always works with json.loads() -> no extra parsing required. Relevant issue - https://github.com/BerriAI/litellm/issues/2654
+## Test to make sure function call response always works with json.loads() -> no extra parsing required. Relevant issue - https://github.com/BerriAI/llm/issues/2654
 import os
 import sys
 import traceback

@@ -39,7 +39,7 @@
 #         model_list = [
 #             {
 #                 "model_name": "gpt-3.5-turbo",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "azure/chatgpt-v-2",
 #                     "api_key": os.getenv("AZURE_API_KEY"),
 #                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -95,7 +95,7 @@
 #         model_list = [
 #             {
 #                 "model_name": "gpt-3.5-turbo",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "azure/chatgpt-v-2",
 #                     "api_key": os.getenv("AZURE_API_KEY"),
 #                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -133,37 +133,37 @@
 #         model_list = [
 #             {
 #                 "model_name": "azure-cloudflare",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "azure/chatgpt-v-2",
 #                     "api_key": os.getenv("AZURE_API_KEY"),
 #                     "api_version": os.getenv("AZURE_API_VERSION"),
-#                     "api_base": "https://gateway.ai.cloudflare.com/v1/0399b10e77ac6668c80404a5ff49eb37/litellm-test/azure-openai/openai-gpt-4-test-v-1",
+#                     "api_base": "https://gateway.ai.cloudflare.com/v1/0399b10e77ac6668c80404a5ff49eb37/llm-test/azure-openai/openai-gpt-4-test-v-1",
 #                 },
 #             },
 #             {
 #                 "model_name": "gpt-openai",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "gpt-3.5-turbo",
 #                     "api_key": os.getenv("OPENAI_API_KEY"),
 #                 },
 #             },
 #             {
 #                 "model_name": "text-embedding-ada-002",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "text-embedding-ada-002",
 #                     "api_key": os.getenv("OPENAI_API_KEY"),
 #                 },
 #             },
 #             {
 #                 "model_name": "mistral",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "mistral/mistral-tiny",
 #                     "api_key": os.getenv("MISTRAL_API_KEY"),
 #                 },
 #             },
 #             {
 #                 "model_name": "bge-base-en",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "xinference/bge-base-en",
 #                     "api_base": "http://127.0.0.1:9997/v1",
 #                     "api_key": os.getenv("OPENAI_API_KEY"),
@@ -200,7 +200,7 @@
 #         model_list = [
 #             {
 #                 "model_name": "gpt-3.5-turbo",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "azure/chatgpt-v-2",
 #                     "api_key": os.getenv("AZURE_API_KEY"),
 #                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -253,7 +253,7 @@
 #         model_list = [
 #             {
 #                 "model_name": "gpt-3.5-turbo",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "azure/chatgpt-v-2",
 #                     "api_key": os.getenv("AZURE_API_KEY"),
 #                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -310,7 +310,7 @@
 #     model_list = [
 #         {
 #             "model_name": "xinference",
-#             "litellm_params": {
+#             "llm_params": {
 #                 "model": "xinference/bge-base-en",
 #                 "api_base": "os.environ/XINFERENCE_API_BASE",
 #             },
@@ -323,7 +323,7 @@
 #     print(router.model_list[0])
 
 #     assert (
-#         router.model_list[0]["litellm_params"]["api_base"] == "http://0.0.0.0:9997"
+#         router.model_list[0]["llm_params"]["api_base"] == "http://0.0.0.0:9997"
 #     )  # set in env
 
 #     openai_client = router._get_client(
@@ -347,7 +347,7 @@
 #         model_list = [
 #             {
 #                 "model_name": "gpt-4-vision-enhancements",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "azure/gpt-4-vision",
 #                     "api_key": os.getenv("AZURE_API_KEY"),
 #                     "base_url": "https://gpt-4-vision-resource.openai.azure.com/openai/deployments/gpt-4-vision/extensions/",
@@ -370,19 +370,19 @@
 #         print(router.model_list[0])
 
 #         assert (
-#             router.model_list[0]["litellm_params"]["base_url"]
+#             router.model_list[0]["llm_params"]["base_url"]
 #             == "https://gpt-4-vision-resource.openai.azure.com/openai/deployments/gpt-4-vision/extensions/"
 #         )  # set in env
 
 #         assert (
-#             router.model_list[0]["litellm_params"]["dataSources"][0]["parameters"][
+#             router.model_list[0]["llm_params"]["dataSources"][0]["parameters"][
 #                 "endpoint"
 #             ]
 #             == os.environ["AZURE_VISION_ENHANCE_ENDPOINT"]
 #         )
 
 #         assert (
-#             router.model_list[0]["litellm_params"]["dataSources"][0]["parameters"][
+#             router.model_list[0]["llm_params"]["dataSources"][0]["parameters"][
 #                 "key"
 #             ]
 #             == os.environ["AZURE_VISION_ENHANCE_KEY"]
@@ -411,14 +411,14 @@
 #         model_list = [
 #             {
 #                 "model_name": "openai-bad-org",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "gpt-3.5-turbo",
 #                     "organization": "org-ikDc4ex8NB",
 #                 },
 #             },
 #             {
 #                 "model_name": "openai-good-org",
-#                 "litellm_params": {"model": "gpt-3.5-turbo"},
+#                 "llm_params": {"model": "gpt-3.5-turbo"},
 #             },
 #         ]
 
@@ -509,7 +509,7 @@
 #         model_list = [
 #             {
 #                 "model_name": "gpt-3.5-turbo",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "azure/command-r-plus",
 #                     "api_key": os.getenv("AZURE_COHERE_API_KEY"),
 #                     "api_base": os.getenv("AZURE_COHERE_API_BASE"),
@@ -546,7 +546,7 @@
 #         model_list = [
 #             {
 #                 "model_name": "openai-bad-org",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "text-completion-openai/gpt-3.5-turbo-instruct",
 #                     "api_key": os.getenv("OPENAI_API_KEY", None),
 #                     "organization": "org-ikDc4ex8NB",
@@ -554,7 +554,7 @@
 #             },
 #             {
 #                 "model_name": "openai-good-org",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "text-completion-openai/gpt-3.5-turbo-instruct",
 #                     "api_key": os.getenv("OPENAI_API_KEY", None),
 #                     "organization": os.getenv("OPENAI_ORGANIZATION", None),
@@ -614,7 +614,7 @@
 #         model_list = [
 #             {
 #                 "model_name": "gpt-3.5-turbo",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "azure/chatgpt-v-2",
 #                     "api_key": os.getenv("AZURE_API_KEY"),
 #                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -653,13 +653,13 @@
 # )
 # def test_init_router_with_supported_environments(environment, expected_models):
 #     """
-#     Tests that the correct models are setup on router when LITELLM_ENVIRONMENT is set
+#     Tests that the correct models are setup on router when LLM_ENVIRONMENT is set
 #     """
-#     os.environ["LITELLM_ENVIRONMENT"] = environment
+#     os.environ["LLM_ENVIRONMENT"] = environment
 #     model_list = [
 #         {
 #             "model_name": "gpt-3.5-turbo",
-#             "litellm_params": {
+#             "llm_params": {
 #                 "model": "azure/chatgpt-v-2",
 #                 "api_key": os.getenv("AZURE_API_KEY"),
 #                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -672,7 +672,7 @@
 #         },
 #         {
 #             "model_name": "gpt-4",
-#             "litellm_params": {
+#             "llm_params": {
 #                 "model": "openai/gpt-4",
 #                 "api_key": os.getenv("OPENAI_API_KEY"),
 #                 "timeout": 0.01,
@@ -683,7 +683,7 @@
 #         },
 #         {
 #             "model_name": "gpt-4o",
-#             "litellm_params": {
+#             "llm_params": {
 #                 "model": "openai/gpt-4o",
 #                 "api_key": os.getenv("OPENAI_API_KEY"),
 #                 "timeout": 0.01,
@@ -701,4 +701,4 @@
 
 #     assert set(_model_list) == set(expected_models)
 
-#     os.environ.pop("LITELLM_ENVIRONMENT")
+#     os.environ.pop("LLM_ENVIRONMENT")

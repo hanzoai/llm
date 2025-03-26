@@ -8,7 +8,7 @@ import random, uuid
 import time, asyncio, llm
 # import logging
 # logging.basicConfig(level=logging.DEBUG)
-#### LITELLM PROXY #### 
+#### LLM PROXY #### 
 llm_client = AsyncOpenAI(
     api_key="sk-1234", # [CHANGE THIS]
     base_url="http://0.0.0.0:4000"
@@ -22,7 +22,7 @@ client = AsyncAzureOpenAI(
 )
 
 
-#### LITELLM ROUTER #### 
+#### LLM ROUTER #### 
 model_list = [
   {
     "model_name": "azure-canada",

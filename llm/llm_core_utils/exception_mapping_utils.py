@@ -77,7 +77,7 @@ def _get_response_headers(original_exception: Exception) -> Optional[httpx.Heade
             _response_headers = getattr(error_response, "headers", None)
         if not _response_headers:
             _response_headers = getattr(
-                original_exception, "litellm_response_headers", None
+                original_exception, "llm_response_headers", None
             )
     except Exception:
         return None
@@ -88,7 +88,7 @@ def _get_response_headers(original_exception: Exception) -> Optional[httpx.Heade
 import re
 
 
-def extract_and_raise_litellm_exception(
+def extract_and_raise_llm_exception(
     response: Optional[Any],
     error_str: str,
     model: str,
@@ -97,11 +97,11 @@ def extract_and_raise_litellm_exception(
     """
     Covers scenario where llm sdk calling proxy.
 
-    Enables raising the special errors raised by litellm, eg. ContextWindowExceededError.
+    Enables raising the special errors raised by llm, eg. ContextWindowExceededError.
 
-    Relevant Issue: https://github.com/BerriAI/litellm/issues/7259
+    Relevant Issue: https://github.com/BerriAI/llm/issues/7259
     """
-    pattern = r"litellm\.\w+Error"
+    pattern = r"llm\.\w+Error"
 
     # Search for the exception in the error string
     match = re.search(pattern, error_str)
@@ -110,7 +110,7 @@ def extract_and_raise_litellm_exception(
     if match:
         exception_name = match.group(0)
         exception_name = exception_name.strip().replace("llm.", "")
-        raised_exception_obj = getattr(litellm, exception_name, None)
+        raised_exception_obj = getattr(llm, exception_name, None)
         if raised_exception_obj:
             raise raised_exception_obj(
                 message=error_str,
@@ -138,14 +138,14 @@ def exception_type(  # type: ignore  # noqa: PLR0915
     if llm.suppress_debug_info is False:
         print()  # noqa
         print(  # noqa
-            "\033[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new\033[0m"  # noqa
+            "\033[1;31mGive Feedback / Get Help: https://github.com/BerriAI/llm/issues/new\033[0m"  # noqa
         )  # noqa
         print(  # noqa
             "LLM.Info: If you need to debug this error, use `llm._turn_on_debug()'."  # noqa
         )  # noqa
         print()  # noqa
 
-    litellm_response_headers = _get_response_headers(
+    llm_response_headers = _get_response_headers(
         original_exception=original_exception
     )
     try:
@@ -237,7 +237,7 @@ def exception_type(  # type: ignore  # noqa: PLR0915
             if (
                 custom_llm_provider == "llm_proxy"
             ):  # handle special case where calling llm proxy + exception str contains error message
-                extract_and_raise_litellm_exception(
+                extract_and_raise_llm_exception(
                     response=getattr(original_exception, "response", None),
                     error_str=error_str,
                     model=model,
@@ -259,7 +259,7 @@ def exception_type(  # type: ignore  # noqa: PLR0915
 
                 if message is not None and isinstance(
                     message, str
-                ):  # done to prevent user-confusion. Relevant issue - https://github.com/BerriAI/litellm/issues/1414
+                ):  # done to prevent user-confusion. Relevant issue - https://github.com/BerriAI/llm/issues/1414
                     message = message.replace("OPENAI", custom_llm_provider.upper())
                     message = message.replace(
                         "openai.OpenAIError",
@@ -1133,7 +1133,7 @@ def exception_type(  # type: ignore  # noqa: PLR0915
                         response=httpx.Response(
                             status_code=500,
                             content=str(original_exception),
-                            request=httpx.Request(method="completion", url="https://github.com/BerriAI/litellm"),  # type: ignore
+                            request=httpx.Request(method="completion", url="https://github.com/BerriAI/llm"),  # type: ignore
                         ),
                         llm_debug_info=extra_information,
                     )
@@ -1274,7 +1274,7 @@ def exception_type(  # type: ignore  # noqa: PLR0915
                             response=httpx.Response(
                                 status_code=500,
                                 content=str(original_exception),
-                                request=httpx.Request(method="completion", url="https://github.com/BerriAI/litellm"),  # type: ignore
+                                request=httpx.Request(method="completion", url="https://github.com/BerriAI/llm"),  # type: ignore
                             ),
                         )
                     if original_exception.status_code == 503:
@@ -2176,7 +2176,7 @@ def exception_type(  # type: ignore  # noqa: PLR0915
             )
         else:  # ensure generic errors always return APIConnectionError=
             """
-            For unmapped exceptions - raise the exception with traceback - https://github.com/BerriAI/litellm/issues/4201
+            For unmapped exceptions - raise the exception with traceback - https://github.com/BerriAI/llm/issues/4201
             """
             exception_mapping_worked = True
             if hasattr(original_exception, "request"):
@@ -2210,19 +2210,19 @@ def exception_type(  # type: ignore  # noqa: PLR0915
 
         # don't let an error with mapping interrupt the user from receiving an error from the llm api calls
         if exception_mapping_worked:
-            setattr(e, "litellm_response_headers", litellm_response_headers)
+            setattr(e, "llm_response_headers", llm_response_headers)
             raise e
         else:
             for error_type in llm.LLM_EXCEPTION_TYPES:
                 if isinstance(e, error_type):
-                    setattr(e, "litellm_response_headers", litellm_response_headers)
+                    setattr(e, "llm_response_headers", llm_response_headers)
                     raise e  # it's already mapped
             raised_exc = APIConnectionError(
                 message="{}\n{}".format(original_exception, traceback.format_exc()),
                 llm_provider="",
                 model="",
             )
-            setattr(raised_exc, "litellm_response_headers", litellm_response_headers)
+            setattr(raised_exc, "llm_response_headers", llm_response_headers)
             raise raised_exc
 
 

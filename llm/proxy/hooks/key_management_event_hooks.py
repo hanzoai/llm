@@ -14,7 +14,7 @@ from llm.proxy._types import (
     KeyRequest,
     LLM_AuditLogs,
     LLM_VerificationToken,
-    LitellmTableNames,
+    LlmTableNames,
     ProxyErrorTypes,
     ProxyException,
     RegenerateKeyRequest,
@@ -24,7 +24,7 @@ from llm.proxy._types import (
 )
 
 # NOTE: This is the prefix for all virtual keys stored in AWS Secrets Manager
-LITELLM_PREFIX_STORED_VIRTUAL_KEYS = "litellm/"
+LLM_PREFIX_STORED_VIRTUAL_KEYS = "llm/"
 
 
 class KeyManagementEventHooks:
@@ -34,7 +34,7 @@ class KeyManagementEventHooks:
         data: GenerateKeyRequest,
         response: GenerateKeyResponse,
         user_api_key_dict: UserAPIKeyAuth,
-        litellm_changed_by: Optional[str] = None,
+        llm_changed_by: Optional[str] = None,
     ):
         """
         Hook that runs after a successful /key/generate request
@@ -62,11 +62,11 @@ class KeyManagementEventHooks:
                     request_data=LLM_AuditLogs(
                         id=str(uuid.uuid4()),
                         updated_at=datetime.now(timezone.utc),
-                        changed_by=litellm_changed_by
+                        changed_by=llm_changed_by
                         or user_api_key_dict.user_id
                         or llm_proxy_admin_name,
                         changed_by_api_key=user_api_key_dict.api_key,
-                        table_name=LitellmTableNames.KEY_TABLE_NAME,
+                        table_name=LlmTableNames.KEY_TABLE_NAME,
                         object_id=response.token_id or "",
                         action="created",
                         updated_values=_updated_values,
@@ -86,7 +86,7 @@ class KeyManagementEventHooks:
         existing_key_row: Any,
         response: Any,
         user_api_key_dict: UserAPIKeyAuth,
-        litellm_changed_by: Optional[str] = None,
+        llm_changed_by: Optional[str] = None,
     ):
         """
         Post /key/update processing hook
@@ -111,11 +111,11 @@ class KeyManagementEventHooks:
                     request_data=LLM_AuditLogs(
                         id=str(uuid.uuid4()),
                         updated_at=datetime.now(timezone.utc),
-                        changed_by=litellm_changed_by
+                        changed_by=llm_changed_by
                         or user_api_key_dict.user_id
                         or llm_proxy_admin_name,
                         changed_by_api_key=user_api_key_dict.api_key,
-                        table_name=LitellmTableNames.KEY_TABLE_NAME,
+                        table_name=LlmTableNames.KEY_TABLE_NAME,
                         object_id=data.key,
                         action="updated",
                         updated_values=_updated_values,
@@ -130,7 +130,7 @@ class KeyManagementEventHooks:
         existing_key_row: Any,
         response: GenerateKeyResponse,
         user_api_key_dict: UserAPIKeyAuth,
-        litellm_changed_by: Optional[str] = None,
+        llm_changed_by: Optional[str] = None,
     ):
         # store the generated key in the secret manager
         if data is not None and response.token_id is not None:
@@ -149,7 +149,7 @@ class KeyManagementEventHooks:
         keys_being_deleted: List[LLM_VerificationToken],
         response: dict,
         user_api_key_dict: UserAPIKeyAuth,
-        litellm_changed_by: Optional[str] = None,
+        llm_changed_by: Optional[str] = None,
     ):
         """
         Post /key/delete processing hook
@@ -187,11 +187,11 @@ class KeyManagementEventHooks:
                         request_data=LLM_AuditLogs(
                             id=str(uuid.uuid4()),
                             updated_at=datetime.now(timezone.utc),
-                            changed_by=litellm_changed_by
+                            changed_by=llm_changed_by
                             or user_api_key_dict.user_id
                             or llm_proxy_admin_name,
                             changed_by_api_key=user_api_key_dict.api_key,
-                            table_name=LitellmTableNames.KEY_TABLE_NAME,
+                            table_name=LlmTableNames.KEY_TABLE_NAME,
                             object_id=key,
                             action="deleted",
                             updated_values="{}",

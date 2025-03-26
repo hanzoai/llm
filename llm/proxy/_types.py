@@ -1702,7 +1702,7 @@ class LLM_AuditLogs(LLMPydanticObjectBase):
     changed_by: Optional[Any] = None
     changed_by_api_key: Optional[str] = None
     action: AUDIT_ACTIONS
-    table_name: LitellmTableNames
+    table_name: LlmTableNames
     object_id: str
     before_value: Optional[Json] = None
     updated_values: Optional[Json] = None
@@ -2018,7 +2018,7 @@ class ProxyException(Exception):
         self.openai_code = openai_code or code
         # If we look on official python OpenAI lib, the code should be a string:
         # https://github.com/openai/openai-python/blob/195c05a64d39c87b2dfdf1eca2d339597f1fce03/src/openai/types/shared/error_object.py#L11
-        # Related LLM issue: https://github.com/BerriAI/litellm/discussions/4834
+        # Related LLM issue: https://github.com/BerriAI/llm/discussions/4834
         self.code = str(code)
         if headers is not None:
             for k, v in headers.items():
@@ -2027,8 +2027,8 @@ class ProxyException(Exception):
         self.headers = headers or {}
 
         # rules for proxyExceptions
-        # Litellm router.py returns "No healthy deployment available" when there are no deployments available
-        # Should map to 429 errors https://github.com/BerriAI/litellm/issues/2487
+        # Llm router.py returns "No healthy deployment available" when there are no deployments available
+        # Should map to 429 errors https://github.com/BerriAI/llm/issues/2487
         if (
             "No healthy deployment available" in self.message
             or "No deployments available" in self.message
@@ -2053,7 +2053,7 @@ class CommonProxyErrors(str, enum.Enum):
     )
     no_llm_router = "No models configured on proxy"
     not_allowed_access = "Admin-only endpoint. Not allowed to access this."
-    not_premium_user = "You must be a LLM Enterprise user to use this feature. If you have a license please set `LITELLM_LICENSE` in your env. Get a 7 day trial key here: https://www.llm.ai/#trial. \nPricing: https://www.llm.ai/#pricing"
+    not_premium_user = "You must be a LLM Enterprise user to use this feature. If you have a license please set `LLM_LICENSE` in your env. Get a 7 day trial key here: https://www.llm.ai/#trial. \nPricing: https://www.llm.ai/#pricing"
     max_parallel_request_limit_reached = (
         "Crossed TPM / RPM / Max Parallel Request Limit"
     )
@@ -2249,12 +2249,12 @@ ROLES_WITHIN_ORG = [
 
 class OrganizationMemberUpdateRequest(OrganizationMemberDeleteRequest):
     max_budget_in_organization: Optional[float] = None
-    role: Optional[LitellmUserRoles] = None
+    role: Optional[LlmUserRoles] = None
 
     @field_validator("role")
     def validate_role(
-        cls, value: Optional[LitellmUserRoles]
-    ) -> Optional[LitellmUserRoles]:
+        cls, value: Optional[LlmUserRoles]
+    ) -> Optional[LlmUserRoles]:
         if value is not None and value not in ROLES_WITHIN_ORG:
             raise ValueError(
                 f"Invalid role. Must be one of: {[role.value for role in ROLES_WITHIN_ORG]}"
@@ -2316,7 +2316,7 @@ class SpecialHeaders(enum.Enum):
     azure_apim_authorization = "Ocp-Apim-Subscription-Key"
 
 
-class LitellmDataForBackendLLMCall(TypedDict, total=False):
+class LlmDataForBackendLLMCall(TypedDict, total=False):
     headers: dict
     organization: str
     timeout: Optional[float]
@@ -2345,7 +2345,7 @@ class UserManagementEndpointParamDocStringEnums(str, enum.Enum):
     send_invite_email_doc_str = (
         "Optional[bool] - Specify if an invite email should be sent."
     )
-    user_role_doc_str = """Optional[str] - Specify a user role - "proxy_admin", "proxy_admin_viewer", "internal_user", "internal_user_viewer", "team", "customer". Info about each role here: `https://github.com/BerriAI/litellm/litellm/proxy/_types.py#L20`"""
+    user_role_doc_str = """Optional[str] - Specify a user role - "proxy_admin", "proxy_admin_viewer", "internal_user", "internal_user_viewer", "team", "customer". Info about each role here: `https://github.com/BerriAI/llm/llm/proxy/_types.py#L20`"""
     max_budget_doc_str = """Optional[float] - Specify max budget for a given user."""
     budget_duration_doc_str = """Optional[str] - Budget is reset at the end of specified duration. If not set, budget is never reset. You can set duration as seconds ("30s"), minutes ("30m"), hours ("30h"), days ("30d"), months ("1mo")."""
     models_doc_str = """Optional[list] - Model_name's a user is allowed to call. (if empty, key is allowed to call all models)"""

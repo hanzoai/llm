@@ -102,18 +102,18 @@ async def test_atext_completion_memory():
     await run_memory_test(make_text_completion_request, "atext_completion")
 
 
-litellm_router = Router(
+llm_router = Router(
     model_list=[
         {
             "model_name": "text-gpt-4o",
-            "litellm_params": {
+            "llm_params": {
                 "model": "text-completion-openai/gpt-3.5-turbo-instruct-unlimited",
                 "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
             },
         },
         {
             "model_name": "chat-gpt-4o",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/gpt-4o",
                 "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
             },
@@ -123,7 +123,7 @@ litellm_router = Router(
 
 
 async def make_router_atext_completion_request():
-    return await litellm_router.atext_completion(
+    return await llm_router.atext_completion(
         model="text-gpt-4o",
         temperature=0.5,
         frequency_penalty=0.5,
@@ -145,7 +145,7 @@ async def test_router_atext_completion_memory():
 
 
 async def make_router_acompletion_request():
-    return await litellm_router.acompletion(
+    return await llm_router.acompletion(
         model="chat-gpt-4o",
         messages=[{"role": "user", "content": "Test message for memory usage"}],
         api_base="https://exampleopenaiendpoint-production.up.railway.app/",

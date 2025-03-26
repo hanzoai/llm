@@ -79,12 +79,12 @@ class VertexAIFilesTransformation(VertexGeminiConfig):
         """
         Gets a unique GCS object name for the VertexAI batch prediction job
 
-        named as: litellm-vertex-{model}-{uuid}
+        named as: llm-vertex-{model}-{uuid}
         """
         _model = openai_jsonl_content[0].get("body", {}).get("model", "")
         if "publishers/google/models" not in _model:
             _model = f"publishers/google/models/{_model}"
-        object_name = f"litellm-vertex-files/{_model}/{uuid.uuid4()}"
+        object_name = f"llm-vertex-files/{_model}/{uuid.uuid4()}"
         return object_name
 
     def _map_openai_to_vertex_params(

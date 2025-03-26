@@ -12,7 +12,7 @@ from llm.integrations.langfuse.langfuse import (
     LangFuseLogger,
 )
 from llm.integrations.langfuse.langfuse_handler import LangFuseHandler
-from llm.litellm_core_utils.litellm_logging import DynamicLoggingCache
+from llm.llm_core_utils.llm_logging import DynamicLoggingCache
 from unittest.mock import Mock, patch
 from respx import MockRouter
 from llm.types.utils import (
@@ -329,7 +329,7 @@ def test_langfuse_e2e_sync(monkeypatch):
     import time
 
     llm._turn_on_debug()
-    monkeypatch.setattr(litellm, "success_callback", ["langfuse"])
+    monkeypatch.setattr(llm, "success_callback", ["langfuse"])
 
     with respx.mock:
         # Mock Langfuse

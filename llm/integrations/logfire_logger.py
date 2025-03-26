@@ -64,7 +64,7 @@ class LogfireLogger:
             )
         else:
             return SpanConfig(
-                message_template="Litellm Call with {request_data[model]!r}",
+                message_template="Llm Call with {request_data[model]!r}",
                 span_data={"request_data": payload},
             )
 

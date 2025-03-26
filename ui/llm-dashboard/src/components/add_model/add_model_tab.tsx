@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Card, Form, Button, Tooltip, Typography, Select as AntdSelect, Modal } from "antd";
 import type { FormInstance } from "antd";
 import type { UploadProps } from "antd/es/upload";
-import LiteLLMModelNameField from "./litellm_model_name";
+import LLMModelNameField from "./llm_model_name";
 import ConditionalPublicModelName from "./conditional_public_model_name";
 import ProviderSpecificFields from "./provider_specific_fields";
 import AdvancedSettings from "./advanced_settings";
@@ -125,7 +125,7 @@ const AddModelTab: React.FC<AddModelTabProps> = ({
                 ))}
               </AntdSelect>
             </Form.Item>
-            <LiteLLMModelNameField
+            <LLMModelNameField
                 selectedProvider={selectedProvider}
                 providerModels={providerModels}
                 getPlaceholder={getPlaceholder}
@@ -151,7 +151,7 @@ const AddModelTab: React.FC<AddModelTabProps> = ({
               <Col span={10}></Col>
               <Col span={10}>
                 <Text className="mb-5 mt-1">
-                  <strong>Optional</strong> - LiteLLM endpoint to use when health checking this model <Link href="https://docs.litellm.ai/docs/proxy/health#health" target="_blank">Learn more</Link>
+                  <strong>Optional</strong> - LLM endpoint to use when health checking this model <Link href="https://docs.llm.ai/docs/proxy/health#health" target="_blank">Learn more</Link>
                 </Text>
               </Col>
             </Row>
@@ -165,7 +165,7 @@ const AddModelTab: React.FC<AddModelTabProps> = ({
 
             <Form.Item
               label="Existing Credentials"
-              name="litellm_credential_name"
+              name="llm_credential_name"
             >
               <AntdSelect
                 showSearch
@@ -194,12 +194,12 @@ const AddModelTab: React.FC<AddModelTabProps> = ({
             <Form.Item
               noStyle
               shouldUpdate={(prevValues, currentValues) => 
-                prevValues.litellm_credential_name !== currentValues.litellm_credential_name ||
+                prevValues.llm_credential_name !== currentValues.llm_credential_name ||
                 prevValues.provider !== currentValues.provider
               }
             >
               {({ getFieldValue }) => {
-                const credentialName = getFieldValue('litellm_credential_name');
+                const credentialName = getFieldValue('llm_credential_name');
                 console.log("🔑 Credential Name Changed:", credentialName);
                 // Only show provider specific fields if no credentials selected
                 if (!credentialName) {
@@ -225,7 +225,7 @@ const AddModelTab: React.FC<AddModelTabProps> = ({
 
             <div className="flex justify-between items-center mb-4">
               <Tooltip title="Get help on our github">
-                <Typography.Link href="https://github.com/BerriAI/litellm/issues">
+                <Typography.Link href="https://github.com/BerriAI/llm/issues">
                   Need Help?
                 </Typography.Link>
               </Tooltip>

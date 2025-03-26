@@ -20,8 +20,8 @@ sys.path.append(os.getcwd())
 
 config_filename = "llm.secrets"
 
-litellm_mode = os.getenv("LITELLM_MODE", "DEV")  # "PRODUCTION", "DEV"
-if litellm_mode == "DEV":
+llm_mode = os.getenv("LLM_MODE", "DEV")  # "PRODUCTION", "DEV"
+if llm_mode == "DEV":
     load_dotenv()
 from enum import Enum
 
@@ -48,7 +48,7 @@ def append_query_params(url, params) -> str:
 
 class ProxyInitializationHelpers:
     @staticmethod
-    def _echo_litellm_version():
+    def _echo_llm_version():
         pkg_version = importlib.metadata.version("llm")  # type: ignore
         click.echo(f"\nLLM: Current Version = {pkg_version}\n")
 
@@ -511,11 +511,11 @@ def run_server(  # noqa: PLR0915
                 save_worker_config,
             )
         except ImportError as e:
-            if "litellm[proxy]" in str(e):
-                # user is missing a proxy dependency, ask them to pip install litellm[proxy]
+            if "llm[proxy]" in str(e):
+                # user is missing a proxy dependency, ask them to pip install llm[proxy]
                 raise e
             else:
-                # this is just a local/relative import error, user git cloned litellm
+                # this is just a local/relative import error, user git cloned llm
                 from proxy_server import (
                     KeyManagementSettings,
                     ProxyConfig,
@@ -523,7 +523,7 @@ def run_server(  # noqa: PLR0915
                     save_worker_config,
                 )
     if version is True:
-        ProxyInitializationHelpers._echo_litellm_version()
+        ProxyInitializationHelpers._echo_llm_version()
         return
     if model and "ollama" in model and api_base is None:
         ProxyInitializationHelpers._run_ollama_serve()
@@ -559,7 +559,7 @@ def run_server(  # noqa: PLR0915
             import uvicorn
         except Exception:
             raise ImportError(
-                "uvicorn, gunicorn needs to be imported. Run - `pip install 'litellm[proxy]'`"
+                "uvicorn, gunicorn needs to be imported. Run - `pip install 'llm[proxy]'`"
             )
 
         db_connection_pool_limit = 100
@@ -613,13 +613,13 @@ def run_server(  # noqa: PLR0915
 
             except Exception:
                 raise ImportError(
-                    "yaml needs to be imported. Run - `pip install 'litellm[proxy]'`"
+                    "yaml needs to be imported. Run - `pip install 'llm[proxy]'`"
                 )
 
             proxy_config = ProxyConfig()
             _config = asyncio.run(proxy_config.get_config(config_file_path=config))
 
-            ### LITELLM SETTINGS ###
+            ### LLM SETTINGS ###
             llm_settings = _config.get("llm_settings", None)
             if (
                 llm_settings is not None

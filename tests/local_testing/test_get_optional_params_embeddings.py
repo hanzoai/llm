@@ -23,7 +23,7 @@ def test_vertex_projects():
     )
     optional_params = get_optional_params_embeddings(
         model=model,
-        user="test-litellm-user-5",
+        user="test-llm-user-5",
         dimensions=None,
         encoding_format="base64",
         custom_llm_provider=custom_llm_provider,
@@ -63,7 +63,7 @@ def test_bedrock_embed_v2_with_drop_params():
     optional_params = get_optional_params_embeddings(
         model=model,
         dimensions=512,
-        user="test-litellm-user-5",
+        user="test-llm-user-5",
         encoding_format="base64",
         custom_llm_provider=custom_llm_provider,
     )

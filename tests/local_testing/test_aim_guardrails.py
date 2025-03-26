@@ -37,7 +37,7 @@ def test_aim_guard_config():
         all_guardrails=[
             {
                 "guardrail_name": "gibberish-guard",
-                "litellm_params": {
+                "llm_params": {
                     "guardrail": "aim",
                     "guard_name": "gibberish_guard",
                     "mode": "pre_call",
@@ -57,7 +57,7 @@ def test_aim_guard_config_no_api_key():
             all_guardrails=[
                 {
                     "guardrail_name": "gibberish-guard",
-                    "litellm_params": {
+                    "llm_params": {
                         "guardrail": "aim",
                         "guard_name": "gibberish_guard",
                         "mode": "pre_call",
@@ -75,7 +75,7 @@ async def test_callback(mode: str):
         all_guardrails=[
             {
                 "guardrail_name": "gibberish-guard",
-                "litellm_params": {
+                "llm_params": {
                     "guardrail": "aim",
                     "mode": mode,
                     "api_key": "hs-aim-key",
@@ -125,7 +125,7 @@ async def test_post_call_stream__all_chunks_are_valid(monkeypatch, length: int):
         all_guardrails=[
             {
                 "guardrail_name": "gibberish-guard",
-                "litellm_params": {
+                "llm_params": {
                     "guardrail": "aim",
                     "mode": "post_call",
                     "api_key": "hs-aim-key",
@@ -179,7 +179,7 @@ async def test_post_call_stream__blocked_chunks(monkeypatch):
         all_guardrails=[
             {
                 "guardrail_name": "gibberish-guard",
-                "litellm_params": {
+                "llm_params": {
                     "guardrail": "aim",
                     "mode": "post_call",
                     "api_key": "hs-aim-key",

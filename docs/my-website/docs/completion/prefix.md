@@ -43,7 +43,7 @@ print(response.choices[0].message.content)
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $LITELLM_KEY" \
+  -H "Authorization: Bearer $LLM_KEY" \
   -d '{
     "model": "deepseek/deepseek-chat",
     "messages": [
@@ -113,7 +113,7 @@ Call the `/model/info` endpoint to get a list of models + their supported params
 
 ```bash
 curl -X GET 'http://0.0.0.0:4000/v1/model/info' \
--H 'Authorization: Bearer $LITELLM_KEY' \
+-H 'Authorization: Bearer $LLM_KEY' \
 ```
 </TabItem>
 </Tabs>

@@ -29,7 +29,7 @@ async def test_o1_handle_system_role(model):
     from openai import AsyncOpenAI
     from llm.utils import supports_system_messages
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     llm.set_verbose = True
@@ -83,7 +83,7 @@ async def test_o1_handle_tool_calling_optional_params(
     from llm.utils import ProviderConfigManager
     from llm.types.utils import LlmProviders
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     config = ProviderConfigManager.get_provider_chat_config(
@@ -131,7 +131,7 @@ async def test_o1_max_completion_tokens(model: str):
         assert request_body["messages"] == [{"role": "user", "content": "Hello!"}]
 
 
-def test_litellm_responses():
+def test_llm_responses():
     """
     ensures that type of completion_tokens_details is correctly handled / returned
     """
@@ -164,7 +164,7 @@ class TestOpenAIO1(BaseOSeriesModelsTest, BaseLLMChatTest):
         return OpenAI(api_key="fake-api-key")
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
         pass
 
     def test_prompt_caching(self):
@@ -184,16 +184,16 @@ class TestOpenAIO3(BaseOSeriesModelsTest, BaseLLMChatTest):
         return OpenAI(api_key="fake-api-key")
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/litellm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
         pass
 
 
 def test_o1_supports_vision():
     """Test that o1 supports vision"""
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
     for k, v in llm.model_cost.items():
-        if k.startswith("o1") and v.get("litellm_provider") == "openai":
+        if k.startswith("o1") and v.get("llm_provider") == "openai":
             assert v.get("supports_vision") is True, f"{k} does not support vision"
 
 

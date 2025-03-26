@@ -20,7 +20,7 @@ class TraceloopLogger:
             raise e
 
         Traceloop.init(
-            app_name="Litellm-Server",
+            app_name="Llm-Server",
             disable_batch=True,
         )
         self.tracer_wrapper = TracerWrapper()

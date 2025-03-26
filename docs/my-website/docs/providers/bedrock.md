@@ -360,7 +360,7 @@ llm --config /path/to/config.yaml
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
 -H "Content-Type: application/json" \
--H "Authorization: Bearer $LITELLM_API_KEY" \
+-H "Authorization: Bearer $LLM_API_KEY" \
 -d '{
   "model": "bedrock-claude-3-7",
   "messages": [
@@ -505,7 +505,7 @@ llm --config /path/to/config.yaml
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <YOUR-LITELLM-KEY>" \
+  -H "Authorization: Bearer <YOUR-LLM-KEY>" \
   -d '{
     "model": "bedrock-claude-3-7",
     "messages": [{"role": "user", "content": "What is the capital of France?"}],
@@ -618,7 +618,7 @@ llm --config /path/to/config.yaml
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $LITELLM_KEY" \
+  -H "Authorization: Bearer $LLM_KEY" \
   -d '{
     "model": "bedrock-claude-3-7",
     "messages": [
@@ -1563,7 +1563,7 @@ llm --config /path/to/config.yaml
 ```bash
 curl -L -X POST 'http://0.0.0.0:4000/v1/images/generations' \
 -H 'Content-Type: application/json' \
--H 'Authorization: Bearer $LITELLM_VIRTUAL_KEY' \
+-H 'Authorization: Bearer $LLM_VIRTUAL_KEY' \
 -d '{
     "model": "amazon.nova-canvas-v1:0",
     "prompt": "A cute baby sea otter"
@@ -1714,7 +1714,7 @@ llm --config /path/to/config.yaml
 ```bash
 curl -L -X POST 'http://0.0.0.0:4000/v1/chat/completions' \
 -H 'Content-Type: application/json' \
--H 'Authorization: Bearer $LITELLM_API_KEY' \
+-H 'Authorization: Bearer $LLM_API_KEY' \
 -d '{
   "model": "anthropic-claude-3-5-sonnet",
   "messages": [

@@ -21,7 +21,7 @@ Requirements:
 - Set `DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<dbname>` in your env 
 - Set a `master key`, this is your Proxy Admin key - you can use this to create other keys (🚨 must start with `sk-`).
   - ** Set on config.yaml** set your master key under `general_settings:master_key`, example below
-  - ** Set env variable** set `LITELLM_MASTER_KEY`
+  - ** Set env variable** set `LLM_MASTER_KEY`
 
 (the proxy Dockerfile checks if the `DATABASE_URL` is set and then intializes the DB connection)
 
@@ -307,13 +307,13 @@ model_list:
 
 general_settings: 
   master_key: sk-1234 
-  llm_key_header_name: "X-Litellm-Key" # 👈 Key Change
+  llm_key_header_name: "X-Llm-Key" # 👈 Key Change
 
 ```
 
 **Step 2** Test it
 
-In this request, llm will use the Virtual key in the `X-Litellm-Key` header
+In this request, llm will use the Virtual key in the `X-Llm-Key` header
 
 <Tabs>
 <TabItem value="curl" label="curl">
@@ -321,7 +321,7 @@ In this request, llm will use the Virtual key in the `X-Litellm-Key` header
 ```shell
 curl http://localhost:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "X-Litellm-Key: Bearer sk-1234" \
+  -H "X-Llm-Key: Bearer sk-1234" \
   -H "Authorization: Bearer bad-key" \
   -d '{
     "model": "fake-openai-endpoint",
@@ -333,7 +333,7 @@ curl http://localhost:4000/v1/chat/completions \
 
 **Expected Response**
 
-Expect to see a successfull response from the llm proxy since the key passed in `X-Litellm-Key` is valid
+Expect to see a successfull response from the llm proxy since the key passed in `X-Llm-Key` is valid
 ```shell
 {"id":"chatcmpl-f9b2b79a7c30477ab93cd0e717d1773e","choices":[{"finish_reason":"stop","index":0,"message":{"content":"\n\nHello there, how may I assist you today?","role":"assistant","tool_calls":null,"function_call":null}}],"created":1677652288,"model":"gpt-3.5-turbo-0125","object":"chat.completion","system_fingerprint":"fp_44709d6fcb","usage":{"completion_tokens":12,"prompt_tokens":9,"total_tokens":21}
 ```
@@ -348,7 +348,7 @@ client = openai.OpenAI(
     base_url="https://api-gateway-url.com/llmservc/api/llmp",
     default_headers={
         "Authorization": f"Bearer {API_GATEWAY_TOKEN}", # (optional) For your API Gateway
-        "X-Litellm-Key": f"Bearer sk-1234"              # For LLM Proxy
+        "X-Llm-Key": f"Bearer sk-1234"              # For LLM Proxy
     }
 )
 ```
@@ -361,7 +361,7 @@ client = openai.OpenAI(
 
 ```bash
 curl -L -X POST 'http://0.0.0.0:4000/key/block' \
--H 'Authorization: Bearer LITELLM_MASTER_KEY' \
+-H 'Authorization: Bearer LLM_MASTER_KEY' \
 -H 'Content-Type: application/json' \
 -d '{"key": "KEY-TO-BLOCK"}'
 ```
@@ -379,7 +379,7 @@ Expected Response:
 
 ```bash
 curl -L -X POST 'http://0.0.0.0:4000/key/unblock' \
--H 'Authorization: Bearer LITELLM_MASTER_KEY' \
+-H 'Authorization: Bearer LLM_MASTER_KEY' \
 -H 'Content-Type: application/json' \
 -d '{"key": "KEY-TO-UNBLOCK"}'
 ```
@@ -607,11 +607,11 @@ class TeamUIKeyGenerationConfig(TypedDict):
 
 
 class PersonalUIKeyGenerationConfig(TypedDict):
-    allowed_user_roles: List[LitellmUserRoles] 
+    allowed_user_roles: List[LlmUserRoles] 
     required_params: List[str] # require params on `/key/generate` to be set if a personal key (no team_id in request) is being generated
 
 
-class LitellmUserRoles(str, enum.Enum):
+class LlmUserRoles(str, enum.Enum):
     """
     Admin Roles:
     PROXY_ADMIN: admin over the platform

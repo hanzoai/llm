@@ -51,9 +51,9 @@ def test_tpm_rpm_updated():
     standard_logging_payload["model_group"] = model_group
     standard_logging_payload["model_id"] = deployment_id
     standard_logging_payload["total_tokens"] = total_tokens
-    standard_logging_payload["hidden_params"]["litellm_model_name"] = deployment
+    standard_logging_payload["hidden_params"]["llm_model_name"] = deployment
     kwargs = {
-        "litellm_params": {
+        "llm_params": {
             "model": deployment,
             "metadata": {
                 "model_group": model_group,
@@ -64,16 +64,16 @@ def test_tpm_rpm_updated():
         "standard_logging_object": standard_logging_payload,
     }
 
-    litellm_deployment_dict: DeploymentTypedDict = {
+    llm_deployment_dict: DeploymentTypedDict = {
         "model_name": model_group,
-        "litellm_params": {"model": deployment},
+        "llm_params": {"model": deployment},
         "model_info": {"id": deployment_id},
     }
 
     start_time = time.time()
     response_obj = {"usage": {"total_tokens": total_tokens}}
     end_time = time.time()
-    lowest_tpm_logger.pre_call_check(deployment=litellm_deployment_dict)
+    lowest_tpm_logger.pre_call_check(deployment=llm_deployment_dict)
     lowest_tpm_logger.log_success_event(
         response_obj=response_obj,
         kwargs=kwargs,
@@ -100,12 +100,12 @@ def test_get_available_deployments():
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {"model": "azure/chatgpt-v-2"},
+            "llm_params": {"model": "azure/chatgpt-v-2"},
             "model_info": {"id": "1234"},
         },
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {"model": "azure/chatgpt-v-2"},
+            "llm_params": {"model": "azure/chatgpt-v-2"},
             "model_info": {"id": "5678"},
         },
     ]
@@ -121,9 +121,9 @@ def test_get_available_deployments():
     standard_logging_payload["model_group"] = model_group
     standard_logging_payload["model_id"] = deployment_id
     standard_logging_payload["total_tokens"] = total_tokens
-    standard_logging_payload["hidden_params"]["litellm_model_name"] = deployment
+    standard_logging_payload["hidden_params"]["llm_model_name"] = deployment
     kwargs = {
-        "litellm_params": {
+        "llm_params": {
             "metadata": {
                 "model_group": model_group,
                 "deployment": deployment,
@@ -148,9 +148,9 @@ def test_get_available_deployments():
     standard_logging_payload["model_group"] = model_group
     standard_logging_payload["model_id"] = deployment_id
     standard_logging_payload["total_tokens"] = total_tokens
-    standard_logging_payload["hidden_params"]["litellm_model_name"] = deployment
+    standard_logging_payload["hidden_params"]["llm_model_name"] = deployment
     kwargs = {
-        "litellm_params": {
+        "llm_params": {
             "metadata": {
                 "model_group": model_group,
                 "deployment": deployment,
@@ -190,7 +190,7 @@ def test_router_get_available_deployments():
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -200,7 +200,7 @@ def test_router_get_available_deployments():
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-35-turbo",
                 "api_key": "os.environ/AZURE_EUROPE_API_KEY",
                 "api_base": "https://my-endpoint-europe-berri-992.openai.azure.com",
@@ -224,9 +224,9 @@ def test_router_get_available_deployments():
     standard_logging_payload["model_id"] = str(deployment_id)
     total_tokens = 50
     standard_logging_payload["total_tokens"] = total_tokens
-    standard_logging_payload["hidden_params"]["litellm_model_name"] = "azure/gpt-turbo"
+    standard_logging_payload["hidden_params"]["llm_model_name"] = "azure/gpt-turbo"
     kwargs = {
-        "litellm_params": {
+        "llm_params": {
             "metadata": {
                 "model_group": "azure-model",
             },
@@ -249,10 +249,10 @@ def test_router_get_available_deployments():
     standard_logging_payload["model_group"] = "azure-model"
     standard_logging_payload["model_id"] = str(deployment_id)
     standard_logging_payload["hidden_params"][
-        "litellm_model_name"
+        "llm_model_name"
     ] = "azure/gpt-35-turbo"
     kwargs = {
-        "litellm_params": {
+        "llm_params": {
             "metadata": {
                 "model_group": "azure-model",
             },
@@ -288,7 +288,7 @@ def test_router_skip_rate_limited_deployments():
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -311,9 +311,9 @@ def test_router_skip_rate_limited_deployments():
     standard_logging_payload["model_group"] = "azure-model"
     standard_logging_payload["model_id"] = str(deployment_id)
     standard_logging_payload["total_tokens"] = total_tokens
-    standard_logging_payload["hidden_params"]["litellm_model_name"] = "azure/gpt-turbo"
+    standard_logging_payload["hidden_params"]["llm_model_name"] = "azure/gpt-turbo"
     kwargs = {
-        "litellm_params": {
+        "llm_params": {
             "metadata": {
                 "model_group": "azure-model",
             },
@@ -357,7 +357,7 @@ async def test_multiple_potential_deployments(sync_mode):
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -366,7 +366,7 @@ async def test_multiple_potential_deployments(sync_mode):
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo-2",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -411,7 +411,7 @@ def test_single_deployment_tpm_zero():
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "api_key": os.getenv("OPENAI_API_KEY"),
                 "tpm": 0,
@@ -446,7 +446,7 @@ async def test_router_completion_streaming():
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -457,7 +457,7 @@ async def test_router_completion_streaming():
         },
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-35-turbo",
                 "api_key": "os.environ/AZURE_EUROPE_API_KEY",
                 "api_base": "https://my-endpoint-europe-berri-992.openai.azure.com",
@@ -522,7 +522,7 @@ async def test_router_caching_ttl():
     """
     Confirm caching ttl's work as expected.
 
-    Relevant issue: https://github.com/BerriAI/litellm/issues/5609
+    Relevant issue: https://github.com/BerriAI/llm/issues/5609
     """
     messages = [
         {"role": "user", "content": "Hello, can you generate a 500 words poem?"}
@@ -531,7 +531,7 @@ async def test_router_caching_ttl():
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -589,7 +589,7 @@ def test_router_caching_ttl_sync():
     """
     Confirm caching ttl's work as expected.
 
-    Relevant issue: https://github.com/BerriAI/litellm/issues/5609
+    Relevant issue: https://github.com/BerriAI/llm/issues/5609
     """
     messages = [
         {"role": "user", "content": "Hello, can you generate a 500 words poem?"}
@@ -598,7 +598,7 @@ def test_router_caching_ttl_sync():
     model_list = [
         {
             "model_name": "azure-model",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/gpt-turbo",
                 "api_key": "os.environ/AZURE_FRANCE_API_KEY",
                 "api_base": "https://openai-france-1234.openai.azure.com",
@@ -668,7 +668,7 @@ def test_return_potential_deployments():
         "healthy_deployments": [
             {
                 "model_name": "model-test",
-                "litellm_params": {
+                "llm_params": {
                     "rpm": 1,
                     "api_key": "sk-1234",
                     "model": "openai/gpt-3.5-turbo",
@@ -681,7 +681,7 @@ def test_return_potential_deployments():
             },
             {
                 "model_name": "model-test",
-                "litellm_params": {
+                "llm_params": {
                     "rpm": 10,
                     "api_key": "sk-1234",
                     "model": "openai/o1-mini",
@@ -720,7 +720,7 @@ def test_return_potential_deployments():
 async def test_tpm_rpm_routing_model_name_checks():
     deployment = {
         "model_name": "gpt-3.5-turbo",
-        "litellm_params": {
+        "llm_params": {
             "model": "azure/chatgpt-v-2",
             "api_key": os.getenv("AZURE_API_KEY"),
             "api_base": os.getenv("AZURE_API_BASE"),
@@ -746,8 +746,8 @@ async def test_tpm_rpm_routing_model_name_checks():
         mock_object.assert_called()
         print(f"mock_object.call_args: {mock_object.call_args[0][0]}")
         assert (
-            mock_object.call_args[0][0]["litellm_params"]["model"]
-            == deployment["litellm_params"]["model"]
+            mock_object.call_args[0][0]["llm_params"]["model"]
+            == deployment["llm_params"]["model"]
         )
 
         await asyncio.sleep(1)
@@ -762,6 +762,6 @@ async def test_tpm_rpm_routing_model_name_checks():
         )
 
         assert (
-            standard_logging_payload["hidden_params"]["litellm_model_name"]
+            standard_logging_payload["hidden_params"]["llm_model_name"]
             == "azure/chatgpt-v-2"
         )

@@ -15,7 +15,7 @@ from llm.llm_core_utils.asyncify import run_async_function
 from llm.types.llms.openai import AllMessageValues, ChatCompletionSystemMessage
 from llm.types.utils import StandardCallbackDynamicParams, StandardLoggingPayload
 
-from ...litellm_core_utils.specialty_caches.dynamic_logging_cache import (
+from ...llm_core_utils.specialty_caches.dynamic_logging_cache import (
     DynamicLoggingCache,
 )
 from ..prompt_management_base import PromptManagementBase

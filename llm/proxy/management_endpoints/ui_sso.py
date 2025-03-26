@@ -18,7 +18,7 @@ from llm._logging import verbose_proxy_logger
 from llm.constants import MAX_SPENDLOG_ROWS_TO_QUERY
 from llm.proxy._types import (
     LLM_UserTable,
-    LitellmUserRoles,
+    LlmUserRoles,
     Member,
     NewUserRequest,
     NewUserResponse,
@@ -58,7 +58,7 @@ router = APIRouter()
 async def google_login(request: Request):  # noqa: PLR0915
     """
     Create Proxy API Keys using Google Workspace SSO. Requires setting PROXY_BASE_URL in .env
-    PROXY_BASE_URL should be the your deployed proxy endpoint, e.g. PROXY_BASE_URL="https://litellm-production-7002.up.railway.app/"
+    PROXY_BASE_URL should be the your deployed proxy endpoint, e.g. PROXY_BASE_URL="https://llm-production-7002.up.railway.app/"
     Example:
     """
     from llm.proxy.proxy_server import premium_user
@@ -82,7 +82,7 @@ async def google_login(request: Request):  # noqa: PLR0915
     ):
         if premium_user is not True:
             raise ProxyException(
-                message="You must be a LLM Enterprise user to use SSO. If you have a license please set `LITELLM_LICENSE` in your env. If you want to obtain a license meet with us here: https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat You are seeing this error message because You set one of `MICROSOFT_CLIENT_ID`, `GOOGLE_CLIENT_ID`, or `GENERIC_CLIENT_ID` in your env. Please unset this",
+                message="You must be a LLM Enterprise user to use SSO. If you have a license please set `LLM_LICENSE` in your env. If you want to obtain a license meet with us here: https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat You are seeing this error message because You set one of `MICROSOFT_CLIENT_ID`, `GOOGLE_CLIENT_ID`, or `GENERIC_CLIENT_ID` in your env. Please unset this",
                 type=ProxyErrorTypes.auth_error,
                 param="premium_user",
                 code=status.HTTP_403_FORBIDDEN,
@@ -540,7 +540,7 @@ async def auth_callback(request: Request):  # noqa: PLR0915
         "aliases": {},
         "config": {},
         "spend": 0,
-        "team_id": "litellm-dashboard",
+        "team_id": "llm-dashboard",
     }
     user_defined_values: Optional[SSOUserDefinedValues] = None
 
@@ -600,7 +600,7 @@ async def auth_callback(request: Request):  # noqa: PLR0915
                 user_role = getattr(user_info, "user_role", None)
 
                 # update id
-                await prisma_client.db.litellm_usertable.update_many(
+                await prisma_client.db.llm_usertable.update_many(
                     where={"user_email": user_email}, data={"user_id": user_id}  # type: ignore
                 )
             else:
@@ -626,7 +626,7 @@ async def auth_callback(request: Request):  # noqa: PLR0915
 
     if user_defined_values is None:
         raise Exception(
-            "Unable to map user identity to known values. 'user_defined_values' is None. File an issue - https://github.com/BerriAI/litellm/issues"
+            "Unable to map user identity to known values. 'user_defined_values' is None. File an issue - https://github.com/BerriAI/llm/issues"
         )
 
     verbose_proxy_logger.info(
@@ -643,7 +643,7 @@ async def auth_callback(request: Request):  # noqa: PLR0915
     key = response["token"]  # type: ignore
     user_id = response["user_id"]  # type: ignore
 
-    litellm_dashboard_ui = "/ui/"
+    llm_dashboard_ui = "/ui/"
     user_role = user_role or LLMUserRoles.INTERNAL_USER_VIEW_ONLY.value
     if (
         os.getenv("PROXY_ADMIN_ID", None) is not None
@@ -682,7 +682,7 @@ async def auth_callback(request: Request):  # noqa: PLR0915
             "login_method": "sso",
             "premium_user": premium_user,
             "auth_header_name": general_settings.get(
-                "litellm_key_header_name", "Authorization"
+                "llm_key_header_name", "Authorization"
             ),
             "disabled_non_admin_personal_key_creation": disabled_non_admin_personal_key_creation,
         },
@@ -690,8 +690,8 @@ async def auth_callback(request: Request):  # noqa: PLR0915
         algorithm="HS256",
     )
     if user_id is not None and isinstance(user_id, str):
-        litellm_dashboard_ui += "?userID=" + user_id
-    redirect_response = RedirectResponse(url=litellm_dashboard_ui, status_code=303)
+        llm_dashboard_ui += "?userID=" + user_id
+    redirect_response = RedirectResponse(url=llm_dashboard_ui, status_code=303)
     redirect_response.set_cookie(key="token", value=jwt_token, secure=True)
     return redirect_response
 

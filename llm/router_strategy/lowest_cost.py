@@ -264,7 +264,7 @@ class LowestCostLoggingHandler(CustomLogger):
                 or float("inf")
             )
             item_llm_model_name = _deployment.get("llm_params", {}).get("model")
-            item_litellm_model_cost_map = llm.model_cost.get(
+            item_llm_model_cost_map = llm.model_cost.get(
                 item_llm_model_name, {}
             )
 
@@ -282,16 +282,16 @@ class LowestCostLoggingHandler(CustomLogger):
                 )
 
             if item_input_cost is None:
-                item_input_cost = item_litellm_model_cost_map.get(
+                item_input_cost = item_llm_model_cost_map.get(
                     "input_cost_per_token", 5.0
                 )
 
             if item_output_cost is None:
-                item_output_cost = item_litellm_model_cost_map.get(
+                item_output_cost = item_llm_model_cost_map.get(
                     "output_cost_per_token", 5.0
                 )
 
-            # if litellm["model"] is not in model_cost map -> use item_cost = $10
+            # if llm["model"] is not in model_cost map -> use item_cost = $10
 
             item_cost = item_input_cost + item_output_cost
 

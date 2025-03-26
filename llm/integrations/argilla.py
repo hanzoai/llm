@@ -116,7 +116,7 @@ class ArgillaLogger(CustomBatchLogger):
         _credentials_dataset_name = (
             argilla_dataset_name
             or os.getenv("ARGILLA_DATASET_NAME")
-            or "litellm-completion"
+            or "llm-completion"
         )
         if _credentials_dataset_name is None:
             raise Exception("Invalid Argilla Dataset give. Value=None.")

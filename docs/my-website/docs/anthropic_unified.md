@@ -45,7 +45,7 @@ llm --config /path/to/config.yaml
 ```bash
 curl -L -X POST 'http://0.0.0.0:4000/v1/messages' \
 -H 'content-type: application/json' \
--H 'x-api-key: $LITELLM_API_KEY' \
+-H 'x-api-key: $LLM_API_KEY' \
 -H 'anthropic-version: 2023-06-01' \
 -d '{
   "model": "anthropic-claude",

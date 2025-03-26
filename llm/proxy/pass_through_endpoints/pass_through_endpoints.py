@@ -242,7 +242,7 @@ async def chat_completion_pass_through_endpoint(  # noqa: PLR0915
             )
         )
 
-        verbose_proxy_logger.info("\nResponse from Litellm:\n{}".format(response))
+        verbose_proxy_logger.info("\nResponse from Llm:\n{}".format(response))
         return response
     except Exception as e:
         await proxy_logging_obj.post_call_failure_hook(

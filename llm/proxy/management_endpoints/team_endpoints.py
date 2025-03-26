@@ -33,8 +33,8 @@ from llm.proxy._types import (
     LLM_TeamTable,
     LLM_TeamTableCachedObj,
     LLM_UserTable,
-    LitellmTableNames,
-    LitellmUserRoles,
+    LlmTableNames,
+    LlmUserRoles,
     Member,
     NewTeamRequest,
     ProxyErrorTypes,
@@ -120,9 +120,9 @@ async def new_team(  # noqa: PLR0915
     data: NewTeamRequest,
     http_request: Request,
     user_api_key_dict: UserAPIKeyAuth = Depends(user_api_key_auth),
-    litellm_changed_by: Optional[str] = Header(
+    llm_changed_by: Optional[str] = Header(
         None,
-        description="The litellm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
+        description="The llm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
     ),
 ):
     """
@@ -268,13 +268,13 @@ async def new_team(  # noqa: PLR0915
         ## ADD TO MODEL TABLE
         _model_id = None
         if data.model_aliases is not None and isinstance(data.model_aliases, dict):
-            litellm_modeltable = LLM_ModelTable(
+            llm_modeltable = LLM_ModelTable(
                 model_aliases=json.dumps(data.model_aliases),
                 created_by=user_api_key_dict.user_id or llm_proxy_admin_name,
                 updated_by=user_api_key_dict.user_id or llm_proxy_admin_name,
             )
-            model_dict = await prisma_client.db.litellm_modeltable.create(
-                {**litellm_modeltable.json(exclude_none=True)}  # type: ignore
+            model_dict = await prisma_client.db.llm_modeltable.create(
+                {**llm_modeltable.json(exclude_none=True)}  # type: ignore
             )  # type: ignore
 
             _model_id = model_dict.id
@@ -335,11 +335,11 @@ async def new_team(  # noqa: PLR0915
                     request_data=LLM_AuditLogs(
                         id=str(uuid.uuid4()),
                         updated_at=datetime.now(timezone.utc),
-                        changed_by=litellm_changed_by
+                        changed_by=llm_changed_by
                         or user_api_key_dict.user_id
                         or llm_proxy_admin_name,
                         changed_by_api_key=user_api_key_dict.api_key,
-                        table_name=LitellmTableNames.TEAM_TABLE_NAME,
+                        table_name=LlmTableNames.TEAM_TABLE_NAME,
                         object_id=data.team_id,
                         action="created",
                         updated_values=_updated_values,
@@ -369,21 +369,21 @@ async def _update_model_table(
     ## UPSERT MODEL TABLE
     _model_id = model_id
     if data.model_aliases is not None and isinstance(data.model_aliases, dict):
-        litellm_modeltable = LLM_ModelTable(
+        llm_modeltable = LLM_ModelTable(
             model_aliases=json.dumps(data.model_aliases),
             created_by=user_api_key_dict.user_id or llm_proxy_admin_name,
             updated_by=user_api_key_dict.user_id or llm_proxy_admin_name,
         )
         if model_id is None:
-            model_dict = await prisma_client.db.litellm_modeltable.create(
-                data={**litellm_modeltable.json(exclude_none=True)}  # type: ignore
+            model_dict = await prisma_client.db.llm_modeltable.create(
+                data={**llm_modeltable.json(exclude_none=True)}  # type: ignore
             )
         else:
-            model_dict = await prisma_client.db.litellm_modeltable.upsert(
+            model_dict = await prisma_client.db.llm_modeltable.upsert(
                 where={"id": model_id},
                 data={
-                    "update": {**litellm_modeltable.json(exclude_none=True)},  # type: ignore
-                    "create": {**litellm_modeltable.json(exclude_none=True)},  # type: ignore
+                    "update": {**llm_modeltable.json(exclude_none=True)},  # type: ignore
+                    "create": {**llm_modeltable.json(exclude_none=True)},  # type: ignore
                 },
             )  # type: ignore
 
@@ -400,9 +400,9 @@ async def update_team(
     data: UpdateTeamRequest,
     http_request: Request,
     user_api_key_dict: UserAPIKeyAuth = Depends(user_api_key_auth),
-    litellm_changed_by: Optional[str] = Header(
+    llm_changed_by: Optional[str] = Header(
         None,
-        description="The litellm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
+        description="The llm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
     ),
 ):
     """
@@ -538,11 +538,11 @@ async def update_team(
                 request_data=LLM_AuditLogs(
                     id=str(uuid.uuid4()),
                     updated_at=datetime.now(timezone.utc),
-                    changed_by=litellm_changed_by
+                    changed_by=llm_changed_by
                     or user_api_key_dict.user_id
                     or llm_proxy_admin_name,
                     changed_by_api_key=user_api_key_dict.api_key,
-                    table_name=LitellmTableNames.TEAM_TABLE_NAME,
+                    table_name=LlmTableNames.TEAM_TABLE_NAME,
                     object_id=data.team_id,
                     action="updated",
                     updated_values=_after_value,
@@ -925,7 +925,7 @@ async def team_member_delete(
         key_val["user_id"] = data.user_id
     elif data.user_email is not None:
         key_val["user_email"] = data.user_email
-    existing_user_rows = await prisma_client.db.litellm_usertable.find_many(
+    existing_user_rows = await prisma_client.db.llm_usertable.find_many(
         where=key_val  # type: ignore
     )
 
@@ -937,7 +937,7 @@ async def team_member_delete(
             if data.team_id in existing_user.teams:
                 team_list = existing_user.teams
                 team_list.remove(data.team_id)
-                await prisma_client.db.litellm_usertable.update(
+                await prisma_client.db.llm_usertable.update(
                     where={
                         "user_id": existing_user.user_id,
                     },
@@ -1041,7 +1041,7 @@ async def team_member_update(
     ### upsert new budget
     if data.max_budget_in_team is not None:
         if identified_budget_id is None:
-            new_budget = await prisma_client.db.litellm_budgettable.create(
+            new_budget = await prisma_client.db.llm_budgettable.create(
                 data={
                     "max_budget": data.max_budget_in_team,
                     "created_by": user_api_key_dict.user_id or "",
@@ -1057,7 +1057,7 @@ async def team_member_update(
                 },
             )
         elif identified_budget_id is not None:
-            await prisma_client.db.litellm_budgettable.update(
+            await prisma_client.db.llm_budgettable.update(
                 where={"budget_id": identified_budget_id},
                 data={"max_budget": data.max_budget_in_team},
             )
@@ -1101,9 +1101,9 @@ async def delete_team(
     data: DeleteTeamRequest,
     http_request: Request,
     user_api_key_dict: UserAPIKeyAuth = Depends(user_api_key_auth),
-    litellm_changed_by: Optional[str] = Header(
+    llm_changed_by: Optional[str] = Header(
         None,
-        description="The litellm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
+        description="The llm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
     ),
 ):
     """
@@ -1171,11 +1171,11 @@ async def delete_team(
                     request_data=LLM_AuditLogs(
                         id=str(uuid.uuid4()),
                         updated_at=datetime.now(timezone.utc),
-                        changed_by=litellm_changed_by
+                        changed_by=llm_changed_by
                         or user_api_key_dict.user_id
                         or llm_proxy_admin_name,
                         changed_by_api_key=user_api_key_dict.api_key,
-                        table_name=LitellmTableNames.TEAM_TABLE_NAME,
+                        table_name=LlmTableNames.TEAM_TABLE_NAME,
                         object_id=team_id,
                         action="deleted",
                         updated_values="{}",
@@ -1511,7 +1511,7 @@ async def list_available_teams(
         )
 
     # filter out teams that the user is already a member of
-    user_info = await prisma_client.db.litellm_usertable.find_unique(
+    user_info = await prisma_client.db.llm_usertable.find_unique(
         where={"user_id": user_api_key_dict.user_id}
     )
     if user_info is None:

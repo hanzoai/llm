@@ -79,13 +79,13 @@ def get_modified_max_tokens(
             user_max_tokens = max_output_tokens
 
         verbose_logger.debug(
-            f"llm.litellm_core_utils.token_counter.py::get_modified_max_tokens() - user_max_tokens: {user_max_tokens}"
+            f"llm.llm_core_utils.token_counter.py::get_modified_max_tokens() - user_max_tokens: {user_max_tokens}"
         )
 
         return user_max_tokens
     except Exception as e:
         verbose_logger.error(
-            "llm.litellm_core_utils.token_counter.py::get_modified_max_tokens() - Error while checking max token limit: {}\nmodel={}, base_model={}".format(
+            "llm.llm_core_utils.token_counter.py::get_modified_max_tokens() - Error while checking max token limit: {}\nmodel={}, base_model={}".format(
                 str(e), model, base_model
             )
         )

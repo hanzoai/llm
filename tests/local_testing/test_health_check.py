@@ -56,7 +56,7 @@ async def test_azure_embedding_health_check():
             "api_base": os.getenv("AZURE_API_BASE"),
             "api_version": os.getenv("AZURE_API_VERSION"),
         },
-        input=["test for litellm"],
+        input=["test for llm"],
         mode="embedding",
     )
     print(f"response: {response}")
@@ -224,22 +224,22 @@ async def test_async_realtime_health_check(model, mocker):
     assert response == {}
 
 
-def test_update_litellm_params_for_health_check():
+def test_update_llm_params_for_health_check():
     """
-    Test if _update_litellm_params_for_health_check correctly:
+    Test if _update_llm_params_for_health_check correctly:
     1. Updates messages with a random message
     2. Updates model name when health_check_model is provided
     """
-    from llm.proxy.health_check import _update_litellm_params_for_health_check
+    from llm.proxy.health_check import _update_llm_params_for_health_check
 
     # Test with health_check_model
     model_info = {"health_check_model": "gpt-3.5-turbo"}
-    litellm_params = {
+    llm_params = {
         "model": "gpt-4",
         "api_key": "fake_key",
     }
 
-    updated_params = _update_litellm_params_for_health_check(model_info, litellm_params)
+    updated_params = _update_llm_params_for_health_check(model_info, llm_params)
 
     assert "messages" in updated_params
     assert isinstance(updated_params["messages"], list)
@@ -247,12 +247,12 @@ def test_update_litellm_params_for_health_check():
 
     # Test without health_check_model
     model_info = {}
-    litellm_params = {
+    llm_params = {
         "model": "gpt-4",
         "api_key": "fake_key",
     }
 
-    updated_params = _update_litellm_params_for_health_check(model_info, litellm_params)
+    updated_params = _update_llm_params_for_health_check(model_info, llm_params)
 
     assert "messages" in updated_params
     assert isinstance(updated_params["messages"], list)
@@ -271,7 +271,7 @@ async def test_perform_health_check_with_health_check_model():
     # Mock model list with health_check_model specified
     model_list = [
         {
-            "litellm_params": {"model": "openai/*", "api_key": "fake-key"},
+            "llm_params": {"model": "openai/*", "api_key": "fake-key"},
             "model_info": {
                 "mode": "chat",
                 "health_check_model": "openai/gpt-4o-mini",  # Override model for health check
@@ -282,8 +282,8 @@ async def test_perform_health_check_with_health_check_model():
     # Track which model is actually used in the health check
     health_check_calls = []
 
-    async def mock_health_check(litellm_params, **kwargs):
-        health_check_calls.append(litellm_params["model"])
+    async def mock_health_check(llm_params, **kwargs):
+        health_check_calls.append(llm_params["model"])
         return {"status": "healthy"}
 
     with patch("llm.ahealth_check", side_effect=mock_health_check):
@@ -307,7 +307,7 @@ async def test_health_check_bad_model():
     model_list = [
         {
             "model_name": "openai-gpt-4o",
-            "litellm_params": {
+            "llm_params": {
                 "api_key": "sk-1234",
                 "api_base": "https://exampleopenaiendpoint-production.up.railway.app",
                 "model": "openai/my-fake-openai-endpoint",
@@ -331,8 +331,8 @@ async def test_health_check_bad_model():
     # Track which model is actually used in the health check
     health_check_calls = []
 
-    async def mock_health_check(litellm_params, **kwargs):
-        health_check_calls.append(litellm_params["model"])
+    async def mock_health_check(llm_params, **kwargs):
+        health_check_calls.append(llm_params["model"])
         await asyncio.sleep(10)
         return {"status": "healthy"}
 

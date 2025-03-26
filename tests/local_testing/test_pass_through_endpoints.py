@@ -165,7 +165,7 @@ async def test_pass_through_endpoint_rpm_limit(
     user_api_key_cache.set_cache(key=hash_token(mock_api_key), value=cache_value)
 
     proxy_logging_obj = ProxyLogging(user_api_key_cache=user_api_key_cache)
-    proxy_logging_obj._init_litellm_callbacks()
+    proxy_logging_obj._init_llm_callbacks()
 
     setattr(llm.proxy.proxy_server, "user_api_key_cache", user_api_key_cache)
     setattr(llm.proxy.proxy_server, "master_key", "sk-1234")
@@ -250,7 +250,7 @@ async def test_aaapass_through_endpoint_pass_through_keys_langfuse(
         user_api_key_cache.set_cache(key=hash_token(mock_api_key), value=cache_value)
 
         proxy_logging_obj = ProxyLogging(user_api_key_cache=user_api_key_cache)
-        proxy_logging_obj._init_litellm_callbacks()
+        proxy_logging_obj._init_llm_callbacks()
 
         setattr(llm.proxy.proxy_server, "user_api_key_cache", user_api_key_cache)
         setattr(llm.proxy.proxy_server, "master_key", "sk-1234")
@@ -288,7 +288,7 @@ async def test_aaapass_through_endpoint_pass_through_keys_langfuse(
                     "body": {
                         "id": "0687af7b-4a75-4de8-a4f6-cba1cdc00865",
                         "timestamp": "2024-08-14T02:38:56.092950Z",
-                        "name": "test-trace-litellm-proxy-passthrough",
+                        "name": "test-trace-llm-proxy-passthrough",
                     },
                     "timestamp": "2024-08-14T02:38:56.093352Z",
                 }

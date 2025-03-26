@@ -43,7 +43,7 @@ import llm
 )  # ,
 @pytest.mark.asyncio
 @pytest.mark.flaky(retries=3, delay=1)
-async def test_audio_speech_litellm(sync_mode, model, api_base, api_key):
+async def test_audio_speech_llm(sync_mode, model, api_base, api_key):
     speech_file_path = Path(__file__).parent / "speech.mp3"
 
     if sync_mode:
@@ -91,7 +91,7 @@ async def test_audio_speech_litellm(sync_mode, model, api_base, api_key):
 @pytest.mark.skip(reason="local only test - we run testing using MockRequests below")
 @pytest.mark.asyncio
 @pytest.mark.flaky(retries=3, delay=1)
-async def test_audio_speech_litellm_vertex(sync_mode):
+async def test_audio_speech_llm_vertex(sync_mode):
     llm.set_verbose = True
     speech_file_path = Path(__file__).parent / "speech_vertex.mp3"
     model = "vertex_ai/test"
@@ -118,7 +118,7 @@ async def test_audio_speech_litellm_vertex(sync_mode):
 
 @pytest.mark.flaky(retries=6, delay=2)
 @pytest.mark.asyncio
-async def test_speech_litellm_vertex_async():
+async def test_speech_llm_vertex_async():
     # Mock the response
     mock_response = AsyncMock()
 
@@ -165,7 +165,7 @@ async def test_speech_litellm_vertex_async():
 
 
 @pytest.mark.asyncio
-async def test_speech_litellm_vertex_async_with_voice():
+async def test_speech_llm_vertex_async_with_voice():
     # Mock the response
     mock_response = AsyncMock()
 
@@ -220,7 +220,7 @@ async def test_speech_litellm_vertex_async_with_voice():
 
 
 @pytest.mark.asyncio
-async def test_speech_litellm_vertex_async_with_voice_ssml():
+async def test_speech_llm_vertex_async_with_voice_ssml():
     # Mock the response
     mock_response = AsyncMock()
 

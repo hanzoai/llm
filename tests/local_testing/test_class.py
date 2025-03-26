@@ -24,7 +24,7 @@
 #     age: int
 
 
-# client = instructor.from_litellm(completion)
+# client = instructor.from_llm(completion)
 
 # llm.set_verbose = True
 
@@ -54,7 +54,7 @@
 # #         model_list=[
 # #             {
 # #                 "model_name": "gpt-3.5-turbo",  # openai model name
-# #                 "litellm_params": {  # params for llm completion/embedding call
+# #                 "llm_params": {  # params for llm completion/embedding call
 # #                     "model": "azure/chatgpt-v-2",
 # #                     "api_key": os.getenv("AZURE_API_KEY"),
 # #                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -92,7 +92,7 @@
 # #         model_list=[
 # #             {
 # #                 "model_name": "gpt-3.5-turbo",  # openai model name
-# #                 "litellm_params": {  # params for llm completion/embedding call
+# #                 "llm_params": {  # params for llm completion/embedding call
 # #                     "model": "azure/chatgpt-v-2",
 # #                     "api_key": os.getenv("AZURE_API_KEY"),
 # #                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -100,7 +100,7 @@
 # #                 },
 # #             }
 # #         ],
-# #         default_litellm_params={"acompletion": True},
+# #         default_llm_params={"acompletion": True},
 # #     )
 # # )
 

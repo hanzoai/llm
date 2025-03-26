@@ -37,13 +37,13 @@ async def test_batch_completion_multiple_models(mode):
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                 },
             },
             {
                 "model_name": "groq-llama",
-                "litellm_params": {
+                "llm_params": {
                     "model": "groq/llama3-8b-8192",
                 },
             },
@@ -98,14 +98,14 @@ async def test_batch_completion_fastest_response_unit_test():
         model_list=[
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4",
                 },
                 "model_info": {"id": "1"},
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "mock_response": "This is a fake response",
                 },
@@ -135,13 +135,13 @@ async def test_batch_completion_fastest_response_streaming():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                 },
             },
             {
                 "model_name": "groq-llama",
-                "litellm_params": {
+                "llm_params": {
                     "model": "groq/llama3-8b-8192",
                 },
             },
@@ -171,13 +171,13 @@ async def test_batch_completion_multiple_models_multiple_messages():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                 },
             },
             {
                 "model_name": "groq-llama",
-                "litellm_params": {
+                "llm_params": {
                     "model": "groq/llama3-8b-8192",
                 },
             },

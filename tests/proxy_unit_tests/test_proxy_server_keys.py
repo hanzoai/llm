@@ -5,7 +5,7 @@
 # load_dotenv()
 # import os, io
 
-# # this file is to test litellm/proxy
+# # this file is to test llm/proxy
 
 # sys.path.insert(
 #     0, os.path.abspath("../..")
@@ -23,7 +23,7 @@
 # load_dotenv()
 # import os, io
 
-# # this file is to test litellm/proxy
+# # this file is to test llm/proxy
 # from concurrent.futures import ThreadPoolExecutor
 
 # sys.path.insert(
@@ -88,7 +88,7 @@
 #             token = os.getenv("PROXY_MASTER_KEY")
 #             headers = {"Authorization": f"Bearer {token}"}
 
-#             endpoint = f"https://litellm-litellm-pr-{pr_number}.up.railway.app"
+#             endpoint = f"https://llm-llm-pr-{pr_number}.up.railway.app"
 
 #             # Make a request to the staging endpoint
 #             response = requests.post(
@@ -126,7 +126,7 @@
 #         token = os.getenv("PROXY_MASTER_KEY")
 #         headers = {"Authorization": f"Bearer {token}"}
 
-#         endpoint = f"https://litellm-litellm-pr-{pr_number}.up.railway.app"
+#         endpoint = f"https://llm-llm-pr-{pr_number}.up.railway.app"
 
 #         # Make a request to the staging endpoint
 #         response = requests.post(
@@ -158,7 +158,7 @@
 #         token = os.getenv("PROXY_MASTER_KEY")
 #         headers = {"Authorization": f"Bearer {token}"}
 
-#         endpoint = f"https://litellm-litellm-pr-{pr_number}.up.railway.app"
+#         endpoint = f"https://llm-llm-pr-{pr_number}.up.railway.app"
 #         print(f"endpoint: {endpoint}")
 #         # Make a request to the staging endpoint
 #         response = requests.post(
@@ -170,7 +170,7 @@
 #         # load endpoint with model
 #         model_data = {
 #             "model_name": "azure-model",
-#             "litellm_params": {
+#             "llm_params": {
 #                 "model": "azure/chatgpt-v-2",
 #                 "api_key": os.getenv("AZURE_API_KEY"),
 #                 "api_base": os.getenv("AZURE_API_BASE"),
@@ -225,7 +225,7 @@
 #         token = os.getenv("PROXY_MASTER_KEY")
 #         headers = {"Authorization": f"Bearer {token}"}
 
-#         endpoint = f"https://litellm-litellm-pr-{pr_number}.up.railway.app"
+#         endpoint = f"https://llm-llm-pr-{pr_number}.up.railway.app"
 
 #         # Make a request to the staging endpoint
 #         response = requests.post(

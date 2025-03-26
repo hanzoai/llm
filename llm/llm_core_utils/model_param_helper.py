@@ -55,16 +55,16 @@ class ModelParamHelper:
         Gets the supported kwargs for each call type and combines them
         """
         chat_completion_kwargs = (
-            ModelParamHelper._get_litellm_supported_chat_completion_kwargs()
+            ModelParamHelper._get_llm_supported_chat_completion_kwargs()
         )
         text_completion_kwargs = (
-            ModelParamHelper._get_litellm_supported_text_completion_kwargs()
+            ModelParamHelper._get_llm_supported_text_completion_kwargs()
         )
-        embedding_kwargs = ModelParamHelper._get_litellm_supported_embedding_kwargs()
+        embedding_kwargs = ModelParamHelper._get_llm_supported_embedding_kwargs()
         transcription_kwargs = (
-            ModelParamHelper._get_litellm_supported_transcription_kwargs()
+            ModelParamHelper._get_llm_supported_transcription_kwargs()
         )
-        rerank_kwargs = ModelParamHelper._get_litellm_supported_rerank_kwargs()
+        rerank_kwargs = ModelParamHelper._get_llm_supported_rerank_kwargs()
         exclude_kwargs = ModelParamHelper._get_exclude_kwargs()
 
         combined_kwargs = chat_completion_kwargs.union(
@@ -77,7 +77,7 @@ class ModelParamHelper:
         return combined_kwargs
 
     @staticmethod
-    def _get_litellm_supported_chat_completion_kwargs() -> Set[str]:
+    def _get_llm_supported_chat_completion_kwargs() -> Set[str]:
         """
         Get the llm supported chat completion kwargs
 
@@ -91,7 +91,7 @@ class ModelParamHelper:
         return all_chat_completion_kwargs
 
     @staticmethod
-    def _get_litellm_supported_text_completion_kwargs() -> Set[str]:
+    def _get_llm_supported_text_completion_kwargs() -> Set[str]:
         """
         Get the llm supported text completion kwargs
 
@@ -111,14 +111,14 @@ class ModelParamHelper:
         return all_text_completion_kwargs
 
     @staticmethod
-    def _get_litellm_supported_rerank_kwargs() -> Set[str]:
+    def _get_llm_supported_rerank_kwargs() -> Set[str]:
         """
         Get the llm supported rerank kwargs
         """
         return set(RerankRequest.model_fields.keys())
 
     @staticmethod
-    def _get_litellm_supported_embedding_kwargs() -> Set[str]:
+    def _get_llm_supported_embedding_kwargs() -> Set[str]:
         """
         Get the llm supported embedding kwargs
 
@@ -127,7 +127,7 @@ class ModelParamHelper:
         return set(getattr(EmbeddingCreateParams, "__annotations__", {}).keys())
 
     @staticmethod
-    def _get_litellm_supported_transcription_kwargs() -> Set[str]:
+    def _get_llm_supported_transcription_kwargs() -> Set[str]:
         """
         Get the llm supported transcription kwargs
 

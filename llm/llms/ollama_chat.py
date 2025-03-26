@@ -234,7 +234,7 @@ def get_ollama_response(  # noqa: PLR0915
     for m in messages:
         if isinstance(
             m, BaseModel
-        ):  # avoid message serialization issues - https://github.com/BerriAI/litellm/issues/5319
+        ):  # avoid message serialization issues - https://github.com/BerriAI/llm/issues/5319
             m = m.model_dump(exclude_none=True)
         if m.get("tool_calls") is not None and isinstance(m["tool_calls"], list):
             new_tools: List[OllamaToolCall] = []

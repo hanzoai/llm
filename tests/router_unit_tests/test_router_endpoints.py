@@ -32,35 +32,35 @@ def model_list():
     return [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
         },
         {
             "model_name": "gpt-4o",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-4o",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
         },
         {
             "model_name": "dall-e-3",
-            "litellm_params": {
+            "llm_params": {
                 "model": "dall-e-3",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
         },
         {
             "model_name": "cohere-rerank",
-            "litellm_params": {
+            "llm_params": {
                 "model": "cohere/rerank-english-v3.0",
                 "api_key": os.getenv("COHERE_API_KEY"),
             },
         },
         {
             "model_name": "claude-3-5-sonnet-20240620",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "mock_response": "hi this is macintosh.",
             },
@@ -101,13 +101,13 @@ async def test_transcription_on_router():
         model_list = [
             {
                 "model_name": "whisper",
-                "litellm_params": {
+                "llm_params": {
                     "model": "whisper-1",
                 },
             },
             {
                 "model_name": "whisper",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/azure-whisper",
                     "api_base": "https://my-endpoint-europe-berri-992.openai.azure.com/",
                     "api_key": os.getenv("AZURE_EUROPE_API_KEY"),
@@ -164,7 +164,7 @@ async def test_audio_speech_router(mode):
         model_list=[
             {
                 "model_name": "tts",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/tts-1",
                 },
             },
@@ -239,13 +239,13 @@ async def test_moderation_endpoint(model):
         model_list=[
             {
                 "model_name": "openai/*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/*",
                 },
             },
             {
                 "model_name": "*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/*",
                 },
             },
@@ -293,7 +293,7 @@ async def test_aaaaatext_completion_endpoint(model_list, sync_mode):
 @pytest.mark.asyncio
 async def test_router_with_empty_choices(model_list):
     """
-    https://github.com/BerriAI/litellm/issues/8306
+    https://github.com/BerriAI/llm/issues/8306
     """
     router = Router(model_list=model_list)
     mock_response = llm.ModelResponse(
@@ -345,7 +345,7 @@ def test_generic_api_call_with_fallbacks_basic(sync_mode):
         model_list=[
             {
                 "model_name": "test-model-alias",
-                "litellm_params": {
+                "llm_params": {
                     "model": "anthropic/test-model",
                     "api_key": "fake-api-key",
                 },
@@ -409,7 +409,7 @@ async def test_aadapter_completion():
             model_list=[
                 {
                     "model_name": "test-adapter-model",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "anthropic/test-model",
                         "api_key": "fake-api-key",
                     },
@@ -474,7 +474,7 @@ async def test__aadapter_completion():
             model_list=[
                 {
                     "model_name": "test-adapter-model",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "anthropic/test-model",
                         "api_key": "fake-api-key",
                     },
@@ -486,7 +486,7 @@ async def test__aadapter_completion():
         router.async_get_available_deployment = AsyncMock(
             return_value={
                 "model_name": "test-adapter-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "test-model",
                     "api_key": "fake-api-key",
                 },
@@ -537,7 +537,7 @@ def test_initialize_router_endpoints():
         model_list=[
             {
                 "model_name": "test-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "anthropic/test-model",
                     "api_key": "fake-api-key",
                 },

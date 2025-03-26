@@ -107,10 +107,10 @@ async def get_daily_spend_from_prometheus(api_key: Optional[str]):
     url = f"{PROMETHEUS_URL}/api/v1/query_range"
 
     if api_key is None:
-        query = "sum(delta(litellm_spend_metric_total[1d]))"
+        query = "sum(delta(llm_spend_metric_total[1d]))"
     else:
         query = (
-            f'sum(delta(litellm_spend_metric_total{{hashed_api_key="{api_key}"}}[1d]))'
+            f'sum(delta(llm_spend_metric_total{{hashed_api_key="{api_key}"}}[1d]))'
         )
 
     params = {

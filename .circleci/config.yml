@@ -1374,7 +1374,7 @@ jobs:
               -e USE_DDTRACE=True \
               -e DD_API_KEY=$DD_API_KEY \
               -e DD_SITE=$DD_SITE \
-              -e LITELLM_LICENSE=$LITELLM_LICENSE \
+              -e LLM_LICENSE=$LLM_LICENSE \
               -e LANGFUSE_PROJECT1_PUBLIC=$LANGFUSE_PROJECT1_PUBLIC \
               -e LANGFUSE_PROJECT2_PUBLIC=$LANGFUSE_PROJECT2_PUBLIC \
               -e LANGFUSE_PROJECT1_SECRET=$LANGFUSE_PROJECT1_SECRET \
@@ -1498,7 +1498,7 @@ jobs:
               -e DD_API_KEY=$DD_API_KEY \
               -e DD_SITE=$DD_SITE \
               -e OPENAI_API_KEY=$OPENAI_API_KEY \
-              -e LITELLM_LICENSE=$LITELLM_LICENSE \
+              -e LLM_LICENSE=$LLM_LICENSE \
               -e LANGFUSE_PROJECT1_PUBLIC=$LANGFUSE_PROJECT1_PUBLIC \
               -e LANGFUSE_PROJECT2_PUBLIC=$LANGFUSE_PROJECT2_PUBLIC \
               -e LANGFUSE_PROJECT1_SECRET=$LANGFUSE_PROJECT1_SECRET \
@@ -1604,9 +1604,9 @@ jobs:
               -e REDIS_HOST=$REDIS_HOST \
               -e REDIS_PASSWORD=$REDIS_PASSWORD \
               -e REDIS_PORT=$REDIS_PORT \
-              -e LITELLM_MASTER_KEY="sk-1234" \
+              -e LLM_MASTER_KEY="sk-1234" \
               -e OPENAI_API_KEY=$OPENAI_API_KEY \
-              -e LITELLM_LICENSE=$LITELLM_LICENSE \
+              -e LLM_LICENSE=$LLM_LICENSE \
               -e OTEL_EXPORTER="in_memory" \
               -e APORIA_API_BASE_2=$APORIA_API_BASE_2 \
               -e APORIA_API_KEY_2=$APORIA_API_KEY_2 \
@@ -1668,9 +1668,9 @@ jobs:
               -e REDIS_HOST=$REDIS_HOST \
               -e REDIS_PASSWORD=$REDIS_PASSWORD \
               -e REDIS_PORT=$REDIS_PORT \
-              -e LITELLM_MASTER_KEY="sk-1234" \
+              -e LLM_MASTER_KEY="sk-1234" \
               -e OPENAI_API_KEY=$OPENAI_API_KEY \
-              -e LITELLM_LICENSE="bad-license" \
+              -e LLM_LICENSE="bad-license" \
               --name my-app-3 \
               -v $(pwd)/llm/proxy/example_config_yaml/enterprise_config.yaml:/app/config.yaml \
               my-app:latest \
@@ -1746,8 +1746,8 @@ jobs:
               -e REDIS_HOST=$REDIS_HOST \
               -e REDIS_PASSWORD=$REDIS_PASSWORD \
               -e REDIS_PORT=$REDIS_PORT \
-              -e LITELLM_MASTER_KEY="sk-1234" \
-              -e LITELLM_LICENSE=$LITELLM_LICENSE \
+              -e LLM_MASTER_KEY="sk-1234" \
+              -e LLM_LICENSE=$LLM_LICENSE \
               -e USE_DDTRACE=True \
               -e DD_API_KEY=$DD_API_KEY \
               -e DD_SITE=$DD_SITE \
@@ -1766,8 +1766,8 @@ jobs:
               -e REDIS_HOST=$REDIS_HOST \
               -e REDIS_PASSWORD=$REDIS_PASSWORD \
               -e REDIS_PORT=$REDIS_PORT \
-              -e LITELLM_MASTER_KEY="sk-1234" \
-              -e LITELLM_LICENSE=$LITELLM_LICENSE \
+              -e LLM_MASTER_KEY="sk-1234" \
+              -e LLM_LICENSE=$LLM_LICENSE \
               -e USE_DDTRACE=True \
               -e DD_API_KEY=$DD_API_KEY \
               -e DD_SITE=$DD_SITE \
@@ -1856,8 +1856,8 @@ jobs:
               -p 4000:4000 \
               -e DATABASE_URL=$CLEAN_STORE_MODEL_IN_DB_DATABASE_URL \
               -e STORE_MODEL_IN_DB="True" \
-              -e LITELLM_MASTER_KEY="sk-1234" \
-              -e LITELLM_LICENSE=$LITELLM_LICENSE \
+              -e LLM_MASTER_KEY="sk-1234" \
+              -e LLM_LICENSE=$LLM_LICENSE \
               --name my-app \
               -v $(pwd)/llm/proxy/example_config_yaml/store_model_db_config.yaml:/app/config.yaml \
               my-app:latest \
@@ -1938,9 +1938,9 @@ jobs:
               -e REDIS_HOST=$REDIS_HOST \
               -e REDIS_PASSWORD=$REDIS_PASSWORD \
               -e REDIS_PORT=$REDIS_PORT \
-              -e LITELLM_MASTER_KEY="sk-1234" \
+              -e LLM_MASTER_KEY="sk-1234" \
               -e OPENAI_API_KEY=$OPENAI_API_KEY \
-              -e LITELLM_LICENSE=$LITELLM_LICENSE \
+              -e LLM_LICENSE=$LLM_LICENSE \
               -e OTEL_EXPORTER="in_memory" \
               -e APORIA_API_BASE_2=$APORIA_API_BASE_2 \
               -e APORIA_API_KEY_2=$APORIA_API_KEY_2 \
@@ -2051,7 +2051,7 @@ jobs:
             docker run -d \
               -p 4000:4000 \
               -e DATABASE_URL=$PROXY_DATABASE_URL \
-              -e LITELLM_MASTER_KEY="sk-1234" \
+              -e LLM_MASTER_KEY="sk-1234" \
               -e OPENAI_API_KEY=$OPENAI_API_KEY \
               -e GEMINI_API_KEY=$GEMINI_API_KEY \
               -e ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY \
@@ -2059,7 +2059,7 @@ jobs:
               -e USE_DDTRACE=True \
               -e DD_API_KEY=$DD_API_KEY \
               -e DD_SITE=$DD_SITE \
-              -e LITELLM_LICENSE=$LITELLM_LICENSE \
+              -e LLM_LICENSE=$LLM_LICENSE \
               --name my-app \
               -v $(pwd)/llm/proxy/example_config_yaml/pass_through_config.yaml:/app/config.yaml \
               -v $(pwd)/llm/proxy/example_config_yaml/custom_auth_basic.py:/app/custom_auth_basic.py \
@@ -2326,11 +2326,11 @@ jobs:
             docker run -d \
               -p 4000:4000 \
               -e DATABASE_URL=$SMALL_DATABASE_URL \
-              -e LITELLM_MASTER_KEY="sk-1234" \
+              -e LLM_MASTER_KEY="sk-1234" \
               -e OPENAI_API_KEY=$OPENAI_API_KEY \
               -e UI_USERNAME="admin" \
               -e UI_PASSWORD="gm" \
-              -e LITELLM_LICENSE=$LITELLM_LICENSE \
+              -e LLM_LICENSE=$LLM_LICENSE \
               --name my-app \
               -v $(pwd)/llm/proxy/example_config_yaml/simple_config.yaml:/app/config.yaml \
               my-app:latest \

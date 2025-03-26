@@ -275,7 +275,7 @@ class Logging(LLMLoggingBaseClass):
         self.completion_start_time: Optional[datetime.datetime] = None
         self._llm_caching_handler: Optional[LLMCachingHandler] = None
 
-        # INITIAL LITELLM_PARAMS
+        # INITIAL LLM_PARAMS
         llm_params = {}
         if kwargs is not None:
             llm_params = get_llm_params(**kwargs)
@@ -2313,7 +2313,7 @@ class Logging(LLMLoggingBaseClass):
         _filtered_success_callbacks = self._remove_internal_custom_logger_callbacks(
             _combined_sync_callbacks
         )
-        _filtered_success_callbacks = self._remove_internal_litellm_callbacks(
+        _filtered_success_callbacks = self._remove_internal_llm_callbacks(
             _filtered_success_callbacks
         )
         return len(_filtered_success_callbacks) > 0
@@ -2325,7 +2325,7 @@ class Logging(LLMLoggingBaseClass):
             return global_callbacks
         return list(set(dynamic_success_callbacks + global_callbacks))
 
-    def _remove_internal_litellm_callbacks(self, callbacks: List) -> List:
+    def _remove_internal_llm_callbacks(self, callbacks: List) -> List:
         """
         Creates a filtered list of callbacks, excluding internal LLM callbacks.
 
@@ -3591,7 +3591,7 @@ def get_standard_logging_object_payload(
 
 
 def emit_standard_logging_payload(payload: StandardLoggingPayload):
-    if os.getenv("LITELLM_PRINT_STANDARD_LOGGING_PAYLOAD"):
+    if os.getenv("LLM_PRINT_STANDARD_LOGGING_PAYLOAD"):
         verbose_logger.info(json.dumps(payload, indent=4))
 
 
@@ -3659,7 +3659,7 @@ def scrub_sensitive_keys_in_metadata(llm_params: Optional[dict]):
         for k, v in metadata["user_api_key_metadata"].items():
             if k == "logging":  # prevent logging user logging keys
                 cleaned_user_api_key_metadata[k] = (
-                    "scrubbed_by_litellm_for_sensitive_keys"
+                    "scrubbed_by_llm_for_sensitive_keys"
                 )
             else:
                 cleaned_user_api_key_metadata[k] = v

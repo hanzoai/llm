@@ -1,14 +1,14 @@
-import { handleAddModelSubmit } from '../../../ui/litellm-dashboard/src/components/add_model/handle_add_model_submit';
-import { modelCreateCall } from '../../../ui/litellm-dashboard/src/components/networking';
+import { handleAddModelSubmit } from '../../../ui/llm-dashboard/src/components/add_model/handle_add_model_submit';
+import { modelCreateCall } from '../../../ui/llm-dashboard/src/components/networking';
 
 // Mock the dependencies
 const mockModelCreateCall = jest.fn().mockResolvedValue({ data: 'success' });
-jest.mock('../../../ui/litellm-dashboard/src/components/networking', () => ({
+jest.mock('../../../ui/llm-dashboard/src/components/networking', () => ({
   modelCreateCall: async (accessToken: string, formValues: any) => mockModelCreateCall(formValues)
 }));
 
 // Also need to mock provider_map
-jest.mock('../../../ui/litellm-dashboard/src/components/provider_info_helpers', () => ({
+jest.mock('../../../ui/llm-dashboard/src/components/provider_info_helpers', () => ({
   provider_map: {
     'openai': 'openai'
   }
@@ -42,7 +42,7 @@ describe('handleAddModelSubmit', () => {
     
     console.log('Expected call:', {
       model_name: 'my-gpt4-deployment',
-      litellm_params: {
+      llm_params: {
         model: 'gpt-4',
         custom_llm_provider: 'openai'
       },
@@ -52,7 +52,7 @@ describe('handleAddModelSubmit', () => {
 
     expect(mockModelCreateCall).toHaveBeenCalledWith({
       model_name: 'my-gpt4-deployment',
-      litellm_params: {
+      llm_params: {
         model: 'gpt-4',
         custom_llm_provider: 'openai'
       },
@@ -72,7 +72,7 @@ describe('handleAddModelSubmit', () => {
 
     expect(mockModelCreateCall).toHaveBeenCalledWith({
       model_name: 'openai/*',
-      litellm_params: {
+      llm_params: {
         model: 'openai/*',
         custom_llm_provider: 'openai'
       },

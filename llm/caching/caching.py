@@ -1,7 +1,7 @@
 # +-----------------------------------------------+
 # |                                               |
 # |           Give Feedback / Get Help            |
-# | https://github.com/BerriAI/litellm/issues/new |
+# | https://github.com/BerriAI/llm/issues/new |
 # |                                               |
 # +-----------------------------------------------+
 #
@@ -205,9 +205,9 @@ class Cache:
         if "cache" not in llm.input_callback:
             llm.input_callback.append("cache")
         if "cache" not in llm.success_callback:
-            llm.logging_callback_manager.add_litellm_success_callback("cache")
+            llm.logging_callback_manager.add_llm_success_callback("cache")
         if "cache" not in llm._async_success_callback:
-            llm.logging_callback_manager.add_litellm_async_success_callback("cache")
+            llm.logging_callback_manager.add_llm_async_success_callback("cache")
         self.supported_call_types = supported_call_types  # default to ["completion", "acompletion", "embedding", "aembedding"]
         self.type = type
         self.namespace = namespace
@@ -246,14 +246,14 @@ class Cache:
             return preset_cache_key
 
         combined_kwargs = ModelParamHelper._get_all_llm_api_params()
-        litellm_param_kwargs = all_llm_params
+        llm_param_kwargs = all_llm_params
         for param in kwargs:
             if param in combined_kwargs:
                 param_value: Optional[str] = self._get_param_value(param, kwargs)
                 if param_value is not None:
                     cache_key += f"{str(param)}: {str(param_value)}"
             elif (
-                param not in litellm_param_kwargs
+                param not in llm_param_kwargs
             ):  # check if user passed in optional param - e.g. top_k
                 if (
                     llm.enable_caching_on_provider_specific_optional_params is True
@@ -708,9 +708,9 @@ def enable_cache(
     if "cache" not in llm.input_callback:
         llm.input_callback.append("cache")
     if "cache" not in llm.success_callback:
-        llm.logging_callback_manager.add_litellm_success_callback("cache")
+        llm.logging_callback_manager.add_llm_success_callback("cache")
     if "cache" not in llm._async_success_callback:
-        llm.logging_callback_manager.add_litellm_async_success_callback("cache")
+        llm.logging_callback_manager.add_llm_async_success_callback("cache")
 
     if llm.cache is None:
         llm.cache = Cache(

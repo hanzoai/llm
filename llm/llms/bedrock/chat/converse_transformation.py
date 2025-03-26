@@ -657,7 +657,7 @@ class AmazonConverseConfig(BaseConfig):
             completion_response = ConverseResponseBlock(**response.json())  # type: ignore
         except Exception as e:
             raise BedrockError(
-                message="Received={}, Error converting to valid response block={}. File an issue if llm error - https://github.com/BerriAI/litellm/issues".format(
+                message="Received={}, Error converting to valid response block={}. File an issue if llm error - https://github.com/BerriAI/llm/issues".format(
                     response.text, str(e)
                 ),
                 status_code=422,
@@ -715,7 +715,7 @@ class AmazonConverseConfig(BaseConfig):
                     content_str += content["text"]
                 if "toolUse" in content:
 
-                    ## check tool name was formatted by litellm
+                    ## check tool name was formatted by llm
                     _response_tool_name = content["toolUse"]["name"]
                     response_tool_name = get_bedrock_tool_name(
                         response_tool_name=_response_tool_name

@@ -280,16 +280,16 @@ async def _user_api_key_auth_builder(  # noqa: PLR0915
                 if endpoint.get("path", "") == route:
                     headers: Optional[dict] = endpoint.get("headers", None)
                     if headers is not None:
-                        header_key: str = headers.get("litellm_user_api_key", "")
+                        header_key: str = headers.get("llm_user_api_key", "")
                         if request.headers.get(key=header_key) is not None:
                             api_key = request.headers.get(key=header_key)
 
         # if user wants to pass LLM_Master_Key as a custom header, example pass llm keys as X-LLM-Key: Bearer sk-1234
-        custom_litellm_key_header_name = general_settings.get("litellm_key_header_name")
-        if custom_litellm_key_header_name is not None:
+        custom_llm_key_header_name = general_settings.get("llm_key_header_name")
+        if custom_llm_key_header_name is not None:
             api_key = get_api_key_from_custom_header(
                 request=request,
-                custom_litellm_key_header_name=custom_litellm_key_header_name,
+                custom_llm_key_header_name=custom_llm_key_header_name,
             )
 
         if open_telemetry_logger is not None:
@@ -305,7 +305,7 @@ async def _user_api_key_auth_builder(  # noqa: PLR0915
             response = await user_custom_auth(request=request, api_key=api_key)  # type: ignore
             return UserAPIKeyAuth.model_validate(response)
 
-        ### LITELLM-DEFINED AUTH FUNCTION ###
+        ### LLM-DEFINED AUTH FUNCTION ###
         #### IF JWT ####
         """
         LLM supports using JWTs.
@@ -435,8 +435,8 @@ async def _user_api_key_auth_builder(  # noqa: PLR0915
             if route.startswith(mapped_route):
                 is_mapped_pass_through_route = True
         if is_mapped_pass_through_route:
-            if request.headers.get("litellm_user_api_key") is not None:
-                api_key = request.headers.get("litellm_user_api_key") or ""
+            if request.headers.get("llm_user_api_key") is not None:
+                api_key = request.headers.get("llm_user_api_key") or ""
         if pass_through_endpoints is not None:
             for endpoint in pass_through_endpoints:
                 if isinstance(endpoint, dict) and endpoint.get("path", "") == route:
@@ -462,7 +462,7 @@ async def _user_api_key_auth_builder(  # noqa: PLR0915
                     else:
                         headers = endpoint.get("headers", None)
                         if headers is not None:
-                            header_key = headers.get("litellm_user_api_key", "")
+                            header_key = headers.get("llm_user_api_key", "")
                             if (
                                 isinstance(request.headers, dict)
                                 and request.headers.get(key=header_key) is not None  # type: ignore
@@ -1153,38 +1153,38 @@ async def _return_user_api_key_auth_obj(
 
 
 def get_api_key_from_custom_header(
-    request: Request, custom_litellm_key_header_name: str
+    request: Request, custom_llm_key_header_name: str
 ) -> str:
     """
     Get API key from custom header
 
     Args:
         request (Request): Request object
-        custom_litellm_key_header_name (str): Custom header name
+        custom_llm_key_header_name (str): Custom header name
 
     Returns:
         Optional[str]: API key
     """
     api_key: str = ""
     # use this as the virtual key passed to llm proxy
-    custom_litellm_key_header_name = custom_litellm_key_header_name.lower()
+    custom_llm_key_header_name = custom_llm_key_header_name.lower()
     _headers = {k.lower(): v for k, v in request.headers.items()}
     verbose_proxy_logger.debug(
-        "searching for custom_litellm_key_header_name= %s, in headers=%s",
-        custom_litellm_key_header_name,
+        "searching for custom_llm_key_header_name= %s, in headers=%s",
+        custom_llm_key_header_name,
         _headers,
     )
-    custom_api_key = _headers.get(custom_litellm_key_header_name)
+    custom_api_key = _headers.get(custom_llm_key_header_name)
     if custom_api_key:
         api_key = _get_bearer_token(api_key=custom_api_key)
         verbose_proxy_logger.debug(
             "Found custom API key using header: {}, setting api_key={}".format(
-                custom_litellm_key_header_name, api_key
+                custom_llm_key_header_name, api_key
             )
         )
     else:
         verbose_proxy_logger.exception(
-            f"No LLM Virtual Key pass. Please set header={custom_litellm_key_header_name}: Bearer <api_key>"
+            f"No LLM Virtual Key pass. Please set header={custom_llm_key_header_name}: Bearer <api_key>"
         )
     return api_key
 

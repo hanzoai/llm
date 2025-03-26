@@ -51,7 +51,7 @@ interface TeamData {
     max_parallel_requests: number | null;
     budget_reset_at: string | null;
     model_id: string | null;
-    litellm_model_table: {
+    llm_model_table: {
       model_aliases: Record<string, string>;
     } | null;
     created_at: string;
@@ -407,7 +407,7 @@ const TeamInfoView: React.FC<TeamInfoProps> = ({
                         Guardrails{' '}
                         <Tooltip title="Setup your first guardrail">
                           <a 
-                            href="https://docs.litellm.ai/docs/proxy/guardrails/quick_start" 
+                            href="https://docs.llm.ai/docs/proxy/guardrails/quick_start" 
                             target="_blank" 
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}

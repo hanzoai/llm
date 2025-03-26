@@ -97,7 +97,7 @@ vertex_credentials_json = json.dumps(vertex_credentials)
 messages = [
     {
         "role": "system",
-        "content": "Your name is Litellm Bot, you are a helpful assistant",
+        "content": "Your name is Llm Bot, you are a helpful assistant",
     },
     # User asks for their name and weather in San Francisco
     {
@@ -972,7 +972,7 @@ llm --config /path/to/config.yaml
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <YOUR-LITELLM-KEY>" \
+  -H "Authorization: Bearer <YOUR-LLM-KEY>" \
   -d '{
     "model": "claude-3-7-sonnet-20250219",
     "messages": [{"role": "user", "content": "What is the capital of France?"}],
@@ -1532,7 +1532,7 @@ response = completion(
 ```bash
 curl --location 'https://0.0.0.0:4000/v1/chat/completions' \
 --header 'Content-Type: application/json' \
---header 'Authorization: <LITELLM_KEY>' \
+--header 'Authorization: <LLM_KEY>' \
 --data '{"model": "finetuned-gemini" ,"messages":[{"role": "user", "content":[{"type": "text", "text": "hi"}]}]}'
 ```
 
@@ -1782,7 +1782,7 @@ llm --config /path/to/config.yaml
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <YOUR-LITELLM-KEY>" \
+  -H "Authorization: Bearer <YOUR-LLM-KEY>" \
   -d '{
     "model": "gemini-1.5-flash",
     "messages": [
@@ -1810,7 +1810,7 @@ curl http://0.0.0.0:4000/v1/chat/completions \
 ```bash
 curl http://0.0.0.0:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <YOUR-LITELLM-KEY>" \
+  -H "Authorization: Bearer <YOUR-LLM-KEY>" \
   -d '{
     "model": "gemini-1.5-flash",
     "messages": [
@@ -2206,8 +2206,8 @@ from vertexai.vision_models import VideoSegmentConfig
 from google.auth.credentials import Credentials
 
 
-LITELLM_PROXY_API_KEY = "sk-1234"
-LITELLM_PROXY_BASE = "http://0.0.0.0:4000/vertex-ai"
+LLM_PROXY_API_KEY = "sk-1234"
+LLM_PROXY_BASE = "http://0.0.0.0:4000/vertex-ai"
 
 import datetime
 
@@ -2231,12 +2231,12 @@ class CredentialsWrapper(Credentials):
     def valid(self):
         return True  # Always consider the credentials as valid
 
-credentials = CredentialsWrapper(token=LITELLM_PROXY_API_KEY)
+credentials = CredentialsWrapper(token=LLM_PROXY_API_KEY)
 
 vertexai.init(
     project="adroit-crow-413218",
     location="us-central1",
-    api_endpoint=LITELLM_PROXY_BASE,
+    api_endpoint=LLM_PROXY_BASE,
     credentials = credentials,
     api_transport="rest",
    

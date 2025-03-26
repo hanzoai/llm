@@ -430,20 +430,20 @@ router_settings:
 | LITERAL_API_KEY | API key for Literal integration
 | LITERAL_API_URL | API URL for Literal service
 | LITERAL_BATCH_SIZE | Batch size for Literal operations
-| LITELLM_DONT_SHOW_FEEDBACK_BOX | Flag to hide feedback box in LLM UI
-| LITELLM_DROP_PARAMS | Parameters to drop in LLM requests
-| LITELLM_EMAIL | Email associated with LLM account
-| LITELLM_GLOBAL_MAX_PARALLEL_REQUEST_RETRIES | Maximum retries for parallel requests in LLM
-| LITELLM_GLOBAL_MAX_PARALLEL_REQUEST_RETRY_TIMEOUT | Timeout for retries of parallel requests in LLM
-| LITELLM_HOSTED_UI | URL of the hosted UI for LLM
-| LITELLM_LICENSE | License key for LLM usage
-| LITELLM_LOCAL_MODEL_COST_MAP | Local configuration for model cost mapping in LLM
-| LITELLM_LOG | Enable detailed logging for LLM
-| LITELLM_MODE | Operating mode for LLM (e.g., production, development)
-| LITELLM_SALT_KEY | Salt key for encryption in LLM
-| LITELLM_SECRET_AWS_KMS_LITELLM_LICENSE | AWS KMS encrypted license for LLM
-| LITELLM_TOKEN | Access token for LLM integration
-| LITELLM_PRINT_STANDARD_LOGGING_PAYLOAD | If true, prints the standard logging payload to the console - useful for debugging
+| LLM_DONT_SHOW_FEEDBACK_BOX | Flag to hide feedback box in LLM UI
+| LLM_DROP_PARAMS | Parameters to drop in LLM requests
+| LLM_EMAIL | Email associated with LLM account
+| LLM_GLOBAL_MAX_PARALLEL_REQUEST_RETRIES | Maximum retries for parallel requests in LLM
+| LLM_GLOBAL_MAX_PARALLEL_REQUEST_RETRY_TIMEOUT | Timeout for retries of parallel requests in LLM
+| LLM_HOSTED_UI | URL of the hosted UI for LLM
+| LLM_LICENSE | License key for LLM usage
+| LLM_LOCAL_MODEL_COST_MAP | Local configuration for model cost mapping in LLM
+| LLM_LOG | Enable detailed logging for LLM
+| LLM_MODE | Operating mode for LLM (e.g., production, development)
+| LLM_SALT_KEY | Salt key for encryption in LLM
+| LLM_SECRET_AWS_KMS_LLM_LICENSE | AWS KMS encrypted license for LLM
+| LLM_TOKEN | Access token for LLM integration
+| LLM_PRINT_STANDARD_LOGGING_PAYLOAD | If true, prints the standard logging payload to the console - useful for debugging
 | LOGFIRE_TOKEN | Token for Logfire logging service
 | MICROSOFT_CLIENT_ID | Client ID for Microsoft services
 | MICROSOFT_CLIENT_SECRET | Client secret for Microsoft services

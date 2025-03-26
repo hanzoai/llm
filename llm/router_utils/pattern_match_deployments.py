@@ -108,7 +108,7 @@ class PatternMatchRouter:
             new_deployment["llm_params"]["model"] = (
                 PatternMatchRouter.set_deployment_model_name(
                     matched_pattern=matched_pattern,
-                    llm_deployment_litellm_model=deployment["llm_params"][
+                    llm_deployment_llm_model=deployment["llm_params"][
                         "model"
                     ],
                 )
@@ -162,7 +162,7 @@ class PatternMatchRouter:
     @staticmethod
     def set_deployment_model_name(
         matched_pattern: Match,
-        llm_deployment_litellm_model: str,
+        llm_deployment_llm_model: str,
     ) -> str:
         """
         Set the model name for the matched pattern llm deployment
@@ -192,10 +192,10 @@ class PatternMatchRouter:
         """
 
         ## BASE CASE: if the deployment model name does not contain a wildcard, return the deployment model name
-        if "*" not in llm_deployment_litellm_model:
-            return llm_deployment_litellm_model
+        if "*" not in llm_deployment_llm_model:
+            return llm_deployment_llm_model
 
-        wildcard_count = llm_deployment_litellm_model.count("*")
+        wildcard_count = llm_deployment_llm_model.count("*")
 
         # Extract all dynamic segments from the request
         dynamic_segments = matched_pattern.groups()
@@ -206,11 +206,11 @@ class PatternMatchRouter:
             )  # default to the user input, if unable to map based on wildcards.
         # Replace the corresponding wildcards in the llm model pattern with extracted segments
         for segment in dynamic_segments:
-            llm_deployment_litellm_model = llm_deployment_litellm_model.replace(
+            llm_deployment_llm_model = llm_deployment_llm_model.replace(
                 "*", segment, 1
             )
 
-        return llm_deployment_litellm_model
+        return llm_deployment_llm_model
 
     def get_pattern(
         self, model: str, custom_llm_provider: Optional[str] = None

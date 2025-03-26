@@ -10,8 +10,8 @@ from typing import Callable, Optional, Union
 import httpx  # type: ignore
 
 import llm
-import llm.litellm_core_utils
-import llm.litellm_core_utils.litellm_logging
+import llm.llm_core_utils
+import llm.llm_core_utils.llm_logging
 from llm.llm_core_utils.core_helpers import map_finish_reason
 from llm.llm_core_utils.prompt_templates.factory import (
     custom_prompt,
@@ -64,7 +64,7 @@ class PredibaseChatCompletion:
         """
         Parse the output text to remove any special characters. In our current approach we just check for ChatML tokens.
 
-        Initial issue that prompted this - https://github.com/BerriAI/litellm/issues/763
+        Initial issue that prompted this - https://github.com/BerriAI/llm/issues/763
         """
         chat_template_tokens = [
             "<|assistant|>",

@@ -195,7 +195,7 @@ async def test_end_user_specific_region():
             user=end_user_obj["user_id"],
         )
 
-        assert result.headers.get("x-litellm-model-region") == "eu"
+        assert result.headers.get("x-llm-model-region") == "eu"
 
 
 @pytest.mark.asyncio

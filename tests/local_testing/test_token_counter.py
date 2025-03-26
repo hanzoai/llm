@@ -370,7 +370,7 @@ def test_gpt_4o_token_counter():
 )
 def test_img_url_token_counter(img_url):
 
-    from llm.litellm_core_utils.token_counter import get_image_dimensions
+    from llm.llm_core_utils.token_counter import get_image_dimensions
 
     width, height = get_image_dimensions(data=img_url)
 
@@ -464,7 +464,7 @@ class TestTokenizerSelection(unittest.TestCase):
     def test_disable_hf_tokenizer_download(self, mock_return_huggingface_tokenizer):
         # Use pytest.MonkeyPatch() directly instead of fixture
         monkeypatch = pytest.MonkeyPatch()
-        monkeypatch.setattr(litellm, "disable_hf_tokenizer_download", True)
+        monkeypatch.setattr(llm, "disable_hf_tokenizer_download", True)
 
         result = _select_tokenizer_helper("grok-32r22r")
         mock_return_huggingface_tokenizer.assert_not_called()

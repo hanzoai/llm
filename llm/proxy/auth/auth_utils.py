@@ -464,7 +464,7 @@ def should_run_auth_on_pass_through_provider_route(route: str) -> bool:
     ex /vertex-ai/{endpoint} routes
     Run virtual key auth if the following is try:
     - User is premium_user
-    - User has enabled litellm_setting.use_client_credentials_pass_through_routes
+    - User has enabled llm_setting.use_client_credentials_pass_through_routes
     """
     from llm.proxy.proxy_server import general_settings, premium_user
 

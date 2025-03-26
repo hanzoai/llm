@@ -9,7 +9,7 @@ Pass-through endpoints for Cohere - call provider-specific endpoint, in native f
 | End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
 | Streaming | ✅ | |
 
-Just replace `https://api.cohere.com` with `LITELLM_PROXY_BASE_URL/cohere` 🚀
+Just replace `https://api.cohere.com` with `LLM_PROXY_BASE_URL/cohere` 🚀
 
 #### **Example Usage**
 ```bash
@@ -81,8 +81,8 @@ Key Changes:
 
 | **Original Endpoint**                                | **Replace With**                  |
 |------------------------------------------------------|-----------------------------------|
-| `https://api.cohere.com`          | `http://0.0.0.0:4000/cohere` (LITELLM_PROXY_BASE_URL="http://0.0.0.0:4000")      |
-| `bearer $CO_API_KEY`                                 | `bearer anything` (use `bearer LITELLM_VIRTUAL_KEY` if Virtual Keys are setup on proxy)                    |
+| `https://api.cohere.com`          | `http://0.0.0.0:4000/cohere` (LLM_PROXY_BASE_URL="http://0.0.0.0:4000")      |
+| `bearer $CO_API_KEY`                                 | `bearer anything` (use `bearer LLM_VIRTUAL_KEY` if Virtual Keys are setup on proxy)                    |
 
 
 ### **Example 1: Rerank endpoint**
@@ -210,7 +210,7 @@ Use this, to avoid giving developers the raw Cohere API key, but still letting t
 
 ```bash
 export DATABASE_URL=""
-export LITELLM_MASTER_KEY=""
+export LLM_MASTER_KEY=""
 export COHERE_API_KEY=""
 ```
 

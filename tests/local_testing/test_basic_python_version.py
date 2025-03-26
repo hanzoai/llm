@@ -12,7 +12,7 @@ sys.path.insert(
 )  # Adds the parent directory to the system path
 
 
-def test_using_litellm():
+def test_using_llm():
     try:
         import llm
 
@@ -23,9 +23,9 @@ def test_using_litellm():
         )
 
 
-def test_litellm_proxy_server():
-    # Install the litellm[proxy] package
-    subprocess.run(["pip", "install", "litellm[proxy]"])
+def test_llm_proxy_server():
+    # Install the llm[proxy] package
+    subprocess.run(["pip", "install", "llm[proxy]"])
 
     # Import the proxy_server module
     try:
@@ -44,8 +44,8 @@ def test_package_dependencies():
         import llm
 
         # Get the llm package root path
-        litellm_path = pathlib.Path(llm.__file__).parent.parent
-        pyproject_path = litellm_path / "pyproject.toml"
+        llm_path = pathlib.Path(llm.__file__).parent.parent
+        pyproject_path = llm_path / "pyproject.toml"
 
         # Read and parse pyproject.toml
         with open(pyproject_path, "rb") as f:
@@ -90,12 +90,12 @@ import pytest
 import requests
 
 
-def test_litellm_proxy_server_config_no_general_settings():
-    # Install the litellm[proxy] package
+def test_llm_proxy_server_config_no_general_settings():
+    # Install the llm[proxy] package
     # Start the server
     try:
-        subprocess.run(["pip", "install", "litellm[proxy]"])
-        subprocess.run(["pip", "install", "litellm[extra_proxy]"])
+        subprocess.run(["pip", "install", "llm[proxy]"])
+        subprocess.run(["pip", "install", "llm[extra_proxy]"])
         filepath = os.path.dirname(os.path.abspath(__file__))
         config_fp = f"{filepath}/test_configs/test_config_no_auth.yaml"
         server_process = subprocess.Popen(

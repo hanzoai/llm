@@ -46,7 +46,7 @@ if MCP_AVAILABLE:
         prefix="/mcp",
         tags=["mcp"],
     )
-    server: Server = Server("litellm-mcp-server")
+    server: Server = Server("llm-mcp-server")
     sse: SseServerTransport = SseServerTransport("/mcp/sse/messages")
 
     ########################################################
@@ -114,7 +114,7 @@ if MCP_AVAILABLE:
         await request.close()
 
     options = InitializationOptions(
-        server_name="litellm-mcp-server",
+        server_name="llm-mcp-server",
         server_version="0.1.0",
         capabilities=server.get_capabilities(
             notification_options=NotificationOptions(),

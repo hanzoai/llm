@@ -104,12 +104,12 @@ async def test_router_with_caching():
         model_list = [
             {
                 "model_name": "azure/gpt-4",
-                "litellm_params": get_azure_params("chatgpt-v-2"),
+                "llm_params": get_azure_params("chatgpt-v-2"),
                 "tpm": 100,
             },
             {
                 "model_name": "azure/gpt-4",
-                "litellm_params": get_azure_params("chatgpt-v-2"),
+                "llm_params": get_azure_params("chatgpt-v-2"),
                 "tpm": 1000,
             },
         ]
@@ -221,7 +221,7 @@ def test_get_metric_existing():
     )
 
     # Test retrieving existing metric
-    retrieved_metric = pl._get_metric("litellm_test_service_test_type_of_request")
+    retrieved_metric = pl._get_metric("llm_test_service_test_type_of_request")
     assert retrieved_metric is hist
     assert retrieved_metric is not None
 
@@ -245,7 +245,7 @@ def test_create_histogram_new():
     )
 
     assert hist is not None
-    assert pl._get_metric("litellm_test_service_test_type_of_request") is hist
+    assert pl._get_metric("llm_test_service_test_type_of_request") is hist
 
 
 def test_create_histogram_existing():
@@ -263,7 +263,7 @@ def test_create_histogram_existing():
     )
 
     assert hist2 is hist1  # same object
-    assert pl._get_metric("litellm_test_service_test_type_of_request") is hist1
+    assert pl._get_metric("llm_test_service_test_type_of_request") is hist1
 
 
 def test_create_counter_new():
@@ -276,7 +276,7 @@ def test_create_counter_new():
     )
 
     assert counter is not None
-    assert pl._get_metric("litellm_test_service_test_type_of_request") is counter
+    assert pl._get_metric("llm_test_service_test_type_of_request") is counter
 
 
 def test_create_counter_existing():
@@ -294,4 +294,4 @@ def test_create_counter_existing():
     )
 
     assert counter2 is counter1
-    assert pl._get_metric("litellm_test_service_test_type_of_request") is counter1
+    assert pl._get_metric("llm_test_service_test_type_of_request") is counter1

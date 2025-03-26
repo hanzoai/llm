@@ -480,7 +480,7 @@ curl -X POST 'http://0.0.0.0:4000/team/update' \
 ```bash
 curl --location 'http://0.0.0.0:4000/chat/completions' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer $LITELLM_VIRTUAL_KEY' \
+--header 'Authorization: Bearer $LLM_VIRTUAL_KEY' \
 --data '{
 "model": "gpt-3.5-turbo",
     "messages": [

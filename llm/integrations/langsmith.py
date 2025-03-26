@@ -82,7 +82,7 @@ class LangsmithLogger(CustomBatchLogger):
                 "Invalid Langsmith API Key given. _credentials_api_key=None."
             )
         _credentials_project = (
-            langsmith_project or os.getenv("LANGSMITH_PROJECT") or "litellm-completion"
+            langsmith_project or os.getenv("LANGSMITH_PROJECT") or "llm-completion"
         )
         if _credentials_project is None:
             raise Exception(

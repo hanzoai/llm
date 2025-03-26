@@ -40,7 +40,7 @@ load_dotenv()
 
 def test_router_deployment_typing():
     deployment_typed_dict = DeploymentTypedDict(
-        model_name="hi", litellm_params={"model": "hello-world"}
+        model_name="hi", llm_params={"model": "hello-world"}
     )
     for value in deployment_typed_dict.items():
         assert not isinstance(value, BaseModel)
@@ -55,7 +55,7 @@ def test_router_multi_org_list():
         model_list=[
             {
                 "model_name": "*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/*",
                     "api_key": "my-key",
                     "api_base": "https://api.openai.com/v1",
@@ -79,7 +79,7 @@ async def test_router_provider_wildcard_routing():
         model_list=[
             {
                 "model_name": "openai/*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/*",
                     "api_key": os.environ["OPENAI_API_KEY"],
                     "api_base": "https://api.openai.com/v1",
@@ -87,14 +87,14 @@ async def test_router_provider_wildcard_routing():
             },
             {
                 "model_name": "anthropic/*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "anthropic/*",
                     "api_key": os.environ["ANTHROPIC_API_KEY"],
                 },
             },
             {
                 "model_name": "groq/*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "groq/*",
                     "api_key": os.environ["GROQ_API_KEY"],
                 },
@@ -141,14 +141,14 @@ async def test_router_provider_wildcard_routing_regex():
         model_list=[
             {
                 "model_name": "openai/fo::*:static::*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/fo::*:static::*",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                 },
             },
             {
                 "model_name": "openai/foo3::hello::*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/foo3::hello::*",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
                 },
@@ -181,7 +181,7 @@ def test_router_specific_model_via_id():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "my-fake-key",
                     "mock_response": "Hello world",
@@ -201,7 +201,7 @@ def test_router_azure_ai_client_init():
 
     _deployment = {
         "model_name": "meta-llama-3-70b",
-        "litellm_params": {
+        "llm_params": {
             "model": "azure_ai/Meta-Llama-3-70B-instruct",
             "api_base": "my-fake-route",
             "api_key": "my-fake-key",
@@ -228,7 +228,7 @@ def test_router_azure_ai_client_init():
 def test_router_azure_ad_token_provider():
     _deployment = {
         "model_name": "gpt-4o_2024-05-13",
-        "litellm_params": {
+        "llm_params": {
             "model": "azure/gpt-4o_2024-05-13",
             "api_base": "my-fake-route",
             "api_version": "2024-08-01-preview",
@@ -265,7 +265,7 @@ def test_router_sensitive_keys():
             model_list=[
                 {
                     "model_name": "gpt-3.5-turbo",  # openai model name
-                    "litellm_params": {  # params for llm completion/embedding call
+                    "llm_params": {  # params for llm completion/embedding call
                         "model": "azure/chatgpt-v-2",
                         "api_key": "special-key",
                     },
@@ -286,7 +286,7 @@ def test_router_order():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "mock_response": "Hello world",
@@ -296,7 +296,7 @@ def test_router_order():
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_key": "bad-key",
                     "mock_response": Exception("this is a bad key"),
@@ -329,11 +329,11 @@ async def test_router_retries(sync_mode):
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {"model": "gpt-3.5-turbo", "api_key": "bad-key"},
+            "llm_params": {"model": "gpt-3.5-turbo", "api_key": "bad-key"},
         },
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "azure/chatgpt-v-2",
                 "api_key": os.getenv("AZURE_API_KEY"),
                 "api_base": os.getenv("AZURE_API_BASE"),
@@ -376,7 +376,7 @@ def test_router_azure_ai_studio_init(mistral_api_base):
         model_list=[
             {
                 "model_name": "test-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/mistral-large-latest",
                     "api_key": "os.environ/AZURE_MISTRAL_API_KEY",
                     "api_base": mistral_api_base,
@@ -416,7 +416,7 @@ def test_exception_raising():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -427,7 +427,7 @@ def test_exception_raising():
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  #
+                "llm_params": {  #
                     "model": "gpt-3.5-turbo",
                     "api_key": "bad-key",
                 },
@@ -478,7 +478,7 @@ def test_reading_key_from_model_list():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": old_api_key,
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -543,7 +543,7 @@ def test_call_one_endpoint():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": old_api_key,
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -554,7 +554,7 @@ def test_call_one_endpoint():
             },
             {
                 "model_name": "text-embedding-ada-002",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/azure-embedding-model",
                     "api_key": os.environ["AZURE_API_KEY"],
                     "api_base": os.environ["AZURE_API_BASE"],
@@ -619,7 +619,7 @@ def test_router_azure_acompletion():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": old_api_key,
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -629,7 +629,7 @@ def test_router_azure_acompletion():
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/gpt-turbo",
                     "api_key": os.getenv("AZURE_FRANCE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -701,7 +701,7 @@ async def test_async_router_context_window_fallback(sync_mode):
         model_list = [
             {
                 "model_name": "gpt-4",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-4",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "api_base": os.getenv("OPENAI_API_BASE"),
@@ -709,7 +709,7 @@ async def test_async_router_context_window_fallback(sync_mode):
             },
             {
                 "model_name": "gpt-4-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-4-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -751,7 +751,7 @@ def test_router_rpm_pre_call_check():
         model_list = [
             {
                 "model_name": "fake-openai-endpoint",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "openai/my-fake-model",
                     "api_key": "my-fake-key",
                     "api_base": "https://openai-function-calling-workers.tasslexyz.workers.dev/",
@@ -792,7 +792,7 @@ def test_router_context_window_check_pre_call_check_in_group_custom_model_info()
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -804,7 +804,7 @@ def test_router_context_window_check_pre_call_check_in_group_custom_model_info()
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo-1106",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "mock_response": "Hello world 2!",
@@ -846,7 +846,7 @@ def test_router_context_window_check_pre_call_check():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -858,7 +858,7 @@ def test_router_context_window_check_pre_call_check():
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo-1106",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                     "mock_response": "Hello world 2!",
@@ -900,7 +900,7 @@ def test_router_context_window_check_pre_call_check_out_group():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo-small",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -910,7 +910,7 @@ def test_router_context_window_check_pre_call_check_out_group():
             },
             {
                 "model_name": "gpt-3.5-turbo-large",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo-1106",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -943,14 +943,14 @@ def test_filter_invalid_params_pre_call_check():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo-16k",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -979,7 +979,7 @@ def test_router_region_pre_call_check(allowed_model_region):
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-v-2",
                 "api_key": os.getenv("AZURE_API_KEY"),
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -991,7 +991,7 @@ def test_router_region_pre_call_check(allowed_model_region):
         },
         {
             "model_name": "gpt-3.5-turbo-large",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "gpt-3.5-turbo-1106",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
@@ -1028,7 +1028,7 @@ def test_function_calling():
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
@@ -1073,7 +1073,7 @@ def test_function_calling_on_router():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -1124,13 +1124,13 @@ async def test_aimg_gen_on_router():
         model_list = [
             {
                 "model_name": "dall-e-3",
-                "litellm_params": {
+                "llm_params": {
                     "model": "dall-e-3",
                 },
             },
             {
                 "model_name": "dall-e-3",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/dall-e-3-test",
                     "api_version": "2023-12-01-preview",
                     "api_base": os.getenv("AZURE_SWEDEN_API_BASE"),
@@ -1139,7 +1139,7 @@ async def test_aimg_gen_on_router():
             },
             {
                 "model_name": "dall-e-2",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/",
                     "api_version": "2023-06-01-preview",
                     "api_base": os.getenv("AZURE_API_BASE"),
@@ -1184,13 +1184,13 @@ def test_img_gen_on_router():
         model_list = [
             {
                 "model_name": "dall-e-3",
-                "litellm_params": {
+                "llm_params": {
                     "model": "dall-e-3",
                 },
             },
             {
                 "model_name": "dall-e-3",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/dall-e-3-test",
                     "api_version": "2023-12-01-preview",
                     "api_base": os.getenv("AZURE_SWEDEN_API_BASE"),
@@ -1222,7 +1222,7 @@ def test_aembedding_on_router():
         model_list = [
             {
                 "model_name": "text-embedding-ada-002",
-                "litellm_params": {
+                "llm_params": {
                     "model": "text-embedding-ada-002",
                 },
                 "tpm": 100000,
@@ -1289,7 +1289,7 @@ def test_azure_embedding_on_router():
         model_list = [
             {
                 "model_name": "text-embedding-ada-002",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/azure-embedding-model",
                     "api_key": os.environ["AZURE_API_KEY"],
                     "api_base": os.environ["AZURE_API_BASE"],
@@ -1331,7 +1331,7 @@ def test_bedrock_on_router():
         model_list = [
             {
                 "model_name": "claude-v1",
-                "litellm_params": {
+                "llm_params": {
                     "model": "bedrock/anthropic.claude-instant-v1",
                 },
                 "tpm": 100000,
@@ -1369,7 +1369,7 @@ async def test_mistral_on_router():
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "mistral/mistral-small-latest",
             },
         },
@@ -1399,7 +1399,7 @@ def test_openai_completion_on_router():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                 },
             },
@@ -1485,7 +1485,7 @@ def test_model_group_info():
         model_list=[
             {
                 "model_name": "command-r-plus",
-                "litellm_params": {"model": "cohere.command-r-plus-v1:0"},
+                "llm_params": {"model": "cohere.command-r-plus-v1:0"},
             }
         ]
     )
@@ -1506,7 +1506,7 @@ def test_consistent_model_id():
     Test on `_add_deployment`
     """
     model_group = "gpt-3.5-turbo"
-    litellm_params = {
+    llm_params = {
         "model": "openai/my-fake-model",
         "api_key": "my-fake-key",
         "api_base": "https://openai-function-calling-workers.tasslexyz.workers.dev/",
@@ -1514,11 +1514,11 @@ def test_consistent_model_id():
     }
 
     id1 = Router()._generate_model_id(
-        model_group=model_group, litellm_params=litellm_params
+        model_group=model_group, llm_params=llm_params
     )
 
     id2 = Router()._generate_model_id(
-        model_group=model_group, litellm_params=litellm_params
+        model_group=model_group, llm_params=llm_params
     )
 
     assert id1 == id2
@@ -1532,7 +1532,7 @@ def test_reading_keys_os_environ():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "os.environ/AZURE_API_KEY",
                     "api_base": "os.environ/AZURE_API_BASE",
@@ -1547,24 +1547,24 @@ def test_reading_keys_os_environ():
         router = Router(model_list=model_list)
         for model in router.model_list:
             assert (
-                model["litellm_params"]["api_key"] == os.environ["AZURE_API_KEY"]
-            ), f"{model['litellm_params']['api_key']} vs {os.environ['AZURE_API_KEY']}"
+                model["llm_params"]["api_key"] == os.environ["AZURE_API_KEY"]
+            ), f"{model['llm_params']['api_key']} vs {os.environ['AZURE_API_KEY']}"
             assert (
-                model["litellm_params"]["api_base"] == os.environ["AZURE_API_BASE"]
-            ), f"{model['litellm_params']['api_base']} vs {os.environ['AZURE_API_BASE']}"
+                model["llm_params"]["api_base"] == os.environ["AZURE_API_BASE"]
+            ), f"{model['llm_params']['api_base']} vs {os.environ['AZURE_API_BASE']}"
             assert (
-                model["litellm_params"]["api_version"]
+                model["llm_params"]["api_version"]
                 == os.environ["AZURE_API_VERSION"]
-            ), f"{model['litellm_params']['api_version']} vs {os.environ['AZURE_API_VERSION']}"
-            assert float(model["litellm_params"]["timeout"]) == float(
+            ), f"{model['llm_params']['api_version']} vs {os.environ['AZURE_API_VERSION']}"
+            assert float(model["llm_params"]["timeout"]) == float(
                 os.environ["AZURE_TIMEOUT"]
-            ), f"{model['litellm_params']['timeout']} vs {os.environ['AZURE_TIMEOUT']}"
-            assert float(model["litellm_params"]["stream_timeout"]) == float(
+            ), f"{model['llm_params']['timeout']} vs {os.environ['AZURE_TIMEOUT']}"
+            assert float(model["llm_params"]["stream_timeout"]) == float(
                 os.environ["AZURE_STREAM_TIMEOUT"]
-            ), f"{model['litellm_params']['stream_timeout']} vs {os.environ['AZURE_STREAM_TIMEOUT']}"
-            assert int(model["litellm_params"]["max_retries"]) == int(
+            ), f"{model['llm_params']['stream_timeout']} vs {os.environ['AZURE_STREAM_TIMEOUT']}"
+            assert int(model["llm_params"]["max_retries"]) == int(
                 os.environ["AZURE_MAX_RETRIES"]
-            ), f"{model['litellm_params']['max_retries']} vs {os.environ['AZURE_MAX_RETRIES']}"
+            ), f"{model['llm_params']['max_retries']} vs {os.environ['AZURE_MAX_RETRIES']}"
             print("passed testing of reading keys from os.environ")
             model_id = model["model_info"]["id"]
             async_client: openai.AsyncAzureOpenAI = router.cache.get_cache(f"{model_id}_async_client")  # type: ignore
@@ -1632,7 +1632,7 @@ def test_reading_openai_keys_os_environ():
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "os.environ/OPENAI_API_KEY",
                     "timeout": "os.environ/AZURE_TIMEOUT",
@@ -1642,7 +1642,7 @@ def test_reading_openai_keys_os_environ():
             },
             {
                 "model_name": "text-embedding-ada-002",
-                "litellm_params": {
+                "llm_params": {
                     "model": "text-embedding-ada-002",
                     "api_key": "os.environ/OPENAI_API_KEY",
                     "timeout": "os.environ/AZURE_TIMEOUT",
@@ -1655,17 +1655,17 @@ def test_reading_openai_keys_os_environ():
         router = Router(model_list=model_list)
         for model in router.model_list:
             assert (
-                model["litellm_params"]["api_key"] == os.environ["OPENAI_API_KEY"]
-            ), f"{model['litellm_params']['api_key']} vs {os.environ['AZURE_API_KEY']}"
-            assert float(model["litellm_params"]["timeout"]) == float(
+                model["llm_params"]["api_key"] == os.environ["OPENAI_API_KEY"]
+            ), f"{model['llm_params']['api_key']} vs {os.environ['AZURE_API_KEY']}"
+            assert float(model["llm_params"]["timeout"]) == float(
                 os.environ["AZURE_TIMEOUT"]
-            ), f"{model['litellm_params']['timeout']} vs {os.environ['AZURE_TIMEOUT']}"
-            assert float(model["litellm_params"]["stream_timeout"]) == float(
+            ), f"{model['llm_params']['timeout']} vs {os.environ['AZURE_TIMEOUT']}"
+            assert float(model["llm_params"]["stream_timeout"]) == float(
                 os.environ["AZURE_STREAM_TIMEOUT"]
-            ), f"{model['litellm_params']['stream_timeout']} vs {os.environ['AZURE_STREAM_TIMEOUT']}"
-            assert int(model["litellm_params"]["max_retries"]) == int(
+            ), f"{model['llm_params']['stream_timeout']} vs {os.environ['AZURE_STREAM_TIMEOUT']}"
+            assert int(model["llm_params"]["max_retries"]) == int(
                 os.environ["AZURE_MAX_RETRIES"]
-            ), f"{model['litellm_params']['max_retries']} vs {os.environ['AZURE_MAX_RETRIES']}"
+            ), f"{model['llm_params']['max_retries']} vs {os.environ['AZURE_MAX_RETRIES']}"
             print("passed testing of reading keys from os.environ")
             model_id = model["model_info"]["id"]
             async_client: openai.AsyncOpenAI = router.cache.get_cache(key=f"{model_id}_async_client")  # type: ignore
@@ -1726,7 +1726,7 @@ def test_router_anthropic_key_dynamic():
     model_list = [
         {
             "model_name": "anthropic-claude",
-            "litellm_params": {
+            "llm_params": {
                 "model": "claude-3-5-haiku-20241022",
                 "api_key": anthropic_api_key,
             },
@@ -1749,7 +1749,7 @@ def test_router_timeout():
     model_list = [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {
+            "llm_params": {
                 "model": "gpt-3.5-turbo",
                 "api_key": "os.environ/OPENAI_API_KEY",
             },
@@ -1776,7 +1776,7 @@ async def test_router_amoderation():
     model_list = [
         {
             "model_name": "openai-moderations",
-            "litellm_params": {
+            "llm_params": {
                 "model": "text-moderation-stable",
                 "api_key": os.getenv("OPENAI_API_KEY", None),
             },
@@ -1794,7 +1794,7 @@ def test_router_add_deployment():
     initial_model_list = [
         {
             "model_name": "fake-openai-endpoint",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/my-fake-model",
                 "api_key": "my-fake-key",
                 "api_base": "https://openai-function-calling-workers.tasslexyz.workers.dev/",
@@ -1810,7 +1810,7 @@ def test_router_add_deployment():
     router.add_deployment(
         deployment=Deployment(
             model_name="gpt-instruct",
-            litellm_params=LLM_Params(model="gpt-3.5-turbo-instruct"),
+            llm_params=LLM_Params(model="gpt-3.5-turbo-instruct"),
             model_info=ModelInfo(),
         )
     )
@@ -1832,7 +1832,7 @@ async def test_router_text_completion_client():
         model_list = [
             {
                 "model_name": "fake-openai-endpoint",
-                "litellm_params": {
+                "llm_params": {
                     "model": "text-completion-openai/gpt-3.5-turbo-instruct",
                     "api_key": os.getenv("OPENAI_API_KEY", None),
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
@@ -1909,7 +1909,7 @@ async def test_router_model_usage(mock_response):
         model_list=[
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "my-key",
                     "api_base": "my-base",
@@ -1982,7 +1982,7 @@ async def test_is_proxy_set():
         model_list=[
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/gpt-3.5-turbo",
                     "api_key": "my-key",
                     "api_base": "my-base",
@@ -2020,7 +2020,7 @@ def test_router_get_model_info(model, base_model, llm_provider):
         model_list=[
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": model,
                     "api_key": "my-fake-key",
                     "api_base": "my-fake-base",
@@ -2067,7 +2067,7 @@ def test_router_context_window_pre_call_check(model, base_model, llm_provider):
         model_list = [
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": model,
                     "api_key": "my-fake-key",
                     "api_base": "my-fake-base",
@@ -2119,7 +2119,7 @@ def test_router_cooldown_api_connection_error():
     except llm.APIConnectionError as e:
         assert (
             _is_cooldown_required(
-                litellm_router_instance=Router(),
+                llm_router_instance=Router(),
                 model_id="",
                 exception_status=e.code,
                 exception_str=str(e),
@@ -2131,7 +2131,7 @@ def test_router_cooldown_api_connection_error():
         model_list=[
             {
                 "model_name": "gemini-1.5-pro",
-                "litellm_params": {"model": "vertex_ai/gemini-1.5-pro"},
+                "llm_params": {"model": "vertex_ai/gemini-1.5-pro"},
             }
         ]
     )
@@ -2157,7 +2157,7 @@ def test_router_correctly_reraise_error():
         model_list=[
             {
                 "model_name": "gemini-1.5-pro",
-                "litellm_params": {
+                "llm_params": {
                     "model": "vertex_ai/gemini-1.5-pro",
                     "mock_response": "llm.RateLimitError",
                 },
@@ -2187,7 +2187,7 @@ def test_router_dynamic_cooldown_correct_retry_after_time():
         model_list=[
             {
                 "model_name": "text-embedding-ada-002",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/text-embedding-ada-002",
                 },
             }
@@ -2273,13 +2273,13 @@ async def test_aaarouter_dynamic_cooldown_message_retry_time(sync_mode):
         model_list=[
             {
                 "model_name": "text-embedding-ada-002",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/text-embedding-ada-002",
                 },
             },
             {
                 "model_name": "text-embedding-ada-002",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/text-embedding-ada-002",
                 },
             },
@@ -2349,11 +2349,11 @@ async def test_aaarouter_dynamic_cooldown_message_retry_time(sync_mode):
 
         if sync_mode:
             cooldown_deployments = _get_cooldown_deployments(
-                litellm_router_instance=router, parent_otel_span=None
+                llm_router_instance=router, parent_otel_span=None
             )
         else:
             cooldown_deployments = await _async_get_cooldown_deployments(
-                litellm_router_instance=router, parent_otel_span=None
+                llm_router_instance=router, parent_otel_span=None
             )
         print(
             "Cooldown deployments - {}\n{}".format(
@@ -2392,7 +2392,7 @@ async def test_router_weighted_pick(sync_mode):
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "weight": 2,
                     "mock_response": "Hello world 1!",
@@ -2401,7 +2401,7 @@ async def test_router_weighted_pick(sync_mode):
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "weight": 1,
                     "mock_response": "Hello world 2!",
@@ -2452,7 +2452,7 @@ async def test_router_batch_endpoints(provider):
         model_list=[
             {
                 "model_name": "my-custom-name",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/gpt-4o-mini",
                     "api_base": os.getenv("AZURE_API_BASE"),
                     "api_key": os.getenv("AZURE_API_KEY"),
@@ -2541,9 +2541,9 @@ def test_model_group_alias(hidden):
     _model_list = [
         {
             "model_name": "gpt-3.5-turbo",
-            "litellm_params": {"model": "gpt-3.5-turbo"},
+            "llm_params": {"model": "gpt-3.5-turbo"},
         },
-        {"model_name": "gpt-4", "litellm_params": {"model": "gpt-4"}},
+        {"model_name": "gpt-4", "llm_params": {"model": "gpt-4"}},
     ]
     router = Router(
         model_list=_model_list,
@@ -2576,7 +2576,7 @@ def test_get_team_specific_model():
     # Test 1: Matching team_id
     deployment = DeploymentTypedDict(
         model_name="model-x",
-        litellm_params={},
+        llm_params={},
         model_info=ModelInfo(team_id="team1", team_public_model_name="public-model-x"),
     )
     assert router._get_team_specific_model(deployment, "team1") == "public-model-x"
@@ -2587,14 +2587,14 @@ def test_get_team_specific_model():
     # Test 3: No team_id in model_info
     deployment = DeploymentTypedDict(
         model_name="model-y",
-        litellm_params={},
+        llm_params={},
         model_info=ModelInfo(team_public_model_name="public-model-y"),
     )
     assert router._get_team_specific_model(deployment, "team1") is None
 
     # Test 4: No model_info
     deployment = DeploymentTypedDict(
-        model_name="model-z", litellm_params={}, model_info=ModelInfo()
+        model_name="model-z", llm_params={}, model_info=ModelInfo()
     )
     assert router._get_team_specific_model(deployment, "team1") is None
 
@@ -2631,7 +2631,7 @@ def test_is_team_specific_model():
 #         model_list=[
 #             {
 #                 "model_name": "gpt-3.5-turbo",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "azure/chatgpt-v-2",
 #                     "api_key": os.getenv("AZURE_API_KEY"),
 #                     "api_base": os.getenv("AZURE_API_BASE"),
@@ -2641,7 +2641,7 @@ def test_is_team_specific_model():
 #             },
 #             {
 #                 "model_name": "gpt-3.5-turbo",
-#                 "litellm_params": {
+#                 "llm_params": {
 #                     "model": "azure/chatgpt-v-2",
 #                     "api_key": os.getenv("AZURE_API_KEY"),
 #                     "api_base": os.getenv("AZURE_API_BASE"),
@@ -2673,7 +2673,7 @@ def test_router_completion_with_model_id():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {"model": "gpt-3.5-turbo"},
+                "llm_params": {"model": "gpt-3.5-turbo"},
                 "model_info": {"id": "123"},
             }
         ]
@@ -2691,11 +2691,11 @@ def test_router_prompt_management_factory():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {"model": "gpt-3.5-turbo"},
+                "llm_params": {"model": "gpt-3.5-turbo"},
             },
             {
                 "model_name": "chatbot_actions",
-                "litellm_params": {
+                "llm_params": {
                     "model": "langfuse/openai-gpt-3.5-turbo",
                     "tpm": 1000000,
                     "prompt_id": "jokes",
@@ -2703,7 +2703,7 @@ def test_router_prompt_management_factory():
             },
             {
                 "model_name": "openai-gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -2728,7 +2728,7 @@ def test_router_get_model_list_from_model_alias():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {"model": "gpt-3.5-turbo"},
+                "llm_params": {"model": "gpt-3.5-turbo"},
             }
         ],
         model_group_alias={
@@ -2752,7 +2752,7 @@ def test_router_dynamic_credentials():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-3.5-turbo",
                     "api_key": original_api_key,
                     "mock_response": "fake_response",
@@ -2764,7 +2764,7 @@ def test_router_dynamic_credentials():
 
     deployment = router.get_deployment(model_id=original_model_id)
     assert deployment is not None
-    assert deployment.litellm_params.api_key == original_api_key
+    assert deployment.llm_params.api_key == original_api_key
 
     response = router.completion(
         model="gpt-3.5-turbo",
@@ -2782,4 +2782,4 @@ def test_router_dynamic_credentials():
 
     deployment = router.get_deployment(model_id=original_model_id)
     assert deployment is not None
-    assert deployment.litellm_params.api_key == original_api_key
+    assert deployment.llm_params.api_key == original_api_key

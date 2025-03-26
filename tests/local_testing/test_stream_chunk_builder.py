@@ -91,7 +91,7 @@ tools_schema = [
 # test_stream_chunk_builder_tools()
 
 
-def test_stream_chunk_builder_litellm_function_call():
+def test_stream_chunk_builder_llm_function_call():
     try:
         llm.set_verbose = False
         response = llm.completion(
@@ -107,10 +107,10 @@ def test_stream_chunk_builder_litellm_function_call():
         pytest.fail(f"An exception occurred - {str(e)}")
 
 
-# test_stream_chunk_builder_litellm_function_call()
+# test_stream_chunk_builder_llm_function_call()
 
 
-def test_stream_chunk_builder_litellm_tool_call():
+def test_stream_chunk_builder_llm_tool_call():
     try:
         llm.set_verbose = True
         response = llm.completion(
@@ -133,10 +133,10 @@ def test_stream_chunk_builder_litellm_tool_call():
         pytest.fail(f"An exception occurred - {str(e)}")
 
 
-# test_stream_chunk_builder_litellm_tool_call()
+# test_stream_chunk_builder_llm_tool_call()
 
 
-def test_stream_chunk_builder_litellm_tool_call_regular_message():
+def test_stream_chunk_builder_llm_tool_call_regular_message():
     try:
         messages = [{"role": "user", "content": "Hey, how's it going?"}]
         # llm.set_verbose = True
@@ -165,10 +165,10 @@ def test_stream_chunk_builder_litellm_tool_call_regular_message():
         pytest.fail(f"An exception occurred - {str(e)}")
 
 
-# test_stream_chunk_builder_litellm_tool_call_regular_message()
+# test_stream_chunk_builder_llm_tool_call_regular_message()
 
 
-def test_stream_chunk_builder_litellm_usage_chunks():
+def test_stream_chunk_builder_llm_usage_chunks():
     """
     Checks if stream_chunk_builder is able to correctly rebuild with given metadata from streaming chunks
     """
@@ -218,7 +218,7 @@ def test_stream_chunk_builder_litellm_usage_chunks():
     ), f"Stream builder is not able to rebuild usage correctly. Got={stream_rebuilt_pt}, expected={gemini_pt}"
 
 
-def test_stream_chunk_builder_litellm_mixed_calls():
+def test_stream_chunk_builder_llm_mixed_calls():
     response = stream_chunk_builder(stream_chunk_testdata.chunks)
     assert (
         response.choices[0].message.content
@@ -238,7 +238,7 @@ def test_stream_chunk_builder_litellm_mixed_calls():
     }
 
 
-def test_stream_chunk_builder_litellm_empty_chunks():
+def test_stream_chunk_builder_llm_empty_chunks():
     with pytest.raises(llm.APIError):
         response = stream_chunk_builder(chunks=None)
 
@@ -738,7 +738,7 @@ def test_stream_chunk_builder_openai_audio_output_usage():
 
 
 def test_stream_chunk_builder_empty_initial_chunk():
-    from llm.litellm_core_utils.streaming_chunk_builder_utils import (
+    from llm.llm_core_utils.streaming_chunk_builder_utils import (
         ChunkProcessor,
     )
 
@@ -753,7 +753,7 @@ def test_stream_chunk_builder_empty_initial_chunk():
 
 
 def test_stream_chunk_builder_tool_calls_list():
-    from llm.litellm_core_utils.streaming_chunk_builder_utils import (
+    from llm.llm_core_utils.streaming_chunk_builder_utils import (
         ChunkProcessor,
     )
     from llm.types.utils import (

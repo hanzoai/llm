@@ -141,7 +141,7 @@ const OrganizationInfoView: React.FC<OrganizationInfoProps> = ({
         organization_id: organizationId,
         organization_alias: values.organization_alias,
         models: values.models,
-        litellm_budget_table: {
+        llm_budget_table: {
           tpm_limit: values.tpm_limit,
           rpm_limit: values.rpm_limit,
           max_budget: values.max_budget,
@@ -203,9 +203,9 @@ const OrganizationInfoView: React.FC<OrganizationInfoProps> = ({
                 <Text>Budget Status</Text>
                 <div className="mt-2">
                 <Title>${orgData.spend.toFixed(6)}</Title>
-                <Text>of {orgData.litellm_budget_table.max_budget === null ? "Unlimited" : `$${orgData.litellm_budget_table.max_budget}`}</Text>
-                {orgData.litellm_budget_table.budget_duration && (
-                    <Text className="text-gray-500">Reset: {orgData.litellm_budget_table.budget_duration}</Text>
+                <Text>of {orgData.llm_budget_table.max_budget === null ? "Unlimited" : `$${orgData.llm_budget_table.max_budget}`}</Text>
+                {orgData.llm_budget_table.budget_duration && (
+                    <Text className="text-gray-500">Reset: {orgData.llm_budget_table.budget_duration}</Text>
                 )}
                 </div>
             </Card>
@@ -213,10 +213,10 @@ const OrganizationInfoView: React.FC<OrganizationInfoProps> = ({
             <Card>
                 <Text>Rate Limits</Text>
                 <div className="mt-2">
-                <Text>TPM: {orgData.litellm_budget_table.tpm_limit || 'Unlimited'}</Text>
-                <Text>RPM: {orgData.litellm_budget_table.rpm_limit || 'Unlimited'}</Text>
-                {orgData.litellm_budget_table.max_parallel_requests && (
-                    <Text>Max Parallel Requests: {orgData.litellm_budget_table.max_parallel_requests}</Text>
+                <Text>TPM: {orgData.llm_budget_table.tpm_limit || 'Unlimited'}</Text>
+                <Text>RPM: {orgData.llm_budget_table.rpm_limit || 'Unlimited'}</Text>
+                {orgData.llm_budget_table.max_parallel_requests && (
+                    <Text>Max Parallel Requests: {orgData.llm_budget_table.max_parallel_requests}</Text>
                 )}
                 </div>
             </Card>
@@ -325,10 +325,10 @@ const OrganizationInfoView: React.FC<OrganizationInfoProps> = ({
                   initialValues={{
                     organization_alias: orgData.organization_alias,
                     models: orgData.models,
-                    tpm_limit: orgData.litellm_budget_table.tpm_limit,
-                    rpm_limit: orgData.litellm_budget_table.rpm_limit,
-                    max_budget: orgData.litellm_budget_table.max_budget,
-                    budget_duration: orgData.litellm_budget_table.budget_duration,
+                    tpm_limit: orgData.llm_budget_table.tpm_limit,
+                    rpm_limit: orgData.llm_budget_table.rpm_limit,
+                    max_budget: orgData.llm_budget_table.max_budget,
+                    budget_duration: orgData.llm_budget_table.budget_duration,
                     metadata: orgData.metadata ? JSON.stringify(orgData.metadata, null, 2) : "",
                   }}
                   layout="vertical"
@@ -416,13 +416,13 @@ const OrganizationInfoView: React.FC<OrganizationInfoProps> = ({
                   </div>
                   <div>
                     <Text className="font-medium">Rate Limits</Text>
-                    <div>TPM: {orgData.litellm_budget_table.tpm_limit || 'Unlimited'}</div>
-                    <div>RPM: {orgData.litellm_budget_table.rpm_limit || 'Unlimited'}</div>
+                    <div>TPM: {orgData.llm_budget_table.tpm_limit || 'Unlimited'}</div>
+                    <div>RPM: {orgData.llm_budget_table.rpm_limit || 'Unlimited'}</div>
                   </div>
                   <div>
                     <Text className="font-medium">Budget</Text>
-                    <div>Max: {orgData.litellm_budget_table.max_budget !== null ? `$${orgData.litellm_budget_table.max_budget}` : 'No Limit'}</div>
-                    <div>Reset: {orgData.litellm_budget_table.budget_duration || 'Never'}</div>
+                    <div>Max: {orgData.llm_budget_table.max_budget !== null ? `$${orgData.llm_budget_table.max_budget}` : 'No Limit'}</div>
+                    <div>Reset: {orgData.llm_budget_table.budget_duration || 'Never'}</div>
                   </div>
                 </div>
               )}

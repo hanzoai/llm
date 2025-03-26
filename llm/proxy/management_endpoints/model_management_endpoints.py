@@ -23,8 +23,8 @@ from llm.constants import LLM_PROXY_ADMIN_NAME
 from llm.proxy._types import (
     CommonProxyErrors,
     LLM_ProxyModelTable,
-    LitellmTableNames,
-    LitellmUserRoles,
+    LlmTableNames,
+    LlmUserRoles,
     ModelInfoDelete,
     PrismaCompatibleUpdateDBModel,
     ProxyErrorTypes,
@@ -335,7 +335,7 @@ def check_if_team_id_matches_key(
     return can_make_call
 
 
-#### [BETA] - This is a beta endpoint, format might change based on user feedback. - https://github.com/BerriAI/litellm/issues/964
+#### [BETA] - This is a beta endpoint, format might change based on user feedback. - https://github.com/BerriAI/llm/issues/964
 @router.post(
     "/model/delete",
     description="Allows deleting models in the model list in the config.yaml",
@@ -350,7 +350,7 @@ async def delete_model(
 
     try:
         """
-        [BETA] - This is a beta endpoint, format might change based on user feedback. - https://github.com/BerriAI/litellm/issues/964
+        [BETA] - This is a beta endpoint, format might change based on user feedback. - https://github.com/BerriAI/llm/issues/964
 
         - Check if id in db
         - Delete
@@ -397,10 +397,10 @@ async def delete_model(
                     object_id=model_info.id,
                     action="deleted",
                     user_api_key_dict=user_api_key_dict,
-                    table_name=LitellmTableNames.PROXY_MODEL_TABLE_NAME,
+                    table_name=LlmTableNames.PROXY_MODEL_TABLE_NAME,
                     before_value=result.model_dump_json(exclude_none=True),
                     after_value=None,
-                    litellm_changed_by=user_api_key_dict.user_id,
+                    llm_changed_by=user_api_key_dict.user_id,
                     llm_proxy_admin_name=LLM_PROXY_ADMIN_NAME,
                 )
             )
@@ -434,7 +434,7 @@ async def delete_model(
         )
 
 
-#### [BETA] - This is a beta endpoint, format might change based on user feedback. - https://github.com/BerriAI/litellm/issues/964
+#### [BETA] - This is a beta endpoint, format might change based on user feedback. - https://github.com/BerriAI/llm/issues/964
 @router.post(
     "/model/new",
     description="Allows adding new models to the model list in the config.yaml",
@@ -537,14 +537,14 @@ async def add_new_model(
                 object_id=model_response.model_id,
                 action="created",
                 user_api_key_dict=user_api_key_dict,
-                table_name=LitellmTableNames.PROXY_MODEL_TABLE_NAME,
+                table_name=LlmTableNames.PROXY_MODEL_TABLE_NAME,
                 before_value=None,
                 after_value=(
                     model_response.model_dump_json(exclude_none=True)
                     if isinstance(model_response, BaseModel)
                     else None
                 ),
-                litellm_changed_by=user_api_key_dict.user_id,
+                llm_changed_by=user_api_key_dict.user_id,
                 llm_proxy_admin_name=LLM_PROXY_ADMIN_NAME,
             )
         )
@@ -679,7 +679,7 @@ async def update_model(
                     object_id=_model_id,
                     action="updated",
                     user_api_key_dict=user_api_key_dict,
-                    table_name=LitellmTableNames.PROXY_MODEL_TABLE_NAME,
+                    table_name=LlmTableNames.PROXY_MODEL_TABLE_NAME,
                     before_value=(
                         _existing_llm_params.model_dump_json(exclude_none=True)
                         if isinstance(_existing_llm_params, BaseModel)
@@ -690,7 +690,7 @@ async def update_model(
                         if isinstance(model_response, BaseModel)
                         else None
                     ),
-                    litellm_changed_by=user_api_key_dict.user_id,
+                    llm_changed_by=user_api_key_dict.user_id,
                     llm_proxy_admin_name=LLM_PROXY_ADMIN_NAME,
                 )
             )

@@ -325,12 +325,12 @@ from openai import OpenAI
 import instructor
 from pydantic import BaseModel
 
-my_proxy_api_key = "" # e.g. sk-1234 - LITELLM KEY
-my_proxy_base_url = "" # e.g. http://0.0.0.0:4000 - LITELLM PROXY BASE URL
+my_proxy_api_key = "" # e.g. sk-1234 - LLM KEY
+my_proxy_base_url = "" # e.g. http://0.0.0.0:4000 - LLM PROXY BASE URL
 
 # This enables response_model keyword
 # from client.chat.completions.create
-## WORKS ACROSS OPENAI/ANTHROPIC/VERTEXAI/ETC. - all LITELLM SUPPORTED MODELS!
+## WORKS ACROSS OPENAI/ANTHROPIC/VERTEXAI/ETC. - all LLM SUPPORTED MODELS!
 client = instructor.from_openai(OpenAI(api_key=my_proxy_api_key, base_url=my_proxy_base_url))
 
 class UserDetail(BaseModel):

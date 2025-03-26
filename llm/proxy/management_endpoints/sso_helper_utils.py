@@ -1,4 +1,4 @@
-from llm.proxy._types import LitellmUserRoles
+from llm.proxy._types import LlmUserRoles
 
 
 def check_is_admin_only_access(ui_access_mode: str) -> bool:

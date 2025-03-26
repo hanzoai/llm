@@ -7,7 +7,7 @@ datasource client {
   url      = env("DATABASE_URL")
 }
 
-model LiteLLM_SpendLogs {
+model LLM_SpendLogs {
   request_id        String   @id
   call_type         String
   api_key           String   @default("")

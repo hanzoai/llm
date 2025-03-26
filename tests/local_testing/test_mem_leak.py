@@ -182,7 +182,7 @@
 #             stream=True,
 #             call_type="completion",
 #             start_time=time.time(),
-#             litellm_call_id="12345",
+#             llm_call_id="12345",
 #             function_id="1245",
 #         ),
 #     )

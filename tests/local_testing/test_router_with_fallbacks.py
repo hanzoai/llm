@@ -15,7 +15,7 @@
 # model_list = [
 #     {  # list of model deployments
 #         "model_name": "text-embedding-ada-002",  # model alias
-#         "litellm_params": {  # params for llm completion/embedding call
+#         "llm_params": {  # params for llm completion/embedding call
 #             "model": "text-embedding-ada-002",  # actual model name
 #             "api_key": "sk-fakekey",
 #             "api_base": "http://0.0.0.0:8080",
@@ -25,7 +25,7 @@
 #     },
 #     {
 #         "model_name": "text-embedding-ada-002-fallback",
-#         "litellm_params": {  # params for llm completion/embedding call
+#         "llm_params": {  # params for llm completion/embedding call
 #             "model": "openai/text-embedding-ada-002-anything-else",  # actual model name
 #             "api_key": "sk-fakekey2",
 #             "api_base": "http://0.0.0.0:8080",

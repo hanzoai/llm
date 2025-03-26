@@ -316,14 +316,14 @@ async def test_presidio_pii_masking_logging_output_only_logged_response_guardrai
             }
         }
     ]
-    litellm_settings = {"guardrails": guardrails_config}
+    llm_settings = {"guardrails": guardrails_config}
 
     assert len(llm.guardrail_name_config_map) == 0
     initialize_guardrails(
         guardrails_config=guardrails_config,
         premium_user=True,
         config_file_path="",
-        litellm_settings=litellm_settings,
+        llm_settings=llm_settings,
     )
 
     assert len(llm.guardrail_name_config_map) == 1

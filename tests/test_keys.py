@@ -12,7 +12,7 @@ sys.path.insert(
     0, os.path.abspath("../")
 )  # Adds the parent directory to the system path
 import llm
-from llm.proxy._types import LitellmUserRoles
+from llm.proxy._types import LlmUserRoles
 
 
 async def generate_team(
@@ -21,7 +21,7 @@ async def generate_team(
     url = "http://0.0.0.0:4000/team/new"
     headers = {"Authorization": "Bearer sk-1234", "Content-Type": "application/json"}
     if team_id is None:
-        team_id = "litellm-dashboard"
+        team_id = "llm-dashboard"
     data = {"team_id": team_id, "models": models}
 
     async with session.post(url, headers=headers, json=data) as response:
@@ -43,7 +43,7 @@ async def generate_user(
     headers = {"Authorization": "Bearer sk-1234", "Content-Type": "application/json"}
     data = {
         "user_role": user_role,
-        "team_id": "litellm-dashboard",
+        "team_id": "llm-dashboard",
     }
 
     async with session.post(url, headers=headers, json=data) as response:
@@ -174,7 +174,7 @@ async def update_proxy_budget(session):
         "Authorization": f"Bearer sk-1234",
         "Content-Type": "application/json",
     }
-    data = {"user_id": "litellm-proxy-budget", "spend": 0}
+    data = {"user_id": "llm-proxy-budget", "spend": 0}
 
     async with session.post(url, headers=headers, json=data) as response:
         status = response.status
@@ -745,7 +745,7 @@ async def test_key_delete_ui():
         # generate a admin UI key
         team = await generate_team(session=session)
         admin_ui_key = await generate_user(
-            session=session, user_role=LitellmUserRoles.PROXY_ADMIN.value
+            session=session, user_role=LlmUserRoles.PROXY_ADMIN.value
         )
         print(
             "trying to delete key=",
@@ -772,7 +772,7 @@ async def test_key_model_list(model_access, model_access_level, model_endpoint):
     """
     async with aiohttp.ClientSession() as session:
         _models = [] if model_access == "all-team-models" else [model_access]
-        team_id = "litellm_dashboard_{}".format(uuid.uuid4())
+        team_id = "llm_dashboard_{}".format(uuid.uuid4())
         new_team = await generate_team(
             session=session,
             models=_models if model_access_level == "team" else None,

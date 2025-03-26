@@ -1,7 +1,7 @@
 # +-----------------------------------------------+
 # |                                               |
 # |           Give Feedback / Get Help            |
-# | https://github.com/BerriAI/litellm/issues/new |
+# | https://github.com/BerriAI/llm/issues/new |
 # |                                               |
 # +-----------------------------------------------+
 #
@@ -26,7 +26,7 @@ import struct
 import subprocess
 
 # What is this?
-## Generic utils.py file. Problem-specific utils (e.g. 'cost calculation), should all be in `litellm_core_utils/`.
+## Generic utils.py file. Problem-specific utils (e.g. 'cost calculation), should all be in `llm_core_utils/`.
 import sys
 import textwrap
 import threading
@@ -54,9 +54,9 @@ from tokenizers import Tokenizer
 
 import llm
 import llm._service_logger  # for storing API inputs, outputs, and metadata
-import llm.litellm_core_utils
-import llm.litellm_core_utils.audio_utils.utils
-import llm.litellm_core_utils.json_validation_rule
+import llm.llm_core_utils
+import llm.llm_core_utils.audio_utils.utils
+import llm.llm_core_utils.json_validation_rule
 from llm.caching._internal_lru_cache import lru_cache_wrapper
 from llm.caching.caching import DualCache
 from llm.caching.caching_handler import CachingHandlerResponse, LLMCachingHandler
@@ -74,7 +74,7 @@ from llm.llm_core_utils.exception_mapping_utils import (
     get_error_message,
 )
 from llm.llm_core_utils.get_llm_params import (
-    _get_base_model_from_litellm_call_metadata,
+    _get_base_model_from_llm_call_metadata,
     get_llm_params,
 )
 from llm.llm_core_utils.get_llm_provider_logic import (
@@ -169,7 +169,7 @@ from llm.types.utils import (
 )
 
 with resources.open_text(
-    "llm.litellm_core_utils.tokenizers", "anthropic_tokenizer.json"
+    "llm.llm_core_utils.tokenizers", "anthropic_tokenizer.json"
 ) as f:
     json_data = json.load(f)
 # Convert to str (if necessary)
@@ -362,10 +362,10 @@ def _add_custom_logger_callback_to_specific_event(
             and _custom_logger_class_exists_in_success_callbacks(callback_class)
             is False
         ):
-            llm.logging_callback_manager.add_litellm_success_callback(
+            llm.logging_callback_manager.add_llm_success_callback(
                 callback_class
             )
-            llm.logging_callback_manager.add_litellm_async_success_callback(
+            llm.logging_callback_manager.add_llm_async_success_callback(
                 callback_class
             )
             if callback in llm.success_callback:
@@ -381,10 +381,10 @@ def _add_custom_logger_callback_to_specific_event(
             and _custom_logger_class_exists_in_failure_callbacks(callback_class)
             is False
         ):
-            llm.logging_callback_manager.add_litellm_failure_callback(
+            llm.logging_callback_manager.add_llm_failure_callback(
                 callback_class
             )
-            llm.logging_callback_manager.add_litellm_async_failure_callback(
+            llm.logging_callback_manager.add_llm_async_failure_callback(
                 callback_class
             )
             if callback in llm.failure_callback:
@@ -513,7 +513,7 @@ def function_setup(  # noqa: PLR0915
             for callback in all_callbacks:
                 # check if callback is a string - e.g. "lago", "openmeter"
                 if isinstance(callback, str):
-                    callback = llm.litellm_core_utils.litellm_logging._init_custom_logger_compatible_class(  # type: ignore
+                    callback = llm.llm_core_utils.llm_logging._init_custom_logger_compatible_class(  # type: ignore
                         callback, internal_usage_cache=None, llm_router=None  # type: ignore
                     )
                     if callback is None or any(
@@ -524,13 +524,13 @@ def function_setup(  # noqa: PLR0915
                 if callback not in llm.input_callback:
                     llm.input_callback.append(callback)  # type: ignore
                 if callback not in llm.success_callback:
-                    llm.logging_callback_manager.add_litellm_success_callback(callback)  # type: ignore
+                    llm.logging_callback_manager.add_llm_success_callback(callback)  # type: ignore
                 if callback not in llm.failure_callback:
-                    llm.logging_callback_manager.add_litellm_failure_callback(callback)  # type: ignore
+                    llm.logging_callback_manager.add_llm_failure_callback(callback)  # type: ignore
                 if callback not in llm._async_success_callback:
-                    llm.logging_callback_manager.add_litellm_async_success_callback(callback)  # type: ignore
+                    llm.logging_callback_manager.add_llm_async_success_callback(callback)  # type: ignore
                 if callback not in llm._async_failure_callback:
-                    llm.logging_callback_manager.add_litellm_async_failure_callback(callback)  # type: ignore
+                    llm.logging_callback_manager.add_llm_async_failure_callback(callback)  # type: ignore
             print_verbose(
                 f"Initialized llm callbacks, Async Success Callbacks: {llm._async_success_callback}"
             )
@@ -565,14 +565,14 @@ def function_setup(  # noqa: PLR0915
             removed_async_items = []
             for index, callback in enumerate(llm.success_callback):  # type: ignore
                 if inspect.iscoroutinefunction(callback):
-                    llm.logging_callback_manager.add_litellm_async_success_callback(
+                    llm.logging_callback_manager.add_llm_async_success_callback(
                         callback
                     )
                     removed_async_items.append(index)
                 elif callback == "dynamodb" or callback == "openmeter":
                     # dynamo is an async callback, it's used for the proxy and needs to be async
                     # we only support async dynamo db logging for acompletion/aembedding since that's used on proxy
-                    llm.logging_callback_manager.add_litellm_async_success_callback(
+                    llm.logging_callback_manager.add_llm_async_success_callback(
                         callback
                     )
                     removed_async_items.append(index)
@@ -590,7 +590,7 @@ def function_setup(  # noqa: PLR0915
             removed_async_items = []
             for index, callback in enumerate(llm.failure_callback):  # type: ignore
                 if inspect.iscoroutinefunction(callback):
-                    llm.logging_callback_manager.add_litellm_async_failure_callback(
+                    llm.logging_callback_manager.add_llm_async_failure_callback(
                         callback
                     )
                     removed_async_items.append(index)
@@ -717,7 +717,7 @@ def function_setup(  # noqa: PLR0915
         ):
             _file_obj: FileTypes = args[1] if len(args) > 1 else kwargs["file"]
             file_checksum = (
-                llm.litellm_core_utils.audio_utils.utils.get_audio_file_name(
+                llm.llm_core_utils.audio_utils.utils.get_audio_file_name(
                     file_obj=_file_obj
                 )
             )
@@ -783,7 +783,7 @@ async def _client_async_logging_helper(
 ):
     if (
         is_completion_with_fallbacks is False
-    ):  # don't log the parent event llm.completion_with_fallbacks as a 'log_success_event', this will lead to double logging the same call - https://github.com/BerriAI/litellm/issues/7477
+    ):  # don't log the parent event llm.completion_with_fallbacks as a 'log_success_event', this will lead to double logging the same call - https://github.com/BerriAI/llm/issues/7477
         print_verbose(
             f"Async Wrapper: Completed Call, calling async_success_handler: {logging_obj.async_success_handler}"
         )
@@ -907,7 +907,7 @@ def client(original_function):  # noqa: PLR0915
                                                     )
                                                 )
                                             if json_response_format is not None:
-                                                llm.litellm_core_utils.json_validation_rule.validate_schema(
+                                                llm.llm_core_utils.json_validation_rule.validate_schema(
                                                     schema=json_response_format[
                                                         "json_schema"
                                                     ]["schema"],
@@ -940,7 +940,7 @@ def client(original_function):  # noqa: PLR0915
                                     is True
                                 ):
                                     # schema given, json response expected, and validation enforced
-                                    llm.litellm_core_utils.json_validation_rule.validate_schema(
+                                    llm.llm_core_utils.json_validation_rule.validate_schema(
                                         schema=optional_params["response_format"][
                                             "response_schema"
                                         ],
@@ -985,7 +985,7 @@ def client(original_function):  # noqa: PLR0915
             return result
 
         # Prints Exactly what was passed to llm function - don't execute any logic here - it should just print
-        print_args_passed_to_litellm(original_function, args, kwargs)
+        print_args_passed_to_llm(original_function, args, kwargs)
         start_time = datetime.datetime.now()
         result = None
         logging_obj: Optional[LLMLoggingObject] = kwargs.get(
@@ -1200,11 +1200,11 @@ def client(original_function):  # noqa: PLR0915
                     "context_window_fallback_dict", {}
                 )
 
-                _is_litellm_router_call = "model_group" in kwargs.get(
+                _is_llm_router_call = "model_group" in kwargs.get(
                     "metadata", {}
                 )  # check if call from llm.router/proxy
                 if (
-                    num_retries and not _is_litellm_router_call
+                    num_retries and not _is_llm_router_call
                 ):  # only enter this if call is not from llm router/proxy. router has it's own logic for retrying
                     if (
                         isinstance(e, openai.APIError)
@@ -1217,7 +1217,7 @@ def client(original_function):  # noqa: PLR0915
                     isinstance(e, llm.exceptions.ContextWindowExceededError)
                     and context_window_fallback_dict
                     and model in context_window_fallback_dict
-                    and not _is_litellm_router_call
+                    and not _is_llm_router_call
                 ):
                     if len(args) > 0:
                         args[0] = context_window_fallback_dict[model]  # type: ignore
@@ -1236,7 +1236,7 @@ def client(original_function):  # noqa: PLR0915
 
     @wraps(original_function)
     async def wrapper_async(*args, **kwargs):  # noqa: PLR0915
-        print_args_passed_to_litellm(original_function, args, kwargs)
+        print_args_passed_to_llm(original_function, args, kwargs)
         start_time = datetime.datetime.now()
         result = None
         logging_obj: Optional[LLMLoggingObject] = kwargs.get(
@@ -1397,12 +1397,12 @@ def client(original_function):  # noqa: PLR0915
                     "context_window_fallback_dict", {}
                 )
 
-                _is_litellm_router_call = "model_group" in kwargs.get(
+                _is_llm_router_call = "model_group" in kwargs.get(
                     "metadata", {}
                 )  # check if call from llm.router/proxy
 
                 if (
-                    num_retries and not _is_litellm_router_call
+                    num_retries and not _is_llm_router_call
                 ):  # only enter this if call is not from llm router/proxy. router has it's own logic for retrying
 
                     try:
@@ -2753,7 +2753,7 @@ def _remove_additional_properties(schema):
     """
     clean out 'additionalProperties = False'. Causes vertexai/gemini OpenAI API Schema errors - https://github.com/langchain-ai/langchainjs/issues/5240
 
-    Relevant Issues: https://github.com/BerriAI/litellm/issues/6136, https://github.com/BerriAI/litellm/issues/6088
+    Relevant Issues: https://github.com/BerriAI/llm/issues/6136, https://github.com/BerriAI/llm/issues/6088
     """
     if isinstance(schema, dict):
         # Remove the 'additionalProperties' key if it exists and is set to False
@@ -2774,7 +2774,7 @@ def _remove_additional_properties(schema):
 
 def _remove_strict_from_schema(schema):
     """
-    Relevant Issues: https://github.com/BerriAI/litellm/issues/6136, https://github.com/BerriAI/litellm/issues/6088
+    Relevant Issues: https://github.com/BerriAI/llm/issues/6136, https://github.com/BerriAI/llm/issues/6088
     """
     if isinstance(schema, dict):
         # Remove the 'additionalProperties' key if it exists and is set to False
@@ -3034,7 +3034,7 @@ def get_optional_params(  # noqa: PLR0915
 
     if "tools" in non_default_params and isinstance(
         non_default_params, list
-    ):  # fixes https://github.com/BerriAI/litellm/issues/4933
+    ):  # fixes https://github.com/BerriAI/llm/issues/4933
         tools = non_default_params["tools"]
         for (
             tool
@@ -4132,7 +4132,7 @@ def get_max_tokens(model: str) -> Optional[int]:
         return None
     except Exception:
         raise Exception(
-            f"Model {model} isn't mapped yet. Add it here - https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json"
+            f"Model {model} isn't mapped yet. Add it here - https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json"
         )
 
 
@@ -4442,7 +4442,7 @@ def _get_model_info_helper(  # noqa: PLR0915
 
             if _model_info is None or key is None:
                 raise ValueError(
-                    "This model isn't mapped yet. Add it here - https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json"
+                    "This model isn't mapped yet. Add it here - https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json"
                 )
 
             _input_cost_per_token: Optional[float] = _model_info.get(
@@ -4556,7 +4556,7 @@ def _get_model_info_helper(  # noqa: PLR0915
         if "OllamaError" in str(e):
             raise e
         raise Exception(
-            "This model isn't mapped yet. model={}, custom_llm_provider={}. Add it here - https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json.".format(
+            "This model isn't mapped yet. model={}, custom_llm_provider={}. Add it here - https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json.".format(
                 model, custom_llm_provider
             )
         )
@@ -5685,7 +5685,7 @@ def trim_messages(
                 system_message += "\n" if system_message else ""
                 system_message += message["content"]
 
-        ## Handle Tool Call ## - check if last message is a tool response, return as is - https://github.com/BerriAI/litellm/issues/4931
+        ## Handle Tool Call ## - check if last message is a tool response, return as is - https://github.com/BerriAI/llm/issues/4931
         tool_messages = []
 
         for message in reversed(messages):
@@ -5796,7 +5796,7 @@ def get_valid_models(check_provider_endpoint: bool = False) -> List[str]:
         return []  # NON-Blocking
 
 
-def print_args_passed_to_litellm(original_function, args, kwargs):
+def print_args_passed_to_llm(original_function, args, kwargs):
     if not _is_debugging_on():
         return
     try:
@@ -5826,7 +5826,7 @@ def print_args_passed_to_litellm(original_function, args, kwargs):
             "\n",
         )  # new line before
         print_verbose(
-            "\033[92mRequest to litellm:\033[0m",
+            "\033[92mRequest to llm:\033[0m",
         )
         if args and kwargs:
             print_verbose(
@@ -5868,7 +5868,7 @@ def _get_base_model_from_metadata(model_call_details=None):
             return _base_model
         metadata = llm_params.get("metadata", {})
 
-        return _get_base_model_from_litellm_call_metadata(metadata=metadata)
+        return _get_base_model_from_llm_call_metadata(metadata=metadata)
     return None
 
 
@@ -6004,7 +6004,7 @@ def add_dummy_tool(custom_llm_provider: str) -> List[ChatCompletionToolParam]:
     """
     Prevent Anthropic from raising error when tool_use block exists but no tools are provided.
 
-    Relevent Issues: https://github.com/BerriAI/litellm/issues/5388, https://github.com/BerriAI/litellm/issues/5747
+    Relevent Issues: https://github.com/BerriAI/llm/issues/5388, https://github.com/BerriAI/llm/issues/5747
     """
     return [
         ChatCompletionToolParam(
@@ -6122,7 +6122,7 @@ def validate_chat_completion_tool_choice(
     """
     Confirm the tool choice is passed in the OpenAI format.
 
-    Prevents user errors like: https://github.com/BerriAI/litellm/issues/7483
+    Prevents user errors like: https://github.com/BerriAI/llm/issues/7483
     """
     from llm.types.llms.openai import (
         ChatCompletionToolChoiceObjectParam,
@@ -6416,12 +6416,12 @@ class ProviderConfigManager:
 
 def get_end_user_id_for_cost_tracking(
     llm_params: dict,
-    service_type: Literal["litellm_logging", "prometheus"] = "litellm_logging",
+    service_type: Literal["llm_logging", "prometheus"] = "llm_logging",
 ) -> Optional[str]:
     """
     Used for enforcing `disable_end_user_cost_tracking` param.
 
-    service_type: "litellm_logging" or "prometheus" - used to allow prometheus only disable cost tracking.
+    service_type: "llm_logging" or "prometheus" - used to allow prometheus only disable cost tracking.
     """
     _metadata = cast(dict, llm_params.get("metadata", {}) or {})
 
@@ -6607,7 +6607,7 @@ def return_raw_request(endpoint: CallTypes, kwargs: dict) -> RawRequestTypedDict
         log_raw_request_response=True,
     )
 
-    llm_api_endpoint = getattr(litellm, endpoint.value)
+    llm_api_endpoint = getattr(llm, endpoint.value)
 
     received_exception = ""
 

@@ -39,7 +39,7 @@ router = APIRouter()
 async def create_internal_user_audit_log(
     user_id: str,
     action: AUDIT_ACTIONS,
-    litellm_changed_by: Optional[str],
+    llm_changed_by: Optional[str],
     user_api_key_dict: UserAPIKeyAuth,
     llm_proxy_admin_name: Optional[str],
     before_value: Optional[str] = None,
@@ -52,7 +52,7 @@ async def create_internal_user_audit_log(
     - user_id: str - The id of the user to create the audit log for.
     - action: AUDIT_ACTIONS - The action to create the audit log for.
     - user_row: LLM_UserTable - The user row to create the audit log for.
-    - litellm_changed_by: Optional[str] - The user id of the user who is changing the user.
+    - llm_changed_by: Optional[str] - The user id of the user who is changing the user.
     - user_api_key_dict: UserAPIKeyAuth - The user api key dictionary.
     - llm_proxy_admin_name: Optional[str] - The name of the proxy admin.
     """
@@ -63,11 +63,11 @@ async def create_internal_user_audit_log(
         request_data=LLM_AuditLogs(
             id=str(uuid.uuid4()),
             updated_at=datetime.now(timezone.utc),
-            changed_by=litellm_changed_by
+            changed_by=llm_changed_by
             or user_api_key_dict.user_id
             or llm_proxy_admin_name,
             changed_by_api_key=user_api_key_dict.api_key,
-            table_name=LitellmTableNames.USER_TABLE_NAME,
+            table_name=LlmTableNames.USER_TABLE_NAME,
             object_id=user_id,
             action=action,
             updated_values=after_value,
@@ -130,7 +130,7 @@ async def _check_duplicate_user_email(
         if prisma_client is None:
             raise Exception("Database not connected")
 
-        existing_user = await prisma_client.db.litellm_usertable.find_first(
+        existing_user = await prisma_client.db.llm_usertable.find_first(
             where={"user_email": user_email}
         )
 
@@ -165,7 +165,7 @@ async def new_user(
     - teams: Optional[list] - specify a list of team id's a user belongs to.
     - user_email: Optional[str] - Specify a user email.
     - send_invite_email: Optional[bool] - Specify if an invite email should be sent.
-    - user_role: Optional[str] - Specify a user role - "proxy_admin", "proxy_admin_viewer", "internal_user", "internal_user_viewer", "team", "customer". Info about each role here: `https://github.com/BerriAI/litellm/litellm/proxy/_types.py#L20`
+    - user_role: Optional[str] - Specify a user role - "proxy_admin", "proxy_admin_viewer", "internal_user", "internal_user_viewer", "team", "customer". Info about each role here: `https://github.com/BerriAI/llm/llm/proxy/_types.py#L20`
     - max_budget: Optional[float] - Specify max budget for a given user.
     - budget_duration: Optional[str] - Budget is reset at the end of specified duration. If not set, budget is never reset. You can set duration as seconds ("30s"), minutes ("30m"), hours ("30h"), days ("30d"), months ("1mo").
     - models: Optional[list] - Model_name's a user is allowed to call. (if empty, key is allowed to call all models). Set to ['no-default-models'] to block all model access. Restricting user to only team-based model access.
@@ -299,22 +299,22 @@ async def new_user(
         try:
             if prisma_client is None:
                 raise Exception(CommonProxyErrors.db_not_connected_error.value)
-            user_row: BaseModel = await prisma_client.db.litellm_usertable.find_first(
+            user_row: BaseModel = await prisma_client.db.llm_usertable.find_first(
                 where={"user_id": response["user_id"]}
             )
 
-            user_row_litellm_typed = LLM_UserTable(
+            user_row_llm_typed = LLM_UserTable(
                 **user_row.model_dump(exclude_none=True)
             )
             asyncio.create_task(
                 create_internal_user_audit_log(
-                    user_id=user_row_litellm_typed.user_id,
+                    user_id=user_row_llm_typed.user_id,
                     action="created",
-                    litellm_changed_by=user_api_key_dict.user_id,
+                    llm_changed_by=user_api_key_dict.user_id,
                     user_api_key_dict=user_api_key_dict,
                     llm_proxy_admin_name=llm_proxy_admin_name,
                     before_value=None,
-                    after_value=user_row_litellm_typed.model_dump_json(
+                    after_value=user_row_llm_typed.model_dump_json(
                         exclude_none=True
                     ),
                 )
@@ -368,7 +368,7 @@ async def ui_get_available_role(
     """
 
     _data_to_return = {}
-    for role in LitellmUserRoles:
+    for role in LlmUserRoles:
 
         # We only show a subset of roles on UI
         if role in [
@@ -543,7 +543,7 @@ async def _get_user_info_for_proxy_admin():
     sql_query = """
         SELECT 
             (SELECT json_agg(t.*) FROM "LLM_TeamTable" t) as teams,
-            (SELECT json_agg(k.*) FROM "LLM_VerificationToken" k WHERE k.team_id != 'litellm-dashboard' OR k.team_id IS NULL) as keys
+            (SELECT json_agg(k.*) FROM "LLM_VerificationToken" k WHERE k.team_id != 'llm-dashboard' OR k.team_id IS NULL) as keys
     """
     if prisma_client is None:
         raise Exception(
@@ -579,7 +579,7 @@ def _process_keys_for_user_info(
     keys: Optional[List[LLM_VerificationToken]],
     all_teams: Optional[Union[List[LLM_TeamTable], List[TeamListResponseObject]]],
 ):
-    from llm.proxy.proxy_server import general_settings, litellm_master_key_hash
+    from llm.proxy.proxy_server import general_settings, llm_master_key_hash
 
     returned_keys = []
     if keys is None:
@@ -587,7 +587,7 @@ def _process_keys_for_user_info(
     else:
         for key in keys:
             if (
-                key.token == litellm_master_key_hash
+                key.token == llm_master_key_hash
                 and general_settings.get("disable_master_key_return", False)
                 is True  ## [IMPORTANT] used by hosted proxy-ui to prevent sharing master key on ui
             ):
@@ -601,7 +601,7 @@ def _process_keys_for_user_info(
             if (
                 "team_id" in _key
                 and _key["team_id"] is not None
-                and _key["team_id"] != "litellm-dashboard"
+                and _key["team_id"] != "llm-dashboard"
             ):
                 team_info = get_team_from_list(
                     team_list=all_teams, team_id=_key["team_id"]
@@ -681,7 +681,7 @@ async def user_update(
     --header 'Authorization: Bearer sk-1234' \
     --header 'Content-Type: application/json' \
     --data '{
-        "user_id": "test-litellm-user-4",
+        "user_id": "test-llm-user-4",
         "user_role": "proxy_admin_viewer"
     }'
     ```
@@ -693,7 +693,7 @@ async def user_update(
         - user_alias: Optional[str] - A descriptive name for you to know who this user id refers to.
         - teams: Optional[list] - specify a list of team id's a user belongs to.
         - send_invite_email: Optional[bool] - Specify if an invite email should be sent.
-        - user_role: Optional[str] - Specify a user role - "proxy_admin", "proxy_admin_viewer", "internal_user", "internal_user_viewer", "team", "customer". Info about each role here: `https://github.com/BerriAI/litellm/litellm/proxy/_types.py#L20`
+        - user_role: Optional[str] - Specify a user role - "proxy_admin", "proxy_admin_viewer", "internal_user", "internal_user_viewer", "team", "customer". Info about each role here: `https://github.com/BerriAI/llm/llm/proxy/_types.py#L20`
         - max_budget: Optional[float] - Specify max budget for a given user.
         - budget_duration: Optional[str] - Budget is reset at the end of specified duration. If not set, budget is never reset. You can set duration as seconds ("30s"), minutes ("30m"), hours ("30h"), days ("30d"), months ("1mo").
         - models: Optional[list] - Model_name's a user is allowed to call. (if empty, key is allowed to call all models)
@@ -734,7 +734,7 @@ async def user_update(
 
         existing_user_row: Optional[BaseModel] = None
         if data.user_id is not None:
-            existing_user_row = await prisma_client.db.litellm_usertable.find_first(
+            existing_user_row = await prisma_client.db.llm_usertable.find_first(
                 where={"user_id": data.user_id}
             )
             if existing_user_row is not None:
@@ -795,19 +795,19 @@ async def user_update(
         if response is not None:  # emit audit log
             try:
                 user_row: BaseModel = (
-                    await prisma_client.db.litellm_usertable.find_first(
+                    await prisma_client.db.llm_usertable.find_first(
                         where={"user_id": response["user_id"]}
                     )
                 )
 
-                user_row_litellm_typed = LLM_UserTable(
+                user_row_llm_typed = LLM_UserTable(
                     **user_row.model_dump(exclude_none=True)
                 )
                 asyncio.create_task(
                     create_internal_user_audit_log(
-                        user_id=user_row_litellm_typed.user_id,
+                        user_id=user_row_llm_typed.user_id,
                         action="updated",
-                        litellm_changed_by=user_api_key_dict.user_id,
+                        llm_changed_by=user_api_key_dict.user_id,
                         user_api_key_dict=user_api_key_dict,
                         llm_proxy_admin_name=llm_proxy_admin_name,
                         before_value=(
@@ -815,7 +815,7 @@ async def user_update(
                             if existing_user_row
                             else None
                         ),
-                        after_value=user_row_litellm_typed.model_dump_json(
+                        after_value=user_row_llm_typed.model_dump_json(
                             exclude_none=True
                         ),
                     )
@@ -965,7 +965,7 @@ async def get_users(
         }
 
     users: Optional[List[LLM_UserTable]] = (
-        await prisma_client.db.litellm_usertable.find_many(
+        await prisma_client.db.llm_usertable.find_many(
             where=where_conditions,
             skip=skip,
             take=page_size,
@@ -974,7 +974,7 @@ async def get_users(
     )
 
     # Get total count of user rows
-    total_count = await prisma_client.db.litellm_usertable.count(
+    total_count = await prisma_client.db.llm_usertable.count(
         where=where_conditions  # type: ignore
     )
 
@@ -1021,9 +1021,9 @@ async def get_users(
 async def delete_user(
     data: DeleteUserRequest,
     user_api_key_dict: UserAPIKeyAuth = Depends(user_api_key_auth),
-    litellm_changed_by: Optional[str] = Header(
+    llm_changed_by: Optional[str] = Header(
         None,
-        description="The litellm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
+        description="The llm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
     ),
 ):
     """
@@ -1058,7 +1058,7 @@ async def delete_user(
 
     # check that all teams passed exist
     for user_id in data.user_ids:
-        user_row = await prisma_client.db.litellm_usertable.find_unique(
+        user_row = await prisma_client.db.llm_usertable.find_unique(
             where={"user_id": user_id}
         )
 
@@ -1079,11 +1079,11 @@ async def delete_user(
                         request_data=LLM_AuditLogs(
                             id=str(uuid.uuid4()),
                             updated_at=datetime.now(timezone.utc),
-                            changed_by=litellm_changed_by
+                            changed_by=llm_changed_by
                             or user_api_key_dict.user_id
                             or llm_proxy_admin_name,
                             changed_by_api_key=user_api_key_dict.api_key,
-                            table_name=LitellmTableNames.USER_TABLE_NAME,
+                            table_name=LlmTableNames.USER_TABLE_NAME,
                             object_id=user_id,
                             action="deleted",
                             updated_values="{}",
@@ -1100,17 +1100,17 @@ async def delete_user(
     )
 
     ## DELETE ASSOCIATED INVITATION LINKS
-    await prisma_client.db.litellm_invitationlink.delete_many(
+    await prisma_client.db.llm_invitationlink.delete_many(
         where={"user_id": {"in": data.user_ids}}
     )
 
     ## DELETE ASSOCIATED ORGANIZATION MEMBERSHIPS
-    await prisma_client.db.litellm_organizationmembership.delete_many(
+    await prisma_client.db.llm_organizationmembership.delete_many(
         where={"user_id": {"in": data.user_ids}}
     )
 
     ## DELETE USERS
-    deleted_users = await prisma_client.db.litellm_usertable.delete_many(
+    deleted_users = await prisma_client.db.llm_usertable.delete_many(
         where={"user_id": {"in": data.user_ids}}
     )
 
@@ -1120,7 +1120,7 @@ async def delete_user(
 async def add_internal_user_to_organization(
     user_id: str,
     organization_id: str,
-    user_role: LitellmUserRoles,
+    user_role: LlmUserRoles,
 ):
     """
     Helper function to add an internal user to an organization
@@ -1140,7 +1140,7 @@ async def add_internal_user_to_organization(
 
     try:
         # Check if organization_id exists
-        organization_row = await prisma_client.db.litellm_organizationtable.find_unique(
+        organization_row = await prisma_client.db.llm_organizationtable.find_unique(
             where={"organization_id": organization_id}
         )
         if organization_row is None:
@@ -1149,7 +1149,7 @@ async def add_internal_user_to_organization(
             )
 
         # Create a new organization membership entry
-        new_membership = await prisma_client.db.litellm_organizationmembership.create(
+        new_membership = await prisma_client.db.llm_organizationmembership.create(
             data={
                 "user_id": user_id,
                 "organization_id": organization_id,
@@ -1226,7 +1226,7 @@ async def ui_view_users(
 
         # Query users with pagination and filters
         users: Optional[List[BaseModel]] = (
-            await prisma_client.db.litellm_usertable.find_many(
+            await prisma_client.db.llm_usertable.find_many(
                 where=where_conditions,
                 skip=skip,
                 take=page_size,

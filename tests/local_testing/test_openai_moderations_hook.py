@@ -46,7 +46,7 @@ async def test_openai_moderation_error_raising():
         model_list=[
             {
                 "model_name": "text-moderation-latest",
-                "litellm_params": {
+                "llm_params": {
                     "model": "text-moderation-latest",
                     "api_key": os.environ["OPENAI_API_KEY"],
                 },

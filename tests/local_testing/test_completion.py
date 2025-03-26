@@ -22,7 +22,7 @@ import pytest
 import llm
 from llm import RateLimitError, Timeout, completion, completion_cost, embedding
 from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
-from llm.litellm_core_utils.prompt_templates.factory import anthropic_messages_pt
+from llm.llm_core_utils.prompt_templates.factory import anthropic_messages_pt
 
 # llm.num_retries=3
 
@@ -48,7 +48,7 @@ def reset_callbacks():
 @pytest.mark.skip(reason="Local test")
 def test_response_model_none():
     """
-    Addresses:https://github.com/BerriAI/litellm/issues/2972
+    Addresses:https://github.com/BerriAI/llm/issues/2972
     """
     x = completion(
         model="mymodel",
@@ -183,8 +183,8 @@ def test_completion_azure_command_r():
 @pytest.mark.parametrize(
     "api_base",
     [
-        "https://litellm8397336933.openai.azure.com",
-        "https://litellm8397336933.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2023-03-15-preview",
+        "https://llm8397336933.openai.azure.com",
+        "https://llm8397336933.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2023-03-15-preview",
     ],
 )
 def test_completion_azure_ai_gpt_4o(api_base):
@@ -522,7 +522,7 @@ async def test_model_function_invoke(model, sync_mode, api_key, api_base):
         messages = [
             {
                 "role": "system",
-                "content": "Your name is Litellm Bot, you are a helpful assistant",
+                "content": "Your name is Llm Bot, you are a helpful assistant",
             },
             # User asks for their name and weather in San Francisco
             {
@@ -601,7 +601,7 @@ async def test_model_function_invoke(model, sync_mode, api_key, api_base):
 @pytest.mark.asyncio
 async def test_anthropic_no_content_error():
     """
-    https://github.com/BerriAI/litellm/discussions/3440#discussioncomment-9323402
+    https://github.com/BerriAI/llm/discussions/3440#discussioncomment-9323402
     """
     try:
         llm.drop_params = True
@@ -668,7 +668,7 @@ async def test_anthropic_no_content_error():
 
 
 def test_parse_xml_params():
-    from llm.litellm_core_utils.prompt_templates.factory import parse_xml_params
+    from llm.llm_core_utils.prompt_templates.factory import parse_xml_params
 
     ## SCENARIO 1 ## - W/ ARRAY
     xml_content = """<invoke><tool_name>return_list_of_str</tool_name>\n<parameters>\n<value>\n<item>apple</item>\n<item>banana</item>\n<item>orange</item>\n</value>\n</parameters></invoke>"""
@@ -819,7 +819,7 @@ def test_completion_function_plus_image(model):
         {
             "type": "image_url",
             "image_url": {
-                "url": "https://litellm-listing.s3.amazonaws.com/litellm_logo.png"
+                "url": "https://llm-listing.s3.amazonaws.com/llm_logo.png"
             },
         },
     ]
@@ -2163,7 +2163,7 @@ def custom_callback(
 ):
     # Your custom code here
     try:
-        print("LITELLM: in custom callback function")
+        print("LLM: in custom callback function")
         print("\nkwargs\n", kwargs)
         model = kwargs["model"]
         messages = kwargs["messages"]
@@ -2307,7 +2307,7 @@ def test_completion_logprobs_stream():
 # test_completion_logprobs_stream()
 
 
-def test_completion_openai_litellm_key():
+def test_completion_openai_llm_key():
     try:
         llm.set_verbose = True
         llm.num_retries = 0
@@ -2342,7 +2342,7 @@ def test_completion_openai_litellm_key():
         pytest.fail(f"Error occurred: {e}")
 
 
-# test_ completion_openai_litellm_key()
+# test_ completion_openai_llm_key()
 
 
 @pytest.mark.skip(reason="Unresponsive endpoint.[TODO] Rehost this somewhere else")
@@ -2706,11 +2706,11 @@ async def test_completion_functions_param():
             print(f"mock_client.call_args.kwargs: {mock_client.call_args.kwargs}")
             assert "tools" in mock_client.call_args.kwargs["json"]
             assert (
-                "litellm_param_is_function_call"
+                "llm_param_is_function_call"
                 not in mock_client.call_args.kwargs["json"]
             )
             assert (
-                "litellm_param_is_function_call"
+                "llm_param_is_function_call"
                 not in mock_client.call_args.kwargs["json"]["generationConfig"]
             )
             assert response.choices[0].message.function_call is not None
@@ -3054,7 +3054,7 @@ def test_completion_azure3():
 #  llm.api_base = self.azure_api_base
 #  llm.api_version = self.azure_api_version
 #  llm.api_key = self.api_key
-def test_completion_azure_with_litellm_key():
+def test_completion_azure_with_llm_key():
     try:
         print("azure gpt-3.5 test\n\n")
         import openai
@@ -4285,7 +4285,7 @@ async def test_acompletion_stream_watsonx():
 
 def test_completion_together_ai_stream():
     llm.set_verbose = True
-    user_message = "Write 1pg about YC & litellm"
+    user_message = "Write 1pg about YC & llm"
     messages = [{"content": user_message, "role": "user"}]
     try:
         response = completion(
@@ -4306,7 +4306,7 @@ def test_completion_together_ai_stream():
 
 
 def test_moderation():
-    response = llm.moderation(input="i'm ishaan cto of litellm")
+    response = llm.moderation(input="i'm ishaan cto of llm")
     print(response)
     output = response.results[0]
     print(output)
@@ -4730,7 +4730,7 @@ def test_completion_openai_metadata(monkeypatch, enable_preview_features):
 
     llm.set_verbose = True
 
-    monkeypatch.setattr(litellm, "enable_preview_features", enable_preview_features)
+    monkeypatch.setattr(llm, "enable_preview_features", enable_preview_features)
     with patch.object(
         client.chat.completions.with_raw_response, "create", return_value=MagicMock()
     ) as mock_completion:

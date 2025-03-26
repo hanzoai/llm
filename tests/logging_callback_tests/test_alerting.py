@@ -58,7 +58,7 @@ async def test_get_api_base():
     _pl.update_values(alerting=["slack"], alerting_threshold=100, redis_cache=None)
     model = "chatgpt-v-2"
     messages = [{"role": "user", "content": "Hey how's it going?"}]
-    litellm_params = {
+    llm_params = {
         "acompletion": True,
         "api_key": None,
         "api_base": "https://openai-gpt-4-test-v-1.openai.azure.com/",
@@ -66,7 +66,7 @@ async def test_get_api_base():
         "logger_fn": None,
         "verbose": False,
         "custom_llm_provider": "azure",
-        "litellm_call_id": "68f46d2d-714d-4ad8-8137-69600ec8755c",
+        "llm_call_id": "68f46d2d-714d-4ad8-8137-69600ec8755c",
         "model_alias_map": {},
         "completion_call_id": None,
         "metadata": None,
@@ -84,7 +84,7 @@ async def test_get_api_base():
             kwargs={
                 "model": model,
                 "messages": messages,
-                "litellm_params": litellm_params,
+                "llm_params": llm_params,
             },
             start_time=start_time,
             end_time=end_time,
@@ -149,7 +149,7 @@ async def test_response_taking_too_long_hanging(slack_alerting):
     request_data = {
         "model": "test_model",
         "messages": "test_messages",
-        "litellm_status": "running",
+        "llm_status": "running",
     }
     with patch.object(slack_alerting, "send_alert", new=AsyncMock()) as mock_send_alert:
         await slack_alerting.response_taking_too_long(
@@ -164,7 +164,7 @@ async def test_response_taking_too_long_hanging(slack_alerting):
 async def test_response_taking_too_long_callback(slack_alerting):
     start_time = datetime.now()
     end_time = start_time + timedelta(seconds=301)
-    kwargs = {"model": "test_model", "messages": "test_messages", "litellm_params": {}}
+    kwargs = {"model": "test_model", "messages": "test_messages", "llm_params": {}}
     with patch.object(slack_alerting, "send_alert", new=AsyncMock()) as mock_send_alert:
         await slack_alerting.response_taking_too_long_callback(
             kwargs, None, start_time, end_time
@@ -182,7 +182,7 @@ async def test_alerting_metadata(slack_alerting):
     kwargs = {
         "model": "test_model",
         "messages": "test_messages",
-        "litellm_params": {"metadata": {"alerting_metadata": {"hello": "world"}}},
+        "llm_params": {"metadata": {"alerting_metadata": {"hello": "world"}}},
     }
     with patch.object(slack_alerting, "send_alert", new=AsyncMock()) as mock_send_alert:
 
@@ -261,7 +261,7 @@ async def test_daily_reports_unit_test(slack_alerting):
             model_list=[
                 {
                     "model_name": "test-gpt",
-                    "litellm_params": {"model": "gpt-3.5-turbo"},
+                    "llm_params": {"model": "gpt-3.5-turbo"},
                     "model_info": {"id": "1234"},
                 }
             ]
@@ -294,7 +294,7 @@ async def test_daily_reports_completion(slack_alerting):
             model_list=[
                 {
                     "model_name": "gpt-5",
-                    "litellm_params": {
+                    "llm_params": {
                         "model": "gpt-3.5-turbo",
                     },
                 }
@@ -318,7 +318,7 @@ async def test_daily_reports_completion(slack_alerting):
             model_list=[
                 {
                     "model_name": "gpt-5",
-                    "litellm_params": {"model": "gpt-3.5-turbo", "api_key": "bad_key"},
+                    "llm_params": {"model": "gpt-3.5-turbo", "api_key": "bad_key"},
                 }
             ]
         )
@@ -355,7 +355,7 @@ async def test_daily_reports_redis_cache_scheduler():
         model_list=[
             {
                 "model_name": "gpt-5",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                 },
             }
@@ -395,14 +395,14 @@ async def test_send_llm_exception_to_slack():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "bad_key",
                 },
             },
             {
                 "model_name": "gpt-5-good",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                 },
             },
@@ -440,7 +440,7 @@ async def test_send_daily_reports_ignores_zero_values():
     )
     slack_alerting.internal_usage_cache.async_set_cache_pipeline = AsyncMock()
 
-    router.get_model_info.side_effect = lambda x: {"litellm_params": {"model": x}}
+    router.get_model_info.side_effect = lambda x: {"llm_params": {"model": x}}
 
     with patch.object(slack_alerting, "send_alert", new=AsyncMock()) as mock_send_alert:
         result = await slack_alerting.send_daily_reports(router)
@@ -633,7 +633,7 @@ async def test_outage_alerting_called(
                 status_code=503,
                 request=httpx.Request(
                     method="completion",
-                    url="https://github.com/BerriAI/litellm",
+                    url="https://github.com/BerriAI/llm",
                 ),
             ),
         )
@@ -642,7 +642,7 @@ async def test_outage_alerting_called(
         model_list=[
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": model,
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": api_base,
@@ -741,7 +741,7 @@ async def test_region_outage_alerting_called(
                 status_code=503,
                 request=httpx.Request(
                     method="completion",
-                    url="https://github.com/BerriAI/litellm",
+                    url="https://github.com/BerriAI/llm",
                 ),
             ),
         )
@@ -750,7 +750,7 @@ async def test_region_outage_alerting_called(
         model_list=[
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": model,
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": api_base,
@@ -761,7 +761,7 @@ async def test_region_outage_alerting_called(
             },
             {
                 "model_name": model,
-                "litellm_params": {
+                "llm_params": {
                     "model": model,
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_base": api_base,
@@ -798,7 +798,7 @@ async def test_alerting():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "bad_key",
                 },
@@ -830,17 +830,17 @@ async def test_langfuse_trace_id():
     """
     - Unit test for `_add_langfuse_trace_id_to_alert` function in slack_alerting.py
     """
-    from llm.litellm_core_utils.litellm_logging import Logging
+    from llm.llm_core_utils.llm_logging import Logging
     from llm.integrations.SlackAlerting.utils import _add_langfuse_trace_id_to_alert
 
     llm.success_callback = ["langfuse"]
 
-    litellm_logging_obj = Logging(
+    llm_logging_obj = Logging(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": "hi"}],
         stream=False,
         call_type="acompletion",
-        litellm_call_id="1234",
+        llm_call_id="1234",
         start_time=datetime.now(),
         function_id="1234",
     )
@@ -849,12 +849,12 @@ async def test_langfuse_trace_id():
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": "Hey how's it going?"}],
         mock_response="Hey!",
-        litellm_logging_obj=litellm_logging_obj,
+        llm_logging_obj=llm_logging_obj,
     )
 
     await asyncio.sleep(3)
 
-    assert litellm_logging_obj._get_trace_id(service_name="langfuse") is not None
+    assert llm_logging_obj._get_trace_id(service_name="langfuse") is not None
 
     slack_alerting = SlackAlerting(
         alerting_threshold=32,
@@ -864,7 +864,7 @@ async def test_langfuse_trace_id():
     )
 
     trace_url = await _add_langfuse_trace_id_to_alert(
-        request_data={"litellm_logging_obj": litellm_logging_obj}
+        request_data={"llm_logging_obj": llm_logging_obj}
     )
 
     assert trace_url is not None
@@ -872,7 +872,7 @@ async def test_langfuse_trace_id():
     returned_trace_id = int(trace_url.split("/")[-1])
 
     assert returned_trace_id == int(
-        litellm_logging_obj._get_trace_id(service_name="langfuse")
+        llm_logging_obj._get_trace_id(service_name="langfuse")
     )
 
 

@@ -156,7 +156,7 @@ def test_get_guardrails_list_response():
     sample_config = [
         {
             "guardrail_name": "test-guard",
-            "litellm_params": {
+            "llm_params": {
                 "guardrail": "test-guard",
                 "mode": "pre_call",
                 "api_key": "test-api-key",
@@ -197,7 +197,7 @@ def test_get_guardrails_list_response():
     minimal_config = [
         {
             "guardrail_name": "minimal-guard",
-            "litellm_params": {"guardrail": "minimal-guard", "mode": "pre_call"},
+            "llm_params": {"guardrail": "minimal-guard", "mode": "pre_call"},
         }
     ]
     minimal_response = _get_guardrails_list_response(minimal_config)

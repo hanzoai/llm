@@ -30,8 +30,8 @@ class PrometheusLogger(CustomLogger):
                 verbose_logger.warning(
                     f"🚨🚨🚨 Prometheus Metrics is on LLM Enterprise\n🚨 {CommonProxyErrors.not_premium_user.value}"
                 )
-                self.litellm_not_a_premium_user_metric = Counter(
-                    name="litellm_not_a_premium_user_metric",
+                self.llm_not_a_premium_user_metric = Counter(
+                    name="llm_not_a_premium_user_metric",
                     documentation=f"🚨🚨🚨 Prometheus Metrics is on LLM Enterprise. 🚨 {CommonProxyErrors.not_premium_user.value}",
                 )
                 return
@@ -85,8 +85,8 @@ class PrometheusLogger(CustomLogger):
             )
 
             # Counter for spend
-            self.litellm_spend_metric = Counter(
-                "litellm_spend_metric",
+            self.llm_spend_metric = Counter(
+                "llm_spend_metric",
                 "Total spend on LLM requests",
                 labelnames=[
                     "end_user",
@@ -100,8 +100,8 @@ class PrometheusLogger(CustomLogger):
             )
 
             # Counter for total_output_tokens
-            self.litellm_tokens_metric = Counter(
-                "litellm_total_tokens",
+            self.llm_tokens_metric = Counter(
+                "llm_total_tokens",
                 "Total number of input + output tokens from LLM requests",
                 labelnames=[
                     "end_user",
@@ -231,8 +231,8 @@ class PrometheusLogger(CustomLogger):
                 ],
             )
 
-            self.litellm_overhead_latency_metric = Histogram(
-                "litellm_overhead_latency_metric",
+            self.llm_overhead_latency_metric = Histogram(
+                "llm_overhead_latency_metric",
                 "Latency overhead (milliseconds) added by LLM processing",
                 labelnames=[
                     "model_group",
@@ -280,7 +280,7 @@ class PrometheusLogger(CustomLogger):
 
             self.llm_deployment_success_responses = Counter(
                 name="llm_deployment_success_responses",
-                documentation="LLM Deployment Analytics - Total number of successful LLM API calls via litellm",
+                documentation="LLM Deployment Analytics - Total number of successful LLM API calls via llm",
                 labelnames=[REQUESTED_MODEL] + _logged_llm_labels + team_and_key_labels,
             )
             self.llm_deployment_failure_responses = Counter(
@@ -538,7 +538,7 @@ class PrometheusLogger(CustomLogger):
         enum_values: UserAPIKeyLabelValues,
     ):
         # token metrics
-        self.litellm_tokens_metric.labels(
+        self.llm_tokens_metric.labels(
             end_user_id,
             user_api_key,
             user_api_key_alias,
@@ -632,7 +632,7 @@ class PrometheusLogger(CustomLogger):
         )
         self.llm_requests_metric.labels(**_labels).inc()
 
-        self.litellm_spend_metric.labels(
+        self.llm_spend_metric.labels(
             end_user_id,
             user_api_key,
             user_api_key_alias,
@@ -1021,7 +1021,7 @@ class PrometheusLogger(CustomLogger):
             if llm_overhead_time_ms := standard_logging_payload[
                 "hidden_params"
             ].get("llm_overhead_time_ms"):
-                self.litellm_overhead_latency_metric.labels(
+                self.llm_overhead_latency_metric.labels(
                     model_group,
                     llm_provider,
                     api_base,

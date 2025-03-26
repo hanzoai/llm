@@ -1,5 +1,5 @@
 """
-TODO: DELETE FILE. Bedrock LLM is no longer used. Goto `litellm/llms/bedrock/chat/invoke_transformations/base_invoke_transformation.py`
+TODO: DELETE FILE. Bedrock LLM is no longer used. Goto `llm/llms/bedrock/chat/invoke_transformations/base_invoke_transformation.py`
 """
 
 import copy
@@ -1291,7 +1291,7 @@ class AWSEventStreamDecoder:
                     and "toolUse" in start_obj
                     and start_obj["toolUse"] is not None
                 ):
-                    ## check tool name was formatted by litellm
+                    ## check tool name was formatted by llm
                     _response_tool_name = start_obj["toolUse"]["name"]
                     response_tool_name = get_bedrock_tool_name(
                         response_tool_name=_response_tool_name

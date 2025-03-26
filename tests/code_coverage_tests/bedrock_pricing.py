@@ -191,7 +191,7 @@ def _check_if_model_name_in_pricing(
     input_cost_per_1k_tokens: str,
     output_cost_per_1k_tokens: str,
 ):
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     for model, value in llm.model_cost.items():

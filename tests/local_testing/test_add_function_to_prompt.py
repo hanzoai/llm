@@ -43,4 +43,4 @@ def test_function_call_non_openai_model():
 
 # test_function_call_non_openai_model()
 
-# test_function_call_non_openai_model_litellm_mod_set()
+# test_function_call_non_openai_model_llm_mod_set()

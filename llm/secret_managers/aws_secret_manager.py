@@ -1,7 +1,7 @@
 """
 This is a file for the AWS Secret Manager Integration
 
-Relevant issue: https://github.com/BerriAI/litellm/issues/1883
+Relevant issue: https://github.com/BerriAI/llm/issues/1883
 
 Requires:
 * `os.environ["AWS_REGION_NAME"], 
@@ -57,15 +57,15 @@ class AWSKeyManagementService_V2:
             raise ValueError("Missing required environment variable - AWS_REGION_NAME")
 
         ## CHECK IF LICENSE IN ENV ## - premium feature
-        is_litellm_license_in_env: bool = False
+        is_llm_license_in_env: bool = False
 
-        if os.getenv("LITELLM_LICENSE", None) is not None:
-            is_litellm_license_in_env = True
-        elif os.getenv("LITELLM_SECRET_AWS_KMS_LITELLM_LICENSE", None) is not None:
-            is_litellm_license_in_env = True
-        if is_litellm_license_in_env is False:
+        if os.getenv("LLM_LICENSE", None) is not None:
+            is_llm_license_in_env = True
+        elif os.getenv("LLM_SECRET_AWS_KMS_LLM_LICENSE", None) is not None:
+            is_llm_license_in_env = True
+        if is_llm_license_in_env is False:
             raise ValueError(
-                "AWSKeyManagementService V2 is an Enterprise Feature. Please add a valid LITELLM_LICENSE to your envionment."
+                "AWSKeyManagementService V2 is an Enterprise Feature. Please add a valid LLM_LICENSE to your envionment."
             )
 
     def load_aws_kms(self, use_aws_kms: Optional[bool]):
@@ -133,11 +133,11 @@ def decrypt_env_var() -> Dict[str, Any]:
         if (
             k is not None
             and isinstance(k, str)
-            and k.lower().startswith("litellm_secret_aws_kms")
+            and k.lower().startswith("llm_secret_aws_kms")
         ) or (v is not None and isinstance(v, str) and v.startswith("aws_kms/")):
             decrypted_value = aws_kms.decrypt_value(secret_name=k)
             # reset env var
-            k = re.sub("litellm_secret_aws_kms_", "", k, flags=re.IGNORECASE)
+            k = re.sub("llm_secret_aws_kms_", "", k, flags=re.IGNORECASE)
             new_values[k] = decrypted_value
 
     return new_values

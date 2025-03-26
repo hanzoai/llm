@@ -16,7 +16,7 @@ from llm import completion
 llm.num_retries = 3
 llm.success_callback = ["helicone"]
 os.environ["HELICONE_DEBUG"] = "True"
-os.environ["LITELLM_LOG"] = "DEBUG"
+os.environ["LLM_LOG"] = "DEBUG"
 
 import pytest
 

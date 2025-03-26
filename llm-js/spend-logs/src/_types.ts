@@ -1,16 +1,16 @@
-export type LiteLLM_IncrementSpend = {
-    key_transactions: Array<LiteLLM_IncrementObject>, // [{"key": spend},..]
-    user_transactions: Array<LiteLLM_IncrementObject>, 
-    team_transactions: Array<LiteLLM_IncrementObject>,
-    spend_logs_transactions: Array<LiteLLM_SpendLogs>
+export type LLM_IncrementSpend = {
+    key_transactions: Array<LLM_IncrementObject>, // [{"key": spend},..]
+    user_transactions: Array<LLM_IncrementObject>, 
+    team_transactions: Array<LLM_IncrementObject>,
+    spend_logs_transactions: Array<LLM_SpendLogs>
 }
 
-export type LiteLLM_IncrementObject = {
+export type LLM_IncrementObject = {
     key: string,
     spend: number
 }
 
-export type LiteLLM_SpendLogs = {
+export type LLM_SpendLogs = {
     request_id: string; // @id means it's a unique identifier
     call_type: string;
     api_key: string; // @default("") means it defaults to an empty string if not provided

@@ -46,13 +46,13 @@ class _PROXY_BatchRedisRequests(CustomLogger):
             """
             Get the user key
 
-            Check if a key starting with `litellm:<api_key>:<call_type:` exists in-memory
+            Check if a key starting with `llm:<api_key>:<call_type:` exists in-memory
 
             If no, then get relevant cache from redis
             """
             api_key = user_api_key_dict.api_key
 
-            cache_key_name = f"litellm:{api_key}:{call_type}"
+            cache_key_name = f"llm:{api_key}:{call_type}"
             self.in_memory_cache = cache.in_memory_cache
 
             key_value_dict = {}

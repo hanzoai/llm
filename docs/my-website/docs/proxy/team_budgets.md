@@ -173,7 +173,7 @@ llm_settings:
   callbacks: ["dynamic_rate_limiter"]
 
 general_settings:
-  master_key: sk-1234 # OR set `LITELLM_MASTER_KEY=".."` in your .env
+  master_key: sk-1234 # OR set `LLM_MASTER_KEY=".."` in your .env
   database_url: postgres://.. # OR set `DATABASE_URL=".."` in your .env
 ```
 
@@ -275,7 +275,7 @@ llm_settings:
   priority_reservation: {"dev": 0, "prod": 1}
 
 general_settings:
-  master_key: sk-1234 # OR set `LITELLM_MASTER_KEY=".."` in your .env
+  master_key: sk-1234 # OR set `LLM_MASTER_KEY=".."` in your .env
   database_url: postgres://.. # OR set `DATABASE_URL=".."` in your .env
 ```
 

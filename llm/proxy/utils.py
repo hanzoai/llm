@@ -30,8 +30,8 @@ except ImportError:
 from fastapi import HTTPException, status
 
 import llm
-import llm.litellm_core_utils
-import llm.litellm_core_utils.litellm_logging
+import llm.llm_core_utils
+import llm.llm_core_utils.llm_logging
 from llm import (
     EmbeddingResponse,
     ImageResponse,
@@ -106,19 +106,19 @@ def safe_deep_copy(data):
     if llm.safe_memory_mode is True:
         return data
 
-    litellm_parent_otel_span: Optional[Any] = None
-    # Step 1: Remove the litellm_parent_otel_span
-    litellm_parent_otel_span = None
+    llm_parent_otel_span: Optional[Any] = None
+    # Step 1: Remove the llm_parent_otel_span
+    llm_parent_otel_span = None
     if isinstance(data, dict):
-        # remove litellm_parent_otel_span since this is not picklable
-        if "metadata" in data and "litellm_parent_otel_span" in data["metadata"]:
-            litellm_parent_otel_span = data["metadata"].pop("litellm_parent_otel_span")
+        # remove llm_parent_otel_span since this is not picklable
+        if "metadata" in data and "llm_parent_otel_span" in data["metadata"]:
+            llm_parent_otel_span = data["metadata"].pop("llm_parent_otel_span")
     new_data = copy.deepcopy(data)
 
-    # Step 2: re-add the litellm_parent_otel_span after doing a deep copy
-    if isinstance(data, dict) and litellm_parent_otel_span is not None:
+    # Step 2: re-add the llm_parent_otel_span after doing a deep copy
+    if isinstance(data, dict) and llm_parent_otel_span is not None:
         if "metadata" in data:
-            data["metadata"]["litellm_parent_otel_span"] = litellm_parent_otel_span
+            data["metadata"]["llm_parent_otel_span"] = llm_parent_otel_span
     return new_data
 
 
@@ -129,14 +129,14 @@ class InternalUsageCache:
     async def async_get_cache(
         self,
         key,
-        litellm_parent_otel_span: Union[Span, None],
+        llm_parent_otel_span: Union[Span, None],
         local_only: bool = False,
         **kwargs,
     ) -> Any:
         return await self.dual_cache.async_get_cache(
             key=key,
             local_only=local_only,
-            parent_otel_span=litellm_parent_otel_span,
+            parent_otel_span=llm_parent_otel_span,
             **kwargs,
         )
 
@@ -144,7 +144,7 @@ class InternalUsageCache:
         self,
         key,
         value,
-        litellm_parent_otel_span: Union[Span, None],
+        llm_parent_otel_span: Union[Span, None],
         local_only: bool = False,
         **kwargs,
     ) -> None:
@@ -152,21 +152,21 @@ class InternalUsageCache:
             key=key,
             value=value,
             local_only=local_only,
-            litellm_parent_otel_span=litellm_parent_otel_span,
+            llm_parent_otel_span=llm_parent_otel_span,
             **kwargs,
         )
 
     async def async_batch_set_cache(
         self,
         cache_list: List,
-        litellm_parent_otel_span: Union[Span, None],
+        llm_parent_otel_span: Union[Span, None],
         local_only: bool = False,
         **kwargs,
     ) -> None:
         return await self.dual_cache.async_set_cache_pipeline(
             cache_list=cache_list,
             local_only=local_only,
-            litellm_parent_otel_span=litellm_parent_otel_span,
+            llm_parent_otel_span=llm_parent_otel_span,
             **kwargs,
         )
 
@@ -186,7 +186,7 @@ class InternalUsageCache:
         self,
         key,
         value: float,
-        litellm_parent_otel_span: Union[Span, None],
+        llm_parent_otel_span: Union[Span, None],
         local_only: bool = False,
         **kwargs,
     ):
@@ -194,7 +194,7 @@ class InternalUsageCache:
             key=key,
             value=value,
             local_only=local_only,
-            parent_otel_span=litellm_parent_otel_span,
+            parent_otel_span=llm_parent_otel_span,
             **kwargs,
         )
 
@@ -240,7 +240,7 @@ class ProxyLogging:
         user_api_key_cache: DualCache,
         premium_user: bool = False,
     ):
-        ## INITIALIZE  LITELLM CALLBACKS ##
+        ## INITIALIZE  LLM CALLBACKS ##
         self.call_details: dict = {}
         self.call_details["user_api_key_cache"] = user_api_key_cache
         self.internal_usage_cache: InternalUsageCache = InternalUsageCache(
@@ -277,9 +277,9 @@ class ProxyLogging:
             redis_cache=redis_usage_cache
         )  # used by parallel request limiter for rate limiting keys across instances
 
-        self._init_litellm_callbacks(
+        self._init_llm_callbacks(
             llm_router=llm_router
-        )  # INITIALIZE LITELLM CALLBACKS ON SERVER STARTUP <- do this to catch any logging errors on startup, not when calls are being made
+        )  # INITIALIZE LLM CALLBACKS ON SERVER STARTUP <- do this to catch any logging errors on startup, not when calls are being made
 
         if (
             self.slack_alerting_instance is not None
@@ -328,21 +328,21 @@ class ProxyLogging:
                 # We should NOT add callbacks when alerting is off
                 if "daily_reports" in self.alert_types:
                     llm.logging_callback_manager.add_llm_callback(self.slack_alerting_instance)  # type: ignore
-                llm.logging_callback_manager.add_litellm_success_callback(
+                llm.logging_callback_manager.add_llm_success_callback(
                     self.slack_alerting_instance.response_taking_too_long_callback
                 )
 
         if redis_cache is not None:
             self.internal_usage_cache.dual_cache.redis_cache = redis_cache
 
-    def _init_litellm_callbacks(self, llm_router: Optional[Router] = None):
+    def _init_llm_callbacks(self, llm_router: Optional[Router] = None):
         llm.logging_callback_manager.add_llm_callback(self.max_parallel_request_limiter)  # type: ignore
         llm.logging_callback_manager.add_llm_callback(self.max_budget_limiter)  # type: ignore
         llm.logging_callback_manager.add_llm_callback(self.cache_control_check)  # type: ignore
         llm.logging_callback_manager.add_llm_callback(self.service_logging_obj)  # type: ignore
         for callback in llm.callbacks:
             if isinstance(callback, str):
-                callback = llm.litellm_core_utils.litellm_logging._init_custom_logger_compatible_class(  # type: ignore
+                callback = llm.llm_core_utils.llm_logging._init_custom_logger_compatible_class(  # type: ignore
                     callback,
                     internal_usage_cache=self.internal_usage_cache.dual_cache,
                     llm_router=llm_router,
@@ -352,13 +352,13 @@ class ProxyLogging:
             if callback not in llm.input_callback:
                 llm.input_callback.append(callback)  # type: ignore
             if callback not in llm.success_callback:
-                llm.logging_callback_manager.add_litellm_success_callback(callback)  # type: ignore
+                llm.logging_callback_manager.add_llm_success_callback(callback)  # type: ignore
             if callback not in llm.failure_callback:
-                llm.logging_callback_manager.add_litellm_failure_callback(callback)  # type: ignore
+                llm.logging_callback_manager.add_llm_failure_callback(callback)  # type: ignore
             if callback not in llm._async_success_callback:
-                llm.logging_callback_manager.add_litellm_async_success_callback(callback)  # type: ignore
+                llm.logging_callback_manager.add_llm_async_success_callback(callback)  # type: ignore
             if callback not in llm._async_failure_callback:
-                llm.logging_callback_manager.add_litellm_async_failure_callback(callback)  # type: ignore
+                llm.logging_callback_manager.add_llm_async_failure_callback(callback)  # type: ignore
             if callback not in llm.service_callback:
                 llm.service_callback.append(callback)  # type: ignore
 
@@ -374,7 +374,7 @@ class ProxyLogging:
                     + llm.failure_callback
                 )
             )
-            llm.litellm_core_utils.litellm_logging.set_callbacks(
+            llm.llm_core_utils.llm_logging.set_callbacks(
                 callback_list=callback_list
             )
 
@@ -397,7 +397,7 @@ class ProxyLogging:
             value=status,
             local_only=True,
             ttl=alerting_threshold,
-            litellm_parent_otel_span=None,
+            llm_parent_otel_span=None,
         )
 
     async def process_pre_call_hook_response(self, response, data, call_type):
@@ -489,7 +489,7 @@ class ProxyLogging:
 
                 _callback = None
                 if isinstance(callback, str):
-                    _callback = llm.litellm_core_utils.litellm_logging.get_custom_logger_compatible_class(
+                    _callback = llm.llm_core_utils.llm_logging.get_custom_logger_compatible_class(
                         callback
                     )
                 else:
@@ -629,7 +629,7 @@ class ProxyLogging:
         request_data: Optional[dict] = None,
     ):
         """
-        Alerting based on thresholds: - https://github.com/BerriAI/litellm/issues/1298
+        Alerting based on thresholds: - https://github.com/BerriAI/llm/issues/1298
 
         - Responses taking too long
         - Requests are hanging
@@ -755,7 +755,7 @@ class ProxyLogging:
             """
             Just alert on LLM API exceptions. Do not alert on user errors
 
-            Related issue - https://github.com/BerriAI/litellm/issues/3395
+            Related issue - https://github.com/BerriAI/llm/issues/3395
             """
             llm_debug_info = getattr(original_exception, "llm_debug_info", None)
             exception_str = str(original_exception)
@@ -786,7 +786,7 @@ class ProxyLogging:
             try:
                 _callback: Optional[CustomLogger] = None
                 if isinstance(callback, str):
-                    _callback = llm.litellm_core_utils.litellm_logging.get_custom_logger_compatible_class(
+                    _callback = llm.llm_core_utils.llm_logging.get_custom_logger_compatible_class(
                         callback
                     )
                 else:
@@ -863,9 +863,9 @@ class ProxyLogging:
             _optional_params = {}
             _llm_params = {}
 
-            litellm_param_keys = LoggedLLMParams.__annotations__.keys()
+            llm_param_keys = LoggedLLMParams.__annotations__.keys()
             for k, v in request_data.items():
-                if k in litellm_param_keys:
+                if k in llm_param_keys:
                     _llm_params[k] = v
                 elif k != "model" and k != "user":
                     _optional_params[k] = v
@@ -928,7 +928,7 @@ class ProxyLogging:
             try:
                 _callback: Optional[CustomLogger] = None
                 if isinstance(callback, str):
-                    _callback = llm.litellm_core_utils.litellm_logging.get_custom_logger_compatible_class(
+                    _callback = llm.llm_core_utils.llm_logging.get_custom_logger_compatible_class(
                         callback
                     )
                 else:
@@ -988,7 +988,7 @@ class ProxyLogging:
                 try:
                     _callback: Optional[CustomLogger] = None
                     if isinstance(callback, str):
-                        _callback = llm.litellm_core_utils.litellm_logging.get_custom_logger_compatible_class(
+                        _callback = llm.llm_core_utils.llm_logging.get_custom_logger_compatible_class(
                             callback
                         )
                     else:
@@ -1017,7 +1017,7 @@ class ProxyLogging:
         for callback in llm.callbacks:
             _callback: Optional[CustomLogger] = None
             if isinstance(callback, str):
-                _callback = llm.litellm_core_utils.litellm_logging.get_custom_logger_compatible_class(
+                _callback = llm.llm_core_utils.llm_logging.get_custom_logger_compatible_class(
                     callback
                 )
             else:
@@ -1248,7 +1248,7 @@ class PrismaClient:
                         missing_views = expected_views_set - ret_view_names_set
 
                         verbose_proxy_logger.warning(
-                            "\n\n\033[93mNot all views exist in db, needed for UI 'Usage' tab. Missing={}.\nRun 'create_views.py' from https://github.com/BerriAI/litellm/tree/main/db_scripts to create missing views.\033[0m\n".format(
+                            "\n\n\033[93mNot all views exist in db, needed for UI 'Usage' tab. Missing={}.\nRun 'create_views.py' from https://github.com/BerriAI/llm/tree/main/db_scripts to create missing views.\033[0m\n".format(
                                 missing_views
                             )
                         )
@@ -1277,7 +1277,7 @@ class PrismaClient:
         start_time = time.time()
         try:
             if table_name == "users":
-                response = await self.db.litellm_usertable.find_first(
+                response = await self.db.llm_usertable.find_first(
                     where={key: value}  # type: ignore
                 )
             elif table_name == "keys":
@@ -1285,7 +1285,7 @@ class PrismaClient:
                     where={key: value}  # type: ignore
                 )
             elif table_name == "config":
-                response = await self.db.litellm_config.find_first(  # type: ignore
+                response = await self.db.llm_config.find_first(  # type: ignore
                     where={key: value}  # type: ignore
                 )
             elif table_name == "spend":
@@ -1459,27 +1459,27 @@ class PrismaClient:
                 if query_type == "find_unique":
                     if key_val is None:
                         key_val = {"user_id": user_id}
-                    response = await self.db.litellm_usertable.find_unique(  # type: ignore
+                    response = await self.db.llm_usertable.find_unique(  # type: ignore
                         where=key_val,  # type: ignore
                         include={"organization_memberships": True},
                     )
                 elif query_type == "find_all" and key_val is not None:
-                    response = await self.db.litellm_usertable.find_many(
+                    response = await self.db.llm_usertable.find_many(
                         where=key_val  # type: ignore
                     )  # type: ignore
                 elif query_type == "find_all" and reset_at is not None:
-                    response = await self.db.litellm_usertable.find_many(
+                    response = await self.db.llm_usertable.find_many(
                         where={  # type:ignore
                             "budget_reset_at": {"lt": reset_at},
                         }
                     )
                 elif query_type == "find_all" and user_id_list is not None:
-                    response = await self.db.litellm_usertable.find_many(
+                    response = await self.db.llm_usertable.find_many(
                         where={"user_id": {"in": user_id_list}}
                     )
                 elif query_type == "find_all":
                     if expires is not None:
-                        response = await self.db.litellm_usertable.find_many(  # type: ignore
+                        response = await self.db.llm_usertable.find_many(  # type: ignore
                             order={"spend": "desc"},
                             where={  # type:ignore
                                 "OR": [
@@ -1556,11 +1556,11 @@ class PrismaClient:
                 return response
             elif table_name == "user_notification":
                 if query_type == "find_unique":
-                    response = await self.db.litellm_usernotifications.find_unique(  # type: ignore
+                    response = await self.db.llm_usernotifications.find_unique(  # type: ignore
                         where={"user_id": user_id}  # type: ignore
                     )
                 elif query_type == "find_all":
-                    response = await self.db.litellm_usernotifications.find_many()  # type: ignore
+                    response = await self.db.llm_usernotifications.find_many()  # type: ignore
                 return response
             elif table_name == "combined_view":
                 # check if plain text or hash
@@ -1724,7 +1724,7 @@ class PrismaClient:
             elif table_name == "user":
                 db_data = self.jsonify_object(data=data)
                 try:
-                    new_user_row = await self.db.litellm_usertable.upsert(
+                    new_user_row = await self.db.llm_usertable.upsert(
                         where={"user_id": data["user_id"]},
                         data={
                             "create": {**db_data},  # type: ignore
@@ -1769,7 +1769,7 @@ class PrismaClient:
                 for k, v in data.items():
                     updated_data = v
                     updated_data = json.dumps(updated_data)
-                    updated_table_row = self.db.litellm_config.upsert(
+                    updated_table_row = self.db.llm_config.upsert(
                         where={"param_name": k},  # type: ignore
                         data={
                             "create": {"param_name": k, "param_value": updated_data},  # type: ignore
@@ -1794,7 +1794,7 @@ class PrismaClient:
             elif table_name == "user_notification":
                 db_data = self.jsonify_object(data=data)
                 new_user_notification_row = (
-                    await self.db.litellm_usernotifications.upsert(  # type: ignore
+                    await self.db.llm_usernotifications.upsert(  # type: ignore
                         where={"request_id": data["request_id"]},
                         data={
                             "create": {**db_data},  # type: ignore
@@ -1890,7 +1890,7 @@ class PrismaClient:
                         update_key_values = update_key_values_custom_query
                     else:
                         update_key_values = db_data
-                update_user_row = await self.db.litellm_usertable.upsert(
+                update_user_row = await self.db.llm_usertable.upsert(
                     where={"user_id": user_id},  # type: ignore
                     data={
                         "create": {**db_data},  # type: ignore
@@ -1993,7 +1993,7 @@ class PrismaClient:
                         )
                     except Exception:
                         data_json = self.jsonify_object(data=user.dict())
-                    batcher.litellm_usertable.upsert(
+                    batcher.llm_usertable.upsert(
                         where={"user_id": user.user_id},  # type: ignore
                         data={
                             "create": {**data_json},  # type: ignore
@@ -2375,7 +2375,7 @@ class ProxyUpdateSpend:
                         ) in prisma_client.end_user_list_transactons.items():
                             if llm.max_end_user_budget is not None:
                                 pass
-                            batcher.litellm_endusertable.upsert(
+                            batcher.llm_endusertable.upsert(
                                 where={"user_id": end_user_id},
                                 data={
                                     "create": {
@@ -2520,7 +2520,7 @@ async def update_spend(  # noqa: PLR0915
                             user_id,
                             response_cost,
                         ) in prisma_client.user_list_transactons.items():
-                            batcher.litellm_usertable.update_many(
+                            batcher.llm_usertable.update_many(
                                 where={"user_id": user_id},
                                 data={"spend": {"increment": response_cost}},
                             )
@@ -2683,7 +2683,7 @@ async def update_spend(  # noqa: PLR0915
                             org_id,
                             response_cost,
                         ) in prisma_client.org_list_transactons.items():
-                            batcher.litellm_organizationtable.update_many(  # 'update_many' prevents error from being raised if no row exists
+                            batcher.llm_organizationtable.update_many(  # 'update_many' prevents error from being raised if no row exists
                                 where={"organization_id": org_id},
                                 data={"spend": {"increment": response_cost}},
                             )

@@ -61,9 +61,9 @@ export default function ModelInfoView({
   const canEditModel = userRole === "Admin";
   const isAdmin = userRole === "Admin";
 
-  const usingExistingCredential = modelData.litellm_params?.litellm_credential_name != null && modelData.litellm_params?.litellm_credential_name != undefined;
+  const usingExistingCredential = modelData.llm_params?.llm_credential_name != null && modelData.llm_params?.llm_credential_name != undefined;
   console.log("usingExistingCredential, ", usingExistingCredential);
-  console.log("modelData.litellm_params.litellm_credential_name, ", modelData.litellm_params.litellm_credential_name);
+  console.log("modelData.llm_params.llm_credential_name, ", modelData.llm_params.llm_credential_name);
   
 
   useEffect(() => {
@@ -98,7 +98,7 @@ export default function ModelInfoView({
       credential_name: values.credential_name,
       model_id: modelId,
       credential_info: {
-        "custom_llm_provider": localModelData.litellm_params?.custom_llm_provider,
+        "custom_llm_provider": localModelData.llm_params?.custom_llm_provider,
       }
     }
     message.info("Storing credential..");
@@ -114,9 +114,9 @@ export default function ModelInfoView({
       
       const updateData = {
         model_name: values.model_name,
-        litellm_params: {
-          ...localModelData.litellm_params,
-          model: values.litellm_model_name,
+        llm_params: {
+          ...localModelData.llm_params,
+          model: values.llm_model_name,
           api_base: values.api_base,
           custom_llm_provider: values.custom_llm_provider,
           organization: values.organization,
@@ -138,8 +138,8 @@ export default function ModelInfoView({
       const updatedModelData = {
         ...localModelData,
         model_name: values.model_name,
-        litellm_model_name: values.litellm_model_name,
-        litellm_params: updateData.litellm_params
+        llm_model_name: values.llm_model_name,
+        llm_params: updateData.llm_params
       };
       
       setLocalModelData(updatedModelData);
@@ -266,9 +266,9 @@ export default function ModelInfoView({
                 </div>
               </Card>
               <Card>
-                <Text>LiteLLM Model</Text>
+                <Text>LLM Model</Text>
                 <pre>
-                  <Title>{modelData.litellm_model_name || "Not Set"}</Title>
+                  <Title>{modelData.llm_model_name || "Not Set"}</Title>
                 </pre>
               </Card>
               <Card>
@@ -322,19 +322,19 @@ export default function ModelInfoView({
                   onFinish={handleModelUpdate}
                   initialValues={{
                   model_name: localModelData.model_name,
-                  litellm_model_name: localModelData.litellm_model_name,
-                  api_base: localModelData.litellm_params.api_base,
-                  custom_llm_provider: localModelData.litellm_params.custom_llm_provider,
-                  organization: localModelData.litellm_params.organization,
-                  tpm: localModelData.litellm_params.tpm,
-                  rpm: localModelData.litellm_params.rpm,
-                  max_retries: localModelData.litellm_params.max_retries,
-                  timeout: localModelData.litellm_params.timeout,
-                  stream_timeout: localModelData.litellm_params.stream_timeout,
-                  input_cost: localModelData.litellm_params.input_cost_per_token ? 
-                    (localModelData.litellm_params.input_cost_per_token * 1_000_000) : localModelData.model_info?.input_cost_per_token * 1_000_000 || null,
-                  output_cost: localModelData.litellm_params?.output_cost_per_token ? 
-                    (localModelData.litellm_params.output_cost_per_token * 1_000_000) : localModelData.model_info?.output_cost_per_token * 1_000_000 || null,
+                  llm_model_name: localModelData.llm_model_name,
+                  api_base: localModelData.llm_params.api_base,
+                  custom_llm_provider: localModelData.llm_params.custom_llm_provider,
+                  organization: localModelData.llm_params.organization,
+                  tpm: localModelData.llm_params.tpm,
+                  rpm: localModelData.llm_params.rpm,
+                  max_retries: localModelData.llm_params.max_retries,
+                  timeout: localModelData.llm_params.timeout,
+                  stream_timeout: localModelData.llm_params.stream_timeout,
+                  input_cost: localModelData.llm_params.input_cost_per_token ? 
+                    (localModelData.llm_params.input_cost_per_token * 1_000_000) : localModelData.model_info?.input_cost_per_token * 1_000_000 || null,
+                  output_cost: localModelData.llm_params?.output_cost_per_token ? 
+                    (localModelData.llm_params.output_cost_per_token * 1_000_000) : localModelData.model_info?.output_cost_per_token * 1_000_000 || null,
                 }}
                 layout="vertical"
                 onValuesChange={() => setIsDirty(true)}
@@ -353,13 +353,13 @@ export default function ModelInfoView({
                     </div>
 
                     <div>
-                      <Text className="font-medium">LiteLLM Model Name</Text>
+                      <Text className="font-medium">LLM Model Name</Text>
                       {isEditing ? (
-                        <Form.Item name="litellm_model_name" className="mb-0">
-                          <TextInput placeholder="Enter LiteLLM model name" />
+                        <Form.Item name="llm_model_name" className="mb-0">
+                          <TextInput placeholder="Enter LLM model name" />
                         </Form.Item>
                       ) : (
-                        <div className="mt-1 p-2 bg-gray-50 rounded">{localModelData.litellm_model_name}</div>
+                        <div className="mt-1 p-2 bg-gray-50 rounded">{localModelData.llm_model_name}</div>
                       )}
                     </div>
 
@@ -371,8 +371,8 @@ export default function ModelInfoView({
                         </Form.Item>
                       ) : (
                         <div className="mt-1 p-2 bg-gray-50 rounded">
-                          {localModelData?.litellm_params?.input_cost_per_token 
-                            ? (localModelData.litellm_params?.input_cost_per_token * 1_000_000).toFixed(4) 
+                          {localModelData?.llm_params?.input_cost_per_token 
+                            ? (localModelData.llm_params?.input_cost_per_token * 1_000_000).toFixed(4) 
                             : localModelData?.model_info?.input_cost_per_token ? (localModelData.model_info.input_cost_per_token * 1_000_000).toFixed(4) : null}
                         </div>
                       )}
@@ -386,8 +386,8 @@ export default function ModelInfoView({
                         </Form.Item>
                       ) : (
                         <div className="mt-1 p-2 bg-gray-50 rounded">
-                          {localModelData?.litellm_params?.output_cost_per_token 
-                            ? (localModelData.litellm_params.output_cost_per_token * 1_000_000).toFixed(4) 
+                          {localModelData?.llm_params?.output_cost_per_token 
+                            ? (localModelData.llm_params.output_cost_per_token * 1_000_000).toFixed(4) 
                             : localModelData?.model_info?.output_cost_per_token ? (localModelData.model_info.output_cost_per_token * 1_000_000).toFixed(4) : null}
                         </div>
                       )}
@@ -401,7 +401,7 @@ export default function ModelInfoView({
                         </Form.Item>
                       ) : (
                         <div className="mt-1 p-2 bg-gray-50 rounded">
-                          {localModelData.litellm_params?.api_base || "Not Set"}
+                          {localModelData.llm_params?.api_base || "Not Set"}
                         </div>
                       )}
                     </div>
@@ -414,7 +414,7 @@ export default function ModelInfoView({
                         </Form.Item>
                       ) : (
                         <div className="mt-1 p-2 bg-gray-50 rounded">
-                          {localModelData.litellm_params?.custom_llm_provider || "Not Set"}
+                          {localModelData.llm_params?.custom_llm_provider || "Not Set"}
                         </div>
                       )}
                     </div>
@@ -427,7 +427,7 @@ export default function ModelInfoView({
                         </Form.Item>
                       ) : (
                         <div className="mt-1 p-2 bg-gray-50 rounded">
-                          {localModelData.litellm_params?.organization || "Not Set"}
+                          {localModelData.llm_params?.organization || "Not Set"}
                         </div>
                       )}
                     </div>
@@ -440,7 +440,7 @@ export default function ModelInfoView({
                         </Form.Item>
                       ) : (
                         <div className="mt-1 p-2 bg-gray-50 rounded">
-                          {localModelData.litellm_params?.tpm || "Not Set"}
+                          {localModelData.llm_params?.tpm || "Not Set"}
                         </div>
                       )}
                     </div>
@@ -453,7 +453,7 @@ export default function ModelInfoView({
                         </Form.Item>
                       ) : (
                         <div className="mt-1 p-2 bg-gray-50 rounded">
-                          {localModelData.litellm_params?.rpm || "Not Set"}
+                          {localModelData.llm_params?.rpm || "Not Set"}
                         </div>
                       )}
                     </div>
@@ -466,7 +466,7 @@ export default function ModelInfoView({
                         </Form.Item>
                       ) : (
                         <div className="mt-1 p-2 bg-gray-50 rounded">
-                          {localModelData.litellm_params?.max_retries || "Not Set"}
+                          {localModelData.llm_params?.max_retries || "Not Set"}
                         </div>
                       )}
                     </div>
@@ -479,7 +479,7 @@ export default function ModelInfoView({
                         </Form.Item>
                       ) : (
                         <div className="mt-1 p-2 bg-gray-50 rounded">
-                          {localModelData.litellm_params?.timeout || "Not Set"}
+                          {localModelData.llm_params?.timeout || "Not Set"}
                         </div>
                       )}
                     </div>
@@ -492,7 +492,7 @@ export default function ModelInfoView({
                         </Form.Item>
                       ) : (
                         <div className="mt-1 p-2 bg-gray-50 rounded">
-                          {localModelData.litellm_params?.stream_timeout || "Not Set"}
+                          {localModelData.llm_params?.stream_timeout || "Not Set"}
                         </div>
                       )}
                     </div>
@@ -601,7 +601,7 @@ export default function ModelInfoView({
           onCancel={() => setIsCredentialModalOpen(false)}
           title="Using Existing Credential"
         >
-          <Text>{modelData.litellm_params.litellm_credential_name}</Text>
+          <Text>{modelData.llm_params.llm_credential_name}</Text>
         </Modal>
       )}
     </div>

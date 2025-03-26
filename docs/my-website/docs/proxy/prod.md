@@ -39,7 +39,7 @@ export SLACK_WEBHOOK_URL="https://hooks.slack.com/services/T04JBDEQSHF/B06S53DQS
 
 Turn off FASTAPI's default info logs
 ```bash
-export LITELLM_LOG="ERROR"
+export LLM_LOG="ERROR"
 ```
 
 :::info
@@ -88,7 +88,7 @@ llm_settings:
 
 ## 4. Disable 'load_dotenv'
 
-Set `export LITELLM_MODE="PRODUCTION"`
+Set `export LLM_MODE="PRODUCTION"`
 
 This disables the load_dotenv() functionality, which will automatically load your environment credentials from the local `.env`. 
 
@@ -156,7 +156,7 @@ Do not change this after adding a model. It is used to encrypt / decrypt your LL
 We recommned - https://1password.com/password-generator/ password generator to get a random hash for llm salt key.
 
 ```bash
-export LITELLM_SALT_KEY="sk-1234"
+export LLM_SALT_KEY="sk-1234"
 ```
 
 [**See Code**](https://github.com/BerriAI/llm/blob/036a6821d588bd36d170713dcf5a72791a694178/llm/proxy/common_utils/encrypt_decrypt_utils.py#L15)
@@ -221,7 +221,7 @@ spec:
               value: "d6******"
             - name: AZURE_API_BASE
               value: "https://ope******"
-            - name: LITELLM_MASTER_KEY
+            - name: LLM_MASTER_KEY
               value: "sk-1234"
             - name: DATABASE_URL
               value: "po**********"

@@ -447,15 +447,15 @@ llm --model gpt-3.5-turbo --detailed_debug
 
 Events that occur during normal operation
 ```shell
-export LITELLM_LOG=INFO
+export LLM_LOG=INFO
 ```
 
 Detailed information
 ```shell
-export LITELLM_LOG=DEBUG
+export LLM_LOG=DEBUG
 ```
 
 No Logs
 ```shell
-export LITELLM_LOG=None
+export LLM_LOG=None
 ```

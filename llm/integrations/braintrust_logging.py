@@ -223,7 +223,7 @@ class BraintrustLogger(CustomLogger):
 
             cost = kwargs.get("response_cost", None)
             if cost is not None:
-                clean_metadata["litellm_response_cost"] = cost
+                clean_metadata["llm_response_cost"] = cost
 
             metrics: Optional[dict] = None
             usage_obj = getattr(response_obj, "usage", None)
@@ -344,7 +344,7 @@ class BraintrustLogger(CustomLogger):
 
             cost = kwargs.get("response_cost", None)
             if cost is not None:
-                clean_metadata["litellm_response_cost"] = cost
+                clean_metadata["llm_response_cost"] = cost
 
             metrics: Optional[dict] = None
             usage_obj = getattr(response_obj, "usage", None)

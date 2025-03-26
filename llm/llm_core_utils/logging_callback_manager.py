@@ -26,7 +26,7 @@ class LoggingCallbackManager:
             callback=callback, parent_list=llm.input_callback
         )
 
-    def add_litellm_service_callback(
+    def add_llm_service_callback(
         self, callback: Union[CustomLogger, str, Callable]
     ):
         """
@@ -46,7 +46,7 @@ class LoggingCallbackManager:
             callback=callback, parent_list=llm.callbacks  # type: ignore
         )
 
-    def add_litellm_success_callback(
+    def add_llm_success_callback(
         self, callback: Union[CustomLogger, str, Callable]
     ):
         """
@@ -56,7 +56,7 @@ class LoggingCallbackManager:
             callback=callback, parent_list=llm.success_callback
         )
 
-    def add_litellm_failure_callback(
+    def add_llm_failure_callback(
         self, callback: Union[CustomLogger, str, Callable]
     ):
         """
@@ -66,7 +66,7 @@ class LoggingCallbackManager:
             callback=callback, parent_list=llm.failure_callback
         )
 
-    def add_litellm_async_success_callback(
+    def add_llm_async_success_callback(
         self, callback: Union[CustomLogger, Callable, str]
     ):
         """
@@ -76,7 +76,7 @@ class LoggingCallbackManager:
             callback=callback, parent_list=llm._async_success_callback
         )
 
-    def add_litellm_async_failure_callback(
+    def add_llm_async_failure_callback(
         self, callback: Union[CustomLogger, Callable, str]
     ):
         """

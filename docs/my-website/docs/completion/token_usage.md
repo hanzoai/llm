@@ -186,7 +186,7 @@ llm.register_model(model_cost=
 **Don't pull hosted model_cost_map**  
 If you have firewalls, and want to just use the local copy of the model cost map, you can do so like this:
 ```bash
-export LITELLM_LOCAL_MODEL_COST_MAP="True"
+export LLM_LOCAL_MODEL_COST_MAP="True"
 ```
 
 Note: this means you will need to upgrade to get updated pricing, and newer models. 

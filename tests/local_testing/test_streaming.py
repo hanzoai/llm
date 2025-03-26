@@ -14,8 +14,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import pytest
 from pydantic import BaseModel
 
-import llm.litellm_core_utils
-import llm.litellm_core_utils.litellm_logging
+import llm.llm_core_utils
+import llm.llm_core_utils.llm_logging
 from llm.utils import ModelResponseListIterator
 from llm.types.utils import ModelResponseStream
 
@@ -417,7 +417,7 @@ def test_completion_azure_stream_content_filter_no_delta():
                 stream=True,
                 call_type="completion",
                 start_time=time.time(),
-                litellm_call_id="12345",
+                llm_call_id="12345",
                 function_id="1245",
             ),
         )
@@ -1777,7 +1777,7 @@ def test_sagemaker_weird_response():
             model="berri-benchmarking-Llama-2-70b-chat-hf-4",
             messages=messages,
             stream=True,
-            litellm_call_id="1234",
+            llm_call_id="1234",
             function_id="function_id",
             call_type="acompletion",
             start_time=time.time(),
@@ -2716,7 +2716,7 @@ def test_success_callback_streaming():
     llm.success_callback = [success_callback]
 
     messages = [{"role": "user", "content": "hello"}]
-    print("TESTING LITELLM COMPLETION CALL")
+    print("TESTING LLM COMPLETION CALL")
     response = llm.completion(
         model="gpt-3.5-turbo",
         messages=messages,
@@ -3281,7 +3281,7 @@ def test_unit_test_custom_stream_wrapper():
             stream=True,
             call_type="completion",
             start_time=time.time(),
-            litellm_call_id="12345",
+            llm_call_id="12345",
             function_id="1245",
         ),
     )
@@ -3345,7 +3345,7 @@ def test_unit_test_custom_stream_wrapper_repeating_chunk(
             stream=True,
             call_type="completion",
             start_time=time.time(),
-            litellm_call_id="12345",
+            llm_call_id="12345",
             function_id="1245",
         ),
     )
@@ -3425,7 +3425,7 @@ def test_unit_test_gemini_streaming_content_filter():
             stream=True,
             call_type="completion",
             start_time=time.time(),
-            litellm_call_id="12345",
+            llm_call_id="12345",
             function_id="1245",
         ),
     )
@@ -3478,7 +3478,7 @@ def test_unit_test_custom_stream_wrapper_openai():
             stream=True,
             call_type="completion",
             start_time=time.time(),
-            litellm_call_id="12345",
+            llm_call_id="12345",
             function_id="1245",
         ),
     )
@@ -3495,7 +3495,7 @@ def test_aamazing_unit_test_custom_stream_wrapper_n():
     """
     Test if the translated output maps exactly to the received openai input
 
-    Relevant issue: https://github.com/BerriAI/litellm/issues/3276
+    Relevant issue: https://github.com/BerriAI/llm/issues/3276
     """
     chunks = [
         {
@@ -3723,7 +3723,7 @@ def test_aamazing_unit_test_custom_stream_wrapper_n():
             stream=True,
             call_type="completion",
             start_time=time.time(),
-            litellm_call_id="12345",
+            llm_call_id="12345",
             function_id="1245",
         ),
     )
@@ -3790,13 +3790,13 @@ def test_unit_test_custom_stream_wrapper_function_call():
         completion_stream=completion_stream,
         model="gpt-3.5-turbo",
         custom_llm_provider="cached_response",
-        logging_obj=llm.litellm_core_utils.litellm_logging.Logging(
+        logging_obj=llm.llm_core_utils.llm_logging.Logging(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hey"}],
             stream=True,
             call_type="completion",
             start_time=time.time(),
-            litellm_call_id="12345",
+            llm_call_id="12345",
             function_id="1245",
         ),
     )
@@ -3900,13 +3900,13 @@ def test_unit_test_perplexity_citations_chunk():
         completion_stream=completion_stream,
         model="gpt-3.5-turbo",
         custom_llm_provider="cached_response",
-        logging_obj=llm.litellm_core_utils.litellm_logging.Logging(
+        logging_obj=llm.llm_core_utils.llm_logging.Logging(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hey"}],
             stream=True,
             call_type="completion",
             start_time=time.time(),
-            litellm_call_id="12345",
+            llm_call_id="12345",
             function_id="1245",
         ),
     )
@@ -4001,7 +4001,7 @@ def test_streaming_api_base():
 
 def test_mock_response_iterator_tool_use():
     """
-    Relevant Issue: https://github.com/BerriAI/litellm/issues/7364
+    Relevant Issue: https://github.com/BerriAI/llm/issues/7364
     """
     from llm.llms.bedrock.chat.invoke_handler import MockResponseIterator
     from llm.types.utils import (
@@ -4101,7 +4101,7 @@ def test_reasoning_content_completion(model):
 
 
 def test_is_delta_empty():
-    from llm.litellm_core_utils.streaming_handler import CustomStreamWrapper
+    from llm.llm_core_utils.streaming_handler import CustomStreamWrapper
     from llm.types.utils import Delta
 
     custom_stream_wrapper = CustomStreamWrapper(

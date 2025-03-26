@@ -82,7 +82,7 @@ def _is_allowed_to_make_key_request(
     """
     Assert user only creates keys for themselves
 
-    Relevant issue: https://github.com/BerriAI/litellm/issues/7336
+    Relevant issue: https://github.com/BerriAI/llm/issues/7336
     """
     ## BASE CASE - PROXY ADMIN
     if (
@@ -103,7 +103,7 @@ def _is_allowed_to_make_key_request(
             user_api_key_dict.team_id is not None
             and user_api_key_dict.team_id == UI_TEAM_ID
         ):
-            return True  # handle https://github.com/BerriAI/litellm/issues/7482
+            return True  # handle https://github.com/BerriAI/llm/issues/7482
         assert (
             user_api_key_dict.team_id == team_id
         ), "User can only create keys for their own team. Got={}, Your Team ID={}".format(
@@ -326,9 +326,9 @@ router = APIRouter()
 async def generate_key_fn(  # noqa: PLR0915
     data: GenerateKeyRequest,
     user_api_key_dict: UserAPIKeyAuth = Depends(user_api_key_auth),
-    litellm_changed_by: Optional[str] = Header(
+    llm_changed_by: Optional[str] = Header(
         None,
-        description="The litellm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
+        description="The llm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
     ),
 ):
     """
@@ -508,7 +508,7 @@ async def generate_key_fn(  # noqa: PLR0915
                 budget_row.json(exclude_none=True)
             )
 
-            _budget = await prisma_client.db.litellm_budgettable.create(
+            _budget = await prisma_client.db.llm_budgettable.create(
                 data={
                     **new_budget,  # type: ignore
                     "created_by": user_api_key_dict.user_id or llm_proxy_admin_name,
@@ -579,7 +579,7 @@ async def generate_key_fn(  # noqa: PLR0915
                 data=data,
                 response=response,
                 user_api_key_dict=user_api_key_dict,
-                litellm_changed_by=litellm_changed_by,
+                llm_changed_by=llm_changed_by,
             )
         )
 
@@ -676,9 +676,9 @@ async def update_key_fn(
     request: Request,
     data: UpdateKeyRequest,
     user_api_key_dict: UserAPIKeyAuth = Depends(user_api_key_auth),
-    litellm_changed_by: Optional[str] = Header(
+    llm_changed_by: Optional[str] = Header(
         None,
-        description="The litellm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
+        description="The llm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
     ),
 ):
     """
@@ -790,7 +790,7 @@ async def update_key_fn(
                 existing_key_row=existing_key_row,
                 response=response,
                 user_api_key_dict=user_api_key_dict,
-                litellm_changed_by=litellm_changed_by,
+                llm_changed_by=llm_changed_by,
             )
         )
 
@@ -829,9 +829,9 @@ async def update_key_fn(
 async def delete_key_fn(
     data: KeyRequest,
     user_api_key_dict: UserAPIKeyAuth = Depends(user_api_key_auth),
-    litellm_changed_by: Optional[str] = Header(
+    llm_changed_by: Optional[str] = Header(
         None,
-        description="The litellm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
+        description="The llm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
     ),
 ):
     """
@@ -918,7 +918,7 @@ async def delete_key_fn(
                 data=data,
                 keys_being_deleted=_keys_being_deleted,
                 user_api_key_dict=user_api_key_dict,
-                litellm_changed_by=litellm_changed_by,
+                llm_changed_by=llm_changed_by,
                 response=number_deleted_keys,
             )
         )
@@ -1583,7 +1583,7 @@ async def _rotate_master_key(
         )
     # 3. process config table
     try:
-        config = await prisma_client.db.litellm_config.find_many()
+        config = await prisma_client.db.llm_config.find_many()
     except Exception:
         config = None
 
@@ -1604,7 +1604,7 @@ async def _rotate_master_key(
             )
 
             if encrypted_env_vars:
-                await prisma_client.db.litellm_config.update(
+                await prisma_client.db.llm_config.update(
                     where={"param_name": "environment_variables"},
                     data={"param_value": jsonify_object(encrypted_env_vars)},
                 )
@@ -1625,9 +1625,9 @@ async def regenerate_key_fn(
     key: Optional[str] = None,
     data: Optional[RegenerateKeyRequest] = None,
     user_api_key_dict: UserAPIKeyAuth = Depends(user_api_key_auth),
-    litellm_changed_by: Optional[str] = Header(
+    llm_changed_by: Optional[str] = Header(
         None,
-        description="The litellm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
+        description="The llm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
     ),
 ) -> Optional[GenerateKeyResponse]:
     """
@@ -1806,7 +1806,7 @@ async def regenerate_key_fn(
                 existing_key_row=_key_in_db,
                 response=response,
                 user_api_key_dict=user_api_key_dict,
-                litellm_changed_by=litellm_changed_by,
+                llm_changed_by=llm_changed_by,
             )
         )
 
@@ -1836,7 +1836,7 @@ async def validate_key_list_check(
             code=status.HTTP_403_FORBIDDEN,
         )
     complete_user_info_db_obj: Optional[BaseModel] = (
-        await prisma_client.db.litellm_usertable.find_unique(
+        await prisma_client.db.llm_usertable.find_unique(
             where={"user_id": user_api_key_dict.user_id},
             include={"organization_memberships": True},
         )
@@ -2157,9 +2157,9 @@ async def block_key(
     data: BlockKeyRequest,
     http_request: Request,
     user_api_key_dict: UserAPIKeyAuth = Depends(user_api_key_auth),
-    litellm_changed_by: Optional[str] = Header(
+    llm_changed_by: Optional[str] = Header(
         None,
-        description="The litellm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
+        description="The llm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
     ),
 ) -> Optional[LLM_VerificationToken]:
     """
@@ -2214,11 +2214,11 @@ async def block_key(
                 request_data=LLM_AuditLogs(
                     id=str(uuid.uuid4()),
                     updated_at=datetime.now(timezone.utc),
-                    changed_by=litellm_changed_by
+                    changed_by=llm_changed_by
                     or user_api_key_dict.user_id
                     or llm_proxy_admin_name,
                     changed_by_api_key=user_api_key_dict.api_key,
-                    table_name=LitellmTableNames.KEY_TABLE_NAME,
+                    table_name=LlmTableNames.KEY_TABLE_NAME,
                     object_id=hashed_token,
                     action="blocked",
                     updated_values="{}",
@@ -2264,9 +2264,9 @@ async def unblock_key(
     data: BlockKeyRequest,
     http_request: Request,
     user_api_key_dict: UserAPIKeyAuth = Depends(user_api_key_auth),
-    litellm_changed_by: Optional[str] = Header(
+    llm_changed_by: Optional[str] = Header(
         None,
-        description="The litellm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
+        description="The llm-changed-by header enables tracking of actions performed by authorized users on behalf of other users, providing an audit trail for accountability",
     ),
 ):
     """
@@ -2321,11 +2321,11 @@ async def unblock_key(
                 request_data=LLM_AuditLogs(
                     id=str(uuid.uuid4()),
                     updated_at=datetime.now(timezone.utc),
-                    changed_by=litellm_changed_by
+                    changed_by=llm_changed_by
                     or user_api_key_dict.user_id
                     or llm_proxy_admin_name,
                     changed_by_api_key=user_api_key_dict.api_key,
-                    table_name=LitellmTableNames.KEY_TABLE_NAME,
+                    table_name=LlmTableNames.KEY_TABLE_NAME,
                     object_id=hashed_token,
                     action="blocked",
                     updated_values="{}",

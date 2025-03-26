@@ -237,7 +237,7 @@ async def test_global_proxy_budget_update():
     - Make chat completion call (streaming)
     - Assert spend increased
     """
-    get_user = f"litellm-proxy-budget"
+    get_user = f"llm-proxy-budget"
     async with aiohttp.ClientSession() as session:
         user_info = await get_user_info(
             session=session, get_user=get_user, call_user="sk-1234"

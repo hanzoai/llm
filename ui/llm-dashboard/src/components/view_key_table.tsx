@@ -557,7 +557,7 @@ const ViewKeyTable: React.FC<ViewKeyTableProps> = ({
             </p>
             <Button variant="primary" className="mb-2">
               <a
-                href="https://calendly.com/d/4mp-gd3-k5k/litellm-1-1-onboarding-chat"
+                href="https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat"
                 target="_blank"
               >
                 Get Free Trial
@@ -584,7 +584,7 @@ const ViewKeyTable: React.FC<ViewKeyTableProps> = ({
               <p>
                 Please replace your old key with the new key generated. For
                 security reasons, <b>you will not be able to view it again</b>{" "}
-                through your LiteLLM account. If you lose this secret key, you
+                through your LLM account. If you lose this secret key, you
                 will need to generate a new one.
               </p>
             </Col>

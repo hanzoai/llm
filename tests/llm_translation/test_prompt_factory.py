@@ -9,10 +9,10 @@ sys.path.insert(0, os.path.abspath("../.."))
 
 from typing import Union
 
-# from llm.litellm_core_utils.prompt_templates.factory import prompt_factory
+# from llm.llm_core_utils.prompt_templates.factory import prompt_factory
 import llm
 from llm import completion
-from llm.litellm_core_utils.prompt_templates.factory import (
+from llm.llm_core_utils.prompt_templates.factory import (
     _bedrock_tools_pt,
     anthropic_messages_pt,
     anthropic_pt,
@@ -22,7 +22,7 @@ from llm.litellm_core_utils.prompt_templates.factory import (
     llama_2_chat_pt,
     prompt_factory,
 )
-from llm.litellm_core_utils.prompt_templates.common_utils import (
+from llm.llm_core_utils.prompt_templates.common_utils import (
     get_completion_messages,
 )
 from llm.llms.vertex_ai.gemini.transformation import (
@@ -303,9 +303,9 @@ def test_anthropic_cache_controls_pt():
 @pytest.mark.parametrize("provider", ["bedrock", "anthropic"])
 def test_bedrock_parallel_tool_calling_pt(provider):
     """
-    Make sure parallel tool call blocks are merged correctly - https://github.com/BerriAI/litellm/issues/5277
+    Make sure parallel tool call blocks are merged correctly - https://github.com/BerriAI/llm/issues/5277
     """
-    from llm.litellm_core_utils.prompt_templates.factory import (
+    from llm.llm_core_utils.prompt_templates.factory import (
         _bedrock_converse_messages_pt,
     )
     from llm.types.utils import ChatCompletionMessageToolCall, Function, Message
@@ -433,7 +433,7 @@ def test_azure_tool_call_invoke_helper():
         model="gpt-4o",
         messages=messages,
         optional_params={},
-        litellm_params={},
+        llm_params={},
         headers={},
     )
 
@@ -662,7 +662,7 @@ def test_alternating_roles_e2e():
 
 
 def test_just_system_message():
-    from llm.litellm_core_utils.prompt_templates.factory import (
+    from llm.llm_core_utils.prompt_templates.factory import (
         _bedrock_converse_messages_pt,
     )
 
@@ -676,7 +676,7 @@ def test_just_system_message():
 
 
 def test_convert_generic_image_chunk_to_openai_image_obj():
-    from llm.litellm_core_utils.prompt_templates.factory import (
+    from llm.llm_core_utils.prompt_templates.factory import (
         convert_generic_image_chunk_to_openai_image_obj,
         convert_to_anthropic_image_obj,
     )
@@ -689,7 +689,7 @@ def test_convert_generic_image_chunk_to_openai_image_obj():
 
 
 def test_hf_chat_template():
-    from llm.litellm_core_utils.prompt_templates.factory import (
+    from llm.llm_core_utils.prompt_templates.factory import (
         hf_chat_template,
     )
 
@@ -746,7 +746,7 @@ def test_hf_chat_template():
 
 
 def test_ollama_pt():
-    from llm.litellm_core_utils.prompt_templates.factory import ollama_pt
+    from llm.llm_core_utils.prompt_templates.factory import ollama_pt
 
     messages = [
         {"role": "system", "content": "You are a helpful assistant."},

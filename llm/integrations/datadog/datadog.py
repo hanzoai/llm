@@ -525,7 +525,7 @@ class DataDogLogger(
 
     @staticmethod
     def _get_datadog_service():
-        return os.getenv("DD_SERVICE", "litellm-server")
+        return os.getenv("DD_SERVICE", "llm-server")
 
     @staticmethod
     def _get_datadog_hostname():

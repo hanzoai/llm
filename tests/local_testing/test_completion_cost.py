@@ -25,7 +25,7 @@ from llm import (
     open_ai_chat_completion_models,
 )
 from llm.types.utils import PromptTokensDetails
-from llm.litellm_core_utils.litellm_logging import CustomLogger
+from llm.llm_core_utils.llm_logging import CustomLogger
 
 
 class CustomLoggingHandler(CustomLogger):
@@ -485,7 +485,7 @@ def test_replicate_llama3_cost_tracking():
             "replicate/meta/meta-llama-3-8b-instruct": {
                 "input_cost_per_token": 0.00000005,
                 "output_cost_per_token": 0.00000025,
-                "litellm_provider": "replicate",
+                "llm_provider": "replicate",
             }
         }
     )
@@ -634,7 +634,7 @@ def test_gemini_completion_cost(above_128k, provider):
     """
     Check if cost correctly calculated for gemini models based on context window
     """
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
     if provider == "gemini":
         model_name = "gemini-1.5-flash-latest"
@@ -646,7 +646,7 @@ def test_gemini_completion_cost(above_128k, provider):
     else:
         prompt_tokens = 128.0
         output_tokens = 228.0
-    ## GET MODEL FROM LITELLM.MODEL_INFO
+    ## GET MODEL FROM LLM.MODEL_INFO
     model_info = llm.get_model_info(model=model_name, custom_llm_provider=provider)
 
     ## EXPECTED COST
@@ -690,7 +690,7 @@ def _count_characters(text):
 
 
 def test_vertex_ai_completion_cost():
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     text = "The quick brown fox jumps over the lazy dog."
@@ -726,7 +726,7 @@ def test_vertex_ai_medlm_completion_cost():
             model=model, messages=messages, custom_llm_provider="vertex_ai"
         )
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     model = "vertex_ai/medlm-medium"
@@ -746,7 +746,7 @@ def test_vertex_ai_claude_completion_cost():
     from llm import Choices, Message, ModelResponse
     from llm.utils import Usage
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     llm.set_verbose = True
@@ -794,9 +794,9 @@ def test_vertex_ai_claude_completion_cost():
 
 def test_vertex_ai_embedding_completion_cost(caplog):
     """
-    Relevant issue - https://github.com/BerriAI/litellm/issues/4630
+    Relevant issue - https://github.com/BerriAI/llm/issues/4630
     """
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     text = "The quick brown fox jumps over the lazy dog."
@@ -826,7 +826,7 @@ def test_vertex_ai_embedding_completion_cost(caplog):
     for item in captured_logs:
         print("\nitem:{}\n".format(item))
         if (
-            "llm.litellm_core_utils.llm_cost_calc.google.cost_per_character(): Exception occured "
+            "llm.llm_core_utils.llm_cost_calc.google.cost_per_character(): Exception occured "
             in item
         ):
             raise Exception("Error log raised for calculating embedding cost")
@@ -834,12 +834,12 @@ def test_vertex_ai_embedding_completion_cost(caplog):
 
 # def test_vertex_ai_embedding_completion_cost_e2e():
 #     """
-#     Relevant issue - https://github.com/BerriAI/litellm/issues/4630
+#     Relevant issue - https://github.com/BerriAI/llm/issues/4630
 #     """
 #     from test_amazing_vertex_completion import load_vertex_ai_credentials
 
 #     load_vertex_ai_credentials()
-#     os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+#     os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
 #     llm.model_cost = llm.get_model_cost_map(url="")
 
 #     text = "The quick brown fox jumps over the lazy dog."
@@ -867,7 +867,7 @@ def test_vertex_ai_embedding_completion_cost(caplog):
 
 def test_completion_azure_ai():
     try:
-        os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+        os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
         llm.model_cost = llm.get_model_cost_map(url="")
 
         llm.set_verbose = True
@@ -927,11 +927,11 @@ def test_vertex_ai_llama_predict_cost():
     assert predictive_cost == 0
 
 
-@pytest.mark.parametrize("usage", ["litellm_usage", "openai_usage"])
+@pytest.mark.parametrize("usage", ["llm_usage", "openai_usage"])
 def test_vertex_ai_mistral_predict_cost(usage):
     from llm.types.utils import Choices, Message, ModelResponse, Usage
 
-    if usage == "litellm_usage":
+    if usage == "llm_usage":
         response_usage = Usage(prompt_tokens=32, completion_tokens=55, total_tokens=87)
     else:
         from openai.types.completion_usage import CompletionUsage
@@ -946,7 +946,7 @@ def test_vertex_ai_mistral_predict_cost(usage):
                 finish_reason="stop",
                 index=0,
                 message=Message(
-                    content="Hello! I'm Litellm Bot, your helpful assistant. While I can't provide real-time weather updates, I can help you find a reliable weather service or guide you on how to check the weather on your device. Would you like assistance with that?",
+                    content="Hello! I'm Llm Bot, your helpful assistant. While I can't provide real-time weather updates, I can help you find a reliable weather service or guide you on how to check the weather on your device. Would you like assistance with that?",
                     role="assistant",
                     tool_calls=None,
                     function_call=None,
@@ -974,7 +974,7 @@ def test_vertex_ai_mistral_predict_cost(usage):
 
 @pytest.mark.parametrize("model", ["openai/tts-1", "azure/tts-1"])
 def test_completion_cost_tts(model):
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     cost = completion_cost(
@@ -989,7 +989,7 @@ def test_completion_cost_tts(model):
 def test_completion_cost_anthropic():
     """
     model_name: claude-3-haiku-20240307
-    litellm_params:
+    llm_params:
       model: anthropic/claude-3-haiku-20240307
       max_tokens: 4096
     """
@@ -997,7 +997,7 @@ def test_completion_cost_anthropic():
         model_list=[
             {
                 "model_name": "claude-3-haiku-20240307",
-                "litellm_params": {
+                "llm_params": {
                     "model": "anthropic/claude-3-haiku-20240307",
                     "max_tokens": 4096,
                 },
@@ -1113,7 +1113,7 @@ def test_completion_cost_azure_common_deployment_name():
         model_list=[
             {
                 "model_name": "gpt-4",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/gpt-4-0314",
                     "max_tokens": 4096,
                     "api_key": os.getenv("AZURE_API_KEY"),
@@ -1171,7 +1171,7 @@ def test_completion_cost_azure_common_deployment_name():
     ],
 )
 def test_completion_cost_prompt_caching(model, custom_llm_provider):
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     from llm.utils import Choices, Message, ModelResponse, Usage
@@ -1273,7 +1273,7 @@ def test_completion_cost_prompt_caching(model, custom_llm_provider):
     ],
 )
 def test_completion_cost_databricks(model):
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
     model, messages = model, [{"role": "user", "content": "What is 2+2?"}]
 
@@ -1291,7 +1291,7 @@ def test_completion_cost_databricks(model):
     ],
 )
 def test_completion_cost_databricks_embedding(model):
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
     resp = llm.embedding(model=model, input=["hey, how's it going?"])  # works fine
 
@@ -1319,7 +1319,7 @@ def test_get_model_params_fireworks_ai(model, base_model):
     ["fireworks_ai/llama-v3p1-405b-instruct", "fireworks_ai/mixtral-8x7b-instruct"],
 )
 def test_completion_cost_fireworks_ai(model):
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     messages = [{"role": "user", "content": "Hey, how's it going?"}]
@@ -1337,7 +1337,7 @@ def test_cost_azure_openai_prompt_caching():
     )
     from llm import get_model_info
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     model = "azure/o1-mini"
@@ -1429,7 +1429,7 @@ def test_cost_azure_openai_prompt_caching():
 
 
 def test_completion_cost_vertex_llama3():
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     from llm.utils import Choices, Message, ModelResponse, Usage
@@ -1441,7 +1441,7 @@ def test_completion_cost_vertex_llama3():
                 finish_reason="stop",
                 index=0,
                 message=Message(
-                    content="My name is Litellm Bot, and I'm here to help you with any questions or tasks you may have. As for the weather, I'd be happy to provide you with the current conditions and forecast for your location. However, I'm a large language model, I don't have real-time access to your location, so I'll need you to tell me where you are or provide me with a specific location you're interested in knowing the weather for.\\n\\nOnce you provide me with that information, I can give you the current weather conditions, including temperature, humidity, wind speed, and more, as well as a forecast for the next few days. Just let me know how I can assist you!",
+                    content="My name is Llm Bot, and I'm here to help you with any questions or tasks you may have. As for the weather, I'd be happy to provide you with the current conditions and forecast for your location. However, I'm a large language model, I don't have real-time access to your location, so I'll need you to tell me where you are or provide me with a specific location you're interested in knowing the weather for.\\n\\nOnce you provide me with that information, I can give you the current weather conditions, including temperature, humidity, wind speed, and more, as well as a forecast for the next few days. Just let me know how I can assist you!",
                     role="assistant",
                     tool_calls=None,
                     function_call=None,
@@ -1470,7 +1470,7 @@ def test_cost_openai_prompt_caching():
     from llm.utils import Choices, Message, ModelResponse, Usage
     from llm import get_model_info
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     model = "gpt-4o-mini-2024-07-18"
@@ -1561,7 +1561,7 @@ def test_cost_openai_prompt_caching():
 def test_completion_cost_azure_ai_rerank(model):
     from llm import RerankResponse, rerank
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     response = RerankResponse(
@@ -1593,7 +1593,7 @@ def test_completion_cost_azure_ai_rerank(model):
 def test_together_ai_embedding_completion_cost():
     from llm.utils import Choices, EmbeddingResponse, Message, ModelResponse, Usage
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
     response = EmbeddingResponse(
         model="togethercomputer/m2-bert-80M-8k-retrieval",
@@ -2391,7 +2391,7 @@ def test_together_ai_embedding_completion_cost():
 
 def test_completion_cost_params():
     """
-    Relevant Issue: https://github.com/BerriAI/litellm/issues/6133
+    Relevant Issue: https://github.com/BerriAI/llm/issues/6133
     """
     llm.set_verbose = True
     resp1_prompt_cost, resp1_completion_cost = cost_per_token(
@@ -2422,7 +2422,7 @@ def test_completion_cost_params():
 
 def test_completion_cost_params_2():
     """
-    Relevant Issue: https://github.com/BerriAI/litellm/issues/6133
+    Relevant Issue: https://github.com/BerriAI/llm/issues/6133
     """
     llm.set_verbose = True
 
@@ -2451,7 +2451,7 @@ def test_completion_cost_params_gemini_3():
 
     from llm.llms.vertex_ai.cost_calculator import cost_per_character
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     response = ModelResponse(
@@ -2521,7 +2521,7 @@ def test_completion_cost_params_gemini_3():
 # @pytest.mark.flaky(retries=3, delay=1)
 @pytest.mark.parametrize("stream", [False])  # True,
 async def test_test_completion_cost_gpt4o_audio_output_from_model(stream):
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
     from llm.types.utils import (
         Choices,
@@ -2615,11 +2615,11 @@ async def test_test_completion_cost_gpt4o_audio_output_from_model(stream):
 )
 def test_completion_cost_model_response_cost(response_model, custom_llm_provider):
     """
-    Relevant issue: https://github.com/BerriAI/litellm/issues/6310
+    Relevant issue: https://github.com/BerriAI/llm/issues/6310
     """
     from llm import ModelResponse
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     llm.set_verbose = True
@@ -2720,7 +2720,7 @@ def test_select_model_name_for_cost_calc():
 def test_moderations():
     from llm import moderation
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
     llm.add_known_models()
 
@@ -2775,7 +2775,7 @@ def test_bedrock_cost_calc_with_region():
 
     from llm import ModelResponse
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     llm.add_known_models()
@@ -2784,7 +2784,7 @@ def test_bedrock_cost_calc_with_region():
         "custom_llm_provider": "bedrock",
         "region_name": "us-east-1",
         "optional_params": {},
-        "litellm_call_id": "cf371a5d-679b-410f-b862-8084676d6d59",
+        "llm_call_id": "cf371a5d-679b-410f-b862-8084676d6d59",
         "model_id": None,
         "api_base": None,
         "response_cost": 0.0005639999999999999,
@@ -2856,7 +2856,7 @@ def test_cost_calculator_with_base_model():
 def model_item():
     return {
         "model_name": "random-model",
-        "litellm_params": {
+        "llm_params": {
             "model": "openai/my-fake-model",
             "api_key": "my-fake-key",
             "api_base": "https://exampleopenaiendpoint-production.up.railway.app/",
@@ -2865,24 +2865,24 @@ def model_item():
     }
 
 
-@pytest.mark.parametrize("base_model_arg", ["litellm_param", "model_info"])
+@pytest.mark.parametrize("base_model_arg", ["llm_param", "model_info"])
 def test_cost_calculator_with_base_model_with_router(base_model_arg, model_item):
     from llm import Router
 
 
-@pytest.mark.parametrize("base_model_arg", ["litellm_param", "model_info"])
+@pytest.mark.parametrize("base_model_arg", ["llm_param", "model_info"])
 def test_cost_calculator_with_base_model_with_router(base_model_arg):
     from llm import Router
 
     model_item = {
         "model_name": "random-model",
-        "litellm_params": {
+        "llm_params": {
             "model": "bedrock/random-model",
         },
     }
 
-    if base_model_arg == "litellm_param":
-        model_item["litellm_params"][
+    if base_model_arg == "llm_param":
+        model_item["llm_params"][
             "base_model"
         ] = "bedrock/anthropic.claude-3-sonnet-20240229-v1:0"
     elif base_model_arg == "model_info":
@@ -2900,7 +2900,7 @@ def test_cost_calculator_with_base_model_with_router(base_model_arg):
     assert resp._hidden_params["response_cost"] > 0
 
 
-@pytest.mark.parametrize("base_model_arg", ["litellm_param", "model_info"])
+@pytest.mark.parametrize("base_model_arg", ["llm_param", "model_info"])
 def test_cost_calculator_with_base_model_with_router_embedding(base_model_arg):
     from llm import Router
 
@@ -2908,13 +2908,13 @@ def test_cost_calculator_with_base_model_with_router_embedding(base_model_arg):
 
     model_item = {
         "model_name": "random-model",
-        "litellm_params": {
+        "llm_params": {
             "model": "bedrock/random-model",
         },
     }
 
-    if base_model_arg == "litellm_param":
-        model_item["litellm_params"]["base_model"] = "cohere.embed-english-v3"
+    if base_model_arg == "llm_param":
+        model_item["llm_params"]["base_model"] = "cohere.embed-english-v3"
     elif base_model_arg == "model_info":
         model_item["model_info"] = {
             "base_model": "cohere.embed-english-v3",
@@ -2945,7 +2945,7 @@ def test_cost_calculator_with_custom_pricing():
 @pytest.mark.parametrize(
     "custom_pricing",
     [
-        "litellm_params",
+        "llm_params",
         "model_info",
     ],
 )
@@ -2955,9 +2955,9 @@ async def test_cost_calculator_with_custom_pricing_router(model_item, custom_pri
 
     llm._turn_on_debug()
 
-    if custom_pricing == "litellm_params":
-        model_item["litellm_params"]["input_cost_per_token"] = 0.0000008
-        model_item["litellm_params"]["output_cost_per_token"] = 0.0000032
+    if custom_pricing == "llm_params":
+        model_item["llm_params"]["input_cost_per_token"] = 0.0000008
+        model_item["llm_params"]["output_cost_per_token"] = 0.0000032
     elif custom_pricing == "model_info":
         model_item["model_info"]["input_cost_per_token"] = 0.0000008
         model_item["model_info"]["output_cost_per_token"] = 0.0000032
@@ -2975,7 +2975,7 @@ async def test_cost_calculator_with_custom_pricing_router(model_item, custom_pri
 def test_json_valid_model_cost_map():
     import json
 
-    os.environ["LITELLM_LOCAL_MODEL_COST_MAP"] = "True"
+    os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
 
     model_cost = llm.get_model_cost_map(url="")
 

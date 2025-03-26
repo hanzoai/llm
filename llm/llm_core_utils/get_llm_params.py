@@ -1,7 +1,7 @@
 from typing import Optional
 
 
-def _get_base_model_from_litellm_call_metadata(
+def _get_base_model_from_llm_call_metadata(
     metadata: Optional[dict],
 ) -> Optional[str]:
     if metadata is None:
@@ -89,7 +89,7 @@ def get_llm_params(
         "azure_ad_token_provider": azure_ad_token_provider,
         "user_continue_message": user_continue_message,
         "base_model": base_model
-        or _get_base_model_from_litellm_call_metadata(metadata=metadata),
+        or _get_base_model_from_llm_call_metadata(metadata=metadata),
         "llm_trace_id": llm_trace_id,
         "hf_model_name": hf_model_name,
         "custom_prompt_dict": custom_prompt_dict,

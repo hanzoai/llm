@@ -219,7 +219,7 @@ See All General Settings [here](http://localhost:3000/docs/proxy/configs#all-set
    - **Usage**: 
      - ** Set on config.yaml** set your master key under `general_settings:master_key`, example - 
         `master_key: sk-1234`
-     - ** Set env variable** set `LITELLM_MASTER_KEY`
+     - ** Set env variable** set `LLM_MASTER_KEY`
 
 2. **`database_url`** (str)
    - **Description**: 

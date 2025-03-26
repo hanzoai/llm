@@ -94,7 +94,7 @@ async def create_credential(
             }
         )
 
-        ## ADD TO LITELLM ##
+        ## ADD TO LLM ##
         CredentialAccessor.upsert_credentials([processed_credential])
 
         return {"success": True, "message": "Credential created successfully"}
@@ -228,7 +228,7 @@ async def delete_credential(
             where={"credential_name": credential_name}
         )
 
-        ## DELETE FROM LITELLM ##
+        ## DELETE FROM LLM ##
         llm.credential_list = [
             cred
             for cred in llm.credential_list

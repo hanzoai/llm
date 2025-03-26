@@ -2,15 +2,15 @@ import os
 import re
 
 # Define the base directory for the llm repository and documentation path
-repo_base = "./litellm"  # Change this to your actual path
+repo_base = "./llm"  # Change this to your actual path
 
 # Regular expressions to capture the keys used in os.getenv() and llm.get_secret()
 getenv_pattern = re.compile(r'os\.getenv\(\s*[\'"]([^\'"]+)[\'"]\s*(?:,\s*[^)]*)?\)')
 get_secret_pattern = re.compile(
-    r'litellm\.get_secret\(\s*[\'"]([^\'"]+)[\'"]\s*(?:,\s*[^)]*|,\s*default_value=[^)]*)?\)'
+    r'llm\.get_secret\(\s*[\'"]([^\'"]+)[\'"]\s*(?:,\s*[^)]*|,\s*default_value=[^)]*)?\)'
 )
 get_secret_str_pattern = re.compile(
-    r'litellm\.get_secret_str\(\s*[\'"]([^\'"]+)[\'"]\s*(?:,\s*[^)]*|,\s*default_value=[^)]*)?\)'
+    r'llm\.get_secret_str\(\s*[\'"]([^\'"]+)[\'"]\s*(?:,\s*[^)]*|,\s*default_value=[^)]*)?\)'
 )
 
 # Set to store unique keys from the code

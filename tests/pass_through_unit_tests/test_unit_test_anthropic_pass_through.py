@@ -12,7 +12,7 @@ sys.path.insert(
 import httpx
 import pytest
 import llm
-from llm.litellm_core_utils.litellm_logging import Logging as LLMLoggingObj
+from llm.llm_core_utils.llm_logging import Logging as LLMLoggingObj
 
 # Import the class we're testing
 from llm.proxy.pass_through_endpoints.llm_provider_handlers.anthropic_passthrough_logging_handler import (
@@ -55,7 +55,7 @@ def mock_logging_obj():
         stream=False,
         call_type="completion",
         start_time=datetime.now(),
-        litellm_call_id="123",
+        llm_call_id="123",
         function_id="456",
     )
 
@@ -89,7 +89,7 @@ async def test_anthropic_passthrough_handler(
 
 @pytest.mark.parametrize(
     "metadata_params",
-    [{"metadata": {"user_id": "test"}}, {"litellm_metadata": {"user": "test"}}, {}],
+    [{"metadata": {"user_id": "test"}}, {"llm_metadata": {"user": "test"}}, {}],
 )
 def test_create_anthropic_response_logging_payload(mock_logging_obj, metadata_params):
     # Test the logging payload creation
@@ -100,10 +100,10 @@ def test_create_anthropic_response_logging_payload(mock_logging_obj, metadata_pa
     end_time = datetime.now()
 
     result = AnthropicPassthroughLoggingHandler._create_anthropic_response_logging_payload(
-        litellm_model_response=model_response,
+        llm_model_response=model_response,
         model="claude-3-opus-20240229",
         kwargs={
-            "litellm_params": {
+            "llm_params": {
                 "metadata": {
                     "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
                     "user_api_key_user_id": "default_user_id",
@@ -113,7 +113,7 @@ def test_create_anthropic_response_logging_payload(mock_logging_obj, metadata_pa
                 "api_base": "https://api.anthropic.com/v1/messages",
             },
             "call_type": "pass_through_endpoint",
-            "litellm_call_id": "5cf924cb-161c-4c1d-a565-31aa71ab50ab",
+            "llm_call_id": "5cf924cb-161c-4c1d-a565-31aa71ab50ab",
             "passthrough_logging_payload": {
                 "url": "https://api.anthropic.com/v1/messages",
                 "request_body": {
@@ -204,7 +204,7 @@ def test_create_anthropic_response_logging_payload(mock_logging_obj, metadata_pa
 
 @pytest.mark.parametrize(
     "end_user_id",
-    [{"litellm_metadata": {"user": "test"}}, {"metadata": {"user_id": "test"}}],
+    [{"llm_metadata": {"user": "test"}}, {"metadata": {"user_id": "test"}}],
 )
 def test_get_user_from_metadata(end_user_id):
     from llm.proxy.pass_through_endpoints.llm_provider_handlers.anthropic_passthrough_logging_handler import (
@@ -317,11 +317,11 @@ def test_handle_logging_anthropic_collected_chunks(all_chunks):
     )
     from llm.types.utils import ModelResponse
 
-    litellm_logging_obj = Mock()
+    llm_logging_obj = Mock()
     pass_through_logging_obj = Mock()
 
     sent_args = {
-        "litellm_logging_obj": litellm_logging_obj,
+        "llm_logging_obj": llm_logging_obj,
         "passthrough_success_handler_obj": pass_through_logging_obj,
         "url_route": "https://api.anthropic.com/v1/messages",
         "request_body": {
@@ -362,12 +362,12 @@ def test_build_complete_streaming_response(all_chunks):
     )
     from llm.types.utils import ModelResponse
 
-    litellm_logging_obj = Mock()
+    llm_logging_obj = Mock()
 
     result = AnthropicPassthroughLoggingHandler._build_complete_streaming_response(
         all_chunks=all_chunks,
         model="claude-3-5-sonnet-20240620",
-        litellm_logging_obj=litellm_logging_obj,
+        llm_logging_obj=llm_logging_obj,
     )
 
     assert isinstance(result, ModelResponse)

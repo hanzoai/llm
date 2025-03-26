@@ -396,7 +396,7 @@ class LangFuseLogger:
 
         trace = self.Langfuse.trace(  # type: ignore
             CreateTrace(  # type: ignore
-                name=metadata.get("generation_name", "litellm-completion"),
+                name=metadata.get("generation_name", "llm-completion"),
                 input=input,
                 output=output,
                 userId=user_id,
@@ -405,7 +405,7 @@ class LangFuseLogger:
 
         trace.generation(
             CreateGeneration(
-                name=metadata.get("generation_name", "litellm-completion"),
+                name=metadata.get("generation_name", "llm-completion"),
                 startTime=start_time,
                 endTime=end_time,
                 model=kwargs["model"],
@@ -512,9 +512,9 @@ class LangFuseLogger:
             clean_metadata = redact_user_api_key_info(metadata=clean_metadata)
 
             if trace_name is None and existing_trace_id is None:
-                # just log `litellm-{call_type}` as the trace name
+                # just log `llm-{call_type}` as the trace name
                 ## DO NOT SET TRACE_NAME if trace-id set. this can lead to overwriting of past traces.
-                trace_name = f"litellm-{kwargs.get('call_type', 'completion')}"
+                trace_name = f"llm-{kwargs.get('call_type', 'completion')}"
 
             if existing_trace_id is not None:
                 trace_params: Dict[str, Any] = {"id": existing_trace_id}
@@ -538,18 +538,18 @@ class LangFuseLogger:
                 # Special keys that are found in the function arguments and not the metadata
                 if "input" in update_trace_keys:
                     trace_params["input"] = (
-                        input if not mask_input else "redacted-by-litellm"
+                        input if not mask_input else "redacted-by-llm"
                     )
                 if "output" in update_trace_keys:
                     trace_params["output"] = (
-                        output if not mask_output else "redacted-by-litellm"
+                        output if not mask_output else "redacted-by-llm"
                     )
             else:  # don't overwrite an existing trace
                 trace_params = {
                     "id": trace_id,
                     "name": trace_name,
                     "session_id": session_id,
-                    "input": input if not mask_input else "redacted-by-litellm",
+                    "input": input if not mask_input else "redacted-by-llm",
                     "version": clean_metadata.pop(
                         "trace_version", clean_metadata.get("version", None)
                     ),  # If provided just version, it will applied to the trace as well, if applied a trace version it will take precedence
@@ -566,20 +566,20 @@ class LangFuseLogger:
                     trace_params["status_message"] = output
                 else:
                     trace_params["output"] = (
-                        output if not mask_output else "redacted-by-litellm"
+                        output if not mask_output else "redacted-by-llm"
                     )
 
             if debug is True or (isinstance(debug, str) and debug.lower() == "true"):
                 if "metadata" in trace_params:
                     # log the raw_metadata in the trace
-                    trace_params["metadata"]["metadata_passed_to_litellm"] = metadata
+                    trace_params["metadata"]["metadata_passed_to_llm"] = metadata
                 else:
-                    trace_params["metadata"] = {"metadata_passed_to_litellm": metadata}
+                    trace_params["metadata"] = {"metadata_passed_to_llm": metadata}
 
             cost = kwargs.get("response_cost", None)
             verbose_logger.debug(f"trace: {cost}")
 
-            clean_metadata["litellm_response_cost"] = cost
+            clean_metadata["llm_response_cost"] = cost
             if standard_logging_object is not None:
                 clean_metadata["hidden_params"] = standard_logging_object[
                     "hidden_params"
@@ -658,15 +658,15 @@ class LangFuseLogger:
             if generation_name is None:
                 # if `generation_name` is None, use sensible default values
                 # If using llm proxy user `key_alias` if not None
-                # If `key_alias` is None, just log `litellm-{call_type}` as the generation name
+                # If `key_alias` is None, just log `llm-{call_type}` as the generation name
                 _user_api_key_alias = cast(
                     Optional[str], clean_metadata.get("user_api_key_alias", None)
                 )
                 generation_name = (
-                    f"litellm-{cast(str, kwargs.get('call_type', 'completion'))}"
+                    f"llm-{cast(str, kwargs.get('call_type', 'completion'))}"
                 )
                 if _user_api_key_alias is not None:
-                    generation_name = f"litellm:{_user_api_key_alias}"
+                    generation_name = f"llm:{_user_api_key_alias}"
 
             if response_obj is not None:
                 system_fingerprint = getattr(response_obj, "system_fingerprint", None)
@@ -683,8 +683,8 @@ class LangFuseLogger:
                 "end_time": end_time,
                 "model": kwargs["model"],
                 "model_parameters": optional_params,
-                "input": input if not mask_input else "redacted-by-litellm",
-                "output": output if not mask_output else "redacted-by-litellm",
+                "input": input if not mask_input else "redacted-by-llm",
+                "output": output if not mask_output else "redacted-by-llm",
                 "usage": usage,
                 "metadata": log_requester_metadata(clean_metadata),
                 "level": level,

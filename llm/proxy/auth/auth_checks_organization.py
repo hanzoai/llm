@@ -113,7 +113,7 @@ def organization_role_based_access_check(
 
 def get_user_organization_info(
     user_object: LLM_UserTable,
-) -> Tuple[List[str], Dict[str, Optional[LitellmUserRoles]]]:
+) -> Tuple[List[str], Dict[str, Optional[LlmUserRoles]]]:
     """
     Helper function to extract user organization information.
 
@@ -121,12 +121,12 @@ def get_user_organization_info(
         user_object (LLM_UserTable): The user object containing organization memberships.
 
     Returns:
-        Tuple[List[str], Dict[str, Optional[LitellmUserRoles]]]: A tuple containing:
+        Tuple[List[str], Dict[str, Optional[LlmUserRoles]]]: A tuple containing:
             - List of organization IDs the user is a member of
             - Dictionary mapping organization IDs to user roles
     """
     _user_organizations: List[str] = []
-    _user_organization_role_mapping: Dict[str, Optional[LitellmUserRoles]] = {}
+    _user_organization_role_mapping: Dict[str, Optional[LlmUserRoles]] = {}
 
     if user_object.organization_memberships is not None:
         for _membership in user_object.organization_memberships:

@@ -166,7 +166,7 @@ class MlflowLogger(CustomLogger):
         """
         Extract span attributes from kwargs.
 
-        With the latest version of litellm, the standard_logging_object contains
+        With the latest version of llm, the standard_logging_object contains
         canonical information for logging. If it is not present, we extract
         subset of attributes from other kwargs.
         """
@@ -224,7 +224,7 @@ class MlflowLogger(CustomLogger):
         import mlflow
 
         call_type = kwargs.get("call_type", "completion")
-        span_name = f"litellm-{call_type}"
+        span_name = f"llm-{call_type}"
         span_type = self._get_span_type(call_type)
         start_time_ns = int(start_time.timestamp() * 1e9)
 

@@ -27,11 +27,11 @@ class MyCustomHandler(CustomLogger):
     def log_pre_api_call(self, model, messages, kwargs):
         print(f"Pre-API Call")
         print(
-            f"previous_models: {kwargs['litellm_params']['metadata'].get('previous_models', None)}"
+            f"previous_models: {kwargs['llm_params']['metadata'].get('previous_models', None)}"
         )
         self.previous_models = len(
-            kwargs["litellm_params"]["metadata"].get("previous_models", [])
-        )  # {"previous_models": [{"model": litellm_model_name, "exception_type": AuthenticationError, "exception_string": <complete_traceback>}]}
+            kwargs["llm_params"]["metadata"].get("previous_models", [])
+        )  # {"previous_models": [{"model": llm_model_name, "exception_type": AuthenticationError, "exception_string": <complete_traceback>}]}
         print(f"self.previous_models: {self.previous_models}")
 
     def log_post_api_call(self, kwargs, response_obj, start_time, end_time):
@@ -66,7 +66,7 @@ def test_sync_fallbacks():
         model_list = [
             {  # list of model deployments
                 "model_name": "azure/gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -77,7 +77,7 @@ def test_sync_fallbacks():
             },
             {  # list of model deployments
                 "model_name": "azure/gpt-3.5-turbo-context-fallback",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -88,7 +88,7 @@ def test_sync_fallbacks():
             },
             {
                 "model_name": "azure/gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-functioncalling",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -99,7 +99,7 @@ def test_sync_fallbacks():
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -108,7 +108,7 @@ def test_sync_fallbacks():
             },
             {
                 "model_name": "gpt-3.5-turbo-16k",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo-16k",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -149,7 +149,7 @@ async def test_async_fallbacks():
     model_list = [
         {  # list of model deployments
             "model_name": "azure/gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-v-2",
                 "api_key": "bad-key",
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -160,7 +160,7 @@ async def test_async_fallbacks():
         },
         {  # list of model deployments
             "model_name": "azure/gpt-3.5-turbo-context-fallback",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-v-2",
                 "api_key": os.getenv("AZURE_API_KEY"),
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -171,7 +171,7 @@ async def test_async_fallbacks():
         },
         {
             "model_name": "azure/gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-functioncalling",
                 "api_key": "bad-key",
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -182,7 +182,7 @@ async def test_async_fallbacks():
         },
         {
             "model_name": "gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "gpt-3.5-turbo",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
@@ -191,7 +191,7 @@ async def test_async_fallbacks():
         },
         {
             "model_name": "gpt-3.5-turbo-16k",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "gpt-3.5-turbo-16k",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
@@ -238,7 +238,7 @@ def test_sync_fallbacks_embeddings():
     model_list = [
         {  # list of model deployments
             "model_name": "bad-azure-embedding-model",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/azure-embedding-model",
                 "api_key": "bad-key",
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -249,7 +249,7 @@ def test_sync_fallbacks_embeddings():
         },
         {  # list of model deployments
             "model_name": "good-azure-embedding-model",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/azure-embedding-model",
                 "api_key": os.getenv("AZURE_API_KEY"),
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -290,7 +290,7 @@ async def test_async_fallbacks_embeddings():
     model_list = [
         {  # list of model deployments
             "model_name": "bad-azure-embedding-model",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/azure-embedding-model",
                 "api_key": "bad-key",
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -301,7 +301,7 @@ async def test_async_fallbacks_embeddings():
         },
         {  # list of model deployments
             "model_name": "good-azure-embedding-model",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/azure-embedding-model",
                 "api_key": os.getenv("AZURE_API_KEY"),
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -348,7 +348,7 @@ def test_dynamic_fallbacks_sync():
         model_list = [
             {  # list of model deployments
                 "model_name": "azure/gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -359,7 +359,7 @@ def test_dynamic_fallbacks_sync():
             },
             {  # list of model deployments
                 "model_name": "azure/gpt-3.5-turbo-context-fallback",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -370,7 +370,7 @@ def test_dynamic_fallbacks_sync():
             },
             {
                 "model_name": "azure/gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-functioncalling",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -381,7 +381,7 @@ def test_dynamic_fallbacks_sync():
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -390,7 +390,7 @@ def test_dynamic_fallbacks_sync():
             },
             {
                 "model_name": "gpt-3.5-turbo-16k",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo-16k",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -425,7 +425,7 @@ async def test_dynamic_fallbacks_async():
         model_list = [
             {  # list of model deployments
                 "model_name": "azure/gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -436,7 +436,7 @@ async def test_dynamic_fallbacks_async():
             },
             {  # list of model deployments
                 "model_name": "azure/gpt-3.5-turbo-context-fallback",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -447,7 +447,7 @@ async def test_dynamic_fallbacks_async():
             },
             {
                 "model_name": "azure/gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-functioncalling",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -458,7 +458,7 @@ async def test_dynamic_fallbacks_async():
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -467,7 +467,7 @@ async def test_dynamic_fallbacks_async():
             },
             {
                 "model_name": "gpt-3.5-turbo-16k",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo-16k",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -508,7 +508,7 @@ async def test_async_fallbacks_streaming():
     model_list = [
         {  # list of model deployments
             "model_name": "azure/gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-v-2",
                 "api_key": "bad-key",
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -519,7 +519,7 @@ async def test_async_fallbacks_streaming():
         },
         {  # list of model deployments
             "model_name": "azure/gpt-3.5-turbo-context-fallback",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-v-2",
                 "api_key": os.getenv("AZURE_API_KEY"),
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -530,7 +530,7 @@ async def test_async_fallbacks_streaming():
         },
         {
             "model_name": "azure/gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-functioncalling",
                 "api_key": "bad-key",
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -541,7 +541,7 @@ async def test_async_fallbacks_streaming():
         },
         {
             "model_name": "gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "gpt-3.5-turbo",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
@@ -550,7 +550,7 @@ async def test_async_fallbacks_streaming():
         },
         {
             "model_name": "gpt-3.5-turbo-16k",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "gpt-3.5-turbo-16k",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
@@ -593,7 +593,7 @@ def test_sync_fallbacks_streaming():
         model_list = [
             {  # list of model deployments
                 "model_name": "azure/gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -604,7 +604,7 @@ def test_sync_fallbacks_streaming():
             },
             {  # list of model deployments
                 "model_name": "azure/gpt-3.5-turbo-context-fallback",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -615,7 +615,7 @@ def test_sync_fallbacks_streaming():
             },
             {
                 "model_name": "azure/gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-functioncalling",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -626,7 +626,7 @@ def test_sync_fallbacks_streaming():
             },
             {
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -635,7 +635,7 @@ def test_sync_fallbacks_streaming():
             },
             {
                 "model_name": "gpt-3.5-turbo-16k",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "gpt-3.5-turbo-16k",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -674,7 +674,7 @@ async def test_async_fallbacks_max_retries_per_request():
     model_list = [
         {  # list of model deployments
             "model_name": "azure/gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-v-2",
                 "api_key": "bad-key",
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -685,7 +685,7 @@ async def test_async_fallbacks_max_retries_per_request():
         },
         {  # list of model deployments
             "model_name": "azure/gpt-3.5-turbo-context-fallback",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-v-2",
                 "api_key": os.getenv("AZURE_API_KEY"),
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -696,7 +696,7 @@ async def test_async_fallbacks_max_retries_per_request():
         },
         {
             "model_name": "azure/gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "azure/chatgpt-functioncalling",
                 "api_key": "bad-key",
                 "api_version": os.getenv("AZURE_API_VERSION"),
@@ -707,7 +707,7 @@ async def test_async_fallbacks_max_retries_per_request():
         },
         {
             "model_name": "gpt-3.5-turbo",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "gpt-3.5-turbo",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
@@ -716,7 +716,7 @@ async def test_async_fallbacks_max_retries_per_request():
         },
         {
             "model_name": "gpt-3.5-turbo-16k",  # openai model name
-            "litellm_params": {  # params for llm completion/embedding call
+            "llm_params": {  # params for llm completion/embedding call
                 "model": "gpt-3.5-turbo-16k",
                 "api_key": os.getenv("OPENAI_API_KEY"),
             },
@@ -808,25 +808,25 @@ def test_ausage_based_routing_fallbacks():
         model_list = [
             {
                 "model_name": "azure/gpt-4-fast",
-                "litellm_params": get_azure_params("chatgpt-v-2"),
+                "llm_params": get_azure_params("chatgpt-v-2"),
                 "model_info": {"id": 1},
                 "rpm": AZURE_FAST_RPM,
             },
             {
                 "model_name": "azure/gpt-4-basic",
-                "litellm_params": get_azure_params("chatgpt-v-2"),
+                "llm_params": get_azure_params("chatgpt-v-2"),
                 "model_info": {"id": 2},
                 "rpm": AZURE_BASIC_RPM,
             },
             {
                 "model_name": "openai-gpt-4",
-                "litellm_params": get_openai_params("gpt-3.5-turbo"),
+                "llm_params": get_openai_params("gpt-3.5-turbo"),
                 "model_info": {"id": 3},
                 "rpm": OPENAI_RPM,
             },
             {
                 "model_name": "anthropic-claude-3-5-haiku-20241022",
-                "litellm_params": get_anthropic_params("claude-3-5-haiku-20241022"),
+                "llm_params": get_anthropic_params("claude-3-5-haiku-20241022"),
                 "model_info": {"id": 4},
                 "rpm": ANTHROPIC_RPM,
             },
@@ -888,7 +888,7 @@ def test_custom_cooldown_times():
         model_list = [
             {  # list of model deployments
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -898,7 +898,7 @@ def test_custom_cooldown_times():
             },
             {  # list of model deployments
                 "model_name": "gpt-3.5-turbo",  # openai model name
-                "litellm_params": {  # params for llm completion/embedding call
+                "llm_params": {  # params for llm completion/embedding call
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -984,7 +984,7 @@ async def test_service_unavailable_fallbacks(sync_mode):
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo-012",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": "anything",
                     "api_base": "http://0.0.0.0:8080",
@@ -992,7 +992,7 @@ async def test_service_unavailable_fallbacks(sync_mode):
             },
             {
                 "model_name": "gpt-3.5-turbo-0125-preview",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -1018,35 +1018,35 @@ async def test_service_unavailable_fallbacks(sync_mode):
 
 
 @pytest.mark.parametrize("sync_mode", [True, False])
-@pytest.mark.parametrize("litellm_module_fallbacks", [True, False])
+@pytest.mark.parametrize("llm_module_fallbacks", [True, False])
 @pytest.mark.asyncio
-async def test_default_model_fallbacks(sync_mode, litellm_module_fallbacks):
+async def test_default_model_fallbacks(sync_mode, llm_module_fallbacks):
     """
-    Related issue - https://github.com/BerriAI/litellm/issues/3623
+    Related issue - https://github.com/BerriAI/llm/issues/3623
 
     If model misconfigured, setup a default model for generic fallback
     """
-    if litellm_module_fallbacks:
+    if llm_module_fallbacks:
         llm.default_fallbacks = ["my-good-model"]
     router = Router(
         model_list=[
             {
                 "model_name": "bad-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/my-bad-model",
                     "api_key": "my-bad-api-key",
                 },
             },
             {
                 "model_name": "my-good-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
             },
         ],
         default_fallbacks=(
-            ["my-good-model"] if litellm_module_fallbacks is False else None
+            ["my-good-model"] if llm_module_fallbacks is False else None
         ),
     )
 
@@ -1083,14 +1083,14 @@ async def test_client_side_fallbacks_list(sync_mode):
         model_list=[
             {
                 "model_name": "bad-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/my-bad-model",
                     "api_key": "my-bad-api-key",
                 },
             },
             {
                 "model_name": "my-good-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -1126,7 +1126,7 @@ async def test_client_side_fallbacks_list(sync_mode):
 async def test_router_content_policy_fallbacks(
     sync_mode, content_filter_response_exception, fallback_type
 ):
-    os.environ["LITELLM_LOG"] = "DEBUG"
+    os.environ["LLM_LOG"] = "DEBUG"
 
     if content_filter_response_exception:
         mock_response = Exception("content filtering policy")
@@ -1140,7 +1140,7 @@ async def test_router_content_policy_fallbacks(
         model_list=[
             {
                 "model_name": "claude-2.1",
-                "litellm_params": {
+                "llm_params": {
                     "model": "claude-2.1",
                     "api_key": "",
                     "mock_response": mock_response,
@@ -1148,7 +1148,7 @@ async def test_router_content_policy_fallbacks(
             },
             {
                 "model_name": "my-fallback-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/my-fake-model",
                     "api_key": "",
                     "mock_response": "This works!",
@@ -1156,7 +1156,7 @@ async def test_router_content_policy_fallbacks(
             },
             {
                 "model_name": "my-default-fallback-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/my-fake-model",
                     "api_key": "",
                     "mock_response": "This works 2!",
@@ -1164,7 +1164,7 @@ async def test_router_content_policy_fallbacks(
             },
             {
                 "model_name": "my-general-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "claude-2.1",
                     "api_key": "",
                     "mock_response": Exception("Should not have called this."),
@@ -1172,7 +1172,7 @@ async def test_router_content_policy_fallbacks(
             },
             {
                 "model_name": "my-context-window-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "claude-2.1",
                     "api_key": "",
                     "mock_response": Exception("Should not have called this."),
@@ -1219,7 +1219,7 @@ async def test_using_default_fallback(sync_mode):
         model_list=[
             {
                 "model_name": "openai/*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/*",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -1260,7 +1260,7 @@ async def test_using_default_working_fallback(sync_mode):
         model_list=[
             {
                 "model_name": "openai/*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/*",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -1307,13 +1307,13 @@ async def test_anthropic_streaming_fallbacks(sync_mode):
         model_list=[
             {
                 "model_name": "anthropic/claude-3-5-sonnet-20240620",
-                "litellm_params": {
+                "llm_params": {
                     "model": "anthropic/claude-3-5-sonnet-20240620",
                 },
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "mock_response": "Hey, how's it going?",
                 },
@@ -1362,7 +1362,7 @@ def test_router_fallbacks_with_custom_model_costs():
     model_list = [
         {
             "model_name": "claude-3-5-sonnet-20240620",
-            "litellm_params": {
+            "llm_params": {
                 "model": "claude-3-5-sonnet-20240620",
                 "api_key": os.environ["ANTHROPIC_API_KEY"],
                 "input_cost_per_token": 30,
@@ -1371,7 +1371,7 @@ def test_router_fallbacks_with_custom_model_costs():
         },
         {
             "model_name": "claude-3-5-sonnet-aihubmix",
-            "litellm_params": {
+            "llm_params": {
                 "model": "openai/claude-3-5-sonnet-20240620",
                 "input_cost_per_token": 0.000003,  # 3$/M
                 "output_cost_per_token": 0.000015,  # 15$/M
@@ -1395,7 +1395,7 @@ def test_router_fallbacks_with_custom_model_costs():
 
     print(f"key: {model_info['key']}")
 
-    assert model_info["litellm_provider"] == "anthropic"
+    assert model_info["llm_provider"] == "anthropic"
 
     response = router.completion(
         model="claude-3-5-sonnet-20240620",
@@ -1424,14 +1424,14 @@ async def test_router_fallbacks_default_and_model_specific_fallbacks(sync_mode):
         model_list=[
             {
                 "model_name": "bad-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/my-bad-model",
                     "api_key": "my-bad-api-key",
                 },
             },
             {
                 "model_name": "my-bad-model-2",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_key": "bad-key",
                 },
@@ -1467,14 +1467,14 @@ async def test_router_disable_fallbacks_dynamically():
         model_list=[
             {
                 "model_name": "bad-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/my-bad-model",
                     "api_key": "my-bad-api-key",
                 },
             },
             {
                 "model_name": "good-model",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-4o",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -1507,7 +1507,7 @@ def test_router_fallbacks_with_model_id():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {"model": "gpt-3.5-turbo", "rpm": 1},
+                "llm_params": {"model": "gpt-3.5-turbo", "rpm": 1},
                 "model_info": {
                     "id": "123",
                 },
@@ -1530,14 +1530,14 @@ def test_router_fallbacks_with_wildcard_model_name():
         model_list=[
             {
                 "model_name": "openai/*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/*",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
             },
             {
                 "model_name": "claude-3-haiku",
-                "litellm_params": {
+                "llm_params": {
                     "model": "claude-3-haiku-20240307",
                     "api_key": os.getenv("ANTHROPIC_API_KEY"),
                     "mock_response": "Hi this is claude!",
@@ -1576,14 +1576,14 @@ def test_fallbacks_with_different_messages():
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
             },
             {
                 "model_name": "claude-3-haiku",
-                "litellm_params": {
+                "llm_params": {
                     "model": "claude-3-haiku-20240307",
                     "api_key": os.getenv("ANTHROPIC_API_KEY"),
                 },
@@ -1612,15 +1612,15 @@ async def test_router_attempted_fallbacks_in_response(expected_attempted_fallbac
     """
     Test that the router returns the correct number of attempted fallbacks in the response
 
-    - Test cases: works on first try, `x-litellm-attempted-fallbacks` is 0
-    - Works on 1st fallback, `x-litellm-attempted-fallbacks` is 1
-    - Works on 3rd fallback, `x-litellm-attempted-fallbacks` is 3
+    - Test cases: works on first try, `x-llm-attempted-fallbacks` is 0
+    - Works on 1st fallback, `x-llm-attempted-fallbacks` is 1
+    - Works on 3rd fallback, `x-llm-attempted-fallbacks` is 3
     """
     router = Router(
         model_list=[
             {
                 "model_name": "working-fake-endpoint",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/working-fake-endpoint",
                     "api_key": "my-fake-key",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.app",
@@ -1628,7 +1628,7 @@ async def test_router_attempted_fallbacks_in_response(expected_attempted_fallbac
             },
             {
                 "model_name": "badly-configured-openai-endpoint",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/my-fake-model",
                     "api_base": "https://exampleopenaiendpoint-production.up.railway.appzzzzz",
                 },
@@ -1643,7 +1643,7 @@ async def test_router_attempted_fallbacks_in_response(expected_attempted_fallbac
             messages=[{"role": "user", "content": "Hey, how's it going?"}],
         )
         assert (
-            resp._hidden_params["additional_headers"]["x-litellm-attempted-fallbacks"]
+            resp._hidden_params["additional_headers"]["x-llm-attempted-fallbacks"]
             == expected_attempted_fallbacks
         )
     elif expected_attempted_fallbacks == 1:
@@ -1652,6 +1652,6 @@ async def test_router_attempted_fallbacks_in_response(expected_attempted_fallbac
             messages=[{"role": "user", "content": "Hey, how's it going?"}],
         )
         assert (
-            resp._hidden_params["additional_headers"]["x-litellm-attempted-fallbacks"]
+            resp._hidden_params["additional_headers"]["x-llm-attempted-fallbacks"]
             == expected_attempted_fallbacks
         )

@@ -99,7 +99,7 @@ Make sure config.yaml is present in the root directory. This is your llm proxy c
 docker run \
     -v $(pwd)/proxy_config.yaml:/app/config.yaml \
     -e DATABASE_URL="postgresql://xxxxxxxx" \
-    -e LITELLM_MASTER_KEY="sk-1234" \
+    -e LLM_MASTER_KEY="sk-1234" \
     -p 4000:4000 \
     llm_test_image \
     --config /app/config.yaml --detailed_debug

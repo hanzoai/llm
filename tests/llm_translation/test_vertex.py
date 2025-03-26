@@ -7,9 +7,9 @@ import traceback
 
 from dotenv import load_dotenv
 
-import llm.litellm_core_utils
-import llm.litellm_core_utils.prompt_templates
-import llm.litellm_core_utils.prompt_templates.factory
+import llm.llm_core_utils
+import llm.llm_core_utils.prompt_templates
+import llm.llm_core_utils.prompt_templates.factory
 
 load_dotenv()
 import io
@@ -1244,7 +1244,7 @@ def test_vertex_embedding_url(model, expected_url):
     """
     Test URL generation for embedding models, including numeric model IDs (fine-tuned models
 
-    Relevant issue: https://github.com/BerriAI/litellm/issues/6482
+    Relevant issue: https://github.com/BerriAI/llm/issues/6482
 
     When a fine-tuned embedding model is used, the URL is different from the standard one.
     """
@@ -1293,7 +1293,7 @@ def encoded_images():
 @pytest.fixture
 def mock_convert_url_to_base64():
     with patch(
-        "llm.litellm_core_utils.prompt_templates.factory.convert_url_to_base64",
+        "llm.llm_core_utils.prompt_templates.factory.convert_url_to_base64",
     ) as mock:
         # Setup the mock to return a valid image object
         mock.return_value = "data:image/jpeg;base64,/9j/4AAQSkZJRg..."

@@ -14,11 +14,11 @@ sys.path.insert(
 import llm
 from unittest.mock import MagicMock, patch, AsyncMock
 
-from llm.proxy._types import LitellmUserRoles, UserAPIKeyAuth
+from llm.proxy._types import LlmUserRoles, UserAPIKeyAuth
 from llm.proxy.auth.auth_utils import is_request_body_safe
-from llm.proxy.litellm_pre_call_utils import (
+from llm.proxy.llm_pre_call_utils import (
     _get_dynamic_logging_metadata,
-    add_litellm_data_to_request,
+    add_llm_data_to_request,
 )
 from llm.types.utils import SupportedCacheControls
 
@@ -29,14 +29,14 @@ def mock_request(monkeypatch):
     mock_request.query_params = {}  # Set mock query_params to an empty dictionary
     mock_request.headers = {"traceparent": "test_traceparent"}
     monkeypatch.setattr(
-        "llm.proxy.litellm_pre_call_utils.add_litellm_data_to_request", mock_request
+        "llm.proxy.llm_pre_call_utils.add_llm_data_to_request", mock_request
     )
     return mock_request
 
 
 @pytest.mark.parametrize("endpoint", ["/v1/threads", "/v1/thread/123"])
 @pytest.mark.asyncio
-async def test_add_litellm_data_to_request_thread_endpoint(endpoint, mock_request):
+async def test_add_llm_data_to_request_thread_endpoint(endpoint, mock_request):
     mock_request.url.path = endpoint
     user_api_key_dict = UserAPIKeyAuth(
         api_key="test_api_key", user_id="test_user_id", org_id="test_org_id"
@@ -44,13 +44,13 @@ async def test_add_litellm_data_to_request_thread_endpoint(endpoint, mock_reques
     proxy_config = Mock()
 
     data = {}
-    await add_litellm_data_to_request(
+    await add_llm_data_to_request(
         data, mock_request, user_api_key_dict, proxy_config
     )
 
     print("DATA: ", data)
 
-    assert "litellm_metadata" in data
+    assert "llm_metadata" in data
     assert "metadata" not in data
 
 
@@ -58,7 +58,7 @@ async def test_add_litellm_data_to_request_thread_endpoint(endpoint, mock_reques
     "endpoint", ["/chat/completions", "/v1/completions", "/completions"]
 )
 @pytest.mark.asyncio
-async def test_add_litellm_data_to_request_non_thread_endpoint(endpoint, mock_request):
+async def test_add_llm_data_to_request_non_thread_endpoint(endpoint, mock_request):
     mock_request.url.path = endpoint
     user_api_key_dict = UserAPIKeyAuth(
         api_key="test_api_key", user_id="test_user_id", org_id="test_org_id"
@@ -66,14 +66,14 @@ async def test_add_litellm_data_to_request_non_thread_endpoint(endpoint, mock_re
     proxy_config = Mock()
 
     data = {}
-    await add_litellm_data_to_request(
+    await add_llm_data_to_request(
         data, mock_request, user_api_key_dict, proxy_config
     )
 
     print("DATA: ", data)
 
     assert "metadata" in data
-    assert "litellm_metadata" not in data
+    assert "llm_metadata" not in data
 
 
 # test adding traceparent
@@ -101,7 +101,7 @@ async def test_traceparent_not_added_by_default(endpoint, mock_request):
     proxy_config = Mock()
 
     data = {}
-    await add_litellm_data_to_request(
+    await add_llm_data_to_request(
         data, mock_request, user_api_key_dict, proxy_config
     )
 
@@ -180,7 +180,7 @@ async def test_add_key_or_team_level_spend_logs_metadata_to_request(
         data["metadata"]["spend_logs_metadata"] = request_sl_metadata
 
     print(data)
-    new_data = await add_litellm_data_to_request(
+    new_data = await add_llm_data_to_request(
         data, mock_request, user_api_key_dict, proxy_config
     )
 
@@ -266,7 +266,7 @@ def test_dynamic_logging_metadata_key_and_team_metadata(callback_vars):
         model_spend={},
         model_max_budget={},
         soft_budget_cooldown=False,
-        litellm_budget_table=None,
+        llm_budget_table=None,
         org_id=None,
         team_spend=0.000132,
         team_alias=None,
@@ -286,7 +286,7 @@ def test_dynamic_logging_metadata_key_and_team_metadata(callback_vars):
         end_user_max_budget=None,
         last_refreshed_at=1726101560.967527,
         api_key="7c305cc48fe72272700dc0d67dc691c2d1f2807490ef5eb2ee1d3a3ca86e12b1",
-        user_role=LitellmUserRoles.INTERNAL_USER,
+        user_role=LlmUserRoles.INTERNAL_USER,
         allowed_model_region=None,
         parent_otel_span=None,
         rpm_limit_per_model=None,
@@ -347,7 +347,7 @@ def test_dynamic_turn_off_message_logging(callback_vars):
         model_spend={},
         model_max_budget={},
         soft_budget_cooldown=False,
-        litellm_budget_table=None,
+        llm_budget_table=None,
         org_id=None,
         team_spend=0.000132,
         team_alias=None,
@@ -367,7 +367,7 @@ def test_dynamic_turn_off_message_logging(callback_vars):
         end_user_max_budget=None,
         last_refreshed_at=1726101560.967527,
         api_key="7c305cc48fe72272700dc0d67dc691c2d1f2807490ef5eb2ee1d3a3ca86e12b1",
-        user_role=LitellmUserRoles.INTERNAL_USER,
+        user_role=LlmUserRoles.INTERNAL_USER,
         allowed_model_region=None,
         parent_otel_span=None,
         rpm_limit_per_model=None,
@@ -398,7 +398,7 @@ def test_is_request_body_safe_global_enabled(
         model_list=[
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "gpt-3.5-turbo",
                     "api_key": os.getenv("OPENAI_API_KEY"),
                 },
@@ -435,7 +435,7 @@ def test_is_request_body_safe_model_enabled(
         model_list=[
             {
                 "model_name": "fireworks_ai/*",
-                "litellm_params": {
+                "llm_params": {
                     "model": "fireworks_ai/*",
                     "api_key": os.getenv("FIREWORKS_API_KEY"),
                     "configurable_clientside_auth_params": (
@@ -460,7 +460,7 @@ def test_is_request_body_safe_model_enabled(
 
 
 def test_reading_openai_org_id_from_headers():
-    from llm.proxy.litellm_pre_call_utils import LLMProxyRequestSetup
+    from llm.proxy.llm_pre_call_utils import LLMProxyRequestSetup
 
     headers = {
         "OpenAI-Organization": "test_org_id",
@@ -486,16 +486,16 @@ def test_reading_openai_org_id_from_headers():
         ),
     ],
 )
-def test_add_litellm_data_for_backend_llm_call(headers, expected_data):
+def test_add_llm_data_for_backend_llm_call(headers, expected_data):
     import json
-    from llm.proxy.litellm_pre_call_utils import LLMProxyRequestSetup
+    from llm.proxy.llm_pre_call_utils import LLMProxyRequestSetup
     from llm.proxy._types import UserAPIKeyAuth
 
     user_api_key_dict = UserAPIKeyAuth(
         api_key="test_api_key", user_id="test_user_id", org_id="test_org_id"
     )
 
-    data = LLMProxyRequestSetup.add_litellm_data_for_backend_llm_call(
+    data = LLMProxyRequestSetup.add_llm_data_for_backend_llm_call(
         headers=headers,
         user_api_key_dict=user_api_key_dict,
         general_settings=None,
@@ -504,12 +504,12 @@ def test_add_litellm_data_for_backend_llm_call(headers, expected_data):
     assert json.dumps(data, sort_keys=True) == json.dumps(expected_data, sort_keys=True)
 
 
-def test_foward_litellm_user_info_to_backend_llm_call():
+def test_foward_llm_user_info_to_backend_llm_call():
     import json
 
     llm.add_user_information_to_llm_headers = True
 
-    from llm.proxy.litellm_pre_call_utils import LLMProxyRequestSetup
+    from llm.proxy.llm_pre_call_utils import LLMProxyRequestSetup
     from llm.proxy._types import UserAPIKeyAuth
 
     user_api_key_dict = UserAPIKeyAuth(
@@ -522,9 +522,9 @@ def test_foward_litellm_user_info_to_backend_llm_call():
     )
 
     expected_data = {
-        "x-litellm-user_api_key_user_id": "test_user_id",
-        "x-litellm-user_api_key_org_id": "test_org_id",
-        "x-litellm-user_api_key_hash": "test_api_key",
+        "x-llm-user_api_key_user_id": "test_user_id",
+        "x-llm-user_api_key_org_id": "test_org_id",
+        "x-llm-user_api_key_hash": "test_api_key",
     }
 
     assert json.dumps(data, sort_keys=True) == json.dumps(expected_data, sort_keys=True)
@@ -566,7 +566,7 @@ async def test_proxy_config_update_from_db():
     pc = AsyncMock()
 
     test_config = {
-        "litellm_settings": {
+        "llm_settings": {
             "callbacks": ["prometheus", "otel"],
         }
     }
@@ -580,7 +580,7 @@ async def test_proxy_config_update_from_db():
         "get_generic_data",
         new=AsyncMock(
             return_value=ReturnValue(
-                param_name="litellm_settings",
+                param_name="llm_settings",
                 param_value={
                     "success_callback": "langfuse",
                 },
@@ -594,7 +594,7 @@ async def test_proxy_config_update_from_db():
         )
 
         assert new_config == {
-            "litellm_settings": {
+            "llm_settings": {
                 "callbacks": ["prometheus", "otel"],
                 "success_callback": "langfuse",
             }
@@ -691,7 +691,7 @@ def test_get_docs_url(env_vars, expected_url):
     ],
 )
 def test_merge_tags(request_tags, tags_to_add, expected_tags):
-    from llm.proxy.litellm_pre_call_utils import LLMProxyRequestSetup
+    from llm.proxy.llm_pre_call_utils import LLMProxyRequestSetup
 
     result = LLMProxyRequestSetup._merge_tags(
         request_tags=request_tags, tags_to_add=tags_to_add
@@ -721,7 +721,7 @@ def test_merge_tags(request_tags, tags_to_add, expected_tags):
         (["Tag1", "TAG2"], ["tag1", "tag2"], ["Tag1", "TAG2", "tag1", "tag2"]),
     ],
 )
-async def test_add_litellm_data_to_request_duplicate_tags(
+async def test_add_llm_data_to_request_duplicate_tags(
     key_tags, request_tags, expected_tags
 ):
     """
@@ -754,7 +754,7 @@ async def test_add_litellm_data_to_request_duplicate_tags(
 
     # Process request
     proxy_config = Mock()
-    result = await add_litellm_data_to_request(
+    result = await add_llm_data_to_request(
         data=data,
         request=mock_request,
         user_api_key_dict=user_api_key_dict,
@@ -799,7 +799,7 @@ async def test_add_litellm_data_to_request_duplicate_tags(
 def test_get_enforced_params(
     general_settings, user_api_key_dict, expected_enforced_params
 ):
-    from llm.proxy.litellm_pre_call_utils import _get_enforced_params
+    from llm.proxy.llm_pre_call_utils import _get_enforced_params
 
     enforced_params = _get_enforced_params(general_settings, user_api_key_dict)
     assert enforced_params == expected_enforced_params
@@ -879,7 +879,7 @@ def test_get_enforced_params(
 def test_enforced_params_check(
     general_settings, user_api_key_dict, request_body, expected_error
 ):
-    from llm.proxy.litellm_pre_call_utils import _enforced_params_check
+    from llm.proxy.llm_pre_call_utils import _enforced_params_check
 
     if expected_error:
         with pytest.raises(ValueError):
@@ -955,7 +955,7 @@ def test_update_config_fields():
 
     args = {
         "current_config": {
-            "litellm_settings": {
+            "llm_settings": {
                 "default_team_settings": [
                     {
                         "team_id": "c91e32bb-0f2a-4aa1-86c4-307ca2e03ea3",
@@ -967,7 +967,7 @@ def test_update_config_fields():
                 ]
             },
         },
-        "param_name": "litellm_settings",
+        "param_name": "llm_settings",
         "db_param_value": {
             "telemetry": False,
             "drop_params": True,
@@ -980,7 +980,7 @@ def test_update_config_fields():
     }
     updated_config = proxy_config._update_config_fields(**args)
 
-    all_team_config = updated_config["litellm_settings"]["default_team_settings"]
+    all_team_config = updated_config["llm_settings"]["default_team_settings"]
 
     # check if team id config returned
     team_config = proxy_config._get_team_config(
@@ -1075,18 +1075,18 @@ def test_proxy_config_state_post_init_callback_call():
     """
     Ensures team_id is still in config, after callback is called
 
-    Addresses issue: https://github.com/BerriAI/litellm/issues/6787
+    Addresses issue: https://github.com/BerriAI/llm/issues/6787
 
     Where team_id was being popped from config, after callback was called
     """
-    from llm.proxy.litellm_pre_call_utils import LLMProxyRequestSetup
+    from llm.proxy.llm_pre_call_utils import LLMProxyRequestSetup
     from llm.proxy.proxy_server import ProxyConfig
 
     pc = ProxyConfig()
 
     pc.update_config_state(
         config={
-            "litellm_settings": {
+            "llm_settings": {
                 "default_team_settings": [
                     {
                         "team_id": "test",
@@ -1105,7 +1105,7 @@ def test_proxy_config_state_post_init_callback_call():
     )
 
     config = pc.get_config_state()
-    assert config["litellm_settings"]["default_team_settings"][0]["team_id"] == "test"
+    assert config["llm_settings"]["default_team_settings"][0]["team_id"] == "test"
 
 
 def test_proxy_config_state_get_config_state_error():
@@ -1136,10 +1136,10 @@ def test_proxy_config_state_get_config_state_error():
     [
         (
             {
-                "litellm_budget_table_max_budget": None,
-                "litellm_budget_table_tpm_limit": None,
-                "litellm_budget_table_rpm_limit": 1,
-                "litellm_budget_table_model_max_budget": None,
+                "llm_budget_table_max_budget": None,
+                "llm_budget_table_tpm_limit": None,
+                "llm_budget_table_rpm_limit": 1,
+                "llm_budget_table_model_max_budget": None,
             },
             "rpm_limit",
             1,
@@ -1151,17 +1151,17 @@ def test_proxy_config_state_get_config_state_error():
         ),
         (
             {
-                "litellm_budget_table_max_budget": None,
-                "litellm_budget_table_tpm_limit": None,
-                "litellm_budget_table_rpm_limit": None,
-                "litellm_budget_table_model_max_budget": {"gpt-4o": 100},
+                "llm_budget_table_max_budget": None,
+                "llm_budget_table_tpm_limit": None,
+                "llm_budget_table_rpm_limit": None,
+                "llm_budget_table_model_max_budget": {"gpt-4o": 100},
             },
             "model_max_budget",
             {"gpt-4o": 100},
         ),
     ],
 )
-def test_litellm_verification_token_view_response_with_budget_table(
+def test_llm_verification_token_view_response_with_budget_table(
     associated_budget_table,
     expected_user_api_key_auth_key,
     expected_user_api_key_auth_value,
@@ -1218,7 +1218,7 @@ def test_litellm_verification_token_view_response_with_budget_table(
 
 
 def test_is_allowed_to_make_key_request():
-    from llm.proxy._types import LitellmUserRoles
+    from llm.proxy._types import LlmUserRoles
     from llm.proxy.management_endpoints.key_management_endpoints import (
         _is_allowed_to_make_key_request,
     )
@@ -1226,7 +1226,7 @@ def test_is_allowed_to_make_key_request():
     assert (
         _is_allowed_to_make_key_request(
             user_api_key_dict=UserAPIKeyAuth(
-                user_id="test_user_id", user_role=LitellmUserRoles.PROXY_ADMIN
+                user_id="test_user_id", user_role=LlmUserRoles.PROXY_ADMIN
             ),
             user_id="test_user_id",
             team_id="test_team_id",
@@ -1238,8 +1238,8 @@ def test_is_allowed_to_make_key_request():
         _is_allowed_to_make_key_request(
             user_api_key_dict=UserAPIKeyAuth(
                 user_id="test_user_id",
-                user_role=LitellmUserRoles.INTERNAL_USER,
-                team_id="litellm-dashboard",
+                user_role=LlmUserRoles.INTERNAL_USER,
+                team_id="llm-dashboard",
             ),
             user_id="test_user_id",
             team_id="test_team_id",
@@ -1256,14 +1256,14 @@ def test_get_model_group_info():
         model_list=[
             {
                 "model_name": "openai/tts-1",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/tts-1",
                     "api_key": "sk-1234",
                 },
             },
             {
                 "model_name": "openai/gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "openai/gpt-3.5-turbo",
                     "api_key": "sk-1234",
                 },
@@ -1300,7 +1300,7 @@ def mock_key_data():
         {
             "token": "test_token_3",
             "key_name": "key3",
-            "team_id": "litellm-dashboard",
+            "team_id": "llm-dashboard",
             "spend": 50,
         },
     ]
@@ -1316,7 +1316,7 @@ class MockDb:
         filtered_keys = [
             k
             for k in self.mock_key_data
-            if k["team_id"] != "litellm-dashboard" or k["team_id"] is None
+            if k["team_id"] != "llm-dashboard" or k["team_id"] is None
         ]
 
         return [{"teams": self.mock_team_data, "keys": filtered_keys}]
@@ -1363,7 +1363,7 @@ def test_custom_openid_response():
     jwt_handler.update_environment(
         prisma_client={},
         user_api_key_cache=DualCache(),
-        litellm_jwtauth=LLM_JWTAuth(
+        llm_jwtauth=LLM_JWTAuth(
             team_ids_jwt_field="department",
         ),
     )
@@ -1534,7 +1534,7 @@ async def test_spend_logs_cleanup_after_error():
         {"id": 3, "amount": 30.0},
     ]
     # Make the DB operation fail
-    mock_client.db.litellm_spendlogs.create_many = AsyncMock(
+    mock_client.db.llm_spendlogs.create_many = AsyncMock(
         side_effect=Exception("DB Error")
     )
 
@@ -1556,7 +1556,7 @@ async def test_spend_logs_cleanup_after_error():
 
 
 def test_provider_specific_header():
-    from llm.proxy.litellm_pre_call_utils import (
+    from llm.proxy.llm_pre_call_utils import (
         add_provider_specific_headers_to_request,
     )
 
@@ -1685,7 +1685,7 @@ def test_get_known_models_from_wildcard(wildcard_model, expected_models):
     ],
 )
 def test_update_model_if_team_alias_exists(data, user_api_key_dict, expected_model):
-    from llm.proxy.litellm_pre_call_utils import _update_model_if_team_alias_exists
+    from llm.proxy.llm_pre_call_utils import _update_model_if_team_alias_exists
 
     # Make a copy of the input data to avoid modifying the test parameters
     test_data = data.copy()
@@ -1703,7 +1703,7 @@ def test_update_model_if_team_alias_exists(data, user_api_key_dict, expected_mod
 def mock_prisma_client():
     client = MagicMock()
     client.db = MagicMock()
-    client.db.litellm_teamtable = AsyncMock()
+    client.db.llm_teamtable = AsyncMock()
     return client
 
 
@@ -1799,7 +1799,7 @@ async def test_get_admin_team_ids(
     )
 
     # Setup
-    mock_prisma_client.db.litellm_teamtable.find_many.return_value = mock_teams
+    mock_prisma_client.db.llm_teamtable.find_many.return_value = mock_teams
     user_api_key_dict = UserAPIKeyAuth(
         user_role=user_role, user_id=user_info.user_id if user_info else None
     )
@@ -1815,8 +1815,8 @@ async def test_get_admin_team_ids(
     assert result == expected_teams, f"Expected {expected_teams}, but got {result}"
 
     if should_query_db:
-        mock_prisma_client.db.litellm_teamtable.find_many.assert_called_once_with(
+        mock_prisma_client.db.llm_teamtable.find_many.assert_called_once_with(
             where={"team_id": {"in": user_info.teams}}
         )
     else:
-        mock_prisma_client.db.litellm_teamtable.find_many.assert_not_called()
+        mock_prisma_client.db.llm_teamtable.find_many.assert_not_called()

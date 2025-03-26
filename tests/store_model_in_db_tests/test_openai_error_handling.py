@@ -138,10 +138,10 @@ async def test_chat_completion_bad_model_with_spend_logs():
         response = client.post(url, headers=headers, json=payload)
 
         # Extract the llm call ID from headers
-        litellm_call_id = response.headers.get("x-litellm-call-id")
+        llm_call_id = response.headers.get("x-llm-call-id")
         print(f"Status code: {response.status_code}")
         print(f"Headers: {dict(response.headers)}")
-        print(f"LLM Call ID: {litellm_call_id}")
+        print(f"LLM Call ID: {llm_call_id}")
 
         # Parse the JSON response body
         try:
@@ -151,13 +151,13 @@ async def test_chat_completion_bad_model_with_spend_logs():
             print(f"Could not parse response body as JSON: {response.text}")
 
     assert (
-        litellm_call_id is not None
+        llm_call_id is not None
     ), "Failed to get LLM Call ID from response headers"
     print("waiting for flushing error log to db....")
     await asyncio.sleep(15)
 
     # Now query the spend logs
-    url = "http://0.0.0.0:4000/spend/logs?request_id=" + litellm_call_id
+    url = "http://0.0.0.0:4000/spend/logs?request_id=" + llm_call_id
     headers = {"Authorization": f"Bearer sk-1234", "Content-Type": "application/json"}
 
     with httpx.Client() as client:
@@ -179,10 +179,10 @@ async def test_chat_completion_bad_model_with_spend_logs():
         assert len(spend_logs) > 0, "No spend logs found"
 
         # Check if the error is recorded in the logs
-        log_entry = spend_logs[0]  # Should be the specific log for our litellm_call_id
+        log_entry = spend_logs[0]  # Should be the specific log for our llm_call_id
 
         # Verify the structure of the log entry
-        assert log_entry["request_id"] == litellm_call_id
+        assert log_entry["request_id"] == llm_call_id
         assert log_entry["model"] == "non-existent-model"
         assert log_entry["model_group"] == "non-existent-model"
         assert log_entry["spend"] == 0.0

@@ -19,8 +19,8 @@ from llm.integrations.custom_guardrail import CustomGuardrail
 from fastapi import HTTPException
 from llm._logging import verbose_proxy_logger
 from llm.proxy.guardrails.guardrail_helpers import should_proceed_based_on_metadata
-from llm.litellm_core_utils.logging_utils import (
-    convert_litellm_response_object_to_str,
+from llm.llm_core_utils.logging_utils import (
+    convert_llm_response_object_to_str,
 )
 from typing import List
 from llm.llms.custom_httpx.http_handler import (
@@ -151,7 +151,7 @@ class AporiaGuardrail(CustomGuardrail):
         if self.should_run_guardrail(data=data, event_type=event_type) is not True:
             return
 
-        response_str: Optional[str] = convert_litellm_response_object_to_str(response)
+        response_str: Optional[str] = convert_llm_response_object_to_str(response)
         if response_str is not None:
             await self.make_aporia_api_request(
                 response_string=response_str, new_messages=data.get("messages", [])

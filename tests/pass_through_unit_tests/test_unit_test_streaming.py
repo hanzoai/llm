@@ -12,7 +12,7 @@ import httpx
 import pytest
 import llm
 from typing import AsyncGenerator
-from llm.litellm_core_utils.litellm_logging import Logging as LLMLoggingObj
+from llm.llm_core_utils.llm_logging import Logging as LLMLoggingObj
 from llm.proxy.pass_through_endpoints.types import EndpointType
 from llm.proxy.pass_through_endpoints.success_handler import (
     PassThroughEndpointLogging,
@@ -61,17 +61,17 @@ async def test_chunk_processor_yields_raw_bytes(endpoint_type, url_route):
     response.aiter_bytes = mock_aiter_bytes
 
     request_body = {"key": "value"}
-    litellm_logging_obj = MagicMock()
+    llm_logging_obj = MagicMock()
     start_time = datetime.now()
     passthrough_success_handler_obj = MagicMock()
-    litellm_logging_obj.async_success_handler = AsyncMock()
+    llm_logging_obj.async_success_handler = AsyncMock()
 
     # Capture yielded chunks and perform detailed assertions
     received_chunks = []
     async for chunk in PassThroughStreamingHandler.chunk_processor(
         response=response,
         request_body=request_body,
-        litellm_logging_obj=litellm_logging_obj,
+        llm_logging_obj=llm_logging_obj,
         endpoint_type=endpoint_type,
         start_time=start_time,
         passthrough_success_handler_obj=passthrough_success_handler_obj,

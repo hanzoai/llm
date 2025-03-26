@@ -276,7 +276,7 @@ async def test_async_create_batch(provider):
         custom_llm_provider=provider,
         metadata={"key1": "value1", "key2": "value2"},
         # llm specific param - used for logging metadata on logging callback
-        litellm_metadata=extra_metadata_field,
+        llm_metadata=extra_metadata_field,
     )
 
     print("response from llm.create_batch=", create_batch_response)
@@ -370,11 +370,11 @@ async def test_async_create_batch(provider):
 
 mock_file_response = {
     "kind": "storage#object",
-    "id": "litellm-local/litellm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb/1739598666670574",
-    "selfLink": "https://www.googleapis.com/storage/v1/b/litellm-local/o/litellm-vertex-files%2Fpublishers%2Fgoogle%2Fmodels%2Fgemini-1.5-flash-001%2F5f7b99ad-9203-4430-98bf-3b45451af4cb",
-    "mediaLink": "https://storage.googleapis.com/download/storage/v1/b/litellm-local/o/litellm-vertex-files%2Fpublishers%2Fgoogle%2Fmodels%2Fgemini-1.5-flash-001%2F5f7b99ad-9203-4430-98bf-3b45451af4cb?generation=1739598666670574&alt=media",
-    "name": "litellm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb",
-    "bucket": "litellm-local",
+    "id": "llm-local/llm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb/1739598666670574",
+    "selfLink": "https://www.googleapis.com/storage/v1/b/llm-local/o/llm-vertex-files%2Fpublishers%2Fgoogle%2Fmodels%2Fgemini-1.5-flash-001%2F5f7b99ad-9203-4430-98bf-3b45451af4cb",
+    "mediaLink": "https://storage.googleapis.com/download/storage/v1/b/llm-local/o/llm-vertex-files%2Fpublishers%2Fgoogle%2Fmodels%2Fgemini-1.5-flash-001%2F5f7b99ad-9203-4430-98bf-3b45451af4cb?generation=1739598666670574&alt=media",
+    "name": "llm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb",
+    "bucket": "llm-local",
     "generation": "1739598666670574",
     "metageneration": "1",
     "contentType": "application/json",
@@ -391,18 +391,18 @@ mock_file_response = {
 
 mock_vertex_batch_response = {
     "name": "projects/123456789/locations/us-central1/batchPredictionJobs/test-batch-id-456",
-    "displayName": "litellm_batch_job",
+    "displayName": "llm_batch_job",
     "model": "projects/123456789/locations/us-central1/models/gemini-1.5-flash-001",
     "modelVersionId": "v1",
     "inputConfig": {
         "gcsSource": {
             "uris": [
-                "gs://litellm-local/litellm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb"
+                "gs://llm-local/llm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb"
             ]
         }
     },
     "outputConfig": {
-        "gcsDestination": {"outputUriPrefix": "gs://litellm-local/batch-outputs/"}
+        "gcsDestination": {"outputUriPrefix": "gs://llm-local/batch-outputs/"}
     },
     "dedicatedResources": {
         "machineSpec": {
@@ -460,7 +460,7 @@ async def test_avertex_batch_prediction():
 
         assert (
             file_obj.id
-            == "gs://litellm-local/litellm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb"
+            == "gs://llm-local/llm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb"
         )
 
         # Create batch
@@ -476,7 +476,7 @@ async def test_avertex_batch_prediction():
         assert create_batch_response.id == "test-batch-id-456"
         assert (
             create_batch_response.input_file_id
-            == "gs://litellm-local/litellm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb"
+            == "gs://llm-local/llm-vertex-files/publishers/google/models/gemini-1.5-flash-001/5f7b99ad-9203-4430-98bf-3b45451af4cb"
         )
 
         # Mock the retrieve batch response

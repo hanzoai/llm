@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import os, io
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -63,7 +63,7 @@ def test_chat_completion(client_no_auth):
         model_list=[
             ModelConfig(
                 model_name="user-azure-instance",
-                litellm_params=CompletionRequest(
+                llm_params=CompletionRequest(
                     model="azure/chatgpt-v-2",
                     api_key=os.getenv("AZURE_API_KEY"),
                     api_version=os.getenv("AZURE_API_VERSION"),
@@ -75,7 +75,7 @@ def test_chat_completion(client_no_auth):
             ),
             ModelConfig(
                 model_name="user-openai-instance",
-                litellm_params=CompletionRequest(
+                llm_params=CompletionRequest(
                     model="gpt-3.5-turbo",
                     api_key=os.getenv("OPENAI_API_KEY"),
                     timeout=10,

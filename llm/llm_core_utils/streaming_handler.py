@@ -152,8 +152,8 @@ class CustomStreamWrapper:
             logging_obj.optional_params, dict
         ):
             if (
-                "litellm_param_is_function_call" in logging_obj.optional_params
-                and logging_obj.optional_params["litellm_param_is_function_call"]
+                "llm_param_is_function_call" in logging_obj.optional_params
+                and logging_obj.optional_params["llm_param_is_function_call"]
                 is True
             ):
                 return True
@@ -179,7 +179,7 @@ class CustomStreamWrapper:
 
     def safety_checker(self) -> None:
         """
-        Fixes - https://github.com/BerriAI/litellm/issues/5158
+        Fixes - https://github.com/BerriAI/llm/issues/5158
 
         if the model enters a loop and starts repeating the same chunk again, break out of loop and raise an internalservererror - allows for retries.
 
@@ -198,7 +198,7 @@ class CustomStreamWrapper:
                     last_contents[0] is not None
                     and isinstance(last_contents[0], str)
                     and len(last_contents[0]) > 2
-                ):  # ignore empty content - https://github.com/BerriAI/litellm/issues/5158#issuecomment-2287156946
+                ):  # ignore empty content - https://github.com/BerriAI/llm/issues/5158#issuecomment-2287156946
                     # All last n chunks are identical
                     raise llm.InternalServerError(
                         message="The model is repeating the same chunk = {}.".format(
@@ -1829,7 +1829,7 @@ class CustomStreamWrapper:
                 return processed_chunk
         except httpx.TimeoutException as e:  # if httpx read timeout error occues
             traceback_exception = traceback.format_exc()
-            ## ADD DEBUG INFORMATION - E.G. LITELLM REQUEST TIMEOUT
+            ## ADD DEBUG INFORMATION - E.G. LLM REQUEST TIMEOUT
             traceback_exception += "\nLLM Default Request Timeout - {}".format(
                 llm.request_timeout
             )

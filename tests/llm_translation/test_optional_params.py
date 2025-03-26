@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.abspath("../.."))
 from unittest.mock import MagicMock, patch
 
 import llm
-from llm.litellm_core_utils.prompt_templates.factory import map_system_message_pt
+from llm.llm_core_utils.prompt_templates.factory import map_system_message_pt
 from llm.types.completion import (
     ChatCompletionMessageParam,
     ChatCompletionSystemMessageParam,
@@ -443,7 +443,7 @@ def test_dynamic_drop_params_e2e():
 )
 def test_drop_params_parallel_tool_calls(model, provider, should_drop):
     """
-    https://github.com/BerriAI/litellm/issues/4584
+    https://github.com/BerriAI/llm/issues/4584
     """
     response = llm.utils.get_optional_params(
         model=model,
@@ -465,7 +465,7 @@ def test_drop_params_parallel_tool_calls(model, provider, should_drop):
 
 def test_dynamic_drop_params_parallel_tool_calls():
     """
-    https://github.com/BerriAI/litellm/issues/4584
+    https://github.com/BerriAI/llm/issues/4584
     """
     with patch(
         "llm.llms.custom_httpx.http_handler.HTTPHandler.post", new=MagicMock()
@@ -571,7 +571,7 @@ def test_bedrock_optional_params_embeddings_provider_specific_params():
 
 def test_get_optional_params_num_retries():
     """
-    Relevant issue - https://github.com/BerriAI/litellm/issues/5124
+    Relevant issue - https://github.com/BerriAI/llm/issues/5124
     """
     with patch("llm.main.get_optional_params", new=MagicMock()) as mock_client:
         _ = llm.completion(
@@ -750,9 +750,9 @@ def _check_additional_properties(schema):
 )
 def test_drop_nested_params_add_prop_and_strict(provider, model):
     """
-    Relevant issue - https://github.com/BerriAI/litellm/issues/5288
+    Relevant issue - https://github.com/BerriAI/llm/issues/5288
 
-    Relevant issue - https://github.com/BerriAI/litellm/issues/6136
+    Relevant issue - https://github.com/BerriAI/llm/issues/6136
     """
     tools = [
         {
@@ -792,7 +792,7 @@ def test_drop_nested_params_add_prop_and_strict(provider, model):
 
 def test_hosted_vllm_tool_param():
     """
-    Relevant issue - https://github.com/BerriAI/litellm/issues/6228
+    Relevant issue - https://github.com/BerriAI/llm/issues/6228
     """
     optional_params = get_optional_params(
         model="my-vllm-model",
@@ -1008,7 +1008,7 @@ def test_gemini_frequency_penalty():
     assert "frequency_penalty" in optional_params
 
 
-def test_litellm_proxy_claude_3_5_sonnet():
+def test_llm_proxy_claude_3_5_sonnet():
     tools = [
         {
             "type": "function",
@@ -1034,7 +1034,7 @@ def test_litellm_proxy_claude_3_5_sonnet():
 
     optional_params = get_optional_params(
         model="claude-3-5-sonnet",
-        custom_llm_provider="litellm_proxy",
+        custom_llm_provider="llm_proxy",
         tools=tools,
         tool_choice=tool_choice,
     )
@@ -1045,7 +1045,7 @@ def test_litellm_proxy_claude_3_5_sonnet():
 def test_is_vertex_anthropic_model():
     assert (
         llm.VertexAIAnthropicConfig().is_supported_model(
-            model="claude-3-5-sonnet", custom_llm_provider="litellm_proxy"
+            model="claude-3-5-sonnet", custom_llm_provider="llm_proxy"
         )
         is False
     )

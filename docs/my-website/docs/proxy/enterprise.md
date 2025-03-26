@@ -1175,7 +1175,7 @@ Requires a LLM Enterprise key to use. Get a free 2-week license [here](https://f
 Set LLM Key in your environment
 
 ```bash
-LITELLM_LICENSE=""
+LLM_LICENSE=""
 ```
 
 #### Customize Title + Description
@@ -1336,10 +1336,10 @@ This is a beta feature, and subject to changes.
 USE_AWS_KMS="True"
 ```
 
-**Step 2.** Add `LITELLM_SECRET_AWS_KMS_` to encrypted keys in env 
+**Step 2.** Add `LLM_SECRET_AWS_KMS_` to encrypted keys in env 
 
 ```env
-LITELLM_SECRET_AWS_KMS_DATABASE_URL="AQICAH.."
+LLM_SECRET_AWS_KMS_DATABASE_URL="AQICAH.."
 ```
 
 LLM will find this and use the decrypted `DATABASE_URL="postgres://.."` value in runtime.

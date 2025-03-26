@@ -17,7 +17,7 @@ import io
 import os
 import time
 
-# this file is to test litellm/proxy
+# this file is to test llm/proxy
 
 sys.path.insert(
     0, os.path.abspath("../..")
@@ -50,7 +50,7 @@ from llm.proxy.management_endpoints.team_endpoints import (
     update_team,
 )
 from llm.proxy.proxy_server import (
-    LitellmUserRoles,
+    LlmUserRoles,
     audio_transcriptions,
     chat_completion,
     completion,
@@ -102,8 +102,8 @@ def prisma_client():
     )
 
     # Reset llm.proxy.proxy_server.prisma_client to None
-    llm.proxy.proxy_server.litellm_proxy_budget_name = (
-        f"litellm-proxy-budget-{time.time()}"
+    llm.proxy.proxy_server.llm_proxy_budget_name = (
+        f"llm-proxy-budget-{time.time()}"
     )
     llm.proxy.proxy_server.user_custom_key_generate = None
 
@@ -128,9 +128,9 @@ RBAC Tests
 @pytest.mark.parametrize(
     "user_role",
     [
-        LitellmUserRoles.ORG_ADMIN,
-        LitellmUserRoles.INTERNAL_USER,
-        LitellmUserRoles.INTERNAL_USER_VIEW_ONLY,
+        LlmUserRoles.ORG_ADMIN,
+        LlmUserRoles.INTERNAL_USER,
+        LlmUserRoles.INTERNAL_USER_VIEW_ONLY,
     ],
 )
 async def test_create_new_user_in_organization(prisma_client, user_role):
@@ -151,7 +151,7 @@ async def test_create_new_user_in_organization(prisma_client, user_role):
             organization_alias=f"new-org-{uuid.uuid4()}",
         ),
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LitellmUserRoles.PROXY_ADMIN,
+            user_role=LlmUserRoles.PROXY_ADMIN,
         ),
     )
 
@@ -188,7 +188,7 @@ async def test_create_new_user_in_organization(prisma_client, user_role):
     if user_role != None:
         assert _membership.user_role == user_role
     else:
-        assert _membership.user_role == LitellmUserRoles.INTERNAL_USER_VIEW_ONLY
+        assert _membership.user_role == LlmUserRoles.INTERNAL_USER_VIEW_ONLY
 
 
 @pytest.mark.asyncio
@@ -211,7 +211,7 @@ async def test_org_admin_create_team_permissions(prisma_client):
             organization_alias=f"new-org-{uuid.uuid4()}",
         ),
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LitellmUserRoles.PROXY_ADMIN,
+            user_role=LlmUserRoles.PROXY_ADMIN,
         ),
     )
 
@@ -220,7 +220,7 @@ async def test_org_admin_create_team_permissions(prisma_client):
     response = await organization_member_add(
         data=OrganizationMemberAddRequest(
             organization_id=org_id,
-            member=OrgMember(role=LitellmUserRoles.ORG_ADMIN, user_id=created_user_id),
+            member=OrgMember(role=LlmUserRoles.ORG_ADMIN, user_id=created_user_id),
         ),
         http_request=None,
     )
@@ -283,7 +283,7 @@ async def test_org_admin_create_user_permissions(prisma_client):
             organization_alias=f"new-org-{uuid.uuid4()}",
         ),
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LitellmUserRoles.PROXY_ADMIN,
+            user_role=LlmUserRoles.PROXY_ADMIN,
         ),
     )
     # Create Org Admin
@@ -292,7 +292,7 @@ async def test_org_admin_create_user_permissions(prisma_client):
     response = await organization_member_add(
         data=OrganizationMemberAddRequest(
             organization_id=org_id,
-            member=OrgMember(role=LitellmUserRoles.ORG_ADMIN, user_id=created_user_id),
+            member=OrgMember(role=LlmUserRoles.ORG_ADMIN, user_id=created_user_id),
         ),
         http_request=None,
     )
@@ -324,7 +324,7 @@ async def test_org_admin_create_user_permissions(prisma_client):
         data=OrganizationMemberAddRequest(
             organization_id=org_id,
             member=OrgMember(
-                role=LitellmUserRoles.INTERNAL_USER, user_id=new_internal_user_for_org
+                role=LlmUserRoles.INTERNAL_USER, user_id=new_internal_user_for_org
             ),
         ),
         http_request=request,
@@ -353,7 +353,7 @@ async def test_org_admin_create_user_team_wrong_org_permissions(prisma_client):
             organization_alias=f"new-org-{uuid.uuid4()}",
         ),
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LitellmUserRoles.PROXY_ADMIN,
+            user_role=LlmUserRoles.PROXY_ADMIN,
         ),
     )
 
@@ -362,7 +362,7 @@ async def test_org_admin_create_user_team_wrong_org_permissions(prisma_client):
             organization_alias=f"new-org-{uuid.uuid4()}",
         ),
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LitellmUserRoles.PROXY_ADMIN,
+            user_role=LlmUserRoles.PROXY_ADMIN,
         ),
     )
 
@@ -375,7 +375,7 @@ async def test_org_admin_create_user_team_wrong_org_permissions(prisma_client):
     response = await organization_member_add(
         data=OrganizationMemberAddRequest(
             organization_id=org1_id,
-            member=OrgMember(role=LitellmUserRoles.ORG_ADMIN, user_id=created_user_id),
+            member=OrgMember(role=LlmUserRoles.ORG_ADMIN, user_id=created_user_id),
         ),
         http_request=None,
     )
@@ -385,7 +385,7 @@ async def test_org_admin_create_user_team_wrong_org_permissions(prisma_client):
             user_id=created_user_id,
         ),
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LitellmUserRoles.ORG_ADMIN,
+            user_role=LlmUserRoles.ORG_ADMIN,
             user_id=created_user_id,
         ),
     )
@@ -446,40 +446,40 @@ async def test_org_admin_create_user_team_wrong_org_permissions(prisma_client):
     "route, user_role, expected_result",
     [
         # Proxy Admin checks
-        ("/global/spend/logs", LitellmUserRoles.PROXY_ADMIN, True),
-        ("/key/delete", LitellmUserRoles.PROXY_ADMIN, True),
-        ("/key/generate", LitellmUserRoles.PROXY_ADMIN, True),
-        ("/key/regenerate", LitellmUserRoles.PROXY_ADMIN, True),
+        ("/global/spend/logs", LlmUserRoles.PROXY_ADMIN, True),
+        ("/key/delete", LlmUserRoles.PROXY_ADMIN, True),
+        ("/key/generate", LlmUserRoles.PROXY_ADMIN, True),
+        ("/key/regenerate", LlmUserRoles.PROXY_ADMIN, True),
         # # Internal User checks - allowed routes
-        ("/global/spend/logs", LitellmUserRoles.INTERNAL_USER, True),
-        ("/key/delete", LitellmUserRoles.INTERNAL_USER, True),
-        ("/key/generate", LitellmUserRoles.INTERNAL_USER, True),
-        ("/key/82akk800000000jjsk/regenerate", LitellmUserRoles.INTERNAL_USER, True),
+        ("/global/spend/logs", LlmUserRoles.INTERNAL_USER, True),
+        ("/key/delete", LlmUserRoles.INTERNAL_USER, True),
+        ("/key/generate", LlmUserRoles.INTERNAL_USER, True),
+        ("/key/82akk800000000jjsk/regenerate", LlmUserRoles.INTERNAL_USER, True),
         # Internal User Viewer
-        ("/key/generate", LitellmUserRoles.INTERNAL_USER_VIEW_ONLY, False),
+        ("/key/generate", LlmUserRoles.INTERNAL_USER_VIEW_ONLY, False),
         (
             "/key/82akk800000000jjsk/regenerate",
-            LitellmUserRoles.INTERNAL_USER_VIEW_ONLY,
+            LlmUserRoles.INTERNAL_USER_VIEW_ONLY,
             False,
         ),
-        ("/key/delete", LitellmUserRoles.INTERNAL_USER_VIEW_ONLY, False),
-        ("/team/new", LitellmUserRoles.INTERNAL_USER_VIEW_ONLY, False),
-        ("/team/delete", LitellmUserRoles.INTERNAL_USER_VIEW_ONLY, False),
-        ("/team/update", LitellmUserRoles.INTERNAL_USER_VIEW_ONLY, False),
+        ("/key/delete", LlmUserRoles.INTERNAL_USER_VIEW_ONLY, False),
+        ("/team/new", LlmUserRoles.INTERNAL_USER_VIEW_ONLY, False),
+        ("/team/delete", LlmUserRoles.INTERNAL_USER_VIEW_ONLY, False),
+        ("/team/update", LlmUserRoles.INTERNAL_USER_VIEW_ONLY, False),
         # Proxy Admin Viewer
-        ("/global/spend/logs", LitellmUserRoles.PROXY_ADMIN_VIEW_ONLY, True),
-        ("/key/delete", LitellmUserRoles.PROXY_ADMIN_VIEW_ONLY, False),
-        ("/key/generate", LitellmUserRoles.PROXY_ADMIN_VIEW_ONLY, False),
+        ("/global/spend/logs", LlmUserRoles.PROXY_ADMIN_VIEW_ONLY, True),
+        ("/key/delete", LlmUserRoles.PROXY_ADMIN_VIEW_ONLY, False),
+        ("/key/generate", LlmUserRoles.PROXY_ADMIN_VIEW_ONLY, False),
         (
             "/key/82akk800000000jjsk/regenerate",
-            LitellmUserRoles.PROXY_ADMIN_VIEW_ONLY,
+            LlmUserRoles.PROXY_ADMIN_VIEW_ONLY,
             False,
         ),
-        ("/team/new", LitellmUserRoles.PROXY_ADMIN_VIEW_ONLY, False),
-        ("/team/delete", LitellmUserRoles.PROXY_ADMIN_VIEW_ONLY, False),
-        ("/team/update", LitellmUserRoles.PROXY_ADMIN_VIEW_ONLY, False),
+        ("/team/new", LlmUserRoles.PROXY_ADMIN_VIEW_ONLY, False),
+        ("/team/delete", LlmUserRoles.PROXY_ADMIN_VIEW_ONLY, False),
+        ("/team/update", LlmUserRoles.PROXY_ADMIN_VIEW_ONLY, False),
         # Internal User checks - disallowed routes
-        ("/organization/member_add", LitellmUserRoles.INTERNAL_USER, False),
+        ("/organization/member_add", LlmUserRoles.INTERNAL_USER, False),
     ],
 )
 async def test_user_role_permissions(prisma_client, route, user_role, expected_result):
@@ -492,7 +492,7 @@ async def test_user_role_permissions(prisma_client, route, user_role, expected_r
 
         # Admin - admin creates a new user
         user_api_key_dict = UserAPIKeyAuth(
-            user_role=LitellmUserRoles.PROXY_ADMIN,
+            user_role=LlmUserRoles.PROXY_ADMIN,
             api_key="sk-1234",
             user_id="1234",
         )
@@ -501,9 +501,9 @@ async def test_user_role_permissions(prisma_client, route, user_role, expected_r
         new_user_response = await new_user(request, user_api_key_dict=user_api_key_dict)
         user_id = new_user_response.user_id
 
-        # Generate key for new user with team_id="litellm-dashboard"
+        # Generate key for new user with team_id="llm-dashboard"
         key_response = await generate_key_fn(
-            data=GenerateKeyRequest(user_id=user_id, team_id="litellm-dashboard"),
+            data=GenerateKeyRequest(user_id=user_id, team_id="llm-dashboard"),
             user_api_key_dict=user_api_key_dict,
         )
         generated_key = key_response.key

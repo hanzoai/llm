@@ -25,7 +25,7 @@ load_dotenv()
 model_list = [
     {  # list of model deployments
         "model_name": "gpt-3.5-turbo",  # openai model name
-        "litellm_params": {  # params for llm completion/embedding call
+        "llm_params": {  # params for llm completion/embedding call
             "model": "azure/chatgpt-v-2",
             "api_key": "bad-key",
             "api_version": os.getenv("AZURE_API_VERSION"),
@@ -36,7 +36,7 @@ model_list = [
     },
     {
         "model_name": "gpt-3.5-turbo",  # openai model name
-        "litellm_params": {  # params for llm completion/embedding call
+        "llm_params": {  # params for llm completion/embedding call
             "model": "gpt-3.5-turbo",
             "api_key": os.getenv("OPENAI_API_KEY"),
         },
@@ -124,7 +124,7 @@ def test_multiple_deployments_parallel():
     print(f"ELAPSED TIME: {end_time - start_time}")
 
 
-# Assuming litellm, router, and executor are defined somewhere in your code
+# Assuming llm, router, and executor are defined somewhere in your code
 
 
 # test_multiple_deployments_parallel()
@@ -142,7 +142,7 @@ async def test_cooldown_same_model_name(sync_mode):
         model_list = [
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": "bad-key",
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -152,7 +152,7 @@ async def test_cooldown_same_model_name(sync_mode):
             },
             {
                 "model_name": "gpt-3.5-turbo",
-                "litellm_params": {
+                "llm_params": {
                     "model": "azure/chatgpt-v-2",
                     "api_key": os.getenv("AZURE_API_KEY"),
                     "api_version": os.getenv("AZURE_API_VERSION"),
@@ -184,7 +184,7 @@ async def test_cooldown_same_model_name(sync_mode):
                 model_ids.append(model["model_info"]["id"])
             print("\n llm model ids ", model_ids)
 
-            # example litellm_model_names ['azure/chatgpt-v-2-ModelID-64321', 'azure/chatgpt-v-2-ModelID-63960']
+            # example llm_model_names ['azure/chatgpt-v-2-ModelID-64321', 'azure/chatgpt-v-2-ModelID-63960']
             assert (
                 model_ids[0] != model_ids[1]
             )  # ensure both models have a uuid added, and they have different names
@@ -201,7 +201,7 @@ async def test_cooldown_same_model_name(sync_mode):
                 model_ids.append(model["model_info"]["id"])
             print("\n llm model ids ", model_ids)
 
-            # example litellm_model_names ['azure/chatgpt-v-2-ModelID-64321', 'azure/chatgpt-v-2-ModelID-63960']
+            # example llm_model_names ['azure/chatgpt-v-2-ModelID-64321', 'azure/chatgpt-v-2-ModelID-63960']
             assert (
                 model_ids[0] != model_ids[1]
             )  # ensure both models have a uuid added, and they have different names

@@ -48,16 +48,16 @@ public_key = {
 def test_load_config_with_custom_role_names():
     config = {
         "general_settings": {
-            "litellm_proxy_roles": {"admin_jwt_scope": "litellm-proxy-admin"}
+            "llm_proxy_roles": {"admin_jwt_scope": "llm-proxy-admin"}
         }
     }
     proxy_roles = LLM_JWTAuth(
-        **config.get("general_settings", {}).get("litellm_proxy_roles", {})
+        **config.get("general_settings", {}).get("llm_proxy_roles", {})
     )
 
     print(f"proxy_roles: {proxy_roles}")
 
-    assert proxy_roles.admin_jwt_scope == "litellm-proxy-admin"
+    assert proxy_roles.admin_jwt_scope == "llm-proxy-admin"
 
 
 # test_load_config_with_custom_role_names()
@@ -86,7 +86,7 @@ async def test_token_single_public_key(monkeypatch):
     cache = DualCache()
 
     await cache.async_set_cache(
-        key="litellm_jwt_auth_keys_https://example.com/public-key",
+        key="llm_jwt_auth_keys_https://example.com/public-key",
         value=backend_keys["keys"],
     )
 
@@ -102,7 +102,7 @@ async def test_token_single_public_key(monkeypatch):
     )
 
 
-@pytest.mark.parametrize("audience", [None, "litellm-proxy"])
+@pytest.mark.parametrize("audience", [None, "llm-proxy"])
 @pytest.mark.asyncio
 async def test_valid_invalid_token(audience, monkeypatch):
     """
@@ -153,7 +153,7 @@ async def test_valid_invalid_token(audience, monkeypatch):
     cache = DualCache()
 
     await cache.async_set_cache(
-        key="litellm_jwt_auth_keys_https://example.com/public-key", value=[public_jwk]
+        key="llm_jwt_auth_keys_https://example.com/public-key", value=[public_jwk]
     )
 
     jwt_handler = JWTHandler()
@@ -168,7 +168,7 @@ async def test_valid_invalid_token(audience, monkeypatch):
     payload = {
         "sub": "user123",
         "exp": expiration_time,  # set the token to expire in 10 minutes
-        "scope": "litellm-proxy-admin",
+        "scope": "llm-proxy-admin",
         "aud": audience,
     }
 
@@ -196,7 +196,7 @@ async def test_valid_invalid_token(audience, monkeypatch):
     payload = {
         "sub": "user123",
         "exp": expiration_time,  # set the token to expire in 10 minutes
-        "scope": "litellm-NO-SCOPE",
+        "scope": "llm-NO-SCOPE",
         "aud": audience,
     }
 
@@ -286,7 +286,7 @@ def team_token_tuple():
     payload = {
         "sub": "user123",
         "exp": expiration_time,  # set the token to expire in 10 minutes
-        "scope": "litellm_team",
+        "scope": "llm_team",
         "client_id": team_id,
         "aud": None,
     }
@@ -301,7 +301,7 @@ def team_token_tuple():
     return team_id, token, public_jwk
 
 
-@pytest.mark.parametrize("audience", [None, "litellm-proxy"])
+@pytest.mark.parametrize("audience", [None, "llm-proxy"])
 @pytest.mark.asyncio
 async def test_team_token_output(prisma_client, audience, monkeypatch):
     import json
@@ -357,14 +357,14 @@ async def test_team_token_output(prisma_client, audience, monkeypatch):
     cache = DualCache()
 
     await cache.async_set_cache(
-        key="litellm_jwt_auth_keys_https://example.com/public-key", value=[public_jwk]
+        key="llm_jwt_auth_keys_https://example.com/public-key", value=[public_jwk]
     )
 
     jwt_handler = JWTHandler()
 
     jwt_handler.user_api_key_cache = cache
 
-    jwt_handler.litellm_jwtauth = LLM_JWTAuth(team_id_jwt_field="client_id")
+    jwt_handler.llm_jwtauth = LLM_JWTAuth(team_id_jwt_field="client_id")
 
     # VALID TOKEN
     ## GENERATE A TOKEN
@@ -375,7 +375,7 @@ async def test_team_token_output(prisma_client, audience, monkeypatch):
     payload = {
         "sub": "user123",
         "exp": expiration_time,  # set the token to expire in 10 minutes
-        "scope": "litellm_team",
+        "scope": "llm_team",
         "client_id": team_id,
         "aud": audience,
     }
@@ -391,7 +391,7 @@ async def test_team_token_output(prisma_client, audience, monkeypatch):
     payload = {
         "sub": "user123",
         "exp": expiration_time,  # set the token to expire in 10 minutes
-        "scope": "litellm_proxy_admin",
+        "scope": "llm_proxy_admin",
         "aud": audience,
     }
 
@@ -468,7 +468,7 @@ async def test_team_token_output(prisma_client, audience, monkeypatch):
     assert team_result.team_models == ["gpt-3.5-turbo", "gpt-4"]
 
 
-@pytest.mark.parametrize("audience", [None, "litellm-proxy"])
+@pytest.mark.parametrize("audience", [None, "llm-proxy"])
 @pytest.mark.parametrize(
     "team_id_set, default_team_id",
     [(True, False), (False, True)],
@@ -547,21 +547,21 @@ async def aaaatest_user_token_output(
     cache = DualCache()
 
     await cache.async_set_cache(
-        key="litellm_jwt_auth_keys_https://example.com/public-key", value=[public_jwk]
+        key="llm_jwt_auth_keys_https://example.com/public-key", value=[public_jwk]
     )
 
     jwt_handler = JWTHandler()
 
     jwt_handler.user_api_key_cache = cache
 
-    jwt_handler.litellm_jwtauth = LLM_JWTAuth()
+    jwt_handler.llm_jwtauth = LLM_JWTAuth()
 
-    jwt_handler.litellm_jwtauth.user_id_jwt_field = "sub"
-    jwt_handler.litellm_jwtauth.team_id_default = default_team_id
-    jwt_handler.litellm_jwtauth.user_id_upsert = user_id_upsert
+    jwt_handler.llm_jwtauth.user_id_jwt_field = "sub"
+    jwt_handler.llm_jwtauth.team_id_default = default_team_id
+    jwt_handler.llm_jwtauth.user_id_upsert = user_id_upsert
 
     if team_id_set:
-        jwt_handler.litellm_jwtauth.team_id_jwt_field = "client_id"
+        jwt_handler.llm_jwtauth.team_id_jwt_field = "client_id"
 
     # VALID TOKEN
     ## GENERATE A TOKEN
@@ -573,7 +573,7 @@ async def aaaatest_user_token_output(
     payload = {
         "sub": user_id,
         "exp": expiration_time,  # set the token to expire in 10 minutes
-        "scope": "litellm_team",
+        "scope": "llm_team",
         "client_id": team_id,
         "aud": audience,
     }
@@ -589,7 +589,7 @@ async def aaaatest_user_token_output(
     payload = {
         "sub": user_id,
         "exp": expiration_time,  # set the token to expire in 10 minutes
-        "scope": "litellm_proxy_admin",
+        "scope": "llm_proxy_admin",
         "aud": audience,
     }
 
@@ -714,7 +714,7 @@ async def aaaatest_user_token_output(
 
 
 @pytest.mark.parametrize("admin_allowed_routes", [None, ["ui_routes"]])
-@pytest.mark.parametrize("audience", [None, "litellm-proxy"])
+@pytest.mark.parametrize("audience", [None, "llm-proxy"])
 @pytest.mark.asyncio
 async def test_allowed_routes_admin(
     prisma_client, audience, admin_allowed_routes, monkeypatch
@@ -778,7 +778,7 @@ async def test_allowed_routes_admin(
     cache = DualCache()
 
     await cache.async_set_cache(
-        key="litellm_jwt_auth_keys_https://example.com/public-key", value=[public_jwk]
+        key="llm_jwt_auth_keys_https://example.com/public-key", value=[public_jwk]
     )
 
     jwt_handler = JWTHandler()
@@ -786,11 +786,11 @@ async def test_allowed_routes_admin(
     jwt_handler.user_api_key_cache = cache
 
     if admin_allowed_routes:
-        jwt_handler.litellm_jwtauth = LLM_JWTAuth(
+        jwt_handler.llm_jwtauth = LLM_JWTAuth(
             team_id_jwt_field="client_id", admin_allowed_routes=admin_allowed_routes
         )
     else:
-        jwt_handler.litellm_jwtauth = LLM_JWTAuth(team_id_jwt_field="client_id")
+        jwt_handler.llm_jwtauth = LLM_JWTAuth(team_id_jwt_field="client_id")
 
     # VALID TOKEN
     ## GENERATE A TOKEN
@@ -805,7 +805,7 @@ async def test_allowed_routes_admin(
     payload = {
         "sub": "user123",
         "exp": expiration_time,  # set the token to expire in 10 minutes
-        "scope": "litellm_proxy_admin",
+        "scope": "llm_proxy_admin",
         "aud": audience,
     }
 
@@ -826,7 +826,7 @@ async def test_allowed_routes_admin(
 
     bearer_token = "Bearer " + admin_token
 
-    pseudo_routes = jwt_handler.litellm_jwtauth.admin_allowed_routes
+    pseudo_routes = jwt_handler.llm_jwtauth.admin_allowed_routes
 
     actual_routes = []
     for route in pseudo_routes:
@@ -939,7 +939,7 @@ async def test_allow_access_by_email(
     """
     Allow anyone with an `@xyz.com` email make a request to the proxy.
 
-    Relevant issue: https://github.com/BerriAI/litellm/issues/5605
+    Relevant issue: https://github.com/BerriAI/llm/issues/5605
     """
     import jwt
     from starlette.datastructures import URL
@@ -956,14 +956,14 @@ async def test_allow_access_by_email(
     cache = DualCache()
 
     await cache.async_set_cache(
-        key="litellm_jwt_auth_keys_https://example.com/public-key", value=[public_jwk]
+        key="llm_jwt_auth_keys_https://example.com/public-key", value=[public_jwk]
     )
 
     jwt_handler = JWTHandler()
 
     jwt_handler.user_api_key_cache = cache
 
-    jwt_handler.litellm_jwtauth = LLM_JWTAuth(
+    jwt_handler.llm_jwtauth = LLM_JWTAuth(
         user_email_jwt_field="email",
         user_allowed_email_domain="berri.ai",
         user_id_upsert=True,
@@ -978,9 +978,9 @@ async def test_allow_access_by_email(
     payload = {
         "sub": "user123",
         "exp": expiration_time,  # set the token to expire in 10 minutes
-        "scope": "litellm_team",
+        "scope": "llm_team",
         "client_id": team_id,
-        "aud": "litellm-proxy",
+        "aud": "llm-proxy",
         "email": user_email,
     }
 
@@ -1077,7 +1077,7 @@ async def test_end_user_jwt_auth(monkeypatch):
     monkeypatch.setenv("JWT_PUBLIC_KEY_URL", "https://example.com/public-key")
     jwt_handler = JWTHandler()
 
-    litellm_jwtauth = LLM_JWTAuth(
+    llm_jwtauth = LLM_JWTAuth(
         end_user_id_jwt_field="sub",
     )
 
@@ -1103,14 +1103,14 @@ async def test_end_user_jwt_auth(monkeypatch):
     ]
 
     cache.set_cache(
-        key="litellm_jwt_auth_keys_https://example.com/public-key",
+        key="llm_jwt_auth_keys_https://example.com/public-key",
         value=keys,
     )
 
     jwt_handler.update_environment(
         prisma_client=None,
         user_api_key_cache=cache,
-        litellm_jwtauth=litellm_jwtauth,
+        llm_jwtauth=llm_jwtauth,
         leeway=100000000000000,
     )
 
@@ -1204,15 +1204,15 @@ async def test_end_user_jwt_auth(monkeypatch):
 def test_can_rbac_role_call_route():
     from llm.proxy.auth.handle_jwt import JWTAuthManager
     from llm.proxy._types import RoleBasedPermissions
-    from llm.proxy._types import LitellmUserRoles
+    from llm.proxy._types import LlmUserRoles
 
     with pytest.raises(HTTPException):
         JWTAuthManager.can_rbac_role_call_route(
-            rbac_role=LitellmUserRoles.TEAM,
+            rbac_role=LlmUserRoles.TEAM,
             general_settings={
                 "role_permissions": [
                     RoleBasedPermissions(
-                        role=LitellmUserRoles.TEAM, routes=["/v1/chat/completions"]
+                        role=LlmUserRoles.TEAM, routes=["/v1/chat/completions"]
                     )
                 ]
             },
@@ -1257,7 +1257,7 @@ def test_check_scope_based_access(requested_model, should_work):
         },
         "general_settings": {
             "enable_jwt_auth": True,
-            "litellm_jwtauth": {
+            "llm_jwtauth": {
                 "team_id_jwt_field": "client_id",
                 "team_id_upsert": True,
                 "scope_mappings": [
@@ -1290,7 +1290,7 @@ async def test_custom_validate_called():
     mock_custom_validate = MagicMock(return_value=True)
 
     jwt_handler = MagicMock()
-    jwt_handler.litellm_jwtauth = MagicMock(
+    jwt_handler.llm_jwtauth = MagicMock(
         custom_validate=mock_custom_validate, allowed_routes=["/chat/completions"]
     )
     jwt_handler.auth_jwt = AsyncMock(return_value={"sub": "test_user"})

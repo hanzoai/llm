@@ -26,7 +26,7 @@ from create_mock_standard_logging_payload import (
     create_standard_logging_payload,
     create_standard_logging_payload_with_long_content,
 )
-from llm.litellm_core_utils.litellm_logging import (
+from llm.llm_core_utils.llm_logging import (
     StandardLoggingPayloadSetup,
 )
 
@@ -247,13 +247,13 @@ def test_get_model_cost_information():
         custom_llm_provider="openai",
         init_response_obj={},
     )
-    litellm_info_gpt_3_5_turbo_model_map_value = llm.get_model_info(
+    llm_info_gpt_3_5_turbo_model_map_value = llm.get_model_info(
         model="gpt-3.5-turbo", custom_llm_provider="openai"
     )
     print("result", result)
     assert result["model_map_key"] == "gpt-3.5-turbo"
     assert result["model_map_value"] is not None
-    assert result["model_map_value"] == litellm_info_gpt_3_5_turbo_model_map_value
+    assert result["model_map_value"] == llm_info_gpt_3_5_turbo_model_map_value
     # assert all fields in StandardLoggingModelInformation are present
     assert all(
         field in result for field in StandardLoggingModelInformation.__annotations__
@@ -320,9 +320,9 @@ def test_get_final_response_obj():
         print("result", result)
         print("type(result)", type(result))
         # Verify response message content was redacted
-        assert result["choices"][0]["message"]["content"] == "redacted-by-litellm"
+        assert result["choices"][0]["message"]["content"] == "redacted-by-llm"
         # Verify that redaction occurred in kwargs
-        assert kwargs["messages"][0]["content"] == "redacted-by-litellm"
+        assert kwargs["messages"][0]["content"] == "redacted-by-llm"
     finally:
         # Reset llm.turn_off_message_logging to its original value
         llm.turn_off_message_logging = False
@@ -399,16 +399,16 @@ def test_get_error_information():
     assert result["llm_provider"] == ""
 
     # Test with llm exception from provider
-    litellm_exception = llm.exceptions.RateLimitError(
+    llm_exception = llm.exceptions.RateLimitError(
         message="Test error",
         llm_provider="openai",
         model="gpt-3.5-turbo",
         response=None,
-        litellm_debug_info=None,
+        llm_debug_info=None,
         max_retries=None,
         num_retries=None,
     )
-    result = StandardLoggingPayloadSetup.get_error_information(litellm_exception)
+    result = StandardLoggingPayloadSetup.get_error_information(llm_exception)
     print("error_information", json.dumps(result, indent=2))
     assert result["error_code"] == "429"
     assert result["error_class"] == "RateLimitError"

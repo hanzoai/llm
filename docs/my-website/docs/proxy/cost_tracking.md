@@ -509,7 +509,7 @@ Use `/global/spend/reset` if you want to:
 - LLM will maintain all the logs in `LLMSpendLogs` for Auditing Purposes
 
 ##### Request 
-Only the `LITELLM_MASTER_KEY` you set can access this route
+Only the `LLM_MASTER_KEY` you set can access this route
 ```shell
 curl -X POST \
   'http://localhost:4000/global/spend/reset' \
