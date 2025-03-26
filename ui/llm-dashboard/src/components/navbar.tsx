@@ -4,7 +4,7 @@ import type { MenuProps } from "antd";
 import { Dropdown } from "antd";
 import { Organization } from "@/components/networking";
 import { defaultOrg } from "@/components/common_components/default_org";
-import { 
+import {
   UserOutlined,
   LogoutOutlined
 } from '@ant-design/icons';
@@ -31,7 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({
   accessToken,
 }) => {
   const isLocal = process.env.NODE_ENV === "development";
-  const imageUrl = isLocal ? "http://localhost:4000/get_image" : "/get_image";
+  const imageUrl = isLocal ? "http://localhost:4000/logo.png" : "/logo.png";
   const [logoutUrl, setLogoutUrl] = useState("");
 
   useEffect(() => {
@@ -102,8 +102,8 @@ const Navbar: React.FC<NavbarProps> = ({
               Docs
             </a>
 
-            <Dropdown 
-              menu={{ 
+            <Dropdown
+              menu={{
                 items: userItems,
                 style: {
                   padding: '4px',
