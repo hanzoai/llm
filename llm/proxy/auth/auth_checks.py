@@ -34,7 +34,7 @@ from llm.proxy._types import (
     LLM_TeamTableCachedObj,
     LLM_UserTable,
     LLMRoutes,
-    LlmUserRoles,
+    LLMUserRoles,
     ProxyErrorTypes,
     ProxyException,
     RoleBasedPermissions,
@@ -242,7 +242,7 @@ def _is_ui_route(
 
 def _get_user_role(
     user_obj: Optional[LLM_UserTable],
-) -> Optional[LlmUserRoles]:
+) -> Optional[LLMUserRoles]:
     if user_obj is None:
         return None
 
@@ -250,7 +250,7 @@ def _get_user_role(
 
     _user_role = _user.user_role
     try:
-        role = LlmUserRoles(_user_role)
+        role = LLMUserRoles(_user_role)
     except ValueError:
         return LLMUserRoles.INTERNAL_USER
 

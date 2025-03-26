@@ -23,8 +23,8 @@ from llm.constants import LLM_PROXY_ADMIN_NAME
 from llm.proxy._types import (
     CommonProxyErrors,
     LLM_ProxyModelTable,
-    LlmTableNames,
-    LlmUserRoles,
+    LLMTableNames,
+    LLMUserRoles,
     ModelInfoDelete,
     PrismaCompatibleUpdateDBModel,
     ProxyErrorTypes,
@@ -397,7 +397,7 @@ async def delete_model(
                     object_id=model_info.id,
                     action="deleted",
                     user_api_key_dict=user_api_key_dict,
-                    table_name=LlmTableNames.PROXY_MODEL_TABLE_NAME,
+                    table_name=LLMTableNames.PROXY_MODEL_TABLE_NAME,
                     before_value=result.model_dump_json(exclude_none=True),
                     after_value=None,
                     llm_changed_by=user_api_key_dict.user_id,
@@ -537,7 +537,7 @@ async def add_new_model(
                 object_id=model_response.model_id,
                 action="created",
                 user_api_key_dict=user_api_key_dict,
-                table_name=LlmTableNames.PROXY_MODEL_TABLE_NAME,
+                table_name=LLMTableNames.PROXY_MODEL_TABLE_NAME,
                 before_value=None,
                 after_value=(
                     model_response.model_dump_json(exclude_none=True)
@@ -679,7 +679,7 @@ async def update_model(
                     object_id=_model_id,
                     action="updated",
                     user_api_key_dict=user_api_key_dict,
-                    table_name=LlmTableNames.PROXY_MODEL_TABLE_NAME,
+                    table_name=LLMTableNames.PROXY_MODEL_TABLE_NAME,
                     before_value=(
                         _existing_llm_params.model_dump_json(exclude_none=True)
                         if isinstance(_existing_llm_params, BaseModel)

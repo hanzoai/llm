@@ -8,7 +8,7 @@ from llm.proxy._types import (
     CommonProxyErrors,
     LLM_UserTable,
     LLMRoutes,
-    LlmUserRoles,
+    LLMUserRoles,
     UserAPIKeyAuth,
 )
 
