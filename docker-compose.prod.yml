@@ -1,12 +1,12 @@
 services:
   llm:
-    image: hanzoai/llm:stable
+    image: hanzoai/llm:latest
     ports:
       - "4000:4000"  # Map container port 4000 to host
     deploy:
-     replicas: 1  # You can increase this number to scale the service
-     restart_policy:
-       condition: on-failure
+      replicas: 1  # You can increase this number to scale the service
+      restart_policy:
+        condition: on-failure
     networks:
       - hanzo-network
     environment:
@@ -22,6 +22,7 @@ services:
       - "4000"
     depends_on:
       - db
+      - redis
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:4000/health/liveliness || exit 1" ]
       interval: 30s
@@ -51,6 +52,17 @@ services:
     networks:
       - hanzo-network
 
+  redis:
+    image: redis:7
+    restart: always
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:-litevp}"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - hanzo-network
+
   prometheus:
     image: prom/prometheus
     volumes:
@@ -71,6 +83,8 @@ volumes:
     driver: local
   postgres_data:
     name: llm_postgres_data
+  redis_data:
+    driver: local
 
 networks:
   hanzo-network:
