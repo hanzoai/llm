@@ -25,7 +25,7 @@ curl -X POST '<PROXY_BASE_URL>/user/new' \
 -H 'Authorization: Bearer <PROXY_MASTER_KEY>' \
 -H 'Content-Type: application/json' \
 -D '{
-    "user_email": "krrishdholakia@gmail.com",
+    "user_email": "zeekay@gmail.com",
     "user_role": "internal_user" # 👈 THIS ALLOWS USER TO CREATE/VIEW/DELETE THEIR OWN KEYS + SEE THEIR SPEND
 }'
 ```

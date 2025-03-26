@@ -396,11 +396,11 @@ Internal User (Key Owner): This is the value of `user_id` passed when calling [`
 :::
 
 
-👉 Key Change: Specify `internal_user_id=ishaan`
+👉 Key Change: Specify `internal_user_id=z`
 
 
 ```shell
-curl -X GET 'http://localhost:4000/global/spend/report?start_date=2024-04-01&end_date=2024-12-30&internal_user_id=ishaan' \
+curl -X GET 'http://localhost:4000/global/spend/report?start_date=2024-04-01&end_date=2024-12-30&internal_user_id=z' \
   -H 'Authorization: Bearer sk-1234'
 ```
 

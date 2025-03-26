@@ -130,7 +130,7 @@ def test_s3_logging():
                 messages=[{"role": "user", "content": f"This is a test {curr_time}"}],
                 max_tokens=10,
                 temperature=0.7,
-                user="ishaan-2",
+                user="z-2",
             )
 
         response = asyncio.run(_test())
@@ -143,7 +143,7 @@ def test_s3_logging():
                 messages=[{"role": "user", "content": f"This is a test {curr_time}"}],
                 max_tokens=10,
                 temperature=0.7,
-                user="ishaan-2",
+                user="z-2",
             )
 
         response = asyncio.run(_test())
@@ -309,7 +309,7 @@ def test_s3_logging_r2():
                 messages=[{"role": "user", "content": f"This is a test {curr_time}"}],
                 max_tokens=10,
                 temperature=0.7,
-                user="ishaan-2",
+                user="z-2",
             )
 
         response = asyncio.run(_test())

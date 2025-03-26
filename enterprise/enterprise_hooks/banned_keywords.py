@@ -3,7 +3,7 @@
 #        Banned Keywords
 #
 # +------------------------------+
-#  Thank you users! We ❤️ you! - Krrish & Ishaan
+
 ## Reject a call / response if it contains certain keywords
 
 

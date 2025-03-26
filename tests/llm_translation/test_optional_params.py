@@ -348,13 +348,13 @@ def test_openai_extra_headers():
         custom_llm_provider="openai",
         max_tokens=10,
         temperature=0.2,
-        extra_headers={"AI-Resource Group": "ishaan-resource"},
+        extra_headers={"AI-Resource Group": "z-resource"},
     )
 
     print(optional_params)
     assert optional_params["max_tokens"] == 10
     assert optional_params["temperature"] == 0.2
-    assert optional_params["extra_headers"] == {"AI-Resource Group": "ishaan-resource"}
+    assert optional_params["extra_headers"] == {"AI-Resource Group": "z-resource"}
 
 
 @pytest.mark.parametrize(
@@ -377,7 +377,7 @@ def test_azure_tool_choice(api_version):
         custom_llm_provider="azure",
         max_tokens=10,
         temperature=0.2,
-        extra_headers={"AI-Resource Group": "ishaan-resource"},
+        extra_headers={"AI-Resource Group": "z-resource"},
         tool_choice="required",
         api_version=api_version,
     )

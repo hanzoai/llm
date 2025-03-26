@@ -42,7 +42,7 @@ llm.failure_callback = ["lunary"]
 response = completion(
   model="gpt-4o",
   messages=[{"role": "user", "content": "Hi there 👋"}],
-  user="ishaan_llm"
+  user="z_llm"
 )
 ```
 

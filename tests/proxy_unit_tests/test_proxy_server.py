@@ -942,7 +942,7 @@ async def test_create_user_default_budget(prisma_client, user_role):
     setattr(llm, "max_internal_user_budget", 10)
     setattr(llm, "internal_user_budget_duration", "5m")
     await llm.proxy.proxy_server.prisma_client.connect()
-    user = f"ishaan {uuid.uuid4().hex}"
+    user = f"z {uuid.uuid4().hex}"
     request = NewUserRequest(
         user_id=user, user_role=user_role
     )  # create a key with no budget
@@ -988,7 +988,7 @@ async def test_create_team_member_add(prisma_client, new_member_method):
     setattr(llm, "max_internal_user_budget", 10)
     setattr(llm, "internal_user_budget_duration", "5m")
     await llm.proxy.proxy_server.prisma_client.connect()
-    user = f"ishaan {uuid.uuid4().hex}"
+    user = f"z {uuid.uuid4().hex}"
     _team_id = "llm-test-client-id-new"
     team_obj = LLM_TeamTableCachedObj(
         team_id=_team_id,
@@ -1085,7 +1085,7 @@ async def test_create_team_member_add_team_admin_user_api_key_auth(
     setattr(llm, "max_internal_user_budget", 10)
     setattr(llm, "internal_user_budget_duration", "5m")
     await llm.proxy.proxy_server.prisma_client.connect()
-    user = f"ishaan {uuid.uuid4().hex}"
+    user = f"z {uuid.uuid4().hex}"
     _team_id = "llm-test-client-id-new"
     user_key = "sk-12345678"
 
@@ -1160,10 +1160,10 @@ async def test_create_team_member_add_team_admin(
     setattr(llm, "max_internal_user_budget", 10)
     setattr(llm, "internal_user_budget_duration", "5m")
     await llm.proxy.proxy_server.prisma_client.connect()
-    user = f"ishaan {uuid.uuid4().hex}"
+    user = f"z {uuid.uuid4().hex}"
     _team_id = "llm-test-client-id-new"
     user_key = "sk-12345678"
-    team_admin = f"krrish {uuid.uuid4().hex}"
+    team_admin = f"dev {uuid.uuid4().hex}"
 
     valid_token = UserAPIKeyAuth(
         team_id=_team_id,

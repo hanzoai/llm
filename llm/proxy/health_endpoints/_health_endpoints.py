@@ -522,7 +522,7 @@ async def health_readiness():
 
             if isinstance(llm.cache.cache, RedisSemanticCache):
                 # ping the cache
-                # TODO: @ishaan-jaff - we should probably not ping the cache on every /health/readiness check
+                # TODO: @z-jaff - we should probably not ping the cache on every /health/readiness check
                 try:
                     index_info = await llm.cache.cache._index_info()
                 except Exception as e:

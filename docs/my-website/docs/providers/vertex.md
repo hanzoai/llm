@@ -2688,7 +2688,7 @@ finetune_settings:
   - custom_llm_provider: "vertex_ai"
     vertex_project: "adroit-crow-413218"
     vertex_location: "us-central1"
-    vertex_credentials: "/Users/ishaanjaffer/Downloads/adroit-crow-413218-a956eef1a2a8.json"
+    vertex_credentials: "/Users/zjaffer/Downloads/adroit-crow-413218-a956eef1a2a8.json"
 ```
 
 #### 2. Create a Fine Tuning Job

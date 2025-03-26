@@ -125,14 +125,14 @@ Use this when you want to budget a users spend within a Team
 
 #### Step 1. Create User
 
-Create a user with `user_id=ishaan`
+Create a user with `user_id=z`
 
 ```shell
 curl --location 'http://0.0.0.0:4000/user/new' \
     --header 'Authorization: Bearer sk-1234' \
     --header 'Content-Type: application/json' \
     --data '{
-        "user_id": "ishaan"
+        "user_id": "z"
 }'
 ```
 
@@ -144,19 +144,19 @@ Set `max_budget_in_team` when adding a User to a team. We use the same `user_id`
 curl -X POST 'http://0.0.0.0:4000/team/member_add' \
 -H 'Authorization: Bearer sk-1234' \
 -H 'Content-Type: application/json' \
--d '{"team_id": "e8d1460f-846c-45d7-9b43-55f3cc52ac32", "max_budget_in_team": 0.000000000001, "member": {"role": "user", "user_id": "ishaan"}}'
+-d '{"team_id": "e8d1460f-846c-45d7-9b43-55f3cc52ac32", "max_budget_in_team": 0.000000000001, "member": {"role": "user", "user_id": "z"}}'
 ```
 
 #### Step 3. Create a Key for Team member from Step 1
 
-Set `user_id=ishaan` from step 1
+Set `user_id=z` from step 1
 
 ```shell
 curl --location 'http://0.0.0.0:4000/key/generate' \
     --header 'Authorization: Bearer sk-1234' \
     --header 'Content-Type: application/json' \
     --data '{
-        "user_id": "ishaan",
+        "user_id": "z",
         "team_id": "e8d1460f-846c-45d7-9b43-55f3cc52ac32"
 }'
 ```
@@ -164,7 +164,7 @@ Response from `/key/generate`
 
 We use the `key` from this response in Step 4
 ```shell
-{"key":"sk-RV-l2BJEZ_LYNChSx2EueQ", "models":[],"spend":0.0,"max_budget":null,"user_id":"ishaan","team_id":"e8d1460f-846c-45d7-9b43-55f3cc52ac32","max_parallel_requests":null,"metadata":{},"tpm_limit":null,"rpm_limit":null,"budget_duration":null,"allowed_cache_controls":[],"soft_budget":null,"key_alias":null,"duration":null,"aliases":{},"config":{},"permissions":{},"model_max_budget":{},"key_name":null,"expires":null,"token_id":null}% 
+{"key":"sk-RV-l2BJEZ_LYNChSx2EueQ", "models":[],"spend":0.0,"max_budget":null,"user_id":"z","team_id":"e8d1460f-846c-45d7-9b43-55f3cc52ac32","max_parallel_requests":null,"metadata":{},"tpm_limit":null,"rpm_limit":null,"budget_duration":null,"allowed_cache_controls":[],"soft_budget":null,"key_alias":null,"duration":null,"aliases":{},"config":{},"permissions":{},"model_max_budget":{},"key_name":null,"expires":null,"token_id":null}% 
 ```
 
 #### Step 4. Make /chat/completions requests for Team member
@@ -211,7 +211,7 @@ By default the `max_budget` is set to `null` and is not checked for keys
 curl --location 'http://localhost:4000/user/new' \
 --header 'Authorization: Bearer <your-master-key>' \
 --header 'Content-Type: application/json' \
---data-raw '{"models": ["azure-models"], "max_budget": 0, "user_id": "krrish3@hanzo.ai"}' 
+--data-raw '{"models": ["azure-models"], "max_budget": 0, "user_id": "dev3@hanzo.ai"}' 
 ```
 
 [**See Swagger**](https://llm-api.up.railway.app/#/user%20management/new_user_user_new_post)
@@ -222,7 +222,7 @@ curl --location 'http://localhost:4000/user/new' \
 {
     "key": "sk-YF2OxDbrgd1y2KgwxmEA2w",
     "expires": "2023-12-22T09:53:13.861000Z",
-    "user_id": "krrish3@hanzo.ai",
+    "user_id": "dev3@hanzo.ai",
     "max_budget": 0.0
 }
 ```
@@ -244,15 +244,15 @@ curl 'http://0.0.0.0:4000/user/new' \
 
 #### Create new keys for existing user
 
-Now you can just call `/key/generate` with that user_id (i.e. krrish3@hanzo.ai) and:
-- **Budget Check**: krrish3@hanzo.ai's budget (i.e. $10) will be checked for this key
-- **Spend Tracking**: spend for this key will update krrish3@hanzo.ai's spend as well
+Now you can just call `/key/generate` with that user_id (i.e. dev3@hanzo.ai) and:
+- **Budget Check**: dev3@hanzo.ai's budget (i.e. $10) will be checked for this key
+- **Spend Tracking**: spend for this key will update dev3@hanzo.ai's spend as well
 
 ```bash
 curl --location 'http://0.0.0.0:4000/key/generate' \
 --header 'Authorization: Bearer <your-master-key>' \
 --header 'Content-Type: application/json' \
---data '{"models": ["azure-models"], "user_id": "krrish3@hanzo.ai"}'
+--data '{"models": ["azure-models"], "user_id": "dev3@hanzo.ai"}'
 ```
 
 ### Virtual Key
@@ -433,7 +433,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
         --header 'Authorization: Bearer sk-zi5onDRdHGD24v0Zdn7VBA' \
         --data ' {
         "model": "azure-gpt-3.5",
-        "user": "ishaan3",
+        "user": "z3",
         "messages": [
             {
             "role": "user",
@@ -443,14 +443,14 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
         }'
 ```
 
-3. Make a /chat/completions call, pass 'user' - Call Fails, since 'ishaan3' over budget
+3. Make a /chat/completions call, pass 'user' - Call Fails, since 'z3' over budget
 ```shell
 curl --location 'http://0.0.0.0:4000/chat/completions' \
         --header 'Content-Type: application/json' \
         --header 'Authorization: Bearer sk-zi5onDRdHGD24v0Zdn7VBA' \
         --data ' {
         "model": "azure-gpt-3.5",
-        "user": "ishaan3",
+        "user": "z3",
         "messages": [
             {
             "role": "user",
@@ -462,7 +462,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 
 Error
 ```shell
-{"error":{"message":"Budget has been exceeded: User ishaan3 has exceeded their budget. Current spend: 0.0008869999999999999; Max Budget: 0.0001","type":"auth_error","param":"None","code":401}}%                
+{"error":{"message":"Budget has been exceeded: User z3 has exceeded their budget. Current spend: 0.0008869999999999999; Max Budget: 0.0001","type":"auth_error","param":"None","code":401}}%                
 ```
 
 ## Reset Budgets 

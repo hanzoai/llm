@@ -26,5 +26,5 @@ async def test_azure_kms():
     """
     with patch("llm.secret_manager_client", new=MockSecretClient()):
         llm._key_management_system = KeyManagementSystem.AZURE_KEY_VAULT
-        secret = get_secret(secret_name="ishaan-test-key")
+        secret = get_secret(secret_name="z-test-key")
         assert secret == "mocked_secret_value"

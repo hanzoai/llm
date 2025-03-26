@@ -4,7 +4,7 @@
 #   https://llm-guard.com/
 #
 # +------------------------+
-#  Thank you users! We ❤️ you! - Krrish & Ishaan
+
 ## This provides an LLM Guard Integration for content moderation on the proxy
 
 from typing import Optional, Literal

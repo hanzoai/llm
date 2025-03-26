@@ -554,10 +554,10 @@ async def test_completion_ai21_stream():
     llm.set_verbose = True
     response = await llm.acompletion(
         model="ai21_chat/jamba-1.5-large",
-        user="ishaan",
+        user="z",
         stream=True,
         seed=123,
-        messages=[{"role": "user", "content": "hi my name is ishaan"}],
+        messages=[{"role": "user", "content": "hi my name is z"}],
     )
     complete_response = ""
     idx = 0

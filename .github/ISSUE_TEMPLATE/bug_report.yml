@@ -44,6 +44,6 @@ body:
     attributes:
       label: Twitter / LinkedIn details 
       description: We announce new features on Twitter + LinkedIn. If this issue leads to an announcement, and you'd like a mention, we'll gladly shout you out!
-      placeholder: ex. @krrish_dh / https://www.linkedin.com/in/krish-d/
+      placeholder: ex. @dev / https://www.linkedin.com/in/krish-d/
     validations:
       required: false

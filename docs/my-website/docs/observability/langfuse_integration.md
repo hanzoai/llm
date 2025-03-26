@@ -91,7 +91,7 @@ response = completion(
     {"role": "user", "content": "Hi 👋 - i'm openai"}
   ],
   metadata = {
-    "generation_name": "llm-ishaan-gen", # set langfuse generation name
+    "generation_name": "llm-z-gen", # set langfuse generation name
     # custom metadata fields
     "project": "llm-proxy" 
   }
@@ -127,7 +127,7 @@ response = completion(
     {"role": "user", "content": "Hi 👋 - i'm openai"}
   ],
   metadata={
-      "generation_name": "ishaan-test-generation",  # set langfuse Generation Name
+      "generation_name": "z-test-generation",  # set langfuse Generation Name
       "generation_id": "gen-id22",                  # set langfuse Generation ID 
       "parent_observation_id": "obs-id9"            # set langfuse Parent Observation ID
       "version":  "test-generation-version"         # set langfuse Generation Version

@@ -5,7 +5,7 @@
 # |                                               |
 # +-----------------------------------------------+
 #
-#  Thank you users! We ❤️ you! - Krrish & Ishaan
+
 
 """
 Module containing "timeout" decorator for sync and async callables.

@@ -3,7 +3,7 @@
 #           Use AporiaAI for your LLM calls
 #
 # +-------------------------------------------------------------+
-#  Thank you users! We ❤️ you! - Krrish & Ishaan
+
 
 import sys
 import os

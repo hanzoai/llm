@@ -13,7 +13,7 @@
 #     temperature=0.1,
 #     extra_body={
 #         "metadata": {
-#             "generation_name": "ishaan-generation-langchain-client",
+#             "generation_name": "z-generation-langchain-client",
 #             "generation_id": "langchain-client-gen-id22",
 #             "trace_id": "langchain-client-trace-id22",
 #             "trace_user_id": "langchain-client-user-id2"

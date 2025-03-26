@@ -3,7 +3,7 @@
 #        Blocked User List
 #
 # +------------------------------+
-#  Thank you users! We ❤️ you! - Krrish & Ishaan
+
 ## This accepts a list of user id's for whom calls will be rejected
 
 

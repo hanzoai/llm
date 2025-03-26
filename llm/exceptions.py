@@ -5,7 +5,7 @@
 # |                                               |
 # +-----------------------------------------------+
 #
-#  Thank you users! We ❤️ you! - Krrish & Ishaan
+
 
 ## LLM versions of the OpenAI Exception Types
 

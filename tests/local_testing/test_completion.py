@@ -371,7 +371,7 @@ def test_completion_claude_3_empty_response():
             "role": "system",
             "content": [{"type": "text", "text": "You are 2twNLGfqk4GMOn3ffp4p."}],
         },
-        {"role": "user", "content": "Hi gm!", "name": "ishaan"},
+        {"role": "user", "content": "Hi gm!", "name": "z"},
         {"role": "assistant", "content": "Good morning! How are you doing today?"},
         {
             "role": "user",
@@ -2181,7 +2181,7 @@ def custom_callback(
             """
         )
 
-        assert kwargs["user"] == "ishaans app"
+        assert kwargs["user"] == "zs app"
         assert kwargs["model"] == "gpt-3.5-turbo-1106"
         assert kwargs["seed"] == 12
         assert kwargs["temperature"] == 0.5
@@ -2207,7 +2207,7 @@ def test_completion_openai_with_optional_params():
             seed=12,
             response_format={"type": "json_object"},
             logit_bias=None,
-            user="ishaans app",
+            user="zs app",
         )
         # Add any assertions here to check the response
 
@@ -2240,7 +2240,7 @@ def test_completion_logprobs():
             top_p=0.1,
             seed=12,
             logit_bias=None,
-            user="ishaans app",
+            user="zs app",
             logprobs=True,
             top_logprobs=3,
         )
@@ -2279,7 +2279,7 @@ def test_completion_logprobs_stream():
             seed=12,
             max_tokens=5,
             logit_bias=None,
-            user="ishaans app",
+            user="zs app",
             logprobs=True,
             top_logprobs=3,
             stream=True,
@@ -2326,7 +2326,7 @@ def test_completion_openai_llm_key():
             temperature=0.5,
             top_p=0.1,
             max_tokens=10,
-            user="ishaan_dev@hanzo.ai",
+            user="z_dev@hanzo.ai",
         )
         # Add any assertions here to check the response
         print(response)
@@ -3353,7 +3353,7 @@ def test_bedrock_deepseek_known_tokenizer_config(monkeypatch):
 # def test_completion_replicate_deployments():
 #     print("TESTING REPLICATE")
 #     llm.set_verbose=False
-#     model_name = "replicate/deployments/ishaan-jaff/ishaan-mistral"
+#     model_name = "replicate/deployments/z-jaff/z-mistral"
 #     try:
 #         response = completion(
 #             model=model_name,
@@ -4306,7 +4306,7 @@ def test_completion_together_ai_stream():
 
 
 def test_moderation():
-    response = llm.moderation(input="i'm ishaan cto of llm")
+    response = llm.moderation(input="i'm z cto of llm")
     print(response)
     output = response.results[0]
     print(output)
@@ -4405,14 +4405,14 @@ async def test_completion_ai21_chat():
     try:
         response = await llm.acompletion(
             model="jamba-1.5-large",
-            user="ishaan",
+            user="z",
             tool_choice="auto",
             seed=123,
             messages=[{"role": "user", "content": "what does the document say"}],
             documents=[
                 {
                     "content": "hello world",
-                    "metadata": {"source": "google", "author": "ishaan"},
+                    "metadata": {"source": "google", "author": "z"},
                 }
             ],
         )

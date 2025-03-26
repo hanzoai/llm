@@ -343,7 +343,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
         }
     ],
     "metadata": {
-        "generation_name": "ishaan-test-generation",
+        "generation_name": "z-test-generation",
         "generation_id": "gen-id22",
         "trace_id": "trace-id22",
         "trace_user_id": "user-id2"
@@ -374,7 +374,7 @@ response = client.chat.completions.create(
     ],
     extra_body={
         "metadata": {
-            "generation_name": "ishaan-generation-openai-client",
+            "generation_name": "z-generation-openai-client",
             "generation_id": "openai-client-gen-id22",
             "trace_id": "openai-client-trace-id22",
             "trace_user_id": "openai-client-user-id2"
@@ -403,7 +403,7 @@ chat = ChatOpenAI(
     temperature=0.1,
     extra_body={
         "metadata": {
-            "generation_name": "ishaan-generation-langchain-client",
+            "generation_name": "z-generation-langchain-client",
             "generation_id": "langchain-client-gen-id22",
             "trace_id": "langchain-client-trace-id22",
             "trace_user_id": "langchain-client-user-id2"
@@ -1070,7 +1070,7 @@ llm_settings:
 
 ```shell
 GCS_BUCKET_NAME="<your-gcs-bucket-name>"
-GCS_PATH_SERVICE_ACCOUNT="/Users/ishaanjaffer/Downloads/adroit-crow-413218-a956eef1a2a8.json" # Add path to service account.json
+GCS_PATH_SERVICE_ACCOUNT="/Users/zjaffer/Downloads/adroit-crow-413218-a956eef1a2a8.json" # Add path to service account.json
 ```
 
 3. Start Proxy
@@ -1705,7 +1705,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
         "content": "good morning good sir"
         }
     ],
-    "user": "ishaan-app",
+    "user": "z-app",
     "temperature": 0.2
     }'
 ```
@@ -1716,7 +1716,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 On Success
     Model: gpt-3.5-turbo,
     Messages: [{'role': 'user', 'content': 'good morning good sir'}],
-    User: ishaan-app,
+    User: z-app,
     Usage: {'completion_tokens': 10, 'prompt_tokens': 11, 'total_tokens': 21},
     Cost: 3.65e-05,
     Response: {'id': 'chatcmpl-8S8avKJ1aVBg941y5xzGMSKrYCMvN', 'choices': [{'finish_reason': 'stop', 'index': 0, 'message': {'content': 'Good morning! How can I assist you today?', 'role': 'assistant'}}], 'created': 1701716913, 'model': 'gpt-3.5-turbo-0613', 'object': 'chat.completion', 'system_fingerprint': None, 'usage': {'completion_tokens': 10, 'prompt_tokens': 11, 'total_tokens': 21}}
@@ -1879,8 +1879,8 @@ curl --location https://your-domain.com/log-event \
          "startTime": "2024-02-15 16:18:44.336280",
          "endTime": "2024-02-15 16:18:45.045539",
          "model": "gpt-3.5-turbo",
-         "user": "ishaan-2",
-         "modelParameters": "{'temperature': 0.7, 'max_tokens': 10, 'user': 'ishaan-2', 'extra_body': {}}",
+         "user": "z-2",
+         "modelParameters": "{'temperature': 0.7, 'max_tokens': 10, 'user': 'z-2', 'extra_body': {}}",
          "messages": "[{'role': 'user', 'content': 'This is a test'}]",
          "response": "ModelResponse(id='chatcmpl-8sgE89cEQ4q9biRtxMvDfQU1O82PT', choices=[Choices(finish_reason='length', index=0, message=Message(content='Great! How can I assist you with this test', role='assistant'))], created=1708042724, model='gpt-3.5-turbo-0613', object='chat.completion', system_fingerprint=None, usage=Usage(completion_tokens=10, prompt_tokens=11, total_tokens=21))",
          "usage": "Usage(completion_tokens=10, prompt_tokens=11, total_tokens=21)",
@@ -2276,7 +2276,7 @@ Your logs should be available on DynamoDB
     "S": "gpt-3.5-turbo"
   },
   "modelParameters": {
-    "S": "{'temperature': 0.7, 'max_tokens': 100, 'user': 'ishaan-2'}"
+    "S": "{'temperature': 0.7, 'max_tokens': 100, 'user': 'z-2'}"
   },
   "response": {
     "S": "ModelResponse(id='chatcmpl-8W15J4480a3fAQ1yQaMgtsKJAicen', choices=[Choices(finish_reason='stop', index=0, message=Message(content='Great! What can I assist you with?', role='assistant'))], created=1702641357, model='gpt-3.5-turbo-0613', object='chat.completion', system_fingerprint=None, usage=Usage(completion_tokens=9, prompt_tokens=11, total_tokens=20))"
@@ -2288,7 +2288,7 @@ Your logs should be available on DynamoDB
     "S": "Usage(completion_tokens=9, prompt_tokens=11, total_tokens=20)"
   },
   "user": {
-    "S": "ishaan-2"
+    "S": "z-2"
   }
 }
 ```
@@ -2316,7 +2316,7 @@ Your logs should be available on DynamoDB
     "S": "text-embedding-ada-002"
   },
   "modelParameters": {
-    "S": "{'user': 'ishaan-2'}"
+    "S": "{'user': 'z-2'}"
   },
   "response": {
     "S": "EmbeddingResponse(model='text-embedding-ada-002-v2', data=[{'embedding': [-0.03503197431564331, -0.020601635798811913, -0.015375726856291294,

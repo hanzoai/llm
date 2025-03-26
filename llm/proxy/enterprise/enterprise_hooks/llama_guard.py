@@ -5,7 +5,7 @@
 #
 #           LLM for Content Moderation
 # +-------------------------------------------------------------+
-#  Thank you users! We ❤️ you! - Krrish & Ishaan
+
 
 import sys
 import os

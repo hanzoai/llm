@@ -104,7 +104,7 @@ Make a test Request with a valid file
 ```shell
 curl --location 'http://localhost:4000/v1/audio/transcriptions' \
 --header 'Authorization: Bearer sk-1234' \
---form 'file=@"/Users/ishaanjaffer/Github/llm/tests/gettysburg.wav"' \
+--form 'file=@"/Users/zjaffer/Github/llm/tests/gettysburg.wav"' \
 --form 'model="whisper"'
 ```
 

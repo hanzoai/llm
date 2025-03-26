@@ -196,7 +196,7 @@ async def new_end_user(
         --header 'Authorization: Bearer sk-1234' \
         --header 'Content-Type: application/json' \
         --data '{
-            "user_id" : "ishaan-jaff-3",
+            "user_id" : "z-jaff-3",
             "allowed_region": "eu",
             "budget_id": "free_tier",
             "default_model": "azure/gpt-3.5-turbo-eu" <- all calls from this user, use this model? 
@@ -497,7 +497,7 @@ async def delete_end_user(
         --header 'Authorization: Bearer sk-1234' \
         --header 'Content-Type: application/json' \
         --data '{
-            "user_ids" :["ishaan-jaff-5"]
+            "user_ids" :["z-jaff-5"]
     }'
 
     See below for all params 

@@ -642,7 +642,7 @@ async def team_member_add(
     curl -X POST 'http://0.0.0.0:4000/team/member_add' \
     -H 'Authorization: Bearer sk-1234' \
     -H 'Content-Type: application/json' \
-    -d '{"team_id": "45e3e396-ee08-4a61-a88e-16b3ce7e0849", "member": {"role": "user", "user_id": "krrish247652@hanzo.ai"}}'
+    -d '{"team_id": "45e3e396-ee08-4a61-a88e-16b3ce7e0849", "member": {"role": "user", "user_id": "dev247652@hanzo.ai"}}'
 
     ```
     """
@@ -838,7 +838,7 @@ async def team_member_delete(
 
     -d '{
         "team_id": "45e3e396-ee08-4a61-a88e-16b3ce7e0849",
-        "user_id": "krrish247652@hanzo.ai"
+        "user_id": "dev247652@hanzo.ai"
     }'
     ```
     """

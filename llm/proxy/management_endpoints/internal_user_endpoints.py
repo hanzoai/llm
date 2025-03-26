@@ -419,7 +419,7 @@ async def user_info(
 
     Example request
     ```
-    curl -X GET 'http://localhost:4000/user/info?user_id=krrish7%40hanzo.ai' \
+    curl -X GET 'http://localhost:4000/user/info?user_id=dev7%40hanzo.ai' \
     --header 'Authorization: Bearer sk-1234'
     ```
     """

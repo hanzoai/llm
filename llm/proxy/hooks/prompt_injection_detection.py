@@ -3,7 +3,7 @@
 #        Prompt Injection Detection
 #
 # +------------------------------------+
-#  Thank you users! We ❤️ you! - Krrish & Ishaan
+
 ## Reject a call if it contains a prompt injection attack.
 
 

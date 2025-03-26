@@ -64,7 +64,7 @@ def test_spend_logs_payload(model_id: Optional[str]):
                 "model_alias_map": {},
                 "completion_call_id": None,
                 "metadata": {
-                    "tags": ["model-anthropic-claude-v2.1", "app-ishaan-prod"],
+                    "tags": ["model-anthropic-claude-v2.1", "app-z-prod"],
                     "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
                     "user_api_key_alias": "custom-key-alias",
                     "user_api_end_user_max_budget": None,
@@ -174,7 +174,7 @@ def test_spend_logs_payload(model_id: Optional[str]):
             "cache_hit": None,
             "response_cost": 2.4999999999999998e-05,
             "standard_logging_object": {
-                "request_tags": ["model-anthropic-claude-v2.1", "app-ishaan-prod"],
+                "request_tags": ["model-anthropic-claude-v2.1", "app-z-prod"],
                 "metadata": {
                     "user_api_key_end_user_id": "test-user",
                 },
@@ -217,7 +217,7 @@ def test_spend_logs_payload(model_id: Optional[str]):
 
     # This is crucial - used in PROD, it should pass, related issue: https://github.com/hanzoai/llm/issues/4334
     assert (
-        payload["request_tags"] == '["model-anthropic-claude-v2.1", "app-ishaan-prod"]'
+        payload["request_tags"] == '["model-anthropic-claude-v2.1", "app-z-prod"]'
     )
     assert payload["metadata"]["user_api_key_org_id"] == "custom-org-id"
     assert payload["metadata"]["user_api_key_team_id"] == "custom-team-id"
@@ -356,7 +356,7 @@ def test_spend_logs_payload_with_prompts_enabled(monkeypatch):
         "metadata": {
             "user_api_key_end_user_id": "test-user",
         },
-        "request_tags": ["model-anthropic-claude-v2.1", "app-ishaan-prod"],
+        "request_tags": ["model-anthropic-claude-v2.1", "app-z-prod"],
     }
     llm_params = {
         "proxy_server_request": {

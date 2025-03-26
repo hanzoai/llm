@@ -4,7 +4,7 @@
 #   https://cloud.google.com/natural-language/docs/moderating-text
 #
 # +-----------------------------------------------+
-#  Thank you users! We ❤️ you! - Krrish & Ishaan
+
 
 
 from typing import Literal

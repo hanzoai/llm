@@ -1,7 +1,7 @@
 ============================= test session starts ==============================
 platform darwin -- Python 3.11.4, pytest-7.4.1, pluggy-1.2.0 -- /Library/Frameworks/Python.framework/Versions/3.11/bin/python3
 cachedir: .pytest_cache
-rootdir: /Users/krrishdholakia/Documents/llm/tests/llm
+rootdir: /Users/zeekay/Documents/llm/tests/llm
 plugins: snapshot-0.9.0, cov-5.0.0, timeout-2.2.0, respx-0.21.1, asyncio-0.21.1, langsmith-0.3.4, anyio-4.8.0, mock-3.11.1, Faker-25.9.2
 asyncio: mode=Mode.STRICT
 collecting ... collected 4 items
@@ -17,11 +17,11 @@ test_main.py::test_url_with_format_param[False-bedrock/anthropic.claude-3-5-sonn
     warnings.warn(DEPRECATION_MESSAGE, DeprecationWarning)
 
 ../../llm/llm_core_utils/get_model_cost_map.py:24
-  /Users/krrishdholakia/Documents/llm/llm/llm_core_utils/get_model_cost_map.py:24: DeprecationWarning: open_text is deprecated. Use files() instead. Refer to https://importlib-resources.readthedocs.io/en/latest/using.html#migrating-from-legacy for migration advice.
+  /Users/zeekay/Documents/llm/llm/llm_core_utils/get_model_cost_map.py:24: DeprecationWarning: open_text is deprecated. Use files() instead. Refer to https://importlib-resources.readthedocs.io/en/latest/using.html#migrating-from-legacy for migration advice.
     with importlib.resources.open_text(
 
 ../../llm/utils.py:168
-  /Users/krrishdholakia/Documents/llm/llm/utils.py:168: DeprecationWarning: open_text is deprecated. Use files() instead. Refer to https://importlib-resources.readthedocs.io/en/latest/using.html#migrating-from-legacy for migration advice.
+  /Users/zeekay/Documents/llm/llm/utils.py:168: DeprecationWarning: open_text is deprecated. Use files() instead. Refer to https://importlib-resources.readthedocs.io/en/latest/using.html#migrating-from-legacy for migration advice.
     with resources.open_text(
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html

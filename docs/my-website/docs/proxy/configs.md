@@ -148,7 +148,7 @@ model_list:
   - model_name: openai-gpt-3.5
     llm_params:
       model: openai/gpt-3.5-turbo
-      extra_headers: {"AI-Resource Group": "ishaan-resource"}
+      extra_headers: {"AI-Resource Group": "z-resource"}
       api_key: sk-123
       organization: org-ikDc4ex8NB
       temperature: 0.2

@@ -62,7 +62,7 @@ llm --config /path/to/config.yaml
 ```bash
 curl --location 'http://0.0.0.0:4000/v1/audio/transcriptions' \
 --header 'Authorization: Bearer sk-1234' \
---form 'file=@"/Users/krrishdholakia/Downloads/gettysburg.wav"' \
+--form 'file=@"/Users/zeekay/Downloads/gettysburg.wav"' \
 --form 'model="nova-2"'
 ```
 

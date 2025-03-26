@@ -528,7 +528,7 @@ def test_langfuse_logging_custom_generation_name():
                 "langfuse/foo": "bar",
                 "langsmith/fizz": "buzz",
                 "prompt_hash": "asdf98u0j9131123",
-                "generation_name": "ishaan-test-generation",
+                "generation_name": "z-test-generation",
                 "generation_id": "gen-id22",
                 "trace_id": "trace-id22",
                 "trace_user_id": "user-id2",
@@ -552,7 +552,7 @@ def test_langfuse_logging_embedding():
         llm.success_callback = ["langfuse"]
         response = llm.embedding(
             model="text-embedding-ada-002",
-            input=["gm", "ishaan"],
+            input=["gm", "z"],
         )
         print(response)
     except llm.Timeout as e:

@@ -5,7 +5,7 @@
 # |                                               |
 # +-----------------------------------------------+
 #
-#  Thank you users! We ❤️ you! - Krrish & Ishaan
+
 
 import json
 import os

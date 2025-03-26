@@ -30,7 +30,7 @@ from datetime import timedelta
 
 # llm.set_verbose=True
 
-messages = [{"role": "user", "content": "who is ishaan Github?  "}]
+messages = [{"role": "user", "content": "who is z Github?  "}]
 # comment
 
 import random
@@ -42,7 +42,7 @@ def generate_random_word(length=4):
     return "".join(random.choice(letters) for _ in range(length))
 
 
-messages = [{"role": "user", "content": "who is ishaan 5222"}]
+messages = [{"role": "user", "content": "who is z 5222"}]
 
 
 @pytest.mark.asyncio
@@ -317,7 +317,7 @@ async def test_caching_with_cache_controls(sync_flag):
 
 def test_caching_with_models_v2():
     messages = [
-        {"role": "user", "content": "who is ishaan CTO of llm from llm 2023"}
+        {"role": "user", "content": "who is z CTO of llm from llm 2023"}
     ]
     llm.cache = Cache()
     print("test2 for caching")
@@ -354,7 +354,7 @@ def test_caching_with_models_v2():
 def c():
     llm.enable_caching_on_provider_specific_optional_params = True
     messages = [
-        {"role": "user", "content": "who is ishaan CTO of llm from llm 2023"}
+        {"role": "user", "content": "who is z CTO of llm from llm 2023"}
     ]
     llm.cache = Cache()
     print("test2 for caching")
@@ -606,8 +606,8 @@ async def test_embedding_caching_base_64():
     import uuid
 
     inputs = [
-        f"{uuid.uuid4()} hello this is ishaan",
-        f"{uuid.uuid4()} hello this is ishaan again",
+        f"{uuid.uuid4()} hello this is z",
+        f"{uuid.uuid4()} hello this is z again",
     ]
 
     embedding_val_1 = await aembedding(
@@ -656,8 +656,8 @@ async def test_embedding_caching_redis_ttl():
         )
 
         inputs = [
-            f"{uuid.uuid4()} hello this is ishaan",
-            f"{uuid.uuid4()} hello this is ishaan again",
+            f"{uuid.uuid4()} hello this is z",
+            f"{uuid.uuid4()} hello this is z again",
         ]
 
         # Call the embedding method
@@ -1577,7 +1577,7 @@ def test_get_cache_key():
                 "api_version": "2023-07-01-preview",
                 "timeout": None,
                 "max_retries": 0,
-                "input": ["hi who is ishaan"],
+                "input": ["hi who is z"],
                 "caching": True,
                 "client": "<openai.lib.azure.AsyncAzureOpenAI object at 0x12b6a1060>",
             }
@@ -1586,14 +1586,14 @@ def test_get_cache_key():
         print(embedding_cache_key)
 
         embedding_cache_key_str = (
-            "model: azure/azure-embedding-modelinput: ['hi who is ishaan']"
+            "model: azure/azure-embedding-modelinput: ['hi who is z']"
         )
         hash_object = hashlib.sha256(embedding_cache_key_str.encode())
         # Hexadecimal representation of the hash
         hash_hex = hash_object.hexdigest()
         assert (
             embedding_cache_key == hash_hex
-        ), f"{embedding_cache_key} != 'model: azure/azure-embedding-modelinput: ['hi who is ishaan']'. The same kwargs should have the same cache key across runs"
+        ), f"{embedding_cache_key} != 'model: azure/azure-embedding-modelinput: ['hi who is z']'. The same kwargs should have the same cache key across runs"
 
         # Proxy - embedding cache, test if embedding key, gets model_group and not model
         embedding_cache_key_2 = cache_instance.get_cache_key(
@@ -1604,7 +1604,7 @@ def test_get_cache_key():
                 "api_version": "2023-07-01-preview",
                 "timeout": None,
                 "max_retries": 0,
-                "input": ["hi who is ishaan"],
+                "input": ["hi who is z"],
                 "caching": True,
                 "client": "<openai.lib.azure.AsyncAzureOpenAI object at 0x12b6a1060>",
                 "proxy_server_request": {
@@ -1619,7 +1619,7 @@ def test_get_cache_key():
                     },
                     "body": {
                         "model": "azure-embedding-model",
-                        "input": ["hi who is ishaan"],
+                        "input": ["hi who is z"],
                     },
                 },
                 "user": None,
@@ -1647,7 +1647,7 @@ def test_get_cache_key():
 
         print(embedding_cache_key_2)
         embedding_cache_key_str_2 = (
-            "model: EMBEDDING_MODEL_GROUPinput: ['hi who is ishaan']"
+            "model: EMBEDDING_MODEL_GROUPinput: ['hi who is z']"
         )
         hash_object = hashlib.sha256(embedding_cache_key_str_2.encode())
         # Hexadecimal representation of the hash

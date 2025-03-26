@@ -734,12 +734,12 @@ async def test_key_rate_limit():
 async def test_key_delete_ui():
     """
     Admin UI flow - DO NOT DELETE
-    -> Create a key with user_id = "ishaan"
-    -> Log on Admin UI, delete the key for user "ishaan"
+    -> Create a key with user_id = "z"
+    -> Log on Admin UI, delete the key for user "z"
     -> This should work, since we're on the admin UI and role == "proxy_admin
     """
     async with aiohttp.ClientSession() as session:
-        key_gen = await generate_key(session=session, i=0, user_id="ishaan-smart")
+        key_gen = await generate_key(session=session, i=0, user_id="z-smart")
         key = key_gen["key"]
 
         # generate a admin UI key

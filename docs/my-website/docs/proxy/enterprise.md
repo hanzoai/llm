@@ -159,7 +159,7 @@ response = client.chat.completions.create(
     ],
     extra_body={
         "metadata": {
-            "tags": ["model-anthropic-claude-v2.1", "app-ishaan-prod"] # 👈 Key Change
+            "tags": ["model-anthropic-claude-v2.1", "app-z-prod"] # 👈 Key Change
         }
     }
 )
@@ -190,7 +190,7 @@ async function runOpenAI() {
         },
       ],
       metadata: {
-        tags: ["model-anthropic-claude-v2.1", "app-ishaan-prod"] // 👈 Key Change
+        tags: ["model-anthropic-claude-v2.1", "app-z-prod"] // 👈 Key Change
       }
     });
     console.log(response);
@@ -220,7 +220,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
         "content": "what llm are you"
         }
     ],
-    "metadata": {"tags": ["model-anthropic-claude-v2.1", "app-ishaan-prod"]}
+    "metadata": {"tags": ["model-anthropic-claude-v2.1", "app-z-prod"]}
 }'
 ```
 </TabItem>
@@ -241,7 +241,7 @@ chat = ChatOpenAI(
     temperature=0.1,
     extra_body={
         "metadata": {
-            "tags": ["model-anthropic-claude-v2.1", "app-ishaan-prod"]
+            "tags": ["model-anthropic-claude-v2.1", "app-z-prod"]
         }
     }
 )
@@ -280,12 +280,12 @@ curl -X GET "http://0.0.0.0:4000/spend/tags" \
     "total_spend": 0.000672
   },
   {
-    "individual_request_tag": "app-ishaan-local",
+    "individual_request_tag": "app-z-local",
     "log_count": 4,
     "total_spend": 0.000448
   },
   {
-    "individual_request_tag": "app-ishaan-prod",
+    "individual_request_tag": "app-z-prod",
     "log_count": 2,
     "total_spend": 0.000224
   }

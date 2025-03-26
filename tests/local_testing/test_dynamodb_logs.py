@@ -88,7 +88,7 @@ def test_dynamo_logging():
                 messages=[{"role": "user", "content": "This is a test"}],
                 max_tokens=100,
                 temperature=0.7,
-                user="ishaan-2",
+                user="z-2",
             )
 
         response = asyncio.run(_test())
@@ -101,7 +101,7 @@ def test_dynamo_logging():
                 messages=[{"role": "user", "content": "This is a test"}],
                 max_tokens=10,
                 temperature=0.7,
-                user="ishaan-2",
+                user="z-2",
                 stream=True,
             )
             async for chunk in response:
@@ -112,7 +112,7 @@ def test_dynamo_logging():
         # aembedding()
         async def _test3():
             return await llm.aembedding(
-                model="text-embedding-ada-002", input=["hi"], user="ishaan-2"
+                model="text-embedding-ada-002", input=["hi"], user="z-2"
             )
 
         response = asyncio.run(_test3())

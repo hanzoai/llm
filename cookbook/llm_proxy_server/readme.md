@@ -36,7 +36,7 @@
 - **Logging** - Log Requests, Responses and Errors to `Supabase`, `Posthog`, `Mixpanel`, `Sentry`, `Lunary`,`Athina`, `Helicone` (Any of the supported providers here: https://llm.readthedocs.io/en/latest/advanced/
 
   **Example: Logs sent to Supabase**
-  <img width="1015" alt="Screenshot 2023-08-11 at 4 02 46 PM" src="https://github.com/ishaan-jaff/proxy-server/assets/29436595/237557b8-ba09-4917-982c-8f3e1b2c8d08">
+  <img width="1015" alt="Screenshot 2023-08-11 at 4 02 46 PM" src="https://github.com/z-jaff/proxy-server/assets/29436595/237557b8-ba09-4917-982c-8f3e1b2c8d08">
 
 - **Token Usage & Spend** - Track Input + Completion tokens used + Spend/model
 - **Caching** - Implementation of Semantic Caching

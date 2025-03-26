@@ -489,7 +489,7 @@ os.environ["OPENAI_API_KEY"] = "your-api-key"
 response = completion(
     model = "gpt-3.5-turbo", 
     messages=[{ "content": "Hello, how are you?","role": "user"}],
-    extra_headers={"AI-Resource Group": "ishaan-resource"}
+    extra_headers={"AI-Resource Group": "z-resource"}
 )
 ```
 

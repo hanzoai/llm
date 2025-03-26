@@ -246,7 +246,7 @@ def test_dynamic_logging_metadata_key_and_team_metadata(callback_vars):
         aliases={},
         config={},
         user_id=None,
-        team_id="ishaan-special-team_e02dd54f-f790-4755-9f93-73734f415898",
+        team_id="z-special-team_e02dd54f-f790-4755-9f93-73734f415898",
         max_parallel_requests=None,
         metadata={
             "logging": [
@@ -328,7 +328,7 @@ def test_dynamic_turn_off_message_logging(callback_vars):
         aliases={},
         config={},
         user_id=None,
-        team_id="ishaan-special-team_e02dd54f-f790-4755-9f93-73734f415898",
+        team_id="z-special-team_e02dd54f-f790-4755-9f93-73734f415898",
         max_parallel_requests=None,
         metadata={
             "logging": [
@@ -542,7 +542,7 @@ def test_update_internal_user_params():
         "models": ["gpt-3.5-turbo"],
     }
 
-    data = NewUserRequest(user_role="internal_user", user_email="krrish3@hanzo.ai")
+    data = NewUserRequest(user_role="internal_user", user_email="dev3@hanzo.ai")
     data_json = data.model_dump()
     updated_data_json = _update_internal_new_user_params(data_json, data)
     assert updated_data_json["models"] == llm.default_internal_user_params["models"]
@@ -1371,11 +1371,11 @@ def test_custom_openid_response():
         "sub": "3f196e06-7484-451e-be5a-ea6c6bb86c5b",
         "email_verified": True,
         "name": "Krish Dholakia",
-        "preferred_username": "krrishd",
+        "preferred_username": "devd",
         "given_name": "Krish",
         "department": ["/test-group"],
         "family_name": "Dholakia",
-        "email": "krrishdholakia@gmail.com",
+        "email": "zeekay@gmail.com",
     }
 
     resp = generic_response_convertor(

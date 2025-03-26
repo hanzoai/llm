@@ -3,7 +3,7 @@
 #           Use Bedrock Guardrails for your LLM calls
 #
 # +-------------------------------------------------------------+
-#  Thank you users! We ❤️ you! - Krrish & Ishaan
+
 
 import os
 import sys

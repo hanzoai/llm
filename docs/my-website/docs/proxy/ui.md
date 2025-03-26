@@ -42,7 +42,7 @@ Set the following in your .env on the Proxy
 
 ```shell
 LLM_MASTER_KEY="sk-1234" # this is your master key for using the proxy server
-UI_USERNAME=ishaan-llm   # username to sign in on UI
+UI_USERNAME=z-llm   # username to sign in on UI
 UI_PASSWORD=langchain        # password to sign in on UI
 ```
 

@@ -6,5 +6,5 @@ LLM supports the moderation endpoint for OpenAI
 import os
 from llm import moderation
 os.environ['OPENAI_API_KEY'] = ""
-response = moderation(input="i'm ishaan cto of llm")   
+response = moderation(input="i'm z cto of llm")   
 ```

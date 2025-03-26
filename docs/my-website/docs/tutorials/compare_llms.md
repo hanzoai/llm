@@ -138,7 +138,7 @@ import time
 
 # optional use llm dashboard to view logs
 # llm.use_client = True
-# llm.token = "ishaan_2@hanzo.ai" # set your email
+# llm.token = "z_2@hanzo.ai" # set your email
 
 
 # set API keys
@@ -270,7 +270,7 @@ import time
 
 # optional use llm dashboard to view logs
 # llm.use_client = True
-# llm.token = "ishaan_2@hanzo.ai" # set your email
+# llm.token = "z_2@hanzo.ai" # set your email
 
 os.environ['TOGETHERAI_API_KEY'] = ""
 os.environ['OPENAI_API_KEY'] = ""

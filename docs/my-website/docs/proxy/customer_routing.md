@@ -24,7 +24,7 @@ curl -X POST --location 'http://0.0.0.0:4000/end_user/new' \
 --header 'Authorization: Bearer sk-1234' \
 --header 'Content-Type: application/json' \
 --data '{
-    "user_id" : "ishaan-jaff-45",
+    "user_id" : "z-jaff-45",
     "allowed_model_region": "eu", # 👈 SPECIFY ALLOWED REGION='eu'
 }'
 ```
@@ -76,7 +76,7 @@ curl -X POST --location 'http://localhost:4000/chat/completions' \
         "role": "user",
         "content": "what is the meaning of the universe? 1234"
     }],
-    "user": "ishaan-jaff-45" # 👈 USER ID
+    "user": "z-jaff-45" # 👈 USER ID
 }
 '
 ```

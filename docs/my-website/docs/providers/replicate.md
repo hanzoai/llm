@@ -195,11 +195,11 @@ model_list:
 
 ## Advanced Usage - Calling Replicate Deployments
 Calling a [deployed replicate LLM](https://replicate.com/deployments)
-Add the `replicate/deployments/` prefix to your model, so llm will call the `deployments` endpoint. This will call `ishaan-jaff/ishaan-mistral` deployment on replicate
+Add the `replicate/deployments/` prefix to your model, so llm will call the `deployments` endpoint. This will call `z-jaff/z-mistral` deployment on replicate
 
 ```python
 response = completion(
-    model="replicate/deployments/ishaan-jaff/ishaan-mistral", 
+    model="replicate/deployments/z-jaff/z-mistral", 
     messages= [{ "content": "Hello, how are you?","role": "user"}]
 )
 ```
@@ -224,7 +224,7 @@ Model Name                  | Function Call                                     
  replicate/vicuna-13b  | `completion(model='replicate/vicuna-13b:6282abe6a492de4145d7bb601023762212f9ddbbe78278bd6771c8b3b2f2a13b', messages)` | `os.environ['REPLICATE_API_KEY']` |
  daanelson/flan-t5-large    | `completion(model='replicate/daanelson/flan-t5-large:ce962b3f6792a57074a601d3979db5839697add2e4e02696b3ced4c022d4767f', messages)`    | `os.environ['REPLICATE_API_KEY']`    |
  custom-llm    | `completion(model='replicate/custom-llm-version-id', messages)`    | `os.environ['REPLICATE_API_KEY']`    |
-  replicate deployment    | `completion(model='replicate/deployments/ishaan-jaff/ishaan-mistral', messages)`    | `os.environ['REPLICATE_API_KEY']`    |
+  replicate deployment    | `completion(model='replicate/deployments/z-jaff/z-mistral', messages)`    | `os.environ['REPLICATE_API_KEY']`    |
 
 
 ## Passing additional params - max_tokens, temperature 

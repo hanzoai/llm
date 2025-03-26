@@ -79,10 +79,10 @@ async def test_aaabasic_gcs_logger():
         temperature=0.7,
         messages=[{"role": "user", "content": "This is a test"}],
         max_tokens=10,
-        user="ishaan-2",
+        user="z-2",
         mock_response="Hi!",
         metadata={
-            "tags": ["model-anthropic-claude-v2.1", "app-ishaan-prod"],
+            "tags": ["model-anthropic-claude-v2.1", "app-z-prod"],
             "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
             "user_api_key_alias": None,
             "user_api_end_user_max_budget": None,
@@ -183,7 +183,7 @@ async def test_basic_gcs_logger_failure():
             temperature=0.7,
             messages=[{"role": "user", "content": "This is a test"}],
             max_tokens=10,
-            user="ishaan-2",
+            user="z-2",
             mock_response=llm.BadRequestError(
                 model="gpt-3.5-turbo",
                 message="Error: 400: Bad Request: Invalid API key, please check your API key and try again.",
@@ -191,7 +191,7 @@ async def test_basic_gcs_logger_failure():
             ),
             metadata={
                 "gcs_log_id": gcs_log_id,
-                "tags": ["model-anthropic-claude-v2.1", "app-ishaan-prod"],
+                "tags": ["model-anthropic-claude-v2.1", "app-z-prod"],
                 "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
                 "user_api_key_alias": None,
                 "user_api_end_user_max_budget": None,
@@ -299,7 +299,7 @@ async def test_basic_gcs_logging_per_request_with_callback_set():
             temperature=0.7,
             messages=[{"role": "user", "content": "This is a test"}],
             max_tokens=10,
-            user="ishaan-2",
+            user="z-2",
             gcs_bucket_name=GCS_BUCKET_NAME,
         )
     except:
@@ -350,7 +350,7 @@ async def test_basic_gcs_logging_per_request_with_callback_set():
             temperature=0.7,
             messages=[{"role": "user", "content": "This is a test"}],
             max_tokens=10,
-            user="ishaan-2",
+            user="z-2",
             mock_response="Hi!",
         )
     except:
@@ -427,7 +427,7 @@ async def test_basic_gcs_logging_per_request_with_no_llm_callback_set():
             temperature=0.7,
             messages=[{"role": "user", "content": "This is a test"}],
             max_tokens=10,
-            user="ishaan-2",
+            user="z-2",
             gcs_bucket_name=GCS_BUCKET_NAME,
             success_callback=["gcs_bucket"],
             failure_callback=["gcs_bucket"],
@@ -481,7 +481,7 @@ async def test_basic_gcs_logging_per_request_with_no_llm_callback_set():
             temperature=0.7,
             messages=[{"role": "user", "content": "This is a test"}],
             max_tokens=10,
-            user="ishaan-2",
+            user="z-2",
             mock_response=llm.BadRequestError(
                 model="gpt-3.5-turbo",
                 message="Error: 400: Bad Request: Invalid API key, please check your API key and try again.",
@@ -597,10 +597,10 @@ async def test_basic_gcs_logger_with_folder_in_bucket_name():
         temperature=0.7,
         messages=[{"role": "user", "content": "This is a test"}],
         max_tokens=10,
-        user="ishaan-2",
+        user="z-2",
         mock_response="Hi!",
         metadata={
-            "tags": ["model-anthropic-claude-v2.1", "app-ishaan-prod"],
+            "tags": ["model-anthropic-claude-v2.1", "app-z-prod"],
             "user_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
             "user_api_key_alias": None,
             "user_api_end_user_max_budget": None,

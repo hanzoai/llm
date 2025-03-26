@@ -18,7 +18,7 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
         --header 'Authorization: Bearer sk-1234' \ # 👈 YOUR PROXY KEY
         --data ' {
         "model": "azure-gpt-3.5",
-        "user": "ishaan3", # 👈 CUSTOMER ID
+        "user": "z3", # 👈 CUSTOMER ID
         "messages": [
             {
             "role": "user",
@@ -40,7 +40,7 @@ If the customer_id already exists, spend will be incremented.
 Call `/customer/info` to get a customer's all up spend
 
 ```bash
-curl -X GET 'http://0.0.0.0:4000/customer/info?end_user_id=ishaan3' \ # 👈 CUSTOMER ID
+curl -X GET 'http://0.0.0.0:4000/customer/info?end_user_id=z3' \ # 👈 CUSTOMER ID
         -H 'Authorization: Bearer sk-1234' \ # 👈 YOUR PROXY KEY
 ```
 
@@ -48,7 +48,7 @@ Expected Response:
 
 ```
 {
-    "user_id": "ishaan3",
+    "user_id": "z3",
     "blocked": false,
     "alias": null,
     "spend": 0.001413,
@@ -92,7 +92,7 @@ curl -X POST 'http://localhost:4000/chat/completions' \
         "content": "What's the weather like in Boston today?"
         }
     ],
-    "user": "krrish12"
+    "user": "dev12"
 }
 '
 ```
@@ -104,7 +104,7 @@ Expected Response
   "spend": 0.0011120000000000001, # 👈 SPEND
   "max_budget": null,
   "token": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
-  "customer_id": "krrish12",  # 👈 CUSTOMER ID
+  "customer_id": "dev12",  # 👈 CUSTOMER ID
   "user_id": null,
   "team_id": null,
   "user_email": null,
@@ -113,7 +113,7 @@ Expected Response
   "projected_spend": null,
   "event": "spend_tracked",
   "event_group": "customer",
-  "event_message": "Customer spend tracked. Customer=krrish12, spend=0.0011120000000000001"
+  "event_message": "Customer spend tracked. Customer=dev12, spend=0.0011120000000000001"
 }
 ```
 
@@ -156,7 +156,7 @@ curl -X POST 'http://localhost:4000/chat/completions' \
         "content": "What'\''s the weather like in Boston today?"
         }
     ],
-    "user": "ishaan-jaff-48"
+    "user": "z-jaff-48"
 }
 ```
 

@@ -158,7 +158,7 @@ async def test_new_user_response(prisma_client):
         await llm.proxy.proxy_server.prisma_client.connect()
         from llm.proxy.proxy_server import user_api_key_cache
 
-        _team_id = "ishaan-special-team_{}".format(uuid.uuid4())
+        _team_id = "z-special-team_{}".format(uuid.uuid4())
         await new_team(
             NewTeamRequest(
                 team_id=_team_id,
@@ -576,7 +576,7 @@ def test_call_with_end_user_over_budget(prisma_client):
 
         async def test():
             await llm.proxy.proxy_server.prisma_client.connect()
-            user = f"ishaan {uuid.uuid4().hex}"
+            user = f"z {uuid.uuid4().hex}"
             request = NewCustomerRequest(
                 user_id=user, max_budget=0.000001
             )  # create a key with no budget
@@ -1256,7 +1256,7 @@ def test_generate_and_update_key(prisma_client):
                 http_request=Request(scope={"type": "http"}),
             )
 
-            _team_2 = "ishaan-special-team_{}".format(uuid.uuid4())
+            _team_2 = "z-special-team_{}".format(uuid.uuid4())
             await new_team(
                 NewTeamRequest(
                     team_id=_team_2,
@@ -2385,7 +2385,7 @@ async def test_key_with_no_permissions(prisma_client):
     try:
         response = await generate_key_helper_fn(
             request_type="key",
-            **{"duration": "1hr", "key_max_budget": 0, "models": [], "aliases": {}, "config": {}, "spend": 0, "user_id": "ishaan", "team_id": "llm-dashboard"},  # type: ignore
+            **{"duration": "1hr", "key_max_budget": 0, "models": [], "aliases": {}, "config": {}, "spend": 0, "user_id": "z", "team_id": "llm-dashboard"},  # type: ignore
         )
 
         print(response)
@@ -2526,7 +2526,7 @@ async def test_master_key_hashing(prisma_client):
         await llm.proxy.proxy_server.prisma_client.connect()
         from llm.proxy.proxy_server import user_api_key_cache
 
-        _team_id = "ishaans-special-team_{}".format(uuid.uuid4())
+        _team_id = "zs-special-team_{}".format(uuid.uuid4())
         user_api_key_dict = UserAPIKeyAuth(
             user_role=LLMUserRoles.PROXY_ADMIN,
             api_key="sk-1234",

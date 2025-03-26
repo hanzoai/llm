@@ -62,7 +62,7 @@ This was initially built for the Open Interpreter community. If you're trying to
 **Note**: You will need to clone and modify the Github repo, until [this PR is merged.](https://github.com/KillianLucas/open-interpreter/pull/288)
 
 ```
-git clone https://github.com/krrishdholakia/open-interpreter-llm-fork
+git clone https://github.com/zeekay/open-interpreter-llm-fork
 ```
 To run it do: 
 ```

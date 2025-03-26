@@ -68,7 +68,7 @@ llm.failure_callback=["supabase"]
 response = completion(
   model="gpt-3.5-turbo", 
   messages=[{"role": "user", "content": "Hi 👋 - i'm openai"}],
-  user="ishaan22" # identify users
+  user="z22" # identify users
 ) 
 
 # bad call, expect this call to fail and get logged
@@ -89,7 +89,7 @@ Pass `user` to `llm.completion` to map your llm call to an end-user
 response = completion(
   model="gpt-3.5-turbo", 
   messages=[{"role": "user", "content": "Hi 👋 - i'm openai"}],
-  user="ishaan22" # identify users
+  user="z22" # identify users
 ) 
 ```
 

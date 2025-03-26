@@ -3,7 +3,7 @@ title: v1.56.1
 slug: v1.56.1
 date: 2024-12-27T10:00:00
 authors:
-  - name: Krrish Dholakia
+  - name: Zach Kelling
     title: CEO, LLM
     url: https://www.linkedin.com/in/krish-d/
     image_url: https://media.licdn.com/dms/image/v2/D4D03AQGrlsJ3aqpHmQ/profile-displayphoto-shrink_400_400/B4DZSAzgP7HYAg-/0/1737327772964?e=1743638400&v=beta&t=39KOXMUFedvukiWWVPHf3qI45fuQD7lNglICwN31DrI

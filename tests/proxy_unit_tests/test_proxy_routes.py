@@ -141,7 +141,7 @@ def test_get_request_route_without_base_url():
 
 
 def test_get_request_route_with_nested_path():
-    request = create_request(path="/embeddings", base_url="http://testserver/ishaan")
+    request = create_request(path="/embeddings", base_url="http://testserver/z")
     result = get_request_route(request)
     assert result == "/embeddings"
 

@@ -10,7 +10,7 @@ response = client.chat.completions.create(
     ],
     extra_body={
         "metadata": {
-            "generation_name": "ishaan-generation-openai-client",
+            "generation_name": "z-generation-openai-client",
             "generation_id": "openai-client-gen-id22",
             "trace_id": "openai-client-trace-id22",
             "trace_user_id": "openai-client-user-id2",

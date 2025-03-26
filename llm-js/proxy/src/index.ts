@@ -5,7 +5,7 @@ import OpenAI from "openai";
 
 const openai = new OpenAI({
   apiKey: "sk-1234",
-  baseURL: "https://openai-endpoint.ishaanjaffer0324.workers.dev"
+  baseURL: "https://openai-endpoint.zjaffer0324.workers.dev"
 });
 
 async function call_proxy() {

@@ -76,7 +76,7 @@ response = client.chat.completions.create(
     ],
     extra_body={ # pass in any provider-specific param, if not supported by openai, https://docs.llm.ai/docs/completion/input#provider-specific-params
         "metadata": { # 👈 use for logging additional params (e.g. to langfuse)
-            "generation_name": "ishaan-generation-openai-client",
+            "generation_name": "z-generation-openai-client",
             "generation_id": "openai-client-gen-id22",
             "trace_id": "openai-client-trace-id22",
             "trace_user_id": "openai-client-user-id2"
@@ -109,7 +109,7 @@ response = client.chat.completions.create(
     ],
     extra_body={ # pass in any provider-specific param, if not supported by openai, https://docs.llm.ai/docs/completion/input#provider-specific-params
         "metadata": { # 👈 use for logging additional params (e.g. to langfuse)
-            "generation_name": "ishaan-generation-openai-client",
+            "generation_name": "z-generation-openai-client",
             "generation_id": "openai-client-gen-id22",
             "trace_id": "openai-client-trace-id22",
             "trace_user_id": "openai-client-user-id2"
@@ -172,7 +172,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
         }
     ],
     "metadata": {
-        "generation_name": "ishaan-test-generation",
+        "generation_name": "z-test-generation",
         "generation_id": "gen-id22",
         "trace_id": "trace-id22",
         "trace_user_id": "user-id2"
@@ -200,7 +200,7 @@ chat = ChatOpenAI(
     temperature=0.1,
     extra_body={
         "metadata": {
-            "generation_name": "ishaan-generation-langchain-client",
+            "generation_name": "z-generation-langchain-client",
             "generation_id": "langchain-client-gen-id22",
             "trace_id": "langchain-client-trace-id22",
             "trace_user_id": "langchain-client-user-id2"
@@ -258,7 +258,7 @@ async function main() {
     messages: [{ role: 'user', content: 'Say this is a test' }],
     model: 'gpt-3.5-turbo',
   }, {"metadata": {
-            "generation_name": "ishaan-generation-openaijs-client",
+            "generation_name": "z-generation-openaijs-client",
             "generation_id": "openaijs-client-gen-id22",
             "trace_id": "openaijs-client-trace-id22",
             "trace_user_id": "openaijs-client-user-id2"

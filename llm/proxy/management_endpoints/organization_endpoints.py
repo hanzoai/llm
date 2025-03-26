@@ -444,7 +444,7 @@ async def organization_member_add(
         "organization_id": "45e3e396-ee08-4a61-a88e-16b3ce7e0849",
         "member": {
             "role": "internal_user",
-            "user_id": "krrish247652@hanzo.ai"
+            "user_id": "dev247652@hanzo.ai"
         },
         "max_budget_in_organization": 100.0
     }'

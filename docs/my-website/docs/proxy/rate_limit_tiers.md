@@ -60,7 +60,7 @@ curl -L -X POST 'http://0.0.0.0:4000/v1/chat/completions' \
 -d '{
     "model": "<REPLACE_WITH_MODEL_NAME_FROM_CONFIG.YAML>",
     "messages": [
-      {"role": "user", "content": "hi my email is ishaan"}
+      {"role": "user", "content": "hi my email is z"}
     ]
 }'
 ```

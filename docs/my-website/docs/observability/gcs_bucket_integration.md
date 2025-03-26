@@ -30,7 +30,7 @@ llm_settings:
 
 ```shell
 GCS_BUCKET_NAME="<your-gcs-bucket-name>"
-GCS_PATH_SERVICE_ACCOUNT="/Users/ishaanjaffer/Downloads/adroit-crow-413218-a956eef1a2a8.json" # Add path to service account.json
+GCS_PATH_SERVICE_ACCOUNT="/Users/zjaffer/Downloads/adroit-crow-413218-a956eef1a2a8.json" # Add path to service account.json
 ```
 
 3. Start Proxy

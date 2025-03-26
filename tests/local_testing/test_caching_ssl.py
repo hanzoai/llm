@@ -17,7 +17,7 @@ import llm
 from llm import embedding, completion, Router
 from llm.caching.caching import Cache
 
-messages = [{"role": "user", "content": f"who is ishaan {time.time()}"}]
+messages = [{"role": "user", "content": f"who is z {time.time()}"}]
 
 
 def test_caching_v2():  # test in memory cache

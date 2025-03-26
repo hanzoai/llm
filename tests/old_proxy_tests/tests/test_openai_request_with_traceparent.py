@@ -17,8 +17,8 @@ tracer = trace.get_tracer(__name__)
 
 # create an otel traceparent header
 tracer = trace.get_tracer(__name__)
-with tracer.start_as_current_span("ishaan-local-dev-app") as span:
-    span.set_attribute("generation_name", "ishaan-generation-openai-client")
+with tracer.start_as_current_span("z-local-dev-app") as span:
+    span.set_attribute("generation_name", "z-generation-openai-client")
     client = openai.OpenAI(api_key="sk-1234", base_url="http://0.0.0.0:4000")
     extra_headers = {}
     context = trace.set_span_in_context(span)

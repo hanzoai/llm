@@ -32,7 +32,7 @@ async def test_custom_api_logging():
             messages=[{"role": "user", "content": f"This is a test"}],
             max_tokens=10,
             temperature=0.7,
-            user="ishaan-2",
+            user="z-2",
         )
 
     except Exception as e:

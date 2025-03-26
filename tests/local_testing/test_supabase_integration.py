@@ -23,7 +23,7 @@ def test_supabase_logging():
         response = completion(
             model="gpt-3.5-turbo",
             messages=[{"role": "user", "content": "Hello tell me hi"}],
-            user="ishaanRegular",
+            user="zRegular",
             max_tokens=10,
         )
         print(response)
@@ -45,7 +45,7 @@ def test_acompletion_sync():
                 messages=[{"role": "user", "content": "write a poem"}],
                 max_tokens=10,
                 stream=True,
-                user="ishaanStreamingUser",
+                user="zStreamingUser",
                 timeout=5,
             )
             complete_response = ""

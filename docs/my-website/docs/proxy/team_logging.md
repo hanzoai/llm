@@ -238,7 +238,7 @@ curl -X POST 'http://0.0.0.0:4000/key/generate' \
 
   Set `GCS_SERVICE_ACCOUNT` in your environment to the path of the service account json
   ```bash
-  export GCS_SERVICE_ACCOUNT=/path/to/service-account.json # GCS_SERVICE_ACCOUNT=/Users/ishaanjaffer/Downloads/adroit-crow-413218-a956eef1a2a8.json
+  export GCS_SERVICE_ACCOUNT=/path/to/service-account.json # GCS_SERVICE_ACCOUNT=/Users/zjaffer/Downloads/adroit-crow-413218-a956eef1a2a8.json
   ```
 
   ```bash
@@ -453,7 +453,7 @@ curl -i http://localhost:4000/v1/chat/completions \
   -d '{
     "model": "gpt-4o",
     "messages": [
-      {"role": "user", "content": "hi my name is ishaan what key alias is this"}
+      {"role": "user", "content": "hi my name is z what key alias is this"}
     ]
   }'
 ```
