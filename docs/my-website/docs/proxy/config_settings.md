@@ -211,6 +211,9 @@ general_settings:
 | enable_oauth2_proxy_auth | boolean | (Enterprise Feature) If true, enables oauth2.0 authentication |
 | forward_openai_org_id | boolean | If true, forwards the OpenAI Organization ID to the backend LLM call (if it's OpenAI). |
 | forward_client_headers_to_llm_api | boolean | If true, forwards the client headers (any `x-` headers) to the backend LLM call |
+| disable_error_logs | boolean | If true, turns off error logging in the proxy server |
+| role_permissions | Dict[str, List[str]] | Define role-based permissions for users |
+| enforce_rbac | boolean | If true, enforces role-based access control checks |
 
 ### router_settings - Reference
 

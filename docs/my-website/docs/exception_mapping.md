@@ -8,17 +8,18 @@ All exceptions can be imported from `llm` - e.g. `from llm import BadRequestErro
 
 | Status Code | Error Type               | Inherits from | Description |
 |-------------|--------------------------|---------------|-------------|
-| 400         | BadRequestError          | openai.BadRequestError |
+| 400         | BadRequestError          | openai.BadRequestError | Generic bad request error |
 | 400 | UnsupportedParamsError | llm.BadRequestError | Raised when unsupported params are passed |
 | 400         | ContextWindowExceededError| llm.BadRequestError | Special error type for context window exceeded error messages - enables context window fallbacks |
 | 400         | ContentPolicyViolationError| llm.BadRequestError | Special error type for content policy violation error messages - enables content policy fallbacks |
+| 400 | RejectedRequestError | llm.BadRequestError | Raised when request is rejected due to content policy or other rules |
 | 400 | InvalidRequestError | openai.BadRequestError | Deprecated error, use BadRequestError instead |
-| 401         | AuthenticationError      | openai.AuthenticationError |
-| 403         | PermissionDeniedError    | openai.PermissionDeniedError |
-| 404         | NotFoundError            | openai.NotFoundError | raise when invalid models passed, example gpt-8 |
+| 401         | AuthenticationError      | openai.AuthenticationError | Authentication error, invalid API key |
+| 403         | PermissionDeniedError    | openai.PermissionDeniedError | Permission denied for requested resource |
+| 404         | NotFoundError            | openai.NotFoundError | Raised when invalid models passed, example gpt-8 |
 | 408 | Timeout | openai.APITimeoutError | Raised when a timeout occurs |
-| 422         | UnprocessableEntityError | openai.UnprocessableEntityError |
-| 429         | RateLimitError           | openai.RateLimitError |
+| 422         | UnprocessableEntityError | openai.UnprocessableEntityError | Entity cannot be processed |
+| 429         | RateLimitError           | openai.RateLimitError | Rate limit exceeded |
 | 500         | APIConnectionError       | openai.APIConnectionError | If any unmapped error is returned, we return this error |
 | 500         | APIError | openai.APIError | Generic 500-status code error | 
 | 503 | ServiceUnavailableError | openai.APIStatusError | If provider returns a service unavailable error, this error is raised |
