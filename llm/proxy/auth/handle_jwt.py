@@ -29,7 +29,7 @@ from llm.proxy._types import (
     LLM_OrganizationTable,
     LLM_TeamTable,
     LLM_UserTable,
-    LlmUserRoles,
+    LLMUserRoles,
     ScopeMapping,
     Span,
 )

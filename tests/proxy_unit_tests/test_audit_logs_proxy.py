@@ -29,7 +29,7 @@ import llm
 from llm._logging import verbose_proxy_logger
 
 from llm.proxy.proxy_server import (
-    LlmUserRoles,
+    LLMUserRoles,
     audio_transcriptions,
     chat_completion,
     completion,

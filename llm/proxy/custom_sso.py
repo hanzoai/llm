@@ -14,7 +14,7 @@ Flow:
 
 from fastapi_sso.sso.base import OpenID
 
-from llm.proxy._types import LlmUserRoles, SSOUserDefinedValues
+from llm.proxy._types import LLMUserRoles, SSOUserDefinedValues
 from llm.proxy.management_endpoints.internal_user_endpoints import user_info
 
 

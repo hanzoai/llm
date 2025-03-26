@@ -1204,15 +1204,15 @@ async def test_end_user_jwt_auth(monkeypatch):
 def test_can_rbac_role_call_route():
     from llm.proxy.auth.handle_jwt import JWTAuthManager
     from llm.proxy._types import RoleBasedPermissions
-    from llm.proxy._types import LlmUserRoles
+    from llm.proxy._types import LLMUserRoles
 
     with pytest.raises(HTTPException):
         JWTAuthManager.can_rbac_role_call_route(
-            rbac_role=LlmUserRoles.TEAM,
+            rbac_role=LLMUserRoles.TEAM,
             general_settings={
                 "role_permissions": [
                     RoleBasedPermissions(
-                        role=LlmUserRoles.TEAM, routes=["/v1/chat/completions"]
+                        role=LLMUserRoles.TEAM, routes=["/v1/chat/completions"]
                     )
                 ]
             },

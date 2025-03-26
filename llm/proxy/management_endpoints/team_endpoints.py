@@ -34,7 +34,7 @@ from llm.proxy._types import (
     LLM_TeamTableCachedObj,
     LLM_UserTable,
     LlmTableNames,
-    LlmUserRoles,
+    LLMUserRoles,
     Member,
     NewTeamRequest,
     ProxyErrorTypes,

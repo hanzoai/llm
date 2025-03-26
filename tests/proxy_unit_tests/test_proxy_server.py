@@ -920,7 +920,7 @@ import uuid
 from unittest.mock import AsyncMock, MagicMock, PropertyMock, patch
 
 from llm.proxy._types import (
-    LlmUserRoles,
+    LLMUserRoles,
     NewUserRequest,
     TeamMemberAddRequest,
     UserAPIKeyAuth,
@@ -932,7 +932,7 @@ from test_key_generate_prisma import prisma_client
 
 @pytest.mark.parametrize(
     "user_role",
-    [LlmUserRoles.INTERNAL_USER.value, LlmUserRoles.PROXY_ADMIN.value],
+    [LLMUserRoles.INTERNAL_USER.value, LLMUserRoles.PROXY_ADMIN.value],
 )
 @pytest.mark.asyncio
 async def test_create_user_default_budget(prisma_client, user_role):
@@ -958,7 +958,7 @@ async def test_create_user_default_budget(prisma_client, user_role):
         print(f"mock_client.call_args: {mock_client.call_args}")
         print("mock_client.call_args.kwargs: {}".format(mock_client.call_args.kwargs))
 
-        if user_role == LlmUserRoles.INTERNAL_USER.value:
+        if user_role == LLMUserRoles.INTERNAL_USER.value:
             assert (
                 mock_client.call_args.kwargs["data"]["max_budget"]
                 == llm.max_internal_user_budget
@@ -2010,7 +2010,7 @@ async def test_proxy_model_group_info_rerank(prisma_client):
 #             from llm.proxy.proxy_server import user_api_key_cache
 
 #             user_api_key_dict = UserAPIKeyAuth(
-#                 user_role=LlmUserRoles.PROXY_ADMIN,
+#                 user_role=LLMUserRoles.PROXY_ADMIN,
 #                 api_key="sk-1234",
 #                 user_id="1234",
 #             )
@@ -2021,7 +2021,7 @@ async def test_proxy_model_group_info_rerank(prisma_client):
 #                     team_id="1234",
 #                     member=Member(
 #                         user_id="1234",
-#                         user_role=LlmUserRoles.INTERNAL_USER,
+#                         user_role=LLMUserRoles.INTERNAL_USER,
 #                     ),
 #                 )
 #                 key = await team_member_add(
@@ -2037,7 +2037,7 @@ async def test_proxy_model_group_info_rerank(prisma_client):
 #             )
 #             new_user_info = new_user_info.user_info
 #             print("new_user_info=", new_user_info)
-#             assert new_user_info["user_role"] == LlmUserRoles.INTERNAL_USER
+#             assert new_user_info["user_role"] == LLMUserRoles.INTERNAL_USER
 #             assert new_user_info["user_id"] == user_id
 
 #             generated_key = key.key

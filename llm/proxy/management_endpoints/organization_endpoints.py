@@ -429,7 +429,7 @@ async def organization_member_add(
 
     - organization_id: str (required)
     - member: Union[List[Member], Member] (required)
-        - role: Literal[LlmUserRoles] (required)
+        - role: Literal[LLMUserRoles] (required)
         - user_id: Optional[str]
         - user_email: Optional[str]
 

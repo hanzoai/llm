@@ -84,3 +84,4 @@ llm/proxy/migrations/0_init/migration.sql
 llm/proxy/db/migrations/0_init/migration.sql
 llm/proxy/db/migrations/*
 llm/proxy/migrations/*
+.venv*

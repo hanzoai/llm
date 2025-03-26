@@ -59,7 +59,7 @@ from llm.proxy.management_endpoints.team_endpoints import (
     update_team,
 )
 from llm.proxy.proxy_server import (
-    LlmUserRoles,
+    LLMUserRoles,
     audio_transcriptions,
     chat_completion,
     completion,
@@ -144,7 +144,7 @@ async def test_view_daily_spend_ui(prisma_client):
     spend_logs_for_admin = await global_spend_logs(
         user_api_key_dict=UserAPIKeyAuth(
             api_key="sk-1234",
-            user_role=LlmUserRoles.PROXY_ADMIN,
+            user_role=LLMUserRoles.PROXY_ADMIN,
         ),
         api_key=None,
     )
@@ -153,7 +153,7 @@ async def test_view_daily_spend_ui(prisma_client):
 
     spend_logs_for_internal_user = await global_spend_logs(
         user_api_key_dict=UserAPIKeyAuth(
-            api_key="sk-1234", user_role=LlmUserRoles.INTERNAL_USER, user_id="1234"
+            api_key="sk-1234", user_role=LLMUserRoles.INTERNAL_USER, user_id="1234"
         ),
         api_key=None,
     )
@@ -189,7 +189,7 @@ async def test_global_spend_models(prisma_client):
         limit=10,
         user_api_key_dict=UserAPIKeyAuth(
             api_key="sk-1234",
-            user_role=LlmUserRoles.PROXY_ADMIN,
+            user_role=LLMUserRoles.PROXY_ADMIN,
         ),
     )
 
@@ -199,7 +199,7 @@ async def test_global_spend_models(prisma_client):
     models_spend_for_internal_user = await global_spend_models(
         limit=10,
         user_api_key_dict=UserAPIKeyAuth(
-            api_key="sk-1234", user_role=LlmUserRoles.INTERNAL_USER, user_id="1234"
+            api_key="sk-1234", user_role=LLMUserRoles.INTERNAL_USER, user_id="1234"
         ),
     )
 
@@ -281,7 +281,7 @@ async def test_global_spend_keys(prisma_client):
         limit=10,
         user_api_key_dict=UserAPIKeyAuth(
             api_key="sk-1234",
-            user_role=LlmUserRoles.PROXY_ADMIN,
+            user_role=LLMUserRoles.PROXY_ADMIN,
         ),
     )
 
@@ -291,7 +291,7 @@ async def test_global_spend_keys(prisma_client):
     keys_spend_for_internal_user = await global_spend_keys(
         limit=10,
         user_api_key_dict=UserAPIKeyAuth(
-            api_key="sk-1234", user_role=LlmUserRoles.INTERNAL_USER, user_id="1234"
+            api_key="sk-1234", user_role=LLMUserRoles.INTERNAL_USER, user_id="1234"
         ),
     )
 

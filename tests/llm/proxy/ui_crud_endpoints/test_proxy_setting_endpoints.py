@@ -9,7 +9,7 @@ sys.path.insert(
     0, os.path.abspath("../../..")
 )  # Adds the parent directory to the system path
 
-from llm.proxy._types import DefaultInternalUserParams, LlmUserRoles
+from llm.proxy._types import DefaultInternalUserParams, LLMUserRoles
 from llm.proxy.proxy_server import app
 
 client = TestClient(app)
@@ -21,7 +21,7 @@ def mock_proxy_config(monkeypatch):
     mock_config = {
         "llm_settings": {
             "default_internal_user_params": {
-                "user_role": LlmUserRoles.INTERNAL_USER,
+                "user_role": LLMUserRoles.INTERNAL_USER,
                 "max_budget": 100.0,
                 "budget_duration": "30d",
                 "models": ["gpt-3.5-turbo", "gpt-4"],
@@ -107,7 +107,7 @@ class TestProxySettingEndpoints:
 
         # New settings to update
         new_settings = {
-            "user_role": LlmUserRoles.PROXY_ADMIN,
+            "user_role": LLMUserRoles.PROXY_ADMIN,
             "max_budget": 200.0,
             "budget_duration": "7d",
             "models": ["gpt-4", "claude-3"],

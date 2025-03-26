@@ -18,7 +18,7 @@ from llm._logging import verbose_proxy_logger
 from llm.constants import MAX_SPENDLOG_ROWS_TO_QUERY
 from llm.proxy._types import (
     LLM_UserTable,
-    LlmUserRoles,
+    LLMUserRoles,
     Member,
     NewUserRequest,
     NewUserResponse,

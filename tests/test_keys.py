@@ -12,7 +12,7 @@ sys.path.insert(
     0, os.path.abspath("../")
 )  # Adds the parent directory to the system path
 import llm
-from llm.proxy._types import LlmUserRoles
+from llm.proxy._types import LLMUserRoles
 
 
 async def generate_team(
@@ -745,7 +745,7 @@ async def test_key_delete_ui():
         # generate a admin UI key
         team = await generate_team(session=session)
         admin_ui_key = await generate_user(
-            session=session, user_role=LlmUserRoles.PROXY_ADMIN.value
+            session=session, user_role=LLMUserRoles.PROXY_ADMIN.value
         )
         print(
             "trying to delete key=",

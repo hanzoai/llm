@@ -20,7 +20,7 @@ from llm.proxy.management_endpoints.model_management_endpoints import (
     add_new_model,
     update_model,
 )
-from llm.proxy._types import LlmUserRoles
+from llm.proxy._types import LLMUserRoles
 from llm._logging import verbose_proxy_logger
 from llm.proxy.utils import PrismaClient, ProxyLogging
 from llm.proxy.management_endpoints.team_endpoints import new_team
@@ -91,7 +91,7 @@ async def test_add_new_model(prisma_client):
             ),
         ),
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LlmUserRoles.PROXY_ADMIN.value,
+            user_role=LLMUserRoles.PROXY_ADMIN.value,
             api_key="sk-1234",
             user_id="1234",
         ),
@@ -113,27 +113,27 @@ async def test_add_new_model(prisma_client):
 @pytest.mark.parametrize(
     "team_id, key_team_id, user_role, expected_result",
     [
-        ("1234", "1234", LlmUserRoles.PROXY_ADMIN.value, True),
+        ("1234", "1234", LLMUserRoles.PROXY_ADMIN.value, True),
         (
             "1234",
             "1235",
-            LlmUserRoles.PROXY_ADMIN.value,
+            LLMUserRoles.PROXY_ADMIN.value,
             True,
         ),  # proxy admin can add models for any team
-        (None, "1234", LlmUserRoles.PROXY_ADMIN.value, True),
-        (None, None, LlmUserRoles.PROXY_ADMIN.value, True),
+        (None, "1234", LLMUserRoles.PROXY_ADMIN.value, True),
+        (None, None, LLMUserRoles.PROXY_ADMIN.value, True),
         (
             "1234",
             "1234",
-            LlmUserRoles.INTERNAL_USER.value,
+            LLMUserRoles.INTERNAL_USER.value,
             True,
         ),  # internal users can add models for their team
-        ("1234", "1235", LlmUserRoles.INTERNAL_USER.value, False),
-        (None, "1234", LlmUserRoles.INTERNAL_USER.value, False),
+        ("1234", "1235", LLMUserRoles.INTERNAL_USER.value, False),
+        (None, "1234", LLMUserRoles.INTERNAL_USER.value, False),
         (
             None,
             None,
-            LlmUserRoles.INTERNAL_USER.value,
+            LLMUserRoles.INTERNAL_USER.value,
             False,
         ),  # internal users cannot add models by default
     ],
@@ -183,7 +183,7 @@ async def test_add_update_model(prisma_client):
             ),
         ),
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LlmUserRoles.PROXY_ADMIN.value,
+            user_role=LLMUserRoles.PROXY_ADMIN.value,
             api_key="sk-1234",
             user_id="1234",
         ),
@@ -214,7 +214,7 @@ async def test_add_update_model(prisma_client):
             ),
         ),
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LlmUserRoles.PROXY_ADMIN.value,
+            user_role=LLMUserRoles.PROXY_ADMIN.value,
             api_key="sk-1234",
             user_id="1234",
         ),
@@ -248,7 +248,7 @@ async def _create_new_team(prisma_client):
     _new_team = await new_team(
         data=new_team_request,
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LlmUserRoles.PROXY_ADMIN.value,
+            user_role=LLMUserRoles.PROXY_ADMIN.value,
             api_key="sk-1234",
             user_id="1234",
         ),
@@ -298,7 +298,7 @@ async def test_add_team_model_to_db(prisma_client):
     model_response = await _add_team_model_to_db(
         model_params=model_params,
         user_api_key_dict=UserAPIKeyAuth(
-            user_role=LlmUserRoles.PROXY_ADMIN.value,
+            user_role=LLMUserRoles.PROXY_ADMIN.value,
             api_key="sk-1234",
             user_id="1234",
             team_id=team_id,

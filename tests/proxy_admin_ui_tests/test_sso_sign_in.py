@@ -13,7 +13,7 @@ import llm
 from llm.proxy.proxy_server import app
 from llm.proxy.utils import PrismaClient, ProxyLogging
 from llm.proxy.management_endpoints.ui_sso import auth_callback
-from llm.proxy._types import LlmUserRoles
+from llm.proxy._types import LLMUserRoles
 import os
 import jwt
 import time
@@ -113,7 +113,7 @@ async def test_auth_callback_new_user(mock_google_sso, mock_env_vars, prisma_cli
         print("inserted user from SSO", user)
         assert user is not None
         assert user.user_email == unique_user_email
-        assert user.user_role == LlmUserRoles.INTERNAL_USER_VIEW_ONLY
+        assert user.user_role == LLMUserRoles.INTERNAL_USER_VIEW_ONLY
         assert user.metadata == {"auth_provider": "google"}
 
     finally:
@@ -143,7 +143,7 @@ async def test_auth_callback_new_user_with_sso_default(
         # Set up the prisma client
         setattr(llm.proxy.proxy_server, "prisma_client", prisma_client)
         llm.default_internal_user_params = {
-            "user_role": LlmUserRoles.INTERNAL_USER.value
+            "user_role": LLMUserRoles.INTERNAL_USER.value
         }
         await llm.proxy.proxy_server.prisma_client.connect()
 
@@ -186,7 +186,7 @@ async def test_auth_callback_new_user_with_sso_default(
         print("inserted user from SSO", user)
         assert user is not None
         assert user.user_email == unique_user_email
-        assert user.user_role == LlmUserRoles.INTERNAL_USER
+        assert user.user_role == LLMUserRoles.INTERNAL_USER
 
     finally:
         # Clean up: Delete the user from the database

@@ -14,7 +14,7 @@ sys.path.insert(
 import llm
 from unittest.mock import MagicMock, patch, AsyncMock
 
-from llm.proxy._types import LlmUserRoles, UserAPIKeyAuth
+from llm.proxy._types import LLMUserRoles, UserAPIKeyAuth
 from llm.proxy.auth.auth_utils import is_request_body_safe
 from llm.proxy.llm_pre_call_utils import (
     _get_dynamic_logging_metadata,
@@ -286,7 +286,7 @@ def test_dynamic_logging_metadata_key_and_team_metadata(callback_vars):
         end_user_max_budget=None,
         last_refreshed_at=1726101560.967527,
         api_key="7c305cc48fe72272700dc0d67dc691c2d1f2807490ef5eb2ee1d3a3ca86e12b1",
-        user_role=LlmUserRoles.INTERNAL_USER,
+        user_role=LLMUserRoles.INTERNAL_USER,
         allowed_model_region=None,
         parent_otel_span=None,
         rpm_limit_per_model=None,
@@ -367,7 +367,7 @@ def test_dynamic_turn_off_message_logging(callback_vars):
         end_user_max_budget=None,
         last_refreshed_at=1726101560.967527,
         api_key="7c305cc48fe72272700dc0d67dc691c2d1f2807490ef5eb2ee1d3a3ca86e12b1",
-        user_role=LlmUserRoles.INTERNAL_USER,
+        user_role=LLMUserRoles.INTERNAL_USER,
         allowed_model_region=None,
         parent_otel_span=None,
         rpm_limit_per_model=None,
@@ -1218,7 +1218,7 @@ def test_llm_verification_token_view_response_with_budget_table(
 
 
 def test_is_allowed_to_make_key_request():
-    from llm.proxy._types import LlmUserRoles
+    from llm.proxy._types import LLMUserRoles
     from llm.proxy.management_endpoints.key_management_endpoints import (
         _is_allowed_to_make_key_request,
     )
@@ -1226,7 +1226,7 @@ def test_is_allowed_to_make_key_request():
     assert (
         _is_allowed_to_make_key_request(
             user_api_key_dict=UserAPIKeyAuth(
-                user_id="test_user_id", user_role=LlmUserRoles.PROXY_ADMIN
+                user_id="test_user_id", user_role=LLMUserRoles.PROXY_ADMIN
             ),
             user_id="test_user_id",
             team_id="test_team_id",
@@ -1238,7 +1238,7 @@ def test_is_allowed_to_make_key_request():
         _is_allowed_to_make_key_request(
             user_api_key_dict=UserAPIKeyAuth(
                 user_id="test_user_id",
-                user_role=LlmUserRoles.INTERNAL_USER,
+                user_role=LLMUserRoles.INTERNAL_USER,
                 team_id="llm-dashboard",
             ),
             user_id="test_user_id",

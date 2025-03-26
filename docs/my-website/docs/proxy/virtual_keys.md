@@ -607,11 +607,11 @@ class TeamUIKeyGenerationConfig(TypedDict):
 
 
 class PersonalUIKeyGenerationConfig(TypedDict):
-    allowed_user_roles: List[LlmUserRoles] 
+    allowed_user_roles: List[LLMUserRoles] 
     required_params: List[str] # require params on `/key/generate` to be set if a personal key (no team_id in request) is being generated
 
 
-class LlmUserRoles(str, enum.Enum):
+class LLMUserRoles(str, enum.Enum):
     """
     Admin Roles:
     PROXY_ADMIN: admin over the platform

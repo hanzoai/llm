@@ -368,7 +368,7 @@ async def ui_get_available_role(
     """
 
     _data_to_return = {}
-    for role in LlmUserRoles:
+    for role in LLMUserRoles:
 
         # We only show a subset of roles on UI
         if role in [
@@ -1120,7 +1120,7 @@ async def delete_user(
 async def add_internal_user_to_organization(
     user_id: str,
     organization_id: str,
-    user_role: LlmUserRoles,
+    user_role: LLMUserRoles,
 ):
     """
     Helper function to add an internal user to an organization
