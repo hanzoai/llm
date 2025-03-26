@@ -67,7 +67,7 @@ class AzureAIEmbedding(OpenAIChatCompletion):
     ) -> EmbeddingResponse:
         if client is None or not isinstance(client, AsyncHTTPHandler):
             client = get_async_httpx_client(
-                llm_provider=llm.LlmProviders.AZURE_AI,
+                llm_provider=llm.LLMProviders.AZURE_AI,
                 params={"timeout": timeout},
             )
 

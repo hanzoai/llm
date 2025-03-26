@@ -71,7 +71,7 @@ class TogetherAIRerank(BaseLLM):
         api_key: str,
     ) -> RerankResponse:
         client = get_async_httpx_client(
-            llm_provider=llm.LlmProviders.TOGETHER_AI
+            llm_provider=llm.LLMProviders.TOGETHER_AI
         )  # Use async client
 
         response = await client.post(

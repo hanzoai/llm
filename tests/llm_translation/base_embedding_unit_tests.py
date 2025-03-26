@@ -45,7 +45,7 @@ class BaseLLMEmbeddingTest(ABC):
         pass
 
     @abstractmethod
-    def get_custom_llm_provider(self) -> llm.LlmProviders:
+    def get_custom_llm_provider(self) -> llm.LLMProviders:
         """Must return the custom llm provider"""
         pass
 

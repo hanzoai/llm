@@ -2890,10 +2890,10 @@ async def test_custom_api_key_header_name(prisma_client):
         }
     )
 
-    # this should pass because we pass the master key as X-Llm-Key and llm_key_header_name="X-Llm-Key" in general settings
+    # this should pass because we pass the master key as X-LLM-Key and llm_key_header_name="X-LLM-Key" in general settings
     result = await user_api_key_auth(request=request, api_key="Bearer invalid-key")
 
-    # this should fail because X-Llm-Key is invalid
+    # this should fail because X-LLM-Key is invalid
     request = Request(
         {
             "type": "http",
@@ -2912,7 +2912,7 @@ async def test_custom_api_key_header_name(prisma_client):
         )
         pass
 
-    # this should pass because X-Llm-Key is valid
+    # this should pass because X-LLM-Key is valid
 
 
 @pytest.mark.asyncio()

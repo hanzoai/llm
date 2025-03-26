@@ -12,9 +12,9 @@ from llm.types.router import LLMParamsTypedDict
 if TYPE_CHECKING:
     from llm.router import Router as _Router
 
-    LlmRouter = _Router
+    LLMRouter = _Router
 else:
-    LlmRouter = Any
+    LLMRouter = Any
 
 
 def _check_stripped_model_group(model_group: str, fallback_key: str) -> bool:
@@ -84,7 +84,7 @@ def get_fallback_model_group(
 
 async def run_async_fallback(
     *args: Tuple[Any],
-    llm_router: LlmRouter,
+    llm_router: LLMRouter,
     fallback_model_group: List[str],
     original_model_group: str,
     original_exception: Exception,

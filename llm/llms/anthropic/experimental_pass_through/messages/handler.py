@@ -85,7 +85,7 @@ async def anthropic_messages(
     anthropic_messages_provider_config: Optional[BaseAnthropicMessagesConfig] = (
         ProviderConfigManager.get_provider_anthropic_messages_config(
             model=model,
-            provider=llm.LlmProviders(_custom_llm_provider),
+            provider=llm.LLMProviders(_custom_llm_provider),
         )
     )
     if anthropic_messages_provider_config is None:
@@ -94,7 +94,7 @@ async def anthropic_messages(
         )
     if client is None or not isinstance(client, AsyncHTTPHandler):
         async_httpx_client = get_async_httpx_client(
-            llm_provider=llm.LlmProviders.ANTHROPIC
+            llm_provider=llm.LLMProviders.ANTHROPIC
         )
     else:
         async_httpx_client = client

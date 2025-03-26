@@ -176,7 +176,7 @@ class VertexMultimodalEmbedding(VertexLLM):
                     timeout = httpx.Timeout(timeout)
                 _params["timeout"] = timeout
             client = get_async_httpx_client(
-                llm_provider=llm.LlmProviders.VERTEX_AI,
+                llm_provider=llm.LLMProviders.VERTEX_AI,
                 params={"timeout": timeout},
             )
         else:

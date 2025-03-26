@@ -8,7 +8,7 @@ from pydantic import BaseModel
 
 import llm
 from llm._logging import verbose_logger
-from llm.llm_core_utils.llm_logging import Logging as LlmLogging
+from llm.llm_core_utils.llm_logging import Logging as LLMLogging
 from llm.llms.custom_httpx.http_handler import (
     AsyncHTTPHandler,
     HTTPHandler,
@@ -48,7 +48,7 @@ class BedrockImageGeneration(BaseAWSLLM):
         prompt: str,
         model_response: ImageResponse,
         optional_params: dict,
-        logging_obj: LlmLogging,
+        logging_obj: LLMLogging,
         timeout: Optional[Union[float, httpx.Timeout]],
         aimg_generation: bool = False,
         api_base: Optional[str] = None,
@@ -105,7 +105,7 @@ class BedrockImageGeneration(BaseAWSLLM):
         prepared_request: BedrockImagePreparedRequest,
         timeout: Optional[Union[float, httpx.Timeout]],
         model: str,
-        logging_obj: LlmLogging,
+        logging_obj: LLMLogging,
         prompt: str,
         model_response: ImageResponse,
         client: Optional[AsyncHTTPHandler] = None,
@@ -116,7 +116,7 @@ class BedrockImageGeneration(BaseAWSLLM):
         Awaits the response from the bedrock image generation endpoint
         """
         async_client = client or get_async_httpx_client(
-            llm_provider=llm.LlmProviders.BEDROCK,
+            llm_provider=llm.LLMProviders.BEDROCK,
             params={"timeout": timeout},
         )
 
@@ -146,7 +146,7 @@ class BedrockImageGeneration(BaseAWSLLM):
         optional_params: dict,
         api_base: Optional[str],
         extra_headers: Optional[dict],
-        logging_obj: LlmLogging,
+        logging_obj: LLMLogging,
         prompt: str,
     ) -> BedrockImagePreparedRequest:
         """
@@ -157,7 +157,7 @@ class BedrockImageGeneration(BaseAWSLLM):
             optional_params (dict): The optional parameters for the image generation
             api_base (Optional[str]): The base URL for the Bedrock API
             extra_headers (Optional[dict]): The extra headers to include in the request
-            logging_obj (LlmLogging): The logging object to use for logging
+            logging_obj (LLMLogging): The logging object to use for logging
             prompt (str): The prompt to use for the image generation
         Returns:
             BedrockImagePreparedRequest: The prepared request object
@@ -278,7 +278,7 @@ class BedrockImageGeneration(BaseAWSLLM):
         self,
         model_response: ImageResponse,
         model: str,
-        logging_obj: LlmLogging,
+        logging_obj: LLMLogging,
         prompt: str,
         response: httpx.Response,
         data: dict,

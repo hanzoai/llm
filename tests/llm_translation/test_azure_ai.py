@@ -256,8 +256,8 @@ def test_azure_deepseek_reasoning_content():
 
 
 class TestAzureAIRerank(BaseLLMRerankTest):
-    def get_custom_llm_provider(self) -> llm.LlmProviders:
-        return llm.LlmProviders.AZURE_AI
+    def get_custom_llm_provider(self) -> llm.LLMProviders:
+        return llm.LLMProviders.AZURE_AI
 
     def get_base_rerank_call_args(self) -> dict:
         return {

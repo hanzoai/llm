@@ -129,7 +129,7 @@ def initialize_callbacks_on_proxy(  # noqa: PLR0915
 
                 if premium_user is not True:
                     raise Exception(
-                        "Trying to use Llm Guard"
+                        "Trying to use LLM Guard"
                         + CommonProxyErrors.not_premium_user.value
                     )
 

@@ -17,8 +17,8 @@ from unittest.mock import patch, MagicMock
 
 
 class TestVoyageAI(BaseLLMEmbeddingTest):
-    def get_custom_llm_provider(self) -> llm.LlmProviders:
-        return llm.LlmProviders.VOYAGE
+    def get_custom_llm_provider(self) -> llm.LLMProviders:
+        return llm.LLMProviders.VOYAGE
 
     def get_base_embedding_call_args(self) -> dict:
         return {

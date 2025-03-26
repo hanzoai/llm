@@ -354,7 +354,7 @@ class CodestralTextCompletion:
     ) -> TextCompletionResponse:
 
         async_handler = get_async_httpx_client(
-            llm_provider=llm.LlmProviders.TEXT_COMPLETION_CODESTRAL,
+            llm_provider=llm.LLMProviders.TEXT_COMPLETION_CODESTRAL,
             params={"timeout": timeout},
         )
         try:

@@ -13,7 +13,7 @@ import TabItem from '@theme/TabItem';
 
 
 
-Currently, Snowflake's REST API does not have an endpoint for `snowflake-arctic-embed` embedding models. If you want to use these embedding models with Llm, you can call them through our Hugging Face provider. 
+Currently, Snowflake's REST API does not have an endpoint for `snowflake-arctic-embed` embedding models. If you want to use these embedding models with LLM, you can call them through our Hugging Face provider. 
 
 Find the Arctic Embed models [here](https://huggingface.co/collections/Snowflake/arctic-embed-661fd57d50fab5fc314e4c18) on Hugging Face.
 

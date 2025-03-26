@@ -308,7 +308,7 @@ class BaseLLMChatTest(ABC):
         """
         Test that the response format type text does not lead to tool calls
         """
-        from llm import LlmProviders
+        from llm import LLMProviders
 
         base_completion_call_args = self.get_base_completion_call_args()
         llm.set_verbose = True
@@ -318,7 +318,7 @@ class BaseLLMChatTest(ABC):
         )
 
         provider_config = ProviderConfigManager.get_provider_chat_config(
-            base_completion_call_args["model"], LlmProviders(provider)
+            base_completion_call_args["model"], LLMProviders(provider)
         )
 
         print(f"provider_config={provider_config}")

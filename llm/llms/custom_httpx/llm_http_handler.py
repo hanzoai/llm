@@ -172,7 +172,7 @@ class BaseLLMHTTPHandler:
     ):
         if client is None:
             async_httpx_client = get_async_httpx_client(
-                llm_provider=llm.LlmProviders(custom_llm_provider),
+                llm_provider=llm.LLMProviders(custom_llm_provider),
                 params={"ssl_verify": llm_params.get("ssl_verify", None)},
             )
         else:
@@ -225,7 +225,7 @@ class BaseLLMHTTPHandler:
         json_mode: bool = optional_params.pop("json_mode", False)
 
         provider_config = ProviderConfigManager.get_provider_chat_config(
-            model=model, provider=llm.LlmProviders(custom_llm_provider)
+            model=model, provider=llm.LLMProviders(custom_llm_provider)
         )
 
         # get config from model, custom llm provider
@@ -527,7 +527,7 @@ class BaseLLMHTTPHandler:
         """
         if client is None:
             async_httpx_client = get_async_httpx_client(
-                llm_provider=llm.LlmProviders(custom_llm_provider),
+                llm_provider=llm.LLMProviders(custom_llm_provider),
                 params={"ssl_verify": llm_params.get("ssl_verify", None)},
             )
         else:
@@ -599,7 +599,7 @@ class BaseLLMHTTPHandler:
     ) -> EmbeddingResponse:
 
         provider_config = ProviderConfigManager.get_provider_embedding_config(
-            model=model, provider=llm.LlmProviders(custom_llm_provider)
+            model=model, provider=llm.LLMProviders(custom_llm_provider)
         )
         # get config from model, custom llm provider
         headers = provider_config.validate_environment(
@@ -699,7 +699,7 @@ class BaseLLMHTTPHandler:
     ) -> EmbeddingResponse:
         if client is None or not isinstance(client, AsyncHTTPHandler):
             async_httpx_client = get_async_httpx_client(
-                llm_provider=llm.LlmProviders(custom_llm_provider)
+                llm_provider=llm.LLMProviders(custom_llm_provider)
             )
         else:
             async_httpx_client = client
@@ -829,7 +829,7 @@ class BaseLLMHTTPHandler:
 
         if client is None or not isinstance(client, AsyncHTTPHandler):
             async_httpx_client = get_async_httpx_client(
-                llm_provider=llm.LlmProviders(custom_llm_provider)
+                llm_provider=llm.LLMProviders(custom_llm_provider)
             )
         else:
             async_httpx_client = client
@@ -913,7 +913,7 @@ class BaseLLMHTTPHandler:
         llm_params: dict = {},
     ) -> TranscriptionResponse:
         provider_config = ProviderConfigManager.get_provider_audio_transcription_config(
-            model=model, provider=llm.LlmProviders(custom_llm_provider)
+            model=model, provider=llm.LLMProviders(custom_llm_provider)
         )
         if provider_config is None:
             raise ValueError(
@@ -1124,7 +1124,7 @@ class BaseLLMHTTPHandler:
         """
         if client is None or not isinstance(client, AsyncHTTPHandler):
             async_httpx_client = get_async_httpx_client(
-                llm_provider=llm.LlmProviders(custom_llm_provider),
+                llm_provider=llm.LLMProviders(custom_llm_provider),
                 params={"ssl_verify": llm_params.get("ssl_verify", None)},
             )
         else:

@@ -356,7 +356,7 @@ class ContextCachingEndpoints(VertexBase):
 
         if client is None or not isinstance(client, AsyncHTTPHandler):
             client = get_async_httpx_client(
-                params={"timeout": timeout}, llm_provider=llm.LlmProviders.VERTEX_AI
+                params={"timeout": timeout}, llm_provider=llm.LLMProviders.VERTEX_AI
             )
         else:
             client = client

@@ -1979,7 +1979,7 @@ totallynotbrent/aaronGPTalpha
 Plaaasma/gerald-model
 yashugupta786/bart_large_xsum_samsum_conv_summarizer
 eachadea/legacy-ggml-vicuna-7b-4bit
-ColtonAi/Llmtrain
+ColtonAi/LLMtrain
 ColtonAi/Chem4
 IchtacaKemeRaz/favabean
 Stromello/DialoGPT-medium-ZeroTwo

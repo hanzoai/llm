@@ -9,7 +9,7 @@ sys.path.insert(0, os.path.abspath("../.."))
 
 import llm
 from llm.utils import get_llm_provider, ProviderConfigManager, _check_provider_match
-from llm import LlmProviders
+from llm import LLMProviders
 
 
 def test_supports_tool_choice_simple_tests():
@@ -148,7 +148,7 @@ async def test_supports_tool_choice():
 
         # Get provider config and supported params
         print("LLM provider", provider)
-        provider_enum = LlmProviders(provider)
+        provider_enum = LLMProviders(provider)
         config = config_manager.get_provider_chat_config(model, provider_enum)
         supported_params = config.get_supported_openai_params(model)
         print("supported_params", supported_params)

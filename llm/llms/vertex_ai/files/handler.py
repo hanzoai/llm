@@ -2,7 +2,7 @@ from typing import Any, Coroutine, Optional, Union
 
 import httpx
 
-from llm import LlmProviders
+from llm import LLMProviders
 from llm.integrations.gcs_bucket.gcs_bucket_base import (
     GCSBucketBase,
     GCSLoggingConfig,
@@ -26,7 +26,7 @@ class VertexAIFilesHandler(GCSBucketBase):
     def __init__(self):
         super().__init__()
         self.async_httpx_client = get_async_httpx_client(
-            llm_provider=LlmProviders.VERTEX_AI,
+            llm_provider=LLMProviders.VERTEX_AI,
         )
 
     pass

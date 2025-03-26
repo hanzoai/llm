@@ -7,9 +7,9 @@ import llm
 if TYPE_CHECKING:
     from llm.router import Router as _Router
 
-    LlmRouter = _Router
+    LLMRouter = _Router
 else:
-    LlmRouter = Any
+    LLMRouter = Any
 
 
 ROUTE_ENDPOINT_MAPPING = {
@@ -35,7 +35,7 @@ class ProxyModelNotFoundError(HTTPException):
 
 async def route_request(
     data: dict,
-    llm_router: Optional[LlmRouter],
+    llm_router: Optional[LLMRouter],
     user_model: Optional[str],
     route_type: Literal[
         "acompletion",

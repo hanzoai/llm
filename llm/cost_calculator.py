@@ -56,8 +56,8 @@ from llm.types.llms.openai import (
 from llm.types.rerank import RerankBilledUnits, RerankResponse
 from llm.types.utils import (
     CallTypesLiteral,
-    LlmProviders,
-    LlmProvidersSet,
+    LLMProviders,
+    LLMProvidersSet,
     ModelInfo,
     PassthroughCallTypes,
     StandardBuiltInToolsParams,
@@ -458,7 +458,7 @@ def _model_contains_known_llm_provider(model: str) -> bool:
     Check if the model contains a known llm provider
     """
     _provider_prefix = model.split("/")[0]
-    return _provider_prefix in LlmProvidersSet
+    return _provider_prefix in LLMProvidersSet
 
 
 def _get_usage_object(
@@ -927,7 +927,7 @@ def rerank_cost(
             model=model,
             api_base=None,
             present_version_params=[],
-            provider=LlmProviders(custom_llm_provider),
+            provider=LLMProviders(custom_llm_provider),
         )
 
         try:

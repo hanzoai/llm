@@ -875,7 +875,7 @@ async def test_gemini_pro_function_calling_httpx(model, sync_mode):
         messages = [
             {
                 "role": "system",
-                "content": "Your name is Llm Bot, you are a helpful assistant",
+                "content": "Your name is LLM Bot, you are a helpful assistant",
             },
             # User asks for their name and weather in San Francisco
             {
@@ -957,7 +957,7 @@ async def test_partner_models_httpx(model, sync_mode):
         messages = [
             {
                 "role": "system",
-                "content": "Your name is Llm Bot, you are a helpful assistant",
+                "content": "Your name is LLM Bot, you are a helpful assistant",
             },
             # User asks for their name and weather in San Francisco
             {
@@ -1020,7 +1020,7 @@ async def test_partner_models_httpx_streaming(model, sync_mode):
         messages = [
             {
                 "role": "system",
-                "content": "Your name is Llm Bot, you are a helpful assistant",
+                "content": "Your name is LLM Bot, you are a helpful assistant",
             },
             # User asks for their name and weather in San Francisco
             {
@@ -1692,7 +1692,7 @@ async def test_gemini_pro_function_calling(provider, sync_mode):
         messages = [
             {
                 "role": "system",
-                "content": "Your name is Llm Bot, you are a helpful assistant",
+                "content": "Your name is LLM Bot, you are a helpful assistant",
             },
             # User asks for their name and weather in San Francisco
             {
@@ -2239,7 +2239,7 @@ def test_tool_name_conversion():
     messages = [
         {
             "role": "system",
-            "content": "Your name is Llm Bot, you are a helpful assistant",
+            "content": "Your name is LLM Bot, you are a helpful assistant",
         },
         # User asks for their name and weather in San Francisco
         {
@@ -2286,7 +2286,7 @@ def test_prompt_factory():
     messages = [
         {
             "role": "system",
-            "content": "Your name is Llm Bot, you are a helpful assistant",
+            "content": "Your name is LLM Bot, you are a helpful assistant",
         },
         # User asks for their name and weather in San Francisco
         {
@@ -2671,7 +2671,7 @@ async def test_partner_models_httpx_ai21():
     messages = [
         {
             "role": "system",
-            "content": "Your name is Llm Bot, you are a helpful assistant",
+            "content": "Your name is LLM Bot, you are a helpful assistant",
         },
         {
             "role": "user",
@@ -2770,7 +2770,7 @@ async def test_partner_models_httpx_ai21():
             "messages": [
                 {
                     "role": "system",
-                    "content": "Your name is Llm Bot, you are a helpful assistant",
+                    "content": "Your name is LLM Bot, you are a helpful assistant",
                 },
                 {
                     "role": "user",
@@ -3140,7 +3140,7 @@ async def test_vertexai_model_garden_model_completion(
     messages = [
         {
             "role": "system",
-            "content": "Your name is Llm Bot, you are a helpful assistant",
+            "content": "Your name is LLM Bot, you are a helpful assistant",
         },
         {
             "role": "user",
@@ -3162,7 +3162,7 @@ async def test_vertexai_model_garden_model_completion(
                 "index": 0,
                 "message": {
                     "role": "assistant",
-                    "content": "Hello, my name is Llm Bot. I'm a helpful assistant here to provide information and answer your questions.\n\nTo check the weather for you, I'll need to know your location. Could you please provide me with your city or zip code? That way, I can give you the most accurate and up-to-date weather information.\n\nIf you don't have your location handy, I can also suggest some popular weather websites or apps that you can use to check the weather for your area.\n\nLet me know how I can assist you!",
+                    "content": "Hello, my name is LLM Bot. I'm a helpful assistant here to provide information and answer your questions.\n\nTo check the weather for you, I'll need to know your location. Could you please provide me with your city or zip code? That way, I can give you the most accurate and up-to-date weather information.\n\nIf you don't have your location handy, I can also suggest some popular weather websites or apps that you can use to check the weather for your area.\n\nLet me know how I can assist you!",
                     "tool_calls": [],
                 },
                 "logprobs": None,
@@ -3200,7 +3200,7 @@ async def test_vertexai_model_garden_model_completion(
     assert len(response.choices) == 1
     assert response.choices[0].message.role == "assistant"
     assert response.choices[0].message.content.startswith(
-        "Hello, my name is Llm Bot"
+        "Hello, my name is LLM Bot"
     )
     assert response.choices[0].finish_reason == "stop"
     assert response.usage.completion_tokens == 109

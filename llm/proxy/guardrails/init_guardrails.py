@@ -13,7 +13,7 @@ from llm.types.guardrails import (
     GuardrailItem,
     GuardrailItemSpec,
     LakeraCategoryThresholds,
-    LlmParams,
+    LLMParams,
 )
 
 from .guardrail_registry import guardrail_registry
@@ -95,10 +95,10 @@ def init_guardrails_v2(
         verbose_proxy_logger.debug("llm_params= %s", llm_params_data)
 
         _llm_params_kwargs = {
-            k: llm_params_data.get(k) for k in LlmParams.__annotations__.keys()
+            k: llm_params_data.get(k) for k in LLMParams.__annotations__.keys()
         }
 
-        llm_params = LlmParams(**_llm_params_kwargs)  # type: ignore
+        llm_params = LLMParams(**_llm_params_kwargs)  # type: ignore
 
         if (
             "category_thresholds" in llm_params_data

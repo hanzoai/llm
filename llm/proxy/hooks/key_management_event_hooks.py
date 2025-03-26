@@ -14,7 +14,7 @@ from llm.proxy._types import (
     KeyRequest,
     LLM_AuditLogs,
     LLM_VerificationToken,
-    LlmTableNames,
+    LLMTableNames,
     ProxyErrorTypes,
     ProxyException,
     RegenerateKeyRequest,
@@ -66,7 +66,7 @@ class KeyManagementEventHooks:
                         or user_api_key_dict.user_id
                         or llm_proxy_admin_name,
                         changed_by_api_key=user_api_key_dict.api_key,
-                        table_name=LlmTableNames.KEY_TABLE_NAME,
+                        table_name=LLMTableNames.KEY_TABLE_NAME,
                         object_id=response.token_id or "",
                         action="created",
                         updated_values=_updated_values,
@@ -115,7 +115,7 @@ class KeyManagementEventHooks:
                         or user_api_key_dict.user_id
                         or llm_proxy_admin_name,
                         changed_by_api_key=user_api_key_dict.api_key,
-                        table_name=LlmTableNames.KEY_TABLE_NAME,
+                        table_name=LLMTableNames.KEY_TABLE_NAME,
                         object_id=data.key,
                         action="updated",
                         updated_values=_updated_values,
@@ -191,7 +191,7 @@ class KeyManagementEventHooks:
                             or user_api_key_dict.user_id
                             or llm_proxy_admin_name,
                             changed_by_api_key=user_api_key_dict.api_key,
-                            table_name=LlmTableNames.KEY_TABLE_NAME,
+                            table_name=LLMTableNames.KEY_TABLE_NAME,
                             object_id=key,
                             action="deleted",
                             updated_values="{}",

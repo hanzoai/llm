@@ -402,7 +402,7 @@ async def azure_proxy_route(
         )
     # Add or update query parameters
     azure_api_key = passthrough_endpoint_router.get_credentials(
-        custom_llm_provider=llm.LlmProviders.AZURE.value,
+        custom_llm_provider=llm.LLMProviders.AZURE.value,
         region_name=None,
     )
     if azure_api_key is None:
@@ -417,7 +417,7 @@ async def azure_proxy_route(
         user_api_key_dict=user_api_key_dict,
         base_target_url=base_target_url,
         api_key=azure_api_key,
-        custom_llm_provider=llm.LlmProviders.AZURE,
+        custom_llm_provider=llm.LLMProviders.AZURE,
     )
 
 
@@ -569,7 +569,7 @@ async def openai_proxy_route(
     base_target_url = "https://api.openai.com/"
     # Add or update query parameters
     openai_api_key = passthrough_endpoint_router.get_credentials(
-        custom_llm_provider=llm.LlmProviders.OPENAI.value,
+        custom_llm_provider=llm.LLMProviders.OPENAI.value,
         region_name=None,
     )
     if openai_api_key is None:
@@ -584,7 +584,7 @@ async def openai_proxy_route(
         user_api_key_dict=user_api_key_dict,
         base_target_url=base_target_url,
         api_key=openai_api_key,
-        custom_llm_provider=llm.LlmProviders.OPENAI,
+        custom_llm_provider=llm.LLMProviders.OPENAI,
     )
 
 
@@ -597,7 +597,7 @@ class BaseOpenAIPassThroughHandler:
         user_api_key_dict: UserAPIKeyAuth,
         base_target_url: str,
         api_key: str,
-        custom_llm_provider: llm.LlmProviders,
+        custom_llm_provider: llm.LLMProviders,
     ):
         encoded_endpoint = httpx.URL(endpoint).path
         # Ensure endpoint starts with '/' for proper URL construction
@@ -660,7 +660,7 @@ class BaseOpenAIPassThroughHandler:
 
     @staticmethod
     def _join_url_paths(
-        base_url: httpx.URL, path: str, custom_llm_provider: llm.LlmProviders
+        base_url: httpx.URL, path: str, custom_llm_provider: llm.LLMProviders
     ) -> str:
         """
         Properly joins a base URL with a path, preserving any existing path in the base URL.
@@ -678,7 +678,7 @@ class BaseOpenAIPassThroughHandler:
 
         # Apply OpenAI-specific path handling for both branches
         if (
-            custom_llm_provider == llm.LlmProviders.OPENAI
+            custom_llm_provider == llm.LLMProviders.OPENAI
             and "/v1/" not in joined_path_str
         ):
             # Insert v1 after api.openai.com for OpenAI requests

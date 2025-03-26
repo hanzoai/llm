@@ -152,8 +152,8 @@ class TestFireworksAIAudioTranscription(BaseLLMAudioTranscriptionTest):
             "api_base": "https://audio-prod.us-virginia-1.direct.fireworks.ai/v1",
         }
 
-    def get_custom_llm_provider(self) -> llm.LlmProviders:
-        return llm.LlmProviders.FIREWORKS_AI
+    def get_custom_llm_provider(self) -> llm.LLMProviders:
+        return llm.LLMProviders.FIREWORKS_AI
 
 
 @pytest.mark.parametrize(

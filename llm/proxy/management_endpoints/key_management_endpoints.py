@@ -2218,7 +2218,7 @@ async def block_key(
                     or user_api_key_dict.user_id
                     or llm_proxy_admin_name,
                     changed_by_api_key=user_api_key_dict.api_key,
-                    table_name=LlmTableNames.KEY_TABLE_NAME,
+                    table_name=LLMTableNames.KEY_TABLE_NAME,
                     object_id=hashed_token,
                     action="blocked",
                     updated_values="{}",
@@ -2325,7 +2325,7 @@ async def unblock_key(
                     or user_api_key_dict.user_id
                     or llm_proxy_admin_name,
                     changed_by_api_key=user_api_key_dict.api_key,
-                    table_name=LlmTableNames.KEY_TABLE_NAME,
+                    table_name=LLMTableNames.KEY_TABLE_NAME,
                     object_id=hashed_token,
                     action="blocked",
                     updated_values="{}",

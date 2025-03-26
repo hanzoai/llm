@@ -44,7 +44,7 @@ def get_unique_names_from_llms_dir(base_dir: str):
 
 
 def run_lint_check(unique_names):
-    _all_llm_providers = [str(provider.value) for provider in llm.LlmProviders]
+    _all_llm_providers = [str(provider.value) for provider in llm.LLMProviders]
     violations = []
     for name in unique_names:
         if (

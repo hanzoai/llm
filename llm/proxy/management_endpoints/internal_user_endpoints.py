@@ -67,7 +67,7 @@ async def create_internal_user_audit_log(
             or user_api_key_dict.user_id
             or llm_proxy_admin_name,
             changed_by_api_key=user_api_key_dict.api_key,
-            table_name=LlmTableNames.USER_TABLE_NAME,
+            table_name=LLMTableNames.USER_TABLE_NAME,
             object_id=user_id,
             action=action,
             updated_values=after_value,
@@ -1083,7 +1083,7 @@ async def delete_user(
                             or user_api_key_dict.user_id
                             or llm_proxy_admin_name,
                             changed_by_api_key=user_api_key_dict.api_key,
-                            table_name=LlmTableNames.USER_TABLE_NAME,
+                            table_name=LLMTableNames.USER_TABLE_NAME,
                             object_id=user_id,
                             action="deleted",
                             updated_values="{}",

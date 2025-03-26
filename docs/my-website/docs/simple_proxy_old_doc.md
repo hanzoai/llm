@@ -858,7 +858,7 @@ LLM requires the following REDIS credentials in your env to enable caching
   ```shell
   REDIS_HOST = ""       # REDIS_HOST='redis-18841.c274.us-east-1-3.ec2.cloud.redislabs.com'
   REDIS_PORT = ""       # REDIS_PORT='18841'
-  REDIS_PASSWORD = ""   # REDIS_PASSWORD='LlmIsAmazing'
+  REDIS_PASSWORD = ""   # REDIS_PASSWORD='LLMIsAmazing'
   ```
 #### Step 3: Run proxy with config
 ```shell
@@ -1246,7 +1246,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
 
 #### --model or -m
    - **Default:** `None`
-   - The model name to pass to Llm.
+   - The model name to pass to LLM.
    - **Usage:**
      ```shell
      llm --model gpt-3.5-turbo
@@ -1337,7 +1337,7 @@ LLM proxy adds **0.00325 seconds** latency as compared to using the Raw OpenAI A
      ```
 
 #### --config
-   - Configure Llm by providing a configuration file path.
+   - Configure LLM by providing a configuration file path.
    - **Usage:**
      ```shell
      llm --config path/to/config.yaml

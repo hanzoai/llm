@@ -522,7 +522,7 @@ async def test_model_function_invoke(model, sync_mode, api_key, api_base):
         messages = [
             {
                 "role": "system",
-                "content": "Your name is Llm Bot, you are a helpful assistant",
+                "content": "Your name is LLM Bot, you are a helpful assistant",
             },
             # User asks for their name and weather in San Francisco
             {

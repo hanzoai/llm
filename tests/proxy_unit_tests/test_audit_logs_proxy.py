@@ -47,7 +47,7 @@ verbose_proxy_logger.setLevel(level=logging.DEBUG)
 from starlette.datastructures import URL
 
 from llm.proxy.management_helpers.audit_logs import create_audit_log_for_update
-from llm.proxy._types import LLM_AuditLogs, LlmTableNames
+from llm.proxy._types import LLM_AuditLogs, LLMTableNames
 from llm.caching.caching import DualCache
 from unittest.mock import patch, AsyncMock
 
@@ -73,7 +73,7 @@ async def test_create_audit_log_for_update_premium_user():
             updated_at=datetime.now(),
             changed_by="test_changed_by",
             action="updated",
-            table_name=LlmTableNames.TEAM_TABLE_NAME,
+            table_name=LLMTableNames.TEAM_TABLE_NAME,
             object_id="test_object_id",
             updated_values=json.dumps({"key": "value"}),
             before_value=json.dumps({"old_key": "old_value"}),
@@ -131,7 +131,7 @@ async def test_create_audit_log_in_db(prisma_client):
         updated_at=datetime.now(),
         changed_by="test_changed_by",
         action="updated",
-        table_name=LlmTableNames.TEAM_TABLE_NAME,
+        table_name=LLMTableNames.TEAM_TABLE_NAME,
         object_id="test_object_id",
         updated_values=json.dumps({"key": "value"}),
         before_value=json.dumps({"old_key": "old_value"}),

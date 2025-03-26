@@ -70,7 +70,7 @@ model_list:
 When adding a new model, your JSON payload should conform to the following structure:
 
 - `model_name`: The name of the new model (required).
-- `llm_params`: A dictionary containing parameters specific to the Llm setup (required).
+- `llm_params`: A dictionary containing parameters specific to the LLM setup (required).
 - `model_info`: An optional dictionary to provide additional information about the model.
 
 Here's an example of how to structure your `ModelParams`:

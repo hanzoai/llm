@@ -216,7 +216,7 @@ class BedrockConverseLLM(BaseAWSLLM):
                     timeout = httpx.Timeout(timeout)
                 _params["timeout"] = timeout
             client = get_async_httpx_client(
-                params=_params, llm_provider=llm.LlmProviders.BEDROCK
+                params=_params, llm_provider=llm.LLMProviders.BEDROCK
             )
         else:
             client = client  # type: ignore

@@ -252,7 +252,7 @@ async def async_completion(
         llm_params=llm_params,
     )
     async_handler = get_async_httpx_client(
-        llm_provider=llm.LlmProviders.REPLICATE,
+        llm_provider=llm.LLMProviders.REPLICATE,
         params={"timeout": 600.0},
     )
     response = await async_handler.post(

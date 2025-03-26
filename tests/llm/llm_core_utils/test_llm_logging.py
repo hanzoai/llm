@@ -11,12 +11,12 @@ sys.path.insert(
 
 import time
 
-from llm.llm_core_utils.llm_logging import Logging as LlmLogging
+from llm.llm_core_utils.llm_logging import Logging as LLMLogging
 
 
 @pytest.fixture
 def logging_obj():
-    return LlmLogging(
+    return LLMLogging(
         model="bedrock/claude-3-5-sonnet-20240620-v1:0",
         messages=[{"role": "user", "content": "Hey"}],
         stream=True,

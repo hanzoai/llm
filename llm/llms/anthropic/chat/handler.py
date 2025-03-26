@@ -12,7 +12,7 @@ import llm
 import llm.llm_core_utils
 import llm.types
 import llm.types.utils
-from llm import LlmProviders
+from llm import LLMProviders
 from llm.llm_core_utils.core_helpers import map_finish_reason
 from llm.llms.base_llm.chat.transformation import BaseConfig
 from llm.llms.custom_httpx.http_handler import (
@@ -227,7 +227,7 @@ class AnthropicChatCompletion(BaseLLM):
         client: Optional[AsyncHTTPHandler] = None,
     ) -> Union[ModelResponse, CustomStreamWrapper]:
         async_handler = client or get_async_httpx_client(
-            llm_provider=llm.LlmProviders.ANTHROPIC
+            llm_provider=llm.LLMProviders.ANTHROPIC
         )
 
         try:
@@ -307,7 +307,7 @@ class AnthropicChatCompletion(BaseLLM):
 
         config = ProviderConfigManager.get_provider_chat_config(
             model=model,
-            provider=LlmProviders(custom_llm_provider),
+            provider=LLMProviders(custom_llm_provider),
         )
 
         data = config.transform_request(

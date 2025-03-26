@@ -18120,7 +18120,7 @@ Kuppuram/distilgpt2-finetuned-wikitext2
 Zekunli/flan-t5-base-da-multiwoz2.0_400-loss-ep100
 tarunchander/t5-end2end-questions-generation
 jeremyvictor/flan-t5-large-clang8-e8-b16
-ColtonAi/Llmtrain
+ColtonAi/LLMtrain
 ybelkada/tiny-random-T5ForConditionalGeneration-calibrated
 VMware/flan-t5-large-alpaca
 VMware/flan-t5-xl-alpaca

@@ -6,15 +6,15 @@ from llm.utils import calculate_max_parallel_requests
 if TYPE_CHECKING:
     from llm.router import Router as _Router
 
-    LlmRouter = _Router
+    LLMRouter = _Router
 else:
-    LlmRouter = Any
+    LLMRouter = Any
 
 
 class InitalizeCachedClient:
     @staticmethod
     def set_max_parallel_requests_client(
-        llm_router_instance: LlmRouter, model: dict
+        llm_router_instance: LLMRouter, model: dict
     ):
         llm_params = model.get("llm_params", {})
         model_id = model["model_info"]["id"]

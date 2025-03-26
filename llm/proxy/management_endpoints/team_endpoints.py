@@ -33,7 +33,7 @@ from llm.proxy._types import (
     LLM_TeamTable,
     LLM_TeamTableCachedObj,
     LLM_UserTable,
-    LlmTableNames,
+    LLMTableNames,
     LLMUserRoles,
     Member,
     NewTeamRequest,
@@ -339,7 +339,7 @@ async def new_team(  # noqa: PLR0915
                         or user_api_key_dict.user_id
                         or llm_proxy_admin_name,
                         changed_by_api_key=user_api_key_dict.api_key,
-                        table_name=LlmTableNames.TEAM_TABLE_NAME,
+                        table_name=LLMTableNames.TEAM_TABLE_NAME,
                         object_id=data.team_id,
                         action="created",
                         updated_values=_updated_values,
@@ -542,7 +542,7 @@ async def update_team(
                     or user_api_key_dict.user_id
                     or llm_proxy_admin_name,
                     changed_by_api_key=user_api_key_dict.api_key,
-                    table_name=LlmTableNames.TEAM_TABLE_NAME,
+                    table_name=LLMTableNames.TEAM_TABLE_NAME,
                     object_id=data.team_id,
                     action="updated",
                     updated_values=_after_value,
@@ -1175,7 +1175,7 @@ async def delete_team(
                         or user_api_key_dict.user_id
                         or llm_proxy_admin_name,
                         changed_by_api_key=user_api_key_dict.api_key,
-                        table_name=LlmTableNames.TEAM_TABLE_NAME,
+                        table_name=LLMTableNames.TEAM_TABLE_NAME,
                         object_id=team_id,
                         action="deleted",
                         updated_values="{}",

@@ -12,15 +12,15 @@ if TYPE_CHECKING:
 
     from llm.router import Router as _Router
 
-    LlmRouter = _Router
+    LLMRouter = _Router
     Span = _Span
 else:
-    LlmRouter = Any
+    LLMRouter = Any
     Span = Any
 
 
 async def send_llm_exception_alert(
-    llm_router_instance: LlmRouter,
+    llm_router_instance: LLMRouter,
     request_kwargs: dict,
     error_traceback_str: str,
     original_exception,
@@ -30,7 +30,7 @@ async def send_llm_exception_alert(
     Sends a Slack / MS Teams alert for the LLM API call failure. Only if router.slack_alerting_logger is set.
 
     Parameters:
-        llm_router_instance (_Router): The LlmRouter instance.
+        llm_router_instance (_Router): The LLMRouter instance.
         original_exception (Any): The original exception that occurred.
 
     Returns:
@@ -65,7 +65,7 @@ async def send_llm_exception_alert(
 
 
 async def async_raise_no_deployment_exception(
-    llm_router_instance: LlmRouter, model: str, parent_otel_span: Optional[Span]
+    llm_router_instance: LLMRouter, model: str, parent_otel_span: Optional[Span]
 ):
     """
     Raises a RouterRateLimitError if no deployment is found for the given model.

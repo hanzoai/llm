@@ -346,21 +346,21 @@ async def test_add_and_delete_deployments(llm_router, model_list_flag_value):
             assert len(llm_router.model_list) == len(model_list) + prev_llm_router_val
 
 
-from llm import LLM_CHAT_PROVIDERS, LlmProviders
+from llm import LLM_CHAT_PROVIDERS, LLMProviders
 from llm.utils import ProviderConfigManager
 from llm.llms.base_llm.chat.transformation import BaseConfig
 
 
-def _check_provider_config(config: BaseConfig, provider: LlmProviders):
+def _check_provider_config(config: BaseConfig, provider: LLMProviders):
     assert isinstance(
         config,
         BaseConfig,
     ), f"Provider {provider} is not a subclass of BaseConfig. Got={config}"
 
     if (
-        provider != llm.LlmProviders.OPENAI
-        and provider != llm.LlmProviders.OPENAI_LIKE
-        and provider != llm.LlmProviders.CUSTOM_OPENAI
+        provider != llm.LLMProviders.OPENAI
+        and provider != llm.LLMProviders.OPENAI_LIKE
+        and provider != llm.LLMProviders.CUSTOM_OPENAI
     ):
         assert (
             config.__class__.__name__ != "OpenAIGPTConfig"
@@ -374,7 +374,7 @@ def test_provider_config_manager_bedrock_converse_like():
 
     config = ProviderConfigManager.get_provider_chat_config(
         model="bedrock/converse_like/us.amazon.nova-pro-v1:0",
-        provider=LlmProviders.BEDROCK,
+        provider=LLMProviders.BEDROCK,
     )
     print(f"config: {config}")
     assert isinstance(config, AmazonConverseConfig)
@@ -385,19 +385,19 @@ def test_provider_config_manager_bedrock_converse_like():
 
 #     for provider in LLM_CHAT_PROVIDERS:
 #         if (
-#             provider == LlmProviders.VERTEX_AI
-#             or provider == LlmProviders.VERTEX_AI_BETA
-#             or provider == LlmProviders.BEDROCK
-#             or provider == LlmProviders.BASETEN
-#             or provider == LlmProviders.PETALS
-#             or provider == LlmProviders.SAGEMAKER
-#             or provider == LlmProviders.SAGEMAKER_CHAT
-#             or provider == LlmProviders.VLLM
-#             or provider == LlmProviders.OLLAMA
+#             provider == LLMProviders.VERTEX_AI
+#             or provider == LLMProviders.VERTEX_AI_BETA
+#             or provider == LLMProviders.BEDROCK
+#             or provider == LLMProviders.BASETEN
+#             or provider == LLMProviders.PETALS
+#             or provider == LLMProviders.SAGEMAKER
+#             or provider == LLMProviders.SAGEMAKER_CHAT
+#             or provider == LLMProviders.VLLM
+#             or provider == LLMProviders.OLLAMA
 #         ):
 #             continue
 
 #         config = ProviderConfigManager.get_provider_chat_config(
-#             model="gpt-3.5-turbo", provider=LlmProviders(provider)
+#             model="gpt-3.5-turbo", provider=LLMProviders(provider)
 #         )
 #         _check_provider_config(config, provider)

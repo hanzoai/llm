@@ -307,13 +307,13 @@ model_list:
 
 general_settings: 
   master_key: sk-1234 
-  llm_key_header_name: "X-Llm-Key" # 👈 Key Change
+  llm_key_header_name: "X-LLM-Key" # 👈 Key Change
 
 ```
 
 **Step 2** Test it
 
-In this request, llm will use the Virtual key in the `X-Llm-Key` header
+In this request, llm will use the Virtual key in the `X-LLM-Key` header
 
 <Tabs>
 <TabItem value="curl" label="curl">
@@ -321,7 +321,7 @@ In this request, llm will use the Virtual key in the `X-Llm-Key` header
 ```shell
 curl http://localhost:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "X-Llm-Key: Bearer sk-1234" \
+  -H "X-LLM-Key: Bearer sk-1234" \
   -H "Authorization: Bearer bad-key" \
   -d '{
     "model": "fake-openai-endpoint",
@@ -333,7 +333,7 @@ curl http://localhost:4000/v1/chat/completions \
 
 **Expected Response**
 
-Expect to see a successfull response from the llm proxy since the key passed in `X-Llm-Key` is valid
+Expect to see a successfull response from the llm proxy since the key passed in `X-LLM-Key` is valid
 ```shell
 {"id":"chatcmpl-f9b2b79a7c30477ab93cd0e717d1773e","choices":[{"finish_reason":"stop","index":0,"message":{"content":"\n\nHello there, how may I assist you today?","role":"assistant","tool_calls":null,"function_call":null}}],"created":1677652288,"model":"gpt-3.5-turbo-0125","object":"chat.completion","system_fingerprint":"fp_44709d6fcb","usage":{"completion_tokens":12,"prompt_tokens":9,"total_tokens":21}
 ```
@@ -348,7 +348,7 @@ client = openai.OpenAI(
     base_url="https://api-gateway-url.com/llmservc/api/llmp",
     default_headers={
         "Authorization": f"Bearer {API_GATEWAY_TOKEN}", # (optional) For your API Gateway
-        "X-Llm-Key": f"Bearer sk-1234"              # For LLM Proxy
+        "X-LLM-Key": f"Bearer sk-1234"              # For LLM Proxy
     }
 )
 ```

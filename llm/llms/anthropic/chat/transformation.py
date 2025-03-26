@@ -28,7 +28,7 @@ from llm.types.llms.openai import (
     ChatCompletionToolCallFunctionChunk,
     ChatCompletionToolParam,
 )
-from llm.types.utils import Message as LlmMessage
+from llm.types.utils import Message as LLMMessage
 from llm.types.utils import PromptTokensDetailsWrapper
 from llm.utils import ModelResponse, Usage, add_dummy_tool, has_tool_call_blocks
 
@@ -568,8 +568,8 @@ class AnthropicConfig(BaseConfig):
         self,
         json_mode: Optional[bool],
         tool_calls: List[ChatCompletionToolCallChunk],
-    ) -> Optional[LlmMessage]:
-        _message: Optional[LlmMessage] = None
+    ) -> Optional[LLMMessage]:
+        _message: Optional[LLMMessage] = None
         if json_mode is True and len(tool_calls) == 1:
             # check if tool name is the default tool name
             json_mode_content_str: Optional[str] = None
@@ -750,7 +750,7 @@ class AnthropicConfig(BaseConfig):
     @staticmethod
     def _convert_tool_response_to_message(
         tool_calls: List[ChatCompletionToolCallChunk],
-    ) -> Optional[LlmMessage]:
+    ) -> Optional[LLMMessage]:
         """
         In JSON mode, Anthropic API returns JSON schema as a tool call, we need to convert it to a message to follow the OpenAI format
 

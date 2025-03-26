@@ -149,8 +149,8 @@ from llm.types.utils import (
     EmbeddingResponse,
     Function,
     ImageResponse,
-    LlmProviders,
-    LlmProvidersSet,
+    LLMProviders,
+    LLMProvidersSet,
     Message,
     ModelInfo,
     ModelInfoBase,
@@ -2057,8 +2057,8 @@ def supports_response_schema(
 
     # providers that globally support response schema
     PROVIDERS_GLOBALLY_SUPPORT_RESPONSE_SCHEMA = [
-        llm.LlmProviders.PREDIBASE,
-        llm.LlmProviders.FIREWORKS_AI,
+        llm.LLMProviders.PREDIBASE,
+        llm.LLMProviders.FIREWORKS_AI,
     ]
 
     if custom_llm_provider in PROVIDERS_GLOBALLY_SUPPORT_RESPONSE_SCHEMA:
@@ -2400,7 +2400,7 @@ def get_optional_params_transcription(
     if custom_llm_provider is not None:
         provider_config = ProviderConfigManager.get_provider_audio_transcription_config(
             model=model,
-            provider=LlmProviders(custom_llm_provider),
+            provider=LLMProviders(custom_llm_provider),
         )
 
     if custom_llm_provider == "openai" or custom_llm_provider == "azure":
@@ -3014,10 +3014,10 @@ def get_optional_params(  # noqa: PLR0915
 
     provider_config: Optional[BaseConfig] = None
     if custom_llm_provider is not None and custom_llm_provider in [
-        provider.value for provider in LlmProviders
+        provider.value for provider in LLMProviders
     ]:
         provider_config = ProviderConfigManager.get_provider_chat_config(
-            model=model, provider=LlmProviders(custom_llm_provider)
+            model=model, provider=LLMProviders(custom_llm_provider)
         )
 
     if "response_format" in non_default_params:
@@ -4314,10 +4314,10 @@ def get_provider_info(
     # if custom_llm_provider == "predibase":
     #     _model_info["supports_response_schema"] = True
     provider_config: Optional[BaseLLMModelInfo] = None
-    if custom_llm_provider and custom_llm_provider in LlmProvidersSet:
-        # Check if the provider string exists in LlmProviders enum
+    if custom_llm_provider and custom_llm_provider in LLMProvidersSet:
+        # Check if the provider string exists in LLMProviders enum
         provider_config = ProviderConfigManager.get_provider_model_info(
-            model=model, provider=LlmProviders(custom_llm_provider)
+            model=model, provider=LLMProviders(custom_llm_provider)
         )
 
     model_info: Optional[ProviderSpecificModelInfo] = None
@@ -5780,7 +5780,7 @@ def get_valid_models(check_provider_endpoint: bool = False) -> List[str]:
         for provider in valid_providers:
             provider_config = ProviderConfigManager.get_provider_model_info(
                 model=None,
-                provider=LlmProviders(provider),
+                provider=LLMProviders(provider),
             )
 
             if provider == "azure":
@@ -6147,141 +6147,141 @@ def validate_chat_completion_tool_choice(
 class ProviderConfigManager:
     @staticmethod
     def get_provider_chat_config(  # noqa: PLR0915
-        model: str, provider: LlmProviders
+        model: str, provider: LLMProviders
     ) -> BaseConfig:
         """
         Returns the provider config for a given provider.
         """
         if (
-            provider == LlmProviders.OPENAI
+            provider == LLMProviders.OPENAI
             and llm.openaiOSeriesConfig.is_model_o_series_model(model=model)
         ):
             return llm.openaiOSeriesConfig
-        elif llm.LlmProviders.DEEPSEEK == provider:
+        elif llm.LLMProviders.DEEPSEEK == provider:
             return llm.DeepSeekChatConfig()
-        elif llm.LlmProviders.GROQ == provider:
+        elif llm.LLMProviders.GROQ == provider:
             return llm.GroqChatConfig()
-        elif llm.LlmProviders.DATABRICKS == provider:
+        elif llm.LLMProviders.DATABRICKS == provider:
             return llm.DatabricksConfig()
-        elif llm.LlmProviders.XAI == provider:
+        elif llm.LLMProviders.XAI == provider:
             return llm.XAIChatConfig()
-        elif llm.LlmProviders.TEXT_COMPLETION_OPENAI == provider:
+        elif llm.LLMProviders.TEXT_COMPLETION_OPENAI == provider:
             return llm.OpenAITextCompletionConfig()
-        elif llm.LlmProviders.COHERE_CHAT == provider:
+        elif llm.LLMProviders.COHERE_CHAT == provider:
             return llm.CohereChatConfig()
-        elif llm.LlmProviders.COHERE == provider:
+        elif llm.LLMProviders.COHERE == provider:
             return llm.CohereConfig()
-        elif llm.LlmProviders.SNOWFLAKE == provider:
+        elif llm.LLMProviders.SNOWFLAKE == provider:
             return llm.SnowflakeConfig()
-        elif llm.LlmProviders.CLARIFAI == provider:
+        elif llm.LLMProviders.CLARIFAI == provider:
             return llm.ClarifaiConfig()
-        elif llm.LlmProviders.ANTHROPIC == provider:
+        elif llm.LLMProviders.ANTHROPIC == provider:
             return llm.AnthropicConfig()
-        elif llm.LlmProviders.ANTHROPIC_TEXT == provider:
+        elif llm.LLMProviders.ANTHROPIC_TEXT == provider:
             return llm.AnthropicTextConfig()
-        elif llm.LlmProviders.VERTEX_AI == provider:
+        elif llm.LLMProviders.VERTEX_AI == provider:
             if "claude" in model:
                 return llm.VertexAIAnthropicConfig()
-        elif llm.LlmProviders.CLOUDFLARE == provider:
+        elif llm.LLMProviders.CLOUDFLARE == provider:
             return llm.CloudflareChatConfig()
-        elif llm.LlmProviders.SAGEMAKER_CHAT == provider:
+        elif llm.LLMProviders.SAGEMAKER_CHAT == provider:
             return llm.SagemakerChatConfig()
-        elif llm.LlmProviders.SAGEMAKER == provider:
+        elif llm.LLMProviders.SAGEMAKER == provider:
             return llm.SagemakerConfig()
-        elif llm.LlmProviders.FIREWORKS_AI == provider:
+        elif llm.LLMProviders.FIREWORKS_AI == provider:
             return llm.FireworksAIConfig()
-        elif llm.LlmProviders.FRIENDLIAI == provider:
+        elif llm.LLMProviders.FRIENDLIAI == provider:
             return llm.FriendliaiChatConfig()
-        elif llm.LlmProviders.WATSONX == provider:
+        elif llm.LLMProviders.WATSONX == provider:
             return llm.IBMWatsonXChatConfig()
-        elif llm.LlmProviders.WATSONX_TEXT == provider:
+        elif llm.LLMProviders.WATSONX_TEXT == provider:
             return llm.IBMWatsonXAIConfig()
-        elif llm.LlmProviders.EMPOWER == provider:
+        elif llm.LLMProviders.EMPOWER == provider:
             return llm.EmpowerChatConfig()
-        elif llm.LlmProviders.GITHUB == provider:
+        elif llm.LLMProviders.GITHUB == provider:
             return llm.GithubChatConfig()
         elif (
-            llm.LlmProviders.CUSTOM == provider
-            or llm.LlmProviders.CUSTOM_OPENAI == provider
-            or llm.LlmProviders.OPENAI_LIKE == provider
-            or llm.LlmProviders.LLM_PROXY == provider
+            llm.LLMProviders.CUSTOM == provider
+            or llm.LLMProviders.CUSTOM_OPENAI == provider
+            or llm.LLMProviders.OPENAI_LIKE == provider
+            or llm.LLMProviders.LLM_PROXY == provider
         ):
             return llm.OpenAILikeChatConfig()
-        elif llm.LlmProviders.AIOHTTP_OPENAI == provider:
+        elif llm.LLMProviders.AIOHTTP_OPENAI == provider:
             return llm.AiohttpOpenAIChatConfig()
-        elif llm.LlmProviders.HOSTED_VLLM == provider:
+        elif llm.LLMProviders.HOSTED_VLLM == provider:
             return llm.HostedVLLMChatConfig()
-        elif llm.LlmProviders.LM_STUDIO == provider:
+        elif llm.LLMProviders.LM_STUDIO == provider:
             return llm.LMStudioChatConfig()
-        elif llm.LlmProviders.GALADRIEL == provider:
+        elif llm.LLMProviders.GALADRIEL == provider:
             return llm.GaladrielChatConfig()
-        elif llm.LlmProviders.REPLICATE == provider:
+        elif llm.LLMProviders.REPLICATE == provider:
             return llm.ReplicateConfig()
-        elif llm.LlmProviders.HUGGINGFACE == provider:
+        elif llm.LLMProviders.HUGGINGFACE == provider:
             return llm.HuggingfaceConfig()
-        elif llm.LlmProviders.TOGETHER_AI == provider:
+        elif llm.LLMProviders.TOGETHER_AI == provider:
             return llm.TogetherAIConfig()
-        elif llm.LlmProviders.OPENROUTER == provider:
+        elif llm.LLMProviders.OPENROUTER == provider:
             return llm.OpenrouterConfig()
-        elif llm.LlmProviders.GEMINI == provider:
+        elif llm.LLMProviders.GEMINI == provider:
             return llm.GoogleAIStudioGeminiConfig()
         elif (
-            llm.LlmProviders.AI21 == provider
-            or llm.LlmProviders.AI21_CHAT == provider
+            llm.LLMProviders.AI21 == provider
+            or llm.LLMProviders.AI21_CHAT == provider
         ):
             return llm.AI21ChatConfig()
-        elif llm.LlmProviders.AZURE == provider:
+        elif llm.LLMProviders.AZURE == provider:
             if llm.AzureOpenAIO1Config().is_o_series_model(model=model):
                 return llm.AzureOpenAIO1Config()
             return llm.AzureOpenAIConfig()
-        elif llm.LlmProviders.AZURE_AI == provider:
+        elif llm.LLMProviders.AZURE_AI == provider:
             return llm.AzureAIStudioConfig()
-        elif llm.LlmProviders.AZURE_TEXT == provider:
+        elif llm.LLMProviders.AZURE_TEXT == provider:
             return llm.AzureOpenAITextConfig()
-        elif llm.LlmProviders.HOSTED_VLLM == provider:
+        elif llm.LLMProviders.HOSTED_VLLM == provider:
             return llm.HostedVLLMChatConfig()
-        elif llm.LlmProviders.NLP_CLOUD == provider:
+        elif llm.LLMProviders.NLP_CLOUD == provider:
             return llm.NLPCloudConfig()
-        elif llm.LlmProviders.OOBABOOGA == provider:
+        elif llm.LLMProviders.OOBABOOGA == provider:
             return llm.OobaboogaConfig()
-        elif llm.LlmProviders.OLLAMA_CHAT == provider:
+        elif llm.LLMProviders.OLLAMA_CHAT == provider:
             return llm.OllamaChatConfig()
-        elif llm.LlmProviders.DEEPINFRA == provider:
+        elif llm.LLMProviders.DEEPINFRA == provider:
             return llm.DeepInfraConfig()
-        elif llm.LlmProviders.PERPLEXITY == provider:
+        elif llm.LLMProviders.PERPLEXITY == provider:
             return llm.PerplexityChatConfig()
         elif (
-            llm.LlmProviders.MISTRAL == provider
-            or llm.LlmProviders.CODESTRAL == provider
+            llm.LLMProviders.MISTRAL == provider
+            or llm.LLMProviders.CODESTRAL == provider
         ):
             return llm.MistralConfig()
-        elif llm.LlmProviders.NVIDIA_NIM == provider:
+        elif llm.LLMProviders.NVIDIA_NIM == provider:
             return llm.NvidiaNimConfig()
-        elif llm.LlmProviders.CEREBRAS == provider:
+        elif llm.LLMProviders.CEREBRAS == provider:
             return llm.CerebrasConfig()
-        elif llm.LlmProviders.VOLCENGINE == provider:
+        elif llm.LLMProviders.VOLCENGINE == provider:
             return llm.VolcEngineConfig()
-        elif llm.LlmProviders.TEXT_COMPLETION_CODESTRAL == provider:
+        elif llm.LLMProviders.TEXT_COMPLETION_CODESTRAL == provider:
             return llm.CodestralTextCompletionConfig()
-        elif llm.LlmProviders.SAMBANOVA == provider:
+        elif llm.LLMProviders.SAMBANOVA == provider:
             return llm.SambanovaConfig()
-        elif llm.LlmProviders.MARITALK == provider:
+        elif llm.LLMProviders.MARITALK == provider:
             return llm.MaritalkConfig()
-        elif llm.LlmProviders.CLOUDFLARE == provider:
+        elif llm.LLMProviders.CLOUDFLARE == provider:
             return llm.CloudflareChatConfig()
-        elif llm.LlmProviders.ANTHROPIC_TEXT == provider:
+        elif llm.LLMProviders.ANTHROPIC_TEXT == provider:
             return llm.AnthropicTextConfig()
-        elif llm.LlmProviders.VLLM == provider:
+        elif llm.LLMProviders.VLLM == provider:
             return llm.VLLMConfig()
-        elif llm.LlmProviders.OLLAMA == provider:
+        elif llm.LLMProviders.OLLAMA == provider:
             return llm.OllamaConfig()
-        elif llm.LlmProviders.PREDIBASE == provider:
+        elif llm.LLMProviders.PREDIBASE == provider:
             return llm.PredibaseConfig()
-        elif llm.LlmProviders.TRITON == provider:
+        elif llm.LLMProviders.TRITON == provider:
             return llm.TritonConfig()
-        elif llm.LlmProviders.PETALS == provider:
+        elif llm.LLMProviders.PETALS == provider:
             return llm.PetalsConfig()
-        elif llm.LlmProviders.BEDROCK == provider:
+        elif llm.LLMProviders.BEDROCK == provider:
             bedrock_route = BedrockModelInfo.get_bedrock_route(model)
             bedrock_invoke_provider = llm.BedrockLLM.get_bedrock_invoke_provider(
                 model=model
@@ -6316,88 +6316,88 @@ class ProviderConfigManager:
     @staticmethod
     def get_provider_embedding_config(
         model: str,
-        provider: LlmProviders,
+        provider: LLMProviders,
     ) -> BaseEmbeddingConfig:
-        if llm.LlmProviders.VOYAGE == provider:
+        if llm.LLMProviders.VOYAGE == provider:
             return llm.VoyageEmbeddingConfig()
-        elif llm.LlmProviders.TRITON == provider:
+        elif llm.LLMProviders.TRITON == provider:
             return llm.TritonEmbeddingConfig()
-        elif llm.LlmProviders.WATSONX == provider:
+        elif llm.LLMProviders.WATSONX == provider:
             return llm.IBMWatsonXEmbeddingConfig()
         raise ValueError(f"Provider {provider.value} does not support embedding config")
 
     @staticmethod
     def get_provider_rerank_config(
         model: str,
-        provider: LlmProviders,
+        provider: LLMProviders,
         api_base: Optional[str],
         present_version_params: List[str],
     ) -> BaseRerankConfig:
-        if llm.LlmProviders.COHERE == provider:
+        if llm.LLMProviders.COHERE == provider:
             if should_use_cohere_v1_client(api_base, present_version_params):
                 return llm.CohereRerankConfig()
             else:
                 return llm.CohereRerankV2Config()
-        elif llm.LlmProviders.AZURE_AI == provider:
+        elif llm.LLMProviders.AZURE_AI == provider:
             return llm.AzureAIRerankConfig()
-        elif llm.LlmProviders.INFINITY == provider:
+        elif llm.LLMProviders.INFINITY == provider:
             return llm.InfinityRerankConfig()
-        elif llm.LlmProviders.JINA_AI == provider:
+        elif llm.LLMProviders.JINA_AI == provider:
             return llm.JinaAIRerankConfig()
         return llm.CohereRerankConfig()
 
     @staticmethod
     def get_provider_anthropic_messages_config(
         model: str,
-        provider: LlmProviders,
+        provider: LLMProviders,
     ) -> Optional[BaseAnthropicMessagesConfig]:
-        if llm.LlmProviders.ANTHROPIC == provider:
+        if llm.LLMProviders.ANTHROPIC == provider:
             return llm.AnthropicMessagesConfig()
         return None
 
     @staticmethod
     def get_provider_audio_transcription_config(
         model: str,
-        provider: LlmProviders,
+        provider: LLMProviders,
     ) -> Optional[BaseAudioTranscriptionConfig]:
-        if llm.LlmProviders.FIREWORKS_AI == provider:
+        if llm.LLMProviders.FIREWORKS_AI == provider:
             return llm.FireworksAIAudioTranscriptionConfig()
-        elif llm.LlmProviders.DEEPGRAM == provider:
+        elif llm.LLMProviders.DEEPGRAM == provider:
             return llm.DeepgramAudioTranscriptionConfig()
         return None
 
     @staticmethod
     def get_provider_responses_api_config(
         model: str,
-        provider: LlmProviders,
+        provider: LLMProviders,
     ) -> Optional[BaseResponsesAPIConfig]:
-        if llm.LlmProviders.OPENAI == provider:
+        if llm.LLMProviders.OPENAI == provider:
             return llm.OpenAIResponsesAPIConfig()
         return None
 
     @staticmethod
     def get_provider_text_completion_config(
         model: str,
-        provider: LlmProviders,
+        provider: LLMProviders,
     ) -> BaseTextCompletionConfig:
-        if LlmProviders.FIREWORKS_AI == provider:
+        if LLMProviders.FIREWORKS_AI == provider:
             return llm.FireworksAITextCompletionConfig()
-        elif LlmProviders.TOGETHER_AI == provider:
+        elif LLMProviders.TOGETHER_AI == provider:
             return llm.TogetherAITextCompletionConfig()
         return llm.OpenAITextCompletionConfig()
 
     @staticmethod
     def get_provider_model_info(
         model: Optional[str],
-        provider: LlmProviders,
+        provider: LLMProviders,
     ) -> Optional[BaseLLMModelInfo]:
-        if LlmProviders.FIREWORKS_AI == provider:
+        if LLMProviders.FIREWORKS_AI == provider:
             return llm.FireworksAIConfig()
-        elif LlmProviders.OPENAI == provider:
+        elif LLMProviders.OPENAI == provider:
             return llm.OpenAIGPTConfig()
-        elif LlmProviders.LLM_PROXY == provider:
+        elif LLMProviders.LLM_PROXY == provider:
             return llm.LLMProxyChatConfig()
-        elif LlmProviders.TOPAZ == provider:
+        elif LLMProviders.TOPAZ == provider:
             return llm.TopazModelInfo()
 
         return None
@@ -6405,11 +6405,11 @@ class ProviderConfigManager:
     @staticmethod
     def get_provider_image_variation_config(
         model: str,
-        provider: LlmProviders,
+        provider: LLMProviders,
     ) -> Optional[BaseImageVariationConfig]:
-        if LlmProviders.OPENAI == provider:
+        if LLMProviders.OPENAI == provider:
             return llm.OpenAIImageVariationConfig()
-        elif LlmProviders.TOPAZ == provider:
+        elif LLMProviders.TOPAZ == provider:
             return llm.TopazImageVariationConfig()
         return None
 

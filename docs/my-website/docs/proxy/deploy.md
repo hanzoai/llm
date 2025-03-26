@@ -8,7 +8,7 @@ You can find the Dockerfile to build llm proxy [here](https://github.com/BerriAI
 
 ## Quick Start
 
-To start using Llm, run the following commands in a shell:
+To start using LLM, run the following commands in a shell:
 
 ```bash
 # Get the code

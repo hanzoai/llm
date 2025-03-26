@@ -119,7 +119,7 @@ def rerank(  # noqa: PLR0915
         rerank_provider_config: BaseRerankConfig = (
             ProviderConfigManager.get_provider_rerank_config(
                 model=model,
-                provider=llm.LlmProviders(_custom_llm_provider),
+                provider=llm.LLMProviders(_custom_llm_provider),
                 api_base=optional_params.api_base,
                 present_version_params=present_version_params,
             )

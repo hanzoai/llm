@@ -3,7 +3,7 @@ import datetime
 import httpx
 import openai
 
-# Set Llm proxy variables here
+# Set LLM proxy variables here
 LLM_BASE_URL = "http://0.0.0.0:4000"
 LLM_PROXY_API_KEY = "sk-1234"
 

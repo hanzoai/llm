@@ -18,7 +18,7 @@ from llm.llms.custom_httpx.http_handler import (
     _get_httpx_client,
 )
 from llm.types.llms.openai import FileTypes
-from llm.types.utils import HttpHandlerRequestFields, ImageResponse, LlmProviders
+from llm.types.utils import HttpHandlerRequestFields, ImageResponse, LLMProviders
 from llm.utils import CustomStreamWrapper, ModelResponse, ProviderConfigManager
 
 if TYPE_CHECKING:
@@ -218,7 +218,7 @@ class BaseLLMAIOHTTPHandler:
         client: Optional[Union[HTTPHandler, AsyncHTTPHandler, ClientSession]] = None,
     ):
         provider_config = ProviderConfigManager.get_provider_chat_config(
-            model=model, provider=llm.LlmProviders(custom_llm_provider)
+            model=model, provider=llm.LLMProviders(custom_llm_provider)
         )
         # get config from model, custom llm provider
         headers = provider_config.validate_environment(
@@ -472,7 +472,7 @@ class BaseLLMAIOHTTPHandler:
 
         provider_config = ProviderConfigManager.get_provider_image_variation_config(
             model=model,  # openai defaults to dall-e-2
-            provider=LlmProviders(custom_llm_provider),
+            provider=LLMProviders(custom_llm_provider),
         )
 
         if provider_config is None:

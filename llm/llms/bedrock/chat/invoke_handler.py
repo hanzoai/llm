@@ -193,7 +193,7 @@ async def make_call(
     try:
         if client is None:
             client = get_async_httpx_client(
-                llm_provider=llm.LlmProviders.BEDROCK
+                llm_provider=llm.LLMProviders.BEDROCK
             )  # Create a new client if none provided
 
         response = await client.post(
@@ -1081,7 +1081,7 @@ class BedrockLLM(BaseAWSLLM):
                 if isinstance(timeout, float) or isinstance(timeout, int):
                     timeout = httpx.Timeout(timeout)
                 _params["timeout"] = timeout
-            client = get_async_httpx_client(params=_params, llm_provider=llm.LlmProviders.BEDROCK)  # type: ignore
+            client = get_async_httpx_client(params=_params, llm_provider=llm.LLMProviders.BEDROCK)  # type: ignore
         else:
             client = client  # type: ignore
 

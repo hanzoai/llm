@@ -31,7 +31,7 @@ class YourProviderRerankConfig(BaseRerankConfig):
 Add your provider to `llm.utils.get_provider_rerank_config()`:
 
 ```python
-elif llm.LlmProviders.YOUR_PROVIDER == provider:
+elif llm.LLMProviders.YOUR_PROVIDER == provider:
     return llm.YourProviderRerankConfig()
 ```
 

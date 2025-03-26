@@ -14,8 +14,8 @@ import llm
 
 
 class TestJinaAI(BaseLLMRerankTest):
-    def get_custom_llm_provider(self) -> llm.LlmProviders:
-        return llm.LlmProviders.JINA_AI
+    def get_custom_llm_provider(self) -> llm.LLMProviders:
+        return llm.LLMProviders.JINA_AI
 
     def get_base_rerank_call_args(self) -> dict:
         return {

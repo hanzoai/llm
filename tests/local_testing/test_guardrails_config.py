@@ -93,11 +93,11 @@ def test_guardrail_list_of_event_hooks():
 
 
 def test_guardrail_info_response():
-    from llm.types.guardrails import GuardrailInfoResponse, LlmParams
+    from llm.types.guardrails import GuardrailInfoResponse, LLMParams
 
     guardrail_info = GuardrailInfoResponse(
         guardrail_name="aporia-pre-guard",
-        llm_params=LlmParams(
+        llm_params=LLMParams(
             guardrail="aporia",
             mode="pre_call",
         ),

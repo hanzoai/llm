@@ -18,7 +18,7 @@ from llm.llms.custom_httpx.http_handler import (
 from llm.types.utils import (
     EmbeddingResponse,
     ImageResponse,
-    LlmProviders,
+    LLMProviders,
     ModelResponse,
 )
 from llm.utils import (
@@ -818,7 +818,7 @@ class AzureChatCompletion(BaseAzureLLM, BaseLLM):
                 _params["timeout"] = httpx.Timeout(timeout=600.0, connect=5.0)
 
             async_handler = get_async_httpx_client(
-                llm_provider=LlmProviders.AZURE,
+                llm_provider=LLMProviders.AZURE,
                 params=_params,
             )
         else:

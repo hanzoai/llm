@@ -83,7 +83,7 @@ interface ErrorDetails {
 const HealthCheckDetails: React.FC<{ response: any }> = ({ response }) => {
   // Initialize with safe default values
   let errorDetails: ErrorDetails | null = null;
-  let parsedLlmParams: any = {};
+  let parsedLLMParams: any = {};
   let parsedRedisParams: any = {};
 
   try {
@@ -100,7 +100,7 @@ const HealthCheckDetails: React.FC<{ response: any }> = ({ response }) => {
           health_check_cache_params: errorMessage?.health_check_cache_params || {}
         };
         
-        parsedLlmParams = deepParse(errorDetails.llm_params) || {};
+        parsedLLMParams = deepParse(errorDetails.llm_params) || {};
         parsedRedisParams = deepParse(errorDetails.health_check_cache_params) || {};
       } catch (e) {
         console.warn("Error parsing error details:", e);
@@ -112,13 +112,13 @@ const HealthCheckDetails: React.FC<{ response: any }> = ({ response }) => {
         };
       }
     } else {
-      parsedLlmParams = deepParse(response?.llm_cache_params) || {};
+      parsedLLMParams = deepParse(response?.llm_cache_params) || {};
       parsedRedisParams = deepParse(response?.health_check_cache_params) || {};
     }
   } catch (e) {
     console.warn("Error in response parsing:", e);
     // Provide safe fallback values
-    parsedLlmParams = {};
+    parsedLLMParams = {};
     parsedRedisParams = {};
   }
 
@@ -199,7 +199,7 @@ const HealthCheckDetails: React.FC<{ response: any }> = ({ response }) => {
                   <tr><td colSpan={2} className="pt-4 pb-2 font-semibold">Cache Details</td></tr>
                   <TableClickableErrorField
                     label="Cache Configuration"
-                    value={String(parsedLlmParams?.type)}
+                    value={String(parsedLLMParams?.type)}
                   />
                   <TableClickableErrorField
                     label="Ping Response"
@@ -211,11 +211,11 @@ const HealthCheckDetails: React.FC<{ response: any }> = ({ response }) => {
                   />
                   <TableClickableErrorField
                     label="llm_settings.cache_params"
-                    value={JSON.stringify(parsedLlmParams, null, 2)}
+                    value={JSON.stringify(parsedLLMParams, null, 2)}
                   />
                   
                   {/* Redis Details Section */}
-                  {parsedLlmParams?.type === "redis" && (
+                  {parsedLLMParams?.type === "redis" && (
                     <>
                       <tr><td colSpan={2} className="pt-4 pb-2 font-semibold">Redis Details</td></tr>
                       <TableClickableErrorField
@@ -252,7 +252,7 @@ const HealthCheckDetails: React.FC<{ response: any }> = ({ response }) => {
                   try {
                     const data = {
                       ...response,
-                      llm_cache_params: parsedLlmParams,
+                      llm_cache_params: parsedLLMParams,
                       health_check_cache_params: parsedRedisParams
                     };
                     // First parse any string JSON values

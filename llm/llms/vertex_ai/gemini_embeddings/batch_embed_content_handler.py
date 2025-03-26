@@ -156,7 +156,7 @@ class GoogleBatchEmbeddings(VertexLLM):
                 _params["timeout"] = httpx.Timeout(timeout=600.0, connect=5.0)
 
             async_handler: AsyncHTTPHandler = get_async_httpx_client(
-                llm_provider=llm.LlmProviders.VERTEX_AI,
+                llm_provider=llm.LLMProviders.VERTEX_AI,
                 params={"timeout": timeout},
             )
         else:

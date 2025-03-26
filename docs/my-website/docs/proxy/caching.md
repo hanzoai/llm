@@ -212,7 +212,7 @@ Set either `REDIS_URL` or the `REDIS_HOST` in your os environment, to enable cac
   ## OR ##
   REDIS_HOST = ""       # REDIS_HOST='redis-18841.c274.us-east-1-3.ec2.cloud.redislabs.com'
   REDIS_PORT = ""       # REDIS_PORT='18841'
-  REDIS_PASSWORD = ""   # REDIS_PASSWORD='LlmIsAmazing'
+  REDIS_PASSWORD = ""   # REDIS_PASSWORD='LLMIsAmazing'
   ```
 
 **Additional kwargs**
@@ -353,7 +353,7 @@ Set either `REDIS_URL` or the `REDIS_HOST` in your os environment, to enable cac
   ## OR ##
   REDIS_HOST = ""       # REDIS_HOST='redis-18841.c274.us-east-1-3.ec2.cloud.redislabs.com'
   REDIS_PORT = ""       # REDIS_PORT='18841'
-  REDIS_PASSWORD = ""   # REDIS_PASSWORD='LlmIsAmazing'
+  REDIS_PASSWORD = ""   # REDIS_PASSWORD='LLMIsAmazing'
   ```
 
 **Additional kwargs**

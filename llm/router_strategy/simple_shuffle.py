@@ -13,13 +13,13 @@ from llm._logging import verbose_router_logger
 if TYPE_CHECKING:
     from llm.router import Router as _Router
 
-    LlmRouter = _Router
+    LLMRouter = _Router
 else:
-    LlmRouter = Any
+    LLMRouter = Any
 
 
 def simple_shuffle(
-    llm_router_instance: LlmRouter,
+    llm_router_instance: LLMRouter,
     healthy_deployments: Union[List[Any], Dict[Any, Any]],
     model: str,
 ) -> Dict:
@@ -31,7 +31,7 @@ def simple_shuffle(
     If users pass `rpm` or `tpm`, we do a random weighted pick - based on `rpm`/`tpm`.
 
     Args:
-        llm_router_instance: LlmRouter instance
+        llm_router_instance: LLMRouter instance
         healthy_deployments: List of healthy deployments
         model: Model name
 

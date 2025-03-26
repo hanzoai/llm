@@ -10,7 +10,7 @@ from typing import Any, Callable, Optional, Union
 import httpx
 
 import llm
-from llm import LlmProviders
+from llm import LLMProviders
 from llm.llms.bedrock.chat.invoke_handler import MockResponseIterator
 from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
 from llm.llms.databricks.streaming_utils import ModelResponseIterator
@@ -262,7 +262,7 @@ class OpenAILikeChatHandler(OpenAILikeBase):
 
         if messages is not None and custom_llm_provider is not None:
             provider_config = ProviderConfigManager.get_provider_chat_config(
-                model=model, provider=LlmProviders(custom_llm_provider)
+                model=model, provider=LLMProviders(custom_llm_provider)
             )
             if isinstance(provider_config, OpenAIGPTConfig) or isinstance(
                 provider_config, OpenAIConfig

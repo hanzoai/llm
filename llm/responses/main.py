@@ -178,7 +178,7 @@ def responses(
         responses_api_provider_config: Optional[BaseResponsesAPIConfig] = (
             ProviderConfigManager.get_provider_responses_api_config(
                 model=model,
-                provider=llm.LlmProviders(custom_llm_provider),
+                provider=llm.LLMProviders(custom_llm_provider),
             )
         )
 

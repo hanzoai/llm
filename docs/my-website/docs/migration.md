@@ -13,7 +13,7 @@ When we have breaking changes (i.e. going from 1.x.x to 2.x.x), we will document
 - `openai.InvalidRequestError` → `openai.BadRequestError`
 - `openai.ServiceUnavailableError` → `openai.APIStatusError`
 - *NEW* llm client, allow users to pass api_key
-    - `llm.Llm(api_key="sk-123")`
+    - `llm.LLM(api_key="sk-123")`
 - response objects now inherit from `BaseModel` (prev. `OpenAIObject`)
 - *NEW* default exception - `APIConnectionError` (prev. `APIError`)
 - llm.get_max_tokens() now returns an int not a dict

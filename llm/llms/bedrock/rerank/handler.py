@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union, cast
 import httpx
 
 import llm
-from llm.llm_core_utils.llm_logging import Logging as LlmLogging
+from llm.llm_core_utils.llm_logging import Logging as LLMLogging
 from llm.llms.custom_httpx.http_handler import (
     AsyncHTTPHandler,
     HTTPHandler,
@@ -32,7 +32,7 @@ class BedrockRerankHandler(BaseAWSLLM):
         client: Optional[AsyncHTTPHandler] = None,
     ):
         if client is None:
-            client = get_async_httpx_client(llm_provider=llm.LlmProviders.BEDROCK)
+            client = get_async_httpx_client(llm_provider=llm.LLMProviders.BEDROCK)
         try:
             response = await client.post(url=prepared_request["endpoint_url"], headers=prepared_request["prepped"].headers, data=prepared_request["body"])  # type: ignore
             response.raise_for_status()
@@ -50,7 +50,7 @@ class BedrockRerankHandler(BaseAWSLLM):
         query: str,
         documents: List[Union[str, Dict[str, Any]]],
         optional_params: dict,
-        logging_obj: LlmLogging,
+        logging_obj: LLMLogging,
         top_n: Optional[int] = None,
         rank_fields: Optional[List[str]] = None,
         return_documents: Optional[bool] = True,

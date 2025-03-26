@@ -12,12 +12,12 @@ from llm.llm_core_utils.logging_utils import track_llm_api_timing
 from llm.types.llms.custom_http import *
 
 if TYPE_CHECKING:
-    from llm import LlmProviders
+    from llm import LLMProviders
     from llm.llm_core_utils.llm_logging import (
         Logging as LLMLoggingObject,
     )
 else:
-    LlmProviders = Any
+    LLMProviders = Any
     LLMLoggingObject = Any
 
 try:
@@ -675,7 +675,7 @@ class HTTPHandler:
 
 
 def get_async_httpx_client(
-    llm_provider: Union[LlmProviders, httpxSpecialProvider],
+    llm_provider: Union[LLMProviders, httpxSpecialProvider],
     params: Optional[dict] = None,
 ) -> AsyncHTTPHandler:
     """

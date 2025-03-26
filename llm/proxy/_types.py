@@ -2027,7 +2027,7 @@ class ProxyException(Exception):
         self.headers = headers or {}
 
         # rules for proxyExceptions
-        # Llm router.py returns "No healthy deployment available" when there are no deployments available
+        # LLM router.py returns "No healthy deployment available" when there are no deployments available
         # Should map to 429 errors https://github.com/BerriAI/llm/issues/2487
         if (
             "No healthy deployment available" in self.message
@@ -2316,7 +2316,7 @@ class SpecialHeaders(enum.Enum):
     azure_apim_authorization = "Ocp-Apim-Subscription-Key"
 
 
-class LlmDataForBackendLLMCall(TypedDict, total=False):
+class LLMDataForBackendLLMCall(TypedDict, total=False):
     headers: dict
     organization: str
     timeout: Optional[float]

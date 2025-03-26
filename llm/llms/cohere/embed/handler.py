@@ -71,7 +71,7 @@ async def async_embedding(
 
     if client is None:
         client = get_async_httpx_client(
-            llm_provider=llm.LlmProviders.COHERE,
+            llm_provider=llm.LLMProviders.COHERE,
             params={"timeout": timeout},
         )
 

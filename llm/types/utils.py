@@ -1950,7 +1950,7 @@ class BudgetConfig(BaseModel):
 GenericBudgetConfigType = Dict[str, BudgetConfig]
 
 
-class LlmProviders(str, Enum):
+class LLMProviders(str, Enum):
     OPENAI = "openai"
     OPENAI_LIKE = "openai_like"  # embedding only
     JINA_AI = "jina_ai"
@@ -2024,7 +2024,7 @@ class LlmProviders(str, Enum):
 
 
 # Create a set of all provider values for quick lookup
-LlmProvidersSet = {provider.value for provider in LlmProviders}
+LLMProvidersSet = {provider.value for provider in LLMProviders}
 
 
 class LLMLoggingBaseClass:
@@ -2054,8 +2054,8 @@ class LLM_IMAGE_VARIATION_PROVIDERS(Enum):
     Try using an enum for endpoints. This should make it easier to track what provider is supported for what endpoint.
     """
 
-    OPENAI = LlmProviders.OPENAI.value
-    TOPAZ = LlmProviders.TOPAZ.value
+    OPENAI = LLMProviders.OPENAI.value
+    TOPAZ = LLMProviders.TOPAZ.value
 
 
 class HttpHandlerRequestFields(TypedDict, total=False):

@@ -663,7 +663,7 @@ const ModelDashboard: React.FC<ModelDashboardProps> = ({
     let output_cost = "Undefined";
     let max_tokens = "Undefined";
     let max_input_tokens = "Undefined";
-    let cleanedLlmParams = {};
+    let cleanedLLMParams = {};
 
     const getProviderFromModel = (model: string) => {
       /**
@@ -711,7 +711,7 @@ const ModelDashboard: React.FC<ModelDashboardProps> = ({
     }
 
     if (curr_model?.llm_params) {
-      cleanedLlmParams = Object.fromEntries(
+      cleanedLLMParams = Object.fromEntries(
         Object.entries(curr_model?.llm_params).filter(
           ([key]) => key !== "model" && key !== "api_base"
         )
@@ -740,7 +740,7 @@ const ModelDashboard: React.FC<ModelDashboardProps> = ({
     modelData.data[i].max_tokens = max_tokens;
     modelData.data[i].max_input_tokens = max_input_tokens;
     modelData.data[i].api_base = curr_model?.llm_params?.api_base;
-    modelData.data[i].cleanedLlmParams = cleanedLlmParams;
+    modelData.data[i].cleanedLLMParams = cleanedLLMParams;
 
     all_models_on_proxy.push(curr_model.model_name);
 

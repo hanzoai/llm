@@ -12,7 +12,7 @@ from llm._service_logger import ServiceLogging
 from llm.proxy._types import (
     AddTeamCallback,
     CommonProxyErrors,
-    LlmDataForBackendLLMCall,
+    LLMDataForBackendLLMCall,
     SpecialHeaders,
     TeamCallbackMetadata,
     UserAPIKeyAuth,
@@ -290,12 +290,12 @@ class LLMProxyRequestSetup:
         headers: dict,
         user_api_key_dict: UserAPIKeyAuth,
         general_settings: Optional[Dict[str, Any]] = None,
-    ) -> LlmDataForBackendLLMCall:
+    ) -> LLMDataForBackendLLMCall:
         """
         - Adds forwardable headers
         - Adds org id
         """
-        data = LlmDataForBackendLLMCall()
+        data = LLMDataForBackendLLMCall()
         if (
             general_settings
             and general_settings.get("forward_client_headers_to_llm_api") is True

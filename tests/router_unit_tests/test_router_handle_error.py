@@ -23,7 +23,7 @@ async def test_send_llm_exception_alert_success():
     """
     Test that the function sends an alert when the router.slack_alerting_logger is set.
     """
-    # Create a mock LlmRouter instance
+    # Create a mock LLMRouter instance
     mock_router = MagicMock()
     mock_router.slack_alerting_logger = AsyncMock()
 
@@ -55,7 +55,7 @@ async def test_send_llm_exception_alert_no_logger():
     """
     Test that the function does error out when no slack_alerting_logger is set
     """
-    # Create a mock LlmRouter instance without a slack_alerting_logger
+    # Create a mock LLMRouter instance without a slack_alerting_logger
     mock_router = MagicMock()
     mock_router.slack_alerting_logger = None
 
@@ -84,7 +84,7 @@ async def test_send_llm_exception_alert_when_proxy_server_request_in_kwargs():
     """
     Test that the function does not send an alert when the request kwargs contains a proxy_server_request key.
     """
-    # Create a mock LlmRouter instance with a slack_alerting_logger
+    # Create a mock LLMRouter instance with a slack_alerting_logger
     mock_router = MagicMock()
     mock_router.slack_alerting_logger = AsyncMock()
 

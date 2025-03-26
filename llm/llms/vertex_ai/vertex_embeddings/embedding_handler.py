@@ -189,7 +189,7 @@ class VertexEmbedding(VertexBase):
             _async_client_params["timeout"] = timeout
         if client is None or not isinstance(client, AsyncHTTPHandler):
             client = get_async_httpx_client(
-                params=_async_client_params, llm_provider=llm.LlmProviders.VERTEX_AI
+                params=_async_client_params, llm_provider=llm.LLMProviders.VERTEX_AI
             )
         else:
             client = client  # type: ignore

@@ -3,7 +3,7 @@
 #           Use GuardrailsAI for your LLM calls
 #
 # +-------------------------------------------------------------+
-#  Thank you for using Llm! - Krrish & Ishaan
+#  Thank you for using LLM! - Krrish & Ishaan
 
 import json
 from typing import Optional, TypedDict
@@ -28,7 +28,7 @@ from llm.types.guardrails import GuardrailEventHooks
 
 class GuardrailsAIResponse(TypedDict):
     callId: str
-    rawLlmOutput: str
+    rawLLMOutput: str
     validatedOutput: str
     validationPassed: bool
 

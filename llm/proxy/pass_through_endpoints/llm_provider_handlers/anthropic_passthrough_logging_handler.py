@@ -124,7 +124,7 @@ class AnthropicPassthroughLoggingHandler:
             llm_model_response.model = model
             logging_obj.model_call_details["model"] = model
             logging_obj.model_call_details["custom_llm_provider"] = (
-                llm.LlmProviders.ANTHROPIC.value
+                llm.LLMProviders.ANTHROPIC.value
             )
             return kwargs
         except Exception as e:

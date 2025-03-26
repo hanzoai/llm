@@ -25,7 +25,7 @@ import ChatUI from "@/components/chat_ui";
 import Sidebar from "@/components/leftnav";
 import Usage from "@/components/usage";
 import CacheDashboard from "@/components/cache_dashboard";
-import { setGlobalLlmHeaderName } from "@/components/networking";
+import { setGlobalLLMHeaderName } from "@/components/networking";
 import { Organization } from "@/components/networking";
 import GuardrailsPanel from "@/components/guardrails";
 import TransformRequestPanel from "@/components/transform_request";
@@ -171,7 +171,7 @@ export default function CreateKeyPage() {
       }
 
       if (decoded.auth_header_name) {
-        setGlobalLlmHeaderName(decoded.auth_header_name);
+        setGlobalLLMHeaderName(decoded.auth_header_name);
       }
     }
   }, [token]);

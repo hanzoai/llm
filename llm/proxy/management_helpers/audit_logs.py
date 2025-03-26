@@ -11,7 +11,7 @@ from llm._logging import verbose_proxy_logger
 from llm.proxy._types import (
     AUDIT_ACTIONS,
     LLM_AuditLogs,
-    LlmTableNames,
+    LLMTableNames,
     Optional,
     UserAPIKeyAuth,
 )
@@ -23,7 +23,7 @@ async def create_object_audit_log(
     llm_changed_by: Optional[str],
     user_api_key_dict: UserAPIKeyAuth,
     llm_proxy_admin_name: Optional[str],
-    table_name: LlmTableNames,
+    table_name: LLMTableNames,
     before_value: Optional[str] = None,
     after_value: Optional[str] = None,
 ):

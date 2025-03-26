@@ -14,9 +14,9 @@ from llm.types.router import RouterErrors
 if TYPE_CHECKING:
     from llm.router import Router as _Router
 
-    LlmRouter = _Router
+    LLMRouter = _Router
 else:
-    LlmRouter = Any
+    LLMRouter = Any
 
 
 def is_valid_deployment_tag(
@@ -44,7 +44,7 @@ def is_valid_deployment_tag(
 
 
 async def get_deployments_for_tag(
-    llm_router_instance: LlmRouter,
+    llm_router_instance: LLMRouter,
     model: str,  # used to raise the correct error
     healthy_deployments: Union[List[Any], Dict[Any, Any]],
     request_kwargs: Optional[Dict[Any, Any]] = None,

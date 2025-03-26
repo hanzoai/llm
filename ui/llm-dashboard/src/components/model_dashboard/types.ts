@@ -28,7 +28,7 @@ export interface ModelData {
   max_input_tokens: number;
   api_base?: string;
   llm_params: LLMParams;
-  cleanedLlmParams: Record<string, any>;
+  cleanedLLMParams: Record<string, any>;
   accessToken?: string;
 }
 

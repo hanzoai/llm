@@ -38,7 +38,7 @@ class OpenAILikeEmbeddingHandler(OpenAILikeBase):
         try:
             if client is None or not isinstance(client, AsyncHTTPHandler):
                 async_client = get_async_httpx_client(
-                    llm_provider=llm.LlmProviders.OPENAI,
+                    llm_provider=llm.LLMProviders.OPENAI,
                     params={"timeout": timeout},
                 )
             else:

@@ -9,7 +9,7 @@ Docs - https://jina.ai/embeddings/
 import types
 from typing import List, Optional, Tuple
 
-from llm import LlmProviders
+from llm import LLMProviders
 from llm.secret_managers.main import get_secret_str
 
 
@@ -75,4 +75,4 @@ class JinaAIEmbeddingConfig:
             or get_secret_str("JINA_AI_API_KEY")
             or get_secret_str("JINA_AI_TOKEN")
         )
-        return LlmProviders.JINA_AI.value, api_base, dynamic_api_key
+        return LLMProviders.JINA_AI.value, api_base, dynamic_api_key

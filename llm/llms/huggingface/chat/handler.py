@@ -80,7 +80,7 @@ async def async_get_hf_task_embedding_for_model(
                 )
             )
     http_client = get_async_httpx_client(
-        llm_provider=llm.LlmProviders.HUGGINGFACE,
+        llm_provider=llm.LLMProviders.HUGGINGFACE,
     )
 
     model_info = await http_client.get(url=api_base)
@@ -292,7 +292,7 @@ class Huggingface(BaseLLM):
         try:
             if client is None:
                 client = get_async_httpx_client(
-                    llm_provider=llm.LlmProviders.HUGGINGFACE
+                    llm_provider=llm.LLMProviders.HUGGINGFACE
                 )
             ### ASYNC COMPLETION
             http_response = await client.post(
@@ -568,7 +568,7 @@ class Huggingface(BaseLLM):
         ## COMPLETION CALL
         if client is None:
             client = get_async_httpx_client(
-                llm_provider=llm.LlmProviders.HUGGINGFACE,
+                llm_provider=llm.LLMProviders.HUGGINGFACE,
             )
 
         response = await client.post(api_base, headers=headers, data=json.dumps(data))

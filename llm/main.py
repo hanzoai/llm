@@ -184,7 +184,7 @@ from .types.utils import (
     CompletionTokensDetails,
     FileTypes,
     HiddenParams,
-    LlmProviders,
+    LLMProviders,
     PromptTokensDetails,
     ProviderSpecificHeader,
     all_llm_params,
@@ -1059,10 +1059,10 @@ def completion(  # type: ignore # noqa: PLR0915
 
         provider_config: Optional[BaseConfig] = None
         if custom_llm_provider is not None and custom_llm_provider in [
-            provider.value for provider in LlmProviders
+            provider.value for provider in LLMProviders
         ]:
             provider_config = ProviderConfigManager.get_provider_chat_config(
-                model=model, provider=LlmProviders(custom_llm_provider)
+                model=model, provider=LLMProviders(custom_llm_provider)
             )
 
         if provider_config is not None:
@@ -4851,7 +4851,7 @@ def image_variation(
 
     # route to the correct provider w/ the params
     try:
-        llm_provider = LlmProviders(custom_llm_provider)
+        llm_provider = LLMProviders(custom_llm_provider)
         image_variation_provider = LLM_IMAGE_VARIATION_PROVIDERS(llm_provider)
     except ValueError:
         raise ValueError(

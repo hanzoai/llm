@@ -104,7 +104,7 @@ class VertexAIBatchPrediction(VertexLLM):
         headers: Dict[str, str],
     ) -> LLMBatch:
         client = get_async_httpx_client(
-            llm_provider=llm.LlmProviders.VERTEX_AI,
+            llm_provider=llm.LLMProviders.VERTEX_AI,
         )
         response = await client.post(
             url=api_base,
@@ -202,7 +202,7 @@ class VertexAIBatchPrediction(VertexLLM):
         headers: Dict[str, str],
     ) -> LLMBatch:
         client = get_async_httpx_client(
-            llm_provider=llm.LlmProviders.VERTEX_AI,
+            llm_provider=llm.LLMProviders.VERTEX_AI,
         )
         response = await client.get(
             url=api_base,

@@ -336,7 +336,7 @@ $ llm --test
 [Quick Test Proxy](./proxy/user_keys)
 <!-- 
 ## .env Files
-If no secret manager client is specified, Llm automatically uses the `.env` file to manage sensitive data. -->
+If no secret manager client is specified, LLM automatically uses the `.env` file to manage sensitive data. -->
 
 ## AWS Key Management V1
 

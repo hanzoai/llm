@@ -63,7 +63,7 @@ from llm.proxy._types import (
     KeyManagementSettings,
     LLM_UpperboundKeyGenerateParams,
 )
-from llm.types.utils import StandardKeyGenerationConfig, LlmProviders
+from llm.types.utils import StandardKeyGenerationConfig, LLMProviders
 from llm.integrations.custom_logger import CustomLogger
 from llm.llm_core_utils.logging_callback_manager import LoggingCallbackManager
 import httpx
@@ -655,7 +655,7 @@ model_list = (
 
 model_list_set = set(model_list)
 
-provider_list: List[Union[LlmProviders, str]] = list(LlmProviders)
+provider_list: List[Union[LLMProviders, str]] = list(LLMProviders)
 
 
 models_by_provider: dict = {

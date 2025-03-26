@@ -97,7 +97,7 @@ vertex_credentials_json = json.dumps(vertex_credentials)
 messages = [
     {
         "role": "system",
-        "content": "Your name is Llm Bot, you are a helpful assistant",
+        "content": "Your name is LLM Bot, you are a helpful assistant",
     },
     # User asks for their name and weather in San Francisco
     {

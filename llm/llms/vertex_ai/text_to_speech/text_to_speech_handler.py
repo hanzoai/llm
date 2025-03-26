@@ -180,7 +180,7 @@ class VertexTextToSpeechAPI(VertexLLM):
         import base64
 
         async_handler = get_async_httpx_client(
-            llm_provider=llm.LlmProviders.VERTEX_AI
+            llm_provider=llm.LLMProviders.VERTEX_AI
         )
 
         response = await async_handler.post(

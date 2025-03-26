@@ -209,8 +209,8 @@ class TestAzureEmbedding(BaseLLMEmbeddingTest):
             "api_base": os.getenv("AZURE_API_BASE"),
         }
 
-    def get_custom_llm_provider(self) -> llm.LlmProviders:
-        return llm.LlmProviders.AZURE
+    def get_custom_llm_provider(self) -> llm.LLMProviders:
+        return llm.LLMProviders.AZURE
 
 
 @patch("azure.identity.UsernamePasswordCredential")

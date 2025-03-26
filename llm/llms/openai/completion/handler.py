@@ -8,7 +8,7 @@ from llm.llm_core_utils.llm_logging import Logging as LLMLoggingObj
 from llm.llm_core_utils.streaming_handler import CustomStreamWrapper
 from llm.llms.base import BaseLLM
 from llm.types.llms.openai import AllMessageValues, OpenAITextCompletionUserMessage
-from llm.types.utils import LlmProviders, ModelResponse, TextCompletionResponse
+from llm.types.utils import LLMProviders, ModelResponse, TextCompletionResponse
 from llm.utils import ProviderConfigManager
 
 from ..common_utils import OpenAIError
@@ -58,7 +58,7 @@ class OpenAITextCompletion(BaseLLM):
 
             provider_config = ProviderConfigManager.get_provider_text_completion_config(
                 model=model,
-                provider=LlmProviders(custom_llm_provider),
+                provider=LLMProviders(custom_llm_provider),
             )
 
             data = provider_config.transform_text_completion_request(

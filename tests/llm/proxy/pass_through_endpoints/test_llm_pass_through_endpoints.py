@@ -33,7 +33,7 @@ class TestBaseOpenAIPassThroughHandler:
         base_url = httpx.URL("https://api.example.com")
         path = "/v1/chat/completions"
         result = BaseOpenAIPassThroughHandler._join_url_paths(
-            base_url, path, llm.LlmProviders.OPENAI.value
+            base_url, path, llm.LLMProviders.OPENAI.value
         )
         print(f"Base URL with no path: '{base_url}' + '{path}' → '{result}'")
         assert str(result) == "https://api.example.com/v1/chat/completions"
@@ -42,7 +42,7 @@ class TestBaseOpenAIPassThroughHandler:
         base_url = httpx.URL("https://api.example.com/v1")
         path = "/chat/completions"
         result = BaseOpenAIPassThroughHandler._join_url_paths(
-            base_url, path, llm.LlmProviders.OPENAI.value
+            base_url, path, llm.LLMProviders.OPENAI.value
         )
         print(f"Base URL with path: '{base_url}' + '{path}' → '{result}'")
         assert str(result) == "https://api.example.com/v1/chat/completions"
@@ -51,7 +51,7 @@ class TestBaseOpenAIPassThroughHandler:
         base_url = httpx.URL("https://api.example.com/v1")
         path = "chat/completions"
         result = BaseOpenAIPassThroughHandler._join_url_paths(
-            base_url, path, llm.LlmProviders.OPENAI.value
+            base_url, path, llm.LLMProviders.OPENAI.value
         )
         print(f"Path without leading slash: '{base_url}' + '{path}' → '{result}'")
         assert str(result) == "https://api.example.com/v1/chat/completions"
@@ -60,7 +60,7 @@ class TestBaseOpenAIPassThroughHandler:
         base_url = httpx.URL("https://api.example.com/v1/")
         path = "/chat/completions"
         result = BaseOpenAIPassThroughHandler._join_url_paths(
-            base_url, path, llm.LlmProviders.OPENAI.value
+            base_url, path, llm.LLMProviders.OPENAI.value
         )
         print(f"Base URL with trailing slash: '{base_url}' + '{path}' → '{result}'")
         assert str(result) == "https://api.example.com/v1/chat/completions"
@@ -157,7 +157,7 @@ class TestBaseOpenAIPassThroughHandler:
             user_api_key_dict=mock_user_api_key_dict,
             base_target_url="https://api.openai.com",
             api_key="test_api_key",
-            custom_llm_provider=llm.LlmProviders.OPENAI.value,
+            custom_llm_provider=llm.LLMProviders.OPENAI.value,
         )
 
         # Verify the result
@@ -425,7 +425,7 @@ class TestVertexAIPassThroughHandler:
         """
         Critical
 
-        This is how Vertex AI JS SDK will Auth to Llm Proxy
+        This is how Vertex AI JS SDK will Auth to LLM Proxy
         """
         # Mock dependencies
         mock_request = Mock()

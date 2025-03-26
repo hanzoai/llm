@@ -8,7 +8,7 @@ import httpx
 from openai import AsyncOpenAI, OpenAI
 
 import llm
-from llm.types.utils import FileTypes, ImageResponse, LlmProviders
+from llm.types.utils import FileTypes, ImageResponse, LLMProviders
 from llm.utils import ProviderConfigManager
 
 from ...base_llm.image_variations.transformation import BaseImageVariationConfig
@@ -137,7 +137,7 @@ class OpenAIImageVariationsHandler:
         try:
             provider_config = ProviderConfigManager.get_provider_image_variation_config(
                 model=model or "",  # openai defaults to dall-e-2
-                provider=LlmProviders.OPENAI,
+                provider=LLMProviders.OPENAI,
             )
 
             if provider_config is None:

@@ -30,7 +30,7 @@ class VertexFineTuningAPI(VertexLLM):
     def __init__(self) -> None:
         super().__init__()
         self.async_handler = get_async_httpx_client(
-            llm_provider=llm.LlmProviders.VERTEX_AI,
+            llm_provider=llm.LLMProviders.VERTEX_AI,
             params={"timeout": 600.0},
         )
 

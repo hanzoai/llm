@@ -24,7 +24,7 @@ from pydantic import BaseModel
 from typing_extensions import overload
 
 import llm
-from llm import LlmProviders
+from llm import LLMProviders
 from llm._logging import verbose_logger
 from llm.constants import DEFAULT_MAX_RETRIES
 from llm.llm_core_utils.llm_logging import Logging as LLMLoggingObj
@@ -526,7 +526,7 @@ class OpenAIChatCompletion(BaseLLM, BaseOpenAILLM):
 
             if custom_llm_provider is not None and model is not None:
                 provider_config = ProviderConfigManager.get_provider_chat_config(
-                    model=model, provider=LlmProviders(custom_llm_provider)
+                    model=model, provider=LLMProviders(custom_llm_provider)
                 )
 
             if provider_config:

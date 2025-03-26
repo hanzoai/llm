@@ -1149,7 +1149,7 @@ def test_bedrock_tool_calling():
             {
                 "type": "function",
                 "function": {
-                    "name": "-DoSomethingVeryCool-forLlm_Testin999229291-0293993",
+                    "name": "-DoSomethingVeryCool-forLLM_Testin999229291-0293993",
                     "description": "use this to get the current weather",
                     "parameters": {"type": "object", "properties": {}},
                 },
@@ -1169,7 +1169,7 @@ def test_bedrock_tool_calling():
             if _tool_Call_name is not None and "DoSomethingVeryCool" in _tool_Call_name:
                 assert (
                     _tool_Call_name
-                    == "-DoSomethingVeryCool-forLlm_Testin999229291-0293993"
+                    == "-DoSomethingVeryCool-forLLM_Testin999229291-0293993"
                 )
 
 
@@ -2215,8 +2215,8 @@ class TestBedrockConverseChatNormal(BaseLLMChatTest):
 
 
 class TestBedrockRerank(BaseLLMRerankTest):
-    def get_custom_llm_provider(self) -> llm.LlmProviders:
-        return llm.LlmProviders.BEDROCK
+    def get_custom_llm_provider(self) -> llm.LLMProviders:
+        return llm.LLMProviders.BEDROCK
 
     def get_base_rerank_call_args(self) -> dict:
         return {
@@ -2225,8 +2225,8 @@ class TestBedrockRerank(BaseLLMRerankTest):
 
 
 class TestBedrockCohereRerank(BaseLLMRerankTest):
-    def get_custom_llm_provider(self) -> llm.LlmProviders:
-        return llm.LlmProviders.BEDROCK
+    def get_custom_llm_provider(self) -> llm.LLMProviders:
+        return llm.LLMProviders.BEDROCK
 
     def get_base_rerank_call_args(self) -> dict:
         return {
@@ -2481,8 +2481,8 @@ class TestBedrockEmbedding(BaseLLMEmbeddingTest):
             "model": "bedrock/amazon.titan-embed-image-v1",
         }
 
-    def get_custom_llm_provider(self) -> llm.LlmProviders:
-        return llm.LlmProviders.BEDROCK
+    def get_custom_llm_provider(self) -> llm.LLMProviders:
+        return llm.LLMProviders.BEDROCK
 
     def test_bedrock_image_embedding_transformation(self):
         from llm.llms.bedrock.embed.amazon_titan_multimodal_transformation import (

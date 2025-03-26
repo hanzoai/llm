@@ -441,7 +441,7 @@ async def ollama_async_streaming(
 ):
     try:
         _async_http_client = get_async_httpx_client(
-            llm_provider=llm.LlmProviders.OLLAMA
+            llm_provider=llm.LLMProviders.OLLAMA
         )
         client = _async_http_client.client
         _request = {

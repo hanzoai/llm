@@ -81,13 +81,13 @@ async def test_o1_handle_tool_calling_optional_params(
     """
     from openai import AsyncOpenAI
     from llm.utils import ProviderConfigManager
-    from llm.types.utils import LlmProviders
+    from llm.types.utils import LLMProviders
 
     os.environ["LLM_LOCAL_MODEL_COST_MAP"] = "True"
     llm.model_cost = llm.get_model_cost_map(url="")
 
     config = ProviderConfigManager.get_provider_chat_config(
-        model=model, provider=LlmProviders.OPENAI
+        model=model, provider=LLMProviders.OPENAI
     )
 
     supported_params = config.get_supported_openai_params(model=model)

@@ -946,7 +946,7 @@ def test_vertex_ai_mistral_predict_cost(usage):
                 finish_reason="stop",
                 index=0,
                 message=Message(
-                    content="Hello! I'm Llm Bot, your helpful assistant. While I can't provide real-time weather updates, I can help you find a reliable weather service or guide you on how to check the weather on your device. Would you like assistance with that?",
+                    content="Hello! I'm LLM Bot, your helpful assistant. While I can't provide real-time weather updates, I can help you find a reliable weather service or guide you on how to check the weather on your device. Would you like assistance with that?",
                     role="assistant",
                     tool_calls=None,
                     function_call=None,
@@ -1441,7 +1441,7 @@ def test_completion_cost_vertex_llama3():
                 finish_reason="stop",
                 index=0,
                 message=Message(
-                    content="My name is Llm Bot, and I'm here to help you with any questions or tasks you may have. As for the weather, I'd be happy to provide you with the current conditions and forecast for your location. However, I'm a large language model, I don't have real-time access to your location, so I'll need you to tell me where you are or provide me with a specific location you're interested in knowing the weather for.\\n\\nOnce you provide me with that information, I can give you the current weather conditions, including temperature, humidity, wind speed, and more, as well as a forecast for the next few days. Just let me know how I can assist you!",
+                    content="My name is LLM Bot, and I'm here to help you with any questions or tasks you may have. As for the weather, I'd be happy to provide you with the current conditions and forecast for your location. However, I'm a large language model, I don't have real-time access to your location, so I'll need you to tell me where you are or provide me with a specific location you're interested in knowing the weather for.\\n\\nOnce you provide me with that information, I can give you the current weather conditions, including temperature, humidity, wind speed, and more, as well as a forecast for the next few days. Just let me know how I can assist you!",
                     role="assistant",
                     tool_calls=None,
                     function_call=None,

@@ -28,15 +28,15 @@ if TYPE_CHECKING:
 
     from llm.router import Router as _Router
 
-    LlmRouter = _Router
+    LLMRouter = _Router
     Span = _Span
 else:
-    LlmRouter = Any
+    LLMRouter = Any
     Span = Any
 
 
 def _is_cooldown_required(
-    llm_router_instance: LlmRouter,
+    llm_router_instance: LLMRouter,
     model_id: str,
     exception_status: Union[str, int],
     exception_str: Optional[str] = None,
@@ -92,7 +92,7 @@ def _is_cooldown_required(
 
 
 def _should_run_cooldown_logic(
-    llm_router_instance: LlmRouter,
+    llm_router_instance: LLMRouter,
     deployment: Optional[str],
     exception_status: Union[str, int],
     original_exception: Any,
@@ -148,7 +148,7 @@ def _should_run_cooldown_logic(
 
 
 def _should_cooldown_deployment(
-    llm_router_instance: LlmRouter,
+    llm_router_instance: LLMRouter,
     deployment: str,
     exception_status: Union[str, int],
     original_exception: Any,
@@ -240,7 +240,7 @@ def _should_cooldown_deployment(
 
 
 def _set_cooldown_deployments(
-    llm_router_instance: LlmRouter,
+    llm_router_instance: LLMRouter,
     original_exception: Any,
     exception_status: Union[str, int],
     deployment: Optional[str] = None,
@@ -300,7 +300,7 @@ def _set_cooldown_deployments(
 
 
 async def _async_get_cooldown_deployments(
-    llm_router_instance: LlmRouter,
+    llm_router_instance: LLMRouter,
     parent_otel_span: Optional[Span],
 ) -> List[str]:
     """
@@ -328,7 +328,7 @@ async def _async_get_cooldown_deployments(
 
 
 async def _async_get_cooldown_deployments_with_debug_info(
-    llm_router_instance: LlmRouter,
+    llm_router_instance: LLMRouter,
     parent_otel_span: Optional[Span],
 ) -> List[tuple]:
     """
@@ -346,7 +346,7 @@ async def _async_get_cooldown_deployments_with_debug_info(
 
 
 def _get_cooldown_deployments(
-    llm_router_instance: LlmRouter, parent_otel_span: Optional[Span]
+    llm_router_instance: LLMRouter, parent_otel_span: Optional[Span]
 ) -> List[str]:
     """
     Get the list of models being cooled down for this minute
@@ -375,7 +375,7 @@ def _get_cooldown_deployments(
 
 
 def should_cooldown_based_on_allowed_fails_policy(
-    llm_router_instance: LlmRouter,
+    llm_router_instance: LLMRouter,
     deployment: str,
     original_exception: Any,
 ) -> bool:
@@ -410,7 +410,7 @@ def should_cooldown_based_on_allowed_fails_policy(
 
 
 def _is_allowed_fails_set_on_router(
-    llm_router_instance: LlmRouter,
+    llm_router_instance: LLMRouter,
 ) -> bool:
     """
     Check if Router.allowed_fails is set or is Non-default Value

@@ -11,15 +11,15 @@ from llm._logging import verbose_logger
 if TYPE_CHECKING:
     from llm.router import Router as _Router
 
-    LlmRouter = _Router
+    LLMRouter = _Router
     from llm.integrations.prometheus import PrometheusLogger
 else:
-    LlmRouter = Any
+    LLMRouter = Any
     PrometheusLogger = Any
 
 
 async def router_cooldown_event_callback(
-    llm_router_instance: LlmRouter,
+    llm_router_instance: LLMRouter,
     deployment_id: str,
     exception_status: Union[str, int],
     cooldown_time: float,

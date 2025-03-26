@@ -16,5 +16,5 @@ class TestDeepgramAudioTranscription(BaseLLMAudioTranscriptionTest):
             "model": "deepgram/nova-2",
         }
 
-    def get_custom_llm_provider(self) -> llm.LlmProviders:
-        return llm.LlmProviders.DEEPGRAM
+    def get_custom_llm_provider(self) -> llm.LLMProviders:
+        return llm.LLMProviders.DEEPGRAM
