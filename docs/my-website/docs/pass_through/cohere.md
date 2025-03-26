@@ -4,9 +4,9 @@ Pass-through endpoints for Cohere - call provider-specific endpoint, in native f
 
 | Feature | Supported | Notes | 
 |-------|-------|-------|
-| Cost Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
+| Cost Tracking | ❌ | [Tell us if you need this](https://github.com/hanzoai/llm/issues/new) |
 | Logging | ✅ | works across all integrations |
-| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
+| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/hanzoai/llm/issues/new) |
 | Streaming | ✅ | |
 
 Just replace `https://api.cohere.com` with `LLM_PROXY_BASE_URL/cohere` 🚀

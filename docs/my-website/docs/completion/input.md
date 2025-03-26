@@ -136,7 +136,7 @@ def completion(
 - `tool_call_id`: *str (optional)* - Tool call that this message is responding to.
 
 
-[**See All Message Values**](https://github.com/BerriAI/llm/blob/8600ec77042dacad324d3879a2bd918fc6a719fa/llm/types/llms/openai.py#L392)
+[**See All Message Values**](https://github.com/hanzoai/llm/blob/8600ec77042dacad324d3879a2bd918fc6a719fa/llm/types/llms/openai.py#L392)
 
 ## Optional Fields
 

@@ -164,10 +164,10 @@ PROXY_BASE_URL=https://llm-api.up.railway.app/
 
 ### Restrict Email Subdomains w/ SSO
 
-If you're using SSO and want to only allow users with a specific subdomain - e.g. (@berri.ai email accounts) to access the UI, do this:
+If you're using SSO and want to only allow users with a specific subdomain - e.g. (@hanzo.ai email accounts) to access the UI, do this:
 
 ```bash
-export ALLOWED_EMAIL_DOMAINS="berri.ai"
+export ALLOWED_EMAIL_DOMAINS="hanzo.ai"
 ```
 
 This will check if the user email we receive from SSO contains this domain, before allowing access.
@@ -245,7 +245,7 @@ Set `UI_LOGO_PATH` on your env. We recommend using a hosted image, it's a lot ea
 
 Exaple setting Hosted image
 ```shell
-UI_LOGO_PATH="https://llm-logo-aws-marketplace.s3.us-west-2.amazonaws.com/berriai-logo-github.png"
+UI_LOGO_PATH="https://llm-logo-aws-marketplace.s3.us-west-2.amazonaws.com/hanzoai-logo-github.png"
 ```
 
 Exaple setting a local image (on your container)
@@ -253,7 +253,7 @@ Exaple setting a local image (on your container)
 UI_LOGO_PATH="ui_images/logo.jpg"
 ```
 #### Set Custom Color Theme
-- Navigate to [/enterprise/enterprise_ui](https://github.com/BerriAI/llm/blob/main/enterprise/enterprise_ui/_enterprise_colors.json)
+- Navigate to [/enterprise/enterprise_ui](https://github.com/hanzoai/llm/blob/main/enterprise/enterprise_ui/_enterprise_colors.json)
 - Inside the `enterprise_ui` directory, rename `_enterprise_colors.json` to `enterprise_colors.json`
 - Set your companies custom color scheme in `enterprise_colors.json`
 Example contents of `enterprise_colors.json` 

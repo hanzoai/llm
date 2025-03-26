@@ -1,7 +1,7 @@
 # OpenRouter
 LLM supports all the text / chat / vision models from [OpenRouter](https://openrouter.ai/docs)
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/LLM_OpenRouter.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/hanzoai/llm/blob/main/cookbook/LLM_OpenRouter.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 

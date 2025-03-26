@@ -361,7 +361,7 @@ print(response_2.usage)
 
 Cost cache-hit prompt tokens can differ from cache-miss prompt tokens.
 
-Use the `completion_cost()` function for calculating cost ([handles prompt caching cost calculation](https://github.com/BerriAI/llm/blob/f7ce1173f3315cc6cae06cf9bcf12e54a2a19705/llm/llms/anthropic/cost_calculation.py#L12) as well). [**See more helper functions**](./token_usage.md)
+Use the `completion_cost()` function for calculating cost ([handles prompt caching cost calculation](https://github.com/hanzoai/llm/blob/f7ce1173f3315cc6cae06cf9bcf12e54a2a19705/llm/llms/anthropic/cost_calculation.py#L12) as well). [**See more helper functions**](./token_usage.md)
 
 ```python
 cost = completion_cost(completion_response=response, model=model)
@@ -505,4 +505,4 @@ curl -L -X GET 'http://0.0.0.0:4000/v1/model/info' \
 </TabItem>
 </Tabs>
 
-This checks our maintained [model info/cost map](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json)
+This checks our maintained [model info/cost map](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json)

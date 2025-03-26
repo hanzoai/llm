@@ -156,7 +156,7 @@ llm_remaining_team_budget_metric{team_alias="QA Prod Bot",team_id="de35b29e-6ca8
 
 Prevent projects from gobbling too much tpm/rpm.
 
-Dynamically allocate TPM/RPM quota to api keys, based on active keys in that minute. [**See Code**](https://github.com/BerriAI/llm/blob/9bffa9a48e610cc6886fc2dce5c1815aeae2ad46/llm/proxy/hooks/dynamic_rate_limiter.py#L125)
+Dynamically allocate TPM/RPM quota to api keys, based on active keys in that minute. [**See Code**](https://github.com/hanzoai/llm/blob/9bffa9a48e610cc6886fc2dce5c1815aeae2ad46/llm/proxy/hooks/dynamic_rate_limiter.py#L125)
 
 1. Setup config.yaml 
 

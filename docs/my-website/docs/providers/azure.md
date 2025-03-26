@@ -28,7 +28,7 @@ os.environ["AZURE_API_TYPE"] = ""
 ```
 
 ## **Usage - LLM Python SDK**
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/LLM_Azure_OpenAI.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/hanzoai/llm/blob/main/cookbook/LLM_Azure_OpenAI.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
@@ -295,7 +295,7 @@ response = completion(
 
 Azure OpenAI O-Series models are supported on LLM. 
 
-LLM routes any deployment name with `o1` or `o3` in the model name, to the O-Series [transformation](https://github.com/BerriAI/llm/blob/91ed05df2962b8eee8492374b048d27cc144d08c/llm/llms/azure/chat/o1_transformation.py#L4) logic.
+LLM routes any deployment name with `o1` or `o3` in the model name, to the O-Series [transformation](https://github.com/hanzoai/llm/blob/91ed05df2962b8eee8492374b048d27cc144d08c/llm/llms/azure/chat/o1_transformation.py#L4) logic.
 
 To set this explicitly, set `model` to `azure/o_series/<your-deployment-name>`.
 
@@ -1161,7 +1161,7 @@ model_list:
 
 **Solution** ✅ :  Set `base_model` on your config so llm uses the correct model for calculating azure cost
 
-Get the base model name from [here](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json)
+Get the base model name from [here](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json)
 
 Example config with `base_model`
 ```yaml

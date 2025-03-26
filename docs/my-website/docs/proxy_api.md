@@ -22,7 +22,7 @@ response = completion("command-nightly", messages)
 ```
 
 **Need a dedicated key?**
-Email us @ krrish@berri.ai 
+Email us @ dev@hanzo.ai 
 
 ## Supported Models for LLM Key
 These are the models that currently work with the "sk-llm-.." keys.
@@ -83,4 +83,4 @@ And that's it!
 Now you can call any model you like!
 
 
-Want us to add more models? [Let us know!](https://github.com/BerriAI/llm/issues/new/choose)
+Want us to add more models? [Let us know!](https://github.com/hanzoai/llm/issues/new/choose)

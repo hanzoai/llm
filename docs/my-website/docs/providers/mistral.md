@@ -139,7 +139,7 @@ print(response)
 ## Supported Models
 
 :::info
-All models listed here https://docs.mistral.ai/platform/endpoints are supported. We actively maintain the list of models, pricing, token window, etc. [here](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json).
+All models listed here https://docs.mistral.ai/platform/endpoints are supported. We actively maintain the list of models, pricing, token window, etc. [here](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json).
 
 :::
 

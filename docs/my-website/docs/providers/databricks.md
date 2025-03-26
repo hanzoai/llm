@@ -156,7 +156,7 @@ response = completion(
 
 ## Passings Databricks specific params - 'instruction'
 
-For embedding models, databricks lets you pass in an additional param 'instruction'. [Full Spec](https://github.com/BerriAI/llm/blob/43353c28b341df0d9992b45c6ce464222ebd7984/llm/llms/databricks.py#L164)
+For embedding models, databricks lets you pass in an additional param 'instruction'. [Full Spec](https://github.com/hanzoai/llm/blob/43353c28b341df0d9992b45c6ce464222ebd7984/llm/llms/databricks.py#L164)
 
 
 ```python

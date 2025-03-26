@@ -182,7 +182,7 @@ print(response)
 
 To test if your retry/fallback logic can handle timeouts, you can set `mock_timeout=True` for testing. 
 
-This is currently only supported on `/chat/completions` and `/completions` endpoints. Please [let us know](https://github.com/BerriAI/llm/issues) if you need this for other endpoints. 
+This is currently only supported on `/chat/completions` and `/completions` endpoints. Please [let us know](https://github.com/hanzoai/llm/issues) if you need this for other endpoints. 
 
 ```bash
 curl -L -X POST 'http://0.0.0.0:4000/v1/chat/completions' \
@@ -191,7 +191,7 @@ curl -L -X POST 'http://0.0.0.0:4000/v1/chat/completions' \
     --data-raw '{
         "model": "gemini/gemini-1.5-flash",
         "messages": [
-        {"role": "user", "content": "hi my email is ishaan@berri.ai"}
+        {"role": "user", "content": "hi my email is ishaan@hanzo.ai"}
         ],
         "mock_timeout": true # 👈 KEY CHANGE
     }'

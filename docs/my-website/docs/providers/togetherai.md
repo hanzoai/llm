@@ -97,7 +97,7 @@ completion(model="together_ai/togethercomputer/Llama-2-7B-32K-Instruct", message
 
 ### Using another model
 
-You can create a custom prompt template on LLM (and we [welcome PRs](https://github.com/BerriAI/llm) to add them to the main repo 🤗)
+You can create a custom prompt template on LLM (and we [welcome PRs](https://github.com/hanzoai/llm) to add them to the main repo 🤗)
 
 Let's make one for `OpenAssistant/llama2-70b-oasst-sft-v10`!
 
@@ -112,7 +112,7 @@ The accepted template format is: [Reference](https://huggingface.co/OpenAssistan
 """
 ```
 
-Let's register our custom prompt template: [Implementation Code](https://github.com/BerriAI/llm/blob/64f3d3c56ef02ac5544983efc78293de31c1c201/llm/llms/prompt_templates/factory.py#L77)
+Let's register our custom prompt template: [Implementation Code](https://github.com/hanzoai/llm/blob/64f3d3c56ef02ac5544983efc78293de31c1c201/llm/llms/prompt_templates/factory.py#L77)
 ```python
 import llm 
 

@@ -1099,7 +1099,7 @@ curl http://0.0.0.0:4000/v1/chat/completions \
 
 Pass `citations: {"enabled": true}` to Anthropic, to get citations on your document responses. 
 
-Note: This interface is in BETA. If you have feedback on how citations should be returned, please [tell us here](https://github.com/BerriAI/llm/issues/7970#issuecomment-2644437943)
+Note: This interface is in BETA. If you have feedback on how citations should be returned, please [tell us here](https://github.com/hanzoai/llm/issues/7970#issuecomment-2644437943)
 
 <Tabs>
 <TabItem value="sdk" label="SDK">

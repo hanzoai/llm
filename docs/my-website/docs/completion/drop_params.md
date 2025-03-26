@@ -26,7 +26,7 @@ response = llm.completion(
 
 LLM maps all supported openai params by provider + model (e.g. function calling is supported by anthropic on bedrock but not titan). 
 
-See `llm.get_supported_openai_params("command-r")` [**Code**](https://github.com/BerriAI/llm/blob/main/llm/utils.py#L3584)
+See `llm.get_supported_openai_params("command-r")` [**Code**](https://github.com/hanzoai/llm/blob/main/llm/utils.py#L3584)
 
 If a provider/model doesn't support a particular param, you can drop it. 
 

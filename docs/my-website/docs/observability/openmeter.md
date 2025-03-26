@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 <Image img={require('../../img/openmeter.png')} />
 
 :::info
-We want to learn how we can make the callbacks better! Meet the LLM [founders](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version) or
+We want to learn how we can make the callbacks better! Meet the LLM [founders](https://calendly.com/d/4mp-gd3-k5k/hanzoai-1-1-onboarding-llm-hosted-version) or
 join our [discord](https://discord.gg/wuPM9dRgDw)
 ::: 
 

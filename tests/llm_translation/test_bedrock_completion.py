@@ -926,7 +926,7 @@ def test_bedrock_ptu():
     """
     Check if a url with 'modelId' passed in, is created correctly
 
-    Reference: https://github.com/BerriAI/llm/issues/3805
+    Reference: https://github.com/hanzoai/llm/issues/3805
     """
     client = HTTPHandler()
 
@@ -960,7 +960,7 @@ async def test_bedrock_custom_api_base():
     """
     Check if a url with 'modelId' passed in, is created correctly
 
-    Reference: https://github.com/BerriAI/llm/issues/3805, https://github.com/BerriAI/llm/issues/5389#issuecomment-2313677977
+    Reference: https://github.com/hanzoai/llm/issues/3805, https://github.com/hanzoai/llm/issues/5389#issuecomment-2313677977
 
     """
     client = AsyncHTTPHandler()
@@ -1004,7 +1004,7 @@ async def test_bedrock_custom_api_base():
 @pytest.mark.asyncio
 async def test_bedrock_extra_headers(model):
     """
-    Relevant Issue: https://github.com/BerriAI/llm/issues/9106
+    Relevant Issue: https://github.com/hanzoai/llm/issues/9106
     """
     client = AsyncHTTPHandler()
 
@@ -1037,7 +1037,7 @@ async def test_bedrock_custom_prompt_template():
     """
     Check if custom prompt template used for bedrock models
 
-    Reference: https://github.com/BerriAI/llm/issues/4415
+    Reference: https://github.com/hanzoai/llm/issues/4415
     """
     client = AsyncHTTPHandler()
 
@@ -1132,7 +1132,7 @@ def test_completion_bedrock_external_client_region():
 
 def test_bedrock_tool_calling():
     """
-    # related issue: https://github.com/BerriAI/llm/issues/5007
+    # related issue: https://github.com/hanzoai/llm/issues/5007
     # Bedrock tool names must satisfy regular expression pattern: [a-zA-Z][a-zA-Z0-9_]* ensure this is true
     """
     llm.set_verbose = True
@@ -1175,7 +1175,7 @@ def test_bedrock_tool_calling():
 
 def test_bedrock_tools_pt_valid_names():
     """
-    # related issue: https://github.com/BerriAI/llm/issues/5007
+    # related issue: https://github.com/hanzoai/llm/issues/5007
     # Bedrock tool names must satisfy regular expression pattern: [a-zA-Z][a-zA-Z0-9_]* ensure this is true
 
     """
@@ -1219,7 +1219,7 @@ def test_bedrock_tools_pt_valid_names():
 
 def test_bedrock_tools_pt_invalid_names():
     """
-    # related issue: https://github.com/BerriAI/llm/issues/5007
+    # related issue: https://github.com/hanzoai/llm/issues/5007
     # Bedrock tool names must satisfy regular expression pattern: [a-zA-Z][a-zA-Z0-9_]* ensure this is true
 
     """
@@ -2154,7 +2154,7 @@ class TestBedrockConverseChatCrossRegion(BaseLLMChatTest):
         }
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/hanzoai/llm/issues/6833"""
         pass
 
     def test_multilingual_requests(self):
@@ -2202,7 +2202,7 @@ class TestBedrockConverseChatNormal(BaseLLMChatTest):
         }
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/hanzoai/llm/issues/6833"""
         pass
 
     def test_multilingual_requests(self):

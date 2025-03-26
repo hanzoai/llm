@@ -60,7 +60,7 @@ Expected Response
 
 ### 2. Adding an `org_admin` to an Organization
 
-Create a user (ishaan@berri.ai) as an `org_admin` for the `marketing_department` Organization (from [step 1](#1-creating-a-new-organization))
+Create a user (ishaan@hanzo.ai) as an `org_admin` for the `marketing_department` Organization (from [step 1](#1-creating-a-new-organization))
 
 Users with the following roles can call `/organization/member_add`
 - `proxy_admin`
@@ -70,19 +70,19 @@ Users with the following roles can call `/organization/member_add`
 curl -X POST 'http://0.0.0.0:4000/organization/member_add' \
     -H 'Authorization: Bearer sk-1234' \
     -H 'Content-Type: application/json' \
-    -d '{"organization_id": "ad15e8ca-12ae-46f4-8659-d02debef1b23", "member": {"role": "org_admin", "user_id": "ishaan@berri.ai"}}'
+    -d '{"organization_id": "ad15e8ca-12ae-46f4-8659-d02debef1b23", "member": {"role": "org_admin", "user_id": "ishaan@hanzo.ai"}}'
 ```
 
-Now a user with user_id = `ishaan@berri.ai` and role = `org_admin` has been created in the `marketing_department` Organization
+Now a user with user_id = `ishaan@hanzo.ai` and role = `org_admin` has been created in the `marketing_department` Organization
 
-Create a Virtual Key for user_id = `ishaan@berri.ai`. The User can then use the Virtual key for their Organization Admin Operations
+Create a Virtual Key for user_id = `ishaan@hanzo.ai`. The User can then use the Virtual key for their Organization Admin Operations
 
 ```shell
 curl --location 'http://0.0.0.0:4000/key/generate' \
         --header 'Authorization: Bearer sk-1234' \
         --header 'Content-Type: application/json' \
         --data '{
-            "user_id": "ishaan@berri.ai"
+            "user_id": "ishaan@hanzo.ai"
     }'
 ```
 
@@ -91,7 +91,7 @@ Expected Response
 ```json
 {
   "models": [],
-  "user_id": "ishaan@berri.ai",
+  "user_id": "ishaan@hanzo.ai",
   "key": "sk-7shH8TGMAofR4zQpAAo6kQ",
   "key_name": "sk-...o6kQ",
 }
@@ -135,7 +135,7 @@ The organization admin will use the virtual key created in [step 2](#2-adding-an
 curl -X POST 'http://0.0.0.0:4000/team/member_add' \
     -H 'Authorization: Bearer sk-1234' \
     -H 'Content-Type: application/json' \
-    -d '{"team_id": "01044ee8-441b-45f4-be7d-c70e002722d8", "member": {"role": "internal_user", "user_id": "krrish@berri.ai"}}'
+    -d '{"team_id": "01044ee8-441b-45f4-be7d-c70e002722d8", "member": {"role": "internal_user", "user_id": "dev@hanzo.ai"}}'
 
 ```
 

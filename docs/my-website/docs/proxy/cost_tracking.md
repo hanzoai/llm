@@ -551,7 +551,7 @@ model_list:
 
 **Solution** ✅ :  Set `base_model` on your config so llm uses the correct model for calculating azure cost
 
-Get the base model name from [here](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json)
+Get the base model name from [here](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json)
 
 Example config with `base_model`
 ```yaml

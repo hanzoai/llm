@@ -333,7 +333,7 @@ def test_parallel_function_call_anthropic_error_msg(
 
     Ensure this error is thrown when `tools=` param is not specified. But tool call requests are made.
 
-    Reference Issue: https://github.com/BerriAI/llm/issues/5747, https://github.com/BerriAI/llm/issues/5388
+    Reference Issue: https://github.com/hanzoai/llm/issues/5747, https://github.com/hanzoai/llm/issues/5388
     """
     try:
         llm.set_verbose = True
@@ -568,7 +568,7 @@ def test_groq_parallel_function_call():
 )
 def test_anthropic_function_call_with_no_schema(model):
     """
-    Relevant Issue: https://github.com/BerriAI/llm/issues/6012
+    Relevant Issue: https://github.com/hanzoai/llm/issues/6012
     """
     tools = [
         {

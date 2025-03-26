@@ -107,7 +107,7 @@ class AnthropicConfig(BaseConfig):
 
         return type_to_response_format_param(
             response_format, ref_template="/$defs/{model}"
-        )  # Relevant issue: https://github.com/BerriAI/llm/issues/7755
+        )  # Relevant issue: https://github.com/hanzoai/llm/issues/7755
 
     def get_cache_control_headers(self) -> dict:
         return {
@@ -770,7 +770,7 @@ class AnthropicConfig(BaseConfig):
                     return _message
                 else:
                     # a lot of the times the `values` key is not present in the tool response
-                    # relevant issue: https://github.com/BerriAI/llm/issues/6741
+                    # relevant issue: https://github.com/hanzoai/llm/issues/6741
                     _message = llm.Message(content=json.dumps(args))
                     return _message
         except json.JSONDecodeError:

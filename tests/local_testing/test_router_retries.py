@@ -555,7 +555,7 @@ def test_timeout_for_rate_limit_error_with_healthy_deployments(
             status_code=429,
             content="",
             headers={"retry-after": str(cooldown_time)},  # type: ignore
-            request=httpx.Request(method="tpm_rpm_limits", url="https://github.com/BerriAI/llm"),  # type: ignore
+            request=httpx.Request(method="tpm_rpm_limits", url="https://github.com/hanzoai/llm"),  # type: ignore
         ),
     )
     model_list = [

@@ -19,7 +19,7 @@ import Image from '@theme/IdealImage';
 
 # v1.55.8-stable
 
-A new LLM Stable release [just went out](https://github.com/BerriAI/llm/releases/tag/v1.55.8-stable). Here are 5 updates since v1.52.2-stable. 
+A new LLM Stable release [just went out](https://github.com/hanzoai/llm/releases/tag/v1.55.8-stable). Here are 5 updates since v1.52.2-stable. 
 
 `langfuse`, `fallbacks`, `new models`, `azure_storage`
 
@@ -53,10 +53,10 @@ Send LLM usage (spend, tokens) data to [Azure Data Lake](https://learn.microsoft
 docker run \
 -e STORE_MODEL_IN_DB=True \
 -p 4000:4000 \
-ghcr.io/berriai/llm:llm_stable_release_branch-v1.55.8-stable
+ghcr.io/hanzoai/llm:llm_stable_release_branch-v1.55.8-stable
 ```
 
 ## Get Daily Updates
 
-LLM ships new releases every day. [Follow us on LinkedIn](https://www.linkedin.com/company/berri-ai/) to get daily updates. 
+LLM ships new releases every day. [Follow us on LinkedIn](https://www.linkedin.com/company/hanzo.ai/) to get daily updates. 
 

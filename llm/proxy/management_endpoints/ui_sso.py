@@ -626,7 +626,7 @@ async def auth_callback(request: Request):  # noqa: PLR0915
 
     if user_defined_values is None:
         raise Exception(
-            "Unable to map user identity to known values. 'user_defined_values' is None. File an issue - https://github.com/BerriAI/llm/issues"
+            "Unable to map user identity to known values. 'user_defined_values' is None. File an issue - https://github.com/hanzoai/llm/issues"
         )
 
     verbose_proxy_logger.info(

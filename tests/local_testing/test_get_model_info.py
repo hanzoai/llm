@@ -400,7 +400,7 @@ def test_get_model_info_huggingface_models(monkeypatch):
 def test_get_model_info_cost_calculator_bedrock_region_cris_stripped(model, provider):
     """
     ensure cross region inferencing model is used correctly
-    Relevant Issue: https://github.com/BerriAI/llm/issues/8115
+    Relevant Issue: https://github.com/hanzoai/llm/issues/8115
     """
     info = get_model_info(model=model, custom_llm_provider=provider)
     print("info", info)

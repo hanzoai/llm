@@ -12,7 +12,7 @@ LLM supports the following types of Hugging Face models:
 
 ## Usage
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/LLM_HuggingFace.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/hanzoai/llm/blob/main/cookbook/LLM_HuggingFace.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
@@ -225,7 +225,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 
 ## Streaming
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/LLM_HuggingFace.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/hanzoai/llm/blob/main/cookbook/LLM_HuggingFace.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
@@ -272,7 +272,7 @@ response = embedding(
 
 ### Setting API KEYS + API BASE
 
-If required, you can set the api key + api base, set it in your os environment. [Code for how it's sent](https://github.com/BerriAI/llm/blob/0100ab2382a0e720c7978fbf662cc6e6920e7e03/llm/llms/huggingface_restapi.py#L25)
+If required, you can set the api key + api base, set it in your os environment. [Code for how it's sent](https://github.com/hanzoai/llm/blob/0100ab2382a0e720c7978fbf662cc6e6920e7e03/llm/llms/huggingface_restapi.py#L25)
 
 ```python
 import os
@@ -378,7 +378,7 @@ def default_pt(messages):
     return " ".join(message["content"] for message in messages)
 ```
 
-[Code for how prompt formats work in LLM](https://github.com/BerriAI/llm/blob/main/llm/llms/prompt_templates/factory.py)
+[Code for how prompt formats work in LLM](https://github.com/hanzoai/llm/blob/main/llm/llms/prompt_templates/factory.py)
 
 #### Custom prompt templates
 
@@ -412,7 +412,7 @@ def test_huggingface_custom_model():
 test_huggingface_custom_model()
 ```
 
-[Implementation Code](https://github.com/BerriAI/llm/blob/c0b3da2c14c791a0b755f0b1e5a9ef065951ecbf/llm/llms/huggingface_restapi.py#L52)
+[Implementation Code](https://github.com/hanzoai/llm/blob/c0b3da2c14c791a0b755f0b1e5a9ef065951ecbf/llm/llms/huggingface_restapi.py#L52)
 
 ### Deploying a model on huggingface
 
@@ -429,7 +429,7 @@ Need help deploying a model on huggingface? [Check out this guide.](https://hugg
 
 # output
 
-Same as the OpenAI format, but also includes logprobs. [See the code](https://github.com/BerriAI/llm/blob/b4b2dbf005142e0a483d46a07a88a19814899403/llm/llms/huggingface_restapi.py#L115)
+Same as the OpenAI format, but also includes logprobs. [See the code](https://github.com/hanzoai/llm/blob/b4b2dbf005142e0a483d46a07a88a19814899403/llm/llms/huggingface_restapi.py#L115)
 
 ```json
 {
@@ -462,6 +462,6 @@ Yes, we support stop sequences - and you can pass as many as allowed by Hugging 
 
 **How do you deal with repetition penalty?**
 
-We map the presence penalty parameter in openai to the repetition penalty parameter on Hugging Face. [See code](https://github.com/BerriAI/llm/blob/b4b2dbf005142e0a483d46a07a88a19814899403/llm/utils.py#L757).
+We map the presence penalty parameter in openai to the repetition penalty parameter on Hugging Face. [See code](https://github.com/hanzoai/llm/blob/b4b2dbf005142e0a483d46a07a88a19814899403/llm/utils.py#L757).
 
-We welcome any suggestions for improving our Hugging Face integration - Create an [issue](https://github.com/BerriAI/llm/issues/new/choose)/[Join the Discord](https://discord.com/invite/wuPM9dRgDw)!
+We welcome any suggestions for improving our Hugging Face integration - Create an [issue](https://github.com/hanzoai/llm/issues/new/choose)/[Join the Discord](https://discord.com/invite/wuPM9dRgDw)!

@@ -657,7 +657,7 @@ class AmazonConverseConfig(BaseConfig):
             completion_response = ConverseResponseBlock(**response.json())  # type: ignore
         except Exception as e:
             raise BedrockError(
-                message="Received={}, Error converting to valid response block={}. File an issue if llm error - https://github.com/BerriAI/llm/issues".format(
+                message="Received={}, Error converting to valid response block={}. File an issue if llm error - https://github.com/hanzoai/llm/issues".format(
                     response.text, str(e)
                 ),
                 status_code=422,

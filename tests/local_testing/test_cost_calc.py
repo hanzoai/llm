@@ -61,7 +61,7 @@ router = Router(
 )
 def test_run(model: str):
     """
-    Relevant issue - https://github.com/BerriAI/llm/issues/4965
+    Relevant issue - https://github.com/hanzoai/llm/issues/4965
     """
     llm.set_verbose = True
     prompt = "Hi"

@@ -113,4 +113,4 @@ model_list:
         - `models`: list of models that the role is allowed to access. 
     - `model_list`: parent list of models on the proxy. [Learn more](./configs.md#llm-configs-model_list)
 
-3. Model Checks: The proxy will run validation checks on the received JWT. [Code](https://github.com/BerriAI/llm/blob/3a4f5b23b5025b87b6d969f2485cc9bc741f9ba6/llm/proxy/auth/user_api_key_auth.py#L284)
+3. Model Checks: The proxy will run validation checks on the received JWT. [Code](https://github.com/hanzoai/llm/blob/3a4f5b23b5025b87b6d969f2485cc9bc741f9ba6/llm/proxy/auth/user_api_key_auth.py#L284)

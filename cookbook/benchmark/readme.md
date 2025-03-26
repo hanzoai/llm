@@ -4,7 +4,7 @@
     <p align="center">
         <p align="center">Benchmark LLMs response, cost and response time</p>
         <p>LLM vs Cost per input + output token ($)</p>
-        <img width="806" alt="Screenshot 2023-11-13 at 2 51 06 PM" src="https://github.com/BerriAI/llm/assets/29436595/6d1bed71-d062-40b8-a113-28359672636a">
+        <img width="806" alt="Screenshot 2023-11-13 at 2 51 06 PM" src="https://github.com/hanzoai/llm/assets/29436595/6d1bed71-d062-40b8-a113-28359672636a">
     </p>
         <a href="https://docs.google.com/spreadsheets/d/1mvPbP02OLFgc-5-Ubn1KxGuQQdbMyG1jhMSWxAldWy4/edit?usp=sharing">
                Bar Graph Excel Sheet here
@@ -108,7 +108,7 @@
 
 ## Setup:
 ```
-git clone https://github.com/BerriAI/llm
+git clone https://github.com/hanzoai/llm
 ```
 cd to `benchmark` dir
 ```
@@ -136,7 +136,7 @@ os.environ['TOGETHERAI_API_KEY'] = ""
 
 # List of questions to benchmark (replace with your questions)
 questions = [
-    "When will BerriAI IPO?",
+    "When will hanzoai IPO?",
     "When will LLM hit $100M ARR?"
 ]
 
@@ -149,28 +149,28 @@ python3 benchmark.py
 
 ## Expected Output
 ```
-Running question: When will BerriAI IPO? for model: claude-2: 100%|████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:13<00:00,  4.41s/it]
+Running question: When will hanzoai IPO? for model: claude-2: 100%|████████████████████████████████████████████████████████████████████████████████████| 3/3 [00:13<00:00,  4.41s/it]
 
-Benchmark Results for 'When will BerriAI IPO?':
+Benchmark Results for 'When will hanzoai IPO?':
 +-----------------+----------------------------------------------------------------------------------+---------------------------+------------+
 | Model           | Response                                                                         | Response Time (seconds)   | Cost ($)   |
 +=================+==================================================================================+===========================+============+
 | gpt-3.5-turbo   | As an AI language model, I cannot provide up-to-date information or predict      | 1.55 seconds              | $0.000122  |
 |                 | future events. It is best to consult a reliable financial source or contact      |                           |            |
-|                 | BerriAI directly for information regarding their IPO plans.                      |                           |            |
+|                 | hanzoai directly for information regarding their IPO plans.                      |                           |            |
 +-----------------+----------------------------------------------------------------------------------+---------------------------+------------+
-| togethercompute | I'm not able to provide information about future IPO plans or dates for BerriAI  | 8.52 seconds              | $0.000531  |
+| togethercompute | I'm not able to provide information about future IPO plans or dates for hanzoai  | 8.52 seconds              | $0.000531  |
 | r/llama-2-70b-c | or any other company. IPO (Initial Public Offering) plans and timelines are      |                           |            |
 | hat             | typically kept private by companies until they are ready to make a public        |                           |            |
 |                 | announcement.  It's important to note that IPO plans can change and are subject  |                           |            |
 |                 | to various factors, such as market conditions, financial performance, and        |                           |            |
 |                 | regulatory approvals. Therefore, it's difficult to predict with certainty when   |                           |            |
-|                 | BerriAI or any other company will go public.  If you're interested in staying    |                           |            |
-|                 | up-to-date with BerriAI's latest news and developments, you may want to follow   |                           |            |
+|                 | hanzoai or any other company will go public.  If you're interested in staying    |                           |            |
+|                 | up-to-date with hanzoai's latest news and developments, you may want to follow   |                           |            |
 |                 | their official social media accounts, subscribe to their newsletter, or visit    |                           |            |
 |                 | their website periodically for updates.                                          |                           |            |
 +-----------------+----------------------------------------------------------------------------------+---------------------------+------------+
-| claude-2        | I do not have any information about when or if BerriAI will have an initial      | 3.17 seconds              | $0.002084  |
+| claude-2        | I do not have any information about when or if hanzoai will have an initial      | 3.17 seconds              | $0.002084  |
 |                 | public offering (IPO). As an AI assistant created by Anthropic to be helpful,    |                           |            |
 |                 | harmless, and honest, I do not have insider knowledge about Anthropic's business |                           |            |
 |                 | plans or strategies.                                                             |                           |            |

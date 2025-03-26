@@ -8,7 +8,7 @@ Allow your end-users to pass their model list, api base, OpenAI API key (any LLM
 
 :::info
 
-**You can pass a llm.RouterConfig as `user_config`, See all supported params here https://github.com/BerriAI/llm/blob/main/llm/types/router.py **
+**You can pass a llm.RouterConfig as `user_config`, See all supported params here https://github.com/hanzoai/llm/blob/main/llm/types/router.py **
 
 :::
 

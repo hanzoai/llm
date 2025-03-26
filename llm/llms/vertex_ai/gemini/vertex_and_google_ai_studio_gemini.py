@@ -651,7 +651,7 @@ class VertexGeminiConfig(VertexAIBaseConfig, BaseConfig):
             completion_response = GenerateContentResponseBody(**raw_response.json())  # type: ignore
         except Exception as e:
             raise VertexAIError(
-                message="Received={}, Error converting to valid response block={}. File an issue if llm error - https://github.com/BerriAI/llm/issues".format(
+                message="Received={}, Error converting to valid response block={}. File an issue if llm error - https://github.com/hanzoai/llm/issues".format(
                     raw_response.text, str(e)
                 ),
                 status_code=422,
@@ -772,7 +772,7 @@ class VertexGeminiConfig(VertexAIBaseConfig, BaseConfig):
 
         except Exception as e:
             raise VertexAIError(
-                message="Received={}, Error converting to valid response block={}. File an issue if llm error - https://github.com/BerriAI/llm/issues".format(
+                message="Received={}, Error converting to valid response block={}. File an issue if llm error - https://github.com/hanzoai/llm/issues".format(
                     completion_response, str(e)
                 ),
                 status_code=422,

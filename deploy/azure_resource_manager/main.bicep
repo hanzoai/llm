@@ -1,4 +1,4 @@
-param imageName string = 'ghcr.io/berriai/llm:main-latest'
+param imageName string = 'ghcr.io/hanzoai/llm:main-latest'
 param containerName string = 'llm-container'
 param dnsLabelName string = 'llm'
 param portNumber int = 4000

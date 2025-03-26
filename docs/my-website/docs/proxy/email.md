@@ -47,5 +47,5 @@ Set the following in your env to customize your emails
 
 ```shell
 EMAIL_LOGO_URL="https://llm-listing.s3.amazonaws.com/llm_logo.png"  # public url to your logo
-EMAIL_SUPPORT_CONTACT="support@berri.ai"                                    # Your company support email
+EMAIL_SUPPORT_CONTACT="support@hanzo.ai"                                    # Your company support email
 ```

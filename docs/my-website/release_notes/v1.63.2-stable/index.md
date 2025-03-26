@@ -45,9 +45,9 @@ Here's a Demo Instance to test changes:
 
 ## New Models / Updated Models
 
-1. Add `supports_pdf_input` for specific Bedrock Claude models [PR](https://github.com/BerriAI/llm/commit/f63cf0030679fe1a43d03fb196e815a0f28dae92)
-2. Add pricing for amazon `eu` models [PR](https://github.com/BerriAI/llm/commits/main/model_prices_and_context_window.json)
-3. Fix Azure O1 mini pricing [PR](https://github.com/BerriAI/llm/commit/52de1949ef2f76b8572df751f9c868a016d4832c)
+1. Add `supports_pdf_input` for specific Bedrock Claude models [PR](https://github.com/hanzoai/llm/commit/f63cf0030679fe1a43d03fb196e815a0f28dae92)
+2. Add pricing for amazon `eu` models [PR](https://github.com/hanzoai/llm/commits/main/model_prices_and_context_window.json)
+3. Fix Azure O1 mini pricing [PR](https://github.com/hanzoai/llm/commit/52de1949ef2f76b8572df751f9c868a016d4832c)
 
 ## LLM Translation
 
@@ -57,7 +57,7 @@ Here's a Demo Instance to test changes:
 2. Bedrock Claude - fix tool calling transformation on invoke route. [Get Started](../../docs/providers/bedrock#usage---function-calling--tool-calling)
 3. Bedrock Claude - response_format support for claude on invoke route. [Get Started](../../docs/providers/bedrock#usage---structured-output--json-mode)
 4. Bedrock - pass `description` if set in response_format. [Get Started](../../docs/providers/bedrock#usage---structured-output--json-mode)
-5. Bedrock - Fix passing response_format: {"type": "text"}. [PR](https://github.com/BerriAI/llm/commit/c84b489d5897755139aa7d4e9e54727ebe0fa540)
+5. Bedrock - Fix passing response_format: {"type": "text"}. [PR](https://github.com/hanzoai/llm/commit/c84b489d5897755139aa7d4e9e54727ebe0fa540)
 6. OpenAI - Handle sending image_url as str to openai. [Get Started](https://docs.llm.ai/docs/completion/vision)
 7. Deepseek - return 'reasoning_content' missing on streaming. [Get Started](https://docs.llm.ai/docs/reasoning_content)
 8. Caching - Support caching on reasoning content. [Get Started](https://docs.llm.ai/docs/proxy/caching)
@@ -92,7 +92,7 @@ Here's a Demo Instance to test changes:
 
 ## Logging / Guardrail Integrations
 
-1. Fix prometheus metrics w/ custom metrics, when keys containing team_id make requests. [PR](https://github.com/BerriAI/llm/pull/8935)
+1. Fix prometheus metrics w/ custom metrics, when keys containing team_id make requests. [PR](https://github.com/hanzoai/llm/pull/8935)
 
 ## Performance / Loadbalancing / Reliability improvements
 
@@ -109,4 +109,4 @@ Here's a Demo Instance to test changes:
 
 ## Complete Git Diff
 
-[Here's the complete git diff](https://github.com/BerriAI/llm/compare/v1.61.20-stable...v1.63.2-stable)
+[Here's the complete git diff](https://github.com/hanzoai/llm/compare/v1.61.20-stable...v1.63.2-stable)

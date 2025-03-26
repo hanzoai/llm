@@ -51,7 +51,7 @@ llm --config config.yaml --detailed_debug
 <Tabs>
 <TabItem label="Unsuccessful call" value = "not-allowed">
 
-Expect this to fail since since `ishaan@berri.ai` in the request is PII
+Expect this to fail since since `ishaan@hanzo.ai` in the request is PII
 
 ```shell
 curl -i http://localhost:4000/v1/chat/completions \
@@ -60,7 +60,7 @@ curl -i http://localhost:4000/v1/chat/completions \
   -d '{
     "model": "gpt-3.5-turbo",
     "messages": [
-      {"role": "user", "content": "hi my email is ishaan@berri.ai"}
+      {"role": "user", "content": "hi my email is ishaan@hanzo.ai"}
     ],
     "guardrails": ["lakera-guard"]
   }'

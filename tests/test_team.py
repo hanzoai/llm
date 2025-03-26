@@ -447,7 +447,7 @@ async def test_team_update_sc_2():
         team_data = await new_team(session=session, i=0, member_list=member_list)
         ## Create 10 normal users
         members = [
-            {"role": "user", "user_id": f"krrish_{uuid.uuid4()}@berri.ai"}
+            {"role": "user", "user_id": f"krrish_{uuid.uuid4()}@hanzo.ai"}
             for _ in range(10)
         ]
         await add_member(
@@ -502,7 +502,7 @@ async def test_team_member_add_email():
         ]
         team_data = await new_team(session=session, i=0, member_list=member_list)
         ## Add 1 user via email
-        user_email = "krrish{}@berri.ai".format(uuid.uuid4())
+        user_email = "krrish{}@hanzo.ai".format(uuid.uuid4())
         new_user_info = await new_user(session=session, i=0, user_email=user_email)
         new_member = {"role": "user", "user_email": user_email}
         await add_member(
@@ -590,7 +590,7 @@ async def test_member_delete(dimension):
         await new_user(session=session, i=0, user_id=admin_user)
         ## Create normal user
         normal_user = f"{uuid.uuid4()}"
-        normal_user_email = "{}@berri.ai".format(normal_user)
+        normal_user_email = "{}@hanzo.ai".format(normal_user)
         print(f"normal_user: {normal_user}")
         await new_user(
             session=session, i=0, user_id=normal_user, user_email=normal_user_email
@@ -687,7 +687,7 @@ async def test_users_in_team_budget():
     - Make Call 1 -> pass
     - Make Call 2 -> fail
     """
-    get_user = f"krrish_{time.time()}@berri.ai"
+    get_user = f"krrish_{time.time()}@hanzo.ai"
     async with aiohttp.ClientSession() as session:
         team = await new_team(session, 0, user_id=get_user)
         print("New team=", team)

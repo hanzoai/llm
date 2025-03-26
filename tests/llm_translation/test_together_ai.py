@@ -23,7 +23,7 @@ class TestTogetherAI(BaseLLMChatTest):
         return {"model": "together_ai/mistralai/Mixtral-8x7B-Instruct-v0.1"}
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/hanzoai/llm/issues/6833"""
         pass
 
     def test_multilingual_requests(self):

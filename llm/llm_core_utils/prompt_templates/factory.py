@@ -1990,7 +1990,7 @@ def cohere_message_pt(messages: list):
 
 def amazon_titan_pt(
     messages: list,
-):  # format - https://github.com/BerriAI/llm/issues/1896
+):  # format - https://github.com/hanzoai/llm/issues/1896
     """
     Amazon Titan uses 'User:' and 'Bot: in it's prompt template
     """
@@ -2530,7 +2530,7 @@ def _insert_assistant_continue_message(
     """
     Add dummy message between user/tool result blocks.
 
-    Conversation blocks and tool result blocks cannot be provided in the same turn. Issue: https://github.com/BerriAI/llm/issues/6053
+    Conversation blocks and tool result blocks cannot be provided in the same turn. Issue: https://github.com/hanzoai/llm/issues/6053
     """
     if assistant_continue_message is not None:
         if isinstance(assistant_continue_message, str):
@@ -2571,7 +2571,7 @@ def get_user_message_block_or_continue_message(
     Returns the user content block
     if content block is an empty string, then return the default continue message
 
-    Relevant Issue: https://github.com/BerriAI/llm/issues/7169
+    Relevant Issue: https://github.com/hanzoai/llm/issues/7169
     """
     content_block = message.get("content", None)
 
@@ -2774,7 +2774,7 @@ def get_assistant_message_block_or_continue_message(
     Returns the user content block
     if content block is an empty string, then return the default continue message
 
-    Relevant Issue: https://github.com/BerriAI/llm/issues/7169
+    Relevant Issue: https://github.com/hanzoai/llm/issues/7169
     """
     content_block = message.get("content", None)
 
@@ -3073,7 +3073,7 @@ def _bedrock_converse_messages_pt(  # noqa: PLR0915
 
     - Roles must alternate b/w 'user' and 'model' (same as anthropic -> merge consecutive roles)
     - Please ensure that function response turn comes immediately after a function call turn
-    - Conversation blocks and tool result blocks cannot be provided in the same turn. Issue: https://github.com/BerriAI/llm/issues/6053
+    - Conversation blocks and tool result blocks cannot be provided in the same turn. Issue: https://github.com/hanzoai/llm/issues/6053
     """
 
     contents: List[BedrockMessageBlock] = []
@@ -3365,7 +3365,7 @@ def _bedrock_tools_pt(tools: List) -> List[BedrockToolBlock]:
         )
         name = tool.get("function", {}).get("name", "")
 
-        # related issue: https://github.com/BerriAI/llm/issues/5007
+        # related issue: https://github.com/hanzoai/llm/issues/5007
         # Bedrock tool names must satisfy regular expression pattern: [a-zA-Z][a-zA-Z0-9_]* ensure this is true
         name = make_valid_bedrock_tool_name(input_tool_name=name)
         description = tool.get("function", {}).get(

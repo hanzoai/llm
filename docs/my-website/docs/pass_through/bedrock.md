@@ -4,9 +4,9 @@ Pass-through endpoints for Bedrock - call provider-specific endpoint, in native 
 
 | Feature | Supported | Notes | 
 |-------|-------|-------|
-| Cost Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
+| Cost Tracking | ❌ | [Tell us if you need this](https://github.com/hanzoai/llm/issues/new) |
 | Logging | ✅ | works across all integrations |
-| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
+| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/hanzoai/llm/issues/new) |
 | Streaming | ✅ | |
 
 Just replace `https://bedrock-runtime.{aws_region_name}.amazonaws.com` with `LLM_PROXY_BASE_URL/bedrock` 🚀

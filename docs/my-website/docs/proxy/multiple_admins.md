@@ -21,14 +21,14 @@ llm_settings:
 Set the 'user_id' in request headers, when calling a management endpoint. [View Full List](https://llm-api.up.railway.app/#/team%20management).
 
 - Update Team budget with master key. 
-- Attribute change to 'krrish@berri.ai'. 
+- Attribute change to 'dev@hanzo.ai'. 
 
-**👉 Key change:** Passing `-H 'LLM-Changed-By: krrish@berri.ai'`
+**👉 Key change:** Passing `-H 'LLM-Changed-By: dev@hanzo.ai'`
 
 ```shell
 curl -X POST 'http://0.0.0.0:4000/team/update' \
     -H 'Authorization: Bearer sk-1234' \
-    -H 'LLM-Changed-By: krrish@berri.ai' \
+    -H 'LLM-Changed-By: dev@hanzo.ai' \
     -H 'Content-Type: application/json' \
     -d '{
         "team_id" : "8bf18b11-7f52-4717-8e1f-7c65f9d01e52",
@@ -42,7 +42,7 @@ curl -X POST 'http://0.0.0.0:4000/team/update' \
 {
    "id": "bd136c28-edd0-4cb6-b963-f35464cf6f5a",
    "updated_at": "2024-06-08 23:41:14.793",
-   "changed_by": "krrish@berri.ai", # 👈 CHANGED BY
+   "changed_by": "dev@hanzo.ai", # 👈 CHANGED BY
    "changed_by_api_key": "88dc28d0f030c55ed4ab77ed8faf098196cb1c05df778539800c9f1243fe6b4b",
    "action": "updated",
    "table_name": "LLM_TeamTable",

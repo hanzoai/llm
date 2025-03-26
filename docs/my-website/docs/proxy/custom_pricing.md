@@ -12,7 +12,7 @@ By default, the response cost is accessible in the logging object via `kwargs["r
 
 :::info
 
-LLM already has pricing for any model in our [model cost map](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json). 
+LLM already has pricing for any model in our [model cost map](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json). 
 
 :::
 
@@ -87,4 +87,4 @@ acompletion(
 
 If these keys are not present, LLM will not use your custom pricing. 
 
-If the problem persists, please file an issue on [GitHub](https://github.com/BerriAI/llm/issues). 
+If the problem persists, please file an issue on [GitHub](https://github.com/hanzoai/llm/issues). 

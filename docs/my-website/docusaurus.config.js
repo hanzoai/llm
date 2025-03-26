@@ -138,7 +138,7 @@ const config = {
             position: 'right',
           },
           {
-            href: 'https://github.com/BerriAI/llm',
+            href: 'https://github.com/hanzoai/llm',
             label: 'GitHub',
             position: 'right',
           },
@@ -179,7 +179,7 @@ const config = {
             items: [
               {
                 label: 'GitHub',
-                href: 'https://github.com/BerriAI/llm/',
+                href: 'https://github.com/hanzoai/llm/',
               },
             ],
           },

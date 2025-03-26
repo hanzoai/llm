@@ -11,7 +11,7 @@ Route specific customers to eu-only models.
 
 By specifying 'allowed_model_region' for a customer, LLM will filter-out any models in a model group which is not in the allowed region (i.e. 'eu').
 
-[**See Code**](https://github.com/BerriAI/llm/blob/5eb12e30cc5faa73799ebc7e48fc86ebf449c879/llm/router.py#L2938)
+[**See Code**](https://github.com/hanzoai/llm/blob/5eb12e30cc5faa73799ebc7e48fc86ebf449c879/llm/router.py#L2938)
 
 ### 1. Create customer with region-specification
 

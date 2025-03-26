@@ -330,7 +330,7 @@ curl http://0.0.0.0:4000/v1/chat/completions \
 
 ## Switching between Anthropic + Deepseek models 
 
-Set `drop_params=True` to drop the 'thinking' blocks when swapping from Anthropic to Deepseek models. Suggest improvements to this approach [here](https://github.com/BerriAI/llm/discussions/8927).
+Set `drop_params=True` to drop the 'thinking' blocks when swapping from Anthropic to Deepseek models. Suggest improvements to this approach [here](https://github.com/hanzoai/llm/discussions/8927).
 
 ```python
 llm.drop_params = True # 👈 EITHER GLOBALLY or per request

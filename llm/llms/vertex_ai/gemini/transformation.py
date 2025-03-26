@@ -190,12 +190,12 @@ def _gemini_convert_messages_with_history(  # noqa: PLR0915
                 """
                 check that user_content has 'text' parameter.
                     - Known Vertex Error: Unable to submit request because it must have a text parameter.
-                    - Relevant Issue: https://github.com/BerriAI/llm/issues/5515
+                    - Relevant Issue: https://github.com/hanzoai/llm/issues/5515
                 """
                 has_text_in_content = _check_text_in_content(user_content)
                 if has_text_in_content is False:
                     verbose_logger.warning(
-                        "No text in user content. Adding a blank text to user content, to ensure Gemini doesn't fail the request. Relevant Issue - https://github.com/BerriAI/llm/issues/5515"
+                        "No text in user content. Adding a blank text to user content, to ensure Gemini doesn't fail the request. Relevant Issue - https://github.com/hanzoai/llm/issues/5515"
                     )
                     user_content.append(
                         PartType(text=" ")
@@ -261,7 +261,7 @@ def _gemini_convert_messages_with_history(  # noqa: PLR0915
 
             if msg_i == init_msg_i:  # prevent infinite loops
                 raise Exception(
-                    "Invalid Message passed in - {}. File an issue https://github.com/BerriAI/llm/issues".format(
+                    "Invalid Message passed in - {}. File an issue https://github.com/hanzoai/llm/issues".format(
                         messages[msg_i]
                     )
                 )

@@ -142,7 +142,7 @@ def get_llm_provider(  # noqa: PLR0915
             model.split("/", 1)[0] in llm.provider_list
             and model.split("/", 1)[0] not in llm.model_list_set
             and len(model.split("/"))
-            > 1  # handle edge case where user passes in `llm --model mistral` https://github.com/BerriAI/llm/issues/1351
+            > 1  # handle edge case where user passes in `llm --model mistral` https://github.com/hanzoai/llm/issues/1351
         ):
             return _get_openai_compatible_provider_info(
                 model=model,
@@ -334,7 +334,7 @@ def get_llm_provider(  # noqa: PLR0915
                 response=httpx.Response(
                     status_code=400,
                     content=error_str,
-                    request=httpx.Request(method="completion", url="https://github.com/BerriAI/llm"),  # type: ignore
+                    request=httpx.Request(method="completion", url="https://github.com/hanzoai/llm"),  # type: ignore
                 ),
                 llm_provider="",
             )
@@ -362,7 +362,7 @@ def get_llm_provider(  # noqa: PLR0915
                 response=httpx.Response(
                     status_code=400,
                     content=error_str,
-                    request=httpx.Request(method="completion", url="https://github.com/BerriAI/llm"),  # type: ignore
+                    request=httpx.Request(method="completion", url="https://github.com/hanzoai/llm"),  # type: ignore
                 ),
                 llm_provider="",
             )

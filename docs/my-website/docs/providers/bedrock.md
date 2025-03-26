@@ -33,7 +33,7 @@ LLM uses boto3 to handle authentication. All these options are supported - https
 
 ## Usage
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/LLM_Bedrock.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/hanzoai/llm/blob/main/cookbook/LLM_Bedrock.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
@@ -1431,7 +1431,7 @@ response = llm.embedding(
 
 LLM supports ALL Bedrock models. 
 
-Here's an example of using a bedrock model with LLM. For a complete list, refer to the [model cost map](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json)
+Here's an example of using a bedrock model with LLM. For a complete list, refer to the [model cost map](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json)
 
 | Model Name                 | Command                                                          |
 |----------------------------|------------------------------------------------------------------|
@@ -1484,11 +1484,11 @@ print(response)
 
 | Model Name           | Usage                               | Supported Additional OpenAI params |
 |----------------------|---------------------------------------------|-----|
-| Titan Embeddings V2 | `embedding(model="bedrock/amazon.titan-embed-text-v2:0", input=input)` | [here](https://github.com/BerriAI/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/amazon_titan_v2_transformation.py#L59) |
-| Titan Embeddings - V1 | `embedding(model="bedrock/amazon.titan-embed-text-v1", input=input)` | [here](https://github.com/BerriAI/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/amazon_titan_g1_transformation.py#L53)
-| Titan Multimodal Embeddings | `embedding(model="bedrock/amazon.titan-embed-image-v1", input=input)` | [here](https://github.com/BerriAI/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/amazon_titan_multimodal_transformation.py#L28) |
-| Cohere Embeddings - English | `embedding(model="bedrock/cohere.embed-english-v3", input=input)` | [here](https://github.com/BerriAI/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/cohere_transformation.py#L18)
-| Cohere Embeddings - Multilingual | `embedding(model="bedrock/cohere.embed-multilingual-v3", input=input)` | [here](https://github.com/BerriAI/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/cohere_transformation.py#L18)
+| Titan Embeddings V2 | `embedding(model="bedrock/amazon.titan-embed-text-v2:0", input=input)` | [here](https://github.com/hanzoai/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/amazon_titan_v2_transformation.py#L59) |
+| Titan Embeddings - V1 | `embedding(model="bedrock/amazon.titan-embed-text-v1", input=input)` | [here](https://github.com/hanzoai/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/amazon_titan_g1_transformation.py#L53)
+| Titan Multimodal Embeddings | `embedding(model="bedrock/amazon.titan-embed-image-v1", input=input)` | [here](https://github.com/hanzoai/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/amazon_titan_multimodal_transformation.py#L28) |
+| Cohere Embeddings - English | `embedding(model="bedrock/cohere.embed-english-v3", input=input)` | [here](https://github.com/hanzoai/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/cohere_transformation.py#L18)
+| Cohere Embeddings - Multilingual | `embedding(model="bedrock/cohere.embed-multilingual-v3", input=input)` | [here](https://github.com/hanzoai/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/cohere_transformation.py#L18)
 
 ### Advanced - [Drop Unsupported Params](https://docs.llm.ai/docs/completion/drop_params#openai-proxy-usage)
 
@@ -1922,7 +1922,7 @@ model_list:
 
 :::warning
 
-This is a deprecated flow. Boto3 is not async. And boto3.client does not let us make the http call through httpx. Pass in your aws params through the method above 👆. [See Auth Code](https://github.com/BerriAI/llm/blob/55a20c7cce99a93d36a82bf3ae90ba3baf9a7f89/llm/llms/bedrock_httpx.py#L284) [Add new auth flow](https://github.com/BerriAI/llm/issues)
+This is a deprecated flow. Boto3 is not async. And boto3.client does not let us make the http call through httpx. Pass in your aws params through the method above 👆. [See Auth Code](https://github.com/hanzoai/llm/blob/55a20c7cce99a93d36a82bf3ae90ba3baf9a7f89/llm/llms/bedrock_httpx.py#L284) [Add new auth flow](https://github.com/hanzoai/llm/issues)
 
 
 Experimental - 2024-Jun-23:

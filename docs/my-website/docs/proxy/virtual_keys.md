@@ -8,7 +8,7 @@ Track Spend, and control model access via virtual keys for the proxy
 
 - 🔑 [UI to Generate, Edit, Delete Keys (with SSO)](https://docs.llm.ai/docs/proxy/ui)
 - [Deploy LLM Proxy with Key Management](https://docs.llm.ai/docs/proxy/deploy#deploy-with-database)
-- [Dockerfile.database for LLM Proxy + Key Management](https://github.com/BerriAI/llm/blob/main/docker/Dockerfile.database)
+- [Dockerfile.database for LLM Proxy + Key Management](https://github.com/hanzoai/llm/blob/main/docker/Dockerfile.database)
 
 
 :::
@@ -32,7 +32,7 @@ export DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<dbname>
 
 You can then generate keys by hitting the `/key/generate` endpoint.
 
-[**See code**](https://github.com/BerriAI/llm/blob/7a669a36d2689c7f7890bc9c93e04ff3c2641299/llm/proxy/proxy_server.py#L672)
+[**See code**](https://github.com/hanzoai/llm/blob/7a669a36d2689c7f7890bc9c93e04ff3c2641299/llm/proxy/proxy_server.py#L672)
 
 ## **Quick Start - Generate a Key**
 **Step 1: Save postgres db url**
@@ -63,7 +63,7 @@ llm --config /path/to/config.yaml
 curl 'http://0.0.0.0:4000/key/generate' \
 --header 'Authorization: Bearer <your-master-key>' \
 --header 'Content-Type: application/json' \
---data-raw '{"models": ["gpt-3.5-turbo", "gpt-4"], "metadata": {"user": "ishaan@berri.ai"}}'
+--data-raw '{"models": ["gpt-3.5-turbo", "gpt-4"], "metadata": {"user": "ishaan@hanzo.ai"}}'
 ```
 
 ## Spend Tracking 
@@ -72,11 +72,11 @@ Get spend per:
 - key - via `/key/info` [Swagger](https://llm-api.up.railway.app/#/key%20management/info_key_fn_key_info_get)
 - user - via `/user/info` [Swagger](https://llm-api.up.railway.app/#/user%20management/user_info_user_info_get)
 - team - via `/team/info` [Swagger](https://llm-api.up.railway.app/#/team%20management/team_info_team_info_get)  
-- ⏳ end-users - via `/end_user/info` - [Comment on this issue for end-user cost tracking](https://github.com/BerriAI/llm/issues/2633)
+- ⏳ end-users - via `/end_user/info` - [Comment on this issue for end-user cost tracking](https://github.com/hanzoai/llm/issues/2633)
 
 **How is it calculated?**
 
-The cost per model is stored [here](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json) and calculated by the [`completion_cost`](https://github.com/BerriAI/llm/blob/db7974f9f216ee50b53c53120d1e3fc064173b60/llm/utils.py#L3771) function.
+The cost per model is stored [here](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json) and calculated by the [`completion_cost`](https://github.com/hanzoai/llm/blob/db7974f9f216ee50b53c53120d1e3fc064173b60/llm/utils.py#L3771) function.
 
 **How is it tracking?**
 
@@ -93,7 +93,7 @@ curl 'http://0.0.0.0:4000/key/info?key=<user-key>' \
      -H 'Authorization: Bearer <your-master-key>'
 ```
 
-This is automatically updated (in USD) when calls are made to /completions, /chat/completions, /embeddings using llm's completion_cost() function. [**See Code**](https://github.com/BerriAI/llm/blob/1a6ea20a0bb66491968907c2bfaabb7fe45fc064/llm/utils.py#L1654). 
+This is automatically updated (in USD) when calls are made to /completions, /chat/completions, /embeddings using llm's completion_cost() function. [**See Code**](https://github.com/hanzoai/llm/blob/1a6ea20a0bb66491968907c2bfaabb7fe45fc064/llm/utils.py#L1654). 
 
 **Sample response**
 
@@ -126,7 +126,7 @@ This is automatically updated (in USD) when calls are made to /completions, /cha
 curl --location 'http://localhost:4000/user/new' \
 --header 'Authorization: Bearer <your-master-key>' \
 --header 'Content-Type: application/json' \
---data-raw '{user_email: "krrish@berri.ai"}' 
+--data-raw '{user_email: "dev@hanzo.ai"}' 
 ```
 
 **Expected Response**
@@ -400,7 +400,7 @@ If you need to add custom logic before generating a Proxy API Key (Example Valid
 #### 1. Write a custom `custom_generate_key_fn`
 
 
-The input to the custom_generate_key_fn function is a single parameter: `data` [(Type: GenerateKeyRequest)](https://github.com/BerriAI/llm/blob/main/llm/proxy/_types.py#L125)
+The input to the custom_generate_key_fn function is a single parameter: `data` [(Type: GenerateKeyRequest)](https://github.com/hanzoai/llm/blob/main/llm/proxy/_types.py#L125)
 
 The output of your `custom_generate_key_fn` should be a dictionary with the following structure
 ```python

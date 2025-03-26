@@ -211,7 +211,7 @@ By default the `max_budget` is set to `null` and is not checked for keys
 curl --location 'http://localhost:4000/user/new' \
 --header 'Authorization: Bearer <your-master-key>' \
 --header 'Content-Type: application/json' \
---data-raw '{"models": ["azure-models"], "max_budget": 0, "user_id": "krrish3@berri.ai"}' 
+--data-raw '{"models": ["azure-models"], "max_budget": 0, "user_id": "krrish3@hanzo.ai"}' 
 ```
 
 [**See Swagger**](https://llm-api.up.railway.app/#/user%20management/new_user_user_new_post)
@@ -222,7 +222,7 @@ curl --location 'http://localhost:4000/user/new' \
 {
     "key": "sk-YF2OxDbrgd1y2KgwxmEA2w",
     "expires": "2023-12-22T09:53:13.861000Z",
-    "user_id": "krrish3@berri.ai",
+    "user_id": "krrish3@hanzo.ai",
     "max_budget": 0.0
 }
 ```
@@ -244,15 +244,15 @@ curl 'http://0.0.0.0:4000/user/new' \
 
 #### Create new keys for existing user
 
-Now you can just call `/key/generate` with that user_id (i.e. krrish3@berri.ai) and:
-- **Budget Check**: krrish3@berri.ai's budget (i.e. $10) will be checked for this key
-- **Spend Tracking**: spend for this key will update krrish3@berri.ai's spend as well
+Now you can just call `/key/generate` with that user_id (i.e. krrish3@hanzo.ai) and:
+- **Budget Check**: krrish3@hanzo.ai's budget (i.e. $10) will be checked for this key
+- **Spend Tracking**: spend for this key will update krrish3@hanzo.ai's spend as well
 
 ```bash
 curl --location 'http://0.0.0.0:4000/key/generate' \
 --header 'Authorization: Bearer <your-master-key>' \
 --header 'Content-Type: application/json' \
---data '{"models": ["azure-models"], "user_id": "krrish3@berri.ai"}'
+--data '{"models": ["azure-models"], "user_id": "krrish3@hanzo.ai"}'
 ```
 
 ### Virtual Key
@@ -566,7 +566,7 @@ Use `/user/new` or `/user/update`, to persist rate limits across multiple keys f
 curl --location 'http://0.0.0.0:4000/user/new' \
 --header 'Authorization: Bearer sk-1234' \
 --header 'Content-Type: application/json' \
---data '{"user_id": "krrish@berri.ai", "max_parallel_requests": 10, "tpm_limit": 20, "rpm_limit": 4}' 
+--data '{"user_id": "dev@hanzo.ai", "max_parallel_requests": 10, "tpm_limit": 20, "rpm_limit": 4}' 
 ```
 
 [**See Swagger**](https://llm-api.up.railway.app/#/user%20management/new_user_user_new_post)
@@ -577,7 +577,7 @@ curl --location 'http://0.0.0.0:4000/user/new' \
 {
     "key": "sk-sA7VDkyhlQ7m8Gt77Mbt3Q",
     "expires": "2024-01-19T01:21:12.816168",
-    "user_id": "krrish@berri.ai",
+    "user_id": "dev@hanzo.ai",
 }
 ```
 
@@ -728,7 +728,7 @@ Use this to set a default budget for users who you give keys to.
 
 This will apply when a user has [`user_role="internal_user"`](./self_serve.md#available-roles) (set this via `/user/new` or `/user/update`). 
 
-This will NOT apply if a key has a team_id (team budgets will apply then). [Tell us how we can improve this!](https://github.com/BerriAI/llm/issues)
+This will NOT apply if a key has a team_id (team budgets will apply then). [Tell us how we can improve this!](https://github.com/hanzoai/llm/issues)
 
 1. Define max budget in your config.yaml
 
@@ -825,7 +825,7 @@ Just include user_id in the `/key/generate` request.
 curl --location 'http://0.0.0.0:4000/key/generate' \
 --header 'Authorization: Bearer <your-master-key>' \
 --header 'Content-Type: application/json' \
---data '{"models": ["azure-models"], "user_id": "krrish@berri.ai"}'
+--data '{"models": ["azure-models"], "user_id": "dev@hanzo.ai"}'
 ```
 
 

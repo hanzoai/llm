@@ -1,4 +1,4 @@
-"""https://github.com/BerriAI/llm/pull/3397/commits/a7ec1772b1457594d3af48cdcb0a382279b841c7#diff-44852387ceb00aade916d6b314dfd5d180499e54f35209ae9c07179febe08b4b."""
+"""https://github.com/hanzoai/llm/pull/3397/commits/a7ec1772b1457594d3af48cdcb0a382279b841c7#diff-44852387ceb00aade916d6b314dfd5d180499e54f35209ae9c07179febe08b4b."""
 
 """Test batch_completion's return_exceptions."""
 import llm

@@ -37,7 +37,7 @@ class AzureOpenAIO1Config(OpenAIOSeriesConfig):
 
         if (
             model and "o3" in model
-        ):  # o3 models support streaming - https://github.com/BerriAI/llm/issues/8274
+        ):  # o3 models support streaming - https://github.com/hanzoai/llm/issues/8274
             return False
 
         if model is not None:

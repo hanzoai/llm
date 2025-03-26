@@ -64,7 +64,7 @@ class PredibaseChatCompletion:
         """
         Parse the output text to remove any special characters. In our current approach we just check for ChatML tokens.
 
-        Initial issue that prompted this - https://github.com/BerriAI/llm/issues/763
+        Initial issue that prompted this - https://github.com/hanzoai/llm/issues/763
         """
         chat_template_tokens = [
             "<|assistant|>",

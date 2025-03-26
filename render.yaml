@@ -3,7 +3,7 @@ services:
     name: openai-proxy
     runtime: image
     image:
-      url: ghcr.io/berriai/llm:main-stable
+      url: ghcr.io/hanzoai/llm:main-stable
     envVars:
       - key: PORT
         value: 4000

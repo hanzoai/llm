@@ -4,7 +4,7 @@ Here's how to run the LLM UI locally for making changes:
 
 ## 1. Clone the repo 
 ```bash
-git clone https://github.com/BerriAI/llm.git
+git clone https://github.com/hanzoai/llm.git
 ```
 
 ## 2. Start the UI + Proxy 

@@ -61,7 +61,7 @@ class GroqChatConfig(OpenAIGPTConfig):
     def _transform_messages(self, messages: List[AllMessageValues], model: str) -> List:
         for idx, message in enumerate(messages):
             """
-            1. Don't pass 'null' function_call assistant message to groq - https://github.com/BerriAI/llm/issues/5839
+            1. Don't pass 'null' function_call assistant message to groq - https://github.com/hanzoai/llm/issues/5839
             """
             if isinstance(message, BaseModel):
                 _message = message.model_dump()

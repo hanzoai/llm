@@ -34,7 +34,7 @@ completion(model="gpt-4", messages=messages)
 ```
 
 ## User-based rate limiting 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/LLM_User_Based_Rate_Limits.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/hanzoai/llm/blob/main/cookbook/LLM_User_Based_Rate_Limits.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
@@ -57,7 +57,7 @@ else:
     response = "Sorry - no budget!"
 ```
 
-[**Implementation Code**](https://github.com/BerriAI/llm/blob/main/llm/budget_manager.py)
+[**Implementation Code**](https://github.com/hanzoai/llm/blob/main/llm/budget_manager.py)
 
 ## use with Text Input / Output
 
@@ -118,7 +118,7 @@ else:
 
 To use your own db, set the BudgetManager client type to `hosted` **and** set the api_base. 
 
-Your api is expected to expose `/get_budget` and `/set_budget` endpoints. [See code for details](https://github.com/BerriAI/llm/blob/27f1051792176a7eb1fe3b72b72bccd6378d24e9/llm/budget_manager.py#L7)
+Your api is expected to expose `/get_budget` and `/set_budget` endpoints. [See code for details](https://github.com/hanzoai/llm/blob/27f1051792176a7eb1fe3b72b72bccd6378d24e9/llm/budget_manager.py#L7)
 
 **Usage**
 ```python

@@ -113,7 +113,7 @@ All responses from the server are returned in the following format (for all LLM 
 
 1. Clone LLM repository to your local machine:
    ```
-   git clone https://github.com/BerriAI/llm-CodeLlama-server
+   git clone https://github.com/hanzoai/llm-CodeLlama-server
    ```
 2. Install the required dependencies using pip
    ```
@@ -141,10 +141,10 @@ All responses from the server are returned in the following format (for all LLM 
 
 # Support / Talk with founders
 
-- [Our calendar 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
+- [Our calendar 👋](https://calendly.com/d/4mp-gd3-k5k/hanzoai-1-1-onboarding-llm-hosted-version)
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 - Our numbers 📞 +1 (770) 8783-106 / +1 (412) 618-6238
-- Our emails ✉️ ishaan@berri.ai / krrish@berri.ai
+- Our emails ✉️ ishaan@hanzo.ai / dev@hanzo.ai
 
 ## Roadmap
 

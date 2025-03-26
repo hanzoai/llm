@@ -360,7 +360,7 @@ general_settings:
     hosted_keys: ["LLM_MASTER_KEY"] # 👈 WHICH KEYS ARE STORED ON KMS
 ```
 
-[**See Decryption Code**](https://github.com/BerriAI/llm/blob/a2da2a8f168d45648b61279d4795d647d94f90c9/llm/utils.py#L10182)
+[**See Decryption Code**](https://github.com/hanzoai/llm/blob/a2da2a8f168d45648b61279d4795d647d94f90c9/llm/utils.py#L10182)
 
 ## **All Secret Manager Settings**
 

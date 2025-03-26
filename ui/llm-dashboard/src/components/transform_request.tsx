@@ -273,7 +273,7 @@ ${formattedBody}
       </div>
     </div>
     <div className="mt-4 text-right w-full">
-        <p className="text-sm text-gray-500">Found an error? File an issue <a href="https://github.com/BerriAI/llm/issues" target="_blank" rel="noopener noreferrer">here</a>.</p>
+        <p className="text-sm text-gray-500">Found an error? File an issue <a href="https://github.com/hanzoai/llm/issues" target="_blank" rel="noopener noreferrer">here</a>.</p>
     </div>
     </div>
   );

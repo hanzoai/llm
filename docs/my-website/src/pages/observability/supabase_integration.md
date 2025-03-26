@@ -76,5 +76,5 @@ llm.modify_integration("supabase",{"table_name": "llm_logs"})
 Here's how to map your llm call to an end-user 
 
 ```python
-llm.identify({"end_user": "krrish@berri.ai"})
+llm.identify({"end_user": "dev@hanzo.ai"})
 ```

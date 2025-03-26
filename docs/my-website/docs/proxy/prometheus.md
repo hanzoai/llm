@@ -247,7 +247,7 @@ llm_settings:
 
 Link to Grafana Dashboards maintained by LLM
 
-https://github.com/BerriAI/llm/tree/main/cookbook/llm_proxy_server/grafana_dashboard
+https://github.com/hanzoai/llm/tree/main/cookbook/llm_proxy_server/grafana_dashboard
 
 Here is a screenshot of the metrics you can monitor with the LLM Grafana Dashboard
 

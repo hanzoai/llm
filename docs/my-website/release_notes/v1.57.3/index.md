@@ -39,7 +39,7 @@ Instead of `apt-get` use `apk`, the base llm image will no longer have `apt-get`
 **You are only impacted if you use `apt-get` in your Dockerfile**
 ```shell
 # Use the provided base image
-FROM ghcr.io/berriai/llm:main-latest
+FROM ghcr.io/hanzoai/llm:main-latest
 
 # Set the working directory
 WORKDIR /app

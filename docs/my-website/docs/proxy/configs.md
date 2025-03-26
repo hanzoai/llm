@@ -68,7 +68,7 @@ model_list:
     llm_params:
       model: "*"
 
-llm_settings: # module level llm settings - https://github.com/BerriAI/llm/blob/main/llm/__init__.py
+llm_settings: # module level llm settings - https://github.com/hanzoai/llm/blob/main/llm/__init__.py
   drop_params: True
   success_callback: ["langfuse"] # OPTIONAL - if you want to start sending LLM Logs to Langfuse. Make sure to set `LANGFUSE_PUBLIC_KEY` and `LANGFUSE_SECRET_KEY` in your env
 
@@ -444,7 +444,7 @@ model_list:
       api_key: os.environ/AZURE_NORTH_AMERICA_API_KEY # 👈 KEY CHANGE
 ```
 
-[**See Code**](https://github.com/BerriAI/llm/blob/c12d6c3fe80e1b5e704d9846b246c059defadce7/llm/utils.py#L2366)
+[**See Code**](https://github.com/hanzoai/llm/blob/c12d6c3fe80e1b5e704d9846b246c059defadce7/llm/utils.py#L2366)
 
 s/o to [@David Manouchehri](https://www.linkedin.com/in/davidmanouchehri/) for helping with this. 
 
@@ -645,7 +645,7 @@ docker run --name llm-proxy \
    -e LLM_CONFIG_BUCKET_OBJECT_KEY="<object_key>> \
    -e LLM_CONFIG_BUCKET_TYPE="gcs" \
    -p 4000:4000 \
-   ghcr.io/berriai/llm-database:main-latest --detailed_debug
+   ghcr.io/hanzoai/llm-database:main-latest --detailed_debug
 ```
 
 </TabItem>
@@ -666,7 +666,7 @@ docker run --name llm-proxy \
    -e LLM_CONFIG_BUCKET_NAME=<bucket_name> \
    -e LLM_CONFIG_BUCKET_OBJECT_KEY="<object_key>> \
    -p 4000:4000 \
-   ghcr.io/berriai/llm-database:main-latest
+   ghcr.io/hanzoai/llm-database:main-latest
 ```
 </TabItem>
 </Tabs>

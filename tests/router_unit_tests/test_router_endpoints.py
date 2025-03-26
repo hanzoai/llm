@@ -293,7 +293,7 @@ async def test_aaaaatext_completion_endpoint(model_list, sync_mode):
 @pytest.mark.asyncio
 async def test_router_with_empty_choices(model_list):
     """
-    https://github.com/BerriAI/llm/issues/8306
+    https://github.com/hanzoai/llm/issues/8306
     """
     router = Router(model_list=model_list)
     mock_response = llm.ModelResponse(

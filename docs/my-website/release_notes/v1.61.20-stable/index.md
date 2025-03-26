@@ -40,12 +40,12 @@ Here's a Demo Instance to test changes:
     1. Anthropic API [Start here](https://docs.llm.ai/docs/providers/anthropic#usage---thinking--reasoning_content)
     2. Bedrock API [Start here](https://docs.llm.ai/docs/providers/bedrock#usage---thinking--reasoning-content)
     3. Vertex AI API [See here](../../docs/providers/vertex#usage---thinking--reasoning_content)
-    4. OpenRouter [See here](https://github.com/BerriAI/llm/blob/ba5bdce50a0b9bc822de58c03940354f19a733ed/model_prices_and_context_window.json#L5626)
-2. Gpt-4.5-preview support + cost tracking [See here](https://github.com/BerriAI/llm/blob/ba5bdce50a0b9bc822de58c03940354f19a733ed/model_prices_and_context_window.json#L79)
-3. Azure AI - Phi-4 cost tracking [See here](https://github.com/BerriAI/llm/blob/ba5bdce50a0b9bc822de58c03940354f19a733ed/model_prices_and_context_window.json#L1773)
-4. Claude-3.5-sonnet - vision support updated on Anthropic API [See here](https://github.com/BerriAI/llm/blob/ba5bdce50a0b9bc822de58c03940354f19a733ed/model_prices_and_context_window.json#L2888)
-5. Bedrock llama vision support [See here](https://github.com/BerriAI/llm/blob/ba5bdce50a0b9bc822de58c03940354f19a733ed/model_prices_and_context_window.json#L7714)
-6. Cerebras llama3.3-70b pricing [See here](https://github.com/BerriAI/llm/blob/ba5bdce50a0b9bc822de58c03940354f19a733ed/model_prices_and_context_window.json#L2697)
+    4. OpenRouter [See here](https://github.com/hanzoai/llm/blob/ba5bdce50a0b9bc822de58c03940354f19a733ed/model_prices_and_context_window.json#L5626)
+2. Gpt-4.5-preview support + cost tracking [See here](https://github.com/hanzoai/llm/blob/ba5bdce50a0b9bc822de58c03940354f19a733ed/model_prices_and_context_window.json#L79)
+3. Azure AI - Phi-4 cost tracking [See here](https://github.com/hanzoai/llm/blob/ba5bdce50a0b9bc822de58c03940354f19a733ed/model_prices_and_context_window.json#L1773)
+4. Claude-3.5-sonnet - vision support updated on Anthropic API [See here](https://github.com/hanzoai/llm/blob/ba5bdce50a0b9bc822de58c03940354f19a733ed/model_prices_and_context_window.json#L2888)
+5. Bedrock llama vision support [See here](https://github.com/hanzoai/llm/blob/ba5bdce50a0b9bc822de58c03940354f19a733ed/model_prices_and_context_window.json#L7714)
+6. Cerebras llama3.3-70b pricing [See here](https://github.com/hanzoai/llm/blob/ba5bdce50a0b9bc822de58c03940354f19a733ed/model_prices_and_context_window.json#L2697)
 
 ## LLM Translation
 
@@ -61,9 +61,9 @@ Here's a Demo Instance to test changes:
 
 ## Spend Tracking Improvements
 
-1. Cost tracking for rerank via Bedrock [See PR](https://github.com/BerriAI/llm/commit/b682dc4ec8fd07acf2f4c981d2721e36ae2a49c5)
-2. Anthropic pass-through - fix race condition causing cost to not be tracked [See PR](https://github.com/BerriAI/llm/pull/8874)
-3. Anthropic pass-through: Ensure accurate token counting [See PR](https://github.com/BerriAI/llm/pull/8880)
+1. Cost tracking for rerank via Bedrock [See PR](https://github.com/hanzoai/llm/commit/b682dc4ec8fd07acf2f4c981d2721e36ae2a49c5)
+2. Anthropic pass-through - fix race condition causing cost to not be tracked [See PR](https://github.com/hanzoai/llm/pull/8874)
+3. Anthropic pass-through: Ensure accurate token counting [See PR](https://github.com/hanzoai/llm/pull/8880)
 
 ## Management Endpoints / UI
 
@@ -72,16 +72,16 @@ Here's a Demo Instance to test changes:
 3. Models Page - Fix Adding Azure, Azure AI Studio models on UI 
 4. Internal Users Page - Allow Bulk Adding Internal Users on UI 
 5. Internal Users Page - Allow sorting users by ‘created at’ 
-6. Virtual Keys Page - Allow searching for UserIDs on the dropdown when assigning a user to a team [See PR](https://github.com/BerriAI/llm/pull/8844)
-7. Virtual Keys Page - allow creating a user when assigning keys to users [See PR](https://github.com/BerriAI/llm/pull/8844)
-8. Model Hub Page  - fix text overflow issue [See PR](https://github.com/BerriAI/llm/pull/8749)
+6. Virtual Keys Page - Allow searching for UserIDs on the dropdown when assigning a user to a team [See PR](https://github.com/hanzoai/llm/pull/8844)
+7. Virtual Keys Page - allow creating a user when assigning keys to users [See PR](https://github.com/hanzoai/llm/pull/8844)
+8. Model Hub Page  - fix text overflow issue [See PR](https://github.com/hanzoai/llm/pull/8749)
 9. Admin Settings Page - Allow adding MSFT SSO on UI 
 10. Backend - don't allow creating duplicate internal users in DB
 
 ## Helm
 
-1. support ttlSecondsAfterFinished on the migration job - [See PR](https://github.com/BerriAI/llm/pull/8593)
-2. enhance migrations job with additional configurable properties - [See PR](https://github.com/BerriAI/llm/pull/8636)
+1. support ttlSecondsAfterFinished on the migration job - [See PR](https://github.com/hanzoai/llm/pull/8593)
+2. enhance migrations job with additional configurable properties - [See PR](https://github.com/hanzoai/llm/pull/8636)
 
 ## Logging / Guardrail Integrations
 
@@ -100,4 +100,4 @@ Here's a Demo Instance to test changes:
 
 ## Complete Git Diff
 
-View the complete git diff [here](https://github.com/BerriAI/llm/compare/v1.61.13-stable...v1.61.20-stable).
+View the complete git diff [here](https://github.com/hanzoai/llm/compare/v1.61.13-stable...v1.61.20-stable).

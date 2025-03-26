@@ -199,7 +199,7 @@ The `messages` field sent in by the client is ignored.
 
 The Langfuse prompt will replace the `messages` field.
 
-To replace parts of the prompt, use the `prompt_variables` field. [See how prompt variables are used](https://github.com/BerriAI/llm/blob/017f83d038f85f93202a083cf334de3544a3af01/llm/integrations/langfuse/langfuse_prompt_management.py#L127)
+To replace parts of the prompt, use the `prompt_variables` field. [See how prompt variables are used](https://github.com/hanzoai/llm/blob/017f83d038f85f93202a083cf334de3544a3af01/llm/integrations/langfuse/langfuse_prompt_management.py#L127)
 
 If the Langfuse prompt is a string, it will be sent as a user message (not all providers support system messages).
 

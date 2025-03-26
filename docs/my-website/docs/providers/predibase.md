@@ -118,7 +118,7 @@ response = completion(
 
 ## Advanced Usage - Prompt Formatting 
 
-LLM has prompt template mappings for all `meta-llama` llama3 instruct models. [**See Code**](https://github.com/BerriAI/llm/blob/4f46b4c3975cd0f72b8c5acb2cb429d23580c18a/llm/llms/prompt_templates/factory.py#L1360)
+LLM has prompt template mappings for all `meta-llama` llama3 instruct models. [**See Code**](https://github.com/hanzoai/llm/blob/4f46b4c3975cd0f72b8c5acb2cb429d23580c18a/llm/llms/prompt_templates/factory.py#L1360)
 
 To apply a custom prompt template: 
 
@@ -216,7 +216,7 @@ response = completion(
 ## Passings Predibase specific params - adapter_id, adapter_source, 
 Send params [not supported by `llm.completion()`](https://docs.llm.ai/docs/completion/input) but supported by Predibase by passing them to `llm.completion`
 
-Example `adapter_id`, `adapter_source` are Predibase specific param - [See List](https://github.com/BerriAI/llm/blob/8a35354dd6dbf4c2fcefcd6e877b980fcbd68c58/llm/llms/predibase.py#L54)
+Example `adapter_id`, `adapter_source` are Predibase specific param - [See List](https://github.com/hanzoai/llm/blob/8a35354dd6dbf4c2fcefcd6e877b980fcbd68c58/llm/llms/predibase.py#L54)
 
 ```python
 # !pip install llm

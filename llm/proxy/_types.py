@@ -2018,7 +2018,7 @@ class ProxyException(Exception):
         self.openai_code = openai_code or code
         # If we look on official python OpenAI lib, the code should be a string:
         # https://github.com/openai/openai-python/blob/195c05a64d39c87b2dfdf1eca2d339597f1fce03/src/openai/types/shared/error_object.py#L11
-        # Related LLM issue: https://github.com/BerriAI/llm/discussions/4834
+        # Related LLM issue: https://github.com/hanzoai/llm/discussions/4834
         self.code = str(code)
         if headers is not None:
             for k, v in headers.items():
@@ -2028,7 +2028,7 @@ class ProxyException(Exception):
 
         # rules for proxyExceptions
         # LLM router.py returns "No healthy deployment available" when there are no deployments available
-        # Should map to 429 errors https://github.com/BerriAI/llm/issues/2487
+        # Should map to 429 errors https://github.com/hanzoai/llm/issues/2487
         if (
             "No healthy deployment available" in self.message
             or "No deployments available" in self.message
@@ -2345,7 +2345,7 @@ class UserManagementEndpointParamDocStringEnums(str, enum.Enum):
     send_invite_email_doc_str = (
         "Optional[bool] - Specify if an invite email should be sent."
     )
-    user_role_doc_str = """Optional[str] - Specify a user role - "proxy_admin", "proxy_admin_viewer", "internal_user", "internal_user_viewer", "team", "customer". Info about each role here: `https://github.com/BerriAI/llm/llm/proxy/_types.py#L20`"""
+    user_role_doc_str = """Optional[str] - Specify a user role - "proxy_admin", "proxy_admin_viewer", "internal_user", "internal_user_viewer", "team", "customer". Info about each role here: `https://github.com/hanzoai/llm/llm/proxy/_types.py#L20`"""
     max_budget_doc_str = """Optional[float] - Specify max budget for a given user."""
     budget_duration_doc_str = """Optional[str] - Budget is reset at the end of specified duration. If not set, budget is never reset. You can set duration as seconds ("30s"), minutes ("30m"), hours ("30h"), days ("30d"), months ("1mo")."""
     models_doc_str = """Optional[list] - Model_name's a user is allowed to call. (if empty, key is allowed to call all models)"""
@@ -2364,7 +2364,7 @@ class UserManagementEndpointParamDocStringEnums(str, enum.Enum):
     )
     guardrails_doc_str = """Optional[List[str]] - [Not Implemented Yet] List of active guardrails for the user"""
     permissions_doc_str = """Optional[dict] - [Not Implemented Yet] User-specific permissions, eg. turning off pii masking."""
-    metadata_doc_str = """Optional[dict] - Metadata for user, store information for user. Example metadata = {"team": "core-infra", "app": "app2", "email": "ishaan@berri.ai" }"""
+    metadata_doc_str = """Optional[dict] - Metadata for user, store information for user. Example metadata = {"team": "core-infra", "app": "app2", "email": "ishaan@hanzo.ai" }"""
     max_parallel_requests_doc_str = """Optional[int] - Rate limit a user based on the number of parallel requests. Raises 429 error, if user's parallel requests > x."""
     soft_budget_doc_str = """Optional[float] - Get alerts when user crosses given budget, doesn't block requests."""
     model_max_budget_doc_str = """Optional[dict] - Model-specific max budget for user. [Docs](https://docs.llm.ai/docs/proxy/users#add-model-specific-budgets-to-keys)"""

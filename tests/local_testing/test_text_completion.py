@@ -3921,7 +3921,7 @@ def test_completion_text_003_prompt_array():
 #         response = text_completion(
 #             model="facebook/opt-125m",
 #             prompt='Write a tagline for a traditional bavarian tavern',
-#             api_base="https://openai-proxy.berriai.repl.co/v1",
+#             api_base="https://openai-proxy.hanzoai.repl.co/v1",
 #             custom_llm_provider="openai",
 #             temperature=0,
 #             max_tokens=10,

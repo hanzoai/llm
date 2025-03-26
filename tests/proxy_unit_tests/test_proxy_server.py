@@ -1132,7 +1132,7 @@ async def test_create_team_member_add_team_admin(
     prisma_client, new_member_method, user_role
 ):
     """
-    Relevant issue - https://github.com/BerriAI/llm/issues/5300
+    Relevant issue - https://github.com/hanzoai/llm/issues/5300
 
     Allow team admins to:
         - Add and remove team members

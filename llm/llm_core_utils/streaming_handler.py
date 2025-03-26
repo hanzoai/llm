@@ -179,7 +179,7 @@ class CustomStreamWrapper:
 
     def safety_checker(self) -> None:
         """
-        Fixes - https://github.com/BerriAI/llm/issues/5158
+        Fixes - https://github.com/hanzoai/llm/issues/5158
 
         if the model enters a loop and starts repeating the same chunk again, break out of loop and raise an internalservererror - allows for retries.
 
@@ -198,7 +198,7 @@ class CustomStreamWrapper:
                     last_contents[0] is not None
                     and isinstance(last_contents[0], str)
                     and len(last_contents[0]) > 2
-                ):  # ignore empty content - https://github.com/BerriAI/llm/issues/5158#issuecomment-2287156946
+                ):  # ignore empty content - https://github.com/hanzoai/llm/issues/5158#issuecomment-2287156946
                     # All last n chunks are identical
                     raise llm.InternalServerError(
                         message="The model is repeating the same chunk = {}.".format(

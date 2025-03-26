@@ -46,7 +46,7 @@ response = completion(
 - n
 - stop
 
-[**See Updated List**](https://github.com/BerriAI/llm/blob/1c747f3ad372399c5b95cc5696b06a5fbe53186b/llm/llms/vertex_httpx.py#L122)
+[**See Updated List**](https://github.com/hanzoai/llm/blob/1c747f3ad372399c5b95cc5696b06a5fbe53186b/llm/llms/vertex_httpx.py#L122)
 
 ## Passing Gemini Specific Params
 ### Response schema 
@@ -719,7 +719,7 @@ in your message content block.
 
 **Notes:**
 
-- [Relevant code](https://github.com/BerriAI/llm/blob/main/llm/llms/vertex_ai/context_caching/vertex_ai_context_caching.py#L255)
+- [Relevant code](https://github.com/hanzoai/llm/blob/main/llm/llms/vertex_ai/context_caching/vertex_ai_context_caching.py#L255)
 
 - Gemini Context Caching only allows 1 block of continuous messages to be cached. 
 

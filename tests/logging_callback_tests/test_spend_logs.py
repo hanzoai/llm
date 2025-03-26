@@ -215,7 +215,7 @@ def test_spend_logs_payload(model_id: Optional[str]):
     payload["metadata"] = json.loads(payload["metadata"])
     assert set(payload["metadata"].keys()) == set(expected_metadata_keys)
 
-    # This is crucial - used in PROD, it should pass, related issue: https://github.com/BerriAI/llm/issues/4334
+    # This is crucial - used in PROD, it should pass, related issue: https://github.com/hanzoai/llm/issues/4334
     assert (
         payload["request_tags"] == '["model-anthropic-claude-v2.1", "app-ishaan-prod"]'
     )

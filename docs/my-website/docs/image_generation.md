@@ -81,7 +81,7 @@ print(image)
 
 Any non-openai params, will be treated as provider-specific params, and sent in the request body as kwargs to the provider.
 
-[**See Reserved Params**](https://github.com/BerriAI/llm/blob/2f5f85cb52f36448d1f8bbfbd3b8af8167d0c4c8/llm/main.py#L4082)
+[**See Reserved Params**](https://github.com/hanzoai/llm/blob/2f5f85cb52f36448d1f8bbfbd3b8af8167d0c4c8/llm/main.py#L4082)
 :::
 
 ### Required Fields

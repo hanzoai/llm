@@ -17,7 +17,7 @@ model_list:
 
 ## Get Model Information - `/model/info`
 
-Retrieve detailed information about each model listed in the `/model/info` endpoint, including descriptions from the `config.yaml` file, and additional model info (e.g. max tokens, cost per input token, etc.) pulled from the model_info you set and the [llm model cost map](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json). Sensitive details like API keys are excluded for security purposes.
+Retrieve detailed information about each model listed in the `/model/info` endpoint, including descriptions from the `config.yaml` file, and additional model info (e.g. max tokens, cost per input token, etc.) pulled from the model_info you set and the [llm model cost map](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json). Sensitive details like API keys are excluded for security purposes.
 
 <Tabs
   defaultValue="curl"
@@ -52,7 +52,7 @@ curl -X POST "http://0.0.0.0:4000/model/new" \
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo ### RECEIVED MODEL NAME ### `openai.chat.completions.create(model="gpt-3.5-turbo",...)`
-    llm_params: # all params accepted by llm.completion() - https://github.com/BerriAI/llm/blob/9b46ec05b02d36d6e4fb5c32321e51e7f56e4a6e/llm/types/router.py#L297
+    llm_params: # all params accepted by llm.completion() - https://github.com/hanzoai/llm/blob/9b46ec05b02d36d6e4fb5c32321e51e7f56e4a6e/llm/types/router.py#L297
       model: azure/gpt-turbo-small-eu ### MODEL NAME sent to `llm.completion()` ###
       api_base: https://my-endpoint-europe-berri-992.openai.azure.com/
       api_key: "os.environ/AZURE_API_KEY_EU" # does os.getenv("AZURE_API_KEY_EU")
@@ -93,8 +93,8 @@ Here's an example of how to structure your `ModelParams`:
 
 Keep in mind that as both endpoints are in [BETA], you may need to visit the associated GitHub issues linked in the API descriptions to check for updates or provide feedback:
 
-- Get Model Information: [Issue #933](https://github.com/BerriAI/llm/issues/933)
-- Add a New Model: [Issue #964](https://github.com/BerriAI/llm/issues/964)
+- Get Model Information: [Issue #933](https://github.com/hanzoai/llm/issues/933)
+- Add a New Model: [Issue #964](https://github.com/hanzoai/llm/issues/964)
 
 Feedback on the beta endpoints is valuable and helps improve the API for all users.
 
@@ -141,9 +141,9 @@ curl -L -X GET 'http://0.0.0.0:4000/v1/model/info' \
 Returned `model_info = Your custom model_info + (if exists) LLM MODEL INFO`
 
 
-[**How LLM Model Info is found**](https://github.com/BerriAI/llm/blob/9b46ec05b02d36d6e4fb5c32321e51e7f56e4a6e/llm/proxy/proxy_server.py#L7460) 
+[**How LLM Model Info is found**](https://github.com/hanzoai/llm/blob/9b46ec05b02d36d6e4fb5c32321e51e7f56e4a6e/llm/proxy/proxy_server.py#L7460) 
 
-[Tell us how this can be improved!](https://github.com/BerriAI/llm/issues)
+[Tell us how this can be improved!](https://github.com/hanzoai/llm/issues)
 
 ```bash
 {
@@ -157,7 +157,7 @@ Returned `model_info = Your custom model_info + (if exists) LLM MODEL INFO`
                 "id": "e889baacd17f591cce4c63639275ba5e8dc60765d6c553e6ee5a504b19e50ddc",
                 "db_model": false,
                 "my_custom_key": "my_custom_value", # 👈 CUSTOM INFO
-                "key": "gpt-4", # 👈 KEY in LLM MODEL INFO/COST MAP - https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json
+                "key": "gpt-4", # 👈 KEY in LLM MODEL INFO/COST MAP - https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json
                 "max_tokens": 4096,
                 "max_input_tokens": 8192,
                 "max_output_tokens": 4096,

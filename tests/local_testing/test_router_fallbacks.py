@@ -1022,7 +1022,7 @@ async def test_service_unavailable_fallbacks(sync_mode):
 @pytest.mark.asyncio
 async def test_default_model_fallbacks(sync_mode, llm_module_fallbacks):
     """
-    Related issue - https://github.com/BerriAI/llm/issues/3623
+    Related issue - https://github.com/hanzoai/llm/issues/3623
 
     If model misconfigured, setup a default model for generic fallback
     """

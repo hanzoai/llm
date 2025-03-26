@@ -54,7 +54,7 @@
 # g = Github(access_token)
 
 # # Provide the owner and name of the repository where the pull request is located
-# repository_owner = "BerriAI"
+# repository_owner = "hanzoai"
 # repository_name = "llm"
 
 # # Get the repository object

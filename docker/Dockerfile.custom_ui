@@ -1,5 +1,5 @@
 # Use the provided base image
-FROM ghcr.io/berriai/llm:llm_fwd_server_root_path-dev
+FROM ghcr.io/hanzoai/llm:llm_fwd_server_root_path-dev
 
 # Set the working directory to /app
 WORKDIR /app

@@ -115,7 +115,7 @@ async def test_llm_guard_triggered():
                 "sk-1234",
                 model="fake-openai-endpoint",
                 messages=[
-                    {"role": "user", "content": f"Hello my name is ishaan@berri.ai"}
+                    {"role": "user", "content": f"Hello my name is ishaan@hanzo.ai"}
                 ],
                 guardrails=[
                     "aporia-post-guard",
@@ -189,7 +189,7 @@ async def test_guardrails_with_api_key_controls():
             session,
             key_with_guardrails,
             model="fake-openai-endpoint",
-            messages=[{"role": "user", "content": f"Hello my name is ishaan@berri.ai"}],
+            messages=[{"role": "user", "content": f"Hello my name is ishaan@hanzo.ai"}],
         )
 
         assert "x-llm-applied-guardrails" in headers
@@ -298,7 +298,7 @@ async def test_guardrails_with_team_controls():
             session,
             key_without_team,
             model="fake-openai-endpoint",
-            messages=[{"role": "user", "content": "Hello my name is ishaan@berri.ai"}],
+            messages=[{"role": "user", "content": "Hello my name is ishaan@hanzo.ai"}],
         )
         await asyncio.sleep(3)
 
@@ -309,7 +309,7 @@ async def test_guardrails_with_team_controls():
             session,
             key_with_team,
             model="fake-openai-endpoint",
-            messages=[{"role": "user", "content": "Hello my name is ishaan@berri.ai"}],
+            messages=[{"role": "user", "content": "Hello my name is ishaan@hanzo.ai"}],
         )
 
         print("response headers=", json.dumps(headers, indent=4))

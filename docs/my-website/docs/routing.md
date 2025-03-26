@@ -21,7 +21,7 @@ If you want a server to load balance across different LLM APIs, use our [LLM Pro
 
 ## Load Balancing
 (s/o [@paulpierre](https://www.linkedin.com/in/paulpierre/) and [sweep proxy](https://docs.sweep.dev/blogs/openai-proxy) for their contributions to this implementation)
-[**See Code**](https://github.com/BerriAI/llm/blob/main/llm/router.py)
+[**See Code**](https://github.com/hanzoai/llm/blob/main/llm/router.py)
 
 ### Quick Start
 
@@ -281,7 +281,7 @@ Picks the deployment with the lowest response time.
 
 It caches, and updates the response times for deployments based on when a request was sent and received from a deployment.
 
-[**How to test**](https://github.com/BerriAI/llm/blob/main/tests/local_testing/test_lowest_latency_routing.py)
+[**How to test**](https://github.com/hanzoai/llm/blob/main/tests/local_testing/test_lowest_latency_routing.py)
 
 ```python
 from llm import Router 
@@ -567,7 +567,7 @@ print(response)
 
 Picks a deployment with the least number of ongoing calls, it's handling.
 
-[**How to test**](https://github.com/BerriAI/llm/blob/main/tests/local_testing/test_least_busy_routing.py)
+[**How to test**](https://github.com/hanzoai/llm/blob/main/tests/local_testing/test_least_busy_routing.py)
 
 ```python
 from llm import Router 
@@ -734,7 +734,7 @@ Picks a deployment based on the lowest cost
 How this works:
 - Get all healthy deployments
 - Select all deployments that are under their provided `rpm/tpm` limits
-- For each deployment check if `llm_param["model"]` exists in [`llm_model_cost_map`](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json) 
+- For each deployment check if `llm_param["model"]` exists in [`llm_model_cost_map`](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json) 
 	- if deployment does not exist in `llm_model_cost_map` -> use deployment_cost= `$1`
 - Select deployment with lowest cost
 
@@ -912,7 +912,7 @@ router = Router(model_list=model_list, default_max_parallel_requests=20) # 👈 
 # deployment max parallel requests > default max parallel requests
 ```
 
-[**See Code**](https://github.com/BerriAI/llm/blob/a978f2d8813c04dad34802cb95e0a0e35a3324bc/llm/utils.py#L5605)
+[**See Code**](https://github.com/hanzoai/llm/blob/a978f2d8813c04dad34802cb95e0a0e35a3324bc/llm/utils.py#L5605)
 
 ### Cooldowns
 
@@ -1051,7 +1051,7 @@ print(f"response: {response}")
 - Use `RetryPolicy` if you want to set a `num_retries` based on the Exception received
 - Use `AllowedFailsPolicy` to set a custom number of `allowed_fails`/minute before cooling down a deployment
 
-[**See All Exception Types**](https://github.com/BerriAI/llm/blob/ccda616f2f881375d4e8586c76fe4662909a7d22/llm/types/router.py#L436)
+[**See All Exception Types**](https://github.com/hanzoai/llm/blob/ccda616f2f881375d4e8586c76fe4662909a7d22/llm/types/router.py#L436)
 
 
 <Tabs>
@@ -1190,14 +1190,14 @@ router = Router(model_list=model_list, enable_pre_call_checks=True) # 👈 Set t
 
 **2. Set Model List**
 
-For context window checks on azure deployments, set the base model. Pick the base model from [this list](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json), all the azure models start with `azure/`. 
+For context window checks on azure deployments, set the base model. Pick the base model from [this list](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json), all the azure models start with `azure/`. 
 
 For 'eu-region' filtering, Set 'region_name' of deployment. 
 
 **Note:** We automatically infer region_name for Vertex AI, Bedrock, and IBM WatsonxAI based on your llm params. For Azure, set `llm.enable_preview = True`.
 
 
-[**See Code**](https://github.com/BerriAI/llm/blob/d33e49411d6503cb634f9652873160cd534dec96/llm/router.py#L2958)
+[**See Code**](https://github.com/hanzoai/llm/blob/d33e49411d6503cb634f9652873160cd534dec96/llm/router.py#L2958)
 
 ```python
 model_list = [

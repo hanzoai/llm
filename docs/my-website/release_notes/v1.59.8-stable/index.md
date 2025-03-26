@@ -35,12 +35,12 @@ Get a 7 day free trial for LLM Enterprise [here](https://llm.ai/#trial).
 1. New OpenAI `/image/variations` endpoint BETA support [Docs](../../docs/image_variations)
 2. Topaz API support on OpenAI `/image/variations` BETA endpoint [Docs](../../docs/providers/topaz)
 3. Deepseek - r1 support w/ reasoning_content ([Deepseek API](../../docs/providers/deepseek#reasoning-models), [Vertex AI](../../docs/providers/vertex#model-garden), [Bedrock](../../docs/providers/bedrock#deepseek)) 
-4. Azure - Add azure o1 pricing [See Here](https://github.com/BerriAI/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L952)
+4. Azure - Add azure o1 pricing [See Here](https://github.com/hanzoai/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L952)
 5. Anthropic - handle `-latest` tag in model for cost calculation
-6. Gemini-2.0-flash-thinking - add model pricing (it’s 0.0) [See Here](https://github.com/BerriAI/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L3393)
-7. Bedrock - add stability sd3 model pricing [See Here](https://github.com/BerriAI/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L6814)  (s/o [Marty Sullivan](https://github.com/marty-sullivan))
-8. Bedrock - add us.amazon.nova-lite-v1:0 to model cost map [See Here](https://github.com/BerriAI/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L5619)
-9. TogetherAI - add new together_ai llama3.3 models [See Here](https://github.com/BerriAI/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L6985)
+6. Gemini-2.0-flash-thinking - add model pricing (it’s 0.0) [See Here](https://github.com/hanzoai/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L3393)
+7. Bedrock - add stability sd3 model pricing [See Here](https://github.com/hanzoai/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L6814)  (s/o [Marty Sullivan](https://github.com/marty-sullivan))
+8. Bedrock - add us.amazon.nova-lite-v1:0 to model cost map [See Here](https://github.com/hanzoai/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L5619)
+9. TogetherAI - add new together_ai llama3.3 models [See Here](https://github.com/hanzoai/llm/blob/b8b927f23bc336862dacb89f59c784a8d62aaa15/model_prices_and_context_window.json#L6985)
 
 ## LLM Translation
 
@@ -158,4 +158,4 @@ This is the diff between v1.57.8-stable and v1.59.8-stable.
 
 Use this to see the changes in the codebase.
 
-[**Git Diff**](https://github.com/BerriAI/llm/compare/v1.57.8-stable...v1.59.8-stable)
+[**Git Diff**](https://github.com/hanzoai/llm/compare/v1.57.8-stable...v1.59.8-stable)

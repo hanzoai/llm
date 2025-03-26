@@ -5,11 +5,11 @@
 [![PyPI Version](https://img.shields.io/pypi/v/llm.svg)](https://pypi.org/project/llm/)
 [![PyPI Version](https://img.shields.io/badge/stable%20version-v0.1.345-blue?color=green&link=https://pypi.org/project/llm/0.1.1/)](https://pypi.org/project/llm/0.1.1/)
 ![Downloads](https://img.shields.io/pypi/dm/llm)
-[![llm](https://img.shields.io/badge/%20%F0%9F%9A%85%20llm-OpenAI%7CAzure%7CAnthropic%7CPalm%7CCohere%7CReplicate%7CHugging%20Face-blue?color=green)](https://github.com/BerriAI/llm)
+[![llm](https://img.shields.io/badge/%20%F0%9F%9A%85%20llm-OpenAI%7CAzure%7CAnthropic%7CPalm%7CCohere%7CReplicate%7CHugging%20Face-blue?color=green)](https://github.com/hanzoai/llm)
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/DYqQAW?referralCode=t3ukrU)
 
-![4BC6491E-86D0-4833-B061-9F54524B2579](https://github.com/BerriAI/llm/assets/17561003/f5dd237b-db5e-42e1-b1ac-f05683b1d724)
+![4BC6491E-86D0-4833-B061-9F54524B2579](https://github.com/hanzoai/llm/assets/17561003/f5dd237b-db5e-42e1-b1ac-f05683b1d724)
 
 ## What does llm proxy do
 
@@ -134,7 +134,7 @@ All responses from the server are returned in the following format (for all LLM 
 
 1. Clone llm repository to your local machine:
    ```
-   git clone https://github.com/BerriAI/llm-proxy
+   git clone https://github.com/hanzoai/llm-proxy
    ```
 2. Install the required dependencies using pip
    ```
@@ -162,10 +162,10 @@ All responses from the server are returned in the following format (for all LLM 
 
 # Support / Talk with founders
 
-- [Our calendar 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
+- [Our calendar 👋](https://calendly.com/d/4mp-gd3-k5k/hanzoai-1-1-onboarding-llm-hosted-version)
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 - Our numbers 📞 +1 (770) 8783-106 / +1 (412) 618-6238
-- Our emails ✉️ ishaan@berri.ai / krrish@berri.ai
+- Our emails ✉️ ishaan@hanzo.ai / dev@hanzo.ai
 
 ## Roadmap
 

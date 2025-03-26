@@ -33,7 +33,7 @@ jobs:
         working-directory: ${{ github.workspace }}
       - name: Run Load Test
         id: locust_run
-        uses: BerriAI/locust-github-action@master
+        uses: hanzoai/locust-github-action@master
         with:
           LOCUSTFILE: ".github/workflows/locustfile.py"
           URL:  "https://post-release-load-test-proxy.onrender.com/"

@@ -6,7 +6,7 @@ import Image from '@theme/IdealImage';
 :::tip
 
 This is community maintained, Please make an issue if you run into a bug
-https://github.com/BerriAI/llm
+https://github.com/hanzoai/llm
 
 :::
 
@@ -82,7 +82,7 @@ Credits to [Nick Bradford](https://github.com/nsbradford), from [Vim-GPT](https:
 
 ## Support & Talk to Founders
 
-- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
+- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/hanzoai-1-1-onboarding-llm-hosted-version)
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 - Our numbers 📞 +1 (770) 8783-106 / ‭+1 (412) 618-6238‬
-- Our emails ✉️ ishaan@berri.ai / krrish@berri.ai
+- Our emails ✉️ ishaan@hanzo.ai / dev@hanzo.ai

@@ -522,7 +522,7 @@ async def test_router_caching_ttl():
     """
     Confirm caching ttl's work as expected.
 
-    Relevant issue: https://github.com/BerriAI/llm/issues/5609
+    Relevant issue: https://github.com/hanzoai/llm/issues/5609
     """
     messages = [
         {"role": "user", "content": "Hello, can you generate a 500 words poem?"}
@@ -589,7 +589,7 @@ def test_router_caching_ttl_sync():
     """
     Confirm caching ttl's work as expected.
 
-    Relevant issue: https://github.com/BerriAI/llm/issues/5609
+    Relevant issue: https://github.com/hanzoai/llm/issues/5609
     """
     messages = [
         {"role": "user", "content": "Hello, can you generate a 500 words poem?"}

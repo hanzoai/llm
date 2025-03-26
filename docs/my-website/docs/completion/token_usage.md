@@ -35,9 +35,9 @@ LLM also exposes some helper functions:
 
 - `register_model`: This registers new / overrides existing models (and their pricing details) in the model cost dictionary. [**Jump to code**](#9-register_model)
 
-- `api.llm.ai`: Live token + price count across [all supported models](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json). [**Jump to code**](#10-apillmai)
+- `api.llm.ai`: Live token + price count across [all supported models](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json). [**Jump to code**](#10-apillmai)
 
-📣 [This is a community maintained list](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json). Contributions are welcome! ❤️
+📣 [This is a community maintained list](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json). Contributions are welcome! ❤️
 
 ## Example Usage 
 
@@ -147,7 +147,7 @@ print(get_max_tokens(model)) # Output: 4097
 
 ### 8. `model_cost`
 
-* Output: Returns a dict object containing the max_tokens, input_cost_per_token, output_cost_per_token for all models on [community-maintained list](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json)
+* Output: Returns a dict object containing the max_tokens, input_cost_per_token, output_cost_per_token for all models on [community-maintained list](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json)
 
 ```python 
 from llm import model_cost 
@@ -180,7 +180,7 @@ llm.register_model({
 import llm
 
 llm.register_model(model_cost=
-"https://raw.githubusercontent.com/BerriAI/llm/main/model_prices_and_context_window.json")
+"https://raw.githubusercontent.com/hanzoai/llm/main/model_prices_and_context_window.json")
 ```
 
 **Don't pull hosted model_cost_map**  

@@ -15,7 +15,7 @@ tests:
           pattern: -llm$
       - equal:
           path: spec.template.spec.containers[0].image
-          value: ghcr.io/berriai/llm-database:test
+          value: ghcr.io/hanzoai/llm-database:test
   - it: should work with tolerations
     template: deployment.yaml
     set:

@@ -5,7 +5,7 @@ import Image from '@theme/IdealImage';
 :::tip
 
 This is community maintained, Please make an issue if you run into a bug
-https://github.com/BerriAI/llm
+https://github.com/hanzoai/llm
 
 :::
 
@@ -53,5 +53,5 @@ print(response)
 
 Set `llm.turn_off_message_logging=True` This will prevent the messages and responses from being logged to sentry, but request metadata will still be logged.
 
-[Let us know](https://github.com/BerriAI/llm/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml&title=%5BFeature%5D%3A+) if you need any additional options from Sentry. 
+[Let us know](https://github.com/hanzoai/llm/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml&title=%5BFeature%5D%3A+) if you need any additional options from Sentry. 
 

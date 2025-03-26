@@ -468,7 +468,7 @@ class TestAnthropicCompletion(BaseLLMChatTest, BaseAnthropicChatTest):
         return {"model": "anthropic/claude-3-5-sonnet-20240620"}
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/hanzoai/llm/issues/6833"""
         from llm.llm_core_utils.prompt_templates.factory import (
             convert_to_anthropic_tool_invoke,
         )
@@ -572,7 +572,7 @@ def test_convert_tool_response_to_message_without_values():
 
     Anthropic API returns the JSON schema in the tool call, OpenAI Spec expects it in the message. This test ensures that the tool call is converted to a message correctly.
 
-    Relevant issue: https://github.com/BerriAI/llm/issues/6741
+    Relevant issue: https://github.com/hanzoai/llm/issues/6741
     """
     tool_calls = [
         ChatCompletionToolCallChunk(
@@ -857,7 +857,7 @@ async def test_anthropic_structured_output():
     """
     Test the _transform_response_for_structured_output
 
-    Relevant Issue: https://github.com/BerriAI/llm/issues/8291
+    Relevant Issue: https://github.com/hanzoai/llm/issues/8291
     """
     from llm import acompletion
 

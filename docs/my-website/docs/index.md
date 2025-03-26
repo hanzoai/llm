@@ -3,7 +3,7 @@ import TabItem from '@theme/TabItem';
 
 # LLM - Getting Started
 
-https://github.com/BerriAI/llm
+https://github.com/hanzoai/llm
 
 ## **Call 100+ LLMs using the OpenAI Input/Output Format**
 
@@ -48,7 +48,7 @@ Typically used by developers building llm projects
 
 ### Basic usage 
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/llm_Getting_Started.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/hanzoai/llm/blob/main/cookbook/llm_Getting_Started.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
@@ -515,7 +515,7 @@ response = completion(
 
 Track spend across multiple projects/people
 
-![ui_3](https://github.com/BerriAI/llm/assets/29436595/47c97d5e-b9be-4839-b28c-43d7f4f10033)
+![ui_3](https://github.com/hanzoai/llm/assets/29436595/47c97d5e-b9be-4839-b28c-43d7f4f10033)
 
 The proxy provides:
 
@@ -573,7 +573,7 @@ docker run \
     -e AZURE_API_KEY=d6*********** \
     -e AZURE_API_BASE=https://openai-***********/ \
     -p 4000:4000 \
-    ghcr.io/berriai/llm:main-latest \
+    ghcr.io/hanzoai/llm:main-latest \
     --config /app/config.yaml --detailed_debug
 ```
 

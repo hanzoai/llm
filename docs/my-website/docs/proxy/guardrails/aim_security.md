@@ -72,18 +72,18 @@ curl -i http://localhost:4000/v1/chat/completions \
   -d '{
     "model": "gpt-3.5-turbo",
     "messages": [
-      {"role": "user", "content": "hi my email is ishaan@berri.ai"}
+      {"role": "user", "content": "hi my email is ishaan@hanzo.ai"}
     ],
     "guardrails": ["aim-protected-app"]
   }'
 ```
 
-If configured correctly, since `ishaan@berri.ai` would be detected by the Aim Guard as PII, you'll receive a response similar to the following with a `400 Bad Request` status code:
+If configured correctly, since `ishaan@hanzo.ai` would be detected by the Aim Guard as PII, you'll receive a response similar to the following with a `400 Bad Request` status code:
 
 ```json
 {
   "error": {
-    "message": "\"ishaan@berri.ai\" detected as email",
+    "message": "\"ishaan@hanzo.ai\" detected as email",
     "type": "None",
     "param": "None",
     "code": "400"
@@ -142,7 +142,7 @@ To utilize this feature, include the end-user's email in the request payload by 
 ```shell
 curl -i http://localhost:4000/v1/chat/completions \
   -H "Content-Type: application/json" \
-  -H "x-aim-user-email: ishaan@berri.ai" \
+  -H "x-aim-user-email: ishaan@hanzo.ai" \
   -d '{
     "model": "gpt-3.5-turbo",
     "messages": [

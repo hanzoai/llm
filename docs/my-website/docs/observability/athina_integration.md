@@ -6,7 +6,7 @@ import Image from '@theme/IdealImage';
 :::tip
 
 This is community maintained, Please make an issue if you run into a bug
-https://github.com/BerriAI/llm
+https://github.com/hanzoai/llm
 
 :::
 

@@ -4,7 +4,7 @@ import TabItem from '@theme/TabItem';
 # Ollama 
 LLM supports all models from [Ollama](https://github.com/ollama/ollama)
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/llm_Ollama.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/hanzoai/llm/blob/main/cookbook/llm_Ollama.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
@@ -489,4 +489,4 @@ for chunk in response:
 
 ## Calling Docker Container (host.docker.internal)
 
-[Follow these instructions](https://github.com/BerriAI/llm/issues/1517#issuecomment-1922022209/)
+[Follow these instructions](https://github.com/hanzoai/llm/issues/1517#issuecomment-1922022209/)

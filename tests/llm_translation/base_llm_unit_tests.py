@@ -252,7 +252,7 @@ class BaseLLMChatTest(ABC):
         print(f"response={response}")
 
         # OpenAI guarantees that the JSON schema is returned in the content
-        # relevant issue: https://github.com/BerriAI/llm/issues/6741
+        # relevant issue: https://github.com/hanzoai/llm/issues/6741
         assert response.choices[0].message.content is not None
 
     @pytest.mark.parametrize(
@@ -524,7 +524,7 @@ class BaseLLMChatTest(ABC):
         print(f"content={content}<END>")
 
         # OpenAI guarantees that the JSON schema is returned in the content
-        # relevant issue: https://github.com/BerriAI/llm/issues/6741
+        # relevant issue: https://github.com/hanzoai/llm/issues/6741
         # we need to assert that the JSON schema was returned in the content, (for Anthropic we were returning it as part of the tool call)
         assert content is not None
         assert len(content) > 0
@@ -545,7 +545,7 @@ class BaseLLMChatTest(ABC):
 
     @abstractmethod
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/hanzoai/llm/issues/6833"""
         pass
 
     @pytest.mark.parametrize("detail", [None, "low", "high"])

@@ -17,7 +17,7 @@ Trying to do batch completion on LLM Proxy ? Go here: https://docs.llm.ai/docs/p
 
 In the batch_completion method, you provide a list of `messages` where each sub-list of messages is passed to `llm.completion()`, allowing you to process multiple prompts efficiently in a single API call.
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/LLM_batch_completion.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/hanzoai/llm/blob/main/cookbook/LLM_batch_completion.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 

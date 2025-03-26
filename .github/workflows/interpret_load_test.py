@@ -61,7 +61,7 @@ def _get_docker_run_command_stable_release(release_version):
 docker run \\
 -e STORE_MODEL_IN_DB=True \\
 -p 4000:4000 \\
-ghcr.io/berriai/llm:llm_stable_release_branch-{release_version}
+ghcr.io/hanzoai/llm:llm_stable_release_branch-{release_version}
 ```
     """
 
@@ -75,7 +75,7 @@ def _get_docker_run_command(release_version):
 docker run \\
 -e STORE_MODEL_IN_DB=True \\
 -p 4000:4000 \\
-ghcr.io/berriai/llm:main-{release_version}
+ghcr.io/hanzoai/llm:main-{release_version}
 ```
     """
 
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     github_token = os.getenv("GITHUB_TOKEN")
     g = Github(github_token)
     repo = g.get_repo(
-        "BerriAI/llm"
+        "hanzoai/llm"
     )  # Replace with your repository's username and name
     latest_release = repo.get_latest_release()
     print("got latest release: ", latest_release)

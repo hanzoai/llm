@@ -413,7 +413,7 @@ async def update_team(
     Parameters:
     - team_id: str - The team id of the user. Required param.
     - team_alias: Optional[str] - User defined team alias
-    - metadata: Optional[dict] - Metadata for team, store information for team. Example metadata = {"team": "core-infra", "app": "app2", "email": "ishaan@berri.ai" }
+    - metadata: Optional[dict] - Metadata for team, store information for team. Example metadata = {"team": "core-infra", "app": "app2", "email": "ishaan@hanzo.ai" }
     - tpm_limit: Optional[int] - The TPM (Tokens Per Minute) limit for this team - all keys with this team_id will have at max this TPM limit
     - rpm_limit: Optional[int] - The RPM (Requests Per Minute) limit for this team - all keys associated with this team_id will have at max this RPM limit
     - max_budget: Optional[float] - The maximum budget allocated to the team - all keys for this team_id will have at max this max_budget
@@ -642,7 +642,7 @@ async def team_member_add(
     curl -X POST 'http://0.0.0.0:4000/team/member_add' \
     -H 'Authorization: Bearer sk-1234' \
     -H 'Content-Type: application/json' \
-    -d '{"team_id": "45e3e396-ee08-4a61-a88e-16b3ce7e0849", "member": {"role": "user", "user_id": "krrish247652@berri.ai"}}'
+    -d '{"team_id": "45e3e396-ee08-4a61-a88e-16b3ce7e0849", "member": {"role": "user", "user_id": "krrish247652@hanzo.ai"}}'
 
     ```
     """
@@ -838,7 +838,7 @@ async def team_member_delete(
 
     -d '{
         "team_id": "45e3e396-ee08-4a61-a88e-16b3ce7e0849",
-        "user_id": "krrish247652@berri.ai"
+        "user_id": "krrish247652@hanzo.ai"
     }'
     ```
     """

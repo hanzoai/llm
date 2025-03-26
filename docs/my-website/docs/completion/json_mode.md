@@ -76,7 +76,7 @@ from llm import supports_response_schema
 assert supports_response_schema(model="gemini-1.5-pro-preview-0215", custom_llm_provider="bedrock")
 ```
 
-Check out [model_prices_and_context_window.json](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json) for a full list of models and their support for `response_schema`.
+Check out [model_prices_and_context_window.json](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json) for a full list of models and their support for `response_schema`.
 
 ## Pass in 'json_schema' 
 
@@ -241,7 +241,7 @@ llm.enable_json_schema_validation=True
 ```
 If `llm.enable_json_schema_validation=True` is set, LLM will validate the json response using `jsonvalidator`. 
 
-[**See Code**](https://github.com/BerriAI/llm/blob/671d8ac496b6229970c7f2a3bdedd6cb84f0746b/llm/llm_core_utils/json_validation_rule.py#L4)
+[**See Code**](https://github.com/hanzoai/llm/blob/671d8ac496b6229970c7f2a3bdedd6cb84f0746b/llm/llm_core_utils/json_validation_rule.py#L4)
 
 
 <Tabs>

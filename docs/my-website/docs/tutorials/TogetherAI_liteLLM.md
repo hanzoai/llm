@@ -35,7 +35,7 @@ print(response)
 LLM handles the prompt formatting for Together AI's Llama2 models as well, converting your message to the 
 `[INST] <your instruction> [/INST]` format required. 
 
-[Implementation Code](https://github.com/BerriAI/llm/blob/64f3d3c56ef02ac5544983efc78293de31c1c201/llm/llms/prompt_templates/factory.py#L17)
+[Implementation Code](https://github.com/hanzoai/llm/blob/64f3d3c56ef02ac5544983efc78293de31c1c201/llm/llms/prompt_templates/factory.py#L17)
 
 ## With Streaming
 
@@ -67,7 +67,7 @@ The accepted template format is: [Reference](https://huggingface.co/OpenAssistan
 """
 ```
 
-Let's register our custom prompt template: [Implementation Code](https://github.com/BerriAI/llm/blob/64f3d3c56ef02ac5544983efc78293de31c1c201/llm/llms/prompt_templates/factory.py#L77)
+Let's register our custom prompt template: [Implementation Code](https://github.com/hanzoai/llm/blob/64f3d3c56ef02ac5544983efc78293de31c1c201/llm/llms/prompt_templates/factory.py#L77)
 ```python
 import llm 
 

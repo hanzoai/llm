@@ -10,7 +10,7 @@ Pass-through endpoints for Vertex AI - call provider-specific endpoint, in nativ
 |-------|-------|-------|
 | Cost Tracking | ✅ | supports all models on `/generateContent` endpoint |
 | Logging | ✅ | works across all integrations |
-| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
+| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/hanzoai/llm/issues/new) |
 | Streaming | ✅ | |
 
 Just replace `https://REGION-aiplatform.googleapis.com` with `LLM_PROXY_BASE_URL/vertex_ai`

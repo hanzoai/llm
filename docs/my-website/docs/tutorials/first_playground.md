@@ -151,7 +151,7 @@ For our frontend, we'll use [Streamlit](https://streamlit.io/) - this enables us
 Let's download the playground template we (LLM) have created: 
 
 ```zsh
-git clone https://github.com/BerriAI/llm_playground_fe_template.git
+git clone https://github.com/hanzoai/llm_playground_fe_template.git
 ```
 
 ### 3.2 Run it
@@ -160,7 +160,7 @@ Make sure our server from [step 2](#2-set-up-server) is still running at port 40
 
 :::info
 
- If you used another port, no worries - just make sure you change [this line](https://github.com/BerriAI/llm_playground_fe_template/blob/411bea2b6a2e0b079eb0efd834886ad783b557ef/app.py#L7) in your playground template's app.py
+ If you used another port, no worries - just make sure you change [this line](https://github.com/hanzoai/llm_playground_fe_template/blob/411bea2b6a2e0b079eb0efd834886ad783b557ef/app.py#L7) in your playground template's app.py
 :::
 
 Now let's run our app: 

@@ -1,7 +1,7 @@
 # +-----------------------------------------------+
 # |                                               |
 # |           Give Feedback / Get Help            |
-# | https://github.com/BerriAI/llm/issues/new |
+# | https://github.com/hanzoai/llm/issues/new |
 # |                                               |
 # +-----------------------------------------------+
 #

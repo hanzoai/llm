@@ -286,7 +286,7 @@ By default:
 - Admins: can access only management routes (`/team/*`, `/key/*`, `/user/*`)
 - Teams: can access only openai routes (`/chat/completions`, etc.)+ info routes (`/*/info`)
 
-[**See Code**](https://github.com/BerriAI/llm/blob/b204f0c01c703317d812a1553363ab0cb989d5b6/llm/proxy/_types.py#L95)
+[**See Code**](https://github.com/hanzoai/llm/blob/b204f0c01c703317d812a1553363ab0cb989d5b6/llm/proxy/_types.py#L95)
 
 **Admin Routes**
 ```yaml
@@ -503,6 +503,6 @@ curl -L -X POST 'http://0.0.0.0:4000/v1/chat/completions' \
 
 ## All JWT Params
 
-[**See Code**](https://github.com/BerriAI/llm/blob/b204f0c01c703317d812a1553363ab0cb989d5b6/llm/proxy/_types.py#L95)
+[**See Code**](https://github.com/hanzoai/llm/blob/b204f0c01c703317d812a1553363ab0cb989d5b6/llm/proxy/_types.py#L95)
 
 

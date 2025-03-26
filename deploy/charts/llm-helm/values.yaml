@@ -5,8 +5,8 @@
 replicaCount: 1
 
 image:
-  # Use "ghcr.io/berriai/llm-database" for optimized image with database
-  repository: ghcr.io/berriai/llm-database
+  # Use "ghcr.io/hanzoai/llm-database" for optimized image with database
+  repository: ghcr.io/hanzoai/llm-database
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   # tag: "main-latest"
@@ -82,7 +82,7 @@ masterkeySecretName: ""
 masterkeySecretKey: ""
 
 # The elements within proxy_config are rendered as config.yaml for the proxy
-#  Examples: https://github.com/BerriAI/llm/tree/main/llm/proxy/example_config_yaml
+#  Examples: https://github.com/hanzoai/llm/tree/main/llm/proxy/example_config_yaml
 #  Reference: https://docs.llm.ai/docs/proxy/configs
 proxy_config:
   model_list:

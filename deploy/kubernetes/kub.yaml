@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: llm-container
-          image: ghcr.io/berriai/llm:main-latest
+          image: ghcr.io/hanzoai/llm:main-latest
           imagePullPolicy: Always
           env:
             - name: AZURE_API_KEY

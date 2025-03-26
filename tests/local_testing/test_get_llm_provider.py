@@ -26,7 +26,7 @@ def test_get_llm_provider():
 # test_get_llm_provider()
 
 
-def test_get_llm_provider_fireworks():  # tests finetuned fireworks models - https://github.com/BerriAI/llm/issues/4923
+def test_get_llm_provider_fireworks():  # tests finetuned fireworks models - https://github.com/hanzoai/llm/issues/4923
     model, custom_llm_provider, _, _ = llm.get_llm_provider(
         model="fireworks_ai/accounts/my-test-1234"
     )

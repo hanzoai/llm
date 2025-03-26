@@ -6,7 +6,7 @@ The LLM Proxy uses a PostgreSQL database to store various information. Here's ar
 
 ## Link to DB Schema
 
-You can see the full DB Schema [here](https://github.com/BerriAI/llm/blob/main/schema.prisma)
+You can see the full DB Schema [here](https://github.com/hanzoai/llm/blob/main/schema.prisma)
 
 ## DB Tables
 

@@ -1244,7 +1244,7 @@ def test_vertex_embedding_url(model, expected_url):
     """
     Test URL generation for embedding models, including numeric model IDs (fine-tuned models
 
-    Relevant issue: https://github.com/BerriAI/llm/issues/6482
+    Relevant issue: https://github.com/hanzoai/llm/issues/6482
 
     When a fine-tuned embedding model is used, the URL is different from the standard one.
     """

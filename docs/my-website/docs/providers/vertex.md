@@ -18,7 +18,7 @@ import TabItem from '@theme/TabItem';
 <br />
 <br />
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/llm_VertextAI_Example.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/hanzoai/llm/blob/main/cookbook/llm_VertextAI_Example.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
@@ -1121,7 +1121,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 
 ## Mistral API
 
-[**Supported OpenAI Params**](https://github.com/BerriAI/llm/blob/e0f3cd580cb85066f7d36241a03c30aa50a8a31d/llm/llms/openai.py#L137)
+[**Supported OpenAI Params**](https://github.com/hanzoai/llm/blob/e0f3cd580cb85066f7d36241a03c30aa50a8a31d/llm/llms/openai.py#L137)
  
 | Model Name       | Function Call                        |
 |------------------|--------------------------------------|
@@ -1929,7 +1929,7 @@ print(response)
 </Tabs>
 
 #### Supported Embedding Models
-All models listed [here](https://github.com/BerriAI/llm/blob/57f37f743886a0249f630a6792d49dffc2c5d9b7/model_prices_and_context_window.json#L835) are supported
+All models listed [here](https://github.com/hanzoai/llm/blob/57f37f743886a0249f630a6792d49dffc2c5d9b7/model_prices_and_context_window.json#L835) are supported
 
 | Model Name               | Function Call                                                                                                                                                      |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|

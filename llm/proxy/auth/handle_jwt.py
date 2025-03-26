@@ -122,7 +122,7 @@ class JWTHandler:
         - TEAM: can make requests to routes associated with a team
         - INTERNAL_USER: can make requests to routes associated with a user
 
-        Resolves: https://github.com/BerriAI/llm/issues/6793
+        Resolves: https://github.com/hanzoai/llm/issues/6793
 
         Returns:
         - PROXY_ADMIN: if token is admin

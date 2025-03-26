@@ -578,7 +578,7 @@ class SlackAlerting(CustomBatchLogger):
         ],
         user_info: CallInfo,
     ):
-        ## PREVENTITIVE ALERTING ## - https://github.com/BerriAI/llm/issues/2727
+        ## PREVENTITIVE ALERTING ## - https://github.com/hanzoai/llm/issues/2727
         # - Alert once within 24hr period
         # - Cache this information
         # - Don't re-alert, if alert already sent
@@ -1338,7 +1338,7 @@ Model Info:
         **kwargs,
     ):
         """
-        Alerting based on thresholds: - https://github.com/BerriAI/llm/issues/1298
+        Alerting based on thresholds: - https://github.com/hanzoai/llm/issues/1298
 
         - Responses taking too long
         - Requests are hanging

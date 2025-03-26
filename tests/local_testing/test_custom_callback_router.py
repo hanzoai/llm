@@ -653,7 +653,7 @@ async def test_rate_limit_error_callback():
     """
     Assert a callback is hit, if a model group starts hitting rate limit errors
 
-    Relevant issue: https://github.com/BerriAI/llm/issues/4096
+    Relevant issue: https://github.com/hanzoai/llm/issues/4096
     """
     from llm.llm_core_utils.llm_logging import Logging as LLMLogging
 

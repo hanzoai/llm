@@ -3,7 +3,7 @@
     </h1>
     <p align="center">
         <p align="center">
-        <a href="https://render.com/deploy?repo=https://github.com/BerriAI/llm" target="_blank" rel="nofollow"><img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render"></a>
+        <a href="https://render.com/deploy?repo=https://github.com/hanzoai/llm" target="_blank" rel="nofollow"><img src="https://render.com/images/deploy-to-render-button.svg" alt="Deploy to Render"></a>
         <a href="https://railway.app/template/HLP0Ub?referralCode=jch2ME">
           <img src="https://railway.app/button.svg" alt="Deploy on Railway">
         </a>
@@ -16,10 +16,10 @@
     <a href="https://pypi.org/project/llm/" target="_blank">
         <img src="https://img.shields.io/pypi/v/llm.svg" alt="PyPI Version">
     </a>
-    <a href="https://dl.circleci.com/status-badge/redirect/gh/BerriAI/llm/tree/main" target="_blank">
-        <img src="https://dl.circleci.com/status-badge/img/gh/BerriAI/llm/tree/main.svg?style=svg" alt="CircleCI">
+    <a href="https://dl.circleci.com/status-badge/redirect/gh/hanzoai/llm/tree/main" target="_blank">
+        <img src="https://dl.circleci.com/status-badge/img/gh/hanzoai/llm/tree/main.svg?style=svg" alt="CircleCI">
     </a>
-    <a href="https://www.ycombinator.com/companies/berriai">
+    <a href="https://www.ycombinator.com/companies/hanzoai">
         <img src="https://img.shields.io/badge/Y%20Combinator-W23-orange?style=flat-square" alt="Y Combinator W23">
     </a>
     <a href="https://wa.link/huol9n">
@@ -37,12 +37,12 @@ LLM manages:
 - Retry/fallback logic across multiple deployments (e.g. Azure/OpenAI) - [Router](https://docs.llm.ai/docs/routing)
 - Set Budgets & Rate limits per project, api key, model [LLM Proxy Server (LLM Gateway)](https://docs.llm.ai/docs/simple_proxy)
 
-[**Jump to LLM Proxy (LLM Gateway) Docs**](https://github.com/BerriAI/llm?tab=readme-ov-file#openai-proxy---docs) <br>
-[**Jump to Supported LLM Providers**](https://github.com/BerriAI/llm?tab=readme-ov-file#supported-providers-docs)
+[**Jump to LLM Proxy (LLM Gateway) Docs**](https://github.com/hanzoai/llm?tab=readme-ov-file#openai-proxy---docs) <br>
+[**Jump to Supported LLM Providers**](https://github.com/hanzoai/llm?tab=readme-ov-file#supported-providers-docs)
 
 🚨 **Stable Release:** Use docker images with the `-stable` tag. These have undergone 12 hour load tests, before being published. [More information about the release cycle here](https://docs.llm.ai/docs/proxy/release_cycle)
 
-Support for more providers. Missing a provider or LLM Platform, raise a [feature request](https://github.com/BerriAI/llm/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml&title=%5BFeature%5D%3A+).
+Support for more providers. Missing a provider or LLM Platform, raise a [feature request](https://github.com/hanzoai/llm/issues/new?assignees=&labels=enhancement&projects=&template=feature_request.yml&title=%5BFeature%5D%3A+).
 
 # Usage ([**Docs**](https://docs.llm.ai/docs/))
 
@@ -50,7 +50,7 @@ Support for more providers. Missing a provider or LLM Platform, raise a [feature
 > LLM v1.0.0 now requires `openai>=1.0.0`. Migration guide [here](https://docs.llm.ai/docs/migration)  
 > LLM v1.40.14+ now requires `pydantic>=2.0.0`. No changes required.
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/llm_Getting_Started.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/hanzoai/llm/blob/main/cookbook/llm_Getting_Started.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 
@@ -252,7 +252,7 @@ Connect the proxy with a Postgres DB to create proxy keys
 
 ```bash
 # Get the code
-git clone https://github.com/BerriAI/llm
+git clone https://github.com/hanzoai/llm
 
 # Go to folder
 cd llm
@@ -274,7 +274,7 @@ docker-compose up
 
 
 UI on `/ui` on your proxy server
-![ui_3](https://github.com/BerriAI/llm/assets/29436595/47c97d5e-b9be-4839-b28c-43d7f4f10033)
+![ui_3](https://github.com/hanzoai/llm/assets/29436595/47c97d5e-b9be-4839-b28c-43d7f4f10033)
 
 Set budgets and rate limits across multiple projects
 `POST /key/generate`
@@ -285,7 +285,7 @@ Set budgets and rate limits across multiple projects
 curl 'http://0.0.0.0:4000/key/generate' \
 --header 'Authorization: Bearer sk-1234' \
 --header 'Content-Type: application/json' \
---data-raw '{"models": ["gpt-3.5-turbo", "gpt-4", "claude-2"], "duration": "20m","metadata": {"user": "ishaan@berri.ai", "team": "core-infra"}}'
+--data-raw '{"models": ["gpt-3.5-turbo", "gpt-4", "claude-2"], "duration": "20m","metadata": {"user": "ishaan@hanzo.ai", "team": "core-infra"}}'
 ```
 
 ### Expected Response
@@ -360,10 +360,10 @@ This covers:
 LLM follows the [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html).
 
 We run: 
-- Ruff for [formatting and linting checks](https://github.com/BerriAI/llm/blob/e19bb55e3b4c6a858b6e364302ebbf6633a51de5/.circleci/config.yml#L320)
-- Mypy + Pyright for typing [1](https://github.com/BerriAI/llm/blob/e19bb55e3b4c6a858b6e364302ebbf6633a51de5/.circleci/config.yml#L90), [2](https://github.com/BerriAI/llm/blob/e19bb55e3b4c6a858b6e364302ebbf6633a51de5/.pre-commit-config.yaml#L4)
-- Black for [formatting](https://github.com/BerriAI/llm/blob/e19bb55e3b4c6a858b6e364302ebbf6633a51de5/.circleci/config.yml#L79)
-- isort for [import sorting](https://github.com/BerriAI/llm/blob/e19bb55e3b4c6a858b6e364302ebbf6633a51de5/.pre-commit-config.yaml#L10)
+- Ruff for [formatting and linting checks](https://github.com/hanzoai/llm/blob/e19bb55e3b4c6a858b6e364302ebbf6633a51de5/.circleci/config.yml#L320)
+- Mypy + Pyright for typing [1](https://github.com/hanzoai/llm/blob/e19bb55e3b4c6a858b6e364302ebbf6633a51de5/.circleci/config.yml#L90), [2](https://github.com/hanzoai/llm/blob/e19bb55e3b4c6a858b6e364302ebbf6633a51de5/.pre-commit-config.yaml#L4)
+- Black for [formatting](https://github.com/hanzoai/llm/blob/e19bb55e3b4c6a858b6e364302ebbf6633a51de5/.circleci/config.yml#L79)
+- isort for [import sorting](https://github.com/hanzoai/llm/blob/e19bb55e3b4c6a858b6e364302ebbf6633a51de5/.pre-commit-config.yaml#L10)
 
 
 If you have suggestions on how to improve the code quality feel free to open an issue or a PR.
@@ -371,10 +371,10 @@ If you have suggestions on how to improve the code quality feel free to open an 
 
 # Support / talk with founders
 
-- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
+- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/hanzoai-1-1-onboarding-llm-hosted-version)
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 - Our numbers 📞 +1 (770) 8783-106 / ‭+1 (412) 618-6238‬
-- Our emails ✉️ ishaan@berri.ai / krrish@berri.ai
+- Our emails ✉️ ishaan@hanzo.ai / dev@hanzo.ai
 
 # Why did we build this
 
@@ -391,8 +391,8 @@ If you have suggestions on how to improve the code quality feel free to open an 
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
-<a href="https://github.com/BerriAI/llm/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=BerriAI/llm" />
+<a href="https://github.com/hanzoai/llm/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=hanzoai/llm" />
 </a>
 
 

@@ -95,6 +95,6 @@ class BaseLoggingCallbackTest(ABC):
         """
         Check if parallel tool calls are correctly logged by Logging callback
 
-        Relevant issue - https://github.com/BerriAI/llm/issues/6677
+        Relevant issue - https://github.com/hanzoai/llm/issues/6677
         """
         pass

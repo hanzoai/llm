@@ -9,7 +9,7 @@ class DynamicLoggingCache:
     """
     Prevent memory leaks caused by initializing new logging clients on each request.
 
-    Relevant Issue: https://github.com/BerriAI/llm/issues/5695
+    Relevant Issue: https://github.com/hanzoai/llm/issues/5695
     """
 
     def __init__(self) -> None:

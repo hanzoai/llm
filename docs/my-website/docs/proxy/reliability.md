@@ -143,8 +143,8 @@ Fallbacks are done in-order - ["gpt-3.5-turbo, "gpt-4", "gpt-4-32k"], will do 'g
 You can also set [`default_fallbacks`](#default-fallbacks), in case a specific model group is misconfigured / bad.
 
 There are 3 types of fallbacks: 
-- `content_policy_fallbacks`: For llm.ContentPolicyViolationError - LLM maps content policy violation errors across providers [**See Code**](https://github.com/BerriAI/llm/blob/89a43c872a1e3084519fb9de159bf52f5447c6c4/llm/utils.py#L8495C27-L8495C54)
-- `context_window_fallbacks`: For llm.ContextWindowExceededErrors - LLM maps context window error messages across providers [**See Code**](https://github.com/BerriAI/llm/blob/89a43c872a1e3084519fb9de159bf52f5447c6c4/llm/utils.py#L8469)
+- `content_policy_fallbacks`: For llm.ContentPolicyViolationError - LLM maps content policy violation errors across providers [**See Code**](https://github.com/hanzoai/llm/blob/89a43c872a1e3084519fb9de159bf52f5447c6c4/llm/utils.py#L8495C27-L8495C54)
+- `context_window_fallbacks`: For llm.ContextWindowExceededErrors - LLM maps context window error messages across providers [**See Code**](https://github.com/hanzoai/llm/blob/89a43c872a1e3084519fb9de159bf52f5447c6c4/llm/utils.py#L8469)
 - `fallbacks`: For all remaining errors - e.g. llm.RateLimitError
 
 
@@ -711,11 +711,11 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 
 **Before call is made** check if a call is within model context window with  **`enable_pre_call_checks: true`**.
 
-[**See Code**](https://github.com/BerriAI/llm/blob/c9e6b05cfb20dfb17272218e2555d6b496c47f6f/llm/router.py#L2163)
+[**See Code**](https://github.com/hanzoai/llm/blob/c9e6b05cfb20dfb17272218e2555d6b496c47f6f/llm/router.py#L2163)
 
 **1. Setup config**
 
-For azure deployments, set the base model. Pick the base model from [this list](https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json), all the azure models start with azure/.
+For azure deployments, set the base model. Pick the base model from [this list](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json), all the azure models start with azure/.
 
 
 <Tabs>

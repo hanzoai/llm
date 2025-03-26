@@ -20,9 +20,9 @@ hide_table_of_contents: false
 
 ## New / Updated Models
 
-1. Mistral large pricing - https://github.com/BerriAI/llm/pull/7452
-2. Cohere command-r7b-12-2024 pricing - https://github.com/BerriAI/llm/pull/7553/files
-3. Voyage - new models, prices and context window information - https://github.com/BerriAI/llm/pull/7472
+1. Mistral large pricing - https://github.com/hanzoai/llm/pull/7452
+2. Cohere command-r7b-12-2024 pricing - https://github.com/hanzoai/llm/pull/7553/files
+3. Voyage - new models, prices and context window information - https://github.com/hanzoai/llm/pull/7472
 4. Anthropic - bump Bedrock claude-3-5-haiku max_output_tokens to 8192
 
 ## General Proxy Improvements
@@ -37,7 +37,7 @@ hide_table_of_contents: false
 1. Deepgram STT support. [Start Here](https://docs.llm.ai/docs/providers/deepgram)
 2. OpenAI Moderations - `omni-moderation-latest` support. [Start Here](https://docs.llm.ai/docs/moderation)
 3. Azure O1 - fake streaming support. This ensures if a `stream=true` is passed, the response is streamed. [Start Here](https://docs.llm.ai/docs/providers/azure)
-4. Anthropic - non-whitespace char stop sequence handling - [PR](https://github.com/BerriAI/llm/pull/7484)
+4. Anthropic - non-whitespace char stop sequence handling - [PR](https://github.com/hanzoai/llm/pull/7484)
 5. Azure OpenAI - support entrata id username + password based auth. [Start Here](https://docs.llm.ai/docs/providers/azure#entrata-id---use-tenant_id-client_id-client_secret)
 6. LM Studio - embedding route support. [Start Here](https://docs.llm.ai/docs/providers/lm-studio)
 7. WatsonX - ZenAPIKeyAuth support. [Start Here](https://docs.llm.ai/docs/providers/watsonx)
@@ -53,8 +53,8 @@ hide_table_of_contents: false
 
 ## Finetuning + Batch APIs Improvements
 
-1. Improved unified endpoint support for Vertex AI finetuning - [PR](https://github.com/BerriAI/llm/pull/7487)
-2. Add support for retrieving vertex api batch jobs - [PR](https://github.com/BerriAI/llm/commit/13f364682d28a5beb1eb1b57f07d83d5ef50cbdc)
+1. Improved unified endpoint support for Vertex AI finetuning - [PR](https://github.com/hanzoai/llm/pull/7487)
+2. Add support for retrieving vertex api batch jobs - [PR](https://github.com/hanzoai/llm/commit/13f364682d28a5beb1eb1b57f07d83d5ef50cbdc)
 
 ## *NEW* Alerting Integration
 
@@ -92,7 +92,7 @@ Support for reading credentials + writing LLM API keys. [Start Here](https://doc
 
 ## Logging Improvements
 
-1. braintrust logging: respect project_id, add more metrics  - https://github.com/BerriAI/llm/pull/7613
+1. braintrust logging: respect project_id, add more metrics  - https://github.com/hanzoai/llm/pull/7613
 2. Athina - support base url - `ATHINA_BASE_URL`
 3. Lunary - Allow passing custom parent run id to LLM Calls 
 
@@ -104,4 +104,4 @@ This is the diff between v1.56.3-stable and v1.57.8-stable.
 
 Use this to see the changes in the codebase. 
 
-[Git Diff](https://github.com/BerriAI/llm/compare/v1.56.3-stable...189b67760011ea313ca58b1f8bd43aa74fbd7f55)
+[Git Diff](https://github.com/hanzoai/llm/compare/v1.56.3-stable...189b67760011ea313ca58b1f8bd43aa74fbd7f55)

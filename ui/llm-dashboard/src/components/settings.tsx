@@ -737,7 +737,7 @@ const Settings: React.FC<SettingsPageProps> = ({
 
                 {key === "SMTP_SENDER_EMAIL" && (
                   <div style={{ color: "gray" }}>
-                    Enter the sender email address, e.g. `sender@berri.ai`
+                    Enter the sender email address, e.g. `sender@hanzo.ai`
                   <span style={{ color: "red" }}> Required * </span>
 
                   </div>
@@ -745,7 +745,7 @@ const Settings: React.FC<SettingsPageProps> = ({
 
                 {key === "TEST_EMAIL_ADDRESS" && (
                   <div style={{ color: "gray" }}>
-                  Email Address to send `Test Email Alert` to. example: `info@berri.ai`
+                  Email Address to send `Test Email Alert` to. example: `info@hanzo.ai`
                   <span style={{ color: "red" }}> Required * </span>
                   </div>
                 )
@@ -758,7 +758,7 @@ const Settings: React.FC<SettingsPageProps> = ({
                 }
                 {key === "EMAIL_SUPPORT_CONTACT" && (
                   <div style={{ color: "gray" }}>
-                   (Optional) Customize the support email address that appears in the email. Default is support@berri.ai
+                   (Optional) Customize the support email address that appears in the email. Default is support@hanzo.ai
                   </div>
                 )
                    }

@@ -90,7 +90,7 @@ curl -i http://localhost:4000/v1/chat/completions \
   -d '{
     "model": "gpt-3.5-turbo",
     "messages": [
-      {"role": "user", "content": "hi my email is ishaan@berri.ai"}
+      {"role": "user", "content": "hi my email is ishaan@hanzo.ai"}
     ],
     "mock_response": "This is a mock response",
     "guardrails": ["aporia-pre-guard", "aporia-post-guard"]
@@ -113,5 +113,5 @@ You can now assign keys to users via Proxy UI
 
 ## Fixes 
 
-- Fix `vertex_ai/` mistral model pricing: https://github.com/BerriAI/llm/pull/7345
-- Missing model_group field in logs for aspeech call types https://github.com/BerriAI/llm/pull/7392
+- Fix `vertex_ai/` mistral model pricing: https://github.com/hanzoai/llm/pull/7345
+- Missing model_group field in logs for aspeech call types https://github.com/hanzoai/llm/pull/7392

@@ -981,7 +981,7 @@ def test_usage_object_null_tokens():
 
     Asserts Usage obj always returns int.
 
-    Fixes https://github.com/BerriAI/llm/issues/5096
+    Fixes https://github.com/hanzoai/llm/issues/5096
     """
     usage_obj = llm.Usage(prompt_tokens=2, completion_tokens=None, total_tokens=2)
 

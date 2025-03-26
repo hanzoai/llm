@@ -3495,7 +3495,7 @@ def test_aamazing_unit_test_custom_stream_wrapper_n():
     """
     Test if the translated output maps exactly to the received openai input
 
-    Relevant issue: https://github.com/BerriAI/llm/issues/3276
+    Relevant issue: https://github.com/hanzoai/llm/issues/3276
     """
     chunks = [
         {
@@ -4001,7 +4001,7 @@ def test_streaming_api_base():
 
 def test_mock_response_iterator_tool_use():
     """
-    Relevant Issue: https://github.com/BerriAI/llm/issues/7364
+    Relevant Issue: https://github.com/hanzoai/llm/issues/7364
     """
     from llm.llms.bedrock.chat.invoke_handler import MockResponseIterator
     from llm.types.utils import (

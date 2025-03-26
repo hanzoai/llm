@@ -47,7 +47,7 @@ def test_map_response_format():
 
     h/t to https://github.com/DaveDeCaprio (@DaveDeCaprio) for the test case
 
-    Relevant Issue: https://github.com/BerriAI/llm/issues/6797
+    Relevant Issue: https://github.com/hanzoai/llm/issues/6797
     Fireworks AI Ref: https://docs.fireworks.ai/structured-responses/structured-response-formatting#step-1-import-libraries
     """
     response_format = {
@@ -84,7 +84,7 @@ class TestFireworksAIChatCompletion(BaseLLMChatTest):
         }
 
     def test_tool_call_no_arguments(self, tool_call_no_arguments):
-        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/BerriAI/llm/issues/6833"""
+        """Test that tool calls with no arguments is translated correctly. Relevant issue: https://github.com/hanzoai/llm/issues/6833"""
         pass
 
     def test_multilingual_requests(self):

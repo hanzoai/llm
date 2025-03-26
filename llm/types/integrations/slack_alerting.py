@@ -26,7 +26,7 @@ class ProviderRegionOutageModel(BaseOutageModel):
 
 # we use this for the email header, please send a test email if you change this. verify it looks good on email
 LLM_LOGO_URL = "https://llm-listing.s3.amazonaws.com/llm_logo.png"
-LLM_SUPPORT_CONTACT = "support@berri.ai"
+LLM_SUPPORT_CONTACT = "support@hanzo.ai"
 
 
 class SlackAlertingArgsEnum(Enum):

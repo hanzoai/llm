@@ -47,7 +47,7 @@ curl -i http://localhost:4000/v1/chat/completions \
   -d '{
     "model": "gpt-3.5-turbo",
     "messages": [
-      {"role": "user", "content": "hi my email is ishaan@berri.ai"}
+      {"role": "user", "content": "hi my email is ishaan@hanzo.ai"}
     ],
     "guardrails": ["guardrails_ai-guard"]
   }'
@@ -108,7 +108,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
     "messages": [
         {
         "role": "user",
-        "content": "my email is ishaan@berri.ai"
+        "content": "my email is ishaan@hanzo.ai"
         }
     ]
 }'

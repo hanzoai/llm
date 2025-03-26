@@ -149,10 +149,10 @@ store_audit_logs = False  # Enterprise feature, allow users to see audit logs
 ### end of callbacks #############
 
 email: Optional[str] = (
-    None  # Not used anymore, will be removed in next MAJOR release - https://github.com/BerriAI/llm/discussions/648
+    None  # Not used anymore, will be removed in next MAJOR release - https://github.com/hanzoai/llm/discussions/648
 )
 token: Optional[str] = (
-    None  # Not used anymore, will be removed in next MAJOR release - https://github.com/BerriAI/llm/discussions/648
+    None  # Not used anymore, will be removed in next MAJOR release - https://github.com/hanzoai/llm/discussions/648
 )
 telemetry = True
 max_tokens = 256  # OpenAI Defaults
@@ -230,10 +230,10 @@ enable_caching_on_provider_specific_optional_params: bool = (
     False  # feature-flag for caching on optional params - e.g. 'top_k'
 )
 caching: bool = (
-    False  # Not used anymore, will be removed in next MAJOR release - https://github.com/BerriAI/llm/discussions/648
+    False  # Not used anymore, will be removed in next MAJOR release - https://github.com/hanzoai/llm/discussions/648
 )
 caching_with_models: bool = (
-    False  # # Not used anymore, will be removed in next MAJOR release - https://github.com/BerriAI/llm/discussions/648
+    False  # # Not used anymore, will be removed in next MAJOR release - https://github.com/hanzoai/llm/discussions/648
 )
 cache: Optional[Cache] = (
     None  # cache object <- use this - https://docs.llm.ai/docs/caching
@@ -262,7 +262,7 @@ client_session: Optional[httpx.Client] = None
 aclient_session: Optional[httpx.AsyncClient] = None
 model_fallbacks: Optional[List] = None  # Deprecated for 'llm.fallbacks'
 model_cost_map_url: str = (
-    "https://raw.githubusercontent.com/BerriAI/llm/main/model_prices_and_context_window.json"
+    "https://raw.githubusercontent.com/hanzoai/llm/main/model_prices_and_context_window.json"
 )
 suppress_debug_info = False
 dynamodb_table_name: Optional[str] = None

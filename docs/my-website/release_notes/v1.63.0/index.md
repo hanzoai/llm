@@ -15,7 +15,7 @@ tags: [llm translation, thinking, reasoning_content, claude-3-7-sonnet]
 hide_table_of_contents: false
 ---
 
-v1.63.0 fixes Anthropic 'thinking' response on streaming to return the `signature` block. [Github Issue](https://github.com/BerriAI/llm/issues/8964)
+v1.63.0 fixes Anthropic 'thinking' response on streaming to return the `signature` block. [Github Issue](https://github.com/hanzoai/llm/issues/8964)
 
 
 

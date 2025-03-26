@@ -22,10 +22,10 @@
 - Audit Logs with retention policy
 - Control Allowed IP Addresses that can access your Cloud LLM Instance
 
-For security inquiries, please contact us at support@berri.ai
+For security inquiries, please contact us at support@hanzo.ai
 
 
-For security inquiries, please contact us at support@berri.ai
+For security inquiries, please contact us at support@hanzo.ai
 
 #### Supported data regions for LLM Cloud
 
@@ -40,7 +40,7 @@ All data, user accounts, and infrastructure are completely separated between the
 
 We value the security community's role in protecting our systems and users. To report a security vulnerability:
 
-- Email support@berri.ai with details
+- Email support@hanzo.ai with details
 - Include steps to reproduce the issue
 - Provide any relevant additional information
 

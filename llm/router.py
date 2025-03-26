@@ -1,7 +1,7 @@
 # +-----------------------------------------------+
 # |                                               |
 # |           Give Feedback / Get Help            |
-# | https://github.com/BerriAI/llm/issues/new |
+# | https://github.com/hanzoai/llm/issues/new |
 # |                                               |
 # +-----------------------------------------------+
 #
@@ -317,7 +317,7 @@ class Router:
         self.debug_level = debug_level
         self.enable_pre_call_checks = enable_pre_call_checks
         self.enable_tag_filtering = enable_tag_filtering
-        llm.suppress_debug_info = True  # prevents 'Give Feedback/Get help' message from being emitted on Router - Relevant Issue: https://github.com/BerriAI/llm/issues/5942
+        llm.suppress_debug_info = True  # prevents 'Give Feedback/Get help' message from being emitted on Router - Relevant Issue: https://github.com/hanzoai/llm/issues/5942
         if self.set_verbose is True:
             if debug_level == "INFO":
                 verbose_router_logger.setLevel(logging.INFO)
@@ -4383,7 +4383,7 @@ class Router:
 
             if _llm_params.get("organization", None) is not None and isinstance(
                 _llm_params["organization"], list
-            ):  # Addresses https://github.com/BerriAI/llm/issues/3949
+            ):  # Addresses https://github.com/hanzoai/llm/issues/3949
                 for org in _llm_params["organization"]:
                     _llm_params["organization"] = org
                     self._create_deployment(

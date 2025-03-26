@@ -54,7 +54,7 @@ curl -L -X POST 'http://0.0.0.0:4000/budget/new' \
 
 LLM was double logging llm_request span. This is now fixed.
 
-[Relevant PR](https://github.com/BerriAI/llm/pull/7435)
+[Relevant PR](https://github.com/hanzoai/llm/pull/7435)
 
 ## Logging for Finetuning Endpoints 
 

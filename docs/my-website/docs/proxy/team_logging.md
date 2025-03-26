@@ -329,7 +329,7 @@ curl -X POST 'http://0.0.0.0:4000/key/generate' \
 
 ---
 
-Help us improve this feature, by filing a [ticket here](https://github.com/BerriAI/llm/issues)
+Help us improve this feature, by filing a [ticket here](https://github.com/hanzoai/llm/issues)
 
 ### Check if key callbacks are configured correctly `/key/health`
 

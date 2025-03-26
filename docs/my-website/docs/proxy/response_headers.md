@@ -18,7 +18,7 @@ When you make a request to the proxy, the proxy will return the following header
 
 **If key has rate limits set**
 
-The proxy will return the [remaining rate limits for that key](https://github.com/BerriAI/llm/blob/bfa95538190575f7f317db2d9598fc9a82275492/llm/proxy/hooks/parallel_request_limiter.py#L778).
+The proxy will return the [remaining rate limits for that key](https://github.com/hanzoai/llm/blob/bfa95538190575f7f317db2d9598fc9a82275492/llm/proxy/hooks/parallel_request_limiter.py#L778).
 
 **If key does not have rate limits set**
 

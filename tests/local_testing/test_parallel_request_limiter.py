@@ -74,7 +74,7 @@ async def test_key_max_parallel_requests():
     """
     Ensure the error str returned contains parallel request information.
 
-    Relevant Issue: https://github.com/BerriAI/llm/issues/8392
+    Relevant Issue: https://github.com/hanzoai/llm/issues/8392
     """
     _api_key = "sk-12345"
     _api_key = hash_token("sk-12345")

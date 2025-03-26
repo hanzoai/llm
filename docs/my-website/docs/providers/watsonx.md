@@ -21,7 +21,7 @@ See [here](https://cloud.ibm.com/apidocs/watsonx-ai#api-authentication) for more
 
 ## Usage
 
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/llm_IBM_Watsonx.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/hanzoai/llm/blob/main/cookbook/llm_IBM_Watsonx.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 

@@ -176,7 +176,7 @@ asyncio.run(test_chat_openai())
 
 :::info
 
-We're actively trying to expand this to other event types. [Tell us if you need this!](https://github.com/BerriAI/llm/issues/1007)
+We're actively trying to expand this to other event types. [Tell us if you need this!](https://github.com/hanzoai/llm/issues/1007)
 :::
 
 ## What's in kwargs? 
@@ -198,7 +198,7 @@ def custom_callback(
 
 This is a dictionary containing all the model-call details (the params we receive, the values we send to the http endpoint, the response we receive, stacktrace in case of errors, etc.). 
 
-This is all logged in the [model_call_details via our Logger](https://github.com/BerriAI/llm/blob/fc757dc1b47d2eb9d0ea47d6ad224955b705059d/llm/utils.py#L246).
+This is all logged in the [model_call_details via our Logger](https://github.com/hanzoai/llm/blob/fc757dc1b47d2eb9d0ea47d6ad224955b705059d/llm/utils.py#L246).
 
 Here's exactly what you can expect in the kwargs dictionary:
 ```shell
@@ -297,7 +297,7 @@ LLM will pass you the complete streaming response in the final streaming chunk a
 
 LLM accepts a metadata dictionary in the completion call. You can pass additional metadata into your completion call via `completion(..., metadata={"key": "value"})`. 
 
-Since this is a [llm-specific param](https://github.com/BerriAI/llm/blob/b6a015404eed8a0fa701e98f4581604629300ee3/llm/main.py#L235), it's accessible via kwargs["llm_params"]
+Since this is a [llm-specific param](https://github.com/hanzoai/llm/blob/b6a015404eed8a0fa701e98f4581604629300ee3/llm/main.py#L235), it's accessible via kwargs["llm_params"]
 
 ```python
 from llm import completion

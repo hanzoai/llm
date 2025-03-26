@@ -1,7 +1,7 @@
 # +-----------------------------------------------+
 # |                                               |
 # |           Give Feedback / Get Help            |
-# | https://github.com/BerriAI/llm/issues/new |
+# | https://github.com/hanzoai/llm/issues/new |
 # |                                               |
 # +-----------------------------------------------+
 #
@@ -933,7 +933,7 @@ def completion(  # type: ignore # noqa: PLR0915
     ### PROMPT MANAGEMENT ###
     prompt_id = cast(Optional[str], kwargs.get("prompt_id", None))
     prompt_variables = cast(Optional[dict], kwargs.get("prompt_variables", None))
-    ### COPY MESSAGES ### - related issue https://github.com/BerriAI/llm/discussions/4489
+    ### COPY MESSAGES ### - related issue https://github.com/hanzoai/llm/discussions/4489
     messages = get_completion_messages(
         messages=messages,
         ensure_alternating_roles=ensure_alternating_roles or False,
@@ -4228,7 +4228,7 @@ def text_completion(  # noqa: PLR0915
         messages = [{"role": "user", "content": prompt}]  # type: ignore
     else:
         raise Exception(
-            f"Unmapped prompt format. Your prompt is neither a list of strings nor a string. prompt={prompt}. File an issue - https://github.com/BerriAI/llm/issues"
+            f"Unmapped prompt format. Your prompt is neither a list of strings nor a string. prompt={prompt}. File an issue - https://github.com/hanzoai/llm/issues"
         )
 
     kwargs.pop("prompt", None)
@@ -5428,7 +5428,7 @@ async def ahealth_check_wildcard_models(
     )
     if len(cheapest_models) == 0:
         raise Exception(
-            f"Unable to health check wildcard model for provider {custom_llm_provider}. Add a model on your config.yaml or contribute here - https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json"
+            f"Unable to health check wildcard model for provider {custom_llm_provider}. Add a model on your config.yaml or contribute here - https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json"
         )
     if len(cheapest_models) > 1:
         fallback_models = cheapest_models[

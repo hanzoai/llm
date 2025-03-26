@@ -163,7 +163,7 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 }'
 ```
 
-[**See Code**](https://github.com/BerriAI/llm/blob/6b8806b45f970cb2446654d2c379f8dcaa93ce3c/llm/router.py#L2535)
+[**See Code**](https://github.com/hanzoai/llm/blob/6b8806b45f970cb2446654d2c379f8dcaa93ce3c/llm/router.py#L2535)
 
 
 ## Load Balancing using multiple llm instances (Kubernetes, Auto Scaling)
@@ -204,7 +204,7 @@ model_group_alias: {
 
 These aliases are shown on `/v1/models`, `/v1/model/info`, and `/v1/model_group/info` by default.
 
-llm.Router() settings can be set under `router_settings`. You can set `model_group_alias`, `routing_strategy`, `num_retries`,`timeout` . See all Router supported params [here](https://github.com/BerriAI/llm/blob/1b942568897a48f014fa44618ec3ce54d7570a46/llm/router.py#L64)
+llm.Router() settings can be set under `router_settings`. You can set `model_group_alias`, `routing_strategy`, `num_retries`,`timeout` . See all Router supported params [here](https://github.com/hanzoai/llm/blob/1b942568897a48f014fa44618ec3ce54d7570a46/llm/router.py#L64)
 
 
 

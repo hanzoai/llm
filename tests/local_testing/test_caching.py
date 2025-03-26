@@ -637,7 +637,7 @@ async def test_embedding_caching_redis_ttl():
     """
     Test default_in_redis_ttl is used for embedding caching
 
-    issue: https://github.com/BerriAI/llm/issues/6010
+    issue: https://github.com/hanzoai/llm/issues/6010
     """
     llm.set_verbose = True
 
@@ -1780,7 +1780,7 @@ async def test_redis_semantic_cache_acompletion():
 
 def test_caching_redis_simple(caplog, capsys):
     """
-    Relevant issue - https://github.com/BerriAI/llm/issues/4511
+    Relevant issue - https://github.com/hanzoai/llm/issues/4511
     """
     llm.set_verbose = True  ## REQUIRED FOR TEST.
     llm.cache = Cache(

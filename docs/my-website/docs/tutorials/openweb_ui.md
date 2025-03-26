@@ -31,7 +31,7 @@ On LLM, you can create Organizations, Teams, Users and Virtual Keys. For this tu
 
 - `Organization` - An Organization is a group of Teams. (US Engineering, EU Developer Tools)
 - `Team` - A Team is a group of Users. (OpenWeb UI Team, Data Science Team, etc.)
-- `User` - A User is an individual user (employee, developer, eg. `krrish@llm.ai`)
+- `User` - A User is an individual user (employee, developer, eg. `dev@llm.ai`)
 - `Virtual Key` - A Virtual Key is an API Key that allows you to authenticate to LLM Proxy. A Virtual Key is associated with a User or Team.
 
 Once the Team is created, you can invite Users to the Team. You can read more about LLM's User Management [here](https://docs.llm.ai/docs/proxy/user_management_heirarchy).

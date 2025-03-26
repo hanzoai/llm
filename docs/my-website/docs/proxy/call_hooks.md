@@ -6,13 +6,13 @@ import Image from '@theme/IdealImage';
 - Reject data before making llm api calls / before returning the response 
 - Enforce 'user' param for all openai endpoint calls
 
-See a complete example with our [parallel request rate limiter](https://github.com/BerriAI/llm/blob/main/llm/proxy/hooks/parallel_request_limiter.py)
+See a complete example with our [parallel request rate limiter](https://github.com/hanzoai/llm/blob/main/llm/proxy/hooks/parallel_request_limiter.py)
 
 ## Quick Start
 
 1. In your Custom Handler add a new `async_pre_call_hook` function
 
-This function is called just before a llm completion call is made, and allows you to modify the data going into the llm call [**See Code**](https://github.com/BerriAI/llm/blob/589a6ca863000ba8e92c897ba0f776796e7a5904/llm/proxy/proxy_server.py#L1000)
+This function is called just before a llm completion call is made, and allows you to modify the data going into the llm call [**See Code**](https://github.com/hanzoai/llm/blob/589a6ca863000ba8e92c897ba0f776796e7a5904/llm/proxy/proxy_server.py#L1000)
 
 ```python
 from llm.integrations.custom_logger import CustomLogger
@@ -138,7 +138,7 @@ We might need to update the function schema in the future, to support multiple e
 
 :::
 
-See a complete example with our [Llama Guard content moderation hook](https://github.com/BerriAI/llm/blob/main/enterprise/enterprise_hooks/llm_guard.py)
+See a complete example with our [Llama Guard content moderation hook](https://github.com/hanzoai/llm/blob/main/enterprise/enterprise_hooks/llm_guard.py)
 
 ```python
 from llm.integrations.custom_logger import CustomLogger
@@ -218,7 +218,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 
 Set `enforce_user_param` to true, to require all calls to the openai endpoints to have the 'user' param. 
 
-[**See Code**](https://github.com/BerriAI/llm/blob/4777921a31c4c70e4d87b927cb233b6a09cd8b51/llm/proxy/auth/auth_checks.py#L72)
+[**See Code**](https://github.com/hanzoai/llm/blob/4777921a31c4c70e4d87b927cb233b6a09cd8b51/llm/proxy/auth/auth_checks.py#L72)
 
 ```yaml
 general_settings:

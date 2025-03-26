@@ -35,7 +35,7 @@ def test_update_model_cost():
 def test_update_model_cost_map_url():
     try:
         llm.register_model(
-            model_cost="https://raw.githubusercontent.com/BerriAI/llm/main/model_prices_and_context_window.json"
+            model_cost="https://raw.githubusercontent.com/hanzoai/llm/main/model_prices_and_context_window.json"
         )
         assert llm.model_cost["gpt-4"]["input_cost_per_token"] == 0.00003
     except Exception as e:

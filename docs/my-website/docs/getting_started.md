@@ -25,7 +25,7 @@ response = completion("command-nightly", messages)
 ```
 
 **Need a dedicated key?**
-Email us @ krrish@berri.ai
+Email us @ dev@hanzo.ai
 
 Next Steps 👉 [Call all supported models - e.g. Claude-2, Llama2-70b, etc.](./proxy_api.md#supported-models)
 
@@ -33,7 +33,7 @@ More details 👉
 
 - [Completion() function details](./completion/)
 - [All supported models / providers on LLM](./providers/)
-- [Build your own OpenAI proxy](https://github.com/BerriAI/llm-proxy/tree/main)
+- [Build your own OpenAI proxy](https://github.com/hanzoai/llm-proxy/tree/main)
 
 ## streaming
 

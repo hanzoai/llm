@@ -23,7 +23,7 @@ Here's how to modify the repo locally:
 Step 1: Clone the repo
 
 ```shell
-git clone https://github.com/BerriAI/llm.git
+git clone https://github.com/hanzoai/llm.git
 ```
 
 Step 2: Install dev dependencies:
@@ -36,7 +36,7 @@ That's it, your local dev environment is ready!
 
 ## 2. Adding Testing to your PR
 
-- Add your test to the [`tests/llm/` directory](https://github.com/BerriAI/llm/tree/main/tests/llm)
+- Add your test to the [`tests/llm/` directory](https://github.com/hanzoai/llm/tree/main/tests/llm)
 
 - This directory 1:1 maps the the `llm/` directory, and can only contain mocked tests.
 - Do not add real llm api calls to this directory.
@@ -80,7 +80,7 @@ Some people might want to build the LLM docker image themselves. Follow these in
 Step 1: Clone the repo
 
 ```shell
-git clone https://github.com/BerriAI/llm.git
+git clone https://github.com/hanzoai/llm.git
 ```
 
 Step 2: Build the Docker Image

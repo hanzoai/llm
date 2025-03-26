@@ -139,7 +139,7 @@ async def test_post_call_processing_error_async_response():
         response = await acompletion(
             model="command-nightly",  # Just used as an example
             messages=[{"content": "Hello, how are you?", "role": "user"}],
-            api_base="https://openai-proxy.berriai.repl.co",  # Just used as an example
+            api_base="https://openai-proxy.hanzoai.repl.co",  # Just used as an example
             custom_llm_provider="openai",
         )
         pytest.fail("This call should have failed")

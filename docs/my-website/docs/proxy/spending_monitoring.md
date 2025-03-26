@@ -24,7 +24,7 @@ Disabling this will prevent your LLM DB from growing in size, which will help wi
 
 ## Need an Integration? Get in Touch
 
-- Request a logging integration on [Github Issues](https://github.com/BerriAI/llm/issues)
+- Request a logging integration on [Github Issues](https://github.com/hanzoai/llm/issues)
 - Get in [touch with LLM Founders](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
 - Get a 7-day free trial of LLM [here](https://llm.ai#trial)
 

@@ -48,7 +48,7 @@ def reset_callbacks():
 @pytest.mark.skip(reason="Local test")
 def test_response_model_none():
     """
-    Addresses:https://github.com/BerriAI/llm/issues/2972
+    Addresses:https://github.com/hanzoai/llm/issues/2972
     """
     x = completion(
         model="mymodel",
@@ -601,7 +601,7 @@ async def test_model_function_invoke(model, sync_mode, api_key, api_base):
 @pytest.mark.asyncio
 async def test_anthropic_no_content_error():
     """
-    https://github.com/BerriAI/llm/discussions/3440#discussioncomment-9323402
+    https://github.com/hanzoai/llm/discussions/3440#discussioncomment-9323402
     """
     try:
         llm.drop_params = True
@@ -2326,7 +2326,7 @@ def test_completion_openai_llm_key():
             temperature=0.5,
             top_p=0.1,
             max_tokens=10,
-            user="ishaan_dev@berri.ai",
+            user="ishaan_dev@hanzo.ai",
         )
         # Add any assertions here to check the response
         print(response)
@@ -3627,7 +3627,7 @@ def test_completion_bedrock_titan_null_response():
 # def test_completion_hosted_chatCompletion():
 #     # this tests calling a server where vllm is hosted
 #     # this should make an openai.Completion() call to the specified api_base
-#     # send a request to this proxy server: https://replit.com/@BerriAI/openai-proxy#main.py
+#     # send a request to this proxy server: https://replit.com/@hanzoai/openai-proxy#main.py
 #     # it checks if model == facebook/opt-125m and returns test passed
 #     try:
 #         llm.set_verbose = True
@@ -3636,13 +3636,13 @@ def test_completion_bedrock_titan_null_response():
 #             messages=messages,
 #             temperature=0.2,
 #             max_tokens=80,
-#             api_base="https://openai-proxy.berriai.repl.co",
+#             api_base="https://openai-proxy.hanzoai.repl.co",
 #             custom_llm_provider="openai"
 #         )
 #         print(response)
 
 #         if response['choices'][0]['message']['content'] != "passed":
-#             # see https://replit.com/@BerriAI/openai-proxy#main.py
+#             # see https://replit.com/@hanzoai/openai-proxy#main.py
 #             pytest.fail(f"Error occurred: proxy server did not respond")
 #     except Exception as e:
 #         pytest.fail(f"Error occurred: {e}")

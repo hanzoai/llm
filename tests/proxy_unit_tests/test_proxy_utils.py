@@ -542,7 +542,7 @@ def test_update_internal_user_params():
         "models": ["gpt-3.5-turbo"],
     }
 
-    data = NewUserRequest(user_role="internal_user", user_email="krrish3@berri.ai")
+    data = NewUserRequest(user_role="internal_user", user_email="krrish3@hanzo.ai")
     data_json = data.model_dump()
     updated_data_json = _update_internal_new_user_params(data_json, data)
     assert updated_data_json["models"] == llm.default_internal_user_params["models"]
@@ -1075,7 +1075,7 @@ def test_proxy_config_state_post_init_callback_call():
     """
     Ensures team_id is still in config, after callback is called
 
-    Addresses issue: https://github.com/BerriAI/llm/issues/6787
+    Addresses issue: https://github.com/hanzoai/llm/issues/6787
 
     Where team_id was being popped from config, after callback was called
     """

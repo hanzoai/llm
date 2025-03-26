@@ -1439,7 +1439,7 @@ docker run \
     -v $(pwd)/llm_config.yaml:/app/config.yaml \
     -e USE_DDTRACE=true \
     -p 4000:4000 \
-    ghcr.io/berriai/llm:main-latest \
+    ghcr.io/hanzoai/llm:main-latest \
     --config /app/config.yaml --detailed_debug
 ```
 
@@ -1852,7 +1852,7 @@ ModelResponse(
 
 :::info
 
-This is an Enterprise only feature [Get Started with Enterprise here](https://github.com/BerriAI/llm/tree/main/enterprise)
+This is an Enterprise only feature [Get Started with Enterprise here](https://github.com/hanzoai/llm/tree/main/enterprise)
 
 :::
 

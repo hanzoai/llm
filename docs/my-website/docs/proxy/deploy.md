@@ -4,7 +4,7 @@ import Image from '@theme/IdealImage';
 
 # Docker, Deployment
 
-You can find the Dockerfile to build llm proxy [here](https://github.com/BerriAI/llm/blob/main/Dockerfile)
+You can find the Dockerfile to build llm proxy [here](https://github.com/hanzoai/llm/blob/main/Dockerfile)
 
 ## Quick Start
 
@@ -12,7 +12,7 @@ To start using LLM, run the following commands in a shell:
 
 ```bash
 # Get the code
-git clone https://github.com/BerriAI/llm
+git clone https://github.com/hanzoai/llm
 
 # Go to folder
 cd llm
@@ -59,11 +59,11 @@ docker run \
     -e AZURE_API_KEY=d6*********** \
     -e AZURE_API_BASE=https://openai-***********/ \
     -p 4000:4000 \
-    ghcr.io/berriai/llm:main-latest \
+    ghcr.io/hanzoai/llm:main-latest \
     --config /app/config.yaml --detailed_debug
 ```
 
-Get Latest Image 👉 [here](https://github.com/berriai/llm/pkgs/container/llm)
+Get Latest Image 👉 [here](https://github.com/hanzoai/llm/pkgs/container/llm)
 
 #### Step 3. TEST Request
 
@@ -89,12 +89,12 @@ See all supported CLI args [here](https://docs.llm.ai/docs/proxy/cli):
 
 Here's how you can run the docker image and pass your config to `llm`
 ```shell
-docker run ghcr.io/berriai/llm:main-latest --config your_config.yaml
+docker run ghcr.io/hanzoai/llm:main-latest --config your_config.yaml
 ```
 
 Here's how you can run the docker image and start llm on port 8002 with `num_workers=8`
 ```shell
-docker run ghcr.io/berriai/llm:main-latest --port 8002 --num_workers 8
+docker run ghcr.io/hanzoai/llm:main-latest --port 8002 --num_workers 8
 ```
 
 
@@ -102,7 +102,7 @@ docker run ghcr.io/berriai/llm:main-latest --port 8002 --num_workers 8
 
 ```shell
 # Use the provided base image
-FROM ghcr.io/berriai/llm:main-latest
+FROM ghcr.io/hanzoai/llm:main-latest
 
 # Set the working directory to /app
 WORKDIR /app
@@ -236,7 +236,7 @@ spec:
     spec:
       containers:
       - name: llm
-        image: ghcr.io/berriai/llm:main-latest # it is recommended to fix a version generally
+        image: ghcr.io/hanzoai/llm:main-latest # it is recommended to fix a version generally
         ports:
         - containerPort: 4000
         volumeMounts:
@@ -261,18 +261,18 @@ To avoid issues with predictability, difficulties in rollback, and inconsistent 
 
 :::info
 
-[BETA] Helm Chart is BETA. If you run into an issues/have feedback please let us know [https://github.com/BerriAI/llm/issues](https://github.com/BerriAI/llm/issues)
+[BETA] Helm Chart is BETA. If you run into an issues/have feedback please let us know [https://github.com/hanzoai/llm/issues](https://github.com/hanzoai/llm/issues)
 
 :::
 
-Use this when you want to use llm helm chart as a dependency for other charts. The `llm-helm` OCI is hosted here [https://github.com/BerriAI/llm/pkgs/container/llm-helm](https://github.com/BerriAI/llm/pkgs/container/llm-helm)
+Use this when you want to use llm helm chart as a dependency for other charts. The `llm-helm` OCI is hosted here [https://github.com/hanzoai/llm/pkgs/container/llm-helm](https://github.com/hanzoai/llm/pkgs/container/llm-helm)
 
 #### Step 1. Pull the llm helm chart
 
 ```bash
-helm pull oci://ghcr.io/berriai/llm-helm
+helm pull oci://ghcr.io/hanzoai/llm-helm
 
-# Pulled: ghcr.io/berriai/llm-helm:0.1.2
+# Pulled: ghcr.io/hanzoai/llm-helm:0.1.2
 # Digest: sha256:7d3ded1c99c1597f9ad4dc49d84327cf1db6e0faa0eeea0c614be5526ae94e2a
 ```
 
@@ -328,10 +328,10 @@ Requirements:
 
 <TabItem value="docker-deploy" label="Dockerfile">
 
-We maintain a [separate Dockerfile](https://github.com/BerriAI/llm/pkgs/container/llm-database) for reducing build time when running LLM proxy with a connected Postgres Database 
+We maintain a [separate Dockerfile](https://github.com/hanzoai/llm/pkgs/container/llm-database) for reducing build time when running LLM proxy with a connected Postgres Database 
 
 ```shell
-docker pull ghcr.io/berriai/llm-database:main-latest
+docker pull ghcr.io/hanzoai/llm-database:main-latest
 ```
 
 ```shell
@@ -342,7 +342,7 @@ docker run \
     -e AZURE_API_KEY=d6*********** \
     -e AZURE_API_BASE=https://openai-***********/ \
     -p 4000:4000 \
-    ghcr.io/berriai/llm-database:main-latest \
+    ghcr.io/hanzoai/llm-database:main-latest \
     --config /app/config.yaml --detailed_debug
 ```
 
@@ -370,7 +370,7 @@ spec:
     spec:
       containers:
         - name: llm-container
-          image: ghcr.io/berriai/llm:main-latest
+          image: ghcr.io/hanzoai/llm:main-latest
           imagePullPolicy: Always
           env:
             - name: AZURE_API_KEY
@@ -454,16 +454,16 @@ Your LLM Proxy Server is now running on `http://0.0.0.0:4000`.
 
 :::info
 
-[BETA] Helm Chart is BETA. If you run into an issues/have feedback please let us know [https://github.com/BerriAI/llm/issues](https://github.com/BerriAI/llm/issues)
+[BETA] Helm Chart is BETA. If you run into an issues/have feedback please let us know [https://github.com/hanzoai/llm/issues](https://github.com/hanzoai/llm/issues)
 
 :::
 
-Use this to deploy llm using a helm chart. Link to [the LLM Helm Chart](https://github.com/BerriAI/llm/tree/main/deploy/charts/llm-helm)
+Use this to deploy llm using a helm chart. Link to [the LLM Helm Chart](https://github.com/hanzoai/llm/tree/main/deploy/charts/llm-helm)
 
 #### Step 1. Clone the repository
 
 ```bash
-git clone https://github.com/BerriAI/llm.git
+git clone https://github.com/hanzoai/llm.git
 ```
 
 #### Step 2. Deploy with Helm
@@ -489,7 +489,7 @@ kubectl \
 Your LLM Proxy Server is now running on `http://127.0.0.1:4000`.
 
 
-If you need to set your llm proxy config.yaml, you can find this in [values.yaml](https://github.com/BerriAI/llm/blob/main/deploy/charts/llm-helm/values.yaml)
+If you need to set your llm proxy config.yaml, you can find this in [values.yaml](https://github.com/hanzoai/llm/blob/main/deploy/charts/llm-helm/values.yaml)
 
 </TabItem>
 
@@ -497,18 +497,18 @@ If you need to set your llm proxy config.yaml, you can find this in [values.yaml
 
 :::info
 
-[BETA] Helm Chart is BETA. If you run into an issues/have feedback please let us know [https://github.com/BerriAI/llm/issues](https://github.com/BerriAI/llm/issues)
+[BETA] Helm Chart is BETA. If you run into an issues/have feedback please let us know [https://github.com/hanzoai/llm/issues](https://github.com/hanzoai/llm/issues)
 
 :::
 
-Use this when you want to use llm helm chart as a dependency for other charts. The `llm-helm` OCI is hosted here [https://github.com/BerriAI/llm/pkgs/container/llm-helm](https://github.com/BerriAI/llm/pkgs/container/llm-helm)
+Use this when you want to use llm helm chart as a dependency for other charts. The `llm-helm` OCI is hosted here [https://github.com/hanzoai/llm/pkgs/container/llm-helm](https://github.com/hanzoai/llm/pkgs/container/llm-helm)
 
 #### Step 1. Pull the llm helm chart
 
 ```bash
-helm pull oci://ghcr.io/berriai/llm-helm
+helm pull oci://ghcr.io/hanzoai/llm-helm
 
-# Pulled: ghcr.io/berriai/llm-helm:0.1.2
+# Pulled: ghcr.io/hanzoai/llm-helm:0.1.2
 # Digest: sha256:7d3ded1c99c1597f9ad4dc49d84327cf1db6e0faa0eeea0c614be5526ae94e2a
 ```
 
@@ -565,7 +565,7 @@ router_settings:
 Start docker container with config
 
 ```shell
-docker run ghcr.io/berriai/llm:main-latest --config your_config.yaml
+docker run ghcr.io/hanzoai/llm:main-latest --config your_config.yaml
 ```
 
 ### Deploy with Database + Redis
@@ -600,7 +600,7 @@ Start `llm-database`docker container with config
 docker run --name llm-proxy \
 -e DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<dbname> \
 -p 4000:4000 \
-ghcr.io/berriai/llm-database:main-latest --config your_config.yaml
+ghcr.io/hanzoai/llm-database:main-latest --config your_config.yaml
 ```
 
 ###  (Non Root) - without Internet Connection
@@ -610,10 +610,10 @@ By default `prisma generate` downloads [prisma's engine binaries](https://www.pr
 Use this docker image to deploy llm with pre-generated prisma binaries.
 
 ```bash
-docker pull ghcr.io/berriai/llm-non_root:main-stable
+docker pull ghcr.io/hanzoai/llm-non_root:main-stable
 ```
 
-[Published Docker Image link](https://github.com/BerriAI/llm/pkgs/container/llm-non_root)
+[Published Docker Image link](https://github.com/hanzoai/llm/pkgs/container/llm-non_root)
 
 ## Advanced Deployment Settings
 
@@ -643,7 +643,7 @@ Dockerfile
 
 ```shell
 # Use the provided base image
-FROM ghcr.io/berriai/llm:main-latest
+FROM ghcr.io/hanzoai/llm:main-latest
 
 # Set the working directory to /app
 WORKDIR /app
@@ -722,7 +722,7 @@ Use this, If you need to set ssl certificates for your on prem llm proxy
 Pass `ssl_keyfile_path` (Path to the SSL keyfile) and `ssl_certfile_path` (Path to the SSL certfile) when starting llm proxy 
 
 ```shell
-docker run ghcr.io/berriai/llm:main-latest \
+docker run ghcr.io/hanzoai/llm:main-latest \
     --ssl_keyfile_path ssl_test/keyfile.key \
     --ssl_certfile_path ssl_test/certfile.crt
 ```
@@ -737,7 +737,7 @@ Step 1. Build your custom docker image with hypercorn
 
 ```shell
 # Use the provided base image
-FROM ghcr.io/berriai/llm:main-latest
+FROM ghcr.io/hanzoai/llm:main-latest
 
 # Set the working directory to /app
 WORKDIR /app
@@ -801,7 +801,7 @@ docker run --name llm-proxy \
    -e LLM_CONFIG_BUCKET_OBJECT_KEY="<object_key>> \
    -e LLM_CONFIG_BUCKET_TYPE="gcs" \
    -p 4000:4000 \
-   ghcr.io/berriai/llm-database:main-latest --detailed_debug
+   ghcr.io/hanzoai/llm-database:main-latest --detailed_debug
 ```
 
 </TabItem>
@@ -822,7 +822,7 @@ docker run --name llm-proxy \
    -e LLM_CONFIG_BUCKET_NAME=<bucket_name> \
    -e LLM_CONFIG_BUCKET_OBJECT_KEY="<object_key>> \
    -p 4000:4000 \
-   ghcr.io/berriai/llm-database:main-latest
+   ghcr.io/hanzoai/llm-database:main-latest
 ```
 </TabItem>
 </Tabs>
@@ -851,9 +851,9 @@ kubectl create configmap llm-config --from-file=proxy_config.yaml
 Step 3. Apply `kub.yaml` and `service.yaml`
 Clone the following `kub.yaml` and `service.yaml` files and apply locally
 
-- Use this `kub.yaml` file - [llm kub.yaml](https://github.com/BerriAI/llm/blob/main/deploy/kubernetes/kub.yaml)
+- Use this `kub.yaml` file - [llm kub.yaml](https://github.com/hanzoai/llm/blob/main/deploy/kubernetes/kub.yaml)
 
-- Use this `service.yaml` file - [llm service.yaml](https://github.com/BerriAI/llm/blob/main/deploy/kubernetes/service.yaml)
+- Use this `service.yaml` file - [llm service.yaml](https://github.com/hanzoai/llm/blob/main/deploy/kubernetes/service.yaml)
 
 Apply `kub.yaml`
 ```
@@ -894,7 +894,7 @@ This will provision:
 - LLMDB - RDS::DBInstance
 
 #### Using AWS Cloud Formation Stack
-**LLM Cloudformation stack is located [here - llm.yaml](https://github.com/BerriAI/llm/blob/main/enterprise/cloudformation_stack/llm.yaml)**
+**LLM Cloudformation stack is located [here - llm.yaml](https://github.com/hanzoai/llm/blob/main/enterprise/cloudformation_stack/llm.yaml)**
 
 #### 1. Create the CloudFormation Stack:
 In the AWS Management Console, navigate to the CloudFormation service, and click on "Create Stack."
@@ -915,7 +915,7 @@ Run the following command, replacing `<database_url>` with the value you copied 
 docker run --name llm-proxy \
    -e DATABASE_URL=<database_url> \
    -p 4000:4000 \
-   ghcr.io/berriai/llm-database:main-latest
+   ghcr.io/hanzoai/llm-database:main-latest
 ```
 
 #### 4. Access the Application:
@@ -927,7 +927,7 @@ Once the container is running, you can access the application by going to `http:
 
 ### Google Cloud Run
 
-1. Fork this repo - [github.com/BerriAI/example_llm_gcp_cloud_run](https://github.com/BerriAI/example_llm_gcp_cloud_run)
+1. Fork this repo - [github.com/hanzoai/example_llm_gcp_cloud_run](https://github.com/hanzoai/example_llm_gcp_cloud_run)
 
 2. Edit the `llm_config.yaml` file in the repo to include your model settings 
 
@@ -983,7 +983,7 @@ https://railway.app
 
 **Step 1**
 
-- (Recommended) Use the example file `docker-compose.yml` given in the project root. e.g. https://github.com/BerriAI/llm/blob/main/docker-compose.yml
+- (Recommended) Use the example file `docker-compose.yml` given in the project root. e.g. https://github.com/hanzoai/llm/blob/main/docker-compose.yml
 
 Here's an example `docker-compose.yml` file
 ```yaml
@@ -994,7 +994,7 @@ services:
       context: .
       args:
         target: runtime
-    image: ghcr.io/berriai/llm:main-latest
+    image: ghcr.io/hanzoai/llm:main-latest
     ports:
       - "4000:4000" # Map the container port to the host, change the host port if necessary
     volumes:
@@ -1030,7 +1030,7 @@ export AWS_ROLE_NAME='arn:aws:iam::123456789012:role/MyRole'
 export AWS_SESSION_NAME='MySession'
 ```
 
-[**See all Auth options**](https://github.com/BerriAI/llm/blob/089a4f279ad61b7b3e213d8039fb9b75204a7abc/llm/proxy/auth/rds_iam_token.py#L165)
+[**See all Auth options**](https://github.com/hanzoai/llm/blob/089a4f279ad61b7b3e213d8039fb9b75204a7abc/llm/proxy/auth/rds_iam_token.py#L165)
 
 2. Add RDS credentials to env
 

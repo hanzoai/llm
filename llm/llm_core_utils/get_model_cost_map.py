@@ -1,5 +1,5 @@
 """
-Pulls the cost + context window + provider route for known models from https://github.com/BerriAI/llm/blob/main/model_prices_and_context_window.json
+Pulls the cost + context window + provider route for known models from https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json
 
 This can be disabled by setting the LLM_LOCAL_MODEL_COST_MAP environment variable to True.
 

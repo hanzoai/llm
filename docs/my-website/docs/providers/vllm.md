@@ -302,7 +302,7 @@ def default_pt(messages):
     return " ".join(message["content"] for message in messages)
 ```
 
-[Code for how prompt templates work in LLM](https://github.com/BerriAI/llm/blob/main/llm/llms/prompt_templates/factory.py)
+[Code for how prompt templates work in LLM](https://github.com/hanzoai/llm/blob/main/llm/llms/prompt_templates/factory.py)
 
 
 #### Models we already have Prompt Templates for
@@ -347,5 +347,5 @@ def test_vllm_custom_model():
 test_vllm_custom_model()
 ```
 
-[Implementation Code](https://github.com/BerriAI/llm/blob/6b3cb1898382f2e4e80fd372308ea232868c78d1/llm/utils.py#L1414)
+[Implementation Code](https://github.com/hanzoai/llm/blob/6b3cb1898382f2e4e80fd372308ea232868c78d1/llm/utils.py#L1414)
 

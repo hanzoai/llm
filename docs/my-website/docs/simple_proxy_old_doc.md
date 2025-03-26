@@ -10,7 +10,7 @@ LLM Server manages:
 * **Load Balancing**: between [Multiple Models](#multiple-models---quick-start) + [Deployments of the same model](#multiple-instances-of-1-model) - LLM proxy can handle 1.5k+ requests/second during load tests.
 * **Cost tracking**: Authentication & Spend Tracking [Virtual Keys](#managing-auth---virtual-keys)
 
-[**See LLM Proxy code**](https://github.com/BerriAI/llm/tree/main/llm/proxy)
+[**See LLM Proxy code**](https://github.com/hanzoai/llm/tree/main/llm/proxy)
 
 ## Quick Start
 View all the supported args for the Proxy CLI [here](https://docs.llm.ai/docs/simple_proxy#proxy-cli-arguments)
@@ -549,7 +549,7 @@ If a call fails after num_retries, fall back to another model group.
 
 If the error is a context window exceeded error, fall back to a larger model group (if given).
 
-[**See Code**](https://github.com/BerriAI/llm/blob/main/llm/router.py)
+[**See Code**](https://github.com/hanzoai/llm/blob/main/llm/router.py)
 
 **Set via config**
 ```yaml
@@ -638,7 +638,7 @@ Requirements:
 
 You can then generate temporary keys by hitting the `/key/generate` endpoint.
 
-[**See code**](https://github.com/BerriAI/llm/blob/7a669a36d2689c7f7890bc9c93e04ff3c2641299/llm/proxy/proxy_server.py#L672)
+[**See code**](https://github.com/hanzoai/llm/blob/7a669a36d2689c7f7890bc9c93e04ff3c2641299/llm/proxy/proxy_server.py#L672)
 
 **Step 1: Save postgres db url**
 
@@ -730,7 +730,7 @@ curl -X POST "https://0.0.0.0:4000/key/generate" \
 ```
 
 - **How to upgrade / downgrade request?** Change the alias mapping
-- **How are routing between diff keys/api bases done?** llm handles this by shuffling between different models in the model list with the same model_name. [**See Code**](https://github.com/BerriAI/llm/blob/main/llm/router.py)
+- **How are routing between diff keys/api bases done?** llm handles this by shuffling between different models in the model list with the same model_name. [**See Code**](https://github.com/hanzoai/llm/blob/main/llm/router.py)
 
 ### Managing Auth - Tracking Spend
 
@@ -742,7 +742,7 @@ curl 'http://0.0.0.0:4000/key/info?key=<user-key>' \
      -H 'Authorization: Bearer <your-master-key>'
 ```
 
-This is automatically updated (in USD) when calls are made to /completions, /chat/completions, /embeddings using llm's completion_cost() function. [**See Code**](https://github.com/BerriAI/llm/blob/1a6ea20a0bb66491968907c2bfaabb7fe45fc064/llm/utils.py#L1654).
+This is automatically updated (in USD) when calls are made to /completions, /chat/completions, /embeddings using llm's completion_cost() function. [**See Code**](https://github.com/hanzoai/llm/blob/1a6ea20a0bb66491968907c2bfaabb7fe45fc064/llm/utils.py#L1654).
 
 **Sample response**
 
@@ -813,7 +813,7 @@ model_list:
       api_key: os.environ/AZURE_NORTH_AMERICA_API_KEY
 ```
 
-[**See Code**](https://github.com/BerriAI/llm/blob/c12d6c3fe80e1b5e704d9846b246c059defadce7/llm/utils.py#L2366)
+[**See Code**](https://github.com/hanzoai/llm/blob/c12d6c3fe80e1b5e704d9846b246c059defadce7/llm/utils.py#L2366)
 
 s/o to [@David Manouchehri](https://www.linkedin.com/in/davidmanouchehri/) for helping with this.
 

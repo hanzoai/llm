@@ -18,7 +18,7 @@ entries:
     name: llm-helm
     type: application
     urls:
-    - https://berriai.github.io/llm/llm-helm-0.2.3.tgz
+    - https://hanzoai.github.io/llm/llm-helm-0.2.3.tgz
     version: 0.2.3
   postgresql:
   - annotations:
@@ -60,7 +60,7 @@ entries:
     sources:
     - https://github.com/bitnami/charts/tree/main/bitnami/postgresql
     urls:
-    - https://berriai.github.io/llm/charts/postgresql-14.3.1.tgz
+    - https://hanzoai.github.io/llm/charts/postgresql-14.3.1.tgz
     version: 14.3.1
   redis:
   - annotations:
@@ -103,6 +103,6 @@ entries:
     sources:
     - https://github.com/bitnami/charts/tree/main/bitnami/redis
     urls:
-    - https://berriai.github.io/llm/charts/redis-18.19.1.tgz
+    - https://hanzoai.github.io/llm/charts/redis-18.19.1.tgz
     version: 18.19.1
 generated: "2024-08-19T23:58:25.322532+08:00"

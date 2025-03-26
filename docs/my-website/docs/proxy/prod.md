@@ -65,7 +65,7 @@ If you decide to use Redis, DO NOT use 'redis_url'. We recommend usig redis port
 
 `redis_url`is 80 RPS slower
 
-This is still something we're investigating. Keep track of it [here](https://github.com/BerriAI/llm/issues/3188)
+This is still something we're investigating. Keep track of it [here](https://github.com/hanzoai/llm/issues/3188)
 
 Recommended to do this for prod: 
 
@@ -121,7 +121,7 @@ general_settings:
 
 ## 7. Use Helm PreSync Hook for Database Migrations [BETA]
 
-To ensure only one service manages database migrations, use our [Helm PreSync hook for Database Migrations](https://github.com/BerriAI/llm/blob/main/deploy/charts/llm-helm/templates/migrations-job.yaml). This ensures migrations are handled during `helm upgrade` or `helm install`, while LLM pods explicitly disable migrations.
+To ensure only one service manages database migrations, use our [Helm PreSync hook for Database Migrations](https://github.com/hanzoai/llm/blob/main/deploy/charts/llm-helm/templates/migrations-job.yaml). This ensures migrations are handled during `helm upgrade` or `helm install`, while LLM pods explicitly disable migrations.
 
 
 1. **Helm PreSync Hook**:
@@ -159,7 +159,7 @@ We recommned - https://1password.com/password-generator/ password generator to g
 export LLM_SALT_KEY="sk-1234"
 ```
 
-[**See Code**](https://github.com/BerriAI/llm/blob/036a6821d588bd36d170713dcf5a72791a694178/llm/proxy/common_utils/encrypt_decrypt_utils.py#L15)
+[**See Code**](https://github.com/hanzoai/llm/blob/036a6821d588bd36d170713dcf5a72791a694178/llm/proxy/common_utils/encrypt_decrypt_utils.py#L15)
 
 ## Extras
 ### Expected Performance in Production
@@ -214,7 +214,7 @@ spec:
     spec:
       containers:
         - name: llm-container
-          image: ghcr.io/berriai/llm:main-latest
+          image: ghcr.io/hanzoai/llm:main-latest
           imagePullPolicy: Always
           env:
             - name: AZURE_API_KEY

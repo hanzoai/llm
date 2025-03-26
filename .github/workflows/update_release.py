@@ -4,7 +4,7 @@ from datetime import datetime
 
 # GitHub API endpoints
 GITHUB_API_URL = "https://api.github.com"
-REPO_OWNER = "BerriAI"
+REPO_OWNER = "hanzoai"
 REPO_NAME = "llm"
 
 # GitHub personal access token (required for uploading release assets)

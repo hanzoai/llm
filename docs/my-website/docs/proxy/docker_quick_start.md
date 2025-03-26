@@ -20,10 +20,10 @@ End-to-End tutorial for LLM Proxy to:
 <TabItem value="docker" label="Docker">
 
 ```
-docker pull ghcr.io/berriai/llm:main-latest
+docker pull ghcr.io/hanzoai/llm:main-latest
 ```
 
-[**See all docker images**](https://github.com/orgs/BerriAI/packages)
+[**See all docker images**](https://github.com/orgs/hanzoai/packages)
 
 </TabItem>
 
@@ -57,7 +57,7 @@ model_list:
 ### Model List Specification
 
 - **`model_name`** (`str`) - This field should contain the name of the model as received.
-- **`llm_params`** (`dict`) [See All LLM Params](https://github.com/BerriAI/llm/blob/559a6ad826b5daef41565f54f06c739c8c068b28/llm/types/router.py#L222)
+- **`llm_params`** (`dict`) [See All LLM Params](https://github.com/hanzoai/llm/blob/559a6ad826b5daef41565f54f06c739c8c068b28/llm/types/router.py#L222)
     - **`model`** (`str`) - Specifies the model name to be sent to `llm.acompletion` / `llm.aembedding`, etc. This is the identifier used by LLM to route to the correct model + provider logic on the backend. 
     - **`api_key`** (`str`) - The API key required for authentication. It can be retrieved from an environment variable using `os.environ/`.
     - **`api_base`** (`str`) - The API base for your azure deployment.
@@ -89,7 +89,7 @@ docker run \
     -e AZURE_API_KEY=d6*********** \
     -e AZURE_API_BASE=https://openai-***********/ \
     -p 4000:4000 \
-    ghcr.io/berriai/llm:main-latest \
+    ghcr.io/hanzoai/llm:main-latest \
     --config /app/config.yaml --detailed_debug
 
 # RUNNING on http://0.0.0.0:4000
@@ -237,7 +237,7 @@ docker run \
     -e AZURE_API_KEY=d6*********** \
     -e AZURE_API_BASE=https://openai-***********/ \
     -p 4000:4000 \
-    ghcr.io/berriai/llm:main-latest \
+    ghcr.io/hanzoai/llm:main-latest \
     --config /app/config.yaml --detailed_debug
 ```
 
@@ -351,7 +351,7 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 
 ### Non-root docker image?
 
-If you need to run the docker image as a non-root user, use [this](https://github.com/BerriAI/llm/pkgs/container/llm-non_root).
+If you need to run the docker image as a non-root user, use [this](https://github.com/hanzoai/llm/pkgs/container/llm-non_root).
 
 ### SSL Verification Issue / Connection Error.
 
@@ -436,15 +436,15 @@ GRANT ALL PRIVILEGES ON DATABASE llm TO your_username;
 
 LLM Proxy uses the [LLM Python SDK](https://docs.llm.ai/docs/routing) for handling LLM API calls. 
 
-`llm_settings` are module-level params for the LLM Python SDK (equivalent to doing `llm.<some_param>` on the SDK). You can see all params [here](https://github.com/BerriAI/llm/blob/208fe6cb90937f73e0def5c97ccb2359bf8a467b/llm/__init__.py#L114)
+`llm_settings` are module-level params for the LLM Python SDK (equivalent to doing `llm.<some_param>` on the SDK). You can see all params [here](https://github.com/hanzoai/llm/blob/208fe6cb90937f73e0def5c97ccb2359bf8a467b/llm/__init__.py#L114)
 
 ## Support & Talk with founders
 
-- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
+- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/hanzoai-1-1-onboarding-llm-hosted-version)
 
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 
-- Our emails ✉️ ishaan@berri.ai / krrish@berri.ai
+- Our emails ✉️ ishaan@hanzo.ai / dev@hanzo.ai
 
 [![Chat on WhatsApp](https://img.shields.io/static/v1?label=Chat%20on&message=WhatsApp&color=success&logo=WhatsApp&style=flat-square)](https://wa.link/huol9n) [![Chat on Discord](https://img.shields.io/static/v1?label=Chat%20on&message=Discord&color=blue&logo=Discord&style=flat-square)](https://discord.gg/wuPM9dRgDw) 
 

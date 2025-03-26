@@ -93,7 +93,7 @@ def generate_feedback_box():
     print("\033[1;37m" + "# {:^59} #\033[0m".format(message))  # noqa
     print(  # noqa
         "\033[1;37m"
-        + "# {:^59} #\033[0m".format("https://github.com/BerriAI/llm/issues/new")
+        + "# {:^59} #\033[0m".format("https://github.com/hanzoai/llm/issues/new")
     )  # noqa
     print("\033[1;37m" + "#" + " " * box_width + "#\033[0m")  # noqa
     print("\033[1;37m" + "#" + "-" * box_width + "#\033[0m")  # noqa
@@ -103,7 +103,7 @@ def generate_feedback_box():
     print()  # noqa
     print()  # noqa
     print(  # noqa
-        "\033[1;31mGive Feedback / Get Help: https://github.com/BerriAI/llm/issues/new\033[0m"
+        "\033[1;31mGive Feedback / Get Help: https://github.com/hanzoai/llm/issues/new\033[0m"
     )  # noqa
     print()  # noqa
     print()  # noqa
@@ -5518,7 +5518,7 @@ async def model_info_v2(
     all_models = copy.deepcopy(llm_router.model_list)
 
     if user_model is not None:
-        # if user does not use a config.yaml, https://github.com/BerriAI/llm/issues/2061
+        # if user does not use a config.yaml, https://github.com/hanzoai/llm/issues/2061
         all_models += [user_model]
 
     # check all models user has access to in user_api_key_dict
@@ -7078,7 +7078,7 @@ async def claim_onboarding_link(data: InvitationClaim):
         raise HTTPException(
             status_code=401,
             detail={
-                "error": "The invitation link was never validated. Please file an issue, if this is not intended - https://github.com/BerriAI/llm/issues."
+                "error": "The invitation link was never validated. Please file an issue, if this is not intended - https://github.com/hanzoai/llm/issues."
             },
         )
 

@@ -295,7 +295,7 @@ MS Teams provides a slack compatible webhook url that you can use for alerting
 2. Add it to your .env
 
 ```bash
-SLACK_WEBHOOK_URL="https://berriai.webhook.office.com/webhookb2/...6901/IncomingWebhook/b55fa0c2a48647be8e6effedcd540266/e04b1092-4a3e-44a2-ab6b-29a0a4854d1d"
+SLACK_WEBHOOK_URL="https://hanzoai.webhook.office.com/webhookb2/...6901/IncomingWebhook/b55fa0c2a48647be8e6effedcd540266/e04b1092-4a3e-44a2-ab6b-29a0a4854d1d"
 ```
 
 3. Add it to your llm config 

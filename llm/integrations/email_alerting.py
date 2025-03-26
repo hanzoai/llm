@@ -10,7 +10,7 @@ from llm.proxy._types import WebhookEvent
 
 # we use this for the email header, please send a test email if you change this. verify it looks good on email
 LLM_LOGO_URL = "https://llm-listing.s3.amazonaws.com/llm_logo.png"
-LLM_SUPPORT_CONTACT = "support@berri.ai"
+LLM_SUPPORT_CONTACT = "support@hanzo.ai"
 
 
 async def get_all_team_member_emails(team_id: Optional[str] = None) -> list:

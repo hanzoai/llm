@@ -303,7 +303,7 @@ def test_anthropic_cache_controls_pt():
 @pytest.mark.parametrize("provider", ["bedrock", "anthropic"])
 def test_bedrock_parallel_tool_calling_pt(provider):
     """
-    Make sure parallel tool call blocks are merged correctly - https://github.com/BerriAI/llm/issues/5277
+    Make sure parallel tool call blocks are merged correctly - https://github.com/hanzoai/llm/issues/5277
     """
     from llm.llm_core_utils.prompt_templates.factory import (
         _bedrock_converse_messages_pt,

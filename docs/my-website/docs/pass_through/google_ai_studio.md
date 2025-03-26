@@ -11,7 +11,7 @@ Pass-through endpoints for Google AI Studio - call provider-specific endpoint, i
 |-------|-------|-------|
 | Cost Tracking | ✅ | supports all models on `/generateContent` endpoint |
 | Logging | ✅ | works across all integrations |
-| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/BerriAI/llm/issues/new) |
+| End-user Tracking | ❌ | [Tell us if you need this](https://github.com/hanzoai/llm/issues/new) |
 | Streaming | ✅ | |
 
 

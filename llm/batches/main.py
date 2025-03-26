@@ -256,7 +256,7 @@ def create_batch(
                 response=httpx.Response(
                     status_code=400,
                     content="Unsupported provider",
-                    request=httpx.Request(method="create_batch", url="https://github.com/BerriAI/llm"),  # type: ignore
+                    request=httpx.Request(method="create_batch", url="https://github.com/hanzoai/llm"),  # type: ignore
                 ),
             )
         return response
@@ -461,7 +461,7 @@ def retrieve_batch(
                 response=httpx.Response(
                     status_code=400,
                     content="Unsupported provider",
-                    request=httpx.Request(method="create_thread", url="https://github.com/BerriAI/llm"),  # type: ignore
+                    request=httpx.Request(method="create_thread", url="https://github.com/hanzoai/llm"),  # type: ignore
                 ),
             )
         return response
@@ -619,7 +619,7 @@ def list_batches(
                 response=httpx.Response(
                     status_code=400,
                     content="Unsupported provider",
-                    request=httpx.Request(method="create_thread", url="https://github.com/BerriAI/llm"),  # type: ignore
+                    request=httpx.Request(method="create_thread", url="https://github.com/hanzoai/llm"),  # type: ignore
                 ),
             )
         return response
@@ -786,7 +786,7 @@ def cancel_batch(
                 response=httpx.Response(
                     status_code=400,
                     content="Unsupported provider",
-                    request=httpx.Request(method="cancel_batch", url="https://github.com/BerriAI/llm"),  # type: ignore
+                    request=httpx.Request(method="cancel_batch", url="https://github.com/hanzoai/llm"),  # type: ignore
                 ),
             )
         return response

@@ -145,7 +145,7 @@ curl -X POST 'http://0.0.0.0:4000/v1/embeddings' \
 
 Any non-openai params, will be treated as provider-specific params, and sent in the request body as kwargs to the provider.
 
-[**See Reserved Params**](https://github.com/BerriAI/llm/blob/2f5f85cb52f36448d1f8bbfbd3b8af8167d0c4c8/llm/main.py#L3130)
+[**See Reserved Params**](https://github.com/hanzoai/llm/blob/2f5f85cb52f36448d1f8bbfbd3b8af8167d0c4c8/llm/main.py#L3130)
 
 [**See Example**](#example)
 :::
@@ -472,7 +472,7 @@ print(response)
 ```
 
 ### Supported Models
-All models listed [here](https://github.com/BerriAI/llm/blob/57f37f743886a0249f630a6792d49dffc2c5d9b7/model_prices_and_context_window.json#L835) are supported
+All models listed [here](https://github.com/hanzoai/llm/blob/57f37f743886a0249f630a6792d49dffc2c5d9b7/model_prices_and_context_window.json#L835) are supported
 
 | Model Name               | Function Call                                                                                                                                                      |
 |--------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -515,7 +515,7 @@ All models listed here https://docs.voyageai.com/embeddings/#models-and-specific
 
 Any non-openai params, will be treated as provider-specific params, and sent in the request body as kwargs to the provider.
 
-[**See Reserved Params**](https://github.com/BerriAI/llm/blob/2f5f85cb52f36448d1f8bbfbd3b8af8167d0c4c8/llm/main.py#L3130)
+[**See Reserved Params**](https://github.com/hanzoai/llm/blob/2f5f85cb52f36448d1f8bbfbd3b8af8167d0c4c8/llm/main.py#L3130)
 :::
 
 ### **Example**

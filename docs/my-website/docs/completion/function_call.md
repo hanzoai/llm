@@ -25,7 +25,7 @@ assert llm.supports_parallel_function_calling(model="gpt-4") == False
 Parallel function calling is the model's ability to perform multiple function calls together, allowing the effects and results of these function calls to be resolved in parallel
 
 ## Quick Start - gpt-3.5-turbo-1106
-<a target="_blank" href="https://colab.research.google.com/github/BerriAI/llm/blob/main/cookbook/Parallel_function_calling.ipynb">
+<a target="_blank" href="https://colab.research.google.com/github/hanzoai/llm/blob/main/cookbook/Parallel_function_calling.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
 </a>
 

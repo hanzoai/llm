@@ -114,11 +114,11 @@ except openai.APITimeoutError as e:
 
 ## Details 
 
-To see how it's implemented - [check out the code](https://github.com/BerriAI/llm/blob/a42c197e5a6de56ea576c73715e6c7c6b19fa249/llm/utils.py#L1217)
+To see how it's implemented - [check out the code](https://github.com/hanzoai/llm/blob/a42c197e5a6de56ea576c73715e6c7c6b19fa249/llm/utils.py#L1217)
 
-[Create an issue](https://github.com/BerriAI/llm/issues/new) **or** [make a PR](https://github.com/BerriAI/llm/pulls) if you want to improve the exception mapping. 
+[Create an issue](https://github.com/hanzoai/llm/issues/new) **or** [make a PR](https://github.com/hanzoai/llm/pulls) if you want to improve the exception mapping. 
 
-**Note** For OpenAI and Azure we return the original exception (since they're of the OpenAI Error type). But we add the 'llm_provider' attribute to them. [See code](https://github.com/BerriAI/llm/blob/a42c197e5a6de56ea576c73715e6c7c6b19fa249/llm/utils.py#L1221)
+**Note** For OpenAI and Azure we return the original exception (since they're of the OpenAI Error type). But we add the 'llm_provider' attribute to them. [See code](https://github.com/hanzoai/llm/blob/a42c197e5a6de56ea576c73715e6c7c6b19fa249/llm/utils.py#L1221)
 
 ## Custom mapping list
 
@@ -155,8 +155,8 @@ Base case - we return `llm.APIConnectionError` exception (inherits from openai's
 - Empty cells indicate the lack of association or that the provider does not raise that particular exception type as indicated by the function.
 
 
-> For a deeper understanding of these exceptions, you can check out [this](https://github.com/BerriAI/llm/blob/d7e58d13bf9ba9edbab2ab2f096f3de7547f35fa/llm/utils.py#L1544) implementation for additional insights.
+> For a deeper understanding of these exceptions, you can check out [this](https://github.com/hanzoai/llm/blob/d7e58d13bf9ba9edbab2ab2f096f3de7547f35fa/llm/utils.py#L1544) implementation for additional insights.
 
-The `ContextWindowExceededError` is a sub-class of `InvalidRequestError`. It was introduced to provide more granularity for exception-handling scenarios. Please refer to [this issue to learn more](https://github.com/BerriAI/llm/issues/228).
+The `ContextWindowExceededError` is a sub-class of `InvalidRequestError`. It was introduced to provide more granularity for exception-handling scenarios. Please refer to [this issue to learn more](https://github.com/hanzoai/llm/issues/228).
 
-Contributions to improve exception mapping are [welcome](https://github.com/BerriAI/llm#contributing)
+Contributions to improve exception mapping are [welcome](https://github.com/hanzoai/llm#contributing)

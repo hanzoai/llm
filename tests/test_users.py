@@ -132,7 +132,7 @@ async def test_user_info():
     - as user themself
     - as random
     """
-    get_user = f"krrish_{time.time()}@berri.ai"
+    get_user = f"krrish_{time.time()}@hanzo.ai"
     async with aiohttp.ClientSession() as session:
         key_gen = await new_user(session, 0, user_id=get_user)
         key = key_gen["key"]
@@ -174,7 +174,7 @@ async def test_users_budgets_reset():
     - wait 5s
     - Check if value updated
     """
-    get_user = f"krrish_{time.time()}@berri.ai"
+    get_user = f"krrish_{time.time()}@hanzo.ai"
     async with aiohttp.ClientSession() as session:
         key_gen = await new_user(
             session, 0, user_id=get_user, budget=10, budget_duration="5s"
@@ -274,7 +274,7 @@ async def test_user_model_access():
     import openai
 
     async with aiohttp.ClientSession() as session:
-        get_user = f"krrish_{time.time()}@berri.ai"
+        get_user = f"krrish_{time.time()}@hanzo.ai"
         await new_user(
             session=session,
             i=0,

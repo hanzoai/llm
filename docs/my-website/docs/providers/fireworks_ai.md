@@ -194,7 +194,7 @@ print(response)
 
 LLM supports document inlining for Fireworks AI models. This is useful for models that are not vision models, but still need to parse documents/images/etc.
 
-LLM will add `#transform=inline` to the url of the image_url, if the model is not a vision model.[**See Code**](https://github.com/BerriAI/llm/blob/1ae9d45798bdaf8450f2dfdec703369f3d2212b7/llm/llms/fireworks_ai/chat/transformation.py#L114)
+LLM will add `#transform=inline` to the url of the image_url, if the model is not a vision model.[**See Code**](https://github.com/hanzoai/llm/blob/1ae9d45798bdaf8450f2dfdec703369f3d2212b7/llm/llms/fireworks_ai/chat/transformation.py#L114)
 
 <Tabs>
 <TabItem value="sdk" label="SDK">

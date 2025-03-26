@@ -41,7 +41,7 @@ print(f"response: {response}")
 
 ### **Fireworks AI - Vision** support for all models
 LLM supports document inlining for Fireworks AI models. This is useful for models that are not vision models, but still need to parse documents/images/etc.
-LLM will add `#transform=inline` to the url of the image_url, if the model is not a vision model [See Code](https://github.com/BerriAI/llm/blob/1ae9d45798bdaf8450f2dfdec703369f3d2212b7/llm/llms/fireworks_ai/chat/transformation.py#L114)
+LLM will add `#transform=inline` to the url of the image_url, if the model is not a vision model [See Code](https://github.com/hanzoai/llm/blob/1ae9d45798bdaf8450f2dfdec703369f3d2212b7/llm/llms/fireworks_ai/chat/transformation.py#L114)
 
 
 ## Proxy Admin UI
@@ -57,12 +57,12 @@ LLM will add `#transform=inline` to the url of the image_url, if the model is no
 
 ## Dependency Upgrades
 
-- (Security fix) Upgrade to `fastapi==0.115.5` https://github.com/BerriAI/llm/pull/7447
+- (Security fix) Upgrade to `fastapi==0.115.5` https://github.com/hanzoai/llm/pull/7447
 
 ## Bug Fixes
 
 - Add health check support for realtime models [Here](https://docs.llm.ai/docs/proxy/health#realtime-models)
-- Health check error with audio_transcription model https://github.com/BerriAI/llm/issues/5999
+- Health check error with audio_transcription model https://github.com/hanzoai/llm/issues/5999
 
 
 

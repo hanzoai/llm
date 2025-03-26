@@ -665,7 +665,7 @@ print(result)
 </Tabs>
 
 :::note
-**Contribute** Using this server with a project? Contribute your tutorial [here!](https://github.com/BerriAI/llm)
+**Contribute** Using this server with a project? Contribute your tutorial [here!](https://github.com/hanzoai/llm)
 
 ::: 
 
@@ -811,7 +811,7 @@ Thread Stats   Avg      Stdev     Max   +/- Stdev
 
 ## Support/ talk with founders
 
-- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/berriai-1-1-onboarding-llm-hosted-version)
+- [Schedule Demo 👋](https://calendly.com/d/4mp-gd3-k5k/hanzoai-1-1-onboarding-llm-hosted-version)
 - [Community Discord 💭](https://discord.gg/wuPM9dRgDw)
 - Our numbers 📞 +1 (770) 8783-106 / ‭+1 (412) 618-6238‬
-- Our emails ✉️ ishaan@berri.ai / krrish@berri.ai
+- Our emails ✉️ ishaan@hanzo.ai / dev@hanzo.ai
