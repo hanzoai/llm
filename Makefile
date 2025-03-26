@@ -20,13 +20,13 @@ lint: install-dev
 
 # Testing
 test:
-	poetry run pytest tests/
+	source .venv-py312/bin/activate && python -m pytest tests/
 
 test-unit:
-	poetry run pytest tests/llm/
+	source .venv-py312/bin/activate && python -m pytest tests/llm/
 
 test-integration:
-	poetry run pytest tests/ -k "not llm"
+	source .venv-py312/bin/activate && python -m pytest tests/ -k "not llm"
 
 test-unit-helm:
 	helm unittest -f 'tests/*.yaml' deploy/charts/llm-helm
