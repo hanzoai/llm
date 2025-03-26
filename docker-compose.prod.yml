@@ -1,5 +1,3 @@
-version: "3.11"
-
 services:
   llm:
     image: ghcr.io/hanzoai/llm:stable
