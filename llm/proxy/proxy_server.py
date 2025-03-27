@@ -580,7 +580,7 @@ async def custom_swagger_ui_html():
         /* Fix text colors for better contrast */
         .swagger-ui, 
         .swagger-ui p, 
-        .swagger-ui span, 
+        .swagger-ui span:not(.arrow), /* Exclude arrow spans for dropdown toggles */
         .swagger-ui label, 
         .swagger-ui .parameter__name, 
         .swagger-ui .parameter__type, 
@@ -593,6 +593,14 @@ async def custom_swagger_ui_html():
         .swagger-ui .opblock-description-wrapper p, 
         .swagger-ui .opblock-external-docs-wrapper p {
             color: #aaa !important;
+        }
+        
+        /* Fix dropdown arrows to be white instead of black */
+        .swagger-ui .opblock-tag svg,
+        .swagger-ui .expand-operation svg,
+        .swagger-ui .arrow {
+            fill: white !important;
+            color: white !important;
         }
         
         /* Make some text brighter for better readability */
@@ -644,6 +652,7 @@ async def custom_swagger_ui_html():
         .hanzo-logo {
             display: flex;
             align-items: center;
+            text-decoration: none; /* Remove underline */
         }
         .hanzo-logo img {
             height: 32px;
