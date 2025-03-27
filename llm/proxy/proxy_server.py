@@ -341,22 +341,19 @@ else:
     )
 
 ui_link = "https://cloud.hanzo.ai"
-ui_message = (
-    f"👉 [```Hanzo Console```]({ui_link}). Create, Edit API Keys."
-)
-ui_message += "\n\n💸 [```LLM Models```](https://models.hanzo.ai/)."
+ui_message = ""  # Removed the console and models links
 
-custom_swagger_message = "[**Docs**](https://docs.hanzo.ai/)"
+custom_swagger_message = ""  # Removed the docs link
 
 ### CUSTOM BRANDING [ENTERPRISE FEATURE] ###
 _title = os.getenv("DOCS_TITLE", "Hanzo API") if premium_user else "Hanzo API"
 _description = (
     os.getenv(
         "DOCS_DESCRIPTION",
-        f"Enterprise Edition \n\nProxy Server to call 100+ LLMs in the OpenAI format. {custom_swagger_message}\n\n{ui_message}",
+        f"Enterprise Edition \n\nAPI documentation for Hanzo",
     )
     if premium_user
-    else f"Call 100+ LLMs in the OpenAI format. {custom_swagger_message}\n\n{ui_message}"
+    else f"API documentation for Hanzo"
 )
 
 
