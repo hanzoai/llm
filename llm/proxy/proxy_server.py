@@ -533,7 +533,7 @@ async def proxy_startup_event(app: FastAPI):
 
 
 from fastapi.openapi.docs import get_swagger_ui_html
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 
 app = FastAPI(
     docs_url=None,  # Disable automatic docs
@@ -7654,14 +7654,11 @@ async def get_models_endpoint(request: Request, accept: Optional[str] = Header(N
 @app.get("/mcps", tags=["Public API"])
 async def get_mcps_endpoint(request: Request, accept: Optional[str] = Header(None)):
     """
-    Public endpoint for MCP servers that returns HTML or JSON based on the Accept header.
+    Public endpoint for MCP servers that returns JSON data of enabled MCP servers.
+    This function is kept for backwards compatibility.
     """
-    # Check if the client accepts JSON
-    if accept and "application/json" in accept or request.headers.get("content-type") == "application/json":
-        return await get_mcps_json()
-    
-    # Otherwise, return HTML
-    return await get_mcps_html()
+    # Always return JSON now
+    return await get_mcps_json()
 
 
 @app.get("/api/models", response_class=JSONResponse, tags=["Public API"])
@@ -7699,39 +7696,39 @@ async def get_mcps_json():
     This endpoint is accessible without authentication.
     """
     try:
-        # Load MCP server information
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        parent_dir = os.path.dirname(os.path.dirname(current_dir))
-        mcp_file_path = os.path.join(parent_dir, "../mcp_servers.json")
+        # Use the global MCP server config to get enabled servers
+        from llm.proxy._experimental.mcp_server.mcp_config import mcp_server_config
         
-        with open(mcp_file_path, 'r') as f:
-            mcp_data = json.load(f)
+        # Get all enabled MCP servers
+        enabled_servers = mcp_server_config.get_enabled_servers()
         
-        return mcp_data
+        # If no servers are found, try loading from the JSON file as fallback
+        if not enabled_servers:
+            # Load MCP server information from file
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            parent_dir = os.path.dirname(os.path.dirname(current_dir))
+            mcp_file_path = os.path.join(parent_dir, "mcp_servers.json")
+            
+            try:
+                with open(mcp_file_path, 'r') as f:
+                    mcp_data = json.load(f)
+                    return mcp_data
+            except Exception as file_error:
+                verbose_proxy_logger.error(f"Error loading MCP server data from file: {file_error}")
+                # Return empty dict instead of raising an exception
+                return {"error": f"No MCP servers available: {str(file_error)}"}
+        
+        return enabled_servers
     except Exception as e:
         verbose_proxy_logger.error(f"Error loading MCP server data: {e}")
-        raise HTTPException(
-            status_code=500,
-            detail=f"Error loading MCP server data: {str(e)}"
-        )
+        # Return error as JSON instead of raising an exception
+        return {"error": f"Error loading MCP server data: {str(e)}"}
 
 
-@app.get("/models.html", response_class=HTMLResponse)
+@app.get("/models.html", response_class=RedirectResponse, status_code=307)
 async def get_models_html():
-    """Public endpoint to display all available models with pricing and capabilities in HTML format"""
-    try:
-        # Load model information from the pricing file
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        parent_dir = os.path.dirname(os.path.dirname(current_dir))
-        model_file_path = os.path.join(parent_dir, "model_prices_and_context_window.json")
-        
-        with open(model_file_path, 'r') as f:
-            model_data = json.load(f)
-        
-        # Filter out the sample spec entry
-        if "sample_spec" in model_data:
-            del model_data["sample_spec"]
-        
+    """Redirect to the UI-based models view"""
+    return "/ui/models"
         # Create HTML table of models
         html_content = """
         <!DOCTYPE html>
@@ -8036,22 +8033,10 @@ async def get_models_html():
         """
 
 
-@app.get("/mcps.html", response_class=HTMLResponse)
+@app.get("/mcps.html", response_class=RedirectResponse, status_code=307)
 async def get_mcps_html():
-    """Public endpoint to display all available MCP servers in HTML format"""
-    try:
-        # Load MCP server information
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        parent_dir = os.path.dirname(os.path.dirname(current_dir))
-        mcp_file_path = os.path.join(parent_dir, "../mcp_servers.json")
-        
-        with open(mcp_file_path, 'r') as f:
-            mcp_data = json.load(f)
-        
-        # Create HTML table of MCP servers
-        html_content = """
-        <!DOCTYPE html>
-        <html lang="en">
+    """Redirect to the UI-based MCP server view"""
+    return "/ui/mcp-servers">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
