@@ -556,7 +556,7 @@ async def custom_swagger_ui_html():
         <style>
         /* Vercel-like Dark Theme for Swagger UI with Inter and Geist Mono fonts */
         body {
-            background-color: #000;
+            background-color: #0f0f0f; /* slightly lighter black */
             color: #fff;
             margin: 0;
             padding: 0;
@@ -566,25 +566,28 @@ async def custom_swagger_ui_html():
             color: #fff;
             font-family: 'Inter', system-ui, sans-serif;
         }
-        /* Force black background everywhere */
+        /* Force slightly less dark black background everywhere */
         body, 
         .swagger-ui,
         .swagger-ui .wrapper,
         .swagger-ui section:not(.models),
-        .swagger-ui .information-container,
         .swagger-ui .auth-wrapper,
         .swagger-ui .auth-container,
         .swagger-ui .authorization__btn {
-            background-color: #000;
+            background-color: #0f0f0f;
+        }
+        /* Hide the information container */
+        .swagger-ui .information-container {
+            display: none;
         }
         /* Additional overrides for the authorize section */
         .swagger-ui .dialog-ux .modal-ux {
-            background: #000;
+            background: #0f0f0f;
             border: 1px solid #333;
         }
         .swagger-ui .dialog-ux .modal-ux-header,
         .swagger-ui .dialog-ux .modal-ux-content {
-            background: #000;
+            background: #0f0f0f;
             border-bottom: 1px solid #333;
         }
         .swagger-ui .auth-container .authorize {
@@ -593,6 +596,10 @@ async def custom_swagger_ui_html():
         }
         .swagger-ui .auth-container .scopes {
             border-color: #333;
+        }
+        /* Move swagger UI content up since we hid the info container */
+        .swagger-ui .wrapper {
+            padding-top: 0;
         }
         /* Custom header with Hanzo logo and navigation */
         .hanzo-header {
@@ -660,9 +667,10 @@ async def custom_swagger_ui_html():
             font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui .scheme-container {
-            background-color: #000;
+            background-color: #0f0f0f;
             box-shadow: none;
             border-bottom: 1px solid #333;
+            margin-top: 0;
         }
         .swagger-ui .opblock-tag {
             border-bottom: 1px solid #333;
@@ -721,7 +729,7 @@ async def custom_swagger_ui_html():
             background: #000;
         }
         .swagger-ui .model-box {
-            background: #111;
+            background: #1a1a1a;
         }
         .swagger-ui .btn {
             background: #333;
