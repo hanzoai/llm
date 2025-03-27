@@ -569,6 +569,34 @@ async def custom_swagger_ui_html():
             color: #fff;
             font-family: 'Inter', system-ui, sans-serif;
         }
+        /* Force black background everywhere */
+        body, 
+        .swagger-ui,
+        .swagger-ui .wrapper,
+        .swagger-ui section:not(.models),
+        .swagger-ui .information-container,
+        .swagger-ui .auth-wrapper,
+        .swagger-ui .auth-container,
+        .swagger-ui .authorization__btn {
+            background-color: #000;
+        }
+        /* Additional overrides for the authorize section */
+        .swagger-ui .dialog-ux .modal-ux {
+            background: #000;
+            border: 1px solid #333;
+        }
+        .swagger-ui .dialog-ux .modal-ux-header,
+        .swagger-ui .dialog-ux .modal-ux-content {
+            background: #000;
+            border-bottom: 1px solid #333;
+        }
+        .swagger-ui .auth-container .authorize {
+            color: #fff;
+            border-color: #333;
+        }
+        .swagger-ui .auth-container .scopes {
+            border-color: #333;
+        }
         /* Custom header with Hanzo logo and navigation */
         .hanzo-header {
             display: flex;
@@ -635,8 +663,9 @@ async def custom_swagger_ui_html():
             font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui .scheme-container {
-            background-color: #111;
+            background-color: #000;
             box-shadow: none;
+            border-bottom: 1px solid #333;
         }
         .swagger-ui .opblock-tag {
             border-bottom: 1px solid #333;
@@ -692,10 +721,10 @@ async def custom_swagger_ui_html():
             border: 1px solid #333;
         }
         .swagger-ui section.models .model-container {
-            background: #111;
+            background: #000;
         }
         .swagger-ui .model-box {
-            background: #222;
+            background: #111;
         }
         .swagger-ui .btn {
             background: #333;
@@ -704,7 +733,7 @@ async def custom_swagger_ui_html():
             font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui select {
-            background: #222;
+            background: #111;
             color: #fff;
             border: 1px solid #444;
             font-family: 'Inter', system-ui, sans-serif;
@@ -713,19 +742,19 @@ async def custom_swagger_ui_html():
         .swagger-ui input[type="password"], 
         .swagger-ui input[type="search"], 
         .swagger-ui input[type="email"] {
-            background: #222;
+            background: #111;
             color: #fff;
             border: 1px solid #444;
             font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui textarea {
-            background: #222;
+            background: #111;
             color: #fff;
             border: 1px solid #444;
         }
         .swagger-ui .markdown code, 
         .swagger-ui .renderedMarkdown code {
-            background: #333;
+            background: #222;
             color: #eee;
         }
         .swagger-ui .model {
