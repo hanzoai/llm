@@ -236,7 +236,7 @@ openai_like_embedding = OpenAILikeEmbeddingHandler()
 openai_like_chat_completion = OpenAILikeChatHandler()
 databricks_embedding = DatabricksEmbeddingHandler()
 base_llm_http_handler = BaseLLMHTTPHandler()
-base_hanzo_aiohttp_handler = BaseLLMAIOHTTPHandler()
+base_llm_aiohttp_handler = BaseLLMAIOHTTPHandler()
 sagemaker_chat_completion = SagemakerChatHandler()
 ####### COMPLETION ENDPOINTS ################
 
@@ -1637,7 +1637,7 @@ def completion(  # type: ignore # noqa: PLR0915
 
             if extra_headers is not None:
                 optional_params["extra_headers"] = extra_headers
-            response = base_hanzo_aiohttp_handler.completion(
+            response = base_llm_aiohttp_handler.completion(
                 model=model,
                 messages=messages,
                 headers=headers,
@@ -4898,7 +4898,7 @@ def image_variation(
         if api_base is None:
             raise ValueError("API base is required for Topaz image variations")
 
-        response = base_hanzo_aiohttp_handler.image_variations(
+        response = base_llm_aiohttp_handler.image_variations(
             model_response=model_response,
             api_key=api_key,
             api_base=api_base,
