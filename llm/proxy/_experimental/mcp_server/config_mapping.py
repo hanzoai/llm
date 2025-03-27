@@ -84,6 +84,15 @@ def load_mcp_server_configs_on_startup(config: Dict[str, Any]) -> None:
     """
     # Load from config.yaml
     load_config_from_yaml(config)
+    
+    # List enabled MCP servers
+    enabled_servers = mcp_server_config.get_enabled_servers()
+    if enabled_servers:
+        print("\n\033[1;34mEnabled MCP Servers:\033[0m")
+        for name, server_config in enabled_servers.items():
+            print(f"\033[1;32m - {name}\033[0m")
+    else:
+        print("\n\033[1;33mNo MCP servers enabled. Add them to config.yaml under 'mcp_servers' section.\033[0m")
 
 
 def update_database_config(server_name: str, enabled: bool, env_vars: Optional[Dict[str, str]] = None) -> bool:
