@@ -1,0 +1,231 @@
+model_list:
+  # OpenAI Models
+  - model_name: gpt-4o
+    llm_params:
+      model: openai/gpt-4o
+  - model_name: gpt-4-turbo
+    llm_params:
+      model: openai/gpt-4-turbo
+  - model_name: gpt-4-vision
+    llm_params:
+      model: openai/gpt-4-vision-preview
+  - model_name: gpt-3.5-turbo
+    llm_params:
+      model: openai/gpt-3.5-turbo-0125
+  
+  # Anthropic Models
+  - model_name: claude-3-opus
+    llm_params:
+      model: anthropic/claude-3-opus-20240229
+  - model_name: claude-3-sonnet
+    llm_params:
+      model: anthropic/claude-3-sonnet-20240229
+  - model_name: claude-3-haiku
+    llm_params:
+      model: anthropic/claude-3-haiku-20240307
+  
+  # Google Models
+  - model_name: gemini-pro
+    llm_params:
+      model: google/gemini-pro
+  - model_name: gemini-pro-vision
+    llm_params:
+      model: google/gemini-pro-vision
+  - model_name: gemini-1.5-pro
+    llm_params:
+      model: google/gemini-1.5-pro
+  - model_name: gemini-1.5-flash
+    llm_params:
+      model: google/gemini-1.5-flash
+
+  # Mistral AI Models
+  - model_name: mistral-large
+    llm_params:
+      model: mistral/mistral-large-latest
+  - model_name: mistral-medium
+    llm_params:
+      model: mistral/mistral-medium-latest
+  - model_name: mistral-small
+    llm_params:
+      model: mistral/mistral-small-latest
+
+  # Cohere Models
+  - model_name: cohere-command
+    llm_params:
+      model: cohere/command
+  - model_name: cohere-command-r
+    llm_params:
+      model: cohere/command-r
+
+# Set to `true` to allow dynamic model list add/edit
+general_settings:
+  store_model_in_db: true
+  database_url: "postgresql://llmproxy:dbpassword9090@db:5432/llm"
+
+# MCP Server Configuration
+mcp_servers:
+  # Web search and information retrieval
+  brave_search:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "BRAVE_API_KEY", "mcp/brave-search"]
+    env:
+      BRAVE_API_KEY: "YOUR_BRAVE_API_KEY_HERE"
+    enabled: true
+  
+  searchapi:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "SEARCHAPI_KEY", "mcp/searchapi"]
+    env:
+      SEARCHAPI_KEY: "YOUR_SEARCHAPI_KEY_HERE"
+    enabled: true
+  
+  google_search:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GOOGLE_API_KEY", "-e", "GOOGLE_CSE_ID", "mcp/google-search"]
+    env:
+      GOOGLE_API_KEY: "YOUR_GOOGLE_API_KEY_HERE"
+      GOOGLE_CSE_ID: "YOUR_GOOGLE_CSE_ID_HERE"
+    enabled: true
+  
+  # Multimodal capabilities
+  gemini_pro_vision:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GOOGLE_API_KEY", "mcp/gemini-pro-vision"]
+    env:
+      GOOGLE_API_KEY: "YOUR_GOOGLE_API_KEY_HERE"
+    enabled: true
+  
+  stable_diffusion:
+    command: "docker"
+    args: ["run", "-i", "--rm", "mcp/stable-diffusion"]
+    env: {}
+    enabled: true
+  
+  dalle:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "OPENAI_API_KEY", "mcp/dalle"]
+    env:
+      OPENAI_API_KEY: "YOUR_OPENAI_API_KEY_HERE"
+    enabled: true
+  
+  # Web and data tools
+  web_scraper:
+    command: "npx"
+    args: ["@mcp/web-scraper"]
+    env:
+      SCRAPER_TIMEOUT: "30000"
+      MAX_DEPTH: "2"
+    enabled: true
+  
+  pdf_reader:
+    command: "docker"
+    args: ["run", "-i", "--rm", "mcp/pdf-reader"]
+    env: {}
+    enabled: true
+  
+  youtube_transcript:
+    command: "npx"
+    args: ["@mcp/youtube-transcript"]
+    env: {}
+    enabled: true
+  
+  # Knowledge and computation
+  wolfram_alpha:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "WOLFRAM_ALPHA_APPID", "mcp/wolfram-alpha"]
+    env:
+      WOLFRAM_ALPHA_APPID: "YOUR_WOLFRAM_ALPHA_APPID_HERE"
+    enabled: true
+  
+  calculator:
+    command: "npx"
+    args: ["@mcp/calculator"]
+    env: {}
+    enabled: true
+  
+  # Developer tools
+  github_search:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_TOKEN", "mcp/github-search"]
+    env:
+      GITHUB_TOKEN: "YOUR_GITHUB_TOKEN_HERE"
+    enabled: true
+  
+  code_executor:
+    command: "docker"
+    args: ["run", "-i", "--rm", "mcp/code-executor"]
+    env:
+      TIMEOUT: "10000"
+      MAX_OUTPUT_SIZE: "10000"
+    enabled: true
+  
+  # Weather and location
+  openweather:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "OPENWEATHER_API_KEY", "mcp/openweather"]
+    env:
+      OPENWEATHER_API_KEY: "YOUR_OPENWEATHER_API_KEY_HERE"
+    enabled: true
+  
+  google_maps:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GOOGLE_MAPS_API_KEY", "mcp/google-maps"]
+    env:
+      GOOGLE_MAPS_API_KEY: "YOUR_GOOGLE_MAPS_API_KEY"
+    enabled: true
+  
+  # Financial tools
+  alpha_vantage:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "ALPHA_VANTAGE_API_KEY", "mcp/alpha-vantage"]
+    env:
+      ALPHA_VANTAGE_API_KEY: "YOUR_ALPHA_VANTAGE_API_KEY_HERE"
+    enabled: true
+  
+  # Database access
+  postgres_executor:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "PG_CONNECTION_STRING", "mcp/postgres-executor"]
+    env:
+      PG_CONNECTION_STRING: "postgresql://username:password@host:5432/dbname"
+    enabled: false
+
+  # Translation
+  google_translate:
+    command: "docker" 
+    args: ["run", "-i", "--rm", "-e", "GOOGLE_API_KEY", "mcp/google-translate"]
+    env:
+      GOOGLE_API_KEY: "YOUR_GOOGLE_API_KEY_HERE"
+    enabled: true
+
+  # News
+  newsapi:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "NEWSAPI_KEY", "mcp/newsapi"]
+    env:
+      NEWSAPI_KEY: "YOUR_NEWSAPI_KEY_HERE"
+    enabled: true
+
+# Set Cache (Redis/in-memory) to improve performance
+cache:
+  type: redis
+  host: redis
+  port: 6379
+  password: ${REDIS_PASSWORD:-litevp}
+  time_to_live: 3600
+  cache_langchain_calls: True
+
+# Logging and observability
+logging_config:
+  level: info
+  log_to_stdout: true
+  log_to_file: false
+  file_path: "logs/hanzo.log"
+  log_requests: true
+  log_responses: true
+
+# Rate limiting and protection
+safety_settings:
+  max_tokens_per_min: 1000000
+  max_requests_per_min: 1000
+  request_timeouts: 300
