@@ -1,4 +1,12 @@
 {
+    "hanzo_mcp": {
+        "command": "uvx",
+        "args": [
+            "hanzo-mcp"
+        ],
+        "env": {},
+        "enabled": true
+    },
     "brave_search": {
         "command": "npx",
         "args": [
@@ -148,6 +156,25 @@
         "env": {
             "PG_CONNECTION_STRING": "${PG_CONNECTION_STRING}"
         },
+        "enabled": false
+    },
+    "langchain_mcp": {
+        "command": "uvx",
+        "args": [
+            "langchain-mcp"
+        ],
+        "env": {
+            "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+        },
+        "enabled": false
+    },
+    "custom_python_mcp": {
+        "command": "python",
+        "args": [
+            "-m",
+            "custom_mcp_module"
+        ],
+        "env": {},
         "enabled": false
     }
 }
