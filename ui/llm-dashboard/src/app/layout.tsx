@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Hanzo Dashboard",
   description: "Hanzo AI Platform Dashboard",
   icons: {
-    icon: "https://api.hanzo.ai/favicon.ico", // Use the favicon from api.hanzo.ai
+    icon: "/favicon.ico", // Use local favicon
   },
 };
 
