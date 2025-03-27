@@ -516,7 +516,8 @@ def run_server(  # noqa: PLR0915
                 raise e
             else:
                 # this is just a local/relative import error, user git cloned llm
-                from proxy_server import (
+                # Use the absolute import path instead of relative
+                from llm.proxy.proxy_server import (
                     KeyManagementSettings,
                     ProxyConfig,
                     app,
