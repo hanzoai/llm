@@ -2320,7 +2320,7 @@ async def test_user_api_key_auth(prisma_client):
         pytest.fail(f"This should have failed!. IT's an invalid key")
     except ProxyException as exc:
         print(exc.message)
-        assert exc.message == "Authentication Error, No api key passed in."
+        assert exc.message == "Authentication Error, No API key passed in."
 
     # Test case: Malformed API Key (missing 'Bearer ' prefix)
     try:

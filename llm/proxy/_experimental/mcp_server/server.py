@@ -77,6 +77,19 @@ if MCP_AVAILABLE:
         """
         Call a specific tool with the provided arguments
         """
+        from fastapi import Request
+        from llm.proxy.proxy_server import user_api_key_auth
+        
+        # Get the current request to fetch user information
+        request = Request(scope={})
+        user_api_key_dict = None
+        try:
+            # This may not always succeed in the MCP context
+            # but we'll try to get user info when available
+            user_api_key_dict = await user_api_key_auth(request)
+        except Exception:
+            pass
+        
         tool = global_mcp_tool_registry.get_tool(name)
         if not tool:
             raise HTTPException(status_code=404, detail=f"Tool '{name}' not found")
@@ -85,11 +98,44 @@ if MCP_AVAILABLE:
                 status_code=400, detail="Request arguments are required"
             )
 
-        try:
-            result = tool.handler(**arguments)
-            return [MCPTextContent(text=str(result), type="text")]
-        except Exception as e:
-            return [MCPTextContent(text=f"Error: {str(e)}", type="text")]
+        # Get the server name from the tool
+        server_name = getattr(tool, "server_name", "default")
+        
+        # Check if this server is enabled
+        from .mcp_config import mcp_server_config
+        server_config = mcp_server_config.get_server_config(server_name)
+        if server_config and server_config.get("enabled", True) is False:
+            raise HTTPException(
+                status_code=403, 
+                detail=f"MCP server '{server_name}' is disabled"
+            )
+            
+        # Use the tracker to log usage
+        from .mcp_config import MCPServerTracker
+        async with MCPServerTracker(
+            server_name=server_name,
+            tool_name=name,
+            user_api_key_dict=user_api_key_dict
+        ) as tracker:
+            try:
+                # Add input arguments metadata
+                tracker.add_metadata("arguments", arguments)
+                
+                # Call the tool handler
+                result = tool.handler(**arguments)
+                
+                # Convert result to string and calculate rough token estimate
+                result_str = str(result)
+                input_tokens = len(str(arguments)) // 4  # Rough estimate
+                output_tokens = len(result_str) // 4  # Rough estimate
+                
+                # Set token counts in the tracker
+                tracker.set_token_counts(input_tokens, output_tokens)
+                
+                return [MCPTextContent(text=result_str, type="text")]
+            except Exception as e:
+                tracker.error_message = str(e)
+                return [MCPTextContent(text=f"Error: {str(e)}", type="text")]
 
     @router.get("/", response_class=StreamingResponse)
     async def handle_sse(request: Request):

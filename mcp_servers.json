@@ -1,5 +1,5 @@
 {
-    "brave-search": {
+    "brave_search": {
         "command": "docker",
         "args": [
             "run",
@@ -12,5 +12,102 @@
         "env": {
             "BRAVE_API_KEY": "YOUR_API_KEY_HERE"
         }
+    },
+    "gemini_pro_vision": {
+        "command": "docker",
+        "args": [
+            "run",
+            "-i",
+            "--rm",
+            "-e",
+            "GOOGLE_API_KEY",
+            "mcp/gemini-pro-vision"
+        ],
+        "env": {
+            "GOOGLE_API_KEY": "YOUR_API_KEY_HERE"
+        }
+    },
+    "web_scraper": {
+        "command": "npx",
+        "args": [
+            "@mcp/web-scraper"
+        ],
+        "env": {
+            "SCRAPER_TIMEOUT": "30000",
+            "MAX_DEPTH": "2"
+        }
+    },
+    "openweather": {
+        "command": "docker",
+        "args": [
+            "run",
+            "-i",
+            "--rm",
+            "-e",
+            "OPENWEATHER_API_KEY",
+            "mcp/openweather"
+        ],
+        "env": {
+            "OPENWEATHER_API_KEY": "YOUR_API_KEY_HERE"
+        }
+    },
+    "stable_diffusion": {
+        "command": "docker",
+        "args": [
+            "run",
+            "-i",
+            "--rm",
+            "mcp/stable-diffusion"
+        ],
+        "env": {}
+    },
+    "searchapi": {
+        "command": "docker",
+        "args": [
+            "run",
+            "-i",
+            "--rm",
+            "-e",
+            "SEARCHAPI_KEY",
+            "mcp/searchapi"
+        ],
+        "env": {
+            "SEARCHAPI_KEY": "YOUR_API_KEY_HERE"
+        }
+    },
+    "github_search": {
+        "command": "docker",
+        "args": [
+            "run",
+            "-i",
+            "--rm",
+            "-e",
+            "GITHUB_TOKEN",
+            "mcp/github-search"
+        ],
+        "env": {
+            "GITHUB_TOKEN": "YOUR_GITHUB_TOKEN_HERE"
+        }
+    },
+    "wolfram_alpha": {
+        "command": "docker",
+        "args": [
+            "run",
+            "-i",
+            "--rm",
+            "-e",
+            "WOLFRAM_ALPHA_APPID",
+            "mcp/wolfram-alpha"
+        ],
+        "env": {
+            "WOLFRAM_ALPHA_APPID": "YOUR_APPID_HERE"
+        }
+    },
+    "youtube_transcript": {
+        "command": "npx",
+        "args": [
+            "@mcp/youtube-transcript"
+        ],
+        "env": {}
     }
 }

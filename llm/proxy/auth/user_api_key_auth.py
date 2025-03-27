@@ -119,7 +119,7 @@ async def user_api_key_auth_websocket(websocket: WebSocket):
     # Extract the Authorization header
     authorization = websocket.headers.get("authorization")
 
-    # If no Authorization header, try the api-key header
+    # If no Authorization header, try the API-key header
     if not authorization:
         api_key = websocket.headers.get("api-key")
         if not api_key:
@@ -451,7 +451,7 @@ async def _user_api_key_auth_builder(  # noqa: PLR0915
                     ):
                         """
                         - langfuse returns {'Authorization': 'Basic YW55dGhpbmc6YW55dGhpbmc'}
-                        - check the langfuse public key if it contains the llm api key
+                        - check the langfuse public key if it contains the LLM API key
                         """
                         import base64
 
@@ -480,8 +480,8 @@ async def _user_api_key_auth_builder(  # noqa: PLR0915
                     user_role=LLMUserRoles.PROXY_ADMIN,
                     parent_otel_span=parent_otel_span,
                 )
-        elif api_key is None:  # only require api key if master key is set
-            raise Exception("No api key passed in.")
+        elif api_key is None:  # only require API key if master key is set
+            raise Exception("No API key passed in.")
         elif api_key == "":
             # missing 'Bearer ' prefix
             raise Exception(
@@ -541,9 +541,9 @@ async def _user_api_key_auth_builder(  # noqa: PLR0915
                 pass
 
         ### CHECK IF ADMIN ###
-        # note: never string compare api keys, this is vulenerable to a time attack. Use secrets.compare_digest instead
+        # note: never string compare API keys, this is vulenerable to a time attack. Use secrets.compare_digest instead
         ### CHECK IF ADMIN ###
-        # note: never string compare api keys, this is vulenerable to a time attack. Use secrets.compare_digest instead
+        # note: never string compare API keys, this is vulenerable to a time attack. Use secrets.compare_digest instead
         ## Check CACHE
         try:
             valid_token = await get_key_object(
@@ -555,7 +555,7 @@ async def _user_api_key_auth_builder(  # noqa: PLR0915
                 check_cache_only=True,
             )
         except Exception:
-            verbose_logger.debug("api key not found in cache.")
+            verbose_logger.debug("API key not found in cache.")
             valid_token = None
 
         if (
@@ -1083,7 +1083,7 @@ async def user_api_key_auth(
     azure_apim_header: Optional[str] = fastapi.Security(azure_apim_header),
 ) -> UserAPIKeyAuth:
     """
-    Parent function to authenticate user api key / jwt token.
+    Parent function to authenticate user API key / JWT token.
     """
 
     request_data = await _read_request_body(request=request)
