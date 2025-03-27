@@ -15,34 +15,34 @@ module.exports = {
     },
     extend: {
       colors: {
-        // light mode
+        // light mode (inverted to dark)
         tremor: {
           brand: {
-            faint: colors.indigo[50],
-            muted: colors.indigo[200],
-            subtle: colors.indigo[400],
+            faint: colors.indigo[950],
+            muted: colors.indigo[800],
+            subtle: colors.indigo[600],
             DEFAULT: colors.indigo[500],
-            emphasis: colors.indigo[700],
-            inverted: colors.white,
+            emphasis: colors.indigo[300],
+            inverted: colors.black,
           },
           background: {
-            muted: colors.gray[50],
-            subtle: colors.gray[100],
-            DEFAULT: colors.white,
-            emphasis: colors.gray[700],
+            muted: colors.gray[900],
+            subtle: colors.gray[800],
+            DEFAULT: colors.black,
+            emphasis: colors.gray[300],
           },
           border: {
-            DEFAULT: colors.gray[200],
+            DEFAULT: colors.gray[700],
           },
           ring: {
-            DEFAULT: colors.gray[200],
+            DEFAULT: colors.gray[700],
           },
           content: {
-            subtle: colors.gray[400],
-            DEFAULT: colors.gray[500],
-            emphasis: colors.gray[700],
-            strong: colors.gray[900],
-            inverted: colors.white,
+            subtle: colors.gray[500],
+            DEFAULT: colors.gray[400],
+            emphasis: colors.gray[300],
+            strong: colors.gray[100],
+            inverted: colors.black,
           },
         },
         // dark mode
@@ -129,5 +129,5 @@ module.exports = {
     },
   ],
   plugins: [require('@headlessui/tailwindcss'), require('@tailwindcss/forms')],
-  darkMode: "media"
+  darkMode: "class"
 };
