@@ -4138,3 +4138,86 @@ export const updateInternalUserSettings = async (accessToken: string, settings: 
     throw error;
   }
 };
+
+// MCP Server API functions
+export async function mcpServerCall(accessToken: string | null) {
+  try {
+    if (accessToken) {
+      // Admin view - authenticated
+      const response = await fetch("/mcp/admin/servers", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Error fetching MCP servers: ${response.statusText}`);
+      }
+      
+      return await response.json();
+    } else {
+      // Public view - unauthenticated
+      const response = await fetch("/api/mcps", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Error fetching MCP servers: ${response.statusText}`);
+      }
+      
+      return await response.json();
+    }
+  } catch (error) {
+    console.error("Error fetching MCP servers:", error);
+    return {};
+  }
+}
+
+export async function getMCPServerUsageStats(accessToken: string) {
+  try {
+    const response = await fetch("/mcp/admin/usage", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error fetching MCP server usage: ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching MCP server usage:", error);
+    return {};
+  }
+}
+
+export async function updateMCPServerConfig(accessToken: string, serverName: string, config: { enabled: boolean }) {
+  try {
+    const response = await fetch(`/mcp/admin/servers/${serverName}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(config),
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Error updating MCP server: ${response.statusText}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error(`Error updating MCP server ${serverName}:`, error);
+    throw error;
+  }
+}
+

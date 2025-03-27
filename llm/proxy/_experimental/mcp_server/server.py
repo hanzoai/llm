@@ -78,7 +78,7 @@ if MCP_AVAILABLE:
         Call a specific tool with the provided arguments
         """
         from fastapi import Request
-        from llm.proxy.proxy_server import user_api_key_auth
+        from llm.proxy.auth.user_api_key_auth import user_api_key_auth
         
         # Get the current request to fetch user information
         request = Request(scope={})
