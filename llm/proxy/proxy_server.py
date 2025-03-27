@@ -528,8 +528,11 @@ async def proxy_startup_event(app: FastAPI):
     await proxy_shutdown_event()
 
 
+from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.responses import HTMLResponse
+
 app = FastAPI(
-    docs_url=_get_docs_url(),
+    docs_url=None,  # Disable automatic docs
     redoc_url=_get_redoc_url(),
     title=_title,
     description=_description,
@@ -537,6 +540,173 @@ app = FastAPI(
     root_path=server_root_path,  # check if user passed root path, FastAPI defaults this value to ""
     lifespan=proxy_startup_event,
 )
+
+# Define custom docs endpoint with our own favicon and dark theme
+@app.get("/", include_in_schema=False)
+async def custom_swagger_ui_html():
+    swagger_ui = get_swagger_ui_html(
+        openapi_url=app.openapi_url,
+        title=app.title,
+        swagger_favicon_url="/favicon.ico",  # Use our custom favicon endpoint
+    )
+    
+    # Create a modified version with dark theme CSS
+    swagger_ui_content = swagger_ui.body.decode()
+    
+    # Insert custom dark theme CSS
+    dark_theme_css = """
+    <style>
+    /* Vercel-like Dark Theme for Swagger UI */
+    body {
+        background-color: #000;
+        color: #fff;
+    }
+    .swagger-ui {
+        color: #fff;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    }
+    .swagger-ui .info .title,
+    .swagger-ui .info h1, 
+    .swagger-ui .info h2, 
+    .swagger-ui .info h3, 
+    .swagger-ui .info h4, 
+    .swagger-ui .info h5 {
+        color: #fff;
+    }
+    .swagger-ui .scheme-container {
+        background-color: #111;
+        box-shadow: none;
+    }
+    .swagger-ui .opblock-tag {
+        border-bottom: 1px solid #333;
+        color: #fff;
+    }
+    .swagger-ui .opblock {
+        background: #111;
+        border: 1px solid #333;
+        box-shadow: none;
+    }
+    .swagger-ui .opblock .opblock-summary-operation-id,
+    .swagger-ui .opblock .opblock-summary-path,
+    .swagger-ui .opblock .opblock-summary-path__deprecated {
+        color: #ddd;
+    }
+    .swagger-ui .opblock .opblock-summary-description {
+        color: #ccc;
+    }
+    .swagger-ui .opblock-description-wrapper, 
+    .swagger-ui .opblock-external-docs-wrapper, 
+    .swagger-ui .opblock-title_normal {
+        color: #ccc;
+    }
+    .swagger-ui .opblock.opblock-get {
+        background: rgba(0, 127, 255, 0.1);
+        border-color: #007fff;
+    }
+    .swagger-ui .opblock.opblock-post {
+        background: rgba(73, 204, 144, 0.1);
+        border-color: #49cc90;
+    }
+    .swagger-ui .opblock.opblock-delete {
+        background: rgba(249, 62, 62, 0.1);
+        border-color: #f93e3e;
+    }
+    .swagger-ui .opblock.opblock-put {
+        background: rgba(252, 161, 48, 0.1);
+        border-color: #fca130;
+    }
+    .swagger-ui .opblock.opblock-patch {
+        background: rgba(80, 227, 194, 0.1);
+        border-color: #50e3c2;
+    }
+    .swagger-ui .opblock.opblock-head {
+        background: rgba(144, 18, 254, 0.1);
+        border-color: #9012fe;
+    }
+    .swagger-ui section.models {
+        border: 1px solid #333;
+    }
+    .swagger-ui section.models .model-container {
+        background: #111;
+    }
+    .swagger-ui .model-box {
+        background: #222;
+    }
+    .swagger-ui .btn {
+        background: #333;
+        color: #fff;
+        border: 1px solid #444;
+    }
+    .swagger-ui select {
+        background: #222;
+        color: #fff;
+        border: 1px solid #444;
+    }
+    .swagger-ui input[type="text"], 
+    .swagger-ui input[type="password"], 
+    .swagger-ui input[type="search"], 
+    .swagger-ui input[type="email"] {
+        background: #222;
+        color: #fff;
+        border: 1px solid #444;
+    }
+    .swagger-ui textarea {
+        background: #222;
+        color: #fff;
+        border: 1px solid #444;
+    }
+    .swagger-ui .markdown code, 
+    .swagger-ui .renderedMarkdown code {
+        background: #333;
+        color: #eee;
+    }
+    .swagger-ui .model {
+        color: #ccc;
+    }
+    .swagger-ui .model-title {
+        color: #fff;
+    }
+    .swagger-ui table tbody tr td {
+        border-bottom: 1px solid #333;
+    }
+    .swagger-ui .response-col_status {
+        color: #fff;
+    }
+    .swagger-ui .responses-table .response {
+        color: #ccc;
+    }
+    .swagger-ui .topbar {
+        background-color: #000;
+        border-bottom: 1px solid #333;
+    }
+    .swagger-ui .info a {
+        color: #0070f3;
+    }
+    .swagger-ui .info a:hover {
+        color: #3291ff;
+    }
+    /* Make scrollbars dark themed */
+    ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #111;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #444;
+    }
+    </style>
+    """
+    
+    # Insert custom CSS after the head tag
+    swagger_ui_content = swagger_ui_content.replace('</head>', f'{dark_theme_css}</head>')
+    
+    return HTMLResponse(content=swagger_ui_content, headers=swagger_ui.headers)
 
 
 ### CUSTOM API DOCS [ENTERPRISE FEATURE] ###
