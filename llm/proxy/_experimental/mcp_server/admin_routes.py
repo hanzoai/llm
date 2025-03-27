@@ -12,10 +12,16 @@ from llm.proxy._types import UserAPIKeyAuth, LLMUserRoles
 from .mcp_config import mcp_server_config
 from .config_mapping import update_database_config
 
-# Create router
+# Create routers
 router = APIRouter(
     prefix="/mcp/admin",
     tags=["mcp-admin"],
+)
+
+# Create a public router for accessing MCP info without authentication
+public_router = APIRouter(
+    prefix="/api/mcps",
+    tags=["mcp-public"],
 )
 
 
@@ -166,3 +172,14 @@ async def get_usage_logs(
         usage_logs[server] = logs[-limit:] if len(logs) > limit else logs
     
     return usage_logs
+
+
+@public_router.get("/", response_model=Dict[str, MCPServerConfigModel])
+async def get_public_servers():
+    """
+    Get all enabled MCP server configurations for public view.
+    This endpoint is public and does not require authentication.
+    """
+    # Get only enabled servers for public view
+    servers = mcp_server_config.get_enabled_servers()
+    return {name: MCPServerConfigModel(name=name, **config) for name, config in servers.items()}

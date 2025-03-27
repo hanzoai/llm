@@ -10,7 +10,14 @@ from pydantic import BaseModel
 from llm._logging import verbose_logger
 from llm.proxy.auth.user_api_key_auth import user_api_key_auth
 from llm.proxy._types import UserAPIKeyAuth, LLMUserRoles
-from llm.proxy.management_endpoints.ui_sso import templates
+from fastapi.templating import Jinja2Templates
+import os
+
+# Create templates instance
+templates = Jinja2Templates(directory=os.path.join(
+    os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 
+    "management_endpoints/ui_templates"
+))
 
 from .mcp_config import mcp_server_config
 

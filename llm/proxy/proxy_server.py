@@ -87,8 +87,8 @@ from llm.llm_core_utils.credential_accessor import CredentialAccessor
 from llm.llm_core_utils.llm_logging import Logging as LLMLoggingObj
 from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
 from llm.proxy._experimental.mcp_server.server import router as mcp_router
-from llm.proxy._experimental.mcp_server.admin_routes import router as mcp_admin_router
-from llm.proxy._experimental.mcp_server.admin_ui_routes import router as mcp_admin_ui_router
+from llm.proxy._experimental.mcp_server.admin_routes import router as mcp_admin_router, public_router as mcp_public_router
+# Removed admin_ui_routes import to use Next.js UI instead
 from llm.proxy._experimental.mcp_server.openai_agents_integration import router as mcp_openai_agents_router
 from llm.proxy._experimental.mcp_server.tool_registry import (
     global_mcp_tool_registry,
@@ -9402,7 +9402,8 @@ app.include_router(credential_router)
 app.include_router(llm_passthrough_router)
 app.include_router(mcp_router)
 app.include_router(mcp_admin_router)
-app.include_router(mcp_admin_ui_router)
+app.include_router(mcp_public_router)  # Public access to MCP servers
+# Removed admin_ui_router to use Next.js UI instead
 app.include_router(mcp_openai_agents_router)
 app.include_router(anthropic_router)
 app.include_router(langfuse_router)
