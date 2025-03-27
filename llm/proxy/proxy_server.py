@@ -551,19 +551,53 @@ async def custom_swagger_ui_html():
     <head>
         <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css">
         <link rel="shortcut icon" href="/favicon.ico">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300..700&display=swap" rel="stylesheet">
         <title>Hanzo API</title>
         <style>
-        /* Vercel-like Dark Theme for Swagger UI */
+        /* Vercel-like Dark Theme for Swagger UI with Inter and Geist Mono fonts */
         body {
             background-color: #000;
             color: #fff;
             margin: 0;
             padding: 0;
+            font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui {
             color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+            font-family: 'Inter', system-ui, sans-serif;
         }
+        /* Custom header with Hanzo logo */
+        .hanzo-header {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background-color: #000;
+            border-bottom: 1px solid #333;
+        }
+        .hanzo-header img {
+            height: 32px;
+            margin-right: 10px;
+        }
+        .hanzo-header h1 {
+            font-family: 'Inter', system-ui, sans-serif;
+            font-weight: 600;
+            font-size: 24px;
+            color: #fff;
+            margin: 0;
+        }
+        /* Code formatting with Geist Mono */
+        .swagger-ui .markdown code, 
+        .swagger-ui .renderedMarkdown code,
+        .swagger-ui textarea,
+        .swagger-ui .model,
+        .swagger-ui code,
+        .swagger-ui pre {
+            font-family: 'Geist Mono', monospace !important;
+        }
+        /* General styling */
         .swagger-ui .info .title,
         .swagger-ui .info h1, 
         .swagger-ui .info h2, 
@@ -571,6 +605,7 @@ async def custom_swagger_ui_html():
         .swagger-ui .info h4, 
         .swagger-ui .info h5 {
             color: #fff;
+            font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui .scheme-container {
             background-color: #111;
@@ -579,6 +614,7 @@ async def custom_swagger_ui_html():
         .swagger-ui .opblock-tag {
             border-bottom: 1px solid #333;
             color: #fff;
+            font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui .opblock {
             background: #111;
@@ -589,14 +625,17 @@ async def custom_swagger_ui_html():
         .swagger-ui .opblock .opblock-summary-path,
         .swagger-ui .opblock .opblock-summary-path__deprecated {
             color: #ddd;
+            font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui .opblock .opblock-summary-description {
             color: #ccc;
+            font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui .opblock-description-wrapper, 
         .swagger-ui .opblock-external-docs-wrapper, 
         .swagger-ui .opblock-title_normal {
             color: #ccc;
+            font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui .opblock.opblock-get {
             background: rgba(0, 127, 255, 0.1);
@@ -635,11 +674,13 @@ async def custom_swagger_ui_html():
             background: #333;
             color: #fff;
             border: 1px solid #444;
+            font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui select {
             background: #222;
             color: #fff;
             border: 1px solid #444;
+            font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui input[type="text"], 
         .swagger-ui input[type="password"], 
@@ -648,6 +689,7 @@ async def custom_swagger_ui_html():
             background: #222;
             color: #fff;
             border: 1px solid #444;
+            font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui textarea {
             background: #222;
@@ -664,9 +706,11 @@ async def custom_swagger_ui_html():
         }
         .swagger-ui .model-title {
             color: #fff;
+            font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui table tbody tr td {
             border-bottom: 1px solid #333;
+            font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui .response-col_status {
             color: #fff;
@@ -677,6 +721,7 @@ async def custom_swagger_ui_html():
         .swagger-ui .topbar {
             background-color: #000;
             border-bottom: 1px solid #333;
+            display: none; /* Hide default topbar */
         }
         .swagger-ui .info a {
             color: #0070f3;
@@ -699,9 +744,18 @@ async def custom_swagger_ui_html():
         ::-webkit-scrollbar-thumb:hover {
             background: #444;
         }
+        /* Hide some Swagger UI elements */
+        .swagger-ui .info .title small {
+            display: none;
+        }
         </style>
     </head>
     <body>
+    <!-- Custom Hanzo header -->
+    <div class="hanzo-header">
+        <img src="/favicon.ico" alt="Hanzo Logo" />
+        <h1>Hanzo API</h1>
+    </div>
     <div id="swagger-ui"></div>
     <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
     <!-- `SwaggerUIBundle` is now available on the page -->
@@ -716,7 +770,8 @@ async def custom_swagger_ui_html():
         layout: "BaseLayout",
         deepLinking: true,
         showExtensions: true,
-        showCommonExtensions: true
+        showCommonExtensions: true,
+        docExpansion: 'list'
     });
     </script>
     </body>
