@@ -28,14 +28,18 @@ class MCPServerConfig:
             config_path: Path to the MCP server configuration file
             usage_log_path: Path to the MCP server usage log file
         """
-        self.config_path = config_path or os.path.join(
-            os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 
-            "../../mcp_servers.json"
-        )
-        self.usage_log_path = usage_log_path or os.path.join(
-            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-            "../../mcp_usage_logs.json"
-        )
+        # Calculate absolute path to the mcp_servers.json file in the root directory
+        # Go from /llm/proxy/_experimental/mcp_server/ up to the root /llm directory
+        root_dir = os.path.abspath(os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),  # Get directory of this file
+            "../../../.."  # Go up 4 levels to reach the root directory
+        ))
+        
+        self.config_path = config_path or os.path.join(root_dir, "mcp_servers.json")
+        self.usage_log_path = usage_log_path or os.path.join(root_dir, "mcp_usage_logs.json")
+        
+        verbose_logger.debug(f"MCP server config path: {self.config_path}")
+        verbose_logger.debug(f"MCP server usage log path: {self.usage_log_path}")
         
         # Load server configurations
         self.servers = self._load_servers()

@@ -82,17 +82,23 @@ def load_mcp_server_configs_on_startup(config: Dict[str, Any]) -> None:
     Args:
         config: The proxy server configuration
     """
-    # Load from config.yaml
-    load_config_from_yaml(config)
+    # First load any overrides from config.yaml
+    if config and "mcp_servers" in config:
+        verbose_logger.info("Loading MCP server configuration from config.yaml")
+        load_config_from_yaml(config)
+    else:
+        verbose_logger.info("No MCP servers specified in config.yaml, using default configuration")
     
     # List enabled MCP servers
     enabled_servers = mcp_server_config.get_enabled_servers()
     if enabled_servers:
         print("\n\033[1;34mEnabled MCP Servers:\033[0m")
         for name, server_config in enabled_servers.items():
-            print(f"\033[1;32m - {name}\033[0m")
+            command = server_config.get("command", "")
+            args = " ".join(server_config.get("args", []))
+            print(f"\033[1;32m - {name}\033[0m ({command} {args})")
     else:
-        print("\n\033[1;33mNo MCP servers enabled. Add them to config.yaml under 'mcp_servers' section.\033[0m")
+        print("\n\033[1;33mNo MCP servers enabled. Check mcp_servers.json or add them to config.yaml under 'mcp_servers' section.\033[0m")
 
 
 def update_database_config(server_name: str, enabled: bool, env_vars: Optional[Dict[str, str]] = None) -> bool:
