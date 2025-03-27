@@ -7675,9 +7675,14 @@ async def get_models_json():
     """
     try:
         # Load model information from the pricing file
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        parent_dir = os.path.dirname(os.path.dirname(current_dir))
-        model_file_path = os.path.join(parent_dir, "model_prices_and_context_window.json")
+        # First try to find the file in the current working directory
+        model_file_path = os.path.join(os.getcwd(), "model_prices_and_context_window.json")
+        
+        # If not found, look in the traditional location
+        if not os.path.exists(model_file_path):
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            parent_dir = os.path.dirname(os.path.dirname(current_dir))
+            model_file_path = os.path.join(parent_dir, "model_prices_and_context_window.json")
 
         with open(model_file_path, 'r') as f:
             model_data = json.load(f)
