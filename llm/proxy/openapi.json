@@ -5,6 +5,21 @@
     "title": "LLM API",
     "description": "API for LLM"
   },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "HANZO_API_KEY",
+        "description": "Enter your API key with the format: 'Bearer <HANZO_API_KEY>'"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
   "paths": {
    "/chat/completions": {
   "post": {
