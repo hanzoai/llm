@@ -483,7 +483,7 @@ async def proxy_startup_event(app: FastAPI):
                 await initialize(**worker_config)
 
     # Load MCP server configurations from config
-    load_mcp_server_configs_on_startup(config)
+    load_mcp_server_configs_on_startup(general_settings)
     
     ProxyStartupEvent._initialize_startup_logging(
         llm_router=llm_router,
