@@ -1,0 +1,78 @@
+model_list:
+  - model_name: gpt-3.5-turbo
+    llm_params:
+      model: openai/gpt-3.5-turbo
+  - model_name: gpt-4-turbo
+    llm_params:
+      model: openai/gpt-4-turbo
+
+# Set to `true` to allow dynamic model list add/edit
+general_settings:
+  store_model_in_db: true
+  database_url: "postgresql://llmproxy:dbpassword9090@db:5432/llm"
+
+# MCP Server Configuration
+mcp_servers:
+  # Web search tool - perfect for internet search capabilities
+  brave_search:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "BRAVE_API_KEY", "mcp/brave-search"]
+    env:
+      BRAVE_API_KEY: "YOUR_BRAVE_API_KEY_HERE"
+    enabled: true
+  
+  # Multimodal vision capabilities with Google's Gemini
+  gemini_pro_vision:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GOOGLE_API_KEY", "mcp/gemini-pro-vision"]
+    env:
+      GOOGLE_API_KEY: "YOUR_GOOGLE_API_KEY_HERE"
+    enabled: true
+  
+  # Scrape websites for content analysis
+  web_scraper:
+    command: "npx"
+    args: ["@mcp/web-scraper"]
+    env:
+      SCRAPER_TIMEOUT: "30000"
+      MAX_DEPTH: "2"
+    enabled: true
+  
+  # Get current weather and forecasts
+  openweather:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "OPENWEATHER_API_KEY", "mcp/openweather"]
+    env:
+      OPENWEATHER_API_KEY: "YOUR_OPENWEATHER_API_KEY_HERE"
+    enabled: false
+  
+  # Generate images with Stable Diffusion
+  stable_diffusion:
+    command: "docker"
+    args: ["run", "-i", "--rm", "mcp/stable-diffusion"]
+    env: {}
+    enabled: true
+  
+  # Search GitHub repositories
+  github_search:
+    command: "docker"
+    args: ["run", "-i", "--rm", "-e", "GITHUB_TOKEN", "mcp/github-search"]
+    env:
+      GITHUB_TOKEN: "YOUR_GITHUB_TOKEN_HERE"
+    enabled: true
+  
+  # Get YouTube video transcripts
+  youtube_transcript:
+    command: "npx"
+    args: ["@mcp/youtube-transcript"]
+    env: {}
+    enabled: true
+
+# Set Cache (Redis/in-memory) to improve performance. Cache is now managed across multiple llm Proxy servers
+# cache:
+#   type: redis                # Required: Options include "redis" or "in-memory".
+#   host: redis
+#   port: 6379
+#   password: ${REDIS_PASSWORD:-litevp}
+#   time_to_live: 3600        # Time in seconds for which cached responses are valid.
+#   cache_langchain_calls: True
