@@ -566,14 +566,25 @@ async def custom_swagger_ui_html():
             color: #fff;
             font-family: 'Inter', system-ui, sans-serif;
         }
-        /* Force slightly less dark black background everywhere */
+        /* Force slightly less dark black background everywhere - make it very minimal */
         body, 
         .swagger-ui,
         .swagger-ui .wrapper,
         .swagger-ui section:not(.models),
         .swagger-ui .auth-wrapper,
         .swagger-ui .auth-container,
-        .swagger-ui .authorization__btn {
+        .swagger-ui .authorization__btn,
+        .swagger-ui .opblock-body,
+        .swagger-ui .opblock-section-header,
+        .swagger-ui .parameters,
+        .swagger-ui .table-container,
+        .swagger-ui .responses-wrapper,
+        .swagger-ui .responses-inner,
+        .swagger-ui .response-col_description__inner,
+        .swagger-ui .renderedMarkdown,
+        .swagger-ui .highlight-code,
+        .swagger-ui .response,
+        .swagger-ui .model {
             background-color: #0f0f0f;
         }
         
@@ -615,9 +626,48 @@ async def custom_swagger_ui_html():
         .swagger-ui .opblock-summary-path {
             color: #fff !important;
         }
-        /* Hide the information container */
+        /* Hide the information container and clean up UI */
         .swagger-ui .information-container {
             display: none;
+        }
+        
+        /* Remove background from highlighted areas */
+        .swagger-ui .highlight-code {
+            background: none;
+        }
+        
+        /* Make border on operation blocks more subtle */
+        .swagger-ui .opblock {
+            margin: 0 0 15px;
+            border-radius: 4px;
+            box-shadow: none;
+        }
+        
+        /* Fix the opblock section header styling */
+        .swagger-ui .opblock .opblock-section-header {
+            background: transparent;
+            border-bottom: 1px solid #333;
+            box-shadow: none;
+        }
+        
+        /* Clean up expanded content style */
+        .swagger-ui .parameters-container, 
+        .swagger-ui .response-col_description, 
+        .swagger-ui .opblock-description-wrapper, 
+        .swagger-ui .responses-inner {
+            background: transparent;
+            box-shadow: none;
+        }
+        
+        /* Make tables more minimal */
+        .swagger-ui table tbody tr td {
+            border-bottom: 1px solid #333;
+            padding: 10px 0;
+        }
+        
+        /* Remove borders from responses */
+        .swagger-ui .responses-table .response {
+            border: none;
         }
         /* Additional overrides for the authorize section */
         .swagger-ui .dialog-ux .modal-ux {
@@ -718,7 +768,7 @@ async def custom_swagger_ui_html():
             font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui .opblock {
-            background: #111;
+            background: #0f0f0f;
             border: 1px solid #333;
             box-shadow: none;
         }
@@ -742,38 +792,39 @@ async def custom_swagger_ui_html():
             color: #aaa;
             font-family: 'Inter', system-ui, sans-serif;
         }
+        /* Minimal styling for HTTP method blocks with only border colors */
         .swagger-ui .opblock.opblock-get {
-            background: rgba(0, 127, 255, 0.1);
+            background: #0f0f0f;
             border-color: #007fff;
         }
         .swagger-ui .opblock.opblock-post {
-            background: rgba(73, 204, 144, 0.1);
+            background: #0f0f0f;
             border-color: #49cc90;
         }
         .swagger-ui .opblock.opblock-delete {
-            background: rgba(249, 62, 62, 0.1);
+            background: #0f0f0f;
             border-color: #f93e3e;
         }
         .swagger-ui .opblock.opblock-put {
-            background: rgba(252, 161, 48, 0.1);
+            background: #0f0f0f;
             border-color: #fca130;
         }
         .swagger-ui .opblock.opblock-patch {
-            background: rgba(80, 227, 194, 0.1);
+            background: #0f0f0f;
             border-color: #50e3c2;
         }
         .swagger-ui .opblock.opblock-head {
-            background: rgba(144, 18, 254, 0.1);
+            background: #0f0f0f;
             border-color: #9012fe;
         }
         .swagger-ui section.models {
             border: 1px solid #333;
         }
         .swagger-ui section.models .model-container {
-            background: #000;
+            background: #0f0f0f;
         }
         .swagger-ui .model-box {
-            background: #1a1a1a;
+            background: #0f0f0f;
         }
         .swagger-ui .btn {
             background: #333;
@@ -782,7 +833,7 @@ async def custom_swagger_ui_html():
             font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui select {
-            background: #111;
+            background: #0f0f0f;
             color: #fff;
             border: 1px solid #444;
             font-family: 'Inter', system-ui, sans-serif;
@@ -791,20 +842,23 @@ async def custom_swagger_ui_html():
         .swagger-ui input[type="password"], 
         .swagger-ui input[type="search"], 
         .swagger-ui input[type="email"] {
-            background: #111;
+            background: #0f0f0f;
             color: #fff;
             border: 1px solid #444;
             font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui textarea {
-            background: #111;
+            background: #0f0f0f;
             color: #fff;
             border: 1px solid #444;
         }
         .swagger-ui .markdown code, 
         .swagger-ui .renderedMarkdown code {
-            background: #222;
+            background: #111;
             color: #eee;
+            padding: 3px 5px;
+            border-radius: 3px;
+            font-size: 13px;
         }
         .swagger-ui .model {
             color: #ccc;
