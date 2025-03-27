@@ -854,7 +854,7 @@ async def custom_swagger_ui_html():
             <h1>Hanzo</h1>
         </a>
         <div class="hanzo-nav">
-            <a href="https://cloud.hanzo.ai" target="_blank">Login</a>
+            <a href="https://cloud.hanzo.ai" target="_blank">Console</a>
             <a href="https://cloud.hanzo.ai/signup" target="_blank" class="signup">Sign Up</a>
         </div>
     </div>
