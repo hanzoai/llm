@@ -695,6 +695,19 @@ async def custom_swagger_ui_html():
         .swagger-ui .auth-container .scopes {
             border-color: #333;
         }
+        /* Fix auth wrapper text */
+        .swagger-ui .auth-wrapper .auth-container h4,
+        .swagger-ui .auth-wrapper .auth-container p {
+            color: #fff !important;
+        }
+        /* Enhance the auth input field */
+        .swagger-ui .auth-wrapper .auth-container input {
+            background: #0f0f0f;
+            color: #fff;
+            border: 1px solid #333;
+            padding: 8px 10px;
+            font-family: 'Geist Mono', monospace;
+        }
         /* Move swagger UI content up since we hid the info container */
         .swagger-ui .wrapper {
             padding-top: 0;
@@ -945,7 +958,22 @@ async def custom_swagger_ui_html():
         deepLinking: true,
         showExtensions: true,
         showCommonExtensions: true,
-        docExpansion: 'list'
+        docExpansion: 'list',
+        securityDefinitions: {
+            apiKey: {
+                type: "apiKey",
+                name: "Authorization",
+                in: "header",
+                description: "Enter your API key with the format: 'Bearer &lt;HANZO_API_KEY&gt;'"
+            }
+        },
+        requestInterceptor: function(request) {
+            // Ensure Authorization header is in the correct format if it exists
+            if (request.headers.Authorization && !request.headers.Authorization.startsWith('Bearer ')) {
+                request.headers.Authorization = 'Bearer ' + request.headers.Authorization;
+            }
+            return request;
+        }
     });
     </script>
     </body>
