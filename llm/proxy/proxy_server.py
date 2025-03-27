@@ -576,6 +576,37 @@ async def custom_swagger_ui_html():
         .swagger-ui .authorization__btn {
             background-color: #0f0f0f;
         }
+        
+        /* Fix text colors for better contrast */
+        .swagger-ui, 
+        .swagger-ui p, 
+        .swagger-ui span, 
+        .swagger-ui label, 
+        .swagger-ui .parameter__name, 
+        .swagger-ui .parameter__type, 
+        .swagger-ui .parameter__deprecated, 
+        .swagger-ui .parameter__in,
+        .swagger-ui table thead tr th,
+        .swagger-ui .parameter__name.required:after,
+        .swagger-ui .parameters-col_description p,
+        .swagger-ui .tab li,
+        .swagger-ui .opblock-description-wrapper p, 
+        .swagger-ui .opblock-external-docs-wrapper p {
+            color: #aaa !important;
+        }
+        
+        /* Make some text brighter for better readability */
+        .swagger-ui h1, 
+        .swagger-ui h2, 
+        .swagger-ui h3, 
+        .swagger-ui h4, 
+        .swagger-ui h5,
+        .swagger-ui .opblock-summary-method,
+        .swagger-ui .tab a,
+        .swagger-ui .response-col_status,
+        .swagger-ui .opblock-summary-path {
+            color: #fff !important;
+        }
         /* Hide the information container */
         .swagger-ui .information-container {
             display: none;
@@ -682,20 +713,24 @@ async def custom_swagger_ui_html():
             border: 1px solid #333;
             box-shadow: none;
         }
-        .swagger-ui .opblock .opblock-summary-operation-id,
-        .swagger-ui .opblock .opblock-summary-path,
-        .swagger-ui .opblock .opblock-summary-path__deprecated {
-            color: #ddd;
+        .swagger-ui .opblock .opblock-summary-operation-id {
+            color: #aaa;
             font-family: 'Inter', system-ui, sans-serif;
         }
+        .swagger-ui .opblock .opblock-summary-path,
+        .swagger-ui .opblock .opblock-summary-path__deprecated {
+            color: #fff;
+            font-family: 'Inter', system-ui, sans-serif;
+            font-weight: 500;
+        }
         .swagger-ui .opblock .opblock-summary-description {
-            color: #ccc;
+            color: #aaa;
             font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui .opblock-description-wrapper, 
         .swagger-ui .opblock-external-docs-wrapper, 
         .swagger-ui .opblock-title_normal {
-            color: #ccc;
+            color: #aaa;
             font-family: 'Inter', system-ui, sans-serif;
         }
         .swagger-ui .opblock.opblock-get {
