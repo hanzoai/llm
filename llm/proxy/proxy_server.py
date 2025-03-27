@@ -535,6 +535,9 @@ async def proxy_startup_event(app: FastAPI):
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.responses import HTMLResponse, RedirectResponse
 
+# Import HTML redirects
+from .html_redirects import register_redirects
+
 app = FastAPI(
     docs_url=None,  # Disable automatic docs
     redoc_url=_get_redoc_url(),
@@ -544,6 +547,9 @@ app = FastAPI(
     root_path=server_root_path,  # check if user passed root path, FastAPI defaults this value to ""
     lifespan=proxy_startup_event,
 )
+
+# Register HTML redirects
+register_redirects(app)
 
 # Define custom docs endpoint with our own favicon and dark theme
 @app.get("/", include_in_schema=False)
@@ -7725,16 +7731,6 @@ async def get_mcps_json():
         return {"error": f"Error loading MCP server data: {str(e)}"}
 
 
-@app.get("/models.html", response_class=RedirectResponse, status_code=307)
-async def get_models_html():
-    """Redirect to the UI-based models view"""
-    return "/ui/models"
-        # Create HTML table of models
-        html_content = """
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Hanzo AI - Available Models</title>
             <link rel="icon" href="/favicon.ico" type="image/x-icon">
@@ -8033,26 +8029,13 @@ async def get_models_html():
         """
 
 
-@app.get("/mcps.html", response_class=RedirectResponse, status_code=307)
-async def get_mcps_html():
-    """Redirect to the UI-based MCP server view"""
-    return "/ui/mcp-servers">
+# MCPS HTML endpoint now handled by html_redirects.py
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Hanzo AI - MCP Servers</title>
             <link rel="icon" href="/favicon.ico" type="image/x-icon">
             <style>
-                body {
-                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-                    line-height: 1.6;
-                    color: #e4e4e4;
-                    max-width: 1200px;
-                    margin: 0 auto;
-                    padding: 20px;
-                    background-color: #000;
-                    color: #e4e4e4;
-                }
                 h1 {
                     color: #ffffff;
                     border-bottom: 1px solid #444;
