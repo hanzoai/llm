@@ -569,24 +569,51 @@ async def custom_swagger_ui_html():
             color: #fff;
             font-family: 'Inter', system-ui, sans-serif;
         }
-        /* Custom header with Hanzo logo */
+        /* Custom header with Hanzo logo and navigation */
         .hanzo-header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             padding: 20px;
             background-color: #000;
             border-bottom: 1px solid #333;
         }
-        .hanzo-header img {
+        .hanzo-logo {
+            display: flex;
+            align-items: center;
+        }
+        .hanzo-logo img {
             height: 32px;
             margin-right: 10px;
         }
-        .hanzo-header h1 {
+        .hanzo-logo h1 {
             font-family: 'Inter', system-ui, sans-serif;
             font-weight: 600;
             font-size: 24px;
             color: #fff;
             margin: 0;
+        }
+        .hanzo-nav {
+            display: flex;
+            gap: 20px;
+        }
+        .hanzo-nav a {
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .hanzo-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .hanzo-nav a.signup {
+            background-color: #0070f3;
+        }
+        .hanzo-nav a.signup:hover {
+            background-color: #0060df;
         }
         /* Code formatting with Geist Mono */
         .swagger-ui .markdown code, 
@@ -751,10 +778,16 @@ async def custom_swagger_ui_html():
         </style>
     </head>
     <body>
-    <!-- Custom Hanzo header -->
+    <!-- Custom Hanzo header with navigation -->
     <div class="hanzo-header">
-        <img src="/favicon.ico" alt="Hanzo Logo" />
-        <h1>Hanzo API</h1>
+        <a href="https://hanzo.ai" class="hanzo-logo">
+            <img src="/favicon.ico" alt="Hanzo Logo" />
+            <h1>Hanzo</h1>
+        </a>
+        <div class="hanzo-nav">
+            <a href="https://cloud.hanzo.ai" target="_blank">Login</a>
+            <a href="https://cloud.hanzo.ai/signup" target="_blank" class="signup">Sign Up</a>
+        </div>
     </div>
     <div id="swagger-ui"></div>
     <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
