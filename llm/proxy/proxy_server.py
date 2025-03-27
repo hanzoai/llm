@@ -606,12 +606,21 @@ async def custom_swagger_ui_html():
             color: #aaa !important;
         }
         
-        /* Fix dropdown arrows to be white instead of black */
+        /* Fix dropdown arrows and icons to be white instead of black */
         .swagger-ui .opblock-tag svg,
         .swagger-ui .expand-operation svg,
-        .swagger-ui .arrow {
+        .swagger-ui .arrow,
+        .swagger-ui .authorization__btn svg,
+        .swagger-ui .authorization__btn.locked,
+        .swagger-ui .authorization__btn.unlocked,
+        .swagger-ui .lock-icon {
             fill: white !important;
             color: white !important;
+        }
+        
+        /* Ensure SVG icons in buttons are white */
+        .swagger-ui .btn svg {
+            fill: white !important;
         }
         
         /* Make some text brighter for better readability */
