@@ -53,28 +53,32 @@ const ModelHub: React.FC<ModelHubProps> = ({
   const router = useRouter();
 
   useEffect(() => {
-    if (!accessToken) {
-      return;
-    }
-
     const fetchData = async () => {
       try {
-        const _modelHubData = await modelHubCall(accessToken);
-
-        console.log("ModelHubData:", _modelHubData);
-
-        setModelHubData(_modelHubData.data);
-
-        getConfigFieldSetting(accessToken, "enable_public_model_hub")
-          .then((data) => {
-            console.log(`data: ${JSON.stringify(data)}`);
-            if (data.field_value == true) {
-              setPublicPageAllowed(true);
+        if (accessToken) {
+          const _modelHubData = await modelHubCall(accessToken);
+          setModelHubData(_modelHubData.data);
+        } else {
+          // Public access without token
+          try {
+            const response = await fetch("/api/models", {
+              headers: {
+                "Accept": "application/json"
+              }
+            });
+            
+            if (response.ok) {
+              const data = await response.json();
+              setModelHubData(data);
             }
-          })
-          .catch((error) => {
-            // do nothing
-          });
+          } catch (error) {
+            console.error("Error fetching public models:", error);
+          }
+        }
+        
+        // Always set public page as allowed
+        setPublicPageAllowed(true);
+        
       } catch (error) {
         console.error("There was an error fetching the model data", error);
       }
@@ -129,18 +133,9 @@ const ModelHub: React.FC<ModelHubProps> = ({
             className={`flex ${publicPage ? "justify-between" : "items-center"}`}
           >
             <Title className="ml-8 text-center ">Model Hub</Title>
+            {/* "Make Public" button hidden as requested */}
             {publicPage == false ? (
-              premiumUser ? (
-                <Button className="ml-4" onClick={() => handleMakePublicPage()}>
-                  ✨ Make Public
-                </Button>
-              ) : (
-                <Button className="ml-4">
-                  <a href="https://forms.gle/W3U4PZpJGFHWtHyA9" target="_blank">
-                    ✨ Make Public
-                  </a>
-                </Button>
-              )
+              <div></div> // Empty div to maintain layout
             ) : (
               <div className="flex justify-between items-center">
                 <p>Filter by key:</p>

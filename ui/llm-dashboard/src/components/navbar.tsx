@@ -62,22 +62,22 @@ const Navbar: React.FC<NavbarProps> = ({
       key: "1",
       label: (
         <div className="py-1">
-          <p className="text-sm text-gray-600">Role: {userRole}</p>
-          <p className="text-sm text-gray-600">Email: {userEmail || "Unknown"}</p>
-          <p className="text-sm text-gray-600"><UserOutlined /> {userID}</p>
-          <p className="text-sm text-gray-600">Premium User: {String(premiumUser)}</p>
+          <p className="text-sm text-gray-300">Role: {userRole}</p>
+          <p className="text-sm text-gray-300">Email: {userEmail || "Unknown"}</p>
+          <p className="text-sm text-gray-300"><UserOutlined /> {userID}</p>
+          <p className="text-sm text-gray-300">Premium User: {String(premiumUser)}</p>
         </div>
       ),
     },
     {
       key: "2",
-      label: <p className="text-sm hover:text-gray-900" onClick={handleLogout}><LogoutOutlined /> Logout</p>,
+      label: <p className="text-sm text-gray-300 hover:text-white" onClick={handleLogout}><LogoutOutlined /> Logout</p>,
     }
   ];
 
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-10">
+    <nav className="bg-black border-b border-gray-800 sticky top-0 z-10">
       <div className="w-full">
         <div className="flex items-center h-12 px-4">
           {/* Left side with correct logo positioning */}
@@ -85,7 +85,7 @@ const Navbar: React.FC<NavbarProps> = ({
             <Link href="/" className="flex items-center">
               <img
                 src={imageUrl}
-                alt="LLM Brand"
+                alt="Hanzo AI"
                 className="h-8 w-auto"
               />
             </Link>
@@ -97,9 +97,27 @@ const Navbar: React.FC<NavbarProps> = ({
               href="https://docs.hanzo.ai/docs/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[13px] text-gray-600 hover:text-gray-900 transition-colors"
+              className="text-[13px] text-white hover:text-white hover:bg-opacity-10 hover:bg-white transition-colors px-4 py-2 border border-white rounded"
             >
               Docs
+            </a>
+            
+            <a
+              href="https://cloud.hanzo.ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[13px] text-white hover:text-white hover:bg-opacity-10 hover:bg-white transition-colors px-4 py-2 border border-white rounded"
+            >
+              Console
+            </a>
+            
+            <a
+              href="https://cloud.hanzo.ai/signup"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[13px] text-black hover:text-black bg-white hover:bg-gray-100 transition-colors px-4 py-2 rounded font-medium"
+            >
+              Sign Up
             </a>
 
             <Dropdown
@@ -107,14 +125,17 @@ const Navbar: React.FC<NavbarProps> = ({
                 items: userItems,
                 style: {
                   padding: '4px',
-                  marginTop: '4px'
+                  marginTop: '4px',
+                  backgroundColor: '#111',
+                  border: '1px solid #333',
+                  color: '#fff'
                 }
               }}
             >
-              <button className="inline-flex items-center text-[13px] text-gray-600 hover:text-gray-900 transition-colors">
+              <button className="inline-flex items-center text-[13px] text-white hover:text-white transition-colors ml-4">
                 User
                 <svg
-                  className="ml-1 w-4 h-4 text-gray-500"
+                  className="ml-1 w-4 h-4 text-gray-200"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"

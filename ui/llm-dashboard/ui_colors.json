@@ -2,9 +2,26 @@
     "brand": {
       "DEFAULT": "#6366f1",
       "muted": "#8688ef",
-      "subtle": "#8e91eb",
+      "subtle": "#9fa1ee",
       "emphasis": "#5558eb",
-      "inverted": "indigo"
+      "inverted": "#f5f5f5"
+    },
+    "background": {
+      "DEFAULT": "#000000",
+      "muted": "#111111",
+      "subtle": "#222222"
+    },
+    "text": {
+      "DEFAULT": "#ffffff",
+      "muted": "#e0e0e0",
+      "subtle": "#bbbbbb"
+    },
+    "border": {
+      "DEFAULT": "#333333",
+      "muted": "#444444"
+    },
+    "card": {
+      "DEFAULT": "#111111",
+      "hover": "#222222"
     }
   }
-  

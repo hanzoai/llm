@@ -87,9 +87,13 @@ from llm.llm_core_utils.credential_accessor import CredentialAccessor
 from llm.llm_core_utils.llm_logging import Logging as LLMLoggingObj
 from llm.llms.custom_httpx.http_handler import AsyncHTTPHandler, HTTPHandler
 from llm.proxy._experimental.mcp_server.server import router as mcp_router
+from llm.proxy._experimental.mcp_server.admin_routes import router as mcp_admin_router
+from llm.proxy._experimental.mcp_server.admin_ui_routes import router as mcp_admin_ui_router
+from llm.proxy._experimental.mcp_server.openai_agents_integration import router as mcp_openai_agents_router
 from llm.proxy._experimental.mcp_server.tool_registry import (
     global_mcp_tool_registry,
 )
+from llm.proxy._experimental.mcp_server.config_mapping import load_mcp_server_configs_on_startup
 from llm.proxy._types import *
 from llm.proxy.analytics_endpoints.analytics_endpoints import (
     router as analytics_router,
@@ -478,6 +482,9 @@ async def proxy_startup_event(app: FastAPI):
             if isinstance(worker_config, dict):
                 await initialize(**worker_config)
 
+    # Load MCP server configurations from config
+    load_mcp_server_configs_on_startup(config)
+    
     ProxyStartupEvent._initialize_startup_logging(
         llm_router=llm_router,
         proxy_logging_obj=proxy_logging_obj,
@@ -634,6 +641,7 @@ async def custom_swagger_ui_html():
         .swagger-ui .response-col_status,
         .swagger-ui .opblock-summary-path {
             color: #fff !important;
+            font-weight: 600 !important;
         }
         /* Hide the information container and clean up UI */
         .swagger-ui .information-container {
@@ -729,6 +737,33 @@ async def custom_swagger_ui_html():
         .hanzo-logo img {
             height: 32px;
             margin-right: 10px;
+        }
+        .hanzo-nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .hanzo-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .hanzo-nav a:not(.signup) {
+            border: 1px solid white;
+        }
+        .hanzo-nav a:not(.signup):hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .hanzo-nav a.signup {
+            background-color: white;
+            color: black;
+            font-weight: 600;
+        }
+        .hanzo-nav a.signup:hover {
+            background-color: #f0f0f0;
         }
         .hanzo-logo h1 {
             font-family: 'Inter', system-ui, sans-serif;
@@ -838,6 +873,13 @@ async def custom_swagger_ui_html():
         .swagger-ui .opblock.opblock-head {
             background: #0f0f0f;
             border-color: #9012fe;
+        }
+        
+        /* Ensure method labels are bright white and fully opaque */
+        .swagger-ui .opblock-summary-method {
+            color: #ffffff !important;
+            opacity: 1 !important;
+            font-weight: 600 !important;
         }
         .swagger-ui section.models {
             border: 1px solid #333;
@@ -7561,6 +7603,770 @@ async def favicon():
     return FileResponse(hanzo_logo, media_type="image/png")
 
 
+@app.get("/models", tags=["Public API"])
+async def get_models_endpoint(request: Request, accept: Optional[str] = Header(None)):
+    """
+    Public endpoint for models that returns HTML or JSON based on the Accept header.
+    """
+    # Check if the client accepts JSON
+    if accept and "application/json" in accept or request.headers.get("content-type") == "application/json":
+        return await get_models_json()
+    
+    # Otherwise, return HTML
+    return await get_models_html()
+
+
+@app.get("/mcps", tags=["Public API"])
+async def get_mcps_endpoint(request: Request, accept: Optional[str] = Header(None)):
+    """
+    Public endpoint for MCP servers that returns HTML or JSON based on the Accept header.
+    """
+    # Check if the client accepts JSON
+    if accept and "application/json" in accept or request.headers.get("content-type") == "application/json":
+        return await get_mcps_json()
+    
+    # Otherwise, return HTML
+    return await get_mcps_html()
+
+
+@app.get("/api/models", response_class=JSONResponse, tags=["Public API"])
+async def get_models_json():
+    """
+    Public JSON API endpoint to get all available models with pricing and capabilities.
+    This endpoint is accessible without authentication.
+    """
+    try:
+        # Load model information from the pricing file
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        parent_dir = os.path.dirname(os.path.dirname(current_dir))
+        model_file_path = os.path.join(parent_dir, "model_prices_and_context_window.json")
+        
+        with open(model_file_path, 'r') as f:
+            model_data = json.load(f)
+        
+        # Filter out the sample spec entry
+        if "sample_spec" in model_data:
+            del model_data["sample_spec"]
+        
+        return model_data
+    except Exception as e:
+        verbose_proxy_logger.error(f"Error loading model data: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error loading model data: {str(e)}"
+        )
+
+
+@app.get("/api/mcps", response_class=JSONResponse, tags=["Public API"])
+async def get_mcps_json():
+    """
+    Public JSON API endpoint to get all available MCP servers.
+    This endpoint is accessible without authentication.
+    """
+    try:
+        # Load MCP server information
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        parent_dir = os.path.dirname(os.path.dirname(current_dir))
+        mcp_file_path = os.path.join(parent_dir, "../mcp_servers.json")
+        
+        with open(mcp_file_path, 'r') as f:
+            mcp_data = json.load(f)
+        
+        return mcp_data
+    except Exception as e:
+        verbose_proxy_logger.error(f"Error loading MCP server data: {e}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error loading MCP server data: {str(e)}"
+        )
+
+
+@app.get("/models.html", response_class=HTMLResponse)
+async def get_models_html():
+    """Public endpoint to display all available models with pricing and capabilities in HTML format"""
+    try:
+        # Load model information from the pricing file
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        parent_dir = os.path.dirname(os.path.dirname(current_dir))
+        model_file_path = os.path.join(parent_dir, "model_prices_and_context_window.json")
+        
+        with open(model_file_path, 'r') as f:
+            model_data = json.load(f)
+        
+        # Filter out the sample spec entry
+        if "sample_spec" in model_data:
+            del model_data["sample_spec"]
+        
+        # Create HTML table of models
+        html_content = """
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Hanzo AI - Available Models</title>
+            <link rel="icon" href="/favicon.ico" type="image/x-icon">
+            <style>
+                body {
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    background-color: #121212;
+                    color: #e4e4e4;
+                }
+                h1 {
+                    color: #ffffff;
+                    border-bottom: 1px solid #444;
+                    padding-bottom: 10px;
+                    margin-top: 0;
+                }
+                .logo {
+                    max-width: 140px;
+                    margin-right: 20px;
+                    vertical-align: middle;
+                }
+                .header {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 30px;
+                }
+                .header-content {
+                    flex-grow: 1;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 20px;
+                    font-size: 14px;
+                }
+                th, td {
+                    padding: 12px 15px;
+                    text-align: left;
+                    border-bottom: 1px solid #444;
+                }
+                th {
+                    background-color: #1e1e1e;
+                    color: #ffffff;
+                    position: sticky;
+                    top: 0;
+                }
+                tr:hover {
+                    background-color: #2a2a2a;
+                }
+                .filter-container {
+                    margin-bottom: 20px;
+                    display: flex;
+                    gap: 15px;
+                    flex-wrap: wrap;
+                }
+                input, select {
+                    padding: 8px 12px;
+                    border: 1px solid #444;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    background-color: #2a2a2a;
+                    color: #e4e4e4;
+                }
+                input:focus, select:focus {
+                    outline: none;
+                    border-color: #0070f3;
+                }
+                .badge {
+                    display: inline-block;
+                    padding: 2px 8px;
+                    font-size: 12px;
+                    border-radius: 12px;
+                    margin-right: 5px;
+                    background-color: #0070f3;
+                    color: white;
+                }
+                .feature-yes {
+                    color: #10b981;
+                }
+                .feature-no {
+                    color: #888;
+                }
+                nav {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px;
+                    background-color: #1e1e1e;
+                    padding: 10px 20px;
+                    border-radius: 4px;
+                }
+                nav a {
+                    color: #e4e4e4;
+                    text-decoration: none;
+                    margin-left: 20px;
+                }
+                nav a:hover {
+                    color: #0070f3;
+                }
+                .search-input {
+                    flex-grow: 1;
+                    max-width: 300px;
+                }
+                .nav-logo {
+                    height: 32px;
+                }
+            </style>
+        </head>
+        <body>
+            <nav>
+                <div>
+                    <img src="/get_image" alt="Hanzo AI Logo" class="nav-logo">
+                </div>
+                <div>
+                    <a href="/docs">API Docs</a>
+                    <a href="/models">Models</a>
+                    <a href="/mcps">MCP Servers</a>
+                    <a href="https://github.com/hanzoai/llm" target="_blank">GitHub</a>
+                </div>
+            </nav>
+            
+            <div class="header">
+                <div class="header-content">
+                    <h1>Available Models</h1>
+                    <p>Browse all models available through Hanzo AI. API access via <a href="/models">/models</a> or <a href="/api/models">/api/models</a> (JSON).</p>
+                </div>
+            </div>
+            
+            <div class="filter-container">
+                <input type="text" id="searchInput" placeholder="Search models..." class="search-input">
+                <select id="providerFilter">
+                    <option value="">All Providers</option>
+                </select>
+                <select id="modeFilter">
+                    <option value="">All Types</option>
+                </select>
+            </div>
+            
+            <table id="modelsTable">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Provider</th>
+                        <th>Type</th>
+                        <th>Context Window</th>
+                        <th>Input Price</th>
+                        <th>Output Price</th>
+                        <th>Features</th>
+                    </tr>
+                </thead>
+                <tbody>
+        """
+        
+        providers = set()
+        modes = set()
+        
+        # Add rows for each model
+        for model_name, model_info in sorted(model_data.items()):
+            provider = model_info.get("llm_provider", "Unknown")
+            mode = model_info.get("mode", "Unknown")
+            
+            providers.add(provider)
+            modes.add(mode)
+            
+            max_tokens = model_info.get("max_tokens", "N/A")
+            input_cost = model_info.get("input_cost_per_token", 0)
+            output_cost = model_info.get("output_cost_per_token", 0)
+            
+            # Format costs properly
+            input_price = f"${input_cost:.6f}" if input_cost > 0 else "Free"
+            output_price = f"${output_cost:.6f}" if output_cost > 0 else "Free"
+            
+            # Collect features
+            features = []
+            
+            if model_info.get("supports_function_calling", False):
+                features.append("Function Calling")
+            
+            if model_info.get("supports_vision", False):
+                features.append("Vision")
+                
+            if model_info.get("supports_audio_input", False):
+                features.append("Audio Input")
+                
+            if model_info.get("supports_audio_output", False):
+                features.append("Audio Output")
+                
+            if model_info.get("supports_system_messages", False):
+                features.append("System Messages")
+                
+            if model_info.get("supports_web_search", False):
+                features.append("Web Search")
+            
+            features_html = ""
+            for feature in features:
+                features_html += f'<span class="badge">{feature}</span>'
+            
+            html_content += f"""
+                <tr data-provider="{provider}" data-mode="{mode}">
+                    <td>{model_name}</td>
+                    <td>{provider}</td>
+                    <td>{mode}</td>
+                    <td>{max_tokens}</td>
+                    <td>{input_price}</td>
+                    <td>{output_price}</td>
+                    <td>{features_html}</td>
+                </tr>
+            """
+        
+        html_content += """
+                </tbody>
+            </table>
+            
+            <script>
+                // Populate filter options
+                const providerFilter = document.getElementById('providerFilter');
+                const modeFilter = document.getElementById('modeFilter');
+                const searchInput = document.getElementById('searchInput');
+                
+                // Populate provider options
+        """
+        
+        # Add provider options
+        html_content += "const providers = ["
+        for provider in sorted(providers):
+            html_content += f'"{provider}", '
+        html_content = html_content.rstrip(", ")
+        html_content += "];\n"
+        
+        # Add mode options
+        html_content += "const modes = ["
+        for mode in sorted(modes):
+            html_content += f'"{mode}", '
+        html_content = html_content.rstrip(", ")
+        html_content += "];\n"
+        
+        html_content += """
+                providers.forEach(provider => {
+                    const option = document.createElement('option');
+                    option.value = provider;
+                    option.textContent = provider;
+                    providerFilter.appendChild(option);
+                });
+                
+                modes.forEach(mode => {
+                    const option = document.createElement('option');
+                    option.value = mode;
+                    option.textContent = mode;
+                    modeFilter.appendChild(option);
+                });
+                
+                // Filter function
+                function filterTable() {
+                    const searchTerm = searchInput.value.toLowerCase();
+                    const providerValue = providerFilter.value;
+                    const modeValue = modeFilter.value;
+                    
+                    document.querySelectorAll('#modelsTable tbody tr').forEach(row => {
+                        const modelName = row.children[0].textContent.toLowerCase();
+                        const provider = row.dataset.provider;
+                        const mode = row.dataset.mode;
+                        
+                        const matchesSearch = searchTerm === '' || modelName.includes(searchTerm);
+                        const matchesProvider = providerValue === '' || provider === providerValue;
+                        const matchesMode = modeValue === '' || mode === modeValue;
+                        
+                        row.style.display = (matchesSearch && matchesProvider && matchesMode) ? '' : 'none';
+                    });
+                }
+                
+                // Add event listeners
+                searchInput.addEventListener('input', filterTable);
+                providerFilter.addEventListener('change', filterTable);
+                modeFilter.addEventListener('change', filterTable);
+            </script>
+        </body>
+        </html>
+        """
+        
+        return html_content
+    except Exception as e:
+        return f"""
+        <html>
+            <body style="font-family: sans-serif; background-color: #121212; color: #e4e4e4; padding: 20px;">
+                <h1>Error loading model data</h1>
+                <p>{str(e)}</p>
+            </body>
+        </html>
+        """
+
+
+@app.get("/mcps.html", response_class=HTMLResponse)
+async def get_mcps_html():
+    """Public endpoint to display all available MCP servers in HTML format"""
+    try:
+        # Load MCP server information
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        parent_dir = os.path.dirname(os.path.dirname(current_dir))
+        mcp_file_path = os.path.join(parent_dir, "../mcp_servers.json")
+        
+        with open(mcp_file_path, 'r') as f:
+            mcp_data = json.load(f)
+        
+        # Create HTML table of MCP servers
+        html_content = """
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Hanzo AI - MCP Servers</title>
+            <link rel="icon" href="/favicon.ico" type="image/x-icon">
+            <style>
+                body {
+                    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+                    line-height: 1.6;
+                    color: #333;
+                    max-width: 1200px;
+                    margin: 0 auto;
+                    padding: 20px;
+                    background-color: #121212;
+                    color: #e4e4e4;
+                }
+                h1 {
+                    color: #ffffff;
+                    border-bottom: 1px solid #444;
+                    padding-bottom: 10px;
+                    margin-top: 0;
+                }
+                .logo {
+                    max-width: 140px;
+                    margin-right: 20px;
+                    vertical-align: middle;
+                }
+                .header {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 30px;
+                }
+                .header-content {
+                    flex-grow: 1;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 20px;
+                    font-size: 14px;
+                }
+                th, td {
+                    padding: 12px 15px;
+                    text-align: left;
+                    border-bottom: 1px solid #444;
+                }
+                th {
+                    background-color: #1e1e1e;
+                    color: #ffffff;
+                    position: sticky;
+                    top: 0;
+                }
+                tr:hover {
+                    background-color: #2a2a2a;
+                }
+                .filter-container {
+                    margin-bottom: 20px;
+                }
+                input {
+                    padding: 8px 12px;
+                    border: 1px solid #444;
+                    border-radius: 4px;
+                    font-size: 14px;
+                    width: 300px;
+                    background-color: #2a2a2a;
+                    color: #e4e4e4;
+                }
+                input:focus {
+                    outline: none;
+                    border-color: #0070f3;
+                }
+                pre {
+                    background-color: #1e1e1e;
+                    padding: 10px;
+                    border-radius: 4px;
+                    overflow: auto;
+                    font-size: 13px;
+                }
+                code {
+                    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+                }
+                .commands {
+                    background-color: #1e1e1e;
+                    padding: 15px;
+                    border-radius: 4px;
+                    margin-top: 10px;
+                }
+                .command-title {
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                }
+                .status-badge {
+                    display: inline-block;
+                    padding: 2px 8px;
+                    font-size: 12px;
+                    border-radius: 12px;
+                    margin-left: 8px;
+                }
+                .status-badge.enabled {
+                    background-color: #10b981;
+                    color: white;
+                }
+                .status-badge.disabled {
+                    background-color: #ef4444;
+                    color: white;
+                }
+                tr.disabled {
+                    opacity: 0.7;
+                }
+                nav {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 20px;
+                    background-color: #1e1e1e;
+                    padding: 10px 20px;
+                    border-radius: 4px;
+                }
+                nav a {
+                    color: #e4e4e4;
+                    text-decoration: none;
+                    margin-left: 20px;
+                }
+                nav a:hover {
+                    color: #0070f3;
+                }
+                .nav-logo {
+                    height: 32px;
+                }
+            </style>
+        </head>
+        <body>
+            <nav>
+                <div>
+                    <img src="/get_image" alt="Hanzo AI Logo" class="nav-logo">
+                </div>
+                <div>
+                    <a href="/docs">API Docs</a>
+                    <a href="/models">Models</a>
+                    <a href="/mcps">MCP Servers</a>
+                    <a href="https://github.com/hanzoai/llm" target="_blank">GitHub</a>
+                </div>
+            </nav>
+            
+            <div class="header">
+                <div class="header-content">
+                    <h1>Model Calling Protocol (MCP) Servers</h1>
+                    <p>Browse available MCP servers that can be used with Hanzo AI. API access via <a href="/mcps">/mcps</a> or <a href="/api/mcps">/api/mcps</a> (JSON).</p>
+                </div>
+            </div>
+            
+            <div class="filter-container">
+                <input type="text" id="searchInput" placeholder="Search MCP servers...">
+            </div>
+            
+            <table id="mcpTable">
+                <thead>
+                    <tr>
+                        <th>Server Name</th>
+                        <th>Launch Command</th>
+                        <th>Required Environment Variables</th>
+                    </tr>
+                </thead>
+                <tbody>
+        """
+        
+        # Add rows for each MCP server
+        for server_name, server_info in sorted(mcp_data.items()):
+            command = server_info.get("command", "")
+            args = " ".join(server_info.get("args", []))
+            launch_command = f"{command} {args}"
+            
+            # Format environment variables
+            env_vars = server_info.get("env", {})
+            env_vars_html = ""
+            for var_name, var_value in env_vars.items():
+                env_vars_html += f"{var_name}"
+                if var_value != "YOUR_API_KEY_HERE":
+                    env_vars_html += f" (default: {var_value})"
+                env_vars_html += "<br>"
+            
+            # Check if server is enabled
+            is_enabled = server_info.get("enabled", True)
+            status_class = "enabled" if is_enabled else "disabled"
+            status_text = "Enabled" if is_enabled else "Disabled"
+            
+            html_content += f"""
+                <tr class="{status_class}">
+                    <td>{server_name} <span class="status-badge {status_class}">{status_text}</span></td>
+                    <td><code>{launch_command}</code></td>
+                    <td>{env_vars_html}</td>
+                </tr>
+            """
+        
+        html_content += """
+                </tbody>
+            </table>
+            
+            <div style="margin-top: 30px;">
+                <h2>How to Use MCP Servers</h2>
+                
+                <div class="commands">
+                    <div class="command-title">1. Set up your environment:</div>
+                    <pre><code>export HANZO_API_KEY=your_api_key_here
+# Set any required environment variables for the MCP server
+export BRAVE_API_KEY=your_brave_api_key</code></pre>
+                </div>
+                
+                <div class="commands">
+                    <div class="command-title">2. Run an MCP server:</div>
+                    <pre><code>docker run -i --rm -e BRAVE_API_KEY mcp/brave-search</code></pre>
+                </div>
+                
+                <div class="commands">
+                    <div class="command-title">3. Use the MCP server in your app:</div>
+                    <pre><code>import llm
+from llm.experimental_mcp_client import MCPClient
+
+client = MCPClient(
+    api_key="your_hanzo_api_key",
+    base_url="https://api.hanzo.ai"
+)
+
+result = client.run_tool(
+    name="brave-search",
+    params={"query": "latest AI developments"}
+)
+print(result)</code></pre>
+                </div>
+                
+                <h2 style="margin-top: 30px;">Using with OpenAI Agents SDK</h2>
+                <p>MCP servers can be used with the OpenAI Agents SDK:</p>
+                
+                <div class="commands">
+                    <pre><code>from openai import OpenAI
+from openai.types.beta.assistant import Tool
+from openai.types.beta.assistant_create_params import ToolResources
+
+# Initialize the OpenAI client
+client = OpenAI(api_key="your_api_key")
+
+# Create an agent with the MCP server tools
+agent = client.beta.assistants.create(
+    name="MCP Assistant",
+    model="gpt-4-turbo",
+    instructions="Use the tools to help the user.",
+    tools=[
+        {
+            "type": "function",
+            "function": {
+                "name": "brave_search",
+                "description": "Search the web using Brave Search",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "query": {
+                            "type": "string",
+                            "description": "The search query"
+                        }
+                    },
+                    "required": ["query"]
+                }
+            }
+        }
+    ]
+)
+
+# Run the agent
+thread = client.beta.threads.create()
+message = client.beta.threads.messages.create(
+    thread_id=thread.id,
+    role="user",
+    content="What are the latest AI developments?"
+)
+
+run = client.beta.threads.runs.create(
+    thread_id=thread.id,
+    assistant_id=agent.id
+)
+
+# Process the run with MCP server tools
+# This would require integration with your MCP server tools
+</code></pre>
+                </div>
+                
+                <h2 style="margin-top: 30px;">Managing MCP Servers</h2>
+                <p>Administrators can enable/disable MCP servers and track usage through the admin interface:</p>
+                
+                <div class="commands">
+                    <div class="command-title">Admin API endpoints:</div>
+                    <ul style="margin-top: 10px; line-height: 1.6;">
+                        <li><code>GET /mcp/admin/servers</code> - List all MCP servers</li>
+                        <li><code>GET /mcp/admin/servers/{server_name}</code> - Get server configuration</li>
+                        <li><code>PATCH /mcp/admin/servers/{server_name}</code> - Update server configuration</li>
+                        <li><code>GET /mcp/admin/usage</code> - Get usage statistics</li>
+                        <li><code>GET /mcp/admin/usage/logs</code> - Get detailed usage logs</li>
+                    </ul>
+                </div>
+                
+                <div class="commands">
+                    <div class="command-title">Managing servers with API:</div>
+                    <pre><code>import requests
+
+# Enable/disable an MCP server
+response = requests.patch(
+    "https://api.hanzo.ai/mcp/admin/servers/brave_search",
+    headers={"Authorization": f"Bearer {HANZO_ADMIN_KEY}"},
+    json={"enabled": True}
+)
+
+# View usage statistics
+response = requests.get(
+    "https://api.hanzo.ai/mcp/admin/usage",
+    headers={"Authorization": f"Bearer {HANZO_ADMIN_KEY}"},
+)
+</code></pre>
+                </div>
+            </div>
+            
+            <script>
+                // Search functionality
+                const searchInput = document.getElementById('searchInput');
+                
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    
+                    document.querySelectorAll('#mcpTable tbody tr').forEach(row => {
+                        const serverName = row.children[0].textContent.toLowerCase();
+                        
+                        if (serverName.includes(searchTerm)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
+            </script>
+        </body>
+        </html>
+        """
+        
+        return html_content
+    except Exception as e:
+        return f"""
+        <html>
+            <body style="font-family: sans-serif; background-color: #121212; color: #e4e4e4; padding: 20px;">
+                <h1>Error loading MCP server data</h1>
+                <p>{str(e)}</p>
+            </body>
+        </html>
+        """
+
+
 #### INVITATION MANAGEMENT ####
 
 
@@ -8595,6 +9401,9 @@ app.include_router(fine_tuning_router)
 app.include_router(credential_router)
 app.include_router(llm_passthrough_router)
 app.include_router(mcp_router)
+app.include_router(mcp_admin_router)
+app.include_router(mcp_admin_ui_router)
+app.include_router(mcp_openai_agents_router)
 app.include_router(anthropic_router)
 app.include_router(langfuse_router)
 app.include_router(pass_through_router)

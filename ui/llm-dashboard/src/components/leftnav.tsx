@@ -45,12 +45,13 @@ interface MenuItem {
 
 // Note: If a menu item does not have a role, it is visible to all roles.
 const menuItems: MenuItem[] = [
-  { key: "1", page: "api-keys", label: "Virtual Keys", icon: <KeyOutlined /> },
-  { key: "3", page: "llm-playground", label: "Test Key", icon: <PlayCircleOutlined />, roles: rolesWithWriteAccess },
+  { key: "1", page: "api-keys", label: "API Keys", icon: <KeyOutlined /> },
+  { key: "3", page: "llm-playground", label: "Playground", icon: <PlayCircleOutlined />, roles: rolesWithWriteAccess },
   { key: "2", page: "models", label: "Models", icon: <BlockOutlined />, roles: all_admin_roles },
   { key: "4", page: "usage", label: "Usage", icon: <BarChartOutlined /> },
   { key: "6", page: "teams", label: "Teams", icon: <TeamOutlined /> },
-  { key: "17", page: "organizations", label: "Organizations", icon: <BankOutlined />, roles: all_admin_roles },
+  // Organizations page hidden as requested
+  // { key: "17", page: "organizations", label: "Organizations", icon: <BankOutlined />, roles: all_admin_roles },
   { key: "5", page: "users", label: "Internal Users", icon: <UserOutlined />, roles: all_admin_roles },
   { key: "14", page: "api_ref", label: "API Reference", icon: <ApiOutlined /> },
   { key: "16", page: "model-hub", label: "Model Hub", icon: <AppstoreOutlined /> },
@@ -77,10 +78,10 @@ const menuItems: MenuItem[] = [
     icon: <SettingOutlined />,
     roles: all_admin_roles,
     children: [
-      { key: "11", page: "general-settings", label: "Router Settings", icon: <SettingOutlined />, roles: all_admin_roles },
+      { key: "11", page: "general-settings", label: "Router Settings", icon: <ThunderboltOutlined />, roles: all_admin_roles },
       { key: "12", page: "pass-through-settings", label: "Pass-Through", icon: <ApiOutlined />, roles: all_admin_roles },
-      { key: "8", page: "settings", label: "Logging & Alerts", icon: <SettingOutlined />, roles: all_admin_roles },
-      { key: "13", page: "admin-panel", label: "Admin Settings", icon: <SettingOutlined />, roles: all_admin_roles },
+      { key: "8", page: "settings", label: "Logging & Alerts", icon: <LineChartOutlined />, roles: all_admin_roles },
+      { key: "13", page: "admin-panel", label: "Admin Settings", icon: <LockOutlined />, roles: all_admin_roles },
     ]
   }
 ];
@@ -113,8 +114,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   );
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <Sider theme="light" width={220}>
+    <Layout style={{ minHeight: "100vh", backgroundColor: 'black' }}>
+      <Sider theme="dark" width={220} style={{ backgroundColor: '#111' }}>
         <Menu
           mode="inline"
           selectedKeys={[selectedMenuKey]}
@@ -122,7 +123,9 @@ const Sidebar: React.FC<SidebarProps> = ({
             borderRight: 0,
             backgroundColor: 'transparent',
             fontSize: '14px',
+            color: 'white',
           }}
+          theme="dark"
           items={filteredMenuItems.map(item => ({
             key: item.key,
             icon: item.icon,

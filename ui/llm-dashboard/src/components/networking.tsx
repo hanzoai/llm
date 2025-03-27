@@ -1314,7 +1314,105 @@ export const modelHubCall = async (accessToken: String) => {
     return data;
     // Handle success - you might want to update some state or UI based on the created key
   } catch (error) {
-    console.error("Failed to create key:", error);
+    console.error("Failed to fetch model data:", error);
+    throw error;
+  }
+};
+
+export const mcpServerCall = async (accessToken: String) => {
+  /**
+   * Get all MCP servers on proxy
+   */
+  try {
+    let url = proxyBaseUrl
+      ? `${proxyBaseUrl}/api/mcps`
+      : `/api/mcps`;
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        ...(accessToken ? { [globalLLMHeaderName]: `Bearer ${accessToken}` } : {})
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch MCP server data:", error);
+    throw error;
+  }
+};
+
+export const getMCPServerUsageStats = async (accessToken: String, serverName?: string) => {
+  /**
+   * Get usage statistics for an MCP server
+   */
+  try {
+    let url = proxyBaseUrl
+      ? `${proxyBaseUrl}/mcp/admin/usage`
+      : `/mcp/admin/usage`;
+    
+    if (serverName) {
+      url += `?server_name=${encodeURIComponent(serverName)}`;
+    }
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        ...(accessToken ? { [globalLLMHeaderName]: `Bearer ${accessToken}` } : {})
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      throw new Error("Failed to fetch MCP server usage stats");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch MCP server usage stats:", error);
+    throw error;
+  }
+};
+
+export const updateMCPServerConfig = async (accessToken: String, serverName: string, config: { enabled?: boolean, env?: Record<string, string> }) => {
+  /**
+   * Update MCP server configuration
+   */
+  try {
+    let url = proxyBaseUrl
+      ? `${proxyBaseUrl}/mcp/admin/servers/${encodeURIComponent(serverName)}`
+      : `/mcp/admin/servers/${encodeURIComponent(serverName)}`;
+
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        ...(accessToken ? { [globalLLMHeaderName]: `Bearer ${accessToken}` } : {})
+      },
+      body: JSON.stringify(config)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      throw new Error("Failed to update MCP server configuration");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Failed to update MCP server configuration:", error);
     throw error;
   }
 };
