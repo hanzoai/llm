@@ -561,9 +561,42 @@ async def custom_swagger_ui_html():
         <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@300..700&display=swap" rel="stylesheet">
         <title>Hanzo API</title>
         <style>
+        /* Navigation bar */
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #000;
+            padding: 12px 20px;
+            margin-bottom: 20px;
+            width: calc(100% - 40px);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .nav-logo {
+            height: 32px;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px;
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .nav-links a:hover {
+            color: #0070f3;
+        }
+        .swagger-content {
+            margin-top: 70px;
+        }
+        
         /* Vercel-like Dark Theme for Swagger UI with Inter and Geist Mono fonts */
         body {
-            background-color: #0f0f0f; /* slightly lighter black */
+            background-color: #000; /* Pure black background */
             color: #fff;
             margin: 0;
             padding: 0;
@@ -974,18 +1007,20 @@ async def custom_swagger_ui_html():
         </style>
     </head>
     <body>
-    <!-- Custom Hanzo header with navigation -->
-    <div class="hanzo-header">
-        <a href="https://hanzo.ai" class="hanzo-logo">
-            <img src="/favicon.ico" alt="Hanzo Logo" />
-            <h1>Hanzo</h1>
-        </a>
-        <div class="hanzo-nav">
-            <a href="https://cloud.hanzo.ai" target="_blank">Console</a>
-            <a href="https://cloud.hanzo.ai/signup" target="_blank" class="signup">Sign Up</a>
+    <div class="nav-container">
+        <div>
+            <img src="/get_image" alt="Hanzo AI Logo" class="nav-logo">
+        </div>
+        <div class="nav-links">
+            <a href="/docs">API</a>
+            <a href="/models.html">Models</a>
+            <a href="/mcps.html">MCP Servers</a>
+            <a href="/ui/tool-hub">Tool Hub</a>
+            <a href="https://github.com/hanzoai/llm" target="_blank">GitHub</a>
         </div>
     </div>
-    <div id="swagger-ui"></div>
+    <div class="swagger-content">
+        <div id="swagger-ui"></div>
     <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
     <!-- `SwaggerUIBundle` is now available on the page -->
     <script>
@@ -7710,11 +7745,11 @@ async def get_models_html():
                 body {
                     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
                     line-height: 1.6;
-                    color: #333;
+                    color: #e4e4e4;
                     max-width: 1200px;
                     margin: 0 auto;
                     padding: 20px;
-                    background-color: #121212;
+                    background-color: #000;
                     color: #e4e4e4;
                 }
                 h1 {
@@ -7794,14 +7829,16 @@ async def get_models_html():
                     justify-content: space-between;
                     align-items: center;
                     margin-bottom: 20px;
-                    background-color: #1e1e1e;
+                    background-color: #000;
                     padding: 10px 20px;
                     border-radius: 4px;
+                    border-bottom: 1px solid #222;
                 }
                 nav a {
                     color: #e4e4e4;
                     text-decoration: none;
                     margin-left: 20px;
+                    font-weight: 500;
                 }
                 nav a:hover {
                     color: #0070f3;
@@ -7821,9 +7858,10 @@ async def get_models_html():
                     <img src="/get_image" alt="Hanzo AI Logo" class="nav-logo">
                 </div>
                 <div>
-                    <a href="/docs">API Docs</a>
-                    <a href="/models">Models</a>
-                    <a href="/mcps">MCP Servers</a>
+                    <a href="/docs">API</a>
+                    <a href="/models.html">Models</a>
+                    <a href="/mcps.html">MCP Servers</a>
+                    <a href="/ui/tool-hub">Tool Hub</a>
                     <a href="https://github.com/hanzoai/llm" target="_blank">GitHub</a>
                 </div>
             </nav>
@@ -8023,11 +8061,11 @@ async def get_mcps_html():
                 body {
                     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
                     line-height: 1.6;
-                    color: #333;
+                    color: #e4e4e4;
                     max-width: 1200px;
                     margin: 0 auto;
                     padding: 20px;
-                    background-color: #121212;
+                    background-color: #000;
                     color: #e4e4e4;
                 }
                 h1 {
@@ -8128,14 +8166,16 @@ async def get_mcps_html():
                     justify-content: space-between;
                     align-items: center;
                     margin-bottom: 20px;
-                    background-color: #1e1e1e;
+                    background-color: #000;
                     padding: 10px 20px;
                     border-radius: 4px;
+                    border-bottom: 1px solid #222;
                 }
                 nav a {
                     color: #e4e4e4;
                     text-decoration: none;
                     margin-left: 20px;
+                    font-weight: 500;
                 }
                 nav a:hover {
                     color: #0070f3;
@@ -8151,9 +8191,10 @@ async def get_mcps_html():
                     <img src="/get_image" alt="Hanzo AI Logo" class="nav-logo">
                 </div>
                 <div>
-                    <a href="/docs">API Docs</a>
-                    <a href="/models">Models</a>
-                    <a href="/mcps">MCP Servers</a>
+                    <a href="/docs">API</a>
+                    <a href="/models.html">Models</a>
+                    <a href="/mcps.html">MCP Servers</a>
+                    <a href="/ui/tool-hub">Tool Hub</a>
                     <a href="https://github.com/hanzoai/llm" target="_blank">GitHub</a>
                 </div>
             </nav>
