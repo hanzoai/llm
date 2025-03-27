@@ -135,7 +135,7 @@ On the 2nd response - expect to see the following exception
 
 ### Prometheus metrics for `remaining_budget`
 
-[More info about Prometheus metrics here](https://docs.llm.ai/docs/proxy/prometheus)
+[More info about Prometheus metrics here](https://docs.hanzo.ai/docs/proxy/prometheus)
 
 You'll need the following in your proxy config.yaml
 

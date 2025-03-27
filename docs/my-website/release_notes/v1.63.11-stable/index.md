@@ -42,7 +42,7 @@ ghcr.io/hanzoai/llm:main-v1.63.11-stable
 ## Demo Instance
 
 Here's a Demo Instance to test changes:
-- Instance: https://demo.llm.ai/
+- Instance: https://demo.hanzo.ai/
 - Login Credentials:
     - Username: admin
     - Password: sk-1234
@@ -51,7 +51,7 @@ Here's a Demo Instance to test changes:
 
 ## New Models / Updated Models
 
-- Image Generation support for Amazon Nova Canvas [Getting Started](https://docs.llm.ai/docs/providers/bedrock#image-generation)
+- Image Generation support for Amazon Nova Canvas [Getting Started](https://docs.hanzo.ai/docs/providers/bedrock#image-generation)
 - Add pricing for Jamba new models [PR](https://github.com/hanzoai/llm/pull/9032/files)
 - Add pricing for Amazon EU models [PR](https://github.com/hanzoai/llm/pull/9056/files)
 - Add Bedrock Deepseek R1 model pricing [PR](https://github.com/hanzoai/llm/pull/9108/files)
@@ -67,18 +67,18 @@ Here's a Demo Instance to test changes:
 <Image img={require('../../img/release_notes/responses_api.png')} />
 
 1. **New Endpoints**
-- [Beta] POST `/responses` API. [Getting Started](https://docs.llm.ai/docs/response_api)
+- [Beta] POST `/responses` API. [Getting Started](https://docs.hanzo.ai/docs/response_api)
 
 2. **New LLM Providers**
-- Snowflake Cortex [Getting Started](https://docs.llm.ai/docs/providers/snowflake)
+- Snowflake Cortex [Getting Started](https://docs.hanzo.ai/docs/providers/snowflake)
 
 3. **New LLM Features**
 
-- Support OpenRouter `reasoning_content` on streaming [Getting Started](https://docs.llm.ai/docs/reasoning_content)
+- Support OpenRouter `reasoning_content` on streaming [Getting Started](https://docs.hanzo.ai/docs/reasoning_content)
 
 4. **Bug Fixes**
 
-- OpenAI: Return `code`, `param` and `type` on bad request error [More information on llm exceptions](https://docs.llm.ai/docs/exception_mapping)
+- OpenAI: Return `code`, `param` and `type` on bad request error [More information on llm exceptions](https://docs.hanzo.ai/docs/exception_mapping)
 - Bedrock: Fix converse chunk parsing to only return empty dict on tool use [PR](https://github.com/hanzoai/llm/pull/9166)
 - Bedrock: Support extra_headers [PR](https://github.com/hanzoai/llm/pull/9113)
 - Azure: Fix Function Calling Bug & Update Default API Version to `2025-02-01-preview` [PR](https://github.com/hanzoai/llm/pull/9191)
@@ -94,16 +94,16 @@ Here's a Demo Instance to test changes:
 
 ## Spend Tracking Improvements
 
-1. Support Bedrock converse cache token tracking [Getting Started](https://docs.llm.ai/docs/completion/prompt_caching)
-2. Cost Tracking for Responses API [Getting Started](https://docs.llm.ai/docs/response_api)
-3. Fix Azure Whisper cost tracking [Getting Started](https://docs.llm.ai/docs/audio_transcription)
+1. Support Bedrock converse cache token tracking [Getting Started](https://docs.hanzo.ai/docs/completion/prompt_caching)
+2. Cost Tracking for Responses API [Getting Started](https://docs.hanzo.ai/docs/response_api)
+3. Fix Azure Whisper cost tracking [Getting Started](https://docs.hanzo.ai/docs/audio_transcription)
 
 
 ## UI
 
 ### Re-Use Credentials on UI
 
-You can now onboard LLM provider credentials on LLM UI. Once these credentials are added you can re-use them when adding new models [Getting Started](https://docs.llm.ai/docs/proxy/ui_credentials)
+You can now onboard LLM provider credentials on LLM UI. Once these credentials are added you can re-use them when adding new models [Getting Started](https://docs.hanzo.ai/docs/proxy/ui_credentials)
 
 <Image img={require('../../img/release_notes/credentials.jpg')} />
 
@@ -131,26 +131,26 @@ Before adding a model you can test the connection to the LLM provider to verify 
    - UI Improvements: Keep expanded log in focus on LLM UI
    - UI Improvements: Minor improvements to logs page
    - Fix: Allow internal user to query their own logs
-   - Allow switching off storing Error Logs in DB [Getting Started](https://docs.llm.ai/docs/proxy/ui_logs)
+   - Allow switching off storing Error Logs in DB [Getting Started](https://docs.hanzo.ai/docs/proxy/ui_logs)
 5. Sign In/Sign Out
-   - Fix: Correctly use `PROXY_LOGOUT_URL` when set [Getting Started](https://docs.llm.ai/docs/proxy/self_serve#setting-custom-logout-urls)
+   - Fix: Correctly use `PROXY_LOGOUT_URL` when set [Getting Started](https://docs.hanzo.ai/docs/proxy/self_serve#setting-custom-logout-urls)
 
 
 ## Security
 
-1. Support for Rotating Master Keys [Getting Started](https://docs.llm.ai/docs/proxy/master_key_rotations)
-2. Fix: Internal User Viewer Permissions, don't allow `internal_user_viewer` role to see `Test Key Page` or `Create Key Button` [More information on role based access controls](https://docs.llm.ai/docs/proxy/access_control)
-3. Emit audit logs on All user + model Create/Update/Delete endpoints [Getting Started](https://docs.llm.ai/docs/proxy/multiple_admins)
+1. Support for Rotating Master Keys [Getting Started](https://docs.hanzo.ai/docs/proxy/master_key_rotations)
+2. Fix: Internal User Viewer Permissions, don't allow `internal_user_viewer` role to see `Test Key Page` or `Create Key Button` [More information on role based access controls](https://docs.hanzo.ai/docs/proxy/access_control)
+3. Emit audit logs on All user + model Create/Update/Delete endpoints [Getting Started](https://docs.hanzo.ai/docs/proxy/multiple_admins)
 4. JWT
-    - Support multiple JWT OIDC providers [Getting Started](https://docs.llm.ai/docs/proxy/token_auth)
+    - Support multiple JWT OIDC providers [Getting Started](https://docs.hanzo.ai/docs/proxy/token_auth)
     - Fix JWT access with Groups not working when team is assigned All Proxy Models access
-5. Using K/V pairs in 1 AWS Secret [Getting Started](https://docs.llm.ai/docs/secret#using-kv-pairs-in-1-aws-secret)
+5. Using K/V pairs in 1 AWS Secret [Getting Started](https://docs.hanzo.ai/docs/secret#using-kv-pairs-in-1-aws-secret)
 
 
 ## Logging Integrations
 
-1. Prometheus: Track Azure LLM API latency metric [Getting Started](https://docs.llm.ai/docs/proxy/prometheus#request-latency-metrics)
-2. Athina: Added tags, user_feedback and model_options to additional_keys which can be sent to Athina [Getting Started](https://docs.llm.ai/docs/observability/athina_integration)
+1. Prometheus: Track Azure LLM API latency metric [Getting Started](https://docs.hanzo.ai/docs/proxy/prometheus#request-latency-metrics)
+2. Athina: Added tags, user_feedback and model_options to additional_keys which can be sent to Athina [Getting Started](https://docs.hanzo.ai/docs/observability/athina_integration)
 
 
 ## Performance / Reliability improvements
@@ -161,8 +161,8 @@ Before adding a model you can test the connection to the LLM provider to verify 
 ## General Improvements
 
 1. OpenWebUI Integration - display `thinking` tokens
-- Guide on getting started with LLM x OpenWebUI. [Getting Started](https://docs.llm.ai/docs/tutorials/openweb_ui)
-- Display `thinking` tokens on OpenWebUI (Bedrock, Anthropic, Deepseek) [Getting Started](https://docs.llm.ai/docs/tutorials/openweb_ui#render-thinking-content-on-openweb-ui)
+- Guide on getting started with LLM x OpenWebUI. [Getting Started](https://docs.hanzo.ai/docs/tutorials/openweb_ui)
+- Display `thinking` tokens on OpenWebUI (Bedrock, Anthropic, Deepseek) [Getting Started](https://docs.hanzo.ai/docs/tutorials/openweb_ui#render-thinking-content-on-openweb-ui)
 
 <Image img={require('../../img/llm_thinking_openweb.gif')} />
 

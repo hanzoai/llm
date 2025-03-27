@@ -23,7 +23,7 @@ import Image from '@theme/IdealImage';
 
 :::info
 
-Get a 7 day free trial for LLM Enterprise [here](https://llm.ai/#trial).
+Get a 7 day free trial for LLM Enterprise [here](https://hanzo.ai/#trial).
 
 **no call needed**
 

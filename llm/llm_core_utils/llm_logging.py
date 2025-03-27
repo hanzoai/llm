@@ -3175,7 +3175,7 @@ class StandardLoggingPayloadSetup:
                     )  # this is the hash
             _potential_requester_metadata = metadata.get(
                 "metadata", None
-            )  # check if user passed metadata in the sdk request - e.g. metadata for langsmith logging - https://docs.llm.ai/docs/observability/langsmith_integration#set-langsmith-fields
+            )  # check if user passed metadata in the sdk request - e.g. metadata for langsmith logging - https://docs.hanzo.ai/docs/observability/langsmith_integration#set-langsmith-fields
             if (
                 clean_metadata["requester_metadata"] is None
                 and _potential_requester_metadata is not None

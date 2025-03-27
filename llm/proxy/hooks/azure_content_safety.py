@@ -12,7 +12,7 @@ from llm.proxy._types import UserAPIKeyAuth
 
 class _PROXY_AzureContentSafety(
     CustomLogger
-):  # https://docs.llm.ai/docs/observability/custom_callback#callback-class
+):  # https://docs.hanzo.ai/docs/observability/custom_callback#callback-class
     # Class variables or attributes
 
     def __init__(self, endpoint, api_key, thresholds=None):

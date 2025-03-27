@@ -2011,7 +2011,7 @@ def test_ollama_image():
 #         pytest.fail(f"Error occurred: {e}")
 
 
-# this should throw an exception, to trigger https://logs.llm.ai/
+# this should throw an exception, to trigger https://logs.hanzo.ai/
 # def hf_test_error_logs():
 #     try:
 #         llm.set_verbose=True

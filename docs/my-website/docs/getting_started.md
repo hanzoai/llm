@@ -78,7 +78,7 @@ except OpenAIError as e:
     print(e)
 ```
 
-## Logging Observability - Log LLM Input/Output ([Docs](https://docs.llm.ai/docs/observability/callbacks))
+## Logging Observability - Log LLM Input/Output ([Docs](https://docs.hanzo.ai/docs/observability/callbacks))
 
 LLM exposes pre defined callbacks to send data to MLflow, Lunary, Langfuse, Helicone, Promptlayer, Traceloop, Slack
 

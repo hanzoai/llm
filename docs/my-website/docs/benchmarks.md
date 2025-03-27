@@ -60,7 +60,7 @@ Each machine deploying LLM had the following specs:
 
 ## Logging Callbacks
 
-### [GCS Bucket Logging](https://docs.llm.ai/docs/proxy/bucket)
+### [GCS Bucket Logging](https://docs.hanzo.ai/docs/proxy/bucket)
 
 Using GCS Bucket has **no impact on latency, RPS compared to Basic LLM Proxy**
 
@@ -70,7 +70,7 @@ Using GCS Bucket has **no impact on latency, RPS compared to Basic LLM Proxy**
 | Median Latency (ms) | 140 | 138 |
 
 
-### [LangSmith logging](https://docs.llm.ai/docs/proxy/logging)
+### [LangSmith logging](https://docs.hanzo.ai/docs/proxy/logging)
 
 Using LangSmith has **no impact on latency, RPS compared to Basic LLM Proxy**
 

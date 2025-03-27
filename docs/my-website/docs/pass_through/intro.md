@@ -5,7 +5,7 @@ These endpoints are useful for 2 scenarios:
 1. **Migrate existing projects** to llm proxy. E.g: If you have users already in production with Anthropic's SDK, you just need to change the base url to get cost tracking/logging/budgets/etc. 
 
 
-2. **Use provider-specific endpoints** E.g: If you want to use [Vertex AI's token counting endpoint](https://docs.llm.ai/docs/pass_through/vertex_ai#count-tokens-api)
+2. **Use provider-specific endpoints** E.g: If you want to use [Vertex AI's token counting endpoint](https://docs.hanzo.ai/docs/pass_through/vertex_ai#count-tokens-api)
 
 
 ## How is your request handled? 

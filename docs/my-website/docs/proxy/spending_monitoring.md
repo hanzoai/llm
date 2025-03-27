@@ -10,8 +10,8 @@ This document is a guide for using LLM Proxy once you have crossed 1M+ rows in t
 ## Solutions for Usage Tracking
 
 Step 1. **Export Logs to Cloud Storage**
-   - [Send logs to S3, GCS, or Azure Blob Storage](https://docs.llm.ai/docs/proxy/logging)
-   - [Log format specification](https://docs.llm.ai/docs/proxy/logging_spec)
+   - [Send logs to S3, GCS, or Azure Blob Storage](https://docs.hanzo.ai/docs/proxy/logging)
+   - [Log format specification](https://docs.hanzo.ai/docs/proxy/logging_spec)
 
 Step 2. **Analyze Data**
    - Use tools like [Redash](https://redash.io/), [Databricks](https://www.databricks.com/), [Snowflake](https://www.snowflake.com/en/) to analyze exported logs
@@ -26,7 +26,7 @@ Disabling this will prevent your LLM DB from growing in size, which will help wi
 
 - Request a logging integration on [Github Issues](https://github.com/hanzoai/llm/issues)
 - Get in [touch with LLM Founders](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
-- Get a 7-day free trial of LLM [here](https://llm.ai#trial)
+- Get a 7-day free trial of LLM [here](https://hanzo.ai#trial)
 
 
 

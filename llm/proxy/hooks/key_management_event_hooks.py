@@ -302,7 +302,7 @@ class KeyManagementEventHooks:
 
         if "email" not in general_settings.get("alerting", []):
             raise ValueError(
-                "Email alerting not setup on config.yaml. Please set `alerting=['email']. \nDocs: https://docs.llm.ai/docs/proxy/email`"
+                "Email alerting not setup on config.yaml. Please set `alerting=['email']. \nDocs: https://docs.hanzo.ai/docs/proxy/email`"
             )
         event = WebhookEvent(
             event="key_created",

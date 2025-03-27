@@ -66,7 +66,7 @@ async def new_organization(
     - blocked: *bool* - Flag indicating if the org is blocked or not - will stop all calls from keys with this org_id.
     - tags: *Optional[List[str]]* - Tags for [tracking spend](https://llm.vercel.app/docs/proxy/enterprise#tracking-spend-for-custom-tags) and/or doing [tag-based routing](https://llm.vercel.app/docs/proxy/tag_routing).
     - organization_id: *Optional[str]* - The organization id of the team. Default is None. Create via `/organization/new`.
-    - model_aliases: Optional[dict] - Model aliases for the team. [Docs](https://docs.llm.ai/docs/proxy/team_based_routing#create-team-with-model-alias)
+    - model_aliases: Optional[dict] - Model aliases for the team. [Docs](https://docs.hanzo.ai/docs/proxy/team_based_routing#create-team-with-model-alias)
 
     Case 1: Create new org **without** a budget_id
 

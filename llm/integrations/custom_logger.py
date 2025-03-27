@@ -36,7 +36,7 @@ else:
     Span = Any
 
 
-class CustomLogger:  # https://docs.llm.ai/docs/observability/custom_callback#callback-class
+class CustomLogger:  # https://docs.hanzo.ai/docs/observability/custom_callback#callback-class
     # Class variables or attributes
     def __init__(self, message_logging: bool = True) -> None:
         self.message_logging = message_logging
@@ -270,7 +270,7 @@ class CustomLogger:  # https://docs.llm.ai/docs/observability/custom_callback#ca
         async for item in response:
             yield item
 
-    #### SINGLE-USE #### - https://docs.llm.ai/docs/observability/custom_callback#using-your-custom-callback-function
+    #### SINGLE-USE #### - https://docs.hanzo.ai/docs/observability/custom_callback#using-your-custom-callback-function
 
     def log_input_event(self, model, messages, kwargs, print_verbose, callback_func):
         try:

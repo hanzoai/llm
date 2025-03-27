@@ -21,7 +21,7 @@ import Image from '@theme/IdealImage';
 
 :::info
 
-Get a 7 day free trial for LLM Enterprise [here](https://llm.ai/#trial).
+Get a 7 day free trial for LLM Enterprise [here](https://hanzo.ai/#trial).
 
 **no call needed**
 
@@ -31,7 +31,7 @@ Get a 7 day free trial for LLM Enterprise [here](https://llm.ai/#trial).
 
 ### ✨ Log Guardrail Traces 
 
-Track guardrail failure rate and if a guardrail is going rogue and failing requests. [Start here](https://docs.llm.ai/docs/proxy/guardrails/quick_start)
+Track guardrail failure rate and if a guardrail is going rogue and failing requests. [Start here](https://docs.hanzo.ai/docs/proxy/guardrails/quick_start)
 
 
 #### Traced Guardrail Success
@@ -81,7 +81,7 @@ Expected response
 ### ✨ Guardrails with Mock LLM 
 
 
-Send `mock_response` to test guardrails without making an LLM call. More info on `mock_response` [here](https://docs.llm.ai/docs/proxy/guardrails/quick_start)
+Send `mock_response` to test guardrails without making an LLM call. More info on `mock_response` [here](https://docs.hanzo.ai/docs/proxy/guardrails/quick_start)
 
 ```shell
 curl -i http://localhost:4000/v1/chat/completions \

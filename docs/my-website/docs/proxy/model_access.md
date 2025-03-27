@@ -275,9 +275,9 @@ Use this to also give users access to all models, except for a few that you don'
 
 Setting model access groups on wildcard models is an Enterprise feature. 
 
-See pricing [here](https://llm.ai/#pricing)
+See pricing [here](https://hanzo.ai/#pricing)
 
-Get a trial key [here](https://llm.ai/#trial)
+Get a trial key [here](https://hanzo.ai/#trial)
 :::
 
 

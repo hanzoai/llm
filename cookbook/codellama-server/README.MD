@@ -8,7 +8,7 @@ Works with: Anthropic, Huggingface, Cohere, TogetherAI, Azure, OpenAI, etc.
 
 [![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/HuDPw-?referralCode=jch2ME)
 
-**LIVE DEMO** - https://llm.ai/playground
+**LIVE DEMO** - https://hanzo.ai/playground
 
 ## What does CodeLlama Server do
 
@@ -31,10 +31,10 @@ Works with: Anthropic, Huggingface, Cohere, TogetherAI, Azure, OpenAI, etc.
     <img src="imgs/promptlayer_logging.png" alt="Prompt Logging" width="900"/>
 
 
-- **Token Usage & Spend** - Track Input + Completion tokens used + Spend/model - https://docs.llm.ai/docs/token_usage
-- **Caching** - Provides in-memory cache + GPT-Cache integration for more advanced usage - https://docs.llm.ai/docs/caching/gpt_cache
+- **Token Usage & Spend** - Track Input + Completion tokens used + Spend/model - https://docs.hanzo.ai/docs/token_usage
+- **Caching** - Provides in-memory cache + GPT-Cache integration for more advanced usage - https://docs.hanzo.ai/docs/caching/gpt_cache
 
-- **Streaming & Async Support** - Return generators to stream text responses - TEST IT 👉 https://llm.ai/
+- **Streaming & Async Support** - Return generators to stream text responses - TEST IT 👉 https://hanzo.ai/
 
 ## API Endpoints
 

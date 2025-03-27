@@ -165,7 +165,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
               tooltip={
                 <span>
                   Allow using these credentials in pass through routes.{" "}
-                  <Link href="https://docs.llm.ai/docs/pass_through/vertex_ai" target="_blank">
+                  <Link href="https://docs.hanzo.ai/docs/pass_through/vertex_ai" target="_blank">
                     Learn more
                   </Link>
                 </span>
@@ -198,7 +198,7 @@ const AdvancedSettings: React.FC<AdvancedSettingsProps> = ({
                 <Text className="text-gray-600 text-sm">
                   Pass JSON of llm supported params{" "}
                   <Link
-                    href="https://docs.llm.ai/docs/completion/input"
+                    href="https://docs.hanzo.ai/docs/completion/input"
                     target="_blank"
                   >
                     llm.completion() call

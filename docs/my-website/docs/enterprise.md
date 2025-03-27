@@ -2,7 +2,7 @@
 For companies that need SSO, user management and professional support for LLM Proxy
 
 :::info
-Get free 7-day trial key [here](https://www.llm.ai/#trial)
+Get free 7-day trial key [here](https://www.hanzo.ai/#trial)
 :::
 
 Includes all enterprise features.
@@ -48,7 +48,7 @@ Self-Managed Enterprise deployments require our team to understand your exact ne
 
 ### How does deployment with Enterprise License work? 
 
-You just deploy [our docker image](https://docs.llm.ai/docs/proxy/deploy) and get an enterprise license key to add to your environment to unlock additional functionality (SSO, Prometheus metrics, etc.). 
+You just deploy [our docker image](https://docs.hanzo.ai/docs/proxy/deploy) and get an enterprise license key to add to your environment to unlock additional functionality (SSO, Prometheus metrics, etc.). 
 
 ```env
 LLM_LICENSE="eyJ..."

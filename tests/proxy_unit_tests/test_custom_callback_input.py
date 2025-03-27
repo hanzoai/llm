@@ -40,7 +40,7 @@ from llm.types.utils import LLMCommonStrings
 
 class CompletionCustomHandler(
     CustomLogger
-):  # https://docs.llm.ai/docs/observability/custom_callback#callback-class
+):  # https://docs.hanzo.ai/docs/observability/custom_callback#callback-class
     """
     The set of expected inputs to a custom handler for a
     """

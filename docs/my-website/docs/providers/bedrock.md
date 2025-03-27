@@ -1490,9 +1490,9 @@ print(response)
 | Cohere Embeddings - English | `embedding(model="bedrock/cohere.embed-english-v3", input=input)` | [here](https://github.com/hanzoai/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/cohere_transformation.py#L18)
 | Cohere Embeddings - Multilingual | `embedding(model="bedrock/cohere.embed-multilingual-v3", input=input)` | [here](https://github.com/hanzoai/llm/blob/f5905e100068e7a4d61441d7453d7cf5609c2121/llm/llms/bedrock/embed/cohere_transformation.py#L18)
 
-### Advanced - [Drop Unsupported Params](https://docs.llm.ai/docs/completion/drop_params#openai-proxy-usage)
+### Advanced - [Drop Unsupported Params](https://docs.hanzo.ai/docs/completion/drop_params#openai-proxy-usage)
 
-### Advanced - [Pass model/provider-specific Params](https://docs.llm.ai/docs/completion/provider_specific_params#proxy-usage)
+### Advanced - [Pass model/provider-specific Params](https://docs.hanzo.ai/docs/completion/provider_specific_params#proxy-usage)
 
 ## Image Generation
 Use this for stable diffusion, and amazon nova canvas on bedrock

@@ -27,7 +27,7 @@ class BudgetManager:
     ):
         self.client_type = client_type
         self.project_name = project_name
-        self.api_base = api_base or "https://api.llm.ai"
+        self.api_base = api_base or "https://api.hanzo.ai"
         self.headers = headers or {"Content-Type": "application/json"}
         ## load the data or init the initial dictionaries
         self.load_data()
@@ -143,7 +143,7 @@ class BudgetManager:
             ]  # if this throws an error try, model = completion_obj['model']
         else:
             raise ValueError(
-                "Either a chat completion object or the text response needs to be passed in. Learn more - https://docs.llm.ai/docs/budget_manager"
+                "Either a chat completion object or the text response needs to be passed in. Learn more - https://docs.hanzo.ai/docs/budget_manager"
             )
 
         self.user_dict[user]["current_cost"] = cost + self.user_dict[user].get(

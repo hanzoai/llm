@@ -434,7 +434,7 @@ GRANT ALL PRIVILEGES ON DATABASE llm TO your_username;
 
 **What is `llm_settings`?**
 
-LLM Proxy uses the [LLM Python SDK](https://docs.llm.ai/docs/routing) for handling LLM API calls. 
+LLM Proxy uses the [LLM Python SDK](https://docs.hanzo.ai/docs/routing) for handling LLM API calls. 
 
 `llm_settings` are module-level params for the LLM Python SDK (equivalent to doing `llm.<some_param>` on the SDK). You can see all params [here](https://github.com/hanzoai/llm/blob/208fe6cb90937f73e0def5c97ccb2359bf8a467b/llm/__init__.py#L114)
 

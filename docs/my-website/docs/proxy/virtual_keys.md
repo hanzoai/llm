@@ -6,8 +6,8 @@ Track Spend, and control model access via virtual keys for the proxy
 
 :::info
 
-- 🔑 [UI to Generate, Edit, Delete Keys (with SSO)](https://docs.llm.ai/docs/proxy/ui)
-- [Deploy LLM Proxy with Key Management](https://docs.llm.ai/docs/proxy/deploy#deploy-with-database)
+- 🔑 [UI to Generate, Edit, Delete Keys (with SSO)](https://docs.hanzo.ai/docs/proxy/ui)
+- [Deploy LLM Proxy with Key Management](https://docs.hanzo.ai/docs/proxy/deploy#deploy-with-database)
 - [Dockerfile.database for LLM Proxy + Key Management](https://github.com/hanzoai/llm/blob/main/docker/Dockerfile.database)
 
 
@@ -525,9 +525,9 @@ llm_settings:
 
 This is an Enterprise feature.
 
-[Enterprise Pricing](https://www.llm.ai/#pricing)
+[Enterprise Pricing](https://www.hanzo.ai/#pricing)
 
-[Get free 7-day trial key](https://www.llm.ai/#trial)
+[Get free 7-day trial key](https://www.hanzo.ai/#trial)
 
 
 :::
@@ -555,7 +555,7 @@ curl 'http://localhost:4000/key/sk-1234/regenerate' \
 
 **Read More**
 
-- [Write rotated keys to secrets manager](https://docs.llm.ai/docs/secret#aws-secret-manager)
+- [Write rotated keys to secrets manager](https://docs.hanzo.ai/docs/secret#aws-secret-manager)
 
 [**👉 API REFERENCE DOCS**](https://llm-api.up.railway.app/#/key%20management/regenerate_key_fn_key__key__regenerate_post)
 

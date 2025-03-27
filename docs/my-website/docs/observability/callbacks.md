@@ -6,7 +6,7 @@ llm provides `input_callbacks`, `success_callbacks` and `failure_callbacks`, mak
 
 llm supports:
 
-- [Custom Callback Functions](https://docs.llm.ai/docs/observability/custom_callback)
+- [Custom Callback Functions](https://docs.hanzo.ai/docs/observability/custom_callback)
 - [Lunary](https://lunary.ai/docs)
 - [Langfuse](https://langfuse.com/docs)
 - [LangSmith](https://www.langchain.com/langsmith)

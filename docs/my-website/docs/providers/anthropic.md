@@ -103,7 +103,7 @@ export ANTHROPIC_API_KEY="your-api-key"
 ```yaml
 model_list:
   - model_name: claude-3 ### RECEIVED MODEL NAME ###
-    llm_params: # all params accepted by llm.completion() - https://docs.llm.ai/docs/completion/input
+    llm_params: # all params accepted by llm.completion() - https://docs.hanzo.ai/docs/completion/input
       model: claude-3-opus-20240229 ### MODEL NAME sent to `llm.completion()` ###
       api_key: "os.environ/ANTHROPIC_API_KEY" # does os.getenv("AZURE_API_KEY_EU")
 ```

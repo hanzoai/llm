@@ -3,4 +3,4 @@
 Customize the Admin UI to your companies branding / logo
 ![Group 204](https://github.com/hanzoai/llm/assets/29436595/3b7dbfc2-6fcd-42af-996d-f734fb8f461b)
 
-## Docs to set up Custom Admin UI [here](https://docs.llm.ai/docs/proxy/ui)
+## Docs to set up Custom Admin UI [here](https://docs.hanzo.ai/docs/proxy/ui)

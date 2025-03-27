@@ -1,13 +1,13 @@
-# Hosted Cache - api.llm.ai
+# Hosted Cache - api.hanzo.ai
 
-Use api.llm.ai for caching `completion()` and `embedding()` responses
+Use api.hanzo.ai for caching `completion()` and `embedding()` responses
 
 ## Quick Start Usage - Completion
 ```python
 import llm
 from llm import completion
 from llm.caching.caching import Cache
-llm.cache = Cache(type="hosted") # init cache to use api.llm.ai
+llm.cache = Cache(type="hosted") # init cache to use api.hanzo.ai
 
 # Make completion calls
 response1 = completion(

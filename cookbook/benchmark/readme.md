@@ -123,7 +123,7 @@ pip install llm click tqdm tabulate termcolor
 ### Configuration
 In `benchmark/benchmark.py` select your LLMs, LLM API Key and questions
 
-Supported LLMs: https://docs.llm.ai/docs/providers
+Supported LLMs: https://docs.hanzo.ai/docs/providers
 
 ```python
 # Define the list of models to benchmark

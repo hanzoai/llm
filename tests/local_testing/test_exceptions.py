@@ -1199,7 +1199,7 @@ def test_context_window_exceeded_error_from_llm_proxy():
 
     args = {
         "response": Response(status_code=400, text="Bad Request"),
-        "error_str": "Error code: 400 - {'error': {'message': \"llm.ContextWindowExceededError: llm.BadRequestError: this is a mock context window exceeded error\\nmodel=gpt-3.5-turbo. context_window_fallbacks=None. fallbacks=None.\\n\\nSet 'context_window_fallback' - https://docs.llm.ai/docs/routing#fallbacks\\nReceived Model Group=gpt-3.5-turbo\\nAvailable Model Group Fallbacks=None\", 'type': None, 'param': None, 'code': '400'}}",
+        "error_str": "Error code: 400 - {'error': {'message': \"llm.ContextWindowExceededError: llm.BadRequestError: this is a mock context window exceeded error\\nmodel=gpt-3.5-turbo. context_window_fallbacks=None. fallbacks=None.\\n\\nSet 'context_window_fallback' - https://docs.hanzo.ai/docs/routing#fallbacks\\nReceived Model Group=gpt-3.5-turbo\\nAvailable Model Group Fallbacks=None\", 'type': None, 'param': None, 'code': '400'}}",
         "model": "gpt-3.5-turbo",
         "custom_llm_provider": "llm_proxy",
     }

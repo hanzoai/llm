@@ -94,7 +94,7 @@ class OpenAIImageVariationsHandler:
                 raw_response=httpx.Response(
                     status_code=200,
                     request=httpx.Request(
-                        method="GET", url="https://llm.ai"
+                        method="GET", url="https://hanzo.ai"
                     ),  # mock request object
                 ),
                 logging_obj=logging_obj,
@@ -221,7 +221,7 @@ class OpenAIImageVariationsHandler:
                 raw_response=httpx.Response(
                     status_code=200,
                     request=httpx.Request(
-                        method="GET", url="https://llm.ai"
+                        method="GET", url="https://hanzo.ai"
                     ),  # mock request object
                 ),
                 logging_obj=logging_obj,

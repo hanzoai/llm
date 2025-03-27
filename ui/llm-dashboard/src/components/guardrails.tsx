@@ -56,7 +56,7 @@ const GuardrailsPanel: React.FC<GuardrailsPanelProps> = ({ accessToken }) => {
         <Text className="mb-4">
         Configured guardrails and their current status. Setup guardrails in config.yaml.{" "}
         <a 
-            href="https://docs.llm.ai/docs/proxy/guardrails/quick_start" 
+            href="https://docs.hanzo.ai/docs/proxy/guardrails/quick_start" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="text-blue-500 hover:text-blue-700 underline"

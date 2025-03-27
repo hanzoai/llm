@@ -18,7 +18,7 @@ Add the following to your proxy env
 SMTP_HOST="smtp.resend.com"
 SMTP_USERNAME="resend"
 SMTP_PASSWORD="*******"
-SMTP_SENDER_EMAIL="support@alerts.llm.ai"  # email to send alerts from: `support@alerts.llm.ai`
+SMTP_SENDER_EMAIL="support@alerts.hanzo.ai"  # email to send alerts from: `support@alerts.hanzo.ai`
 ```
 
 Add `email` to your proxy config.yaml under `general_settings`

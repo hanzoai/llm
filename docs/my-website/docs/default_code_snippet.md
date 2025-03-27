@@ -10,7 +10,7 @@ import TokenComponent from '../src/components/queryParamToken.js'
 
 This section assumes you've already added your API keys in <TokenComponent/>
 
-If you want to use the non-hosted version, [go here](https://docs.llm.ai/docs/#quick-start)
+If you want to use the non-hosted version, [go here](https://docs.hanzo.ai/docs/#quick-start)
 
 :::
 

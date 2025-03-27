@@ -23,7 +23,7 @@ Get a slack webhook url from https://api.slack.com/messaging/webhooks
 
 ## Quick Start
 ### Create a custom Callback to log to slack
-We create a custom callback, to log to slack webhooks, see [custom callbacks on llm](https://docs.llm.ai/docs/observability/custom_callback)
+We create a custom callback, to log to slack webhooks, see [custom callbacks on llm](https://docs.hanzo.ai/docs/observability/custom_callback)
 ```python
 def send_slack_alert(
         kwargs,

@@ -141,10 +141,10 @@ class CustomLLM(BaseLLM):
         model_response: ImageResponse,
         api_key: Optional[
             str
-        ],  # dynamically set api_key - https://docs.llm.ai/docs/set_keys#api_key
+        ],  # dynamically set api_key - https://docs.hanzo.ai/docs/set_keys#api_key
         api_base: Optional[
             str
-        ],  # dynamically set api_base - https://docs.llm.ai/docs/set_keys#api_base
+        ],  # dynamically set api_base - https://docs.hanzo.ai/docs/set_keys#api_base
         optional_params: dict,
         logging_obj: Any,
         timeout: Optional[Union[float, httpx.Timeout]] = None,

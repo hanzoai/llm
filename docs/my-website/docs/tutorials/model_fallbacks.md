@@ -32,7 +32,7 @@ for model in model_fallback_list:
 ```
 
 ## 3. Context Window Exceptions 
-LLM provides a sub-class of the InvalidRequestError class for Context Window Exceeded errors ([docs](https://docs.llm.ai/docs/exception_mapping)).
+LLM provides a sub-class of the InvalidRequestError class for Context Window Exceeded errors ([docs](https://docs.hanzo.ai/docs/exception_mapping)).
 
 Implement model fallbacks based on context window exceptions. 
 

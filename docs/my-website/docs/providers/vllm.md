@@ -7,9 +7,9 @@ LLM supports all models on VLLM.
 
 | Property | Details |
 |-------|-------|
-| Description | vLLM is a fast and easy-to-use library for LLM inference and serving. [Docs](https://docs.vllm.ai/en/latest/index.html) |
+| Description | vLLM is a fast and easy-to-use library for LLM inference and serving. [Docs](https://docs.vhanzo.ai/en/latest/index.html) |
 | Provider Route on LLM | `hosted_vllm/` (for OpenAI compatible server), `vllm/` (for vLLM sdk usage) |
-| Provider Doc | [vLLM ↗](https://docs.vllm.ai/en/latest/index.html) |
+| Provider Doc | [vLLM ↗](https://docs.vhanzo.ai/en/latest/index.html) |
 | Supported Endpoints | `/chat/completions`, `/embeddings`, `/completions` |
 
 

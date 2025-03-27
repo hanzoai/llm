@@ -123,7 +123,7 @@ const OrganizationsTable: React.FC<OrganizationsTableProps> = ({
   if (!premiumUser) {
     return (
       <div>
-        <Text>This is a LLM Enterprise feature, and requires a valid key to use. Get a trial key <a href="https://llm.ai/pricing" target="_blank" rel="noopener noreferrer">here</a>.</Text>
+        <Text>This is a LLM Enterprise feature, and requires a valid key to use. Get a trial key <a href="https://hanzo.ai/pricing" target="_blank" rel="noopener noreferrer">here</a>.</Text>
       </div>
     );
   }

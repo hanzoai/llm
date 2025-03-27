@@ -228,7 +228,7 @@ Model Name                  | Function Call                                     
 
 
 ## Passing additional params - max_tokens, temperature 
-See all llm.completion supported params [here](https://docs.llm.ai/docs/completion/input)
+See all llm.completion supported params [here](https://docs.hanzo.ai/docs/completion/input)
 
 ```python
 # !pip install llm
@@ -259,7 +259,7 @@ response = completion(
 ```
 
 ## Passings Replicate specific params
-Send params [not supported by `llm.completion()`](https://docs.llm.ai/docs/completion/input) but supported by Replicate by passing them to `llm.completion`
+Send params [not supported by `llm.completion()`](https://docs.hanzo.ai/docs/completion/input) but supported by Replicate by passing them to `llm.completion`
 
 Example `seed`, `min_tokens` are Replicate specific param
 

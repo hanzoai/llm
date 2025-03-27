@@ -76,7 +76,7 @@ os.environ['ANTHROPIC_API_KEY'] = ""
 ``` python
 results = [] # for storing results
 
-models = ['gpt-3.5-turbo', 'claude-2'] # define what models you're testing, see: https://docs.llm.ai/docs/providers
+models = ['gpt-3.5-turbo', 'claude-2'] # define what models you're testing, see: https://docs.hanzo.ai/docs/providers
 for question in questions:
     row = [question]
     for model in models:

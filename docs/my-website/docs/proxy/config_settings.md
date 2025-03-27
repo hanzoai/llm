@@ -407,7 +407,7 @@ router_settings:
 | HCP_VAULT_TOKEN | Token for [Hashicorp Vault Secret Manager](../secret.md#hashicorp-vault)
 | HCP_VAULT_CERT_ROLE | Role for [Hashicorp Vault Secret Manager Auth](../secret.md#hashicorp-vault)
 | HELICONE_API_KEY | API key for Helicone service
-| HOSTNAME | Hostname for the server, this will be [emitted to `datadog` logs](https://docs.llm.ai/docs/proxy/logging#datadog)
+| HOSTNAME | Hostname for the server, this will be [emitted to `datadog` logs](https://docs.hanzo.ai/docs/proxy/logging#datadog)
 | HUGGINGFACE_API_BASE | Base URL for Hugging Face API
 | IAM_TOKEN_DB_AUTH | IAM token for database authentication
 | JSON_LOGS | Enable JSON formatted logging
@@ -473,7 +473,7 @@ router_settings:
 | PHOENIX_API_KEY | API key for Arize Phoenix
 | PHOENIX_COLLECTOR_ENDPOINT | API endpoint for Arize Phoenix
 | PHOENIX_COLLECTOR_HTTP_ENDPOINT | API http endpoint for Arize Phoenix
-| POD_NAME | Pod name for the server, this will be [emitted to `datadog` logs](https://docs.llm.ai/docs/proxy/logging#datadog) as `POD_NAME` 
+| POD_NAME | Pod name for the server, this will be [emitted to `datadog` logs](https://docs.hanzo.ai/docs/proxy/logging#datadog) as `POD_NAME` 
 | PREDIBASE_API_BASE | Base URL for Predibase API
 | PRESIDIO_ANALYZER_API_BASE | Base URL for Presidio Analyzer service
 | PRESIDIO_ANONYMIZER_API_BASE | Base URL for Presidio Anonymizer service

@@ -65,7 +65,7 @@ const APIRef: React.FC<ApiRefProps> = ({
 import openai
 client = openai.OpenAI(
     api_key="your_api_key",
-    base_url="${base_url}" # LLM Proxy is OpenAI compatible, Read More: https://docs.llm.ai/docs/proxy/user_keys
+    base_url="${base_url}" # LLM Proxy is OpenAI compatible, Read More: https://docs.hanzo.ai/docs/proxy/user_keys
 )
 
 response = client.chat.completions.create(

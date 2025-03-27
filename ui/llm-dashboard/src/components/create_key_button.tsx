@@ -657,7 +657,7 @@ const CreateKey: React.FC<CreateKeyProps> = ({
                       Guardrails{' '}
                       <Tooltip title="Apply safety guardrails to this key to filter content or enforce policies">
                         <a 
-                          href="https://docs.llm.ai/docs/proxy/guardrails/quick_start" 
+                          href="https://docs.hanzo.ai/docs/proxy/guardrails/quick_start" 
                           target="_blank" 
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()} // Prevent accordion from collapsing when clicking link

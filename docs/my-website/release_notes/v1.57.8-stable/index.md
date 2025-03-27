@@ -34,13 +34,13 @@ hide_table_of_contents: false
 
 ## LLM Translation Improvements
 
-1. Deepgram STT support. [Start Here](https://docs.llm.ai/docs/providers/deepgram)
-2. OpenAI Moderations - `omni-moderation-latest` support. [Start Here](https://docs.llm.ai/docs/moderation)
-3. Azure O1 - fake streaming support. This ensures if a `stream=true` is passed, the response is streamed. [Start Here](https://docs.llm.ai/docs/providers/azure)
+1. Deepgram STT support. [Start Here](https://docs.hanzo.ai/docs/providers/deepgram)
+2. OpenAI Moderations - `omni-moderation-latest` support. [Start Here](https://docs.hanzo.ai/docs/moderation)
+3. Azure O1 - fake streaming support. This ensures if a `stream=true` is passed, the response is streamed. [Start Here](https://docs.hanzo.ai/docs/providers/azure)
 4. Anthropic - non-whitespace char stop sequence handling - [PR](https://github.com/hanzoai/llm/pull/7484)
-5. Azure OpenAI - support entrata id username + password based auth. [Start Here](https://docs.llm.ai/docs/providers/azure#entrata-id---use-tenant_id-client_id-client_secret)
-6. LM Studio - embedding route support. [Start Here](https://docs.llm.ai/docs/providers/lm-studio)
-7. WatsonX - ZenAPIKeyAuth support. [Start Here](https://docs.llm.ai/docs/providers/watsonx)
+5. Azure OpenAI - support entrata id username + password based auth. [Start Here](https://docs.hanzo.ai/docs/providers/azure#entrata-id---use-tenant_id-client_id-client_secret)
+6. LM Studio - embedding route support. [Start Here](https://docs.hanzo.ai/docs/providers/lm-studio)
+7. WatsonX - ZenAPIKeyAuth support. [Start Here](https://docs.hanzo.ai/docs/providers/watsonx)
     
 ## Prompt Management Improvements
 
@@ -49,7 +49,7 @@ hide_table_of_contents: false
 3. Support for using load balanced models 
 4. Support for loading optional params from prompt manager 
 
-[Start Here](https://docs.llm.ai/docs/proxy/prompt_management)
+[Start Here](https://docs.hanzo.ai/docs/proxy/prompt_management)
 
 ## Finetuning + Batch APIs Improvements
 
@@ -66,15 +66,15 @@ Handles two types of alerts:
 - High Number of Hanging LLM Requests. Configure X hangs in Y seconds to trigger an alert.
 
 
-[Start Here](https://docs.llm.ai/docs/proxy/pagerduty)
+[Start Here](https://docs.hanzo.ai/docs/proxy/pagerduty)
 
 ## Prometheus Improvements
 
-Added support for tracking latency/spend/tokens based on custom metrics. [Start Here](https://docs.llm.ai/docs/proxy/prometheus#beta-custom-metrics)
+Added support for tracking latency/spend/tokens based on custom metrics. [Start Here](https://docs.hanzo.ai/docs/proxy/prometheus#beta-custom-metrics)
 
 ## *NEW* Hashicorp Secret Manager Support 
 
-Support for reading credentials + writing LLM API keys. [Start Here](https://docs.llm.ai/docs/secret#hashicorp-vault)
+Support for reading credentials + writing LLM API keys. [Start Here](https://docs.hanzo.ai/docs/secret#hashicorp-vault)
 
 ## Management Endpoints / UI Improvements
 

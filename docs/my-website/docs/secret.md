@@ -8,7 +8,7 @@ import Image from '@theme/IdealImage';
 
 ✨ **This is an Enterprise Feature**
 
-[Enterprise Pricing](https://www.llm.ai/#pricing)
+[Enterprise Pricing](https://www.hanzo.ai/#pricing)
 
 [Contact us here to get a free trial](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
 

@@ -11,4 +11,4 @@ This folder contains the `json` for creating Grafana Dashboards
 
 
 ### Pre-Requisites
-- Setup LLM Proxy Prometheus Metrics https://docs.llm.ai/docs/proxy/prometheus 
+- Setup LLM Proxy Prometheus Metrics https://docs.hanzo.ai/docs/proxy/prometheus 

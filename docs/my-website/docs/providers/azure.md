@@ -1077,7 +1077,7 @@ print(response)
 
 
 ### Parallel Function calling
-See a detailed walthrough of parallel function calling with llm [here](https://docs.llm.ai/docs/completion/function_call)
+See a detailed walthrough of parallel function calling with llm [here](https://docs.hanzo.ai/docs/completion/function_call)
 ```python
 # set Azure env variables
 import os

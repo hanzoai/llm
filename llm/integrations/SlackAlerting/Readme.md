@@ -10,4 +10,4 @@ This folder contains the Slack Alerting integration for LLM Gateway.
 - `utils.py`: This file contains common utils used specifically for slack alerting
 
 ## Further Reading
-- [Doc setting up Alerting on LLM Proxy (Gateway)](https://docs.llm.ai/docs/proxy/alerting)
+- [Doc setting up Alerting on LLM Proxy (Gateway)](https://docs.hanzo.ai/docs/proxy/alerting)

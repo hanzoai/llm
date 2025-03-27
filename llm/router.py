@@ -1806,7 +1806,7 @@ class Router:
             )
 
             self.total_calls[model_name] += 1
-            response = llm.aimage_generation(
+            response = hanzo.aimage_generation(
                 **{
                     **data,
                     "prompt": prompt,
@@ -1843,12 +1843,12 @@ class Router:
 
             self.success_calls[model_name] += 1
             verbose_router_logger.info(
-                f"llm.aimage_generation(model={model_name})\033[32m 200 OK\033[0m"
+                f"hanzo.aimage_generation(model={model_name})\033[32m 200 OK\033[0m"
             )
             return response
         except Exception as e:
             verbose_router_logger.info(
-                f"llm.aimage_generation(model={model_name})\033[31m Exception {str(e)}\033[0m"
+                f"hanzo.aimage_generation(model={model_name})\033[31m Exception {str(e)}\033[0m"
             )
             if model_name is not None:
                 self.fail_calls[model_name] += 1
@@ -3234,7 +3234,7 @@ class Router:
                         return response
 
                     else:
-                        error_message = "model={}. context_window_fallbacks={}. fallbacks={}.\n\nSet 'context_window_fallback' - https://docs.llm.ai/docs/routing#fallbacks".format(
+                        error_message = "model={}. context_window_fallbacks={}. fallbacks={}.\n\nSet 'context_window_fallback' - https://docs.hanzo.ai/docs/routing#fallbacks".format(
                             model_group, context_window_fallbacks, fallbacks
                         )
                         verbose_router_logger.info(
@@ -3269,7 +3269,7 @@ class Router:
                         )
                         return response
                     else:
-                        error_message = "model={}. content_policy_fallback={}. fallbacks={}.\n\nSet 'content_policy_fallback' - https://docs.llm.ai/docs/routing#fallbacks".format(
+                        error_message = "model={}. content_policy_fallback={}. fallbacks={}.\n\nSet 'content_policy_fallback' - https://docs.hanzo.ai/docs/routing#fallbacks".format(
                             model_group, content_policy_fallbacks, fallbacks
                         )
                         verbose_router_logger.info(
@@ -4706,7 +4706,7 @@ class Router:
         ## SET MODEL TO 'model=' - if base_model is None + not azure
         if custom_llm_provider == "azure" and base_model is None:
             verbose_router_logger.error(
-                "Could not identify azure model. Set azure 'base_model' for accurate max tokens, cost tracking, etc.- https://docs.llm.ai/docs/proxy/cost_tracking#spend-tracking-for-azure-openai-models"
+                "Could not identify azure model. Set azure 'base_model' for accurate max tokens, cost tracking, etc.- https://docs.hanzo.ai/docs/proxy/cost_tracking#spend-tracking-for-azure-openai-models"
             )
         elif custom_llm_provider != "azure":
             model = _model
@@ -5503,7 +5503,7 @@ class Router:
         """
         Filter out model in model group, if:
 
-        - model context window < message length. For azure openai models, requires 'base_model' is set. - https://docs.llm.ai/docs/proxy/cost_tracking#spend-tracking-for-azure-openai-models
+        - model context window < message length. For azure openai models, requires 'base_model' is set. - https://docs.hanzo.ai/docs/proxy/cost_tracking#spend-tracking-for-azure-openai-models
         - filter models above rpm limits
         - if region given, filter out models not in that region / unknown region
         - [TODO] function call and model doesn't support function calling

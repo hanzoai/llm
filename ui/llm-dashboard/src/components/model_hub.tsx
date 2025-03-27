@@ -269,7 +269,7 @@ const ModelHub: React.FC<ModelHubProps> = ({
 import openai
 client = openai.OpenAI(
     api_key="your_api_key",
-    base_url="http://0.0.0.0:4000" # LLM Proxy is OpenAI compatible, Read More: https://docs.llm.ai/docs/proxy/user_keys
+    base_url="http://0.0.0.0:4000" # LLM Proxy is OpenAI compatible, Read More: https://docs.hanzo.ai/docs/proxy/user_keys
 )
 
 response = client.chat.completions.create(

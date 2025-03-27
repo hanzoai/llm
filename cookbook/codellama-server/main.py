@@ -19,7 +19,7 @@ dotenv.load_dotenv()
 ######### ENVIRONMENT VARIABLES ##########
 verbose = True
 
-# llm.caching_with_models = True # CACHING: caching_with_models Keys in the cache are messages + model. - to learn more: https://docs.llm.ai/docs/caching/
+# llm.caching_with_models = True # CACHING: caching_with_models Keys in the cache are messages + model. - to learn more: https://docs.hanzo.ai/docs/caching/
 ######### PROMPT LOGGING ##########
 os.environ["PROMPTLAYER_API_KEY"] = (
     ""  # set your promptlayer key here - https://promptlayer.com/

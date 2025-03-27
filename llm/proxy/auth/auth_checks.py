@@ -909,7 +909,7 @@ async def get_team_object(
     """
     if prisma_client is None:
         raise Exception(
-            "No DB Connected. See - https://docs.llm.ai/docs/proxy/virtual_keys"
+            "No DB Connected. See - https://docs.hanzo.ai/docs/proxy/virtual_keys"
         )
 
     # check if in cache
@@ -965,7 +965,7 @@ async def get_key_object(
     """
     if prisma_client is None:
         raise Exception(
-            "No DB Connected. See - https://docs.llm.ai/docs/proxy/virtual_keys"
+            "No DB Connected. See - https://docs.hanzo.ai/docs/proxy/virtual_keys"
         )
 
     # check if in cache
@@ -1073,7 +1073,7 @@ async def get_org_object(
     """
     if prisma_client is None:
         raise Exception(
-            "No DB Connected. See - https://docs.llm.ai/docs/proxy/virtual_keys"
+            "No DB Connected. See - https://docs.hanzo.ai/docs/proxy/virtual_keys"
         )
 
     # check if in cache

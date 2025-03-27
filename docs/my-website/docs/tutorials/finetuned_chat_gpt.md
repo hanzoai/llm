@@ -25,7 +25,7 @@ print(response.choices[0].message)
 
 ## Usage - Setting OpenAI Organization ID
 LLM allows you to specify your OpenAI Organization when calling OpenAI LLMs. More details here: 
-[setting Organization ID](https://docs.llm.ai/docs/providers/openai#setting-organization-id-for-completion-calls)
+[setting Organization ID](https://docs.hanzo.ai/docs/providers/openai#setting-organization-id-for-completion-calls)
 This can be set in one of the following ways:
 - Environment Variable `OPENAI_ORGANIZATION`
 - Params to `llm.completion(model=model, organization="your-organization-id")`

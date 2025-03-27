@@ -426,7 +426,7 @@ Expected Response Headers from OpenAI
 ```
 
 ### Parallel Function calling
-See a detailed walthrough of parallel function calling with llm [here](https://docs.llm.ai/docs/completion/function_call)
+See a detailed walthrough of parallel function calling with llm [here](https://docs.hanzo.ai/docs/completion/function_call)
 ```python
 import llm
 import json

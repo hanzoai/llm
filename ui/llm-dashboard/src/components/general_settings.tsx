@@ -110,7 +110,7 @@ async function testFallbackModelResponse(
           href="#"
           onClick={() =>
             window.open(
-              "https://docs.llm.ai/docs/proxy/reliability",
+              "https://docs.hanzo.ai/docs/proxy/reliability",
               "_blank"
             )
           }

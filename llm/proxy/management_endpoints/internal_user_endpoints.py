@@ -174,16 +174,16 @@ async def new_user(
     - auto_create_key: bool - Default=True. Flag used for returning a key as part of the /user/new response
     - aliases: Optional[dict] - Model aliases for the user - [Docs](https://llm.vercel.app/docs/proxy/virtual_keys#model-aliases)
     - config: Optional[dict] - [DEPRECATED PARAM] User-specific config.
-    - allowed_cache_controls: Optional[list] - List of allowed cache control values. Example - ["no-cache", "no-store"]. See all values - https://docs.llm.ai/docs/proxy/caching#turn-on--off-caching-per-request-
+    - allowed_cache_controls: Optional[list] - List of allowed cache control values. Example - ["no-cache", "no-store"]. See all values - https://docs.hanzo.ai/docs/proxy/caching#turn-on--off-caching-per-request-
     - blocked: Optional[bool] - [Not Implemented Yet] Whether the user is blocked.
     - guardrails: Optional[List[str]] - [Not Implemented Yet] List of active guardrails for the user
     - permissions: Optional[dict] - [Not Implemented Yet] User-specific permissions, eg. turning off pii masking.
     - metadata: Optional[dict] - Metadata for user, store information for user. Example metadata = {"team": "core-infra", "app": "app2", "email": "z@hanzo.ai" }
     - max_parallel_requests: Optional[int] - Rate limit a user based on the number of parallel requests. Raises 429 error, if user's parallel requests > x.
     - soft_budget: Optional[float] - Get alerts when user crosses given budget, doesn't block requests.
-    - model_max_budget: Optional[dict] - Model-specific max budget for user. [Docs](https://docs.llm.ai/docs/proxy/users#add-model-specific-budgets-to-keys)
-    - model_rpm_limit: Optional[float] - Model-specific rpm limit for user. [Docs](https://docs.llm.ai/docs/proxy/users#add-model-specific-limits-to-keys)
-    - model_tpm_limit: Optional[float] - Model-specific tpm limit for user. [Docs](https://docs.llm.ai/docs/proxy/users#add-model-specific-limits-to-keys)
+    - model_max_budget: Optional[dict] - Model-specific max budget for user. [Docs](https://docs.hanzo.ai/docs/proxy/users#add-model-specific-budgets-to-keys)
+    - model_rpm_limit: Optional[float] - Model-specific rpm limit for user. [Docs](https://docs.hanzo.ai/docs/proxy/users#add-model-specific-limits-to-keys)
+    - model_tpm_limit: Optional[float] - Model-specific tpm limit for user. [Docs](https://docs.hanzo.ai/docs/proxy/users#add-model-specific-limits-to-keys)
     - spend: Optional[float] - Amount spent by user. Default is 0. Will be updated by proxy whenever user is used. You can set duration as seconds ("30s"), minutes ("30m"), hours ("30h"), days ("30d"), months ("1mo").
     - team_id: Optional[str] - [DEPRECATED PARAM] The team id of the user. Default is None. 
     - duration: Optional[str] - Duration for the key auto-created on `/user/new`. Default is None.
@@ -273,7 +273,7 @@ async def new_user(
             # check if user has setup email alerting
             if "email" not in general_settings.get("alerting", []):
                 raise ValueError(
-                    "Email alerting not setup on config.yaml. Please set `alerting=['email']. \nDocs: https://docs.llm.ai/docs/proxy/email`"
+                    "Email alerting not setup on config.yaml. Please set `alerting=['email']. \nDocs: https://docs.hanzo.ai/docs/proxy/email`"
                 )
 
             event = WebhookEvent(
@@ -428,7 +428,7 @@ async def user_info(
     try:
         if prisma_client is None:
             raise Exception(
-                "Database not connected. Connect a database to your proxy - https://docs.llm.ai/docs/simple_proxy#managing-auth---virtual-keys"
+                "Database not connected. Connect a database to your proxy - https://docs.hanzo.ai/docs/simple_proxy#managing-auth---virtual-keys"
             )
         if (
             user_id is None
@@ -547,7 +547,7 @@ async def _get_user_info_for_proxy_admin():
     """
     if prisma_client is None:
         raise Exception(
-            "Database not connected. Connect a database to your proxy - https://docs.llm.ai/docs/simple_proxy#managing-auth---virtual-keys"
+            "Database not connected. Connect a database to your proxy - https://docs.hanzo.ai/docs/simple_proxy#managing-auth---virtual-keys"
         )
 
     results = await prisma_client.db.query_raw(sql_query)
@@ -702,16 +702,16 @@ async def user_update(
         - auto_create_key: bool - Default=True. Flag used for returning a key as part of the /user/new response
         - aliases: Optional[dict] - Model aliases for the user - [Docs](https://llm.vercel.app/docs/proxy/virtual_keys#model-aliases)
         - config: Optional[dict] - [DEPRECATED PARAM] User-specific config.
-        - allowed_cache_controls: Optional[list] - List of allowed cache control values. Example - ["no-cache", "no-store"]. See all values - https://docs.llm.ai/docs/proxy/caching#turn-on--off-caching-per-request-
+        - allowed_cache_controls: Optional[list] - List of allowed cache control values. Example - ["no-cache", "no-store"]. See all values - https://docs.hanzo.ai/docs/proxy/caching#turn-on--off-caching-per-request-
         - blocked: Optional[bool] - [Not Implemented Yet] Whether the user is blocked.
         - guardrails: Optional[List[str]] - [Not Implemented Yet] List of active guardrails for the user
         - permissions: Optional[dict] - [Not Implemented Yet] User-specific permissions, eg. turning off pii masking.
         - metadata: Optional[dict] - Metadata for user, store information for user. Example metadata = {"team": "core-infra", "app": "app2", "email": "z@hanzo.ai" }
         - max_parallel_requests: Optional[int] - Rate limit a user based on the number of parallel requests. Raises 429 error, if user's parallel requests > x.
         - soft_budget: Optional[float] - Get alerts when user crosses given budget, doesn't block requests.
-        - model_max_budget: Optional[dict] - Model-specific max budget for user. [Docs](https://docs.llm.ai/docs/proxy/users#add-model-specific-budgets-to-keys)
-        - model_rpm_limit: Optional[float] - Model-specific rpm limit for user. [Docs](https://docs.llm.ai/docs/proxy/users#add-model-specific-limits-to-keys)
-        - model_tpm_limit: Optional[float] - Model-specific tpm limit for user. [Docs](https://docs.llm.ai/docs/proxy/users#add-model-specific-limits-to-keys)
+        - model_max_budget: Optional[dict] - Model-specific max budget for user. [Docs](https://docs.hanzo.ai/docs/proxy/users#add-model-specific-budgets-to-keys)
+        - model_rpm_limit: Optional[float] - Model-specific rpm limit for user. [Docs](https://docs.hanzo.ai/docs/proxy/users#add-model-specific-limits-to-keys)
+        - model_tpm_limit: Optional[float] - Model-specific tpm limit for user. [Docs](https://docs.hanzo.ai/docs/proxy/users#add-model-specific-limits-to-keys)
         - spend: Optional[float] - Amount spent by user. Default is 0. Will be updated by proxy whenever user is used. You can set duration as seconds ("30s"), minutes ("30m"), hours ("30h"), days ("30d"), months ("1mo").
         - team_id: Optional[str] - [DEPRECATED PARAM] The team id of the user. Default is None. 
         - duration: Optional[str] - [NOT IMPLEMENTED].

@@ -58,7 +58,7 @@ You can:
 
 **Step-by step tutorial on setting, resetting budgets on Teams here (API or using Admin UI)**
 
-👉 [https://docs.llm.ai/docs/proxy/team_budgets](https://docs.llm.ai/docs/proxy/team_budgets)
+👉 [https://docs.hanzo.ai/docs/proxy/team_budgets](https://docs.hanzo.ai/docs/proxy/team_budgets)
 
 :::
 
@@ -332,7 +332,7 @@ Apply model specific budgets on a key. Example:
 
 :::info
 
-✨ This is an Enterprise only feature [Get Started with Enterprise here](https://www.llm.ai/#pricing)
+✨ This is an Enterprise only feature [Get Started with Enterprise here](https://www.hanzo.ai/#pricing)
 
 :::
 

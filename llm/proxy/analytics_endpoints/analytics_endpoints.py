@@ -66,7 +66,7 @@ async def get_global_activity(
     try:
         if prisma_client is None:
             raise ValueError(
-                "Database not connected. Connect a database to your proxy - https://docs.llm.ai/docs/simple_proxy#managing-auth---virtual-keys"
+                "Database not connected. Connect a database to your proxy - https://docs.hanzo.ai/docs/simple_proxy#managing-auth---virtual-keys"
             )
 
         sql_query = """

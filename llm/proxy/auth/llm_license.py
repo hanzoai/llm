@@ -18,7 +18,7 @@ class LicenseCheck:
     - Returns if license is valid
     """
 
-    base_url = "https://license.llm.ai"
+    base_url = "https://license.hanzo.ai"
 
     def __init__(self) -> None:
         self.license_str = os.getenv("LLM_LICENSE", None)

@@ -4,7 +4,7 @@ import TabItem from '@theme/TabItem';
 
 # Embeddings - `/embeddings`
 
-See supported Embedding Providers & Models [here](https://docs.llm.ai/docs/embedding/supported_embedding)
+See supported Embedding Providers & Models [here](https://docs.hanzo.ai/docs/embedding/supported_embedding)
 
 
 ## Quick start

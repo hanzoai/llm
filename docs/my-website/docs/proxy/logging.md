@@ -1046,7 +1046,7 @@ Log LLM Logs to [Google Cloud Storage Buckets](https://cloud.google.com/storage?
 | Property | Details |
 |----------|---------|
 | Description | Log LLM Input/Output to cloud storage buckets |
-| Load Test Benchmarks | [Benchmarks](https://docs.llm.ai/docs/benchmarks) |
+| Load Test Benchmarks | [Benchmarks](https://docs.hanzo.ai/docs/benchmarks) |
 | Google Docs on Cloud Storage | [Google Cloud Storage](https://cloud.google.com/storage?hl=en) |
 
 
@@ -1567,7 +1567,7 @@ Use this when you want to run custom callbacks in `python`
 
 #### Step 1 - Create your custom `llm` callback class
 
-We use `llm.integrations.custom_logger` for this, **more details about llm custom callbacks [here](https://docs.llm.ai/docs/observability/custom_callback)**
+We use `llm.integrations.custom_logger` for this, **more details about llm custom callbacks [here](https://docs.hanzo.ai/docs/observability/custom_callback)**
 
 Define your custom callback class in a python file.
 
@@ -1768,7 +1768,7 @@ class MyCustomHandler(CustomLogger):
 
 #### Logging `model_info` set in config.yaml 
 
-Here is how to log the `model_info` set in your proxy `config.yaml`. Information on setting `model_info` on [config.yaml](https://docs.llm.ai/docs/proxy/configs)
+Here is how to log the `model_info` set in your proxy `config.yaml`. Information on setting `model_info` on [config.yaml](https://docs.hanzo.ai/docs/proxy/configs)
 
 ```python
 class MyCustomHandler(CustomLogger):

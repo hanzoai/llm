@@ -38,7 +38,7 @@ class AuthenticationError(openai.AuthenticationError):  # type: ignore
         self.response = response or httpx.Response(
             status_code=self.status_code,
             request=httpx.Request(
-                method="GET", url="https://llm.ai"
+                method="GET", url="https://hanzo.ai"
             ),  # mock request object
         )
         super().__init__(
@@ -84,7 +84,7 @@ class NotFoundError(openai.NotFoundError):  # type: ignore
         self.response = response or httpx.Response(
             status_code=self.status_code,
             request=httpx.Request(
-                method="GET", url="https://llm.ai"
+                method="GET", url="https://hanzo.ai"
             ),  # mock request object
         )
         super().__init__(
@@ -128,7 +128,7 @@ class BadRequestError(openai.BadRequestError):  # type: ignore
         response = httpx.Response(
             status_code=self.status_code,
             request=httpx.Request(
-                method="GET", url="https://llm.ai"
+                method="GET", url="https://hanzo.ai"
             ),  # mock request object
         )
         self.max_retries = max_retries
@@ -708,7 +708,7 @@ class UnsupportedParamsError(BadRequestError):
         response = response or httpx.Response(
             status_code=self.status_code,
             request=httpx.Request(
-                method="GET", url="https://llm.ai"
+                method="GET", url="https://hanzo.ai"
             ),  # mock request object
         )
         self.max_retries = max_retries
@@ -762,7 +762,7 @@ class InvalidRequestError(openai.BadRequestError):  # type: ignore
         self.response = httpx.Response(
             status_code=400,
             request=httpx.Request(
-                method="GET", url="https://llm.ai"
+                method="GET", url="https://hanzo.ai"
             ),  # mock request object
         )
         super().__init__(

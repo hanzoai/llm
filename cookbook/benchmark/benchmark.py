@@ -8,11 +8,11 @@ import os
 
 
 # Define the list of models to benchmark
-# select any LLM listed here: https://docs.llm.ai/docs/providers
+# select any LLM listed here: https://docs.hanzo.ai/docs/providers
 models = ["gpt-3.5-turbo", "claude-2"]
 
 # Enter LLM API keys
-# https://docs.llm.ai/docs/providers
+# https://docs.hanzo.ai/docs/providers
 os.environ["OPENAI_API_KEY"] = ""
 os.environ["ANTHROPIC_API_KEY"] = ""
 

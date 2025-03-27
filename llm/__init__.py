@@ -236,7 +236,7 @@ caching_with_models: bool = (
     False  # # Not used anymore, will be removed in next MAJOR release - https://github.com/hanzoai/llm/discussions/648
 )
 cache: Optional[Cache] = (
-    None  # cache object <- use this - https://docs.llm.ai/docs/caching
+    None  # cache object <- use this - https://docs.hanzo.ai/docs/caching
 )
 default_in_memory_ttl: Optional[float] = None
 default_redis_ttl: Optional[float] = None

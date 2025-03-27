@@ -491,7 +491,7 @@ class AllowedFailsPolicy(BaseModel):
     If `AuthenticationErrorAllowedFails = 1000`, then 1000 AuthenticationError will be allowed before cooling down a deployment
 
     Mapping of Exception type to allowed_fails for each exception
-    https://docs.llm.ai/docs/exception_mapping
+    https://docs.hanzo.ai/docs/exception_mapping
     """
 
     BadRequestErrorAllowedFails: Optional[int] = None
@@ -507,7 +507,7 @@ class RetryPolicy(BaseModel):
     Use this to set a custom number of retries per exception type
     If RateLimitErrorRetries = 3, then 3 retries will be made for RateLimitError
     Mapping of Exception type to number of retries
-    https://docs.llm.ai/docs/exception_mapping
+    https://docs.hanzo.ai/docs/exception_mapping
     """
 
     BadRequestErrorRetries: Optional[int] = None

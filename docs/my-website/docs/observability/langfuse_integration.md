@@ -78,7 +78,7 @@ os.environ["LANGFUSE_SECRET_KEY"] = "sk-..."
 
 
 # OpenAI and Cohere keys 
-# You can use any of the llm supported providers: https://docs.llm.ai/docs/providers
+# You can use any of the llm supported providers: https://docs.hanzo.ai/docs/providers
 os.environ['OPENAI_API_KEY']="sk-..."
 
 # set langfuse as a callback, llm will send the data to langfuse

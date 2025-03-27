@@ -656,7 +656,7 @@ const Settings: React.FC<SettingsPageProps> = ({
               <Card>
       <Title level={4}>Email Settings</Title>
       <Text>
-      <a href="https://docs.llm.ai/docs/proxy/email" target="_blank" style={{ color: "blue" }}> LLM Docs: email alerts</a> <br/>        
+      <a href="https://docs.hanzo.ai/docs/proxy/email" target="_blank" style={{ color: "blue" }}> LLM Docs: email alerts</a> <br/>        
       </Text>
 <div className="flex w-full">
   {alerts
@@ -801,7 +801,7 @@ const Settings: React.FC<SettingsPageProps> = ({
       footer={null}
       >
         
-      <a href="https://docs.llm.ai/docs/proxy/logging" className="mb-8 mt-4" target="_blank" style={{ color: "blue" }}> LLM Docs: Logging</a>
+      <a href="https://docs.hanzo.ai/docs/proxy/logging" className="mb-8 mt-4" target="_blank" style={{ color: "blue" }}> LLM Docs: Logging</a>
 
 
       <Form 

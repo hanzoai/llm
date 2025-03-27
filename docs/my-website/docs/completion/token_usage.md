@@ -25,17 +25,17 @@ LLM also exposes some helper functions:
 
 - `create_pretrained_tokenizer` and `create_tokenizer`: LLM provides default tokenizer support for OpenAI, Cohere, Anthropic, Llama2, and Llama3 models. If you are using a different model, you can create a custom tokenizer and pass it as `custom_tokenizer` to the `encode`, `decode`, and `token_counter` methods. [**Jump to code**](#4-create_pretrained_tokenizer-and-create_tokenizer)
 
-- `cost_per_token`: This returns the cost (in USD) for prompt (input) and completion (output) tokens. Uses the live list from `api.llm.ai`. [**Jump to code**](#5-cost_per_token)
+- `cost_per_token`: This returns the cost (in USD) for prompt (input) and completion (output) tokens. Uses the live list from `api.hanzo.ai`. [**Jump to code**](#5-cost_per_token)
 
 - `completion_cost`: This returns the overall cost (in USD) for a given LLM API Call. It combines `token_counter` and `cost_per_token` to return the cost for that query (counting both cost of input and output). [**Jump to code**](#6-completion_cost)
 
 - `get_max_tokens`: This returns the maximum number of tokens allowed for the given model. [**Jump to code**](#7-get_max_tokens)
 
-- `model_cost`: This returns a dictionary for all models, with their max_tokens, input_cost_per_token and output_cost_per_token. It uses the `api.llm.ai` call shown below. [**Jump to code**](#8-model_cost)
+- `model_cost`: This returns a dictionary for all models, with their max_tokens, input_cost_per_token and output_cost_per_token. It uses the `api.hanzo.ai` call shown below. [**Jump to code**](#8-model_cost)
 
 - `register_model`: This registers new / overrides existing models (and their pricing details) in the model cost dictionary. [**Jump to code**](#9-register_model)
 
-- `api.llm.ai`: Live token + price count across [all supported models](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json). [**Jump to code**](#10-apillmai)
+- `api.hanzo.ai`: Live token + price count across [all supported models](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json). [**Jump to code**](#10-apillmai)
 
 📣 [This is a community maintained list](https://github.com/hanzoai/llm/blob/main/model_prices_and_context_window.json). Contributions are welcome! ❤️
 

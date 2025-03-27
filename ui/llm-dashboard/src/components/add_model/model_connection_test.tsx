@@ -244,7 +244,7 @@ ${formattedBody}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Button 
           type="link" 
-          href="https://docs.llm.ai/docs/providers" 
+          href="https://docs.hanzo.ai/docs/providers" 
           target="_blank"
           icon={<InfoCircleOutlined />}
         >

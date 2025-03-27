@@ -8,5 +8,5 @@ This folder contains the GCS Bucket Logging integration for LLM Gateway.
 - `gcs_bucket_base.py`: This file contains the GCSBucketBase class which handles Authentication for GCS Buckets
 
 ## Further Reading
-- [Doc setting up GCS Bucket Logging on LLM Proxy (Gateway)](https://docs.llm.ai/docs/proxy/bucket)
-- [Doc on Key / Team Based logging with GCS](https://docs.llm.ai/docs/proxy/team_logging)
+- [Doc setting up GCS Bucket Logging on LLM Proxy (Gateway)](https://docs.hanzo.ai/docs/proxy/bucket)
+- [Doc on Key / Team Based logging with GCS](https://docs.hanzo.ai/docs/proxy/team_logging)

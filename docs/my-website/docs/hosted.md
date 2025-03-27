@@ -14,7 +14,7 @@ This is in alpha. Schedule a call with us, and we'll give you a hosted proxy wit
 
 Our proxy is already used in production by customers. 
 
-See our status page for [**live reliability**](https://status.llm.ai/)
+See our status page for [**live reliability**](https://status.hanzo.ai/)
 
 ### **Benefits**
 - **No Maintenance, No Infra**: We'll maintain the proxy, and spin up any additional infrastructure (e.g.: separate server for spend logs) to make sure you can load balance + track spend across multiple LLM projects. 

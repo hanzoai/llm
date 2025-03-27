@@ -99,7 +99,7 @@ curl --location 'http://0.0.0.0:4000/team/new' \
 
 Requirements: 
 
-- Virtual Keys & a database should be set up, see [virtual keys](https://docs.llm.ai/docs/proxy/virtual_keys)
+- Virtual Keys & a database should be set up, see [virtual keys](https://docs.hanzo.ai/docs/proxy/virtual_keys)
 
 #### Usage - /chat/completions requests with request tags 
 
@@ -298,7 +298,7 @@ curl -X GET "http://0.0.0.0:4000/spend/tags" \
 
 Requirements: 
 
-- Virtual Keys & a database should be set up, see [virtual keys](https://docs.llm.ai/docs/proxy/virtual_keys)
+- Virtual Keys & a database should be set up, see [virtual keys](https://docs.hanzo.ai/docs/proxy/virtual_keys)
 
 #### Usage - /chat/completions requests with special spend logs metadata 
 
@@ -1047,7 +1047,7 @@ response = client.chat.completions.create(
             "content": "this is a test request, write a short poem"
         }
     ],
-    extra_body={ # pass in any provider-specific param, if not supported by openai, https://docs.llm.ai/docs/completion/input#provider-specific-params
+    extra_body={ # pass in any provider-specific param, if not supported by openai, https://docs.hanzo.ai/docs/completion/input#provider-specific-params
         "metadata": {
             "permissions": {
                 "enable_llm_guard_check": True # 👈 KEY CHANGE

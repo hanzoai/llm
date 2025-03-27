@@ -23,7 +23,7 @@ import Image from '@theme/IdealImage';
 
 :::info
 
-Get a 7 day free trial for LLM Enterprise [here](https://llm.ai/#trial).
+Get a 7 day free trial for LLM Enterprise [here](https://hanzo.ai/#trial).
 
 **no call needed**
 
@@ -47,7 +47,7 @@ Get a 7 day free trial for LLM Enterprise [here](https://llm.ai/#trial).
 1. LM Studio -> fix async embedding call 
 2. Gpt 4o models - fix response_format translation 
 3. Bedrock nova - expand supported document types to include .md, .csv, etc. [Start Here](../../docs/providers/bedrock#usage---pdf--document-understanding)
-4. Bedrock - docs on IAM role based access for bedrock - [Start Here](https://docs.llm.ai/docs/providers/bedrock#sts-role-based-auth)
+4. Bedrock - docs on IAM role based access for bedrock - [Start Here](https://docs.hanzo.ai/docs/providers/bedrock#sts-role-based-auth)
 5. Bedrock - cache IAM role credentials when used 
 6. Google AI Studio (`gemini/`) - support gemini 'frequency_penalty' and 'presence_penalty'
 7. Azure O1 - fix model name check 
@@ -85,7 +85,7 @@ Get a 7 day free trial for LLM Enterprise [here](https://llm.ai/#trial).
 8. Internal User ‘view’ - fix spend calculation when team selected
 9. Model Analytics is now on Free  
 10. Usage page - shows days when spend = 0, and round spend on charts to 2 sig figs 
-11. Public Teams - allow admins to expose teams for new users to ‘join’ on UI - [Start Here](https://docs.llm.ai/docs/proxy/public_teams)
+11. Public Teams - allow admins to expose teams for new users to ‘join’ on UI - [Start Here](https://docs.hanzo.ai/docs/proxy/public_teams)
 12. Guardrails
     1. set/edit guardrails on a virtual key 
     2. Allow setting guardrails on a team 
@@ -102,7 +102,7 @@ Get a 7 day free trial for LLM Enterprise [here](https://llm.ai/#trial).
 ## Logging / Guardrail Integrations
 
 1. Log the used prompt when prompt management used. [Start Here](../../docs/proxy/prompt_management)
-2. Support s3 logging with team alias prefixes - [Start Here](https://docs.llm.ai/docs/proxy/logging#team-alias-prefix-in-object-key)
+2. Support s3 logging with team alias prefixes - [Start Here](https://docs.hanzo.ai/docs/proxy/logging#team-alias-prefix-in-object-key)
 3. Prometheus [Start Here](../../docs/proxy/prometheus)
     1. fix llm_llm_api_time_to_first_token_metric not populating for bedrock models
     2. emit remaining team budget metric on regular basis (even when call isn’t made) - allows for more stable metrics on Grafana/etc. 
@@ -112,7 +112,7 @@ Get a 7 day free trial for LLM Enterprise [here](https://llm.ai/#trial).
 4. Datadog - support logging spend tags to Datadog. [Start Here](../../docs/proxy/enterprise#tracking-spend-for-custom-tags)
 5. Langfuse - fix logging request tags, read from standard logging payload 
 6. GCS - don’t truncate payload on logging 
-7. New GCS Pub/Sub logging support [Start Here](https://docs.llm.ai/docs/proxy/logging#google-cloud-storage---pubsub-topic)
+7. New GCS Pub/Sub logging support [Start Here](https://docs.hanzo.ai/docs/proxy/logging#google-cloud-storage---pubsub-topic)
 8. Add AIM Guardrails support [Start Here](../../docs/proxy/guardrails/aim_security)
 
 ## Security
@@ -124,7 +124,7 @@ Get a 7 day free trial for LLM Enterprise [here](https://llm.ai/#trial).
 ## Health Checks
 
 1. Cleanup pricing-only model names from wildcard route list - prevent bad health checks 
-2. Allow specifying a health check model for wildcard routes - https://docs.llm.ai/docs/proxy/health#wildcard-routes
+2. Allow specifying a health check model for wildcard routes - https://docs.hanzo.ai/docs/proxy/health#wildcard-routes
 3. New ‘health_check_timeout ‘ param with default 1min upperbound to prevent bad model from health check to hang and cause pod restarts. [Start Here](../../docs/proxy/health#health-check-timeout)
 4. Datadog - add data dog service health check + expose new `/health/services` endpoint. [Start Here](../../docs/proxy/health#healthservices)
 
@@ -150,7 +150,7 @@ Get a 7 day free trial for LLM Enterprise [here](https://llm.ai/#trial).
 1. JWT / OIDC Auth - new `enforce_rbac` param,allows proxy admin to prevent any unmapped yet authenticated jwt tokens from calling proxy. [Start Here](../../docs/proxy/token_auth#enforce-role-based-access-control-rbac)
 2. fix custom openapi schema generation for customized swagger’s 
 3. Request Headers - support reading `x-llm-timeout` param from request headers. Enables model timeout control when using Vercel’s AI SDK + LLM Proxy. [Start Here](../../docs/proxy/request_headers#llm-headers)
-4. JWT / OIDC Auth - new `role` based permissions for model authentication. [See Here](https://docs.llm.ai/docs/proxy/jwt_auth_arch)
+4. JWT / OIDC Auth - new `role` based permissions for model authentication. [See Here](https://docs.hanzo.ai/docs/proxy/jwt_auth_arch)
 
 ## Complete Git Diff
 

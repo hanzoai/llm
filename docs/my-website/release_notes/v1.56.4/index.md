@@ -24,7 +24,7 @@ import Image from '@theme/IdealImage';
 
 ### **Deepgram Speech to Text**
 
-New Speech to Text support for Deepgram models. [**Start Here**](https://docs.llm.ai/docs/providers/deepgram)
+New Speech to Text support for Deepgram models. [**Start Here**](https://docs.hanzo.ai/docs/providers/deepgram)
 
 ```python
 from llm import transcription
@@ -61,7 +61,7 @@ LLM will add `#transform=inline` to the url of the image_url, if the model is no
 
 ## Bug Fixes
 
-- Add health check support for realtime models [Here](https://docs.llm.ai/docs/proxy/health#realtime-models)
+- Add health check support for realtime models [Here](https://docs.hanzo.ai/docs/proxy/health#realtime-models)
 - Health check error with audio_transcription model https://github.com/hanzoai/llm/issues/5999
 
 

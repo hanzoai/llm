@@ -62,7 +62,7 @@ def log_db_metrics(func):
                 )
             elif (
                 # in llm custom callbacks kwargs is passed as arg[0]
-                # https://docs.llm.ai/docs/observability/custom_callback#callback-functions
+                # https://docs.hanzo.ai/docs/observability/custom_callback#callback-functions
                 args is not None
                 and len(args) > 1
                 and isinstance(args[1], dict)

@@ -9,7 +9,7 @@ LLM allows you to:
 
 :::info
 
-Trying to do batch completion on LLM Proxy ? Go here: https://docs.llm.ai/docs/proxy/user_keys#beta-batch-completions---pass-model-as-list
+Trying to do batch completion on LLM Proxy ? Go here: https://docs.hanzo.ai/docs/proxy/user_keys#beta-batch-completions---pass-model-as-list
 
 :::
 

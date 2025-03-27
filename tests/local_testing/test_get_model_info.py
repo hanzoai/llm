@@ -262,7 +262,7 @@ def test_model_info_bedrock_converse_enforcement(monkeypatch):
 
 
 def test_get_model_info_custom_provider():
-    # Custom provider example copied from https://docs.llm.ai/docs/providers/custom_llm_server:
+    # Custom provider example copied from https://docs.hanzo.ai/docs/providers/custom_llm_server:
     import llm
     from llm import CustomLLM, completion, get_llm_provider
 

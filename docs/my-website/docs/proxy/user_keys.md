@@ -11,9 +11,9 @@ LLM Proxy is **OpenAI-Compatible**, and supports:
 * /moderations 
 * /audio/transcriptions
 * /audio/speech
-* [Assistants API endpoints](https://docs.llm.ai/docs/assistants)
-* [Batches API endpoints](https://docs.llm.ai/docs/batches)
-* [Fine-Tuning API endpoints](https://docs.llm.ai/docs/fine_tuning)
+* [Assistants API endpoints](https://docs.hanzo.ai/docs/assistants)
+* [Batches API endpoints](https://docs.hanzo.ai/docs/batches)
+* [Fine-Tuning API endpoints](https://docs.hanzo.ai/docs/fine_tuning)
 
 LLM Proxy is **Azure OpenAI-compatible**:
 * /chat/completions
@@ -34,9 +34,9 @@ This doc covers:
 
 These are **selected examples**. LLM Proxy is **OpenAI-Compatible**, it works with any project that calls OpenAI. Just change the `base_url`, `api_key` and `model`.
 
-To pass provider-specific args, [go here](https://docs.llm.ai/docs/completion/provider_specific_params#proxy-usage)
+To pass provider-specific args, [go here](https://docs.hanzo.ai/docs/completion/provider_specific_params#proxy-usage)
 
-To drop unsupported params (E.g. frequency_penalty for bedrock with librechat), [go here](https://docs.llm.ai/docs/completion/drop_params#openai-proxy-usage)
+To drop unsupported params (E.g. frequency_penalty for bedrock with librechat), [go here](https://docs.hanzo.ai/docs/completion/drop_params#openai-proxy-usage)
 
 
 :::info
@@ -74,7 +74,7 @@ response = client.chat.completions.create(
             "content": "this is a test request, write a short poem"
         }
     ],
-    extra_body={ # pass in any provider-specific param, if not supported by openai, https://docs.llm.ai/docs/completion/input#provider-specific-params
+    extra_body={ # pass in any provider-specific param, if not supported by openai, https://docs.hanzo.ai/docs/completion/input#provider-specific-params
         "metadata": { # 👈 use for logging additional params (e.g. to langfuse)
             "generation_name": "z-generation-openai-client",
             "generation_id": "openai-client-gen-id22",
@@ -107,7 +107,7 @@ response = client.chat.completions.create(
             "content": "this is a test request, write a short poem"
         }
     ],
-    extra_body={ # pass in any provider-specific param, if not supported by openai, https://docs.llm.ai/docs/completion/input#provider-specific-params
+    extra_body={ # pass in any provider-specific param, if not supported by openai, https://docs.hanzo.ai/docs/completion/input#provider-specific-params
         "metadata": { # 👈 use for logging additional params (e.g. to langfuse)
             "generation_name": "z-generation-openai-client",
             "generation_id": "openai-client-gen-id22",
@@ -869,7 +869,7 @@ Use this when you want to send 1 request to N Models
 
 Pass model as a string of comma separated value of models. Example `"model"="llama3,gpt-3.5-turbo"`
 
-This same request will be sent to the following model groups on the [llm proxy config.yaml](https://docs.llm.ai/docs/proxy/configs)
+This same request will be sent to the following model groups on the [llm proxy config.yaml](https://docs.hanzo.ai/docs/proxy/configs)
 - `model_name="llama3"`
 - `model_name="gpt-3.5-turbo"` 
 

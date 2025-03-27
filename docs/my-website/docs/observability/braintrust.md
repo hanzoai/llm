@@ -126,7 +126,7 @@ response = client.chat.completions.create(
             "content": "this is a test request, write a short poem"
         }
     ],
-    extra_body={ # pass in any provider-specific param, if not supported by openai, https://docs.llm.ai/docs/completion/input#provider-specific-params
+    extra_body={ # pass in any provider-specific param, if not supported by openai, https://docs.hanzo.ai/docs/completion/input#provider-specific-params
         "metadata": { # 👈 use for logging additional params (e.g. to langfuse)
             "project_id": "my-special-project"
         }

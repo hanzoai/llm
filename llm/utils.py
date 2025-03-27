@@ -282,7 +282,7 @@ last_fetched_at_keys = None
 ######## Model Response #########################
 
 # All llm Model responses will be in this format, Follows the OpenAI Format
-# https://docs.llm.ai/docs/completion/output
+# https://docs.hanzo.ai/docs/completion/output
 # {
 #   'choices': [
 #      {
@@ -1456,7 +1456,7 @@ def _is_async_request(
     """
     Returns True if the call type is an internal async request.
 
-    eg. llm.acompletion, llm.aimage_generation, llm.acreate_batch, llm._arealtime
+    eg. llm.acompletion, hanzo.aimage_generation, llm.acreate_batch, llm._arealtime
 
     Args:
         kwargs (dict): The kwargs passed to the llm function
@@ -2306,8 +2306,8 @@ def register_model(model_cost: Union[str, dict]):  # noqa: PLR0915
             if key not in llm.vertex_code_chat_models:
                 llm.vertex_code_chat_models.append(key)
         elif value.get("llm_provider") == "ai21":
-            if key not in llm.ai21_models:
-                llm.ai21_models.append(key)
+            if key not in hanzo.ai21_models:
+                hanzo.ai21_models.append(key)
         elif value.get("llm_provider") == "nlp_cloud":
             if key not in llm.nlp_cloud_models:
                 llm.nlp_cloud_models.append(key)
@@ -4031,7 +4031,7 @@ def get_api_key(llm_provider: str, dynamic_api_key: Optional[str]):
         api_key = api_key or llm.anthropic_key or get_secret("ANTHROPIC_API_KEY")
     # ai21
     elif llm_provider == "ai21":
-        api_key = api_key or llm.ai21_key or get_secret("AI211_API_KEY")
+        api_key = api_key or hanzo.ai21_key or get_secret("AI211_API_KEY")
     # aleph_alpha
     elif llm_provider == "aleph_alpha":
         api_key = (
@@ -5126,7 +5126,7 @@ def validate_environment(  # noqa: PLR0915
             else:
                 missing_keys.append("HUGGINGFACE_API_KEY")
         ## ai21
-        elif model in llm.ai21_models:
+        elif model in hanzo.ai21_models:
             if "AI21_API_KEY" in os.environ:
                 keys_in_environment = True
             else:

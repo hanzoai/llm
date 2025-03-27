@@ -9,7 +9,7 @@ Use JWT's to auth admins / users / projects into the proxy.
 
 ✨ JWT-based Auth  is on LLM Enterprise
 
-[Enterprise Pricing](https://www.llm.ai/#pricing)
+[Enterprise Pricing](https://www.hanzo.ai/#pricing)
 
 [Contact us here to get a free trial](https://calendly.com/d/4mp-gd3-k5k/llm-1-1-onboarding-chat)
 

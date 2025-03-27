@@ -10,7 +10,7 @@ With LLM Cloud, we handle:
 - Ensuring high availability
 
   <iframe
-    src="https://status.llm.ai/badge?theme=light"
+    src="https://status.hanzo.ai/badge?theme=light"
     width="250"
     height="30"
     className="inline-block dark:hidden"
@@ -143,7 +143,7 @@ Has an information security management system been implemented?
 - Yes - [CodeQL](https://codeql.github.com/) and a comprehensive ISMS covering multiple security domains.
 
 Is logging of key events - auth, creation, update changes occurring?
-- Yes - we have [audit logs](https://docs.llm.ai/docs/proxy/multiple_admins#1-switch-on-audit-logs)
+- Yes - we have [audit logs](https://docs.hanzo.ai/docs/proxy/multiple_admins#1-switch-on-audit-logs)
 
 Does the Vendor have an established Cybersecurity incident management program?
 - Yes, Incident Response Policy available upon request.

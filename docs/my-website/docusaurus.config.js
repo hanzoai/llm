@@ -11,7 +11,7 @@ const config = {
   favicon: '/img/favicon.ico', 
 
   // Set the production url of your site here
-  url: 'https://docs.llm.ai/',
+  url: 'https://docs.hanzo.ai/',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
@@ -133,7 +133,7 @@ const config = {
           },
           { to: '/release_notes', label: 'Release Notes', position: 'left' },
           {
-            href: 'https://models.llm.ai/',
+            href: 'https://models.hanzo.ai/',
             label: '💸 LLM Model Cost Map',
             position: 'right',
           },
@@ -157,7 +157,7 @@ const config = {
             items: [
               {
                 label: 'Getting Started',
-                to: 'https://docs.llm.ai/docs/',
+                to: 'https://docs.hanzo.ai/docs/',
               },
             ],
           },

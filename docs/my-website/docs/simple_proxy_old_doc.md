@@ -13,7 +13,7 @@ LLM Server manages:
 [**See LLM Proxy code**](https://github.com/hanzoai/llm/tree/main/llm/proxy)
 
 ## Quick Start
-View all the supported args for the Proxy CLI [here](https://docs.llm.ai/docs/simple_proxy#proxy-cli-arguments)
+View all the supported args for the Proxy CLI [here](https://docs.hanzo.ai/docs/simple_proxy#proxy-cli-arguments)
 
 ```shell
 $ pip install 'llm[proxy]'
@@ -85,7 +85,7 @@ print(response)
 - POST `/key/generate` - generate a key to access the proxy
 
 ### Supported LLMs
-All LLM supported LLMs are supported on the Proxy. Seel all [supported llms](https://docs.llm.ai/docs/providers)
+All LLM supported LLMs are supported on the Proxy. Seel all [supported llms](https://docs.hanzo.ai/docs/providers)
 <Tabs>
 <TabItem value="bedrock" label="AWS Bedrock">
 
@@ -451,7 +451,7 @@ Here's how you can use multiple llms with one proxy `config.yaml`.
 ```yaml
 model_list:
   - model_name: zephyr-alpha # the 1st model is the default on the proxy
-    llm_params: # params for llm.completion() - https://docs.llm.ai/docs/completion/input#input---request-body
+    llm_params: # params for llm.completion() - https://docs.hanzo.ai/docs/completion/input#input---request-body
       model: huggingface/HuggingFaceH4/zephyr-7b-alpha
       api_base: http://0.0.0.0:8001
   - model_name: gpt-4
@@ -607,7 +607,7 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 ### Config for Embedding Models - xorbitsai/inference
 
 Here's how you can use multiple llms with one proxy `config.yaml`.
-Here is how [LLM calls OpenAI Compatible Embedding models](https://docs.llm.ai/docs/embedding/supported_embedding#openai-compatible-embedding-models)
+Here is how [LLM calls OpenAI Compatible Embedding models](https://docs.hanzo.ai/docs/embedding/supported_embedding#openai-compatible-embedding-models)
 
 #### Config
 ```yaml
@@ -773,7 +773,7 @@ You can use the config to save model-specific information like api_base, api_key
 ```yaml
 model_list:
   - model_name: gpt-4-team1
-    llm_params: # params for llm.completion() - https://docs.llm.ai/docs/completion/input#input---request-body
+    llm_params: # params for llm.completion() - https://docs.hanzo.ai/docs/completion/input#input---request-body
       model: azure/chatgpt-v-2
       api_base: https://openai-gpt-4-test-v-1.openai.azure.com/
       api_version: "2023-05-15"
@@ -806,7 +806,7 @@ os.environ["AZURE_NORTH_AMERICA_API_KEY"] = "your-azure-api-key"
 ```yaml
 model_list:
   - model_name: gpt-4-team1
-    llm_params: # params for llm.completion() - https://docs.llm.ai/docs/completion/input#input---request-body
+    llm_params: # params for llm.completion() - https://docs.hanzo.ai/docs/completion/input#input---request-body
       model: azure/chatgpt-v-2
       api_base: https://openai-gpt-4-test-v-1.openai.azure.com/
       api_version: "2023-05-15"

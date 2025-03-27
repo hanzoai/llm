@@ -11,7 +11,7 @@ const QueryParamToken = () => {
 
   return (
     <span style={{ padding: 0, margin: 0 }}>
-      {token ? <a href={`https://admin.llm.ai/${token}`} target="_blank" rel="noopener noreferrer">admin.llm.ai</a> : ""}
+      {token ? <a href={`https://admin.hanzo.ai/${token}`} target="_blank" rel="noopener noreferrer">admin.hanzo.ai</a> : ""}
     </span>
   );
 }

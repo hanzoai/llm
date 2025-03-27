@@ -9,7 +9,7 @@ from llm.proxy.proxy_server import DualCache, UserAPIKeyAuth
 # Once defined, these can be passed in proxy_config.yaml
 class MyCustomHandler(
     CustomLogger
-):  # https://docs.llm.ai/docs/observability/custom_callback#callback-class
+):  # https://docs.hanzo.ai/docs/observability/custom_callback#callback-class
     # Class variables or attributes
     def __init__(self):
         pass

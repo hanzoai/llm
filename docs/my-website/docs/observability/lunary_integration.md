@@ -169,7 +169,7 @@ curl -X POST 'http://0.0.0.0:4000/chat/completions' \
 }'
 ```
 
-You can find more details about the different ways of making requests to the LLM proxy on [this page](https://docs.llm.ai/docs/proxy/user_keys)
+You can find more details about the different ways of making requests to the LLM proxy on [this page](https://docs.hanzo.ai/docs/proxy/user_keys)
 
 
 ## Support & Talk to Founders

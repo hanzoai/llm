@@ -10,7 +10,7 @@ from ..common_utils import FireworksAIMixin
 class FireworksAITextCompletionConfig(FireworksAIMixin, BaseTextCompletionConfig):
     def get_supported_openai_params(self, model: str) -> list:
         """
-        See how LLM supports Provider-specific parameters - https://docs.llm.ai/docs/completion/provider_specific_params#proxy-usage
+        See how LLM supports Provider-specific parameters - https://docs.hanzo.ai/docs/completion/provider_specific_params#proxy-usage
         """
         return [
             "max_tokens",

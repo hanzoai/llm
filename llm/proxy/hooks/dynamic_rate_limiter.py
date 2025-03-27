@@ -113,7 +113,7 @@ class _PROXY_DynamicRateLimitHandler(CustomLogger):
             elif priority is not None and llm.priority_reservation is not None:
                 if os.getenv("LLM_LICENSE", None) is None:
                     verbose_proxy_logger.error(
-                        "PREMIUM FEATURE: Reserving tpm/rpm by priority is a premium feature. Please add a 'LLM_LICENSE' to your .env to enable this.\nGet a license: https://docs.llm.ai/docs/proxy/enterprise."
+                        "PREMIUM FEATURE: Reserving tpm/rpm by priority is a premium feature. Please add a 'LLM_LICENSE' to your .env to enable this.\nGet a license: https://docs.hanzo.ai/docs/proxy/enterprise."
                     )
                 else:
                     weight = llm.priority_reservation[priority]

@@ -129,7 +129,7 @@ Expected response on failure
 
 4. **Requirements**:
    - Redis required for tracking spend across instances
-   - Provider names must be llm provider names. See [Supported Providers](https://docs.llm.ai/docs/providers)
+   - Provider names must be llm provider names. See [Supported Providers](https://docs.hanzo.ai/docs/providers)
 
 ### Monitoring Provider Remaining Budget
 
@@ -274,7 +274,7 @@ Expected response on failure
 
 :::info
 
-✨ This is an Enterprise only feature [Get Started with Enterprise here](https://www.llm.ai/#pricing)
+✨ This is an Enterprise only feature [Get Started with Enterprise here](https://www.hanzo.ai/#pricing)
 
 :::
 
@@ -389,7 +389,7 @@ general_settings:
 ## Spec for provider_budget_config
 
 The `provider_budget_config` is a dictionary where:
-- **Key**: Provider name (string) - Must be a valid [LLM provider name](https://docs.llm.ai/docs/providers)
+- **Key**: Provider name (string) - Must be a valid [LLM provider name](https://docs.hanzo.ai/docs/providers)
 - **Value**: Budget configuration object with the following parameters:
   - `budget_limit`: Float value representing the budget in USD
   - `time_period`: Duration string in one of the following formats:

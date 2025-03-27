@@ -621,7 +621,7 @@ const Teams: React.FC<TeamProps> = ({
                         <span>
                           Organizations can have multiple teams. Learn more about{' '}
                           <a 
-                            href="https://docs.llm.ai/docs/proxy/user_management_heirarchy"
+                            href="https://docs.hanzo.ai/docs/proxy/user_management_heirarchy"
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{ color: '#1890ff', textDecoration: 'underline' }}
@@ -741,7 +741,7 @@ const Teams: React.FC<TeamProps> = ({
                           Guardrails{' '}
                           <Tooltip title="Setup your first guardrail">
                             <a 
-                              href="https://docs.llm.ai/docs/proxy/guardrails/quick_start" 
+                              href="https://docs.hanzo.ai/docs/proxy/guardrails/quick_start" 
                               target="_blank" 
                               rel="noopener noreferrer"
                               onClick={(e) => e.stopPropagation()}

@@ -29,8 +29,8 @@ llm/caching/
 ```
 
 ## Documentation
-- [Caching on LLM Gateway](https://docs.llm.ai/docs/proxy/caching)
-- [Caching on LLM Python](https://docs.llm.ai/docs/caching/all_caches)
+- [Caching on LLM Gateway](https://docs.hanzo.ai/docs/proxy/caching)
+- [Caching on LLM Python](https://docs.hanzo.ai/docs/caching/all_caches)
 
 
 

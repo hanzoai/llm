@@ -175,8 +175,8 @@ This is what LLM will log to Lagos
 
 For:
 - Customers (id passed via 'user' param in /chat/completion call) = 'end_user_id'
-- Internal Users (id set when [creating keys](https://docs.llm.ai/docs/proxy/virtual_keys#advanced---spend-tracking)) = 'user_id' 
-- Teams (id set when [creating keys](https://docs.llm.ai/docs/proxy/virtual_keys#advanced---spend-tracking)) = 'team_id' 
+- Internal Users (id set when [creating keys](https://docs.hanzo.ai/docs/proxy/virtual_keys#advanced---spend-tracking)) = 'user_id' 
+- Teams (id set when [creating keys](https://docs.hanzo.ai/docs/proxy/virtual_keys#advanced---spend-tracking)) = 'team_id' 
 
 
 

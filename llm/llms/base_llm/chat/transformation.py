@@ -60,7 +60,7 @@ class BaseLLMException(Exception):
             self.request = request
         else:
             self.request = httpx.Request(
-                method="POST", url="https://docs.llm.ai/docs"
+                method="POST", url="https://docs.hanzo.ai/docs"
             )
         if response:
             self.response = response

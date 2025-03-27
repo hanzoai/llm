@@ -85,7 +85,7 @@ Get Latest Image 👉 [here](https://github.com/hanzoai/llm/pkgs/container/llm)
 
 ### Docker Run - CLI Args
 
-See all supported CLI args [here](https://docs.llm.ai/docs/proxy/cli): 
+See all supported CLI args [here](https://docs.hanzo.ai/docs/proxy/cli): 
 
 Here's how you can run the docker image and pass your config to `llm`
 ```shell
@@ -1009,7 +1009,7 @@ services:
 
 Create a `llm-config.yaml` file with your LLM config relative to your `docker-compose.yml` file.
 
-Check the config doc [here](https://docs.llm.ai/docs/proxy/configs)
+Check the config doc [here](https://docs.hanzo.ai/docs/proxy/configs)
 
 **Step 3**
 

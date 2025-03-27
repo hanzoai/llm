@@ -29,7 +29,7 @@ This release is primarily focused on:
 ## Demo Instance
 
 Here's a Demo Instance to test changes:
-- Instance: https://demo.llm.ai/
+- Instance: https://demo.hanzo.ai/
 - Login Credentials:
     - Username: admin
     - Password: sk-1234
@@ -37,8 +37,8 @@ Here's a Demo Instance to test changes:
 ## New Models / Updated Models
 
 1. Anthropic 3-7 sonnet support + cost tracking (Anthropic API + Bedrock + Vertex AI + OpenRouter) 
-    1. Anthropic API [Start here](https://docs.llm.ai/docs/providers/anthropic#usage---thinking--reasoning_content)
-    2. Bedrock API [Start here](https://docs.llm.ai/docs/providers/bedrock#usage---thinking--reasoning-content)
+    1. Anthropic API [Start here](https://docs.hanzo.ai/docs/providers/anthropic#usage---thinking--reasoning_content)
+    2. Bedrock API [Start here](https://docs.hanzo.ai/docs/providers/bedrock#usage---thinking--reasoning-content)
     3. Vertex AI API [See here](../../docs/providers/vertex#usage---thinking--reasoning_content)
     4. OpenRouter [See here](https://github.com/hanzoai/llm/blob/ba5bdce50a0b9bc822de58c03940354f19a733ed/model_prices_and_context_window.json#L5626)
 2. Gpt-4.5-preview support + cost tracking [See here](https://github.com/hanzoai/llm/blob/ba5bdce50a0b9bc822de58c03940354f19a733ed/model_prices_and_context_window.json#L79)
@@ -50,14 +50,14 @@ Here's a Demo Instance to test changes:
 ## LLM Translation
 
 1. Infinity Rerank - support returning documents when return_documents=True [Start here](../../docs/providers/infinity#usage---returning-documents)
-2. Amazon Deepseek - `<think>` param extraction into ‘reasoning_content’ [Start here](https://docs.llm.ai/docs/providers/bedrock#bedrock-imported-models-deepseek-deepseek-r1)
-3. Amazon Titan Embeddings - filter out ‘aws_’ params from request body [Start here](https://docs.llm.ai/docs/providers/bedrock#bedrock-embedding)
-4. Anthropic ‘thinking’ + ‘reasoning_content’ translation support (Anthropic API, Bedrock, Vertex AI)  [Start here](https://docs.llm.ai/docs/reasoning_content)
+2. Amazon Deepseek - `<think>` param extraction into ‘reasoning_content’ [Start here](https://docs.hanzo.ai/docs/providers/bedrock#bedrock-imported-models-deepseek-deepseek-r1)
+3. Amazon Titan Embeddings - filter out ‘aws_’ params from request body [Start here](https://docs.hanzo.ai/docs/providers/bedrock#bedrock-embedding)
+4. Anthropic ‘thinking’ + ‘reasoning_content’ translation support (Anthropic API, Bedrock, Vertex AI)  [Start here](https://docs.hanzo.ai/docs/reasoning_content)
 5. VLLM - support ‘video_url’ [Start here](../../docs/providers/vllm#send-video-url-to-vllm)
-6. Call proxy via llm SDK: Support `llm_proxy/` for embedding, image_generation, transcription, speech, rerank [Start here](https://docs.llm.ai/docs/providers/llm_proxy)
-7. OpenAI Pass-through - allow using Assistants GET, DELETE on /openai pass through routes [Start here](https://docs.llm.ai/docs/pass_through/openai_passthrough)
+6. Call proxy via llm SDK: Support `llm_proxy/` for embedding, image_generation, transcription, speech, rerank [Start here](https://docs.hanzo.ai/docs/providers/llm_proxy)
+7. OpenAI Pass-through - allow using Assistants GET, DELETE on /openai pass through routes [Start here](https://docs.hanzo.ai/docs/pass_through/openai_passthrough)
 8. Message Translation - fix openai message for assistant msg if role is missing - openai allows this
-9. O1/O3 - support ‘drop_params’ for o3-mini and o1 parallel_tool_calls param (not supported currently) [See here](https://docs.llm.ai/docs/completion/drop_params)
+9. O1/O3 - support ‘drop_params’ for o3-mini and o1 parallel_tool_calls param (not supported currently) [See here](https://docs.hanzo.ai/docs/completion/drop_params)
 
 ## Spend Tracking Improvements
 
@@ -90,7 +90,7 @@ Here's a Demo Instance to test changes:
 
 ## Performance / Loadbalancing / Reliability improvements
 
-1. Single Deployment Cooldown logic - Use allowed_fails or allowed_fail_policy if set [Start here](https://docs.llm.ai/docs/routing#advanced-custom-retries-cooldowns-based-on-error-type)
+1. Single Deployment Cooldown logic - Use allowed_fails or allowed_fail_policy if set [Start here](https://docs.hanzo.ai/docs/routing#advanced-custom-retries-cooldowns-based-on-error-type)
 
 ## General Proxy Improvements
 

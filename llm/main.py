@@ -236,7 +236,7 @@ openai_like_embedding = OpenAILikeEmbeddingHandler()
 openai_like_chat_completion = OpenAILikeChatHandler()
 databricks_embedding = DatabricksEmbeddingHandler()
 base_llm_http_handler = BaseLLMHTTPHandler()
-base_llm_aiohttp_handler = BaseLLMAIOHTTPHandler()
+base_hanzo.aiohttp_handler = BaseLLMAIOHTTPHandler()
 sagemaker_chat_completion = SagemakerChatHandler()
 ####### COMPLETION ENDPOINTS ################
 
@@ -351,7 +351,7 @@ async def acompletion(
     Asynchronously executes a llm.completion() call for any of llm supported llms (example gpt-4, gpt-3.5-turbo, claude-2, command-nightly)
 
     Parameters:
-        model (str): The name of the language model to use for text completion. see all supported LLMs: https://docs.llm.ai/docs/providers/
+        model (str): The name of the language model to use for text completion. see all supported LLMs: https://docs.hanzo.ai/docs/providers/
         messages (List): A list of message objects representing the conversation context (default is an empty list).
 
         OPTIONAL PARAMS
@@ -811,7 +811,7 @@ def completion(  # type: ignore # noqa: PLR0915
     """
     Perform a completion() using any of llm supported llms (example gpt-4, gpt-3.5-turbo, claude-2, command-nightly)
     Parameters:
-        model (str): The name of the language model to use for text completion. see all supported LLMs: https://docs.llm.ai/docs/providers/
+        model (str): The name of the language model to use for text completion. see all supported LLMs: https://docs.hanzo.ai/docs/providers/
         messages (List): A list of message objects representing the conversation context (default is an empty list).
 
         OPTIONAL PARAMS
@@ -1637,7 +1637,7 @@ def completion(  # type: ignore # noqa: PLR0915
 
             if extra_headers is not None:
                 optional_params["extra_headers"] = extra_headers
-            response = base_llm_aiohttp_handler.completion(
+            response = base_hanzo.aiohttp_handler.completion(
                 model=model,
                 messages=messages,
                 headers=headers,
@@ -2261,7 +2261,7 @@ def completion(  # type: ignore # noqa: PLR0915
                 or get_secret("OR_API_KEY")
             )
 
-            openrouter_site_url = get_secret("OR_SITE_URL") or "https://llm.ai"
+            openrouter_site_url = get_secret("OR_SITE_URL") or "https://hanzo.ai"
             openrouter_app_name = get_secret("OR_APP_NAME") or "llm"
 
             openrouter_headers = {
@@ -2634,7 +2634,7 @@ def completion(  # type: ignore # noqa: PLR0915
 
             if "aws_bedrock_client" in optional_params:
                 verbose_logger.warning(
-                    "'aws_bedrock_client' is a deprecated param. Please move to another auth method - https://docs.llm.ai/docs/providers/bedrock#boto3---authentication."
+                    "'aws_bedrock_client' is a deprecated param. Please move to another auth method - https://docs.hanzo.ai/docs/providers/bedrock#boto3---authentication."
                 )
                 # Extract credentials for legacy boto3 client and pass thru to httpx
                 aws_bedrock_client = optional_params.pop("aws_bedrock_client")
@@ -4898,7 +4898,7 @@ def image_variation(
         if api_base is None:
             raise ValueError("API base is required for Topaz image variations")
 
-        response = base_llm_aiohttp_handler.image_variations(
+        response = base_hanzo.aiohttp_handler.image_variations(
             model_response=model_response,
             api_key=api_key,
             api_base=api_base,
@@ -5527,7 +5527,7 @@ async def ahealth_check(
                 **_filter_model_params(model_params),
                 file=get_audio_file_for_health_check(),
             ),
-            "image_generation": lambda: llm.aimage_generation(
+            "image_generation": lambda: hanzo.aimage_generation(
                 **_filter_model_params(model_params),
                 prompt=prompt,
             ),
@@ -5554,7 +5554,7 @@ async def ahealth_check(
             return _create_health_check_response(_response_headers)
         else:
             raise Exception(
-                f"Mode {mode} not supported. See modes here: https://docs.llm.ai/docs/proxy/health"
+                f"Mode {mode} not supported. See modes here: https://docs.hanzo.ai/docs/proxy/health"
             )
     except Exception as e:
         stack_trace = traceback.format_exc()
@@ -5563,7 +5563,7 @@ async def ahealth_check(
 
         if mode is None:
             return {
-                "error": f"error:{str(e)}. Missing `mode`. Set the `mode` for the model - https://docs.llm.ai/docs/proxy/health#embedding-models  \nstacktrace: {stack_trace}"
+                "error": f"error:{str(e)}. Missing `mode`. Set the `mode` for the model - https://docs.hanzo.ai/docs/proxy/health#embedding-models  \nstacktrace: {stack_trace}"
             }
 
         error_to_return = str(e) + "\nstack trace: " + stack_trace

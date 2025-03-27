@@ -189,7 +189,7 @@ class _ProxyDBLogger(CustomLogger):
                         )
                     model = kwargs.get("model")
                     raise Exception(
-                        f"Cost tracking failed for model={model}.\nDebug info - {cost_tracking_failure_debug_info}\nAdd custom pricing - https://docs.llm.ai/docs/proxy/custom_pricing"
+                        f"Cost tracking failed for model={model}.\nDebug info - {cost_tracking_failure_debug_info}\nAdd custom pricing - https://docs.hanzo.ai/docs/proxy/custom_pricing"
                     )
         except Exception as e:
             error_msg = f"Error in tracking cost callback - {str(e)}\n Traceback:{traceback.format_exc()}"

@@ -14,9 +14,9 @@ Set temporary budget increase for a LLM Virtual Key. Use this if you get asked t
 
 ✨ Temporary Budget Increase is a LLM Enterprise feature.
 
-[Enterprise Pricing](https://www.llm.ai/#pricing)
+[Enterprise Pricing](https://www.hanzo.ai/#pricing)
 
-[Get free 7-day trial key](https://www.llm.ai/#trial)
+[Get free 7-day trial key](https://www.hanzo.ai/#trial)
 
 :::
 

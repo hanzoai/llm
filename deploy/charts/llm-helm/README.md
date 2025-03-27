@@ -2,7 +2,7 @@
 
 > [!IMPORTANT]
 > This is community maintained, Please make an issue if you run into a bug
-> We recommend using [Docker or Kubernetes for production deployments](https://docs.llm.ai/docs/proxy/prod)
+> We recommend using [Docker or Kubernetes for production deployments](https://docs.hanzo.ai/docs/proxy/prod)
 
 ## Prerequisites
 

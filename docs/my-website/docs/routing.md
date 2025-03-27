@@ -1532,7 +1532,7 @@ print(f"response: {response}")
 
 ## Custom Callbacks - Track API Key, API Endpoint, Model Used 
 
-If you need to track the api_key, api endpoint, model, custom_llm_provider used for each completion call, you can setup a [custom callback](https://docs.llm.ai/docs/observability/custom_callback) 
+If you need to track the api_key, api endpoint, model, custom_llm_provider used for each completion call, you can setup a [custom callback](https://docs.hanzo.ai/docs/observability/custom_callback) 
 
 ### Usage
 

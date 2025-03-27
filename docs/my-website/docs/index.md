@@ -8,9 +8,9 @@ https://github.com/hanzoai/llm
 ## **Call 100+ LLMs using the OpenAI Input/Output Format**
 
 - Translate inputs to provider's `completion`, `embedding`, and `image_generation` endpoints
-- [Consistent output](https://docs.llm.ai/docs/completion/output), text responses will always be available at `['choices'][0]['message']['content']`
-- Retry/fallback logic across multiple deployments (e.g. Azure/OpenAI) - [Router](https://docs.llm.ai/docs/routing)
-- Track spend & set budgets per project [LLM Proxy Server](https://docs.llm.ai/docs/simple_proxy)
+- [Consistent output](https://docs.hanzo.ai/docs/completion/output), text responses will always be available at `['choices'][0]['message']['content']`
+- Retry/fallback logic across multiple deployments (e.g. Azure/OpenAI) - [Router](https://docs.hanzo.ai/docs/routing)
+- Track spend & set budgets per project [LLM Proxy Server](https://docs.hanzo.ai/docs/simple_proxy)
 
 ## How to use LLM
 You can use llm through either:
@@ -42,7 +42,7 @@ Typically used by developers building llm projects
 :::
 
   - LLM SDK gives you a unified interface to access multiple LLMs (100+ LLMs) 
-  - Retry/fallback logic across multiple deployments (e.g. Azure/OpenAI) - [Router](https://docs.llm.ai/docs/routing)
+  - Retry/fallback logic across multiple deployments (e.g. Azure/OpenAI) - [Router](https://docs.hanzo.ai/docs/routing)
 
 ## **LLM Python SDK**
 
@@ -457,7 +457,7 @@ except OpenAIError as e:
     print(e)
 ```
 
-### Logging Observability - Log LLM Input/Output ([Docs](https://docs.llm.ai/docs/observability/callbacks))
+### Logging Observability - Log LLM Input/Output ([Docs](https://docs.hanzo.ai/docs/observability/callbacks))
 LLM exposes pre defined callbacks to send data to Lunary, MLflow, Langfuse, Helicone, Promptlayer, Traceloop, Slack
 
 ```python
@@ -479,7 +479,7 @@ response = completion(model="gpt-3.5-turbo", messages=[{"role": "user", "content
 ```
 
 ### Track Costs, Usage, Latency for streaming
-Use a callback function for this - more info on custom callbacks: https://docs.llm.ai/docs/observability/custom_callback
+Use a callback function for this - more info on custom callbacks: https://docs.hanzo.ai/docs/observability/custom_callback
 
 ```python
 import llm
@@ -519,10 +519,10 @@ Track spend across multiple projects/people
 
 The proxy provides:
 
-1. [Hooks for auth](https://docs.llm.ai/docs/proxy/virtual_keys#custom-auth)
-2. [Hooks for logging](https://docs.llm.ai/docs/proxy/logging#step-1---create-your-custom-llm-callback-class)
-3. [Cost tracking](https://docs.llm.ai/docs/proxy/virtual_keys#tracking-spend)
-4. [Rate Limiting](https://docs.llm.ai/docs/proxy/users#set-rate-limits)
+1. [Hooks for auth](https://docs.hanzo.ai/docs/proxy/virtual_keys#custom-auth)
+2. [Hooks for logging](https://docs.hanzo.ai/docs/proxy/logging#step-1---create-your-custom-llm-callback-class)
+3. [Cost tracking](https://docs.hanzo.ai/docs/proxy/virtual_keys#tracking-spend)
+4. [Rate Limiting](https://docs.hanzo.ai/docs/proxy/users#set-rate-limits)
 
 ### 📖 Proxy Endpoints - [Swagger Docs](https://llm-api.up.railway.app/)
 

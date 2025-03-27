@@ -51,7 +51,7 @@ async def langfuse_proxy_route(
     """
     Call Langfuse via LLM proxy. Works with Langfuse SDK.
 
-    [Docs](https://docs.llm.ai/docs/pass_through/langfuse)
+    [Docs](https://docs.hanzo.ai/docs/pass_through/langfuse)
     """
     from llm.proxy.proxy_server import proxy_config
 

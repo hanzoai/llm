@@ -2065,7 +2065,7 @@ def _gemini_vision_convert_messages(messages: list):
             if isinstance(message["content"], str):
                 prompt += message["content"]
             elif isinstance(message["content"], list):
-                # see https://docs.llm.ai/docs/providers/openai#openai-vision-models
+                # see https://docs.hanzo.ai/docs/providers/openai#openai-vision-models
                 for element in message["content"]:
                     if isinstance(element, dict):
                         if element["type"] == "text":
@@ -2143,7 +2143,7 @@ def gemini_text_image_pt(messages: list):
         if isinstance(message["content"], str):
             prompt += message["content"]
         elif isinstance(message["content"], list):
-            # see https://docs.llm.ai/docs/providers/openai#openai-vision-models
+            # see https://docs.hanzo.ai/docs/providers/openai#openai-vision-models
             for element in message["content"]:
                 if isinstance(element, dict):
                     if element["type"] == "text":
@@ -2162,7 +2162,7 @@ def azure_text_pt(messages: list):
         if isinstance(message["content"], str):
             prompt += message["content"]
         elif isinstance(message["content"], list):
-            # see https://docs.llm.ai/docs/providers/openai#openai-vision-models
+            # see https://docs.hanzo.ai/docs/providers/openai#openai-vision-models
             for element in message["content"]:
                 if isinstance(element, dict):
                     if element["type"] == "text":

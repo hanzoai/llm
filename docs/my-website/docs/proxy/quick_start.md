@@ -8,7 +8,7 @@ Quick start CLI, Config, Docker
 LLM Server (LLM Gateway) manages:
 
 * **Unified Interface**: Calling 100+ LLMs [Huggingface/Bedrock/TogetherAI/etc.](#other-supported-models) in the OpenAI `ChatCompletions` & `Completions` format
-* **Cost tracking**: Authentication, Spend Tracking & Budgets [Virtual Keys](https://docs.llm.ai/docs/proxy/virtual_keys)
+* **Cost tracking**: Authentication, Spend Tracking & Budgets [Virtual Keys](https://docs.hanzo.ai/docs/proxy/virtual_keys)
 * **Load Balancing**: between [Multiple Models](#multiple-models---quick-start) + [Deployments of the same model](#multiple-instances-of-1-model) - LLM proxy can handle 1.5k+ requests/second during load tests.
 
 ```shell
@@ -42,7 +42,7 @@ llm --test
 This will now automatically route any requests for gpt-3.5-turbo to bigcode starcoder, hosted on huggingface inference endpoints. 
 
 ### Supported LLMs
-All LLM supported LLMs are supported on the Proxy. Seel all [supported llms](https://docs.llm.ai/docs/providers)
+All LLM supported LLMs are supported on the Proxy. Seel all [supported llms](https://docs.hanzo.ai/docs/providers)
 <Tabs>
 <TabItem value="bedrock" label="AWS Bedrock">
 
@@ -223,7 +223,7 @@ $ llm --model command-nightly
 </Tabs>
 
 ## Quick Start - LLM Proxy + Config.yaml
-The config allows you to create a model list and set `api_base`, `max_tokens` (all llm params). See more details about the config [here](https://docs.llm.ai/docs/proxy/configs)
+The config allows you to create a model list and set `api_base`, `max_tokens` (all llm params). See more details about the config [here](https://docs.hanzo.ai/docs/proxy/configs)
 
 ### Create a Config for LLM Proxy
 Example config
@@ -231,7 +231,7 @@ Example config
 ```yaml
 model_list: 
   - model_name: gpt-3.5-turbo # user-facing model alias
-    llm_params: # all params accepted by llm.completion() - https://docs.llm.ai/docs/completion/input
+    llm_params: # all params accepted by llm.completion() - https://docs.hanzo.ai/docs/completion/input
       model: azure/<your-deployment-name>
       api_base: <your-azure-api-endpoint>
       api_key: <your-azure-api-key>

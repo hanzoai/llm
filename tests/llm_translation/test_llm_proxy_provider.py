@@ -156,7 +156,7 @@ async def test_llm_gateway_from_sdk_image_generation(is_async):
     with patch.object(patch_target.__self__, patch_target.__name__, new=mock_method):
         try:
             if is_async:
-                response = await llm.aimage_generation(
+                response = await hanzo.aimage_generation(
                     model="llm_proxy/dall-e-3",
                     prompt="A beautiful sunset over mountains",
                     client=openai_client,

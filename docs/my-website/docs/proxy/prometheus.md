@@ -8,9 +8,9 @@ import Image from '@theme/IdealImage';
 
 ✨ Prometheus metrics is on LLM Enterprise
 
-[Enterprise Pricing](https://www.llm.ai/#pricing)
+[Enterprise Pricing](https://www.hanzo.ai/#pricing)
 
-[Get free 7-day trial key](https://www.llm.ai/#trial)
+[Get free 7-day trial key](https://www.hanzo.ai/#trial)
 
 :::
 

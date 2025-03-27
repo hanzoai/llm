@@ -17,7 +17,7 @@ pip install mlflow
 
 
 ### Step 1: Start LLM Proxy on the CLI
-LLM allows you to create an OpenAI compatible server for all supported LLMs. [More information on llm proxy here](https://docs.llm.ai/docs/simple_proxy)
+LLM allows you to create an OpenAI compatible server for all supported LLMs. [More information on llm proxy here](https://docs.hanzo.ai/docs/simple_proxy)
 
 ```shell
 $ llm --model huggingface/bigcode/starcoder

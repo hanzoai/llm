@@ -16,7 +16,7 @@ const TokenGen = () => {
   useEffect(() => {
     const generateToken = async () => {
       try {
-        const response = await fetch('https://proxy.llm.ai/key/new', {
+        const response = await fetch('https://proxy.hanzo.ai/key/new', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

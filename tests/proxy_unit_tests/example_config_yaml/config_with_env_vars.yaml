@@ -45,4 +45,4 @@ llm_settings: # module level llm settings - https://github.com/hanzoai/llm/blob/
     s3_endpoint_url: https://s3.amazonaws.com  # [OPTIONAL] S3 endpoint URL, if you want to use Backblaze/cloudflare s3 buckets
 
 router_settings:
-  routing_strategy: simple-shuffle # "simple-shuffle" shown to result in highest throughput. https://docs.llm.ai/docs/proxy/configs#load-balancing
+  routing_strategy: simple-shuffle # "simple-shuffle" shown to result in highest throughput. https://docs.hanzo.ai/docs/proxy/configs#load-balancing

@@ -23,7 +23,7 @@ import Image from '@theme/IdealImage';
 
 :::info
 
-Get a 7 day free trial for LLM Enterprise [here](https://llm.ai/#trial).
+Get a 7 day free trial for LLM Enterprise [here](https://hanzo.ai/#trial).
 
 **no call needed**
 
@@ -35,7 +35,7 @@ Define tiers with rate limits. Assign them to keys.
 
 Use this to control access and budgets across a lot of keys.
 
-**[Start here](https://docs.llm.ai/docs/proxy/rate_limit_tiers)**
+**[Start here](https://docs.hanzo.ai/docs/proxy/rate_limit_tiers)**
 
 ```bash
 curl -L -X POST 'http://0.0.0.0:4000/budget/new' \
@@ -68,14 +68,14 @@ What's logged per request:
 
 
 **Start Here:**
-- [Setup Finetuning](https://docs.llm.ai/docs/fine_tuning)
-- [Setup Logging](https://docs.llm.ai/docs/proxy/logging#datadog)
+- [Setup Finetuning](https://docs.hanzo.ai/docs/fine_tuning)
+- [Setup Logging](https://docs.hanzo.ai/docs/proxy/logging#datadog)
 
 ## Dynamic Params for Guardrails 
 
 You can now set custom parameters (like success threshold) for your guardrails in each request.
 
-[See guardrails spec for more details](https://docs.llm.ai/docs/proxy/guardrails/custom_guardrail#-pass-additional-parameters-to-guardrail)
+[See guardrails spec for more details](https://docs.hanzo.ai/docs/proxy/guardrails/custom_guardrail#-pass-additional-parameters-to-guardrail)
 
 
 

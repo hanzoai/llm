@@ -52,7 +52,7 @@ class BaseImageGenTest(ABC):
             llm.callbacks = [custom_logger]
             base_image_generation_call_args = self.get_base_image_generation_call_args()
             llm.set_verbose = True
-            response = await llm.aimage_generation(
+            response = await hanzo.aimage_generation(
                 **base_image_generation_call_args, prompt="A image of a otter"
             )
             print(response)

@@ -151,7 +151,7 @@ const AddModelTab: React.FC<AddModelTabProps> = ({
               <Col span={10}></Col>
               <Col span={10}>
                 <Text className="mb-5 mt-1">
-                  <strong>Optional</strong> - LLM endpoint to use when health checking this model <Link href="https://docs.llm.ai/docs/proxy/health#health" target="_blank">Learn more</Link>
+                  <strong>Optional</strong> - LLM endpoint to use when health checking this model <Link href="https://docs.hanzo.ai/docs/proxy/health#health" target="_blank">Learn more</Link>
                 </Text>
               </Col>
             </Row>

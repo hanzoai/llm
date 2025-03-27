@@ -183,7 +183,7 @@ model_list:
 </Tabs>
 
 ## Passing additional params - max_tokens, temperature 
-See all llm.completion supported params [here](https://docs.llm.ai/docs/completion/input)
+See all llm.completion supported params [here](https://docs.hanzo.ai/docs/completion/input)
 
 ```python
 # !pip install llm
@@ -214,7 +214,7 @@ response = completion(
 ```
 
 ## Passings Predibase specific params - adapter_id, adapter_source, 
-Send params [not supported by `llm.completion()`](https://docs.llm.ai/docs/completion/input) but supported by Predibase by passing them to `llm.completion`
+Send params [not supported by `llm.completion()`](https://docs.hanzo.ai/docs/completion/input) but supported by Predibase by passing them to `llm.completion`
 
 Example `adapter_id`, `adapter_source` are Predibase specific param - [See List](https://github.com/hanzoai/llm/blob/8a35354dd6dbf4c2fcefcd6e877b980fcbd68c58/llm/llms/predibase.py#L54)
 

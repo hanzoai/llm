@@ -219,7 +219,7 @@ class ProxyInitializationHelpers:
                     f"\033[1;34mLLM: Curl Command Test for your local proxy\n {curl_command} \033[0m\n"
                 )
                 print(  # noqa
-                    "\033[1;34mDocs: https://docs.llm.ai/docs/simple_proxy\033[0m\n"
+                    "\033[1;34mDocs: https://docs.hanzo.ai/docs/simple_proxy\033[0m\n"
                 )  # noqa
                 print(  # noqa
                     f"\033[1;34mSee all Router/Swagger docs on http://0.0.0.0:{port} \033[0m\n"

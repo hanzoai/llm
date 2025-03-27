@@ -29,7 +29,7 @@ pip install llm click tqdm tabulate termcolor
 ### Configuration - Set LLM API Keys + LLMs in benchmark.py
 In `benchmark/benchmark.py` select your LLMs, LLM API Key and questions
 
-Supported LLMs: https://docs.llm.ai/docs/providers
+Supported LLMs: https://docs.hanzo.ai/docs/providers
 
 ```python
 # Define the list of models to benchmark
@@ -128,7 +128,7 @@ questions = [
 
 ### Running questions
 
-### Select from 100+ LLMs here: <https://docs.llm.ai/docs/providers> {#select-from-100-llms-here-httpsdocsllmaidocsproviders}
+### Select from 100+ LLMs here: <https://docs.hanzo.ai/docs/providers> {#select-from-100-llms-here-httpsdocsllmaidocsproviders}
 
 ``` python
 import llm
@@ -149,7 +149,7 @@ os.environ['ANTHROPIC_API_KEY'] = ""
 
 # select LLMs to benchmark
 # using https://api.together.xyz/playground for llama2
-# try any supported LLM here: https://docs.llm.ai/docs/providers
+# try any supported LLM here: https://docs.hanzo.ai/docs/providers
 
 models = ['togethercomputer/llama-2-70b-chat', 'gpt-3.5-turbo', 'claude-instant-1.2']
 data = []

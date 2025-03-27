@@ -141,7 +141,7 @@ def test_init_kwargs_with_llm_metadata(mock_request, mock_user_api_key_dict):
     """
     Expected behavior: llm_metadata should be merged with default metadata
 
-    see usage example here: https://docs.llm.ai/docs/pass_through/anthropic_completion#send-llm_metadata-tags
+    see usage example here: https://docs.hanzo.ai/docs/pass_through/anthropic_completion#send-llm_metadata-tags
     """
     request = mock_request()
     parsed_body = {

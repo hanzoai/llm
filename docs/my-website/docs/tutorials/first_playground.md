@@ -1,7 +1,7 @@
 # Create your first LLM playground
 import Image from '@theme/IdealImage';
 
-Create a playground to **evaluate multiple LLM Providers in less than 10 minutes**. If you want to see this in prod, check out our [website](https://llm.ai/).
+Create a playground to **evaluate multiple LLM Providers in less than 10 minutes**. If you want to see this in prod, check out our [website](https://hanzo.ai/).
 
 **What will it look like?**
 <Image
@@ -184,4 +184,4 @@ This is what you should see:
 You've created your first LLM Playground - with the ability to call 50+ LLM APIs. 
 
 Next Steps: 
-* [Check out the full list of LLM Providers you can now add](https://docs.llm.ai/docs/providers)
+* [Check out the full list of LLM Providers you can now add](https://docs.hanzo.ai/docs/providers)

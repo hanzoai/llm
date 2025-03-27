@@ -67,7 +67,7 @@ class LLMPydanticObjectBase(BaseModel):
 
 class LLMCommonStrings(Enum):
     redacted_by_llm = "redacted by llm. 'llm.turn_off_message_logging=True'"
-    llm_provider_not_provided = "Unmapped LLM provider for this endpoint. You passed model={model}, custom_llm_provider={custom_llm_provider}. Check supported provider and route: https://docs.llm.ai/docs/providers"
+    llm_provider_not_provided = "Unmapped LLM provider for this endpoint. You passed model={model}, custom_llm_provider={custom_llm_provider}. Check supported provider and route: https://docs.hanzo.ai/docs/providers"
 
 
 SupportedCacheControls = ["ttl", "s-maxage", "no-cache", "no-store"]

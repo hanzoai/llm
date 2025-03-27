@@ -28,7 +28,7 @@ import Image from '@theme/IdealImage';
 
 :::info
 
-Get a free 7-day LLM Enterprise trial here. [Start here](https://www.llm.ai/#trial)
+Get a free 7-day LLM Enterprise trial here. [Start here](https://www.hanzo.ai/#trial)
 
 **No call needed**
 
@@ -36,7 +36,7 @@ Get a free 7-day LLM Enterprise trial here. [Start here](https://www.llm.ai/#tri
 
 ## ✨ Cost Tracking, Logging for Batches API (`/batches`)
 
-Track cost, usage for Batch Creation Jobs. [Start here](https://docs.llm.ai/docs/batches)
+Track cost, usage for Batch Creation Jobs. [Start here](https://docs.hanzo.ai/docs/batches)
 
 ## ✨ `/guardrails/list` endpoint 
 
@@ -45,17 +45,17 @@ Show available guardrails to users. [Start here](https://llm-api.up.railway.app/
 
 ## ✨ Allow teams to add models
 
-This enables team admins to call their own finetuned models via llm proxy. [Start here](https://docs.llm.ai/docs/proxy/team_model_add)
+This enables team admins to call their own finetuned models via llm proxy. [Start here](https://docs.hanzo.ai/docs/proxy/team_model_add)
 
 
 ## ✨ Common checks for custom auth
 
-Calling the internal common_checks function in custom auth is now enforced as an enterprise feature. This allows admins to use llm's default budget/auth checks within their custom auth implementation. [Start here](https://docs.llm.ai/docs/proxy/virtual_keys#custom-auth)
+Calling the internal common_checks function in custom auth is now enforced as an enterprise feature. This allows admins to use llm's default budget/auth checks within their custom auth implementation. [Start here](https://docs.hanzo.ai/docs/proxy/virtual_keys#custom-auth)
 
 
 ## ✨ Assigning team admins
 
-Team admins is graduating from beta and moving to our enterprise tier. This allows proxy admins to allow others to manage keys/models for their own teams (useful for projects in production). [Start here](https://docs.llm.ai/docs/proxy/virtual_keys#restricting-key-generation)
+Team admins is graduating from beta and moving to our enterprise tier. This allows proxy admins to allow others to manage keys/models for their own teams (useful for projects in production). [Start here](https://docs.hanzo.ai/docs/proxy/virtual_keys#restricting-key-generation)
 
 
 

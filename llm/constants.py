@@ -280,7 +280,7 @@ huggingface_models: List = [
     "meta-llama/Llama-2-13b-chat",
     "meta-llama/Llama-2-70b",
     "meta-llama/Llama-2-70b-chat",
-]  # these have been tested on extensively. But by default all text2text-generation and text-generation models are supported by llm. - https://docs.llm.ai/docs/providers
+]  # these have been tested on extensively. But by default all text2text-generation and text-generation models are supported by llm. - https://docs.hanzo.ai/docs/providers
 empower_models = [
     "empower/empower-functions",
     "empower/empower-functions-small",

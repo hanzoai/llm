@@ -1,7 +1,7 @@
 # Custom Callback
 
 ### Step 1 - Create your custom `llm` callback class
-We use `llm.integrations.custom_logger` for this, **more details about llm custom callbacks [here](https://docs.llm.ai/docs/observability/custom_callback)**
+We use `llm.integrations.custom_logger` for this, **more details about llm custom callbacks [here](https://docs.hanzo.ai/docs/observability/custom_callback)**
 
 Define your custom callback class in a python file.
 

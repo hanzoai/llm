@@ -359,7 +359,7 @@ async def test_simple_image_generation_async():
     llm.custom_provider_map = [
         {"provider": "custom_llm", "custom_handler": my_custom_llm}
     ]
-    resp = await llm.aimage_generation(
+    resp = await hanzo.aimage_generation(
         model="custom_llm/my-fake-model",
         prompt="Hello world",
     )
@@ -378,7 +378,7 @@ async def test_image_generation_async_additional_params():
         my_custom_llm, "aimage_generation", new=AsyncMock()
     ) as mock_client:
         try:
-            resp = await llm.aimage_generation(
+            resp = await hanzo.aimage_generation(
                 model="custom_llm/my-fake-model",
                 prompt="Hello world",
                 api_key="my-api-key",

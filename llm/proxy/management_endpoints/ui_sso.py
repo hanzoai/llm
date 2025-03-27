@@ -430,7 +430,7 @@ async def auth_callback(request: Request):  # noqa: PLR0915
     # get url from request
     if master_key is None:
         raise ProxyException(
-            message="Master Key not set for Proxy. Please set Master Key to use Admin UI. Set `LLM_MASTER_KEY` in .env or set general_settings:master_key in config.yaml.  https://docs.llm.ai/docs/proxy/virtual_keys. If set, use `--detailed_debug` to debug issue.",
+            message="Master Key not set for Proxy. Please set Master Key to use Admin UI. Set `LLM_MASTER_KEY` in .env or set general_settings:master_key in config.yaml.  https://docs.hanzo.ai/docs/proxy/virtual_keys. If set, use `--detailed_debug` to debug issue.",
             type=ProxyErrorTypes.auth_error,
             param="master_key",
             code=status.HTTP_500_INTERNAL_SERVER_ERROR,

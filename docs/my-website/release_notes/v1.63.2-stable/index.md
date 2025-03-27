@@ -37,7 +37,7 @@ This release will be live on 03/09/2025
 ## Demo Instance
 
 Here's a Demo Instance to test changes:
-- Instance: https://demo.llm.ai/
+- Instance: https://demo.hanzo.ai/
 - Login Credentials:
     - Username: admin
     - Password: sk-1234
@@ -53,25 +53,25 @@ Here's a Demo Instance to test changes:
 
 <Image img={require('../../img/release_notes/anthropic_thinking.jpg')}/>
 
-1. Support `/openai/` passthrough for Assistant endpoints. [Get Started](https://docs.llm.ai/docs/pass_through/openai_passthrough)
+1. Support `/openai/` passthrough for Assistant endpoints. [Get Started](https://docs.hanzo.ai/docs/pass_through/openai_passthrough)
 2. Bedrock Claude - fix tool calling transformation on invoke route. [Get Started](../../docs/providers/bedrock#usage---function-calling--tool-calling)
 3. Bedrock Claude - response_format support for claude on invoke route. [Get Started](../../docs/providers/bedrock#usage---structured-output--json-mode)
 4. Bedrock - pass `description` if set in response_format. [Get Started](../../docs/providers/bedrock#usage---structured-output--json-mode)
 5. Bedrock - Fix passing response_format: {"type": "text"}. [PR](https://github.com/hanzoai/llm/commit/c84b489d5897755139aa7d4e9e54727ebe0fa540)
-6. OpenAI - Handle sending image_url as str to openai. [Get Started](https://docs.llm.ai/docs/completion/vision)
-7. Deepseek - return 'reasoning_content' missing on streaming. [Get Started](https://docs.llm.ai/docs/reasoning_content)
-8. Caching - Support caching on reasoning content. [Get Started](https://docs.llm.ai/docs/proxy/caching)
-9. Bedrock - handle thinking blocks in assistant message. [Get Started](https://docs.llm.ai/docs/providers/bedrock#usage---thinking--reasoning-content)
-10. Anthropic - Return `signature` on streaming. [Get Started](https://docs.llm.ai/docs/providers/bedrock#usage---thinking--reasoning-content)
-- Note: We've also migrated from `signature_delta` to `signature`. [Read more](https://docs.llm.ai/release_notes/v1.63.0)
+6. OpenAI - Handle sending image_url as str to openai. [Get Started](https://docs.hanzo.ai/docs/completion/vision)
+7. Deepseek - return 'reasoning_content' missing on streaming. [Get Started](https://docs.hanzo.ai/docs/reasoning_content)
+8. Caching - Support caching on reasoning content. [Get Started](https://docs.hanzo.ai/docs/proxy/caching)
+9. Bedrock - handle thinking blocks in assistant message. [Get Started](https://docs.hanzo.ai/docs/providers/bedrock#usage---thinking--reasoning-content)
+10. Anthropic - Return `signature` on streaming. [Get Started](https://docs.hanzo.ai/docs/providers/bedrock#usage---thinking--reasoning-content)
+- Note: We've also migrated from `signature_delta` to `signature`. [Read more](https://docs.hanzo.ai/release_notes/v1.63.0)
 11. Support format param for specifying image type. [Get Started](../../docs/completion/vision.md#explicitly-specify-image-type)
 12. Anthropic - `/v1/messages` endpoint - `thinking` param support. [Get Started](../../docs/anthropic_unified.md)
 - Note: this refactors the [BETA] unified `/v1/messages` endpoint, to just work for the Anthropic API. 
-13. Vertex AI - handle $id in response schema when calling vertex ai. [Get Started](https://docs.llm.ai/docs/providers/vertex#json-schema)
+13. Vertex AI - handle $id in response schema when calling vertex ai. [Get Started](https://docs.hanzo.ai/docs/providers/vertex#json-schema)
 
 ## Spend Tracking Improvements
 
-1. Batches API - Fix cost calculation to run on retrieve_batch. [Get Started](https://docs.llm.ai/docs/batches)
+1. Batches API - Fix cost calculation to run on retrieve_batch. [Get Started](https://docs.hanzo.ai/docs/batches)
 2. Batches API - Log batch models in spend logs / standard logging payload. [Get Started](../../docs/proxy/logging_spec.md#standardlogginghiddenparams)
 
 ## Management Endpoints / UI
@@ -96,8 +96,8 @@ Here's a Demo Instance to test changes:
 
 ## Performance / Loadbalancing / Reliability improvements
 
-1. Cooldowns - Support cooldowns on models called with client side credentials. [Get Started](https://docs.llm.ai/docs/proxy/clientside_auth#pass-user-llm-api-keys--api-base)
-2. Tag-based Routing - ensures tag-based routing across all endpoints (`/embeddings`, `/image_generation`, etc.). [Get Started](https://docs.llm.ai/docs/proxy/tag_routing)
+1. Cooldowns - Support cooldowns on models called with client side credentials. [Get Started](https://docs.hanzo.ai/docs/proxy/clientside_auth#pass-user-llm-api-keys--api-base)
+2. Tag-based Routing - ensures tag-based routing across all endpoints (`/embeddings`, `/image_generation`, etc.). [Get Started](https://docs.hanzo.ai/docs/proxy/tag_routing)
 
 ## General Proxy Improvements
 

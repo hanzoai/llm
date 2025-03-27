@@ -57,7 +57,7 @@ def decrypt_value_helper(value: str):
 
         traceback.print_stack()
         verbose_proxy_logger.error(
-            f"Error decrypting value, Did your master_key/salt key change recently? \nError: {str(e)}\nSet permanent salt key - https://docs.llm.ai/docs/proxy/prod#5-set-llm-salt-key"
+            f"Error decrypting value, Did your master_key/salt key change recently? \nError: {str(e)}\nSet permanent salt key - https://docs.hanzo.ai/docs/proxy/prod#5-set-llm-salt-key"
         )
         # [Non-Blocking Exception. - this should not block decrypting other values]
         pass

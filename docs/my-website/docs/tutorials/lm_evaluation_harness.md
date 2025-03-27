@@ -11,7 +11,7 @@ This tutorial assumes you're using the `big-refactor` branch of [lm-evaluation-h
 NOTE: LM Harness has not updated to using `openai 1.0.0+`, in order to deal with this we will run lm harness in a venv
 
 **Step 1: Start the local proxy**
-see supported models [here](https://docs.llm.ai/docs/simple_proxy)
+see supported models [here](https://docs.hanzo.ai/docs/simple_proxy)
 ```shell
 $ llm --model huggingface/bigcode/starcoder
 ```
@@ -67,7 +67,7 @@ python3 -m lm_eval \
 ## FastEval
 
 **Step 1: Start the local proxy**
-see supported models [here](https://docs.llm.ai/docs/simple_proxy)
+see supported models [here](https://docs.hanzo.ai/docs/simple_proxy)
 ```shell
 $ llm --model huggingface/bigcode/starcoder
 ```

@@ -119,7 +119,7 @@ const sidebars = {
         {
           type: "link",
           label: "Load Balancing, Routing, Fallbacks",
-          href: "https://docs.llm.ai/docs/routing-load-balancing",
+          href: "https://docs.hanzo.ai/docs/routing-load-balancing",
         },
         {
           type: "category",

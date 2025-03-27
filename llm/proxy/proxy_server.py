@@ -1857,7 +1857,7 @@ class ProxyConfig:
                     )  # noqa
                 elif key == "cache_params":
                     # this is set in the cache branch
-                    # see usage here: https://docs.llm.ai/docs/proxy/caching
+                    # see usage here: https://docs.hanzo.ai/docs/proxy/caching
                     pass
                 elif key == "default_team_settings":
                     for idx, team_setting in enumerate(
@@ -6082,7 +6082,7 @@ async def model_info_v1(  # noqa: PLR0915
         raise HTTPException(
             status_code=500,
             detail={
-                "error": "LLM Model List not loaded in. Make sure you passed models in your config.yaml or on the LLM Admin UI. - https://docs.llm.ai/docs/proxy/configs"
+                "error": "LLM Model List not loaded in. Make sure you passed models in your config.yaml or on the LLM Admin UI. - https://docs.hanzo.ai/docs/proxy/configs"
             },
         )
 
@@ -6090,7 +6090,7 @@ async def model_info_v1(  # noqa: PLR0915
         raise HTTPException(
             status_code=500,
             detail={
-                "error": "LLM Router is not loaded in. Make sure you passed models in your config.yaml or on the LLM Admin UI. - https://docs.llm.ai/docs/proxy/configs"
+                "error": "LLM Router is not loaded in. Make sure you passed models in your config.yaml or on the LLM Admin UI. - https://docs.hanzo.ai/docs/proxy/configs"
             },
         )
 
@@ -6208,7 +6208,7 @@ async def model_group_info(
     -H 'Authorization: Bearersk-1234'
     ```
 
-    Learn how to use and set wildcard models [here](https://docs.llm.ai/docs/wildcard_routing)
+    Learn how to use and set wildcard models [here](https://docs.hanzo.ai/docs/wildcard_routing)
 
     Example Response:
     ```json
@@ -6668,7 +6668,7 @@ async def login(request: Request):  # noqa: PLR0915
     global master_key
     if master_key is None:
         raise ProxyException(
-            message="Master Key not set for Proxy. Please set Master Key to use Admin UI. Set `LLM_MASTER_KEY` in .env or set general_settings:master_key in config.yaml.  https://docs.llm.ai/docs/proxy/virtual_keys. If set, use `--detailed_debug` to debug issue.",
+            message="Master Key not set for Proxy. Please set Master Key to use Admin UI. Set `LLM_MASTER_KEY` in .env or set general_settings:master_key in config.yaml.  https://docs.hanzo.ai/docs/proxy/virtual_keys. If set, use `--detailed_debug` to debug issue.",
             type=ProxyErrorTypes.auth_error,
             param="master_key",
             code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -6682,7 +6682,7 @@ async def login(request: Request):  # noqa: PLR0915
         ui_password = str(master_key) if master_key is not None else None
     if ui_password is None:
         raise ProxyException(
-            message="set Proxy master key to use UI. https://docs.llm.ai/docs/proxy/virtual_keys. If set, use `--detailed_debug` to debug issue.",
+            message="set Proxy master key to use UI. https://docs.hanzo.ai/docs/proxy/virtual_keys. If set, use `--detailed_debug` to debug issue.",
             type=ProxyErrorTypes.auth_error,
             param="UI_PASSWORD",
             code=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -6883,7 +6883,7 @@ async def onboarding(invite_link: str):
     global prisma_client, master_key, general_settings
     if master_key is None:
         raise ProxyException(
-            message="Master Key not set for Proxy. Please set Master Key to use Admin UI. Set `LLM_MASTER_KEY` in .env or set general_settings:master_key in config.yaml.  https://docs.llm.ai/docs/proxy/virtual_keys. If set, use `--detailed_debug` to debug issue.",
+            message="Master Key not set for Proxy. Please set Master Key to use Admin UI. Set `LLM_MASTER_KEY` in .env or set general_settings:master_key in config.yaml.  https://docs.hanzo.ai/docs/proxy/virtual_keys. If set, use `--detailed_debug` to debug issue.",
             type=ProxyErrorTypes.auth_error,
             param="master_key",
             code=status.HTTP_500_INTERNAL_SERVER_ERROR,

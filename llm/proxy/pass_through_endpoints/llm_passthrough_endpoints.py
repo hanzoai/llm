@@ -54,7 +54,7 @@ async def gemini_proxy_route(
     fastapi_response: Response,
 ):
     """
-    [Docs](https://docs.llm.ai/docs/pass_through/google_ai_studio)
+    [Docs](https://docs.hanzo.ai/docs/pass_through/google_ai_studio)
     """
     ## CHECK FOR LLM API KEY IN THE QUERY PARAMS - ?..key=LLM_API_KEY
     google_ai_studio_api_key = request.query_params.get("key") or request.headers.get(
@@ -122,7 +122,7 @@ async def cohere_proxy_route(
     user_api_key_dict: UserAPIKeyAuth = Depends(user_api_key_auth),
 ):
     """
-    [Docs](https://docs.llm.ai/docs/pass_through/cohere)
+    [Docs](https://docs.hanzo.ai/docs/pass_through/cohere)
     """
     base_target_url = "https://api.cohere.com"
     encoded_endpoint = httpx.URL(endpoint).path
@@ -174,7 +174,7 @@ async def anthropic_proxy_route(
     user_api_key_dict: UserAPIKeyAuth = Depends(user_api_key_auth),
 ):
     """
-    [Docs](https://docs.llm.ai/docs/anthropic_completion)
+    [Docs](https://docs.hanzo.ai/docs/anthropic_completion)
     """
     base_target_url = "https://api.anthropic.com"
     encoded_endpoint = httpx.URL(endpoint).path
@@ -230,7 +230,7 @@ async def bedrock_proxy_route(
     user_api_key_dict: UserAPIKeyAuth = Depends(user_api_key_auth),
 ):
     """
-    [Docs](https://docs.llm.ai/docs/pass_through/bedrock)
+    [Docs](https://docs.hanzo.ai/docs/pass_through/bedrock)
     """
     create_request_copy(request)
 
@@ -440,7 +440,7 @@ async def vertex_proxy_route(
     """
     Call LLM proxy via Vertex AI SDK.
 
-    [Docs](https://docs.llm.ai/docs/pass_through/vertex_ai)
+    [Docs](https://docs.hanzo.ai/docs/pass_through/vertex_ai)
     """
     from llm.llms.vertex_ai.common_utils import (
         construct_target_url,

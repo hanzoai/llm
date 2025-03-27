@@ -1,6 +1,6 @@
 # Implementation of `llm.batch_completion`, `llm.batch_completion_models`, `llm.batch_completion_models_all_responses`
 
-Doc: https://docs.llm.ai/docs/completion/batching
+Doc: https://docs.hanzo.ai/docs/completion/batching
 
 
 LLM Python SDK allows you to:

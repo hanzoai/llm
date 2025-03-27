@@ -33,7 +33,7 @@ E.g.:
 ```yaml
 model_list:
   - model_name: gpt-3.5-turbo ### RECEIVED MODEL NAME ###
-    llm_params: # all params accepted by llm.completion() - https://docs.llm.ai/docs/completion/input
+    llm_params: # all params accepted by llm.completion() - https://docs.hanzo.ai/docs/completion/input
       model: azure/gpt-turbo-small-eu ### MODEL NAME sent to `llm.completion()` ###
       api_base: https://my-endpoint-europe-berri-992.openai.azure.com/
       api_key: "os.environ/AZURE_API_KEY_EU" # does os.getenv("AZURE_API_KEY_EU")
@@ -102,7 +102,7 @@ $ llm --config /path/to/config.yaml --detailed_debug
 
 Sends request to model where `model_name=gpt-3.5-turbo` on config.yaml. 
 
-If multiple with `model_name=gpt-3.5-turbo` does [Load Balancing](https://docs.llm.ai/docs/proxy/load_balancing)
+If multiple with `model_name=gpt-3.5-turbo` does [Load Balancing](https://docs.hanzo.ai/docs/proxy/load_balancing)
 
 **[Langchain, OpenAI SDK Usage Examples](../proxy/user_keys#request-format)**
 
@@ -126,13 +126,13 @@ curl --location 'http://0.0.0.0:4000/chat/completions' \
 ### Model-specific params (API Base, Keys, Temperature, Max Tokens, Organization, Headers etc.)
 You can use the config to save model-specific information like api_base, api_key, temperature, max_tokens, etc. 
 
-[**All input params**](https://docs.llm.ai/docs/completion/input#input-params-1)
+[**All input params**](https://docs.hanzo.ai/docs/completion/input#input-params-1)
 
 **Step 1**: Create a `config.yaml` file
 ```yaml
 model_list:
   - model_name: gpt-4-team1
-    llm_params: # params for llm.completion() - https://docs.llm.ai/docs/completion/input#input---request-body
+    llm_params: # params for llm.completion() - https://docs.hanzo.ai/docs/completion/input#input---request-body
       model: azure/chatgpt-v-2
       api_base: https://openai-gpt-4-test-v-1.openai.azure.com/
       api_version: "2023-05-15"
@@ -173,7 +173,7 @@ LLM: Proxy initialized with Config, Set models:
 
 ### Embedding Models - Use Sagemaker, Bedrock, Azure, OpenAI, XInference
 
-See supported Embedding Providers & Models [here](https://docs.llm.ai/docs/embedding/supported_embedding)
+See supported Embedding Providers & Models [here](https://docs.hanzo.ai/docs/embedding/supported_embedding)
 
 
 <Tabs>
@@ -277,7 +277,7 @@ model_list:
 
 <TabItem value="xinf" label="XInference">
 
-https://docs.llm.ai/docs/providers/xinference
+https://docs.hanzo.ai/docs/providers/xinference
 
 **Note add `xinference/` prefix to `llm_params`: `model` so llm knows to route to OpenAI**
 
@@ -360,10 +360,10 @@ curl --location 'http://0.0.0.0:4000/v1/model/info' \
 ### Load Balancing 
 
 :::info
-For more on this, go to [this page](https://docs.llm.ai/docs/proxy/load_balancing)
+For more on this, go to [this page](https://docs.hanzo.ai/docs/proxy/load_balancing)
 :::
 
-Use this to call multiple instances of the same model and configure things like [routing strategy](https://docs.llm.ai/docs/routing#advanced).
+Use this to call multiple instances of the same model and configure things like [routing strategy](https://docs.hanzo.ai/docs/routing#advanced).
 
 For optimal performance:
 - Set `tpm/rpm` per model deployment. Weighted picks are then based on the established tpm/rpm.
@@ -423,7 +423,7 @@ router_settings: # router_settings are optional
   redis_port: 1992
 ```
 
-You can view your cost once you set up [Virtual keys](https://docs.llm.ai/docs/proxy/virtual_keys) or [custom_callbacks](https://docs.llm.ai/docs/proxy/logging)
+You can view your cost once you set up [Virtual keys](https://docs.hanzo.ai/docs/proxy/virtual_keys) or [custom_callbacks](https://docs.hanzo.ai/docs/proxy/logging)
 
 
 ### Load API Keys / config values from Environment 
@@ -437,7 +437,7 @@ os.environ/<YOUR-ENV-VAR> # runs os.getenv("YOUR-ENV-VAR")
 ```yaml 
 model_list:
   - model_name: gpt-4-team1
-    llm_params: # params for llm.completion() - https://docs.llm.ai/docs/completion/input#input---request-body
+    llm_params: # params for llm.completion() - https://docs.hanzo.ai/docs/completion/input#input---request-body
       model: azure/chatgpt-v-2
       api_base: https://openai-gpt-4-test-v-1.openai.azure.com/
       api_version: "2023-05-15"

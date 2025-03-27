@@ -12,7 +12,7 @@ This guide walks you through connecting OpenWeb UI to LLM. Using LLM with OpenWe
 
 ## Quickstart
 
-- Make sure to setup LLM with the [LLM Getting Started Guide](https://docs.llm.ai/docs/proxy/docker_quick_start)
+- Make sure to setup LLM with the [LLM Getting Started Guide](https://docs.hanzo.ai/docs/proxy/docker_quick_start)
 
 
 ## 1. Start LLM & OpenWebUI
@@ -31,10 +31,10 @@ On LLM, you can create Organizations, Teams, Users and Virtual Keys. For this tu
 
 - `Organization` - An Organization is a group of Teams. (US Engineering, EU Developer Tools)
 - `Team` - A Team is a group of Users. (OpenWeb UI Team, Data Science Team, etc.)
-- `User` - A User is an individual user (employee, developer, eg. `dev@llm.ai`)
+- `User` - A User is an individual user (employee, developer, eg. `dev@hanzo.ai`)
 - `Virtual Key` - A Virtual Key is an API Key that allows you to authenticate to LLM Proxy. A Virtual Key is associated with a User or Team.
 
-Once the Team is created, you can invite Users to the Team. You can read more about LLM's User Management [here](https://docs.llm.ai/docs/proxy/user_management_heirarchy).
+Once the Team is created, you can invite Users to the Team. You can read more about LLM's User Management [here](https://docs.hanzo.ai/docs/proxy/user_management_heirarchy).
 
 ### 2.2 Create a Team on LLM
 

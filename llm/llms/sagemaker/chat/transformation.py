@@ -3,7 +3,7 @@ Translate from OpenAI's `/v1/chat/completions` to Sagemaker's `/invocations` API
 
 Called if Sagemaker endpoint supports HF Messages API.
 
-LLM Docs: https://docs.llm.ai/docs/providers/aws_sagemaker#sagemaker-messages-api
+LLM Docs: https://docs.hanzo.ai/docs/providers/aws_sagemaker#sagemaker-messages-api
 Huggingface Docs: https://huggingface.co/docs/text-generation-inference/en/messages_api
 """
 

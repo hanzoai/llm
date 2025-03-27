@@ -10,7 +10,7 @@ Track spend for keys, users, and teams across 100+ LLMs.
 
 **Step 1**
 
-👉 [Setup LLM with a Database](https://docs.llm.ai/docs/proxy/virtual_keys#setup)
+👉 [Setup LLM with a Database](https://docs.hanzo.ai/docs/proxy/virtual_keys#setup)
 
 
 **Step2** Send `/chat/completions` request
@@ -568,7 +568,7 @@ model_list:
 
 ## Custom Input/Output Pricing
 
-👉 Head to [Custom Input/Output Pricing](https://docs.llm.ai/docs/proxy/custom_pricing) to setup custom pricing or your models
+👉 Head to [Custom Input/Output Pricing](https://docs.hanzo.ai/docs/proxy/custom_pricing) to setup custom pricing or your models
 
 ## ✨ Custom Spend Log metadata
 

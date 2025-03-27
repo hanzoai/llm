@@ -27,7 +27,7 @@ Changes:
 - Log the 'prompt_id' and 'prompt_variables' in the logged request (e.g. to s3/langfuse). 
 
 
-[Start Here](https://docs.llm.ai/docs/proxy/prompt_management)
+[Start Here](https://docs.hanzo.ai/docs/proxy/prompt_management)
 
 ## Team/Organization Management + UI Improvements
 
@@ -41,13 +41,13 @@ Changes:
 - Assign teams to orgs on the UI
 - Auto-assign SSO users to teams
 
-[Start Here](https://docs.llm.ai/docs/proxy/self_serve)
+[Start Here](https://docs.hanzo.ai/docs/proxy/self_serve)
 
 ## Hashicorp Vault Support
 
 We now support writing LLM Virtual API keys to Hashicorp Vault. 
 
-[Start Here](https://docs.llm.ai/docs/proxy/vault)
+[Start Here](https://docs.hanzo.ai/docs/proxy/vault)
 
 ## Custom Prometheus Metrics
 
@@ -55,5 +55,5 @@ Define custom prometheus metrics, and track usage/latency/no. of requests agains
 
 This allows for more fine-grained tracking - e.g. on prompt template passed in request metadata
 
-[Start Here](https://docs.llm.ai/docs/proxy/prometheus#beta-custom-metrics)
+[Start Here](https://docs.hanzo.ai/docs/proxy/prometheus#beta-custom-metrics)
 

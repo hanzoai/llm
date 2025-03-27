@@ -8,9 +8,9 @@ Use this to control access and budgets across a lot of keys.
 
 This is a LLM Enterprise feature.
 
-Get a 7 day free trial + get in touch [here](https://llm.ai/#trial).
+Get a 7 day free trial + get in touch [here](https://hanzo.ai/#trial).
 
-See pricing [here](https://llm.ai/#pricing).
+See pricing [here](https://hanzo.ai/#pricing).
 
 :::
 

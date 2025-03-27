@@ -28,7 +28,7 @@ response = client.chat.completions.create(model="gpt-3.5-turbo", messages = [
 print(response)
 ``` 
 
-[**See how to call Huggingface,Bedrock,TogetherAI,Anthropic, etc.**](https://docs.llm.ai/docs/simple_proxy)
+[**See how to call Huggingface,Bedrock,TogetherAI,Anthropic, etc.**](https://docs.hanzo.ai/docs/simple_proxy)
 
 
 ---

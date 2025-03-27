@@ -9,7 +9,7 @@
 ### Self-hosted Instances LLM
 
 - **No data or telemetry is stored on LLM Servers when you self host**
-- For installation and configuration, see: [Self-hosting guided](https://docs.llm.ai/docs/proxy/deploy)
+- For installation and configuration, see: [Self-hosting guided](https://docs.hanzo.ai/docs/proxy/deploy)
 - **Telemetry** We run no telemetry when you self host LLM
 
 ### LLM Cloud

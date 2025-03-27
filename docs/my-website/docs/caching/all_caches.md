@@ -7,7 +7,7 @@ import TabItem from '@theme/TabItem';
 
 :::info
 
-- For Proxy Server? Doc here: [Caching Proxy Server](https://docs.llm.ai/docs/proxy/caching)
+- For Proxy Server? Doc here: [Caching Proxy Server](https://docs.hanzo.ai/docs/proxy/caching)
 
 - For OpenAI/Anthropic Prompt Caching, go [here](../completion/prompt_caching.md)
 

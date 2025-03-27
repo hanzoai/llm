@@ -1558,7 +1558,7 @@ curl --location 'https://0.0.0.0:4000/v1/chat/completions' \
 
 #### Using Gemini Pro Vision
 
-Call `gemini-pro-vision` in the same input/output format as OpenAI [`gpt-4-vision`](https://docs.llm.ai/docs/providers/openai#openai-vision-models)
+Call `gemini-pro-vision` in the same input/output format as OpenAI [`gpt-4-vision`](https://docs.hanzo.ai/docs/providers/openai#openai-vision-models)
 
 LLM Supports the following image types passed in `url`
 - Images with Cloud Storage URIs - gs://cloud-samples-data/generative-ai/image/boats.jpeg
@@ -2265,7 +2265,7 @@ print(f"Text Embedding: {embeddings.text_embedding}")
 Usage 
 
 ```python
-response = await llm.aimage_generation(
+response = await hanzo.aimage_generation(
     prompt="An olympic size swimming pool",
     model="vertex_ai/imagegeneration@006",
     vertex_ai_project="adroit-crow-413218",
@@ -2277,7 +2277,7 @@ response = await llm.aimage_generation(
 
 Use the `n` parameter to pass how many images you want generated
 ```python
-response = await llm.aimage_generation(
+response = await hanzo.aimage_generation(
     prompt="An olympic size swimming pool",
     model="vertex_ai/imagegeneration@006",
     vertex_ai_project="adroit-crow-413218",
@@ -2817,7 +2817,7 @@ def load_vertex_ai_credentials():
 
 :::info
 
-Trying to deploy LLM on Google Cloud Run? Tutorial [here](https://docs.llm.ai/docs/proxy/deploy#deploy-on-google-cloud-run)
+Trying to deploy LLM on Google Cloud Run? Tutorial [here](https://docs.hanzo.ai/docs/proxy/deploy#deploy-on-google-cloud-run)
 
 :::
 

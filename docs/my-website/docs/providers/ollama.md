@@ -376,7 +376,7 @@ math_reasoning = completion.choices[0].message.parsed
 
 #### Using Ollama Vision Models
 
-Call `ollama/llava` in the same input/output format as OpenAI [`gpt-4-vision`](https://docs.llm.ai/docs/providers/openai#openai-vision-models)
+Call `ollama/llava` in the same input/output format as OpenAI [`gpt-4-vision`](https://docs.hanzo.ai/docs/providers/openai#openai-vision-models)
 
 LLM Supports the following image types passed in `url`
 - Base64 encoded svgs

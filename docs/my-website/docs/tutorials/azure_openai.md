@@ -1,7 +1,7 @@
 # Replacing OpenAI ChatCompletion with Completion()
 
-* [Supported OpenAI LLMs](https://docs.llm.ai/docs/providers/openai)
-* [Supported Azure OpenAI LLMs](https://docs.llm.ai/docs/providers/azure)
+* [Supported OpenAI LLMs](https://docs.hanzo.ai/docs/providers/openai)
+* [Supported Azure OpenAI LLMs](https://docs.hanzo.ai/docs/providers/azure)
 
 <a target="_blank" href="https://colab.research.google.com/github/hanzoai/llm/blob/main/cookbook/LLM_Azure_and_OpenAI_example.ipynb">
   <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
